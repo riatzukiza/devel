@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "es2022",                     /* modern ECMAScript version */
+    "module": "commonjs",                   /* Node style modules */
+    "lib": ["es2022"],                       /* standard library definitions */
+    "strict": true,                          /* enable all strict type-checking options */
+    "esModuleInterop": true,                 /* allow default import interop from CJS modules */
+    "skipLibCheck": true,                    /* skip type checking of declaration files */
+    "forceConsistentCasingInFileNames": true,/* file name casing consistency */
+    "moduleResolution": "node",              /* module resolution strategy */
+    "resolveJsonModule": true,               /* allow importing .json files */
+    "outDir": "./dist",                       /* output directory for compiled JS */
+    "rootDir": "./src",                      /* root directory of TS source files */
+    "declaration": false                      /* turn on if you produce d.ts for a library */
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.spec.ts"]
+}
