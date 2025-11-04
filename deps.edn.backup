@@ -58,62 +58,62 @@
         org.eclipse.jetty/jetty-servlet {:mvn/version "11.0.20"}}
 
  :aliases
- {;; Central REPL for all Clojure/JVM projects
-  :repl {:extra-paths ["clojure-mcp/dev" "clojure-mcp/test" "promethean/dev"]
-         :extra-deps {ch.qos.logback/logback-classic {:mvn/version "1.4.14"}}
-:jvm-opts ["-Djdk.attach.allowAttachSelf"
-                   "-Xmx1g" "-Xss1m" "-XX:+UseG1GC"]
-         :main-opts ["-m" "nrepl.cmdline" "--port" "7888"
-                     "--middleware" "[cider.nrepl/cider-middleware refactor-nrepl.middleware/wrap-refactor]"]}
-
-  ;; Clojure-MCP server
-  :mcp {:extra-deps {org.slf4j/slf4j-nop {:mvn/version "2.0.16"}}
-        :exec-fn clojure-mcp.main/start-mcp-server
-        :exec-args {:port 7888}}
-
-  ;; Shadow-CLJS with MCP integration
-  :mcp-shadow {:extra-deps {org.slf4j/slf4j-nop {:mvn/version "2.0.16"}}
-               :exec-fn clojure-mcp.main-examples.shadow-main/start-mcp-server
-               :exec-args {:port 7888 :shadow-build "app" :shadow-port 7889}}
-
-  ;; Development with logging
-  :dev {:extra-paths ["clojure-mcp/dev" "clojure-mcp/test" "promethean/dev"]
+ {:;; Central REPL for all Clojure/JVM projects
+  repl {:extra-paths ["clojure-mcp/dev" "clojure-mcp/test" "promethean/dev"]
         :extra-deps {ch.qos.logback/logback-classic {:mvn/version "1.4.14"}}
         :jvm-opts ["-Djdk.attach.allowAttachSelf"
-                   "-Xmx4g" "-Xss2m" "-XX:+UseG1GC"]}
+                   "-Xmx2g" "-Xss2m" "-XX:+UseG1GC"]
+        :main-opts ["-m" "nrepl.cmdline" "--port" "7888"
+                    "--middleware" "[cider.nrepl/cider-middleware refactor-nrepl.middleware/wrap-refactor]"]}
+
+  ;; Clojure-MCP server
+  mcp {:extra-deps {org.slf4j/slf4j-nop {:mvn/version "2.0.16"}}
+       :exec-fn clojure-mcp.main/start-mcp-server
+       :exec-args {:port 7888}}
+
+  ;; Shadow-CLJS with MCP integration
+  mcp-shadow {:extra-deps {org.slf4j/slf4j-nop {:mvn/version "2.0.16"}}
+              :exec-fn clojure-mcp.main-examples.shadow-main/start-mcp-server
+              :exec-args {:port 7888 :shadow-build "app" :shadow-port 7889}}
+
+  ;; Development with logging
+  dev {:extra-paths ["clojure-mcp/dev" "clojure-mcp/test" "promethean/dev"]
+       :extra-deps {ch.qos.logback/logback-classic {:mvn/version "1.4.14"}}
+       :jvm-opts ["-Djdk.attach.allowAttachSelf"
+                  "-Xmx4g" "-Xss2m" "-XX:+UseG1GC"]}
 
   ;; Testing
-  :test {:extra-paths ["clojure-mcp/test" "promethean/test"]
-         :extra-deps {ch.qos.logback/logback-classic {:mvn/version "1.4.14"}
-                      org.clojure/test.check {:mvn/version "1.1.1"}
-                      io.github.cognitect-labs/test-runner
-                      {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
-         :main-opts ["-m" "cognitect.test-runner"]}
+  test {:extra-paths ["clojure-mcp/test" "promethean/test"]
+        :extra-deps {ch.qos.logback/logback-classic {:mvn/version "1.4.14"}
+                     org.clojure/test.check {:mvn/version "1.1.1"}
+                     io.github.cognitect-labs/test-runner
+                     {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
+        :main-opts ["-m" "cognitect.test-runner"]}
 
   ;; Linting
-  :lint {:extra-deps {clj-kondo/clj-kondo {:mvn/version "2025.02.20"}}
-         :main-opts ["-m" "clj-kondo.main" "--lint" "src"]}
+  lint {:extra-deps {clj-kondo/clj-kondo {:mvn/version "2025.02.20"}}
+        :main-opts ["-m" "clj-kondo.main" "--lint" "src"]}
 
   ;; Build tools
-  :build {:deps {io.github.clojure/tools.build
-                 {:git/tag "v0.9.2" :git/sha "fe6b140"}
-                 slipset/deps-deploy {:mvn/version "0.2.0"}}
-          :ns-default build}
+  build {:deps {io.github.clojure/tools.build
+                {:git/tag "v0.9.2" :git/sha "fe6b140"}
+                slipset/deps-deploy {:mvn/version "0.2.0"}}
+         :ns-default build}
 
   ;; Promethean ecosystem
-  :ecosystem {:extra-paths ["promethean/packages/ecosystem-dsl/src" "promethean/scripts"]
-              :extra-deps {org.clojure/tools.cli {:mvn/version "1.0.214"}
-                           org.clojure/data.json {:mvn/version "2.4.0"}
-                           cheshire/cheshire {:mvn/version "5.11.0"}
-                           com.taoensso/timbre {:mvn/version "6.3.0"}}
-              :main-opts ["-m" "generate-ecosystem"]}
+  ecosystem {:extra-paths ["promethean/packages/ecosystem-dsl/src" "promethean/scripts"]
+             :extra-deps {org.clojure/tools.cli {:mvn/version "1.0.214"}
+                          org.clojure/data.json {:mvn/version "2.4.0"}
+                          cheshire/cheshire {:mvn/version "5.11.0"}
+                          com.taoensso/timbre {:mvn/version "6.3.0"}}
+             :main-opts ["-m" "generate-ecosystem"]}
 
   ;; Clojure hacks
-  :clj-hacks {:replace-deps {clj-hacks/clj-hacks {:local/root "promethean/packages/clj-hacks"}}
-              :main-opts ["-m" "clj-hacks.cli"]}
+  clj-hacks {:replace-deps {clj-hacks/clj-hacks {:local/root "promethean/packages/clj-hacks"}}
+             :main-opts ["-m" "clj-hacks.cli"]}
 
   ;; Docker-ready REPL
-  :docker-repl {:extra-paths ["clojure-mcp/dev" "clojure-mcp/test"]
-                :extra-deps {ch.qos.logback/logback-classic {:mvn/version "1.4.14"}}
-                :jvm-opts ["-Djdk.attach.allowAttachSelf"]
-                :main-opts ["-m" "nrepl.cmdline" "--port" "7888" "--bind" "0.0.0.0"]}}}
+  docker-repl {:extra-paths ["clojure-mcp/dev" "clojure-mcp/test"]
+               :extra-deps {ch.qos.logback/logback-classic {:mvn/version "1.4.14"}}
+               :jvm-opts ["-Djdk.attach.allowAttachSelf"]
+               :main-opts ["-m" "nrepl.cmdline" "--port" "7888" "--bind" "0.0.0.0"]}}}

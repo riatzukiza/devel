@@ -1,5 +1,4 @@
-{:paths ["." 
-          "promethean/bb/src" 
+{:paths ["promethean/bb/src" 
           "promethean/packages/clj-hacks/src" 
           "promethean/packages/clj-hacks/test"
           "clojure-mcp/src"]
