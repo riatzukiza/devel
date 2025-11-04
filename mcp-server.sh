@@ -15,31 +15,31 @@ echo "Port: $PORT"
 # Function to start unified MCP server
 start_unified() {
     echo "📦 Starting unified MCP server for all Clojure runtimes..."
-    clojure -M:mcp-central --port $PORT
+    clojure -X:mcp-central :port $PORT
 }
 
 # Function to start JVM-specific MCP server
 start_jvm() {
     echo "☕ Starting JVM-specific MCP server..."
-    clojure -M:mcp-jvm --port $PORT
+    clojure -X:mcp-jvm :port $PORT
 }
 
 # Function to start ClojureScript-specific MCP server
 start_cljs() {
     echo "🌐 Starting ClojureScript-specific MCP server..."
-    clojure -M:mcp-cljs --port $PORT
+    clojure -X:mcp-cljs :port $PORT
 }
 
 # Function to start development MCP server
 start_dev() {
     echo "🔧 Starting development MCP server with logging..."
-    clojure -M:mcp-dev --port $PORT
+    clojure -X:mcp-dev :port $PORT
 }
 
 # Function to test MCP server
 start_test() {
     echo "🧪 Starting test MCP server..."
-    clojure -M:mcp-test --port $PORT
+    clojure -X:mcp-test :port $PORT
 }
 
 # Main execution

@@ -161,4 +161,4 @@
                             org.slf4j/slf4j-nop {:mvn/version "2.0.16"}}
                :extra-paths ["src"]
                :exec-fn centralized-clojure-mcp.server/start-unified-mcp
-               :exec-args {:port 7893 :test-mode true}}}}}
+               :exec-args {:port 7893 :test-mode true}}}}
