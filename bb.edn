@@ -8,7 +8,7 @@
   repl:jvm {:doc "Start JVM REPL for all Clojure projects"
             :task (clojure "-M:repl")}
   
-  repl:cljs {:doc "Start Shadow-CLJS REPL for all ClojureScript projects"
+  repl:cljs {:doc "Start ClojureScript REPL for all projects"
             :task (shell "shadow-cljs cljs-repl")}
   
   repl:all {:doc "Start both JVM and CLJS REPLs"
@@ -122,11 +122,11 @@
                     :task (do
                             (println "=== Clojure Projects Status ===")
                             (println "JVM Projects:")
-                            (shell "find . -name 'deps.edn' -not -path './node_modules/*' | head -10")
+                            (shell "find . -name 'deps.edn' -not -path './node_modules/*'")
                             (println "\nClojureScript Projects:")
-                            (shell "find . -name 'shadow-cljs.edn' -not -path './node_modules/*' | head -10")
+                            (shell "find . -name 'shadow-cljs.edn' -not -path './node_modules/*'")
                             (println "\nBabashka Projects:")
-                            (shell "find . -name 'bb.edn' -not -path './node_modules/*' | head -5"))}
+                            (shell "find . -name 'bb.edn' -not -path './node_modules/*'"))}
 
   ;; === Development Server Tasks ===
   dev:all {:doc "Start all development servers"
@@ -150,4 +150,4 @@
                   :task (shell "clojure -X:deps find-versions")}
   
   utils:classpath {:doc "Show classpath for current configuration"
-                   :task (clojure "-X:deps classpath")}}
+                   :task (clojure "-X:deps classpath")}}}
