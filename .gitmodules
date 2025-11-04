@@ -1,0 +1,15 @@
+[submodule "promethean"]
+	path = promethean
+	url = git@github.com:riatzukiza/promethean.git
+[submodule "dotfiles"]
+	path = dotfiles
+	url = git@github.com:riatzukiza/dotfiles.git
+[submodule "agent-shell"]
+	path = agent-shell
+	url = git@github.com:riatzukiza/agent-shell.git
+[submodule "clojure-mcp"]
+	path = clojure-mcp
+	url = git@github.com:bhauman/clojure-mcp.git
+[submodule "opencode-openai-codex-auth"]
+	path = opencode-openai-codex-auth
+	url = git@github.com:numman-ali/opencode-openai-codex-auth.git
