@@ -37,3 +37,6 @@
 [submodule "riatzukiza/goblin-lessons"]
 	path = riatzukiza/goblin-lessons
 	url = ./riatzukiza/goblin-lessons
+[submodule "stt"]
+	path = stt
+	url = ./stt
