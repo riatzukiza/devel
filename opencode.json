@@ -4,12 +4,28 @@
     "github":{
       "type":"remote",
       "url":"http://localhost:3210/github"
-
     },
     "github.review":{
       "type":"remote",
       "url":"http://localhost:3210/github/review"
-
+    },
+    "clojure-centralized":{
+      "type":"local",
+      "command":["./mcp-server.sh", "unified", "7890"],
+      "enabled": true,
+      "description": "Centralized Clojure MCP server for all runtimes"
+    },
+    "clojure-jvm":{
+      "type":"local",
+      "command":["./mcp-server.sh", "jvm", "7891"],
+      "enabled": true,
+      "description": "JVM Clojure development MCP server"
+    },
+    "clojure-cljs":{
+      "type":"local",
+      "command":["./mcp-server.sh", "cljs", "7892"],
+      "enabled": true,
+      "description": "ClojureScript development MCP server"
     }
   }
 }

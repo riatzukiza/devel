@@ -112,8 +112,53 @@
   :clj-hacks {:replace-deps {clj-hacks/clj-hacks {:local/root "promethean/packages/clj-hacks"}}
               :main-opts ["-m" "clj-hacks.cli"]}
 
-  ;; Docker-ready REPL
-  :docker-repl {:extra-paths ["clojure-mcp/dev" "clojure-mcp/test"]
-                :extra-deps {ch.qos.logback/logback-classic {:mvn/version "1.4.14"}}
-                :jvm-opts ["-Djdk.attach.allowAttachSelf"]
-                :main-opts ["-m" "nrepl.cmdline" "--port" "7888" "--bind" "0.0.0.0"]}}}
+   ;; Docker-ready REPL
+   :docker-repl {:extra-paths ["clojure-mcp/dev" "clojure-mcp/test"]
+                 :extra-deps {ch.qos.logback/logback-classic {:mvn/version "1.4.14"}}
+                 :jvm-opts ["-Djdk.attach.allowAttachSelf"]
+                 :main-opts ["-m" "nrepl.cmdline" "--port" "7888" "--bind" "0.0.0.0"]}
+
+   ;; Centralized MCP server for all Clojure runtimes
+   :mcp-central {:extra-deps {com.bhauman/clojure-mcp {:git/url "https://github.com/bhauman/clojure-mcp.git"
+                                                        :git/tag "v0.1.11-alpha"
+                                                        :git/sha "7739dba"}
+                             org.slf4j/slf4j-nop {:mvn/version "2.0.16"}}
+                 :extra-paths ["src"]
+                 :exec-fn centralized-clojure-mcp.server/start-unified-mcp
+                 :exec-args {:port 7890}}
+
+   ;; JVM-specific MCP server
+   :mcp-jvm {:extra-deps {com.bhauman/clojure-mcp {:git/url "https://github.com/bhauman/clojure-mcp.git"
+                                                    :git/tag "v0.1.11-alpha"
+                                                    :git/sha "7739dba"}
+                          org.slf4j/slf4j-nop {:mvn/version "2.0.16"}}
+              :extra-paths ["src"]
+              :exec-fn centralized-clojure-mcp.server/start-jvm-mcp
+              :exec-args {:port 7891}}
+
+   ;; ClojureScript-specific MCP server
+   :mcp-cljs {:extra-deps {com.bhauman/clojure-mcp {:git/url "https://github.com/bhauman/clojure-mcp.git"
+                                                     :git/tag "v0.1.11-alpha"
+                                                     :git/sha "7739dba"}
+                           org.slf4j/slf4j-nop {:mvn/version "2.0.16"}}
+               :extra-paths ["src"]
+               :exec-fn centralized-clojure-mcp.server/start-cljs-mcp
+               :exec-args {:port 7892}}
+
+   ;; Development mode with logging
+   :mcp-dev {:extra-deps {com.bhauman/clojure-mcp {:git/url "https://github.com/bhauman/clojure-mcp.git"
+                                                     :git/tag "v0.1.11-alpha"
+                                                     :git/sha "7739dba"}
+                           ch.qos.logback/logback-classic {:mvn/version "1.4.14"}}
+             :extra-paths ["src"]
+             :exec-fn centralized-clojure-mcp.server/start-unified-mcp
+             :exec-args {:port 7890}}
+
+   ;; Test the MCP server
+   :mcp-test {:extra-deps {com.bhauman/clojure-mcp {:git/url "https://github.com/bhauman/clojure-mcp.git"
+                                                      :git/tag "v0.1.11-alpha"
+                                                      :git/sha "7739dba"}
+                            org.slf4j/slf4j-nop {:mvn/version "2.0.16"}}
+               :extra-paths ["src"]
+               :exec-fn centralized-clojure-mcp.server/start-unified-mcp
+               :exec-args {:port 7893 :test-mode true}}}}}
