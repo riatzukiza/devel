@@ -1,0 +1,68 @@
+{
+  "name": "lisp-fixer",
+  "$schema": "node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist",
+        "main": "src/index.ts",
+        "tsConfig": "./tsconfig.json",
+        "assets": [],
+        "generatePackageJson": false,
+        "format": ["esm"],
+        "platform": "node",
+        "sourcemap": true,
+        "minify": false
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["src/**/*.ts"]
+      }
+    },
+    "typecheck": {
+      "executor": "@nx/js:tsc",
+      "options": {
+        "tsConfig": "./tsconfig.json",
+        "noEmit": true
+      }
+    },
+    "test": {
+      "executor": "@nx/js:run-commands",
+      "options": {
+        "command": "uvu -r tsx src test"
+      }
+    },
+    "scan": {
+      "executor": "@nx/js:run-commands",
+      "options": {
+        "command": "tsx src/buildset.ts"
+      }
+    },
+    "mutate": {
+      "executor": "@nx/js:run-commands",
+      "options": {
+        "command": "tsx src/mutate.ts"
+      }
+    },
+    "dataset": {
+      "executor": "@nx/js:run-commands",
+      "options": {
+        "command": "tsx src/dataset.ts"
+      }
+    },
+    "infer": {
+      "executor": "@nx/js:run-commands",
+      "options": {
+        "command": "tsx src/infer.ts"
+      }
+    }
+  },
+  "tags": ["tool", "lisp", "ml"]
+}

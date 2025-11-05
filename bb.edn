@@ -1,0 +1,153 @@
+{:paths ["promethean/bb/src" 
+          "promethean/packages/clj-hacks/src" 
+          "promethean/packages/clj-hacks/test"
+          "clojure-mcp/src"]
+
+ :tasks
+ {;; === Central REPL Tasks ===
+  repl:jvm {:doc "Start JVM REPL for all Clojure projects"
+            :task (clojure "-M:repl")}
+  
+  repl:cljs {:doc "Start ClojureScript REPL for all projects"
+            :task (shell "shadow-cljs cljs-repl")}
+  
+  repl:all {:doc "Start both JVM and CLJS REPLs"
+            :depends [repl:jvm repl:cljs]}
+
+  ;; === Build Tasks ===
+  build:cljs {:doc "Build all ClojureScript projects"
+              :task (shell "shadow-cljs release")}
+  
+  build:dev {:doc "Build all ClojureScript projects in dev mode"
+             :task (shell "shadow-cljs watch")}
+  
+  build:clean {:doc "Clean all ClojureScript build artifacts"
+               :task (shell "shadow-cljs clean")}
+
+  ;; === Project-Specific Tasks ===
+  ;; Clojure-MCP
+  mcp:start {:doc "Start Clojure-MCP server"
+             :task (clojure "-X:mcp")}
+  
+  mcp:shadow {:doc "Start Clojure-MCP with Shadow-CLJS integration"
+             :task (clojure "-X:mcp-shadow")}
+  
+  mcp:dev {:doc "Start Clojure-MCP in development mode"
+           :task (clojure "-M:dev")}
+
+  ;; Promethean
+  promethean:build {:doc "Build Promethean CLI and services"
+                    :task (do
+                            (shell "shadow-cljs release promethean-cli")
+                            (shell "shadow-cljs release frontend-service"))}
+  
+  promethean:watch {:doc "Watch Promethean frontend development"
+                    :task (shell "shadow-cljs watch kanban-frontend docops-frontend health-dashboard-frontend")}
+  
+  promethean:ecosystem {:doc "Run Promethean ecosystem generation"
+                        :task (clojure "-M:ecosystem")}
+
+  ;; Clojure Hacks
+  clj-hacks:prepare {:doc "Prepare Clojure hacks dependencies"
+                     :requires ([clj-hacks.tasks])
+                     :task clj-hacks.tasks/prepare!}
+  
+  clj-hacks:build {:doc "Build Clojure hacks"
+                   :requires ([clj-hacks.tasks])
+                   :task clj-hacks.tasks/build}
+  
+  clj-hacks:lint {:doc "Lint Clojure hacks"
+                  :requires ([clj-hacks.tasks])
+                  :task clj-hacks.tasks/lint}
+  
+  clj-hacks:test {:doc "Test Clojure hacks"
+                  :requires ([clj-hacks.tasks])
+                  :task clj-hacks.tasks/test}
+
+  ;; === Frontend Development Tasks ===
+  frontend:all {:doc "Watch all frontend projects"
+                :task (shell "shadow-cljs watch")}
+  
+  frontend:opencode {:doc "Watch Opencode Unified frontend"
+                     :task (shell "shadow-cljs watch opencode-unified")}
+  
+  frontend:kanban {:doc "Watch Kanban frontend"
+                   :task (shell "shadow-cljs watch kanban-frontend")}
+  
+  frontend:reactant {:doc "Watch Opencode Reactant frontend"
+                     :task (shell "shadow-cljs watch opencode-reactant")}
+
+  ;; === Testing Tasks ===
+  test:jvm {:doc "Run all JVM tests"
+            :task (clojure "-M:test")}
+  
+  test:cljs {:doc "Run all ClojureScript tests"
+             :task (shell "shadow-cljs compile frontend-service-test")}
+  
+  test:all {:doc "Run all tests across all runtimes"
+            :depends [test:jvm test:cljs]}
+
+  ;; === Code Quality Tasks ===
+  lint:clj {:doc "Lint all Clojure code"
+            :task (clojure "-M:lint")}
+  
+  lint:cljs {:doc "Lint all ClojureScript code"
+             :task (shell "shadow-cljs check")}
+  
+  lint:all {:doc "Lint all Clojure and ClojureScript code"
+            :depends [lint:clj lint:cljs]}
+  
+  format:clj {:doc "Format all Clojure code"
+              :task (clojure "-M:format")}
+  
+  format:cljs {:doc "Format all ClojureScript code"
+               :task (shell "shadow-cljs format")}
+
+  ;; === Workspace Management ===
+  workspace:setup {:doc "Setup entire Clojure workspace"
+                   :task (do
+                           (println "Setting up Clojure workspace...")
+                           (clj-hacks:prepare)
+                           (build:clean)
+                           (println "Workspace setup complete!"))}
+  
+  workspace:clean {:doc "Clean all build artifacts"
+                   :task (do
+                           (build:clean)
+                           (shell "rm -rf promethean/packages/*/dist")
+                           (shell "rm -rf promethean/packages/*/public")
+                           (println "All artifacts cleaned!"))}
+  
+  workspace:status {:doc "Show status of all Clojure projects"
+                    :task (do
+                            (println "=== Clojure Projects Status ===")
+                            (println "JVM Projects:")
+                            (shell "find . -name 'deps.edn' -not -path './node_modules/*'")
+                            (println "\nClojureScript Projects:")
+                            (shell "find . -name 'shadow-cljs.edn' -not -path './node_modules/*'")
+                            (println "\nBabashka Projects:")
+                            (shell "find . -name 'bb.edn' -not -path './node_modules/*'"))}
+
+  ;; === Development Server Tasks ===
+  dev:all {:doc "Start all development servers"
+           :task (do
+                   (println "Starting all development servers...")
+                   (run-parallel mcp:start promethean:watch))}
+  
+  dev:opencode {:doc "Start Opencode development environment"
+               :task (do
+                       (run-parallel mcp:shadow frontend:opencode))}
+  
+  dev:promethean {:doc "Start Promethean development environment"
+                  :task (do
+                          (run-parallel mcp:start promethean:watch))}
+
+  ;; === Utility Tasks ===
+  utils:deps-tree {:doc "Show dependency tree for all projects"
+                   :task (shell "clojure -X:deps tree")}
+  
+  utils:outdated {:doc "Check for outdated dependencies"
+                  :task (shell "clojure -X:deps find-versions")}
+  
+  utils:classpath {:doc "Show classpath for current configuration"
+                   :task (clojure "-X:deps classpath")}}}
