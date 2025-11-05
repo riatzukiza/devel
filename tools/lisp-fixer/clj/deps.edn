@@ -1,0 +1,6 @@
+{:paths ["src"]
+ :deps  {org.clojure/clojure      {:mvn/version "1.11.3"}
+         cnuernber/libpython-clj2 {:mvn/version "2.024"}
+         org.clojure/tools.cli    {:mvn/version "1.0.219"}
+         cheshire/cheshire        {:mvn/version "5.13.0"}
+         babashka/fs              {:mvn/version "0.5.20"}}}

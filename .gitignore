@@ -112,3 +112,5 @@ temp/
 # Development workspace specific
 etc/
 unique/
+.cpcache/
+.clj-condo/

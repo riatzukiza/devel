@@ -4,7 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lisp-fixer:build": "pnpm --filter @promethean-os/lisp-fixer build",
+    "lisp-fixer:lint": "pnpm --filter @promethean-os/lisp-fixer lint",
+    "lisp-fixer:typecheck": "pnpm --filter @promethean-os/lisp-fixer typecheck",
+    "lisp-fixer:test": "pnpm --filter @promethean-os/lisp-fixer test",
+    "lisp-fixer:scan": "pnpm --filter @promethean-os/lisp-fixer scan",
+    "lisp-fixer:mutate": "pnpm --filter @promethean-os/lisp-fixer mutate",
+    "lisp-fixer:dataset": "pnpm --filter @promethean-os/lisp-fixer dataset",
+    "lisp-fixer:infer": "pnpm --filter @promethean-os/lisp-fixer infer",
+    "lisp-fixer:demo": "pnpm --filter @promethean-os/lisp-fixer demo"
   },
   "keywords": [],
   "author": "",

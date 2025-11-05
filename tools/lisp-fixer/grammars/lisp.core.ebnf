@@ -1,0 +1,14 @@
+program      = { ws , (comment | sexpr) , ws } ;
+sexpr        = "(" , { ws , (sexpr | atom) , ws } , ")" ;
+atom         = string | symbol | number ;
+string       = "\"" , { string_char } , "\"" ;
+string_char  = ? any char except " and backslash ? | "\\" , ? any ? ;
+symbol       = symbol_start , { symbol_char } ;
+symbol_start = letter | "_" | ":" | "*" | "+" | "-" | "/" | "<" | ">" | "=" | "?" | "!" | "." ;
+symbol_char  = symbol_start | digit ;
+number       = ["-"] , digit , { digit } ;
+comment      = ";" , { ? any char except newline ? } , ( "\n" | EOF ) ;
+ws           = " " | "\t" | "\r" | "\n" ;
+letter       = "A"…"Z" | "a"…"z" ;
+digit        = "0"…"9" ;
+EOF          = ;

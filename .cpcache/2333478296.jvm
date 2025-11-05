@@ -1,0 +1,4 @@
+-Djdk.attach.allowAttachSelf
+-Xmx2g
+-Xss2m
+-XX:+UseG1GC
