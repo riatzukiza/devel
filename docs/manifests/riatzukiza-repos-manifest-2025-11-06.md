@@ -1,0 +1,173 @@
+# riatzukiza Manifest — Local vs GitHub Access
+
+Date: 2025-11-06
+Root workspace: /home/err/devel
+
+## Summary
+- Accessible on GitHub (riatzukiza): 120+ repos (list below)
+- Tracked locally (origin owner = riatzukiza): 16 repos
+- Accessible but not tracked locally: many (full list below)
+
+## Tracked locally (origin owner = `riatzukiza`)
+- agent-shell (path: agent-shell)
+- autocommit (path: promethean/packages/autocommit)
+- book-of-shadows (path: riatzukiza/book-of-shadows)
+- devel (path: .)
+- desktop (path: riatzukiza/desktop)
+- dotfiles (path: dotfiles)
+- goblin-lessons (path: riatzukiza/goblin-lessons)
+- kanban (path: promethean/packages/kanban)
+- mcp (path: promethean/packages/mcp)
+- naming (path: promethean/packages/naming)
+- openhax (path: riatzukiza/openhax)
+- persistence (path: promethean/packages/persistence)
+- promethean (path: promethean)
+- riatzukiza.github.io (path: riatzukiza/riatzukiza.github.io)
+- stt (path: stt)
+- utils (path: promethean/packages/utils)
+
+## Accessible on GitHub (via `gh repo list riatzukiza`)
+- dotfiles
+- opentui
+- opencode
+- promethean
+- devel
+- goblin-lessons
+- book-of-shadows
+- desktop
+- clojure-mcp
+- agent-shell
+- openhax
+- stt
+- codex
+- opencode-openai-codex-auth
+- utils
+- mcp
+- persistence
+- kanban
+- naming
+- opencode-bench
+- riatzukiza.github.io
+- codex-hacks-monorepo
+- pantheon-workflow
+- pantheon-core
+- openai-server
+- math-utils
+- legacy
+- intention
+- indexer-client
+- generator
+- fsm
+- event
+- enso-protocol
+- effects
+- ecosystem-dsl
+- ds
+- compiler
+- auth-service
+- apply-patch
+- logger
+- autocommit
+- opencode-web
+- cider-nrepl
+- codex-ts-sdk
+- Smart-Connections-Vault-Visualizer
+- duck
+- emacs.packages
+- akashik
+- beez
+- kit
+- kit-repl
+- lithp
+- kit-shell
+- sibilant-game-engine
+- kit-events
+- kit-file-system
+- symbiant
+- drunken-duck
+- drunk-duck
+- discord-chatter
+- tauri-clojurescript-template
+- trader.prototype.react
+- vitruvius
+- SuperSonicSnake
+- roarar-bot-ui
+- notes
+- meteor-chat
+- mattermost-docker-preview
+- chat-gpt-experiments
+- awesome-compose
+- express_login
+- TANF-app
+- babylon-experiment
+- just-pipes-mc
+- just-pipes
+- Eris
+- virtue-bot
+- TDP-Project-Update
+- 7-days-to-die-in-a-bottle
+- catharsis
+- brain
+- monorepo
+- bork
+- TheBox
+- doge-bot
+- flyingsquid-k8s-minecraft-server
+- guidebot
+- js-lab
+- tfjs-lab
+- DuckBot
+- err-studios-website
+- .emacs.d
+- ionicons-sass
+- ionic-sass
+- meteor-notes
+- roarar-bot
+- discord.js-template
+- public-api-examples
+- kettlepack
+- minecraft-mods-config
+- idealily
+- apptegy-demo-app
+- sails-db-migrate
+- wepair-old
+- rails
+- factorio-mods
+- jitsi-meet
+- kit-async
+- kit-http
+- kit-interface
+- avaron
+- kit-js
+- electron-kit
+- game-of-life-gpu
+- Algae-speciation-tech-demo
+- kit-actor
+- kit-html
+- tensor-ants
+- sai-auto-save
+- emacs
+- tree-kit
+- Speciation
+- Duckling
+- language-model
+- tinkering
+- file-system
+- kettlelogic
+- sibilant
+- somthing
+- Jamr
+- neuron
+- git-wrapper
+- non-deterministic
+- ent-cache
+- Facebook-Messenger-Desktop
+- meteor-electron-client
+- proto
+- lists
+- heroku-cl-example
+
+## Gap set (accessible but not tracked locally)
+Everything in the list above except the 16 tracked locally. If you want, I can materialize this as a diff list and/or clone a selected subset under `riatzukiza/`.
+
+Method: parsed `.git/config` for local, `gh repo list riatzukiza` for accessible.
