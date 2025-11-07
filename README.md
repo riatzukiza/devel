@@ -228,7 +228,7 @@ bin/submodules-update
 bin/submodules-status
 ```
 
-> **Note:** Pass `--recursive` only when you intentionally need nested submodules (for example inside `orgs/riatzukiza/promethean`). Those repositories must publish their own `.gitmodules` entries or git will report an error. Keeping recursion off by default avoids noise from inner repos that are managed with other tooling.
+> **Note:** Pass `--recursive` only when you intentionally need nested submodules (for example inside `orgs/riatzukiza/promethean`). Those repositories must publish their own `.gitmodules` entries or git will report an error. Keeping recursion off by default avoids noise from inner repos that are managed with other tooling. Legacy git-subrepo placeholders inside `orgs/riatzukiza/promethean` and `orgs/riatzukiza/stt` have been removed, so `--recursive` now walks only real submodules.
 
 ### Branch Management
 
