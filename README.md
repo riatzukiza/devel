@@ -205,6 +205,31 @@ git commit -m "Update promethean to latest"
 git submodule add <repository-url> orgs/<org>/<repo>
 ```
 
+### Submodule Helper Scripts
+
+Executable helpers live in `bin/` so you can run them from anywhere without remembering long git commands. Each script respects the optional `SUBMODULE_JOBS=<n>` environment variable to control parallel git jobs and accepts `--recursive` when you explicitly need to include nested submodules that provide their own `.gitmodules` entries.
+
+| Script | Purpose |
+| --- | --- |
+| `bin/submodules-sync` | Re-sync `.gitmodules` mappings and run `git submodule update --init` with sensible defaults |
+| `bin/submodules-update` | Fetch remote refs for every submodule and fast-forward the recorded commits |
+| `bin/submodules-status` | Show the currently pinned commits plus any dirty submodule worktrees |
+
+Usage examples:
+
+```bash
+# Fast way to clone every tracked submodule after pulling main
+bin/submodules-sync
+
+# Update workspace to the latest commits published in each submodule
+bin/submodules-update
+
+# Inspect which submodules have local changes before committing
+bin/submodules-status
+```
+
+> **Note:** Pass `--recursive` only when you intentionally need nested submodules (for example inside `orgs/riatzukiza/promethean`). Those repositories must publish their own `.gitmodules` entries or git will report an error. Keeping recursion off by default avoids noise from inner repos that are managed with other tooling.
+
 ### Branch Management
 
 Each submodule maintains its own branch structure:

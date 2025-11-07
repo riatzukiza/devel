@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
+cd "$repo_root"
+
+jobs_flag=("--jobs" "${SUBMODULE_JOBS:-8}")
+recursive_flag=()
+forward_args=()
+
+for arg in "$@"; do
+  if [ "$arg" = "--recursive" ]; then
+    recursive_flag=("--recursive")
+  else
+    forward_args+=("$arg")
+  fi
+done
+
+echo "[submodules-update] pulling remote refs for every submodule..."
+git submodule foreach "${recursive_flag[@]}" 'git fetch --all --tags --prune'
+
+echo "[submodules-update] updating to the latest tracked refs..."
+git submodule update --remote --merge "${recursive_flag[@]}" "${jobs_flag[@]}" "${forward_args[@]}"
