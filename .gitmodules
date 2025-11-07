@@ -30,13 +30,13 @@
 	url = git@github.com:riatzukiza/riatzukiza.github.io.git
 [submodule "riatzukiza/desktop"]
 	path = riatzukiza/desktop
-	url = ./riatzukiza/desktop
+	url = git@github.com:riatzukiza/desktop.git
 [submodule "riatzukiza/book-of-shadows"]
 	path = riatzukiza/book-of-shadows
-	url = ./riatzukiza/book-of-shadows
+	url = git@github.com:riatzukiza/book-of-shadows.git
 [submodule "riatzukiza/goblin-lessons"]
 	path = riatzukiza/goblin-lessons
-	url = ./riatzukiza/goblin-lessons
+	url = git@github.com:riatzukiza/goblin-lessons.git
 [submodule "stt"]
 	path = stt
-	url = ./stt
+	url = git@github.com:riatzukiza/stt.git
