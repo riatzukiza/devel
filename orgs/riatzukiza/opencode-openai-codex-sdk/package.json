@@ -1,0 +1,45 @@
+{
+  "name": "@promethean-os/opencode-openai-codex-sdk",
+  "version": "0.1.0",
+  "description": "Experimental opencode plugin that talks to Codex via the native TypeScript SDK",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "license": "MIT",
+  "author": "riatzukiza",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/riatzukiza/opencode-openai-codex-auth.git"
+  },
+  "keywords": [
+    "opencode",
+    "openai",
+    "codex",
+    "sdk",
+    "plugin"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "peerDependencies": {
+    "@opencode-ai/plugin": "^0.13.7"
+  },
+  "devDependencies": {
+    "@opencode-ai/plugin": "^0.13.7",
+    "@opencode-ai/sdk": "^0.13.9",
+    "@types/node": "^24.6.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@flo-ai/codex-ts-sdk": "git+https://github.com/moofone/codex-ts-sdk.git"
+  }
+}
