@@ -16,27 +16,7 @@
 [submodule "openai/codex"]
 	path = openai/codex
 	url = org-14957082@github.com:openai/codex.git
-[submodule "stt/opencode"]
-	path = stt/opencode
+
+[submodule "sst/opencode"]
+	path = orgs/sst/opencode
 	url = git@github.com:sst/opencode.git
-[submodule "moofone/codex-ts-sdk"]
-	path = moofone/codex-ts-sdk
-	url = git@github.com:moofone/codex-ts-sdk.git
-[submodule "riatzukiza/openhax"]
-	path = riatzukiza/openhax
-	url = https://github.com/riatzukiza/openhax.git
-[submodule "riatzukiza/riatzukiza.github.io"]
-	path = riatzukiza/riatzukiza.github.io
-	url = git@github.com:riatzukiza/riatzukiza.github.io.git
-[submodule "riatzukiza/desktop"]
-	path = riatzukiza/desktop
-	url = git@github.com:riatzukiza/desktop.git
-[submodule "riatzukiza/book-of-shadows"]
-	path = riatzukiza/book-of-shadows
-	url = git@github.com:riatzukiza/book-of-shadows.git
-[submodule "riatzukiza/goblin-lessons"]
-	path = riatzukiza/goblin-lessons
-	url = git@github.com:riatzukiza/goblin-lessons.git
-[submodule "stt"]
-	path = stt
-	url = git@github.com:riatzukiza/stt.git

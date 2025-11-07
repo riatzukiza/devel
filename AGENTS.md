@@ -1,6 +1,6 @@
 # Devel Workspace
 
-Multi-repository development workspace with git submodules and TypeScript/ESLint configuration.
+Multi-repository development workspace with git submodules organized under `orgs/` and TypeScript/ESLint configuration.
 
 ## Commands
 
@@ -11,8 +11,8 @@ Multi-repository development workspace with git submodules and TypeScript/ESLint
 - `bun run src/hack.ts` - Run the main utility script
 
 **Submodule workflows:**
-- `cd promethean && pnpm --filter @promethean-os/<pkg> <command>`
-- `cd stt/opencode && bun dev` (opencode development)
+- `cd orgs/riatzukiza/promethean && pnpm --filter @promethean-os/<pkg> <command>`
+- `cd orgs/sst/opencode && bun dev` (opencode development)
 
 ## Code Style
 
@@ -32,31 +32,30 @@ Multi-repository development workspace with git submodules and TypeScript/ESLint
 ## Repository Ecosystem
 
 ### 🏗️ Development Infrastructure
-- **[promethean](promethean/)**: Local LLM enhancement system and autonomous agent framework
-- **[opencode-openai-codex-auth](opencode-openai-codex-auth/)**: OpenAI Codex OAuth authentication plugin
-- **[agent-shell](agent-shell/)**: Emacs-based agent shell for ACP (Agent Client Protocol)
-- **[clojure-mcp](clojure-mcp/)**: MCP server for Clojure REPL-driven development
+- **[orgs/riatzukiza/promethean](orgs/riatzukiza/promethean/)**: Local LLM enhancement system and autonomous agent framework
+- **[orgs/numman-ali/opencode-openai-codex-auth](orgs/numman-ali/opencode-openai-codex-auth/)**: OpenAI Codex OAuth authentication plugin
+- **[orgs/riatzukiza/agent-shell](orgs/riatzukiza/agent-shell/)**: Emacs-based agent shell for ACP (Agent Client Protocol)
+- **[orgs/bhauman/clojure-mcp](orgs/bhauman/clojure-mcp/)**: MCP server for Clojure REPL-driven development
 
 ### 🔧 Tooling & SDKs
-- **[moofone/codex-ts-sdk](moofone/codex-ts-sdk/)**: TypeScript SDK for OpenAI Codex with cloud tasks
-- **[openai/codex](openai/codex/)**: Rust-based Codex CLI and runtime
+- **[orgs/moofone/codex-ts-sdk](orgs/moofone/codex-ts-sdk/)**: TypeScript SDK for OpenAI Codex with cloud tasks
+- **[orgs/openai/codex](orgs/openai/codex/)**: Rust-based Codex CLI and runtime
 
 ### 🌐 Web & Frontend
-- **[stt](stt/)**: Multiple opencode development branches and experiments
-- **[riatzukiza/openhax](riatzukiza/openhax/)**: Full-stack application with Reactant + Fastify
-- **[opencode-hub](opencode-hub/)**: Centralized opencode coordination and distribution
+- **[orgs/sst/opencode](orgs/sst/opencode/)**: Multiple opencode development branches and experiments
+- **[orgs/riatzukiza/openhax](orgs/riatzukiza/openhax/)**: Full-stack application with Reactant + Fastify
 
 ### ⚙️ Configuration & Environment
-- **[dotfiles](dotfiles/)**: System configuration and environment setup
-- **[riatzukiza/**](riatzukiza/)**: Personal workspace collection
+- **[orgs/riatzukiza/dotfiles](orgs/riatzukiza/dotfiles/)**: System configuration and environment setup
+- **[orgs/riatzukiza/**](orgs/riatzukiza/)**: Personal workspace collection
 
 ## Cross-Repository Integration
 
 ### 🔗 High-Value Patterns
-- **Authentication**: opencode-openai-codex-auth ↔ moofone/codex-ts-sdk ↔ openai/codex
-- **Agent Development**: agent-shell ↔ clojure-mcp ↔ promethean
-- **Web Development**: stt ↔ riatzukiza/openhax ↔ opencode-hub
-- **Environment Setup**: dotfiles ↔ all development tools
+- **Authentication**: orgs/numman-ali/opencode-openai-codex-auth ↔ orgs/moofone/codex-ts-sdk ↔ orgs/openai/codex
+- **Agent Development**: orgs/riatzukiza/agent-shell ↔ orgs/bhauman/clojure-mcp ↔ orgs/riatzukiza/promethean
+- **Web Development**: orgs/sst/opencode ↔ orgs/riatzukiza/openhax
+- **Environment Setup**: orgs/riatzukiza/dotfiles ↔ all development tools
 
 ### 📚 Documentation Navigation
 - **[Master Cross-Reference Index](docs/MASTER_CROSS_REFERENCE_INDEX.md)**: Complete ecosystem overview and integration patterns
@@ -67,22 +66,21 @@ Multi-repository development workspace with git submodules and TypeScript/ESLint
 Each repository now has comprehensive cross-reference documentation:
 
 #### **Development Infrastructure**
-- **[promethean/CROSS_REFERENCES.md](promethean/CROSS_REFERENCES.md)** - Agent framework cross-references
-- **[agent-shell/CROSS_REFERENCES.md](agent-shell/CROSS_REFERENCES.md)** - ACP protocol integration
-- **[clojure-mcp/CROSS_REFERENCES.md](clojure-mcp/CROSS_REFERENCES.md)** - REPL development patterns
-- **[opencode-openai-codex-auth/CROSS_REFERENCES.md](opencode-openai-codex-auth/CROSS_REFERENCES.md)** - Authentication patterns
+- **[orgs/riatzukiza/promethean/CROSS_REFERENCES.md](orgs/riatzukiza/promethean/CROSS_REFERENCES.md)** - Agent framework cross-references
+- **[orgs/riatzukiza/agent-shell/CROSS_REFERENCES.md](orgs/riatzukiza/agent-shell/CROSS_REFERENCES.md)** - ACP protocol integration
+- **[orgs/bhauman/clojure-mcp/CROSS_REFERENCES.md](orgs/bhauman/clojure-mcp/CROSS_REFERENCES.md)** - REPL development patterns
+- **[orgs/numman-ali/opencode-openai-codex-auth/CROSS_REFERENCES.md](orgs/numman-ali/opencode-openai-codex-auth/CROSS_REFERENCES.md)** - Authentication patterns
 
 #### **Tooling & SDKs**
-- **[moofone/codex-ts-sdk/CROSS_REFERENCES.md](moofone/codex-ts-sdk/CROSS_REFERENCES.md)** - TypeScript SDK integration
-- **[openai/codex/AGENTS.md](openai/codex/AGENTS.md)** - Rust runtime documentation
+- **[orgs/moofone/codex-ts-sdk/CROSS_REFERENCES.md](orgs/moofone/codex-ts-sdk/CROSS_REFERENCES.md)** - TypeScript SDK integration
+- **[orgs/openai/codex/AGENTS.md](orgs/openai/codex/AGENTS.md)** - Rust runtime documentation
 
 #### **Web & Frontend**
-- **[stt/CROSS_REFERENCES.md](stt/CROSS_REFERENCES.md)** - OpenCode development integration
-- **[opencode-hub/CROSS_REFERENCES.md](opencode-hub/CROSS_REFERENCES.md)** - Package management
-- **[riatzukiza/openhax/CROSS_REFERENCES.md](riatzukiza/openhax/CROSS_REFERENCES.md)** - Full-stack patterns
+- **[orgs/sst/opencode/CROSS_REFERENCES.md](orgs/sst/opencode/CROSS_REFERENCES.md)** - OpenCode development integration
+- **[orgs/riatzukiza/openhax/CROSS_REFERENCES.md](orgs/riatzukiza/openhax/CROSS_REFERENCES.md)** - Full-stack patterns
 
 #### **Configuration & Environment**
-- **[dotfiles/CROSS_REFERENCES.md](dotfiles/CROSS_REFERENCES.md)** - Environment setup and configuration
+- **[orgs/riatzukiza/dotfiles/CROSS_REFERENCES.md](orgs/riatzukiza/dotfiles/CROSS_REFERENCES.md)** - Environment setup and configuration
 
 ### 🎯 Agent Decision Support
 Use cross-reference documentation to:
@@ -94,7 +92,7 @@ Use cross-reference documentation to:
 
 ## Development
 
-- Submodules: promethean, stt/, dotfiles, clojure-mcp, agent-shell, opencode-openai-codex-auth, moofone/codex-ts-sdk, openai/codex, riatzukiza/openhax, opencode-hub
+- Submodules organized under `orgs/`: riatzukiza, sst, bhauman, numman-ali, moofone, openai
 - TypeScript config: es2022, commonjs, strict mode
 - ESLint with functional, sonarjs, promise plugins
 - Use Bun APIs when available (Bun.file(), etc.)
