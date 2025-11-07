@@ -1,22 +1,42 @@
 [submodule "promethean"]
-	path = promethean
+	path = orgs/riatzukiza/promethean
 	url = git@github.com:riatzukiza/promethean.git
 [submodule "dotfiles"]
-	path = dotfiles
+	path = orgs/riatzukiza/dotfiles
 	url = git@github.com:riatzukiza/dotfiles.git
 [submodule "agent-shell"]
-	path = agent-shell
+	path = orgs/riatzukiza/agent-shell
 	url = git@github.com:riatzukiza/agent-shell.git
 [submodule "clojure-mcp"]
-	path = clojure-mcp
+	path = orgs/bhauman/clojure-mcp
 	url = git@github.com:bhauman/clojure-mcp.git
 [submodule "opencode-openai-codex-auth"]
-	path = opencode-openai-codex-auth
+	path = orgs/numman-ali/opencode-openai-codex-auth
 	url = git@github.com:numman-ali/opencode-openai-codex-auth.git
 [submodule "openai/codex"]
-	path = openai/codex
+	path = orgs/openai/codex
 	url = org-14957082@github.com:openai/codex.git
-
+[submodule "moofone/codex-ts-sdk"]
+	path = orgs/moofone/codex-ts-sdk
+	url = git@github.com:moofone/codex-ts-sdk.git
+[submodule "riatzukiza/openhax"]
+	path = orgs/riatzukiza/openhax
+	url = https://github.com/riatzukiza/openhax.git
+[submodule "riatzukiza/riatzukiza.github.io"]
+	path = orgs/riatzukiza/riatzukiza.github.io
+	url = git@github.com:riatzukiza/riatzukiza.github.io.git
+[submodule "riatzukiza/desktop"]
+	path = orgs/riatzukiza/desktop
+	url = git@github.com:riatzukiza/desktop.git
+[submodule "riatzukiza/book-of-shadows"]
+	path = orgs/riatzukiza/book-of-shadows
+	url = git@github.com:riatzukiza/book-of-shadows.git
+[submodule "riatzukiza/goblin-lessons"]
+	path = orgs/riatzukiza/goblin-lessons
+	url = git@github.com:riatzukiza/goblin-lessons.git
+[submodule "stt"]
+	path = orgs/riatzukiza/stt
+	url = git@github.com:riatzukiza/stt.git
 [submodule "sst/opencode"]
 	path = orgs/sst/opencode
 	url = git@github.com:sst/opencode.git

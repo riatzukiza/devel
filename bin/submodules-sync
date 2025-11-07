@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
+cd "$repo_root"
+
+jobs_flag=("--jobs" "${SUBMODULE_JOBS:-8}")
+recursive_flag=()
+forward_args=()
+
+for arg in "$@"; do
+  if [ "$arg" = "--recursive" ]; then
+    recursive_flag=("--recursive")
+  else
+    forward_args+=("$arg")
+  fi
+done
+
+printf '[submodules-sync] syncing .gitmodules mappings\n'
+git submodule sync "${recursive_flag[@]}"
+
+printf '[submodules-sync] initializing/updating submodules\n'
+git submodule update --init "${recursive_flag[@]}" "${jobs_flag[@]}" "${forward_args[@]}"
