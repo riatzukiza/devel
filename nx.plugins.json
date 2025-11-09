@@ -1,0 +1,10 @@
+{
+  "plugins": [
+    {
+      "plugin": "./tools/nx-plugins/giga/plugin.js",
+      "options": {
+        "depsMapPath": "tools/nx-plugins/giga/deps.json"
+      }
+    }
+  ]
+}

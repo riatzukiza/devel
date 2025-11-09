@@ -1,0 +1,8 @@
+{
+  "orgs/riatzukiza/promethean": ["orgs/bhauman/clojure-mcp"],
+  "orgs/riatzukiza/openhax": ["orgs/sst/opencode"],
+  "orgs/sst/opencode": ["orgs/riatzukiza/openhax"],
+  "orgs/riatzukiza/agent-shell": ["orgs/bhauman/clojure-mcp"],
+  "orgs/numman-ali/opencode-openai-codex-auth": ["orgs/moofone/codex-ts-sdk"],
+  "orgs/moofone/codex-ts-sdk": ["orgs/openai/codex"]
+}

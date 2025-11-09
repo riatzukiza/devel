@@ -9,6 +9,9 @@ Multi-repository development workspace with git submodules organized under `orgs
 - `pnpm typecheck` - Type check with strict TypeScript
 - `pnpm build` - Build workspace (if src/ exists)
 - `bun run src/hack.ts` - Run the main utility script
+- `opencode-command --list` - List available opencode commands
+- `opencode-command --name COMMAND` - Create new opencode command
+- `opencode-command --run COMMAND` - Run existing opencode command
 
 **Submodule workflows:**
 - `cd orgs/riatzukiza/promethean && pnpm --filter @promethean-os/<pkg> <command>`
