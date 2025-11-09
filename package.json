@@ -5,6 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "giga:watch": "bun run src/giga/giga-watch.ts",
+    "giga:commit": "bun run src/giga/commit-propagator.ts",
+    "pantheon:msg": "bun run src/giga/pantheon.ts",
+    "giga:nx:generate": "bun run src/giga/generate-nx-projects.ts",
+    "giga:plugin:bundle": "bun run tools/nx-plugins/giga/bundle-plugin.ts",
+    "giga:affected": "nx affected --target=test --build",
     "lisp-fixer:build": "pnpm --filter @promethean-os/lisp-fixer build",
     "lisp-fixer:lint": "pnpm --filter @promethean-os/lisp-fixer lint",
     "lisp-fixer:typecheck": "pnpm --filter @promethean-os/lisp-fixer typecheck",
@@ -18,5 +24,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.14.0"
+  "packageManager": "pnpm@10.14.0",
+  "dependencies": {
+    "redis": "^5.9.0"
+  },
+  "devDependencies": {
+    "nx": "^20.0.0",
+    "@nx/devkit": "^20.0.0"
+  }
 }

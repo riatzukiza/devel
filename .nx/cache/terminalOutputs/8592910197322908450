@@ -1,0 +1,4 @@
+> bun run src/giga/giga-watch.ts
+
+Giga watch started. Submodules: /home/err/devel/orgs/riatzukiza/promethean, /home/err/devel/orgs/riatzukiza/dotfiles, /home/err/devel/orgs/riatzukiza/agent-shell, /home/err/devel/orgs/bhauman/clojure-mcp, /home/err/devel/orgs/numman-ali/opencode-openai-codex-auth, /home/err/devel/orgs/openai/codex, /home/err/devel/orgs/moofone/codex-ts-sdk, /home/err/devel/orgs/riatzukiza/openhax, /home/err/devel/orgs/riatzukiza/riatzukiza.github.io, /home/err/devel/orgs/riatzukiza/desktop, /home/err/devel/orgs/riatzukiza/book-of-shadows, /home/err/devel/orgs/riatzukiza/goblin-lessons, /home/err/devel/orgs/riatzukiza/stt, /home/err/devel/orgs/sst/opencode
+[0m[31mBun.watch is not available on this platform or version. Falling back to manual mode.[0m

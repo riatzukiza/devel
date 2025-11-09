@@ -1,0 +1,21 @@
+{
+  "name": "orgs-moofone-codex-ts-sdk",
+  "projectType": "application",
+  "tags": [
+    "submodule"
+  ],
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/moofone/codex-ts-sdk\" test"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/moofone/codex-ts-sdk\" build"
+      }
+    }
+  }
+}

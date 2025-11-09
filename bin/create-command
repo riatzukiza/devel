@@ -1,0 +1,202 @@
+#!/usr/bin/env nbb
+
+(ns create-command
+  (:require ["child_process" :as child-process]
+            ["fs" :as fs]
+            ["path" :as path]
+            [clojure.string :as str]))
+
+(defn exec-sync [cmd]
+  (.execSync child-process cmd #js {"encoding" "utf8"}))
+
+(defn find-opencode-command-dir []
+  (loop [dir (.cwd js/process)]
+    (let [opencode-dir (.join path dir ".opencode")
+          command-dir (.join path dir ".opencode" "command")
+          parent (.dirname path dir)]
+      (cond
+        (.existsSync fs command-dir)
+        command-dir
+        
+        (and (.existsSync fs opencode-dir) (not (.existsSync fs command-dir)))
+        (do
+          (.mkdirSync fs command-dir #js {"recursive" true})
+          command-dir)
+        
+        (or (nil? parent) (= dir parent))
+        (throw (js/Error. "No .opencode directory found"))
+        
+        :else
+        (recur parent)))))
+
+(defn read-file-sync [file-path]
+  (.readFileSync fs file-path "utf8"))
+
+(defn write-file-sync [file-path content]
+  (.writeFileSync fs file-path content "utf8"))
+
+(defn glob-files [pattern]
+  (try
+    (let [command-dir (find-opencode-command-dir)
+          files (.readdirSync fs command-dir)
+          md-regex (js/RegExp. "\\.md$")]
+      (filter #(.test md-regex %) files))
+    (catch js/Error _
+      [])))
+
+(defn parse-frontmatter [content]
+  (when-let [frontmatter-start (str/index-of content "---")]
+    (when-let [frontmatter-end (str/index-of content "---" (+ 3 frontmatter-start))]
+      (let [frontmatter-content (subs content (+ 3 frontmatter-start) frontmatter-end)
+            body-content (subs content (+ 3 frontmatter-end))]
+        {:frontmatter (into {} (map (fn [[k v]]
+                                      [(keyword (str/trim k)) (when v (str/trim v))])
+                                    (remove #(empty? (first %))
+                                            (map #(str/split % #":" 2)
+                                                 (str/split-lines frontmatter-content)))))
+         :body body-content}))))
+
+(defn validate-schema [frontmatter]
+  (let [required-keys #{:description}]
+    (doseq [k required-keys]
+      (when (not (contains? frontmatter k))
+        (throw (js/Error. (str "Missing required field: " (name k))))))
+    
+    (doseq [k required-keys]
+      (let [value (get frontmatter k)]
+        (when (or (nil? value) (empty? value))
+          (throw (js/Error. (str "Field " (name k) " cannot be empty"))))))
+    
+    (doseq [[k v] frontmatter]
+      (when (not (string? v))
+        (throw (js/Error. (str "Field " (name k) " must be a string")))))
+    
+    true))
+
+(defn create-command-basic [name force?]
+  (println (str "Creating new opencode command: " name "..."))
+  
+  (let [command-dir (find-opencode-command-dir)
+        file-path (.join path command-dir (str name ".md"))
+        description (str "Command " name)
+        frontmatter-str (str "---\ndescription: " description "\n---")
+        content (str frontmatter-str "\n\n\n")]
+    
+    (when (and (.existsSync fs file-path) (not force?))
+      (throw (js/Error. (str "File " name " exists. Use --force to overwrite"))))
+    
+    (write-file-sync file-path content)
+    (println (str "\nCreated command file: " file-path))
+    (println (str "Content:\n" content))
+    
+    (let [frontmatter-data (parse-frontmatter content)
+          parsed-frontmatter (:frontmatter frontmatter-data)]
+      
+      (try
+        (validate-schema parsed-frontmatter)
+        (println "✓ Schema validation passed!")
+        
+        (println "\nRunning opencode to refine the command...")
+        (exec-sync (str "opencode run " name))
+        (println "✓ Command created and refined successfully!")
+        file-path
+        
+        (catch js/Error e
+          (println (str "✗ Schema validation failed: " (.-message e)))
+          (println "Please fix the command manually.")
+          file-path)))))
+
+(defn check-command-directory [name]
+  (let [command-dir (find-opencode-command-dir)
+        existing-commands (when (.existsSync fs command-dir)
+                            (.readdirSync fs command-dir))]
+    (when (and (seq existing-commands)
+               (> (count existing-commands) 0)
+               (not (.existsSync fs (.join path command-dir (str name ".md")))))
+      (let [first-command-dir (.dirname path (.join path command-dir (first existing-commands)))]
+        (when (not= command-dir first-command-dir)
+          (println (str "Error: Existing commands are in " first-command-dir " but trying to create in " command-dir))
+          (println "Use --force to override or run from the correct directory")
+          true)))))
+
+(defn list-commands-file []
+  (let [command-dir (find-opencode-command-dir)]
+    (if (.existsSync fs command-dir)
+      (do
+        (println "Local command files:")
+        (doseq [file (glob-files #"\.md$")]
+          (let [file-path (.join path command-dir file)
+                content (read-file-sync file-path)
+                frontmatter-data (parse-frontmatter content)
+                description (get-in frontmatter-data [:frontmatter :description] "No description")]
+            (println (str "  " (str/replace file "\\.md$" "") " - " description)))))
+      (println "No local command files found."))))
+
+(defn run-command [command-name]
+  (try
+    (exec-sync (str "opencode run " command-name))
+    (catch js/Error e
+      (println (str "Command failed: " (.-message e))))))
+
+(defn check-existing-command [name]
+  (let [command-dir (find-opencode-command-dir)
+        file-path (.join path command-dir (str name ".md"))]
+    (if (.existsSync fs file-path)
+      (do
+        (println (str "Command '" name "' already exists locally in: " command-dir))
+        true)
+      false)))
+
+(defn parse-args [args]
+  (loop [remaining args
+         result {:list false :force nil :run nil :name nil}]
+    (if (empty? remaining)
+      result
+      (let [arg (first remaining)
+            rest-args (rest remaining)]
+        (cond
+          (= arg "--list")
+          (recur rest-args (assoc result :list true))
+          
+          (= arg "--force")
+          (recur rest-args (assoc result :force true))
+          
+          (= arg "--run")
+          (if (empty? rest-args)
+            (throw (js/Error. "--run requires a command name"))
+            (recur (rest rest-args) (assoc result :run (first rest-args))))
+          
+          (= arg "--name")
+          (if (empty? rest-args)
+            (throw (js/Error. "--name requires a command name"))
+            (recur (rest rest-args) (assoc result :name (first rest-args))))
+          
+          :else
+          (recur rest-args (assoc result :name arg)))))))
+
+(defn -main [& args]
+  (let [opts (parse-args args)]
+    (cond
+      (:list opts)
+      (list-commands-file)
+      
+      (:run opts)
+      (run-command (:run opts))
+      
+      (:name opts)
+      (cond
+        (and (check-existing-command (:name opts)) (not (:force opts)))
+        (println "Use --force to overwrite existing local command")
+        
+        (and (check-command-directory (:name opts)) (not (:force opts)))
+        (println "Directory conflict detected. Use --force to override.")
+        
+        :else
+        (create-command-basic (:name opts) (:force opts)))
+      
+      :else
+      (println "Usage: npx nbb create-command [--name COMMAND] [--list] [--run COMMAND] [--force]"))))
+
+(def main-args (rest (rest (.-argv js/process))))
+(when (seq main-args)
+  (apply -main main-args))
