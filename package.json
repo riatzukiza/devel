@@ -8,6 +8,7 @@
     "giga:watch": "bun run src/giga/giga-watch.ts",
     "giga:commit": "bun run src/giga/commit-propagator.ts",
     "pantheon:msg": "bun run src/giga/pantheon.ts",
+    "issues:project": "bun run src/issues/projector.ts",
     "giga:nx:generate": "bun run src/giga/generate-nx-projects.ts",
     "giga:plugin:bundle": "bun run tools/nx-plugins/giga/bundle-plugin.ts",
     "giga:affected": "nx affected --target=test --build",
@@ -19,17 +20,20 @@
     "lisp-fixer:mutate": "pnpm --filter @promethean-os/lisp-fixer mutate",
     "lisp-fixer:dataset": "pnpm --filter @promethean-os/lisp-fixer dataset",
     "lisp-fixer:infer": "pnpm --filter @promethean-os/lisp-fixer infer",
-    "lisp-fixer:demo": "pnpm --filter @promethean-os/lisp-fixer demo"
+    "lisp-fixer:demo": "pnpm --filter @promethean-os/lisp-fixer demo",
+    "nx:publish:affected": "bun run src/nx-publish-affected.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.14.0",
   "dependencies": {
+    "@octokit/rest": "^22.0.1",
+    "commander": "^14.0.2",
     "redis": "^5.9.0"
   },
   "devDependencies": {
-    "nx": "^20.0.0",
-    "@nx/devkit": "^20.0.0"
+    "@nx/devkit": "^20.0.0",
+    "nx": "^20.0.0"
   }
 }
