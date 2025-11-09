@@ -123,6 +123,34 @@ cd orgs/bhauman/clojure-mcp && <clojure-command>
 cd orgs/moofone/codex-ts-sdk && pnpm <command>
 ```
 
+### Issue & PR Projection
+
+Mirror every GitHub issue and pull request for the submodules living under `orgs/**` into the local `issues/org/` tree. The projector requires a valid `GITHUB_TOKEN` (with `repo` scope for private repos) exported in your environment.
+
+```bash
+# Project everything (issues + PRs) for every tracked repo
+GITHUB_TOKEN=<token> pnpm issues:project
+
+# Regenerate only Promethean issues (leave PRs alone)
+GITHUB_TOKEN=<token> pnpm issues:project -- --repo riatzukiza/promethean --type issues
+
+# Clean the output folder and limit to the 10 newest PRs per repo
+GITHUB_TOKEN=<token> pnpm issues:project -- --clean --type prs --limit 10
+```
+
+Output layout:
+
+```
+issues/org/<owner>/<repo>/
+  issues/<number>-<slug>/thread.md
+  prs/<number>-<slug>/
+    thread.md
+    reviews/<review-id>.md
+    files/<path>.md
+```
+
+Each `thread.md` mirrors the GitHub conversation, every `reviews/<id>.md` interleaves inline review comments with their diff hunks, and `files/<path>.md` stores the per-file diffs along with any inline annotations.
+
 ## Code Style and Standards
 
 ### ESLint Configuration
@@ -205,30 +233,139 @@ git commit -m "Update promethean to latest"
 git submodule add <repository-url> orgs/<org>/<repo>
 ```
 
-### Submodule Helper Scripts
+### Submodule Management CLI
 
-Executable helpers live in `bin/` so you can run them from anywhere without remembering long git commands. Each script respects the optional `SUBMODULE_JOBS=<n>` environment variable to control parallel git jobs and accepts `--recursive` when you explicitly need to include nested submodules that provide their own `.gitmodules` entries.
+The workspace uses a unified CLI tool for submodule management with Commander.js framework.
 
-| Script | Purpose |
-| --- | --- |
-| `bin/submodules-sync` | Re-sync `.gitmodules` mappings and run `git submodule update --init` with sensible defaults |
-| `bin/submodules-update` | Fetch remote refs for every submodule and fast-forward the recorded commits |
-| `bin/submodules-status` | Show the currently pinned commits plus any dirty submodule worktrees |
+#### Main Commands
+```bash
+# Sync .gitmodules mappings and initialize/update submodules
+submodule sync [--recursive] [--jobs <number>]
 
-Usage examples:
+# Fetch remote refs and update to latest tracked commits
+submodule update [--recursive] [--jobs <number>]
+
+# Show pinned commits and dirty submodule worktrees
+submodule status [--recursive]
+
+# Smart commit across submodule hierarchy with pantheon integration
+submodule smart commit "message" [--dry-run] [--recursive]
+```
+
+#### Help and Options
+```bash
+# Show main help
+submodule --help
+
+# Show help for specific command
+submodule sync --help
+submodule update --help
+submodule status --help
+```
+
+#### Legacy Support
+For backward compatibility, the original scripts still work but show deprecation warnings:
+- `bin/submodules-sync` → `submodule sync`
+- `bin/submodules-update` → `submodule update`
+- `bin/submodules-status` → `submodule status`
+
+#### Core Features
+- **Parallel execution**: Uses 8 jobs by default (configurable via `SUBMODULE_JOBS=<n>`)
+- **Recursive support**: Pass `--recursive` for nested submodules
+- **Error handling**: Comprehensive error reporting and recovery procedures
+
+#### Usage Examples
 
 ```bash
 # Fast way to clone every tracked submodule after pulling main
-bin/submodules-sync
+submodule sync
 
 # Update workspace to the latest commits published in each submodule
-bin/submodules-update
+submodule update
 
 # Inspect which submodules have local changes before committing
-bin/submodules-status
+submodule status
+
+# Smart commit with interactive explanation
+submodule smart commit "prepare for release"
+
+# Smart commit dry run to see what would be committed
+submodule smart commit "prepare for release" --dry-run
+
+# Use 4 parallel jobs instead of default 8
+submodule update --jobs 4
+
+# Include nested submodules (for advanced use cases)
+submodule update --recursive
+
+# Use environment variable for jobs (legacy support)
+SUBMODULE_JOBS=4 submodule update
+```
+
+### Automation Tools
+
+#### Giga System
+- **src/giga/run-submodule.ts**: Runs test/build in submodules via package.json scripts or Nx
+- **src/giga/giga-watch.ts**: Watches for changes and triggers affected tests/builds automatically
+- **src/giga/commit-propagator.ts**: Handles commit and tag propagation between submodules
+
+#### Nx Integration
+- **tools/nx-plugins/giga/plugin.ts**: Creates Nx virtual projects for each submodule
+- **src/nss/gitmodules.ts**: Parses .gitmodules and discovers nested submodules
+
+#### Workspace Automation
+```bash
+# Run tests for all submodules via Nx
+pnpm nx run-many --target=test --all
+
+# Watch for changes and run affected tests
+bun run src/giga/giga-watch.ts
+
+# Run specific submodule target
+bun run src/giga/run-submodule.ts "orgs/riatzukiza/promethean" test
 ```
 
 > **Note:** Pass `--recursive` only when you intentionally need nested submodules (for example inside `orgs/riatzukiza/promethean`). Those repositories must publish their own `.gitmodules` entries or git will report an error. Keeping recursion off by default avoids noise from inner repos that are managed with other tooling. Legacy git-subrepo placeholders inside `orgs/riatzukiza/promethean` and `orgs/riatzukiza/stt` have been removed, so `--recursive` now walks only real submodules.
+
+### Smart Commit Feature
+
+The `submodule smart commit` command provides intelligent, hierarchical commit management:
+
+#### Key Features
+- **Breadth-first traversal**: Commits from deepest submodules up to root workspace
+- **Pantheon integration**: Generates meaningful commit messages using AI assistance
+- **Interactive explanation**: Prompts for change context to enhance commit messages
+- **Context propagation**: Child commit messages inform parent commit messages
+- **Dry-run mode**: Preview changes without actually committing
+
+#### Algorithm Overview
+1. **Analysis**: Discovers all `orgs/**` submodules and builds hierarchy
+2. **Depth grouping**: Organizes modules by depth for breadth-first processing
+3. **Interactive prompt**: Asks "Why were these changes made?" with your message
+4. **Bottom-up commits**: Commits deepest modules first, then aggregates up the tree
+5. **Pantheon integration**: Uses AI to generate context-aware commit messages
+6. **Root aggregation**: Final commit at workspace level integrating all changes
+
+#### Example Usage
+```bash
+# Interactive smart commit with context
+submodule smart commit "prepare for release"
+
+# See what would be committed without actually doing it
+submodule smart commit "prepare for release" --dry-run
+
+# Include nested submodules in smart commit
+submodule smart commit "prepare for release" --recursive
+```
+
+### Advanced Documentation
+
+For comprehensive submodule management guidance, see:
+- **[Worktrees & Submodules Guide](docs/worktrees-and-submodules.md)**: Complete policies, workflows, and troubleshooting
+- **[Submodule Recovery Plan](spec/submodules-update.md)**: Recovery procedures for nested submodule failures
+- **[Kanban Submodule Analysis](spec/kanban-submodule-comparison.md)**: Case study of divergent histories
+- **[AGENTS.md](AGENTS.md)**: Agent-specific submodule management guidance and best practices
+- **[CLI Migration Guide](docs/SUBMODULE_CLI_MIGRATION.md)**: Migration from bash scripts to Commander.js CLI
 
 ### Branch Management
 

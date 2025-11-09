@@ -108,6 +108,10 @@ Each repository maintains its own detailed cross-reference documentation:
 - **[opencode-hub/CROSS_REFERENCES.md](opencode-hub/CROSS_REFERENCES.md)** - Package coordination and distribution
 - **[riatzukiza/openhax/CROSS_REFERENCES.md](riatzukiza/openhax/CROSS_REFERENCES.md)** - Full-stack application patterns
 
+#### **Workspace Automation**
+- **[PR Mirroring Documentation](docs/pr-mirroring.md)** - Automated PR synchronization between sst/opencode and riatzukiza/opencode
+- **[PR Mirroring Automation](docs/pr-mirroring-automation.md)** - Quick reference for PR synchronization script
+
 #### **Configuration & Environment**
 - **[dotfiles/CROSS_REFERENCES.md](dotfiles/CROSS_REFERENCES.md)** - System configuration and environment setup
 

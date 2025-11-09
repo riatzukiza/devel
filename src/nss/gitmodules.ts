@@ -113,7 +113,7 @@ export const discoverGitmodules = async ({ root }: DiscoverOptions): Promise<rea
         path: path.relative(absoluteRoot, absolutePath) || '.',
         url: record.url,
         absolutePath,
-        parent: current.parent ?? path.relative(absoluteRoot, normalizedDir) || '.',
+        parent: current.parent ?? (path.relative(absoluteRoot, normalizedDir) || '.'),
         depth: current.depth + 1
       };
       entries.push(entry);
