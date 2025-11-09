@@ -1,6 +1,0 @@
--m
-nrepl.cmdline
---port
-7888
---middleware
-[cider.nrepl/cider-middleware refactor-nrepl.middleware/wrap-refactor]
