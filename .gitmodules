@@ -21,7 +21,7 @@
 	url = git@github.com:moofone/codex-ts-sdk.git
 [submodule "riatzukiza/openhax"]
 	path = orgs/riatzukiza/openhax
-	url = https://github.com/riatzukiza/openhax.git
+	url = git@github.com:riatzukiza/openhax.git
 [submodule "riatzukiza/riatzukiza.github.io"]
 	path = orgs/riatzukiza/riatzukiza.github.io
 	url = git@github.com:riatzukiza/riatzukiza.github.io.git
@@ -40,3 +40,10 @@
 [submodule "sst/opencode"]
 	path = orgs/sst/opencode
 	url = git@github.com:sst/opencode.git
+[submodule "orgs/kcrommett/oc-manager"]
+	path = orgs/kcrommett/oc-manager
+	url = git@github.com:kcrommett/oc-manager.git
+[submodule ".emacs.d"]
+	path = .emacs.d
+	url = https://github.com/syl20bnr/spacemacs
+	branch = develop
