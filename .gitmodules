@@ -36,7 +36,7 @@
 	url = git@github.com:riatzukiza/goblin-lessons.git
 [submodule "sst/opencode"]
 	path = orgs/sst/opencode
-	url = git@github.com:sst/opencode.git
+	url = git@github.com:riatzukiza/opencode.git
 [submodule "orgs/kcrommett/oc-manager"]
 	path = orgs/kcrommett/oc-manager
 	url = git@github.com:kcrommett/oc-manager.git
