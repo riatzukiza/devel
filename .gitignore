@@ -65,6 +65,9 @@ bower_components/
 # Optional eslint cache
 .eslintcache
 
+# Nx cache
+.nx/
+
 # Optional REPL history
 .node_repl_history
 

@@ -21,7 +21,9 @@
     "lisp-fixer:dataset": "pnpm --filter @promethean-os/lisp-fixer dataset",
     "lisp-fixer:infer": "pnpm --filter @promethean-os/lisp-fixer infer",
     "lisp-fixer:demo": "pnpm --filter @promethean-os/lisp-fixer demo",
-    "nx:publish:affected": "bun run src/nx-publish-affected.ts"
+    "nx:publish:affected": "bun run src/nx-publish-affected.ts",
+    "hooks:install": "bash ./bin/install-pre-push-hooks.sh",
+    "postinstall": "pnpm run hooks:install"
   },
   "keywords": [],
   "author": "",
@@ -34,6 +36,7 @@
   },
   "devDependencies": {
     "@nx/devkit": "^20.0.0",
+    "@nx/js": "^20.0.0",
     "nx": "^20.0.0"
   }
 }

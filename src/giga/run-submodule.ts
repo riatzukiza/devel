@@ -1,21 +1,24 @@
 /*
-  Run a submodule's test/build target in a robust way:
+  Run a submodule's target (test/build/typecheck/lint) in a robust way:
   - If package.json has a matching script, run it via pnpm -C "<subPath>" <target>
   - Else if nx.json exists, run nx run-many --target=<target> --all inside the submodule
   - Else, no-op success (prints "no <target> script found")
+ 
+   Usage:
+     bun run src/giga/run-submodule.ts <subPath> <target>
+ */
+ 
+ import { spawn } from "bun";
+ 
+ const ALLOWED_TARGETS = new Set(["test", "build", "typecheck", "lint"]);
+ 
+ async function main(): Promise<void> {
+   const [subPath, target] = process.argv.slice(2);
+   if (!subPath || !target || !ALLOWED_TARGETS.has(target)) {
+     console.error("Usage: bun run src/giga/run-submodule.ts <subPath> <target>");
+     process.exit(2);
+   }
 
-  Usage:
-    bun run src/giga/run-submodule.ts <subPath> <test|build>
-*/
-
-import { spawn } from "bun";
-
-async function main(): Promise<void> {
-  const [subPath, target] = process.argv.slice(2);
-  if (!subPath || !target || !["test", "build"].includes(target)) {
-    console.error("Usage: bun run src/giga/run-submodule.ts <subPath> <test|build>");
-    process.exit(2);
-  }
 
   const hasPj = await exists(`${subPath}/package.json`);
   if (hasPj) {
