@@ -1,0 +1,139 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# setup-branch-protection: Apply baseline GitHub branch protection to all submodules
+# - Targets each repo referenced in .gitmodules (GitHub only)
+# - Protects the default branch (via gh repo view --json defaultBranchRef)
+# - Optional: set ALSO_DEV=true to also protect a 'dev' branch if it exists
+# - Use --dry-run to print intended actions without applying changes
+#
+# Baseline protections applied:
+# - enforce_admins: true
+# - required_linear_history: true
+# - required_conversation_resolution: true
+# - allow_force_pushes: false
+# - allow_deletions: false
+# - required_pull_request_reviews: 1 approval, dismiss stale reviews
+#
+# Notes:
+# - This script requires the GitHub CLI (`gh`) to be authenticated with admin permissions
+#   for each target repository. It will skip repos where permissions are insufficient.
+# - Status checks are NOT enforced by default to avoid breaking repos without defined checks.
+#   You can extend the JSON payload below to include required_status_checks if desired.
+
+DRY_RUN=0
+if [[ "${1:-}" == "--dry-run" ]]; then
+  DRY_RUN=1
+fi
+
+# Resolve repo slugs (owner/repo) from .gitmodules, filtering only GitHub repos
+resolve_slugs() {
+  if [[ ! -f .gitmodules ]]; then
+    echo "No .gitmodules found in $(pwd)" >&2
+    return 1
+  fi
+  git config -f .gitmodules --get-regexp '^submodule\..*\.url' | awk '{print $2}' | while read -r url; do
+    slug=""
+    case "$url" in
+      git@github.com:*) slug=${url#git@github.com:} ;;
+      https://github.com/*) slug=${url#https://github.com/} ;;
+      ssh://git@github.com/*) slug=${url#ssh://git@github.com/} ;;
+      git://github.com/*) slug=${url#git://github.com/} ;;
+      *) slug="" ;;
+    esac
+    [[ -z "$slug" ]] && continue
+    slug=${slug%.git}
+    printf '%s\n' "$slug"
+  done | sort -u
+}
+
+# Get default branch for a repo slug using gh
+get_default_branch() {
+  local slug="$1"
+  gh repo view "$slug" --json defaultBranchRef --jq .defaultBranchRef.name 2>/dev/null || true
+}
+
+# Check if a branch exists for a repo slug
+branch_exists() {
+  local slug="$1" branch="$2"
+  gh api -H "Accept: application/vnd.github+json" "repos/$slug/branches/$branch" >/dev/null 2>&1
+}
+
+apply_protection() {
+  local slug="$1" branch="$2"
+  local json
+  json='{
+    "enforce_admins": true,
+    "required_linear_history": true,
+    "allow_force_pushes": false,
+    "allow_deletions": false,
+    "required_conversation_resolution": true,
+    "required_status_checks": null,
+    "restrictions": null,
+    "required_pull_request_reviews": {
+      "dismiss_stale_reviews": true,
+      "require_code_owner_reviews": false,
+      "required_approving_review_count": 1,
+      "require_last_push_approval": false
+    }
+  }'
+
+  if [[ $DRY_RUN -eq 1 ]]; then
+    echo "[DRY-RUN] Would protect $slug:$branch with baseline protections"
+    return 0
+  fi
+
+  if ! gh api --method PUT -H "Accept: application/vnd.github+json" \
+      "repos/$slug/branches/$branch/protection" \
+      --input - <<<"$json" >/dev/null; then
+    echo "[ERROR] Failed to set protection on $slug:$branch" >&2
+    return 1
+  fi
+  echo "[OK] Protected $slug:$branch"
+}
+
+main() {
+  local failures=()
+  local slugs
+  mapfile -t slugs < <(resolve_slugs)
+
+  if [[ ${#slugs[@]} -eq 0 ]]; then
+    echo "No GitHub-backed submodules found in .gitmodules" >&2
+    exit 1
+  fi
+
+  for slug in "${slugs[@]}"; do
+    local default_branch
+    default_branch=$(get_default_branch "$slug")
+    if [[ -z "$default_branch" ]]; then
+      echo "[WARN] Could not determine default branch for $slug; skipping" >&2
+      failures+=("$slug:default-branch")
+      continue
+    fi
+
+    # Protect default branch
+    if ! apply_protection "$slug" "$default_branch"; then
+      failures+=("$slug:$default_branch")
+    fi
+
+    # Optionally protect 'dev' branch if requested and exists
+    if [[ "${ALSO_DEV:-false}" == "true" ]]; then
+      if branch_exists "$slug" "dev"; then
+        if ! apply_protection "$slug" "dev"; then
+          failures+=("$slug:dev")
+        fi
+      else
+        echo "[INFO] Branch 'dev' not found for $slug; skipping"
+      fi
+    fi
+  done
+
+  if [[ ${#failures[@]} -gt 0 ]]; then
+    echo "" >&2
+    echo "Completed with errors on the following (repo:branch):" >&2
+    printf ' - %s\n' "${failures[@]}" >&2
+    exit 2
+  fi
+}
+
+main "$@"
