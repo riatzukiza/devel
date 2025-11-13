@@ -2,7 +2,7 @@
 
 import { execSync } from "child_process";
 import * as path from "path";
-import { readdirRecursive, isDirectory, stat } from "@promethean-os/fs"; // adjust import based on actual API
+import { walkDir, listFiles, type FileEntry } from "@promethean-os/fs";
 import fetch from "node-fetch";
 
 const OLLOMA_API_URL =
@@ -28,8 +28,7 @@ function run(cmd: string, cwd: string): string {
 /** detect if a directory is a git root (has a .git folder) */
 function isGitRoot(dir: string): boolean {
   try {
-    const statInfo = stat(path.join(dir, ".git"));
-    return statInfo && statInfo.isDirectory();
+    return require("fs").statSync(path.join(dir, ".git")).isDirectory();
   } catch {
     return false;
   }
@@ -38,7 +37,7 @@ function isGitRoot(dir: string): boolean {
 /** find all git roots under `dir`, including nested ones */
 function findAllGitRoots(dir: string): RepoInfo[] {
   const results: RepoInfo[] = [];
-  const allEntries = readdirRecursive(dir, { skip: EXCLUDE });
+  const allEntries = walkDir(dir, { skip: EXCLUDE });
   for (const entry of allEntries) {
     if (entry.type === "directory") {
       const full = path.resolve(entry.path);
