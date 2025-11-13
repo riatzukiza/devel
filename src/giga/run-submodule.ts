@@ -1,57 +1,208 @@
-/*
-  Run a submodule's target (test/build/typecheck/lint) in a robust way:
-  - If package.json has a matching script, run it via pnpm -C "<subPath>" <target>
-  - Else if nx.json exists, run nx run-many --target=<target> --all inside the submodule
-  - Else, no-op success (prints "no <target> script found")
- 
-   Usage:
-     bun run src/giga/run-submodule.ts <subPath> <target>
+/**
+ * Run a submodule's target (test/build/typecheck/lint) in a robust way:
+ * - Detect the owning toolchain (bun, pnpm, yarn, npm) and run the matching script when it exists
+ * - Special-case typecheck to fall back to Nx, TypeScript, or Cargo when no script exists
+ * - Fall back to Nx run-many when a monorepo exposes nx.json but no script
+ *
+ * Usage:
+ *   bun run src/giga/run-submodule.ts <subPath> <target>
  */
- 
- import { spawn } from "bun";
- 
- const ALLOWED_TARGETS = new Set(["test", "build", "typecheck", "lint"]);
- 
- async function main(): Promise<void> {
-   const [subPath, target] = process.argv.slice(2);
-   if (!subPath || !target || !ALLOWED_TARGETS.has(target)) {
-     console.error("Usage: bun run src/giga/run-submodule.ts <subPath> <target>");
-     process.exit(2);
-   }
 
+import { spawn } from "bun";
+import { join, resolve } from "path";
+import { stat } from "fs/promises";
 
-  const hasPj = await exists(`${subPath}/package.json`);
-  if (hasPj) {
-    try {
-      const pj = await Bun.file(`${subPath}/package.json`).json();
-      if (pj?.scripts?.[target]) {
-        const ok = await run(["bash", "-lc", `pnpm -C "${subPath}" ${target}`], process.cwd());
-        process.exit(ok ? 0 : 1);
-      }
-    } catch {/* ignore and continue */}
+const ALLOWED_TARGETS = new Set(["test", "build", "typecheck", "lint"]);
+
+const NX_CONFIG = "nx.json";
+const TS_CONFIG_CANDIDATES = [
+  "tsconfig.typecheck.json",
+  "tsconfig.build.json",
+  "tsconfig.json",
+];
+
+const LOCKFILE_HINTS: ReadonlyArray<readonly [NodePackageManager, readonly string[]]> = [
+  ["bun", ["bun.lockb", "bun.lock"]],
+  ["pnpm", ["pnpm-lock.yaml"]],
+  ["yarn", ["yarn.lock"]],
+  ["npm", ["package-lock.json", "npm-shrinkwrap.json"]],
+];
+
+type NodePackageManager = "pnpm" | "npm" | "yarn" | "bun";
+type PackageJson = {
+  readonly packageManager?: string;
+  readonly scripts?: Record<string, string>;
+};
+
+async function main(): Promise<void> {
+  const [subPath, target] = process.argv.slice(2);
+  if (!subPath || !target || !ALLOWED_TARGETS.has(target)) {
+    console.error("Usage: bun run src/giga/run-submodule.ts <subPath> <target>");
+    process.exit(2);
   }
 
-  const hasNx = await exists(`${subPath}/nx.json`);
-  if (hasNx) {
-    // Run all for that target in the submodule when no package script exists
-    const ok = await run(["bash", "-lc", `pnpm -C "${subPath}" nx run-many --target=${target} --all`], process.cwd());
-    process.exit(ok ? 0 : 1);
+  const absSubPath = resolve(process.cwd(), subPath);
+  if (!(await pathExists(absSubPath))) {
+    console.error(`Submodule path ${subPath} does not exist`);
+    process.exit(1);
   }
 
-  console.log(`No ${target} script or nx.json in ${subPath}; skipping.`);
-  process.exit(0);
+  const ok = target === "typecheck"
+    ? await runTypecheck(subPath, absSubPath)
+    : await runGenericTarget(subPath, absSubPath, target);
+
+  process.exit(ok ? 0 : 1);
 }
 
-async function exists(p: string): Promise<boolean> {
+async function runGenericTarget(label: string, dir: string, target: string): Promise<boolean> {
+  const pkg = await readPackageJson(dir);
+  const manager = pkg ? await detectPackageManager(dir, pkg) : null;
+
+  if (pkg?.scripts?.[target]) {
+    return runPackageScript(manager!, dir, target);
+  }
+
+  if (await hasNxConfig(dir)) {
+    console.log(`[${target}] ${label}: running Nx run-many fallback`);
+    return runNxTarget(dir, target, manager);
+  }
+
+  console.log(`No ${target} script or nx.json in ${label}; skipping.`);
+  return true;
+}
+
+async function runTypecheck(label: string, dir: string): Promise<boolean> {
+  const pkg = await readPackageJson(dir);
+  const manager = pkg ? await detectPackageManager(dir, pkg) : null;
+
+  if (pkg?.scripts?.typecheck) {
+    return runPackageScript(manager!, dir, "typecheck");
+  }
+
+  if (await hasNxConfig(dir)) {
+    console.log(`[typecheck] ${label}: running Nx run-many fallback`);
+    return runNxTarget(dir, "typecheck", manager);
+  }
+
+  if (pkg) {
+    const tsconfig = await findTsconfig(dir);
+    if (tsconfig) {
+      console.log(`[typecheck] ${label}: no script found, running TypeScript on ${tsconfig}`);
+      return runTypeScriptCheck(dir, tsconfig, manager);
+    }
+  }
+
+  if (await pathExists(join(dir, "Cargo.toml"))) {
+    console.log(`[typecheck] ${label}: detected Cargo project, running cargo check`);
+    return run(["cargo", "check"], dir);
+  }
+
+  console.warn(`[typecheck] Skipping ${label}: no supported typecheck strategy detected`);
+  return true;
+}
+
+async function readPackageJson(dir: string): Promise<PackageJson | null> {
+  const file = join(dir, "package.json");
+  if (!(await pathExists(file))) {
+    return null;
+  }
+
   try {
-    await Bun.file(p).text();
+    return (await Bun.file(file).json()) as PackageJson;
+  } catch {
+    return null;
+  }
+}
+
+async function detectPackageManager(dir: string, pkg?: PackageJson | null): Promise<NodePackageManager> {
+  const field = parsePackageManagerField(pkg?.packageManager);
+  if (field) return field;
+
+  for (const [manager, files] of LOCKFILE_HINTS) {
+    for (const rel of files) {
+      if (await pathExists(join(dir, rel))) {
+        return manager;
+      }
+    }
+  }
+
+  return "pnpm";
+}
+
+function parsePackageManagerField(value?: string): NodePackageManager | null {
+  if (!value) return null;
+  const name = value.split("@")[0]?.trim().toLowerCase();
+  if (name === "bun" || name === "pnpm" || name === "yarn" || name === "npm") {
+    return name;
+  }
+  return null;
+}
+
+async function hasNxConfig(dir: string): Promise<boolean> {
+  return pathExists(join(dir, NX_CONFIG));
+}
+
+async function runPackageScript(manager: NodePackageManager, dir: string, script: string): Promise<boolean> {
+  const cmd = (() => {
+    switch (manager) {
+      case "npm":
+        return ["npm", "run", script];
+      case "yarn":
+        return ["yarn", script];
+      case "bun":
+        return ["bun", "run", script];
+      case "pnpm":
+      default:
+        return ["pnpm", script];
+    }
+  })();
+  return run(cmd, dir);
+}
+
+async function runNxTarget(dir: string, target: string, manager: NodePackageManager | null): Promise<boolean> {
+  const args = ["run-many", `--target=${target}`, "--all"];
+  return run(buildBinaryCommand(manager, "nx", args), dir);
+}
+
+async function runTypeScriptCheck(dir: string, tsconfig: string, manager: NodePackageManager | null): Promise<boolean> {
+  const args = ["-p", tsconfig, "--noEmit"];
+  return run(buildBinaryCommand(manager, "tsc", args), dir);
+}
+
+function buildBinaryCommand(manager: NodePackageManager | null, bin: string, args: string[]): string[] {
+  switch (manager) {
+    case "pnpm":
+      return ["pnpm", "exec", bin, ...args];
+    case "yarn":
+      return ["yarn", bin, ...args];
+    case "bun":
+      return ["bunx", bin, ...args];
+    case "npm":
+      return ["npx", "--yes", bin, ...args];
+    default:
+      return ["npx", "--yes", bin, ...args];
+  }
+}
+
+async function findTsconfig(dir: string): Promise<string | null> {
+  for (const candidate of TS_CONFIG_CANDIDATES) {
+    if (await pathExists(join(dir, candidate))) {
+      return candidate;
+    }
+  }
+  return null;
+}
+
+async function pathExists(p: string): Promise<boolean> {
+  try {
+    await stat(p);
     return true;
   } catch {
     return false;
   }
 }
 
-async function run(cmd: string[], cwd: string): Promise<boolean> {
+async function run(cmd: string[], cwd: string = process.cwd()): Promise<boolean> {
   console.log(`> ${cmd.join(" ")}`);
   const proc = spawn({ cmd, cwd, stdout: "pipe", stderr: "pipe" });
   const [out, err] = await Promise.all([
@@ -59,8 +210,13 @@ async function run(cmd: string[], cwd: string): Promise<boolean> {
     new Response(proc.stderr).text(),
   ]);
   if (out.trim()) console.log(out.trim());
-  if (proc.exitCode === 0) return true;
-  console.warn(err.trim());
+  if (proc.exitCode === 0) {
+    return true;
+  }
+  const errorText = err.trim();
+  if (errorText) {
+    console.warn(errorText);
+  }
   return false;
 }
 
