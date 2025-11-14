@@ -41,8 +41,8 @@ Note: Some repos also have fork remotes (e.g., `fork` → `riatzukiza/*`); group
 ## github.com/kcrommett (1)
 - opencode-web → git@github.com:kcrommett/opencode-web.git
 
-## github.com/numman-ali (1)
-- opencode-openai-codex-auth → git@github.com:numman-ali/opencode-openai-codex-auth.git
+## github.com/open-hax (1)
+- codex → git@github.com:open-hax/codex.git
 
 ## github.com/alacritty (1)
 - .config/alacritty/themes → https://github.com/alacritty/alacritty-theme.git

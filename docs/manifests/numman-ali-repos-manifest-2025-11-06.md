@@ -9,10 +9,10 @@ Root workspace: /home/err/devel
 - Accessible but not tracked locally: 1 repo
 
 ## Tracked locally (origin owner = `numman-ali`)
-- opencode-openai-codex-auth (path: opencode-openai-codex-auth)
+- (moved) open-hax/codex — previously under the numman-ali org (path: orgs/open-hax/codex)
 
 ## Accessible on GitHub (via `gh repo list numman-ali`)
-- opencode-openai-codex-auth
+- open-hax/codex (migrated from the numman-ali organization)
 - openskills
 
 ## Gap set

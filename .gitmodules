@@ -10,9 +10,6 @@
 [submodule "clojure-mcp"]
 	path = orgs/bhauman/clojure-mcp
 	url = git@github.com:bhauman/clojure-mcp.git
-[submodule "opencode-openai-codex-auth"]
-	path = orgs/numman-ali/opencode-openai-codex-auth
-	url = git@github.com:numman-ali/opencode-openai-codex-auth.git
 [submodule "openai/codex"]
 	path = orgs/openai/codex
 	url = org-14957082@github.com:openai/codex.git
@@ -40,3 +37,6 @@
 [submodule "sst/opencode"]
 	path = orgs/sst/opencode
 	url = git@github.com:sst/opencode.git
+[submodule "orgs/open-hax/codex"]
+	path = orgs/open-hax/codex
+	url = git@github.com:open-hax/codex.git
