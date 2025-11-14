@@ -32,7 +32,6 @@ Both repositories package an OpenCode plugin that swaps API-key auth for ChatGPT
 ### Licensing & Compliance Considerations
 - Open Hax releases under GPL-3.0-only (see `package.json` `license`), meaning redistributors must publish derivative source if they ship plugin changes to others [orgs/open-hax/codex/package.json:2-69].
 - Numman Ali's MIT license is permissive and aligns with the original community plugin terms, easing inclusion in commercial or closed-source environments [orgs/numman-ali/opencode-openai-codex-auth/package.json:2-65].
-- Choose GPL if you prefer copyleft reciprocity or plan to contribute back; choose MIT if license compatibility with proprietary clients is mandatory.
 
 ### Backlog & Community Signals (Nov 14, 2025)
 - `gh issue list --repo open-hax/codex --limit 3` shows that Open Hax is actively pursuing deeper diagnostics (#6 richer metrics/#5 compaction/#4 prompt cache overrides), aligning with the new cache/session subsystems.
