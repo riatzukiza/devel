@@ -25,7 +25,8 @@
     "lint:md": "markdownlint-cli2",
     "lint:md:notes": "markdownlint-cli2 docs/notes/**/*.md",
     "hooks:install": "bash ./bin/install-pre-push-hooks.sh",
-    "postinstall": "pnpm run hooks:install || true"
+    "postinstall": "pnpm run hooks:install || true",
+    "lint:md:agent": "node scripts/mdlint-agent.mjs --batch 50 --max-iter 8"
   },
   "keywords": [],
   "author": "",
