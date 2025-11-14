@@ -14,6 +14,7 @@ on:
       - "**/*.md"
       - ".markdownlint.*"
       - "package.json"
+      - "scripts/mdlint-agentsdk.mjs"
       - "scripts/mdlint-agent.mjs"
 
 jobs:
@@ -62,13 +63,13 @@ jobs:
           echo "Pulling model ${MODEL} from local Ollama"
           curl -sSf http://localhost:11434/api/pull -d "{\"name\":\"${MODEL}\"}" || true
 
-      - name: Run AI lint fixer
+      - name: Run AI lint fixer (Agents SDK)
         id: run
         env:
           BATCH: ${{ github.event.inputs.batch || '50' }}
           MAX_ITER: ${{ github.event.inputs.max_iter || '6' }}
         run: |
-          node scripts/mdlint-agent.mjs --batch "$BATCH" --max-iter "$MAX_ITER" || true
+          node scripts/mdlint-agentsdk.mjs --batch "$BATCH" --max-iter "$MAX_ITER" || true
 
       - name: Commit changes
         run: |

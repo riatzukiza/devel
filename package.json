@@ -26,7 +26,8 @@
     "lint:md:notes": "markdownlint-cli2 docs/notes/**/*.md",
     "hooks:install": "bash ./bin/install-pre-push-hooks.sh",
     "postinstall": "pnpm run hooks:install || true",
-    "lint:md:agent": "node scripts/mdlint-agent.mjs --batch 50 --max-iter 8"
+    "lint:md:agent": "node scripts/mdlint-agent.mjs --batch 50 --max-iter 8",
+    "lint:md:agent:sdk": "node scripts/mdlint-agentsdk.mjs --batch 50 --max-iter 8"
   },
   "keywords": [],
   "author": "",
@@ -42,6 +43,9 @@
     "markdownlint": "^0.39.0",
     "markdownlint-cli2": "^0.19.0",
     "@nx/js": "^20.0.0",
-    "nx": "^20.0.0"
+    "nx": "^20.0.0",
+    "@openai/agents": "^0.2.1",
+    "openai": "^4.77.0",
+    "zod": "^3.23.8"
   }
 }
