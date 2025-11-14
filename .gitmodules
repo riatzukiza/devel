@@ -31,6 +31,9 @@
 [submodule "riatzukiza/goblin-lessons"]
 	path = orgs/riatzukiza/goblin-lessons
 	url = git@github.com:riatzukiza/goblin-lessons.git
+[submodule "riatzukiza/stt"]
+	path = orgs/riatzukiza/stt
+	url = git@github.com:riatzukiza/stt.git
 [submodule "sst/opencode"]
 	path = orgs/sst/opencode
 	url = git@github.com:riatzukiza/opencode.git
