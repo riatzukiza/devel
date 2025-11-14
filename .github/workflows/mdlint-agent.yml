@@ -1,0 +1,83 @@
+name: Markdown Lint AI Fixer
+
+on:
+  workflow_dispatch:
+    inputs:
+      batch:
+        description: "Max issues to fix per iteration"
+        default: "50"
+      max_iter:
+        description: "Max iterations"
+        default: "6"
+  pull_request:
+    paths:
+      - "**/*.md"
+      - ".markdownlint.*"
+      - "package.json"
+      - "scripts/mdlint-agent.mjs"
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL || 'http://localhost:11434/v1' }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || 'ollama' }}
+      MODEL: ${{ vars.MDLINT_MODEL || 'gpt-oss:20b-cloud' }}
+
+    services:
+      # Optional local Ollama for self-hosted or when no remote is configured
+      ollama:
+        image: ollama/ollama:latest
+        ports:
+          - 11434:11434
+        options: >-
+          --health-cmd "curl -sSf http://localhost:11434/api/version || exit 1"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 20
+        # Skip service if remote OPENAI_BASE_URL is provided
+        if: ${{ !secrets.OPENAI_BASE_URL }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
+
+      - name: (Optional) Pull model
+        if: ${{ !secrets.OPENAI_BASE_URL }}
+        run: |
+          echo "Pulling model ${MODEL} from local Ollama"
+          curl -sSf http://localhost:11434/api/pull -d "{\"name\":\"${MODEL}\"}" || true
+
+      - name: Run AI lint fixer
+        id: run
+        env:
+          BATCH: ${{ github.event.inputs.batch || '50' }}
+          MAX_ITER: ${{ github.event.inputs.max_iter || '6' }}
+        run: |
+          node scripts/mdlint-agent.mjs --batch "$BATCH" --max-iter "$MAX_ITER" || true
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet; then
+            git add -A
+            git commit -m "chore(docs): AI-assisted markdownlint fixes"
+            git push
+          else
+            echo "No changes to commit"
+          fi
