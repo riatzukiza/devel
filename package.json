@@ -23,7 +23,9 @@
     "lisp-fixer:demo": "pnpm --filter @promethean-os/lisp-fixer demo",
     "nx:publish:affected": "bun run src/nx-publish-affected.ts",
     "lint:md": "markdownlint-cli2",
-    "lint:md:notes": "markdownlint-cli2 docs/notes/**/*.md"
+    "lint:md:notes": "markdownlint-cli2 docs/notes/**/*.md",
+    "hooks:install": "bash ./bin/install-pre-push-hooks.sh",
+    "postinstall": "pnpm run hooks:install"
   },
   "keywords": [],
   "author": "",
@@ -38,6 +40,7 @@
     "@nx/devkit": "^20.0.0",
     "markdownlint": "^0.39.0",
     "markdownlint-cli2": "^0.19.0",
+    "@nx/js": "^20.0.0",
     "nx": "^20.0.0"
   }
 }

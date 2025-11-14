@@ -442,6 +442,20 @@ When contributing to this workspace:
 5. Test changes across affected submodules
 6. Respect the organization-based structure when suggesting new submodules
 
+## riatzukiza Remote READMEs
+
+<!-- BEGIN: RIATZUKIZA-READMES -->
+- [riatzukiza/agent-shell](https://github.com/riatzukiza/agent-shell#readme)
+- [riatzukiza/book-of-shadows](https://github.com/riatzukiza/book-of-shadows#readme)
+- [riatzukiza/desktop](https://github.com/riatzukiza/desktop#readme)
+- [riatzukiza/dotfiles](https://github.com/riatzukiza/dotfiles#readme)
+- [riatzukiza/goblin-lessons](https://github.com/riatzukiza/goblin-lessons#readme)
+- [riatzukiza/openhax](https://github.com/riatzukiza/openhax#readme)
+- [riatzukiza/promethean](https://github.com/riatzukiza/promethean#readme)
+- [riatzukiza/riatzukiza.github.io](https://github.com/riatzukiza/riatzukiza.github.io#readme)
+- [riatzukiza/stt](https://github.com/riatzukiza/stt#readme)
+<!-- END: RIATZUKIZA-READMES -->
+
 ## Support
 
 For workspace-specific issues:

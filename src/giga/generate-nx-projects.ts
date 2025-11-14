@@ -7,6 +7,7 @@
     bun run src/giga/generate-nx-projects.ts
 */
 
+import { execSync } from "child_process";
 import { mkdir, writeFile } from "fs/promises";
 
 const ROOT = process.cwd();
@@ -57,6 +58,12 @@ async function main(): Promise<void> {
             options: {
               command: `bun run src/giga/run-submodule.ts "${p}" build`
             }
+          },
+          typecheck: {
+            executor: "nx:run-commands",
+            options: {
+              command: `bun run src/giga/run-submodule.ts "${p}" typecheck`
+            }
           }
         }
       }
@@ -73,10 +80,14 @@ async function ensureProject(dir: string, config: any): Promise<void> {
 
 async function readSubmodules(): Promise<string[]> {
   try {
-    const text = await Bun.file(`${ROOT}/.gitmodules`).text();
-    const paths = [...text.matchAll(/\n\s*path\s*=\s*(.+)\n/g)].map((m) => m[1].trim());
-    // Filter to orgs/** to avoid weird cases
-    return paths.filter((p) => p.startsWith("orgs/"));
+    const output = execSync("git submodule status --recursive", { cwd: ROOT, encoding: "utf8" });
+    const paths = output
+      .split("\n")
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((line) => line.replace(/^[+-]?/, "").split(/\s+/)[1])
+      .filter((p): p is string => Boolean(p));
+    return Array.from(new Set(paths));
   } catch {
     return [];
   }
