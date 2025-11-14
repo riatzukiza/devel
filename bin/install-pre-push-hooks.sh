@@ -34,16 +34,17 @@ echo "Ensured .nx ignore for root repo"
 
 # Install for each submodule recursively
 if git -C "$ROOT_DIR" rev-parse --git-dir >/dev/null 2>&1; then
-  HOOK_SOURCE="$HOOK_SOURCE" git -C "$ROOT_DIR" submodule foreach --quiet --recursive "
-    hook_dir=\$(git rev-parse --git-path hooks)
-    mkdir -p \"\$hook_dir\"
-    install -m 755 \"$HOOK_SOURCE\" \"\$hook_dir/pre-push\"
-    exclude_file=\$(git rev-parse --git-path info/exclude)
-    mkdir -p \"\$(dirname \"\$exclude_file\")\"
-    touch \"\$exclude_file\"
-    if ! grep -qx \".nx/\" \"\$exclude_file\" >/dev/null 2>&1; then
-      printf \"\\n.nx/\\n\" >> \"\$exclude_file\"
+  export HOOK_SOURCE
+  git -C "$ROOT_DIR" submodule foreach --quiet --recursive '
+    hook_dir=$(git rev-parse --git-path hooks)
+    mkdir -p "$hook_dir"
+    install -m 755 "$HOOK_SOURCE" "$hook_dir/pre-push"
+    exclude_file=$(git rev-parse --git-path info/exclude)
+    mkdir -p "$(dirname "$exclude_file")"
+    touch "$exclude_file"
+    if ! grep -qx ".nx/" "$exclude_file" >/dev/null 2>&1; then
+      printf "\n.nx/\n" >> "$exclude_file"
     fi
-    echo \"Installed pre-push hook and ensured .nx ignore for \$path\"
-  "
+    echo "Installed pre-push hook and ensured .nx ignore for $path"
+  '
 fi
