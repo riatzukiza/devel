@@ -205,12 +205,16 @@ async function pathExists(p: string): Promise<boolean> {
 async function run(cmd: string[], cwd: string = process.cwd()): Promise<boolean> {
   console.log(`> ${cmd.join(" ")}`);
   const proc = spawn({ cmd, cwd, stdout: "pipe", stderr: "pipe" });
-  const [out, err] = await Promise.all([
+  const [out, err, exitCode] = await Promise.all([
     new Response(proc.stdout).text(),
     new Response(proc.stderr).text(),
+    proc.exited,
   ]);
-  if (out.trim()) console.log(out.trim());
-  if (proc.exitCode === 0) {
+  const trimmedOut = out.trim();
+  if (trimmedOut) {
+    console.log(trimmedOut);
+  }
+  if (exitCode === 0) {
     return true;
   }
   const errorText = err.trim();
