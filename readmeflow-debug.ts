@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 
 import { makeOpenAIAdapter } from "./orgs/riatzukiza/promethean/packages/pantheon/llm-openai/dist/index.js";
 
@@ -7,7 +7,8 @@ async function testConnection() {
   const apiKey = process.env.OPENAI_API_KEY || "ollama";
 
   console.log("Testing connection to:", baseURL);
-  console.log("Using API key:", apiKey);
+  const maskedKey = apiKey && apiKey.length > 8 ? `${apiKey.slice(0,4)}...${apiKey.slice(-4)}` : "[redacted]";
+  console.log("Using API key:", maskedKey);
 
   try {
     // Test models endpoint
@@ -26,7 +27,10 @@ async function testConnection() {
     console.log("Models response status:", modelsRes.status);
     if (modelsRes.ok) {
       const models = await modelsRes.json();
-      console.log("Available models:", models.data?.map((m: any) => m.id).slice(0, 5));
+      const modelIds = Array.isArray(models?.data)
+        ? models.data.map((m: any) => m.id).slice(0, 5)
+        : models;
+      console.log("Available models:", modelIds);
     } else {
       console.log("Models response text:", await modelsRes.text());
     }

@@ -25,7 +25,7 @@
     "lint:md": "markdownlint-cli2",
     "lint:md:notes": "markdownlint-cli2 docs/notes/**/*.md",
     "hooks:install": "bash ./bin/install-pre-push-hooks.sh",
-    "postinstall": "pnpm run hooks:install"
+    "postinstall": "pnpm run hooks:install || true"
   },
   "keywords": [],
   "author": "",
