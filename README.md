@@ -31,7 +31,7 @@ All submodules are now organized under `orgs/` by their respective GitHub organi
 | **riatzukiza** | `riatzukiza.github.io` | Personal website | `orgs/riatzukiza/riatzukiza.github.io` |
 | **sst** | `opencode` | Opencode development tools | `orgs/sst/opencode` |
 | **bhauman** | `clojure-mcp` | Clojure MCP integration | `orgs/bhauman/clojure-mcp` |
-| **numman-ali** | `opencode-openai-codex-auth` | Authentication for Codex | `orgs/numman-ali/opencode-openai-codex-auth` |
+| **open-hax** | `codex` | Authentication for Codex | `orgs/open-hax/codex` |
 | **moofone** | `codex-ts-sdk` | TypeScript SDK for Codex | `orgs/moofone/codex-ts-sdk` |
 | **openai** | `codex` | OpenAI Codex integration | `orgs/openai/codex` |
 
@@ -54,8 +54,8 @@ devel/
 │   │   └── opencode/              # Main opencode repo
 │   ├── bhauman/                   # bhauman's repositories
 │   │   └── clojure-mcp/           # Clojure integration
-│   ├── numman-ali/                # numman-ali's repositories
-│   │   └── opencode-openai-codex-auth/ # Auth plugin
+│   ├── open-hax/                  # open-hax organization
+│   │   └── codex/                 # Auth plugin
 │   ├── moofone/                   # moofone's repositories
 │   │   └── codex-ts-sdk/          # TypeScript SDK
 │   └── openai/                    # OpenAI organization
@@ -400,7 +400,7 @@ The workspace maintains comprehensive cross-reference documentation:
 - **Individual CROSS_REFERENCES.md files**: Located in each repository
 
 ### Integration Patterns
-- **Authentication**: `orgs/numman-ali/opencode-openai-codex-auth` ↔ `orgs/moofone/codex-ts-sdk` ↔ `orgs/openai/codex`
+- **Authentication**: `orgs/open-hax/codex` ↔ `orgs/moofone/codex-ts-sdk` ↔ `orgs/openai/codex`
 - **Agent Development**: `orgs/riatzukiza/agent-shell` ↔ `orgs/bhauman/clojure-mcp` ↔ `orgs/riatzukiza/promethean`
 - **Web Development**: `orgs/sst/opencode` ↔ `orgs/riatzukiza/openhax`
 - **Environment Setup**: `orgs/riatzukiza/dotfiles` ↔ all development tools

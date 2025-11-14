@@ -59,7 +59,7 @@ Multi-repository development workspace with git submodules organized under `orgs
 
 ### 🏗️ Development Infrastructure
 - **[orgs/riatzukiza/promethean](orgs/riatzukiza/promethean/)**: Local LLM enhancement system and autonomous agent framework
-- **[orgs/numman-ali/opencode-openai-codex-auth](orgs/numman-ali/opencode-openai-codex-auth/)**: OpenAI Codex OAuth authentication plugin
+- **[orgs/open-hax/codex](orgs/open-hax/codex/)**: Open Hax Codex/OAuth authentication suite
 - **[orgs/riatzukiza/agent-shell](orgs/riatzukiza/agent-shell/)**: Emacs-based agent shell for ACP (Agent Client Protocol)
 - **[orgs/bhauman/clojure-mcp](orgs/bhauman/clojure-mcp/)**: MCP server for Clojure REPL-driven development
 
@@ -78,7 +78,7 @@ Multi-repository development workspace with git submodules organized under `orgs
 ## Cross-Repository Integration
 
 ### 🔗 High-Value Patterns
-- **Authentication**: orgs/numman-ali/opencode-openai-codex-auth ↔ orgs/moofone/codex-ts-sdk ↔ orgs/openai/codex
+- **Authentication**: orgs/open-hax/codex ↔ orgs/moofone/codex-ts-sdk ↔ orgs/openai/codex
 - **Agent Development**: orgs/riatzukiza/agent-shell ↔ orgs/bhauman/clojure-mcp ↔ orgs/riatzukiza/promethean
 - **Web Development**: orgs/sst/opencode ↔ orgs/riatzukiza/openhax
 - **Environment Setup**: orgs/riatzukiza/dotfiles ↔ all development tools
@@ -99,7 +99,7 @@ Each repository now has comprehensive cross-reference documentation:
 - **[orgs/riatzukiza/promethean/CROSS_REFERENCES.md](orgs/riatzukiza/promethean/CROSS_REFERENCES.md)** - Agent framework cross-references
 - **[orgs/riatzukiza/agent-shell/CROSS_REFERENCES.md](orgs/riatzukiza/agent-shell/CROSS_REFERENCES.md)** - ACP protocol integration
 - **[orgs/bhauman/clojure-mcp/CROSS_REFERENCES.md](orgs/bhauman/clojure-mcp/CROSS_REFERENCES.md)** - REPL development patterns
-- **[orgs/numman-ali/opencode-openai-codex-auth/CROSS_REFERENCES.md](orgs/numman-ali/opencode-openai-codex-auth/CROSS_REFERENCES.md)** - Authentication patterns
+- **[orgs/open-hax/codex/CROSS_REFERENCES.md](orgs/open-hax/codex/CROSS_REFERENCES.md)** - Authentication patterns
 
 #### **Tooling & SDKs**
 - **[orgs/moofone/codex-ts-sdk/CROSS_REFERENCES.md](orgs/moofone/codex-ts-sdk/CROSS_REFERENCES.md)** - TypeScript SDK integration
