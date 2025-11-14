@@ -1,0 +1,311 @@
+Absolutely—most of what you need is already in Promethean. Let’s **connect the plans** you’ve scattered across `pseudo/`, `hack/`, and `docs/` into one coherent map, and give you **drop‑in pages + tiny automations** so the docs folder becomes the source of truth for the memory system, agents, and plugins.
+
+Below is a concrete **weaving plan** with ready‑to‑paste file skeletons and minimal scripts. I reference your repo where relevant so you can see why each link exists.
+
+---
+
+## 0) What’s already here to anchor to
+
+* **Unique doc filenames & inboxes** are already configured in `.dir-locals.el` (`prom/unique-doc-format`, targets for `docs/inbox`, `docs/unique`). Use this to create stable, linkable slugs for canonical docs. 
+* **Agents/structures/indexes/profiles** are declared in `pseudo/pil.hy` (e.g., `Cephalon`, `Eidolon`, `Pandora`, `Eris`, `repo-embeddings`)—that’s your ontology.  
+* **Plugins** (including `EventCapturePlugin`, `AsyncSubAgentsPlugin`) are enumerated and described in `hack/index.ts`—perfect to auto‑generate plugin pages from.  
+* **Data intake precedent** (audio → transcripts) references `docs/maintenance/orphaned-files.md`—use that “maintenance” area as a home for housekeeping playbooks. 
+
+---
+
+## 1) A simple docs spine (folders + 7 canonical pages)
+
+Create this minimal spine in `docs/` (you can keep your `inbox/` and `unique/` as‑is):
+
+```
+docs/
+  README.md                    # The living map (entrypoint)
+  atlas/architecture.md        # High-level system & graph-of-graphs
+  concepts/glossary.md         # Terms: Enso, Eidolon fields, Nooi, Daimoi
+  specs/memory.md              # Memory WAL + index + consolidation (canonical)
+  specs/context-compilation.md # Retrieval, scoring, pruning, loops
+  plugins/                      # Generated: one page per plugin
+  maintenance/orphaned-files.md # Housekeeping (already referenced)
+```
+
+**Why these pages?**
+
+* `pseudo/pil.hy` already names the system’s **kinds** (structures, agents, indexes, profiles). The **atlas** page can mirror those headings verbatim so every entity in `pil.hy` has a doc anchor you can link to. 
+* `hack/index.ts` already describes plugins with names and one‑line descriptions—**generate** a page per plugin from this file (see §3). 
+* `.dir-locals.el` ensures new notes land in the right inbox with timestamped filenames—link **out of** `docs/README.md` and **into** curated canonical docs to drain the inbox over time. 
+
+---
+
+## 2) Drop‑in page skeletons (paste these now)
+
+### docs/README.md
+
+```md
+# Promethean – Docs Map
+
+This file is the canonical map of the system. Everything here links to a stable page.
+
+## Start here
+- **Architecture** → [docs/atlas/architecture.md](atlas/architecture.md)
+- **Memory System (Spec)** → [docs/specs/memory.md](specs/memory.md)
+- **Context Compilation** → [docs/specs/context-compilation.md](specs/context-compilation.md)
+- **Glossary** → [docs/concepts/glossary.md](concepts/glossary.md)
+- **Plugins** → [docs/plugins/](plugins/)
+- **Maintenance** → [docs/maintenance/](maintenance/)
+
+## Working sets
+- Inbox (curate → promote): `docs/inbox/`  
+- Unique drafts (timestamped): `docs/unique/` (Emacs auto-creates unique names)
+```
+
+### docs/atlas/architecture.md
+
+```md
+# Architecture (System of Systems)
+
+## Organs / Structures
+- **Cephalon** – perceive / route / prompt (declared in `pseudo/pil.hy`)  
+- **Eidolon** – semantic field / associations (declared in `pseudo/pil.hy`)
+
+## Agents
+- **Pandora** – discovery & hypotheses (profile: `pandora.dev.search.v1`)
+- **Eris** – adversarial falsification (`eris.dev.adversarial.v1`)
+
+## Indexes
+- **repo-embeddings** – vector corpus for code/docs (Chroma backing)
+
+> Source of truth for these names and relationships is `pseudo/pil.hy` (see repo). Link each name above to the exact form in the file and to the related spec pages.
+```
+
+*(Back the above claims with your ontology file:)*  
+
+### docs/concepts/glossary.md
+
+```md
+# Glossary
+
+- **Enso protocol** — Event-sourcing discipline for append-only segments + manifest; used by memory (see *Memory WAL*).
+- **Eidolon fields** — The feature/association field backing memory’s graph weights; feeds context compilation.
+- **Nooi** — Collective overlay across personas (ensemble profile aggregating edge reinforcements).
+- **Daimoi** — Persona-specific overlays; profile-weighted ranking & expansion biases.
+
+See also: `pseudo/AGENT.md` for speculative/ideation territory. 
+```
+
+(Your `pseudo/AGENT.md` explicitly reserves that folder for conceptual design—link it.) 
+
+### docs/specs/memory.md
+
+```md
+# Memory System (Spec)
+
+## Storage
+- **WAL segments**: daily NDJSON files (append-only).
+- **Manifest**: segment checksums + Bloom/bitmap for fast hydration.
+- **Artifacts**: curated Markdown snapshots for humans.
+
+## Indexes (local, rebuildable)
+- Sparse (FTS5/keyword) + Dense (ANN) + Graph (edges, weights).
+
+## Lifecycle
+- Hot → Warm → Cold; nothing is deleted.
+- Expiration: persist if read-count ≥ threshold; else mark for consolidation.
+- Consolidation: LSH-cluster stale items → summarize → write a *semantic memory* linking back.
+
+## Algorithms
+- Scoring: α·cos + β·sparse + γ·connectivity + δ·recency + ε·frequency.
+- Context loop: expand strong neighbors → prune near-dupes → update edges (reinforce in-context, decay out).
+
+## Provenance & Audit
+- Required: `meta.source`, `project`, `commit`.
+- Segment checksums in manifest.
+```
+
+### docs/specs/context-compilation.md
+
+```md
+# Context Compilation
+
+1. Fusion seed: ANN ∪ FTS, K=64.
+2. Add strong neighbors (sim≥0.6, cap 16).
+3. Prune near-dupes (sim>0.92), keep highest query affinity.
+4. Update edges: +Δ in-context, -δ to unrecalled neighbors.
+5. Iterate for requested "effort" or until no new strong neighbors.
+
+Serialize the resulting subgraph into Markdown for the working note.
+```
+
+### docs/maintenance/orphaned-files.md (fill what `data/README.md` points to)
+
+```md
+# Maintenance – Orphaned Files
+
+- Sweep `data/` for unlinked artifacts (e.g., `raw-wav/`, transcripts).
+- Promote linked artifacts into canonical docs; mark stale as archived.
+- Report: list files not referenced from any page in `docs/` or `pseudo/`.
+
+Run: `pnpm docs:orphans` (see scripts below).
+```
+
+(“Orphaned files” is already mentioned in `data/README.md`; this page closes that loop.) 
+
+---
+
+## 3) Generate plugin pages from `hack/index.ts`
+
+You already have a **registry** with `name`, `description`, `toolCount`, and `source`. That’s perfect for generation.  
+
+### scripts/docs-generate-plugins.mjs
+
+```js
+#!/usr/bin/env node
+import fs from "node:fs/promises";
+import path from "node:path";
+import url from "node:url";
+
+// Import the registry directly
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
+const repoRoot  = path.join(__dirname, "..");
+const hackIndex = path.join(repoRoot, "hack", "index.ts");
+
+// Naive import via ts-node/register would be overkill here; do a tiny parse:
+const src = await fs.readFile(hackIndex, "utf8");
+// Extract blocks like: export const PluginRegistry = { ... }
+const match = src.match(/export const PluginRegistry = \\{([\\s\\S]*?)\\};/m);
+if (!match) throw new Error("PluginRegistry not found");
+const body = match[1];
+
+// Quick-and-dirty parse of top-level entries
+const entries = [...body.matchAll(/(\\w+):\\s*\\{[\\s\\S]*?name:\\s*'([^']+)'[\\s\\S]*?description:\\s*'([^']+)'[\\s\\S]*?toolCount:\\s*(\\d+)[\\s\\S]*?(source:\\s*'([^']+)')?/g)]
+  .map(([, key, name, description, toolCount, _s, source]) => ({ key, name, description, toolCount: Number(toolCount), source }));
+
+const outDir = path.join(repoRoot, "docs", "plugins");
+await fs.mkdir(outDir, { recursive: true });
+
+for (const e of entries) {
+  const md = `# ${e.name}
+
+**Key:** \`${e.key}\`  
+**Tools:** ${e.toolCount}  
+${e.source ? `**Source:** \`${e.source}\`` : ""}
+
+${e.description}
+
+## Usage
+- Where it fits in the system: link back to atlas/architecture.md
+- Related agents/structures: add links
+
+`;
+  await fs.writeFile(path.join(outDir, `${e.key}.md`), md, "utf8");
+}
+console.log(`Generated ${entries.length} plugin docs at docs/plugins/`);
+```
+
+### Add scripts (root `package.json`):
+
+```json
+{
+  "scripts": {
+    "docs:plugins": "node scripts/docs-generate-plugins.mjs"
+  }
+}
+```
+
+Run it once; now the **Plugins** section in `docs/README.md` is real.
+
+---
+
+## 4) Lightweight automations to keep the map coherent
+
+* **Docs map (index) refresher:** A simple script that scans `docs/**.md` and builds a sectioned table of contents (writes back into `docs/README.md`).
+* **Orphaned files sweep:** Start with a minimal Node script that lists files under `data/` not mentioned by any doc (satisfies `docs/maintenance/orphaned-files.md`).
+
+### scripts/docs-orphans.mjs
+
+```js
+#!/usr/bin/env node
+import fs from "node:fs/promises";
+import path from "node:path";
+
+const root = path.join(process.cwd());
+const allDocs = await globs(["docs/**/*.md", "pseudo/**/*.md", "pseudo/**/*.hy"]);
+const allText = (await Promise.all(allDocs.map(p => fs.readFile(p, "utf8")))).join("\\n");
+
+const dataFiles = await globs(["data/**/*", "!data/**/.gitkeep", "!data/**/*.md"]);
+const orphans = dataFiles.filter(p => !allText.includes(path.basename(p)));
+
+console.log(`# Orphans (${orphans.length})`);
+for (const p of orphans) console.log(p);
+
+// --- tiny glob helper ---
+async function globs(patterns) {
+  const { glob } = await import("glob");
+  const files = new Set();
+  for (const pat of patterns) for (const f of await glob(pat, { nodir: true })) files.add(f);
+  return [...files].sort();
+}
+```
+
+Add to `package.json`:
+
+```json
+{ "scripts": { "docs:orphans": "node scripts/docs-orphans.mjs" } }
+```
+
+---
+
+## 5) Wire “memory system” pages to real code touchpoints
+
+* In **`atlas/architecture.md`**, link “Event capture → memory ingress” to `EventCapturePlugin` (ingress), since it already exists in the plugin registry. 
+* In **`specs/memory.md`**, add a “**Index precedent**” section pointing at `repo-embeddings` as the pattern you will replicate for personal memory indexes (vector + filters). 
+* In **`concepts/glossary.md`**, link “Pseudo territory” to `pseudo/AGENT.md` so readers know where ideation lives. 
+
+---
+
+## 6) Make cross‑linking cheap (editor habits you already have)
+
+* Keep using the **timestamped unique docs** for first drafts (`docs/unique/`, `docs/inbox/`), then **promote** content by moving sections into the canonical pages above—your Emacs setting is already set up for this. 
+* Each time you land a new concept in `pseudo/` (e.g., a new `def-agent` or `def-structure` in `pil.hy`), add a one‑line entry under **the matching heading** in `atlas/architecture.md`. That page becomes the “index of indices.” 
+
+---
+
+## 7) Optional: a tiny “graph of docs” block
+
+Paste this at the bottom of `docs/atlas/architecture.md` and update links as you go:
+
+```mermaid
+graph TD
+  A[Cephalon] -->|routes| B[Pandora]
+  A --> C[Eris]
+  B --> D[repo-embeddings]
+  C --> D
+  A --> E[EventCapturePlugin]
+  E --> F[Memory Ingress (WAL)]
+  F --> G[Context Compilation]
+  G --> H[Markdown Snapshots]
+```
+
+* **Cephalon/Eidolon/Pandora/Eris** live in `pseudo/pil.hy`.  
+* **EventCapturePlugin** is catalogued in `hack/index.ts`. 
+
+---
+
+## 8) “Next steps” checklist (no ceremony)
+
+1. Create the 7 files above under `docs/` (paste skeletons).
+2. Add `scripts/docs-generate-plugins.mjs` and run `pnpm docs:plugins` (generates plugin pages from your registry). 
+3. Add `scripts/docs-orphans.mjs`; run `pnpm docs:orphans` and paste the output into `docs/maintenance/orphaned-files.md`. 
+4. In `atlas/architecture.md`, link each entity name to the exact form in `pseudo/pil.hy` so the atlas mirrors the ontology. 
+5. Move any “unconnected plans” from `docs/inbox` into the canonical pages; let `.dir-locals.el` continue creating unique drafts for fresh notes. 
+
+---
+
+## 9) Where this meaningfully stitches your ideas together
+
+* **Memory design ↔ Agents & Plugins**: EventCapture → WAL → Index → Context loop → Markdown snapshot → back to Agents for action; this is now one walkable path across `plugins/`, `specs/`, and `atlas/`.  
+* **Concepts (“enso”, “eidolon fields”, “nooi/daimoi”)**: glossary anchors referenced by specs and atlas; “pseudo” stays the place for theory, but every term links to a canonical definition. 
+* **Indexing precedent**: `repo-embeddings` shows how you already think about vector corpora; the memory spec links to that pattern so you don’t reinvent. 
+
+---
+
+If you’d like, I can turn the memory spec above into a ready‑to‑commit `docs/specs/memory.md` with your exact field names (including the Emacs `(store ...)` struct form) and a short “API” section for `mem add/query/compact`.
