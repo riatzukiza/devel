@@ -2011,12 +2011,12 @@
           "implicitDependencies": []
         }
       },
-      "orgs-numman-ali-opencode-openai-codex-auth": {
-        "name": "orgs-numman-ali-opencode-openai-codex-auth",
+      "orgs-open-hax-codex": {
+        "name": "orgs-open-hax-codex",
         "type": "app",
         "data": {
-          "root": "projects/orgs-numman-ali-opencode-openai-codex-auth",
-          "name": "orgs-numman-ali-opencode-openai-codex-auth",
+          "root": "projects/orgs-open-hax-codex",
+          "name": "orgs-open-hax-codex",
           "projectType": "application",
           "tags": [
             "submodule"
@@ -2025,7 +2025,7 @@
             "test": {
               "executor": "nx:run-commands",
               "options": {
-                "command": "bun run src/giga/run-submodule.ts \"orgs/numman-ali/opencode-openai-codex-auth\" test"
+                "command": "bun run src/giga/run-submodule.ts \"orgs/open-hax/codex\" test"
               },
               "configurations": {},
               "parallelism": true
@@ -2033,7 +2033,7 @@
             "build": {
               "executor": "nx:run-commands",
               "options": {
-                "command": "bun run src/giga/run-submodule.ts \"orgs/numman-ali/opencode-openai-codex-auth\" build"
+                "command": "bun run src/giga/run-submodule.ts \"orgs/open-hax/codex\" build"
               },
               "configurations": {},
               "parallelism": true
@@ -12579,7 +12579,7 @@
         }
       ],
       "@promethean/duck-audio": [],
-      "orgs-numman-ali-opencode-openai-codex-auth": [],
+      "orgs-open-hax-codex": [],
       "@promethean-os/promethean-cli": [],
       "@promethean-os/eidolon-field": [
         {
