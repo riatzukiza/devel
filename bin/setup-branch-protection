@@ -32,7 +32,7 @@ resolve_slugs() {
     echo "No .gitmodules found in $(pwd)" >&2
     return 1
   fi
-  git config -f .gitmodules --get-regexp '^submodule\..*\.url' | awk '{print $2}' | while read -r url; do
+  git config -f .gitmodules --get-regexp '^submodule\..*\.url' 2>/dev/null | awk '{print $2}' | while read -r url; do
     slug=""
     case "$url" in
       git@github.com:*) slug=${url#git@github.com:} ;;

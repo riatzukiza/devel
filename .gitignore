@@ -116,4 +116,25 @@ temp/
 etc/
 unique/
 .cpcache/
-.clj-condo/
+.clj-kondo/
+
+# LSP / analysis caches
+.lsp/
+.scannerwork/
+.nx/cache/
+
+# Test and temporary artifacts
+simple-test-temp/
+coverage/
+.nyc_output/
+.nrepl-port
+out.json
+test.txt
+test-*.js
+
+# Editor / tool metadata
+.obsidian/
+code.lock
+elgrep-data.el
+
+docs.github/**/.cache/
