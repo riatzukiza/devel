@@ -25,19 +25,32 @@ function run(
 
     const p = spawn(cmd, args, { cwd, stdio: "inherit", shell: false });
 
+    let settled = false;
+
+    const settleReject = (err: unknown) => {
+      if (settled) return;
+      settled = true;
+      rej(err instanceof Error ? err : new Error(String(err)));
+    };
+    const settleResolve = (code?: number | null) => {
+      if (settled) return;
+      settled = true;
+      res(code ?? 1);
+    };
+
     const timer = setTimeout(() => {
-      p.kill("SIGKILL");
-      rej(new Error(`Command timed out after ${timeout}ms`));
+      try { p.kill("SIGKILL"); } catch {}
+      settleReject(new Error(`Command timed out after ${timeout}ms`));
     }, timeout);
 
     p.on("exit", (code) => {
       clearTimeout(timer);
-      res(code ?? 1);
+      settleResolve(code);
     });
 
     p.on("error", (err) => {
       clearTimeout(timer);
-      rej(err);
+      settleReject(err);
     });
   });
 }
