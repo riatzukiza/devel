@@ -1,0 +1,10 @@
+{
+  // Use default rules; relax a few for long docs
+  "default": true,
+  // Line length (allow long technical lines / tables)
+  "MD013": false,
+  // Allow basic inline HTML like <br>
+  "MD033": {
+    "allowed_elements": ["br"]
+  }
+}

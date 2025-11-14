@@ -14,7 +14,7 @@ log() {
 }
 
 remote_name="${1:-origin}"
-remote_url="${2:-}"
+_remote_url="${2:-}"
 head_sha=$(git rev-parse HEAD)
 push_updates=()
 
@@ -26,7 +26,7 @@ fi
 
 selected_push_line=""
 for entry in "${push_updates[@]}"; do
-  IFS=' ' read -r entry_local_ref entry_local_sha entry_remote_ref entry_remote_sha <<<"$entry"
+  IFS=' ' read -r _entry_local_ref entry_local_sha _entry_remote_ref _entry_remote_sha <<<"$entry"
   if [[ -z "$selected_push_line" ]]; then
     selected_push_line="$entry"
   fi
@@ -39,7 +39,7 @@ done
 selected_remote_ref=""
 selected_remote_sha=""
 if [[ -n "$selected_push_line" ]]; then
-  IFS=' ' read -r selected_local_ref selected_local_sha selected_remote_ref selected_remote_sha <<<"$selected_push_line"
+  IFS=' ' read -r _selected_local_ref _selected_local_sha selected_remote_ref selected_remote_sha <<<"$selected_push_line"
 fi
 
 remote_branch_name=""
@@ -118,15 +118,17 @@ if command -v pnpm >/dev/null 2>&1 && [[ -f nx.json ]]; then
   exit "$nx_exit"
 fi
 
-if command -v pnpm >/dev/null 2>&1 && ([[ -f pnpm-lock.yaml ]] || [[ -f pnpm-workspace.yaml ]] || [[ -f package.json ]]); then
-  log "Running pnpm run --if-present typecheck"
-  pnpm run --if-present typecheck
-  exit 0
+if command -v pnpm >/dev/null 2>&1; then
+  if [[ -f package.json ]] && grep -q '"typecheck"\s*:' package.json; then
+    log "Running pnpm run typecheck"
+    pnpm run typecheck
+    exit 0
+  fi
 fi
 
-if [[ -f package.json ]] && command -v npm >/dev/null 2>&1; then
-  log "Running npm run typecheck --if-present"
-  npm run typecheck --if-present
+if command -v npm >/dev/null 2>&1 && [[ -f package.json ]] && grep -q '"typecheck"\s*:' package.json; then
+  log "Running npm run typecheck"
+  npm run typecheck
   exit 0
 fi
 

@@ -18,7 +18,7 @@
 	url = git@github.com:moofone/codex-ts-sdk.git
 [submodule "riatzukiza/openhax"]
 	path = orgs/riatzukiza/openhax
-	url = https://github.com/riatzukiza/openhax.git
+	url = git@github.com:riatzukiza/openhax.git
 [submodule "riatzukiza/riatzukiza.github.io"]
 	path = orgs/riatzukiza/riatzukiza.github.io
 	url = git@github.com:riatzukiza/riatzukiza.github.io.git
@@ -31,12 +31,22 @@
 [submodule "riatzukiza/goblin-lessons"]
 	path = orgs/riatzukiza/goblin-lessons
 	url = git@github.com:riatzukiza/goblin-lessons.git
-[submodule "stt"]
-	path = orgs/riatzukiza/stt
-	url = git@github.com:riatzukiza/stt.git
 [submodule "sst/opencode"]
 	path = orgs/sst/opencode
-	url = git@github.com:sst/opencode.git
+	url = git@github.com:riatzukiza/opencode.git
 [submodule "orgs/open-hax/codex"]
 	path = orgs/open-hax/codex
 	url = git@github.com:open-hax/codex.git
+[submodule "orgs/kcrommett/oc-manager"]
+	path = orgs/kcrommett/oc-manager
+	url = git@github.com:kcrommett/oc-manager.git
+[submodule ".emacs.d"]
+	path = .emacs.d
+	url = https://github.com/syl20bnr/spacemacs
+	branch = develop
+[submodule "orgs/riatzukiza/opencode-openai-codex-auth"]
+	path = orgs/riatzukiza/opencode-openai-codex-auth
+	url = https://github.com/riatzukiza/opencode-openai-codex-auth
+[submodule "orgs/moazbuilds"]
+	path = orgs/moazbuilds
+	url = https://github.com/moazbuilds/CodeMachine-CLI
