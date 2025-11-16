@@ -9,6 +9,8 @@
     "giga:commit": "bun run src/giga/commit-propagator.ts",
     "pantheon:msg": "bun run src/giga/pantheon.ts",
     "issues:project": "bun run src/issues/projector.ts",
+    "inbox:pipeline": "node scripts/inbox-pipeline.mjs",
+    "inbox:meta-pipeline": "node scripts/meta-agent-evaluator.mjs",
     "giga:nx:generate": "bun run src/giga/generate-nx-projects.ts",
     "giga:plugin:bundle": "bun run tools/nx-plugins/giga/bundle-plugin.ts",
     "giga:affected": "nx affected --target=test --build",
@@ -27,7 +29,10 @@
     "hooks:install": "bash ./bin/install-pre-push-hooks.sh",
     "postinstall": "pnpm run hooks:install || true",
     "lint:md:agent": "node scripts/mdlint-agent.mjs --batch 50 --max-iter 8",
-    "lint:md:agent:sdk": "node scripts/mdlint-agentsdk.mjs --batch 50 --max-iter 8"
+    "lint:md:agent:sdk": "node scripts/mdlint-agentsdk.mjs --batch 50 --max-iter 8",
+    "ecosystem:generate": "pnpm --dir orgs/riatzukiza/promethean --filter @promethean-os/ecosystem-dsl run generate -- --dir ../../../../../system/daemons --output ../../../../../ecosystem.config.enhanced.mjs",
+    "ecosystem:watch": "pnpm --dir orgs/riatzukiza/promethean --filter @promethean-os/ecosystem-dsl run generate:watch -- --dir ../../../../../system/daemons --output ../../../../../ecosystem.config.enhanced.mjs",
+    "ecosystem:validate": "pnpm --dir orgs/riatzukiza/promethean --filter @promethean-os/ecosystem-dsl run validate -- --dir ../../../../../system/daemons"
   },
   "keywords": [],
   "author": "",
@@ -46,6 +51,7 @@
     "nx": "^20.0.0",
     "@openai/agents": "^0.2.1",
     "openai": "^4.77.0",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "@promethean-os/ecosystem-dsl": "file:orgs/riatzukiza/promethean/packages/ecosystem-dsl"
   }
 }
