@@ -1,0 +1,59 @@
+name: Security - OWASP Dependency Check
+
+on:
+  pull_request:
+    branches: [release]
+
+permissions:
+  contents: read
+  security-events: write
+
+concurrency:
+  group: security-owasp-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  owasp-dependency-check:
+    if: github.event.pull_request.base.ref == 'release' && (startsWith(github.head_ref, 'dev/') || github.head_ref == 'main')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Generate npm lockfile from pnpm/bun
+        run: |
+          set -e
+          # Prefer converting pnpm-lock.yaml to package-lock.json with a dedicated converter
+          if [ -f pnpm-lock.yaml ]; then
+            npx pnpm-lock-to-npm-lock@1.0.0
+          fi
+          # For bun projects, synthesize a package-lock from package.json to approximate the bun graph
+          if [ -f bun.lock ] || ls bun.lockb >/dev/null 2>&1; then
+            npm install --package-lock-only --ignore-scripts
+          fi
+          if [ ! -f package-lock.json ]; then
+            echo "No lockfile generated; dependency-check will fall back to package.json" >&2
+          else
+            echo "Generated package-lock.json for OWASP scan"
+          fi
+
+      - name: OWASP Dependency Check
+        uses: dependency-check/action@v4
+        with:
+          project: devel
+          path: .
+          format: "SARIF"
+          out: "dependency-check-report"
+          args: "--failOnCVSS 0"
+
+      - name: Upload SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: dependency-check-report/dependency-check-report.sarif
