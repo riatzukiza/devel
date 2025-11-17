@@ -1,52 +1,68 @@
 [submodule "promethean"]
 	path = orgs/riatzukiza/promethean
 	url = git@github.com:riatzukiza/promethean.git
+	branch = device/stealth
 [submodule "dotfiles"]
 	path = orgs/riatzukiza/dotfiles
 	url = git@github.com:riatzukiza/dotfiles.git
+	branch = device/stealth
 [submodule "agent-shell"]
 	path = orgs/riatzukiza/agent-shell
 	url = git@github.com:riatzukiza/agent-shell.git
+	branch = device/stealth
 [submodule "clojure-mcp"]
 	path = orgs/bhauman/clojure-mcp
 	url = git@github.com:bhauman/clojure-mcp.git
+	branch = device/stealth
 [submodule "openai/codex"]
 	path = orgs/openai/codex
 	url = org-14957082@github.com:openai/codex.git
+	branch = device/stealth
 [submodule "moofone/codex-ts-sdk"]
 	path = orgs/moofone/codex-ts-sdk
 	url = git@github.com:moofone/codex-ts-sdk.git
+	branch = device/stealth
 [submodule "riatzukiza/openhax"]
 	path = orgs/riatzukiza/openhax
 	url = git@github.com:riatzukiza/openhax.git
+	branch = device/stealth
 [submodule "riatzukiza/riatzukiza.github.io"]
 	path = orgs/riatzukiza/riatzukiza.github.io
 	url = git@github.com:riatzukiza/riatzukiza.github.io.git
+	branch = device/stealth
 [submodule "riatzukiza/desktop"]
 	path = orgs/riatzukiza/desktop
 	url = git@github.com:riatzukiza/desktop.git
+	branch = device/stealth
 [submodule "riatzukiza/book-of-shadows"]
 	path = orgs/riatzukiza/book-of-shadows
 	url = git@github.com:riatzukiza/book-of-shadows.git
+	branch = device/stealth
 [submodule "riatzukiza/goblin-lessons"]
 	path = orgs/riatzukiza/goblin-lessons
 	url = git@github.com:riatzukiza/goblin-lessons.git
+	branch = device/stealth
 [submodule "riatzukiza/stt"]
 	path = orgs/riatzukiza/stt
 	url = git@github.com:riatzukiza/stt.git
+	branch = device/stealth
 [submodule "sst/opencode"]
 	path = orgs/sst/opencode
 	url = git@github.com:riatzukiza/opencode.git
+	branch = device/stealth
 [submodule "orgs/open-hax/codex"]
 	path = orgs/open-hax/codex
 	url = git@github.com:open-hax/codex.git
+	branch = device/stealth
 [submodule "orgs/kcrommett/oc-manager"]
 	path = orgs/kcrommett/oc-manager
 	url = git@github.com:kcrommett/oc-manager.git
+	branch = device/stealth
 [submodule ".emacs.d"]
 	path = .emacs.d
 	url = https://github.com/syl20bnr/spacemacs
-	branch = develop
+	branch = device/stealth
 [submodule "orgs/moazbuilds"]
 	path = orgs/moazbuilds
 	url = https://github.com/moazbuilds/CodeMachine-CLI
+	branch = device/stealth
