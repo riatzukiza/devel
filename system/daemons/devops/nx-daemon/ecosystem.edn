@@ -1,0 +1,27 @@
+{
+  :apps [
+    {
+      :name "nx-daemon"
+      :script "node"
+      :args ["node_modules/nx/src/daemon/server/start.js"]
+      :cwd "."
+      :exec_mode "fork"
+      :instances 1
+      :autorestart true
+      :restart_delay 5000
+      :kill_timeout 10000
+      :max_memory_restart "512M"
+      :env {
+        :PM2_PROCESS_NAME "nx-daemon"
+        :NODE_ENV "production"
+        :NX_DAEMON "true"
+      }
+      :watch false
+      :ignore_watch [
+        "node_modules"
+        "logs"
+        ".git"
+      ]
+    }
+  ]
+}
