@@ -3,6 +3,7 @@ import { dirname, join } from 'node:path';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { setTimeout } from 'node:timers/promises';
+import ioPkg from '@pm2/io';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CACHE_DIR = join(__dirname, '..', '.cache');
@@ -16,6 +17,26 @@ const log = (level, message, ...args) => {
   const prefix = `[serena-updater] [${level.toUpperCase()}]`;
   console.log(prefix, message, ...args);
 };
+
+const pm2Module = ioPkg?.default ?? ioPkg;
+const pm2Action = typeof pm2Module?.action === 'function' ? pm2Module.action.bind(pm2Module) : null;
+
+const registerPm2Action = (name, handler) => {
+  if (!pm2Action) {
+    return;
+  }
+
+  pm2Action(name, async (reply) => {
+    try {
+      const payload = await handler();
+      reply({ success: true, ...(payload ?? {}) });
+    } catch (error) {
+      reply({ success: false, error: error?.message ?? String(error) });
+    }
+  });
+};
+
+let sharedState = {};
 
 async function ensureCacheDir() {
   await mkdir(CACHE_DIR, { recursive: true });
@@ -98,16 +119,31 @@ async function checkForUpdate(state) {
   }
 }
 
+registerPm2Action('check-now', async () => {
+  sharedState = await checkForUpdate(sharedState);
+  return {
+    version: sharedState.version ?? null,
+    lastUpdated: sharedState.lastUpdated ?? null,
+  };
+});
+
+registerPm2Action('restart-serena', () => {
+  restartSerena();
+  return { version: sharedState.version ?? null };
+});
+
 async function main() {
   let state = await readState();
+  sharedState = state;
 
   if (process.env.SERENA_UPDATE_RUN_ONCE === 'true') {
-    await checkForUpdate(state);
+    sharedState = await checkForUpdate(sharedState);
     return;
   }
 
   while (true) {
     state = await checkForUpdate(state);
+    sharedState = state;
     await setTimeout(POLL_INTERVAL_MS);
   }
 }

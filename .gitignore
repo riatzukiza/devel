@@ -1,6 +1,8 @@
 # Development workspace .gitignore
 
 # Cache and temporary files
+index.jsonl
+.octavia/
 .cache/
 *.tmp
 *.temp

@@ -54,6 +54,26 @@
 	path = orgs/open-hax/codex
 	url = git@github.com:open-hax/codex.git
 	branch = device/stealth
+[submodule "orgs/open-hax/opencode-client"]
+	path = orgs/open-hax/opencode-client
+	url = git@github.com:open-hax/opencode-client.git
+	branch = device/stealth
+[submodule "orgs/open-hax/opencode-interface-plugin"]
+	path = orgs/open-hax/opencode-interface-plugin
+	url = git@github.com:open-hax/opencode-interface-plugin.git
+	branch = device/stealth
+[submodule "orgs/open-hax/openhax"]
+	path = orgs/open-hax/openhax
+	url = git@github.com:open-hax/openhax.git
+	branch = device/stealth
+[submodule "orgs/open-hax/opencode-hub"]
+	path = orgs/open-hax/opencode-hub
+	url = git@github.com:open-hax/opencode-hub.git
+	branch = device/stealth
+[submodule "orgs/open-hax/opencode-unified"]
+	path = orgs/open-hax/opencode-unified
+	url = git@github.com:open-hax/opencode-unified.git
+	branch = device/stealth
 [submodule "orgs/kcrommett/oc-manager"]
 	path = orgs/kcrommett/oc-manager
 	url = git@github.com:kcrommett/oc-manager.git

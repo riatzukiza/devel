@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "pnpm run test:octavia",
+    "test:octavia": "pnpm run build:octavia && vitest run --config vitest.config.ts --threads false",
+    "test:octavia:coverage": "pnpm run build:octavia && c8 vitest run --config vitest.config.ts --threads false",
+    "stryker:octavia": "pnpm run build:octavia && stryker run stryker.octavia.conf.json",
+    "build": "pnpm run build:octavia",
+    "build:octavia": "pnpm --filter @promethean-os/lmdb-cache build && tsc -p tsconfig.octavia.json",
     "giga:watch": "bun run src/giga/giga-watch.ts",
     "giga:commit": "bun run src/giga/commit-propagator.ts",
     "pantheon:msg": "bun run src/giga/pantheon.ts",
@@ -27,12 +32,15 @@
     "lint:md": "markdownlint-cli2",
     "lint:md:notes": "markdownlint-cli2 docs/notes/**/*.md",
     "hooks:install": "bash ./bin/install-pre-push-hooks.sh",
-    "postinstall": "pnpm run hooks:install || true",
+    "postinstall": "pnpm run hooks:install || true; pnpm run build:octavia || true",
     "lint:md:agent": "node scripts/mdlint-agent.mjs --batch 50 --max-iter 8",
     "lint:md:agent:sdk": "node scripts/mdlint-agentsdk.mjs --batch 50 --max-iter 8",
     "ecosystem:generate": "pnpm --dir orgs/riatzukiza/promethean --filter @promethean-os/ecosystem-dsl run generate -- --dir ../../../../../system/daemons --output ../../../../../ecosystem.config.enhanced.mjs",
     "ecosystem:watch": "pnpm --dir orgs/riatzukiza/promethean --filter @promethean-os/ecosystem-dsl run generate:watch -- --dir ../../../../../system/daemons --output ../../../../../ecosystem.config.enhanced.mjs",
     "ecosystem:validate": "pnpm --dir orgs/riatzukiza/promethean --filter @promethean-os/ecosystem-dsl run validate -- --dir ../../../../../system/daemons"
+  },
+  "bin": {
+    "octavia": "dist/octavia/index.js"
   },
   "keywords": [],
   "author": "",
@@ -40,6 +48,7 @@
   "packageManager": "pnpm@10.14.0",
   "dependencies": {
     "@octokit/rest": "^22.0.1",
+    "@promethean-os/lmdb-cache": "workspace:*",
     "commander": "^14.0.2",
     "redis": "^5.9.0"
   },
@@ -50,8 +59,14 @@
     "@nx/js": "^20.0.0",
     "nx": "^20.0.0",
     "@openai/agents": "^0.2.1",
+    "@types/node": "^20.11.30",
     "openai": "^4.77.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.6.3",
+    "vitest": "^0.34.5",
     "zod": "^3.23.8",
+    "c8": "^8.0.0",
+    "stryker": "^0.35.1",
     "@promethean-os/ecosystem-dsl": "file:orgs/riatzukiza/promethean/packages/ecosystem-dsl"
   }
 }
