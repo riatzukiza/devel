@@ -90,3 +90,7 @@
 	path = orgs/open-hax/plugins/codex
 	url = git@github.com:open-hax/codex.git
 	branch = device/stealth
+[submodule "orgs/riatzukiza/openhax"]
+	path = orgs/riatzukiza/openhax
+	url = git@github.com:riatzukiza/openhax.git
+	branch = device/stealth
