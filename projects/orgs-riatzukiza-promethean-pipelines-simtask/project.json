@@ -1,0 +1,27 @@
+{
+  "name": "orgs-riatzukiza-promethean-pipelines-simtask",
+  "projectType": "application",
+  "tags": [
+    "submodule"
+  ],
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/riatzukiza/promethean/pipelines/simtask\" test"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/riatzukiza/promethean/pipelines/simtask\" build"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/riatzukiza/promethean/pipelines/simtask\" typecheck"
+      }
+    }
+  }
+}
