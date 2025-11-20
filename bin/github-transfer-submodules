@@ -1,0 +1,7 @@
+#!/bin/bash
+TARGET_ORG=$1
+
+git config --file .gitmodules --get-regexp url | awk '{print $2}' | while read url; do
+    repo_path=$(echo "$url" | sed -e 's/^git@github.com://' -e 's/^https:\/\/github.com\///' -e 's/\.git$//')
+    gh transfer "$repo_path" "$TARGET_ORG"
+done
