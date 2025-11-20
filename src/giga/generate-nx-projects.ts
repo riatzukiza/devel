@@ -4,13 +4,18 @@
   and proxy to the submodule's native test/build via run-submodule.ts.
 
   Usage:
-    bun run src/giga/generate-nx-projects.ts
-*/
+    bun run src/giga/generate-nx-projects.ts [--force]
+
+  Flags:
+    --force  Overwrite existing projects/project.json files instead of skipping them
+ */
+
 
 import { execSync } from "child_process";
-import { mkdir, writeFile } from "fs/promises";
+import { mkdir, stat, writeFile } from "fs/promises";
 
 const ROOT = process.cwd();
+const forceOverwrite = process.argv.slice(2).includes("--force");
 
 async function main(): Promise<void> {
   const subs = await readSubmodules();
@@ -20,8 +25,10 @@ async function main(): Promise<void> {
   }
   await mkdir(`${ROOT}/projects`, { recursive: true });
 
+  let writes = 0;
+
   // Root utility project for watcher
-  await ensureProject(
+  if (await ensureProject(
     `${ROOT}/projects/giga`,
     {
       name: "giga",
@@ -35,12 +42,15 @@ async function main(): Promise<void> {
           }
         }
       }
-    }
-  );
+    },
+    forceOverwrite
+  )) {
+    writes += 1;
+  }
 
   for (const p of subs) {
     const name = safeName(p);
-    await ensureProject(
+    if (await ensureProject(
       `${ROOT}/projects/${name}`,
       {
         name,
@@ -66,16 +76,36 @@ async function main(): Promise<void> {
             }
           }
         }
-      }
-    );
+      },
+      forceOverwrite
+    )) {
+      writes += 1;
+    }
   }
-  console.log(`Generated ${subs.length + 1} Nx project(s) under ./projects/`);
+
+  const note = forceOverwrite ? " (force overwrite enabled)" : "";
+  console.log(`Wrote ${writes} Nx project file(s) under ./projects/${note}`);
 }
 
-async function ensureProject(dir: string, config: any): Promise<void> {
+async function ensureProject(dir: string, config: any, overwrite: boolean): Promise<boolean> {
   await mkdir(dir, { recursive: true });
+  const filePath = `${dir}/project.json`;
+  const exists = await fileExists(filePath);
+  if (exists && !overwrite) {
+    return false;
+  }
   const json = JSON.stringify(config, null, 2) + "\n";
-  await writeFile(`${dir}/project.json`, json, { encoding: "utf8" });
+  await writeFile(filePath, json, { encoding: "utf8" });
+  return true;
+}
+
+async function fileExists(path: string): Promise<boolean> {
+  try {
+    await stat(path);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 async function readSubmodules(): Promise<string[]> {
