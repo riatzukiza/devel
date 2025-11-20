@@ -89,4 +89,4 @@
 [submodule "orgs/open-hax/plugins/codex"]
 	path = orgs/open-hax/plugins/codex
 	url = git@github.com:open-hax/codex.git
-	branch = docs/release-process-and-issues-triage
+	branch = device/stealth
