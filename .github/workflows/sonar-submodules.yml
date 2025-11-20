@@ -1,0 +1,74 @@
+name: SonarCloud Submodules
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * 1'
+
+env:
+  SONAR_HOST_URL: https://sonarcloud.io
+  SONAR_ORG: octave-commons
+  SONAR_NAMESPACE: octave-commons
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Compute submodule matrix
+        id: matrix
+        run: |
+          node scripts/sonar-bootstrap.mjs matrix --namespace "${SONAR_NAMESPACE}" --recursive true > matrix.json
+          echo "matrix=$(cat matrix.json)" >> "$GITHUB_OUTPUT"
+      - name: Ensure Sonar projects exist
+        if: ${{ secrets.SONAR_TOKEN != '' }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          node scripts/sonar-bootstrap.mjs ensure --namespace "${SONAR_NAMESPACE}" --host "${SONAR_HOST_URL}" --org "${SONAR_ORG}" --recursive true
+
+  sonar:
+    needs: prepare
+    runs-on: ubuntu-latest
+    if: ${{ secrets.SONAR_TOKEN != '' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Cache Sonar cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar-${{ hashFiles('**/pnpm-lock.yaml', '**/package-lock.json', '**/yarn.lock', '**/bun.lock') }}
+          restore-keys: ${{ runner.os }}-sonar-
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=${{ matrix.projectKey }}
+            -Dsonar.projectName=${{ matrix.projectName }}
+            -Dsonar.organization=${{ env.SONAR_ORG }}
+            -Dsonar.host.url=${{ env.SONAR_HOST_URL }}
+            -Dsonar.projectBaseDir=${{ matrix.path }}
+            -Dsonar.sources=.
+            -Dsonar.exclusions=**/node_modules/**,**/.git/**,**/.worktrees/**,**/dist/**,**/build/**,**/.next/**,**/.cache/**,**/coverage/**,**/target/**,**/.scannerwork/**
