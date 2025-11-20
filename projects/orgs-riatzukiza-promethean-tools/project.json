@@ -1,0 +1,27 @@
+{
+  "name": "orgs-riatzukiza-promethean-tools",
+  "projectType": "application",
+  "tags": [
+    "submodule"
+  ],
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/riatzukiza/promethean/tools\" test"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/riatzukiza/promethean/tools\" build"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/riatzukiza/promethean/tools\" typecheck"
+      }
+    }
+  }
+}
