@@ -104,6 +104,15 @@ pnpm typecheck
 pnpm build
 ```
 
+### Bin Utilities
+
+- `bin/install-pre-push-hooks.sh`: Installs `.hooks/pre-push-typecheck.sh` into the root repo and every submodule, adding `.nx/` to git excludes.
+- `bin/setup-branch-protection [--dry-run]`: Applies baseline GitHub branch protection to every GitHub-backed submodule default branch (set `ALSO_DEV=true` to also guard `dev`; requires `gh` admin access).
+- `bin/fix-submodules <org>`: Converts nested git directories into proper submodules under the given org, creating GitHub remotes when missing and committing the replacements.
+- `bin/github-transfer-submodules <org>`: Transfers each `.gitmodules` repo to the target org via `gh transfer`.
+- `bin/init-pnpm-submodules`: Initializes pnpm workspace packages that lack git repos, creates private GitHub repos under `GITHUB_OWNER` (default `octave-commons`), pushes `main`, and adds them back as submodules.
+- `bin/opencode-command`: Wrapper for `bin/create-command` with the required `NODE_PATH` set for NBB.
+
 ### Submodule Workflows
 
 ```bash
