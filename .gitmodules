@@ -94,3 +94,243 @@
 	path = orgs/riatzukiza/openhax
 	url = git@github.com:riatzukiza/openhax.git
 	branch = device/stealth
+[submodule "orgs/open-hax/agent-actors"]
+	path = orgs/open-hax/agent-actors
+	url = git@github.com:open-hax/agent-actors.git
+[submodule "orgs/open-hax/clients"]
+	path = orgs/open-hax/clients
+	url = git@github.com:open-hax/clients.git
+[submodule "orgs/open-hax/workbench"]
+	path = orgs/open-hax/workbench
+	url = git@github.com:open-hax/workbench.git
+[submodule "orgs/octave-commons/agent-os-protocol"]
+	path = orgs/octave-commons/agent-os-protocol
+	url = git@github.com:octave-commons/agent-os-protocol.git
+[submodule "orgs/octave-commons/ai-learning"]
+	path = orgs/octave-commons/ai-learning
+	url = git@github.com:octave-commons/ai-learning.git
+[submodule "orgs/octave-commons/apply-patch"]
+	path = orgs/octave-commons/apply-patch
+	url = git@github.com:octave-commons/apply-patch.git
+[submodule "orgs/octave-commons/auth-service"]
+	path = orgs/octave-commons/auth-service
+	url = git@github.com:octave-commons/auth-service.git
+[submodule "orgs/octave-commons/autocommit"]
+	path = orgs/octave-commons/autocommit
+	url = git@github.com:octave-commons/autocommit.git
+[submodule "orgs/octave-commons/benchmark"]
+	path = orgs/octave-commons/benchmark
+	url = git@github.com:octave-commons/benchmark.git
+[submodule "orgs/octave-commons/boardrev"]
+	path = orgs/octave-commons/boardrev
+	url = git@github.com:octave-commons/boardrev.git
+[submodule "orgs/octave-commons/build-monitoring"]
+	path = orgs/octave-commons/build-monitoring
+	url = git@github.com:octave-commons/build-monitoring.git
+[submodule "orgs/octave-commons/buildfix"]
+	path = orgs/octave-commons/buildfix
+	url = git@github.com:octave-commons/buildfix.git
+[submodule "orgs/octave-commons/cli"]
+	path = orgs/octave-commons/cli
+	url = git@github.com:octave-commons/cli.git
+[submodule "orgs/octave-commons/clj-hacks-tools"]
+	path = orgs/octave-commons/clj-hacks-tools
+	url = git@github.com:octave-commons/clj-hacks-tools.git
+[submodule "orgs/octave-commons/codemods"]
+	path = orgs/octave-commons/codemods
+	url = git@github.com:octave-commons/codemods.git
+[submodule "orgs/octave-commons/codepack"]
+	path = orgs/octave-commons/codepack
+	url = git@github.com:octave-commons/codepack.git
+[submodule "orgs/octave-commons/compiler"]
+	path = orgs/octave-commons/compiler
+	url = git@github.com:octave-commons/compiler.git
+[submodule "orgs/octave-commons/compliance-monitor"]
+	path = orgs/octave-commons/compliance-monitor
+	url = git@github.com:octave-commons/compliance-monitor.git
+[submodule "orgs/octave-commons/cookbookflow"]
+	path = orgs/octave-commons/cookbookflow
+	url = git@github.com:octave-commons/cookbookflow.git
+[submodule "orgs/octave-commons/core"]
+	path = orgs/octave-commons/core
+	url = git@github.com:octave-commons/core.git
+[submodule "orgs/octave-commons/discord"]
+	path = orgs/octave-commons/discord
+	url = git@github.com:octave-commons/discord.git
+[submodule "orgs/octave-commons/dlq"]
+	path = orgs/octave-commons/dlq
+	url = git@github.com:octave-commons/dlq.git
+[submodule "orgs/octave-commons/docops"]
+	path = orgs/octave-commons/docops
+	url = git@github.com:octave-commons/docops.git
+[submodule "orgs/octave-commons/ds"]
+	path = orgs/octave-commons/ds
+	url = git@github.com:octave-commons/ds.git
+[submodule "orgs/octave-commons/ecosystem-dsl"]
+	path = orgs/octave-commons/ecosystem-dsl
+	url = git@github.com:octave-commons/ecosystem-dsl.git
+[submodule "orgs/octave-commons/effects"]
+	path = orgs/octave-commons/effects
+	url = git@github.com:octave-commons/effects.git
+[submodule "orgs/octave-commons/eidolon-field"]
+	path = orgs/octave-commons/eidolon-field
+	url = git@github.com:octave-commons/eidolon-field.git
+[submodule "orgs/octave-commons/embedding"]
+	path = orgs/octave-commons/embedding
+	url = git@github.com:octave-commons/embedding.git
+[submodule "orgs/octave-commons/enso-agent-communication"]
+	path = orgs/octave-commons/enso-agent-communication
+	url = git@github.com:octave-commons/enso-agent-communication.git
+[submodule "orgs/octave-commons/file-indexer"]
+	path = orgs/octave-commons/file-indexer
+	url = git@github.com:octave-commons/file-indexer.git
+[submodule "orgs/octave-commons/file-indexer-service"]
+	path = orgs/octave-commons/file-indexer-service
+	url = git@github.com:octave-commons/file-indexer-service.git
+[submodule "orgs/octave-commons/frontend"]
+	path = orgs/octave-commons/frontend
+	url = git@github.com:octave-commons/frontend.git
+[submodule "orgs/octave-commons/frontend-service"]
+	path = orgs/octave-commons/frontend-service
+	url = git@github.com:octave-commons/frontend-service.git
+[submodule "orgs/octave-commons/fs"]
+	path = orgs/octave-commons/fs
+	url = git@github.com:octave-commons/fs.git
+[submodule "orgs/octave-commons/fsm"]
+	path = orgs/octave-commons/fsm
+	url = git@github.com:octave-commons/fsm.git
+[submodule "orgs/octave-commons/github-sync"]
+	path = orgs/octave-commons/github-sync
+	url = git@github.com:octave-commons/github-sync.git
+[submodule "orgs/octave-commons/helm"]
+	path = orgs/octave-commons/helm
+	url = git@github.com:octave-commons/helm.git
+[submodule "orgs/octave-commons/http"]
+	path = orgs/octave-commons/http
+	url = git@github.com:octave-commons/http.git
+[submodule "orgs/octave-commons/kanban"]
+	path = orgs/octave-commons/kanban
+	url = git@github.com:octave-commons/kanban.git
+[submodule "orgs/octave-commons/knowledge-graph"]
+	path = orgs/octave-commons/knowledge-graph
+	url = git@github.com:octave-commons/knowledge-graph.git
+[submodule "orgs/octave-commons/level-cache"]
+	path = orgs/octave-commons/level-cache
+	url = git@github.com:octave-commons/level-cache.git
+[submodule "orgs/octave-commons/lint-taskgen"]
+	path = orgs/octave-commons/lint-taskgen
+	url = git@github.com:octave-commons/lint-taskgen.git
+[submodule "orgs/octave-commons/lmdb-cache"]
+	path = orgs/octave-commons/lmdb-cache
+	url = git@github.com:octave-commons/lmdb-cache.git
+[submodule "orgs/octave-commons/logger"]
+	path = orgs/octave-commons/logger
+	url = git@github.com:octave-commons/logger.git
+[submodule "orgs/octave-commons/markdown"]
+	path = orgs/octave-commons/markdown
+	url = git@github.com:octave-commons/markdown.git
+[submodule "orgs/octave-commons/math-utils"]
+	path = orgs/octave-commons/math-utils
+	url = git@github.com:octave-commons/math-utils.git
+[submodule "orgs/octave-commons/mcp"]
+	path = orgs/octave-commons/mcp
+	url = git@github.com:octave-commons/mcp.git
+[submodule "orgs/octave-commons/mcp-dev-ui-frontend"]
+	path = orgs/octave-commons/mcp-dev-ui-frontend
+	url = git@github.com:octave-commons/mcp-dev-ui-frontend.git
+[submodule "orgs/octave-commons/mcp-express-server"]
+	path = orgs/octave-commons/mcp-express-server
+	url = git@github.com:octave-commons/mcp-express-server.git
+[submodule "orgs/octave-commons/mcp-kanban-bridge"]
+	path = orgs/octave-commons/mcp-kanban-bridge
+	url = git@github.com:octave-commons/mcp-kanban-bridge.git
+[submodule "orgs/octave-commons/messaging"]
+	path = orgs/octave-commons/messaging
+	url = git@github.com:octave-commons/messaging.git
+[submodule "orgs/octave-commons/migrations"]
+	path = orgs/octave-commons/migrations
+	url = git@github.com:octave-commons/migrations.git
+[submodule "orgs/octave-commons/naming"]
+	path = orgs/octave-commons/naming
+	url = git@github.com:octave-commons/naming.git
+[submodule "orgs/octave-commons/obsidian-export"]
+	path = orgs/octave-commons/obsidian-export
+	url = git@github.com:octave-commons/obsidian-export.git
+[submodule "orgs/octave-commons/omni-tools"]
+	path = orgs/octave-commons/omni-tools
+	url = git@github.com:octave-commons/omni-tools.git
+[submodule "orgs/octave-commons/openai-server"]
+	path = orgs/octave-commons/openai-server
+	url = git@github.com:octave-commons/openai-server.git
+[submodule "orgs/octave-commons/pantheon"]
+	path = orgs/octave-commons/pantheon
+	url = git@github.com:octave-commons/pantheon.git
+[submodule "orgs/octave-commons/persistence"]
+	path = orgs/octave-commons/persistence
+	url = git@github.com:octave-commons/persistence.git
+[submodule "orgs/octave-commons/piper"]
+	path = orgs/octave-commons/piper
+	url = git@github.com:octave-commons/piper.git
+[submodule "orgs/octave-commons/platform"]
+	path = orgs/octave-commons/platform
+	url = git@github.com:octave-commons/platform.git
+[submodule "orgs/octave-commons/plugin-hooks"]
+	path = orgs/octave-commons/plugin-hooks
+	url = git@github.com:octave-commons/plugin-hooks.git
+[submodule "orgs/octave-commons/promethean"]
+	path = orgs/octave-commons/promethean
+	url = git@github.com:octave-commons/promethean.git
+[submodule "orgs/octave-commons/providers"]
+	path = orgs/octave-commons/providers
+	url = git@github.com:octave-commons/providers.git
+[submodule "orgs/octave-commons/readmeflow"]
+	path = orgs/octave-commons/readmeflow
+	url = git@github.com:octave-commons/readmeflow.git
+[submodule "orgs/octave-commons/report-forge"]
+	path = orgs/octave-commons/report-forge
+	url = git@github.com:octave-commons/report-forge.git
+[submodule "orgs/octave-commons/security"]
+	path = orgs/octave-commons/security
+	url = git@github.com:octave-commons/security.git
+[submodule "orgs/octave-commons/semverguard"]
+	path = orgs/octave-commons/semverguard
+	url = git@github.com:octave-commons/semverguard.git
+[submodule "orgs/octave-commons/sentinel"]
+	path = orgs/octave-commons/sentinel
+	url = git@github.com:octave-commons/sentinel.git
+[submodule "orgs/octave-commons/shadow-conf"]
+	path = orgs/octave-commons/shadow-conf
+	url = git@github.com:octave-commons/shadow-conf.git
+[submodule "orgs/octave-commons/simtask"]
+	path = orgs/octave-commons/simtask
+	url = git@github.com:octave-commons/simtask.git
+[submodule "orgs/octave-commons/snapshots"]
+	path = orgs/octave-commons/snapshots
+	url = git@github.com:octave-commons/snapshots.git
+[submodule "orgs/octave-commons/sonarflow"]
+	path = orgs/octave-commons/sonarflow
+	url = git@github.com:octave-commons/sonarflow.git
+[submodule "orgs/octave-commons/symdocs"]
+	path = orgs/octave-commons/symdocs
+	url = git@github.com:octave-commons/symdocs.git
+[submodule "orgs/octave-commons/test-classifier"]
+	path = orgs/octave-commons/test-classifier
+	url = git@github.com:octave-commons/test-classifier.git
+[submodule "orgs/octave-commons/test-utils"]
+	path = orgs/octave-commons/test-utils
+	url = git@github.com:octave-commons/test-utils.git
+[submodule "orgs/octave-commons/testgap"]
+	path = orgs/octave-commons/testgap
+	url = git@github.com:octave-commons/testgap.git
+[submodule "orgs/octave-commons/tools"]
+	path = orgs/octave-commons/tools
+	url = git@github.com:octave-commons/tools.git
+[submodule "orgs/octave-commons/trello"]
+	path = orgs/octave-commons/trello
+	url = git@github.com:octave-commons/trello.git
+[submodule "orgs/octave-commons/utils"]
+	path = orgs/octave-commons/utils
+	url = git@github.com:octave-commons/utils.git
+[submodule "orgs/octave-commons/worker"]
+	path = orgs/octave-commons/worker
+	url = git@github.com:octave-commons/worker.git
