@@ -1,0 +1,31 @@
+name: Security - Semgrep
+
+on:
+  pull_request:
+    branches: [release]
+
+permissions:
+  contents: read
+  security-events: write
+
+concurrency:
+  group: security-semgrep-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  semgrep-scan:
+    if: github.event.pull_request.base.ref == 'release' && (startsWith(github.head_ref, 'dev/') || github.head_ref == 'main')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Semgrep
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: >-
+            p/owasp-top-ten
+        env:
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
