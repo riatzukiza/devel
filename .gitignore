@@ -143,3 +143,5 @@ elgrep-data.el
 docs.github/**/.cache/
 
 workspaces/
+orgs/private/
+orgs/snorkel-ai/
