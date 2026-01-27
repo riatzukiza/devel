@@ -120,7 +120,7 @@ run_nx_affected_typecheck() {
     return 0
   fi
 
-  IFS=$'\n' read -r -d '' -a affected_projects <<<"$affected_projects_raw"$'\0'
+  mapfile -t affected_projects <<<"$affected_projects_raw"
   for project in "${affected_projects[@]}"; do
     project="${project//[[:space:]]/}"
     if [[ -z "$project" ]]; then
