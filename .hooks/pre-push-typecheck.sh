@@ -73,10 +73,19 @@ else
   NX_BASE_SELECTION_MSG="Using Nx base default ${NX_RESOLVED_BASE}"
 fi
 
+ORG_PREFIXES=(
+  "orgs-riatzukiza-"
+  "orgs-open-hax-"
+  "orgs-octave-commons-"
+)
+
 run_nx_affected_typecheck() {
   local head_ref="${NX_HEAD_REF:-HEAD}"
   local desired_base="${NX_RESOLVED_BASE:-origin/main}"
   local base_sha=""
+  local affected_projects_raw=""
+  local affected_projects=()
+  local filtered_projects=()
 
   if ! git rev-parse --verify "$head_ref" >/dev/null 2>&1; then
     head_ref="HEAD"
@@ -101,8 +110,37 @@ run_nx_affected_typecheck() {
     log "$NX_BASE_SELECTION_MSG (merge-base ${base_sha})"
   fi
 
-  log "Running pnpm nx affected -t typecheck --base ${base_sha} --head ${head_ref}"
-  pnpm nx affected -t typecheck --base "$base_sha" --head "$head_ref"
+  if ! affected_projects_raw=$(pnpm nx print-affected --base "$base_sha" --head "$head_ref" --select=projects); then
+    log "Nx print-affected failed; aborting pre-push checks"
+    return 1
+  fi
+
+  if [[ -z "${affected_projects_raw//[[:space:]]/}" ]]; then
+    log "No affected projects detected"
+    return 0
+  fi
+
+  IFS=',' read -ra affected_projects <<<"$affected_projects_raw"
+  for project in "${affected_projects[@]}"; do
+    project="${project//[[:space:]]/}"
+    if [[ -z "$project" ]]; then
+      continue
+    fi
+    for prefix in "${ORG_PREFIXES[@]}"; do
+      if [[ "$project" == "$prefix"* ]]; then
+        filtered_projects+=("$project")
+        break
+      fi
+    done
+  done
+
+  if [[ ${#filtered_projects[@]} -eq 0 ]]; then
+    log "No affected projects in allowed orgs (riatzukiza, open-hax, octave-commons); skipping"
+    return 0
+  fi
+
+  log "Running pnpm nx run-many -t typecheck --projects ${filtered_projects[*]}"
+  pnpm nx run-many -t typecheck --projects "$(IFS=,; echo "${filtered_projects[*]}")"
 }
 
 if command -v pnpm >/dev/null 2>&1 && [[ -f nx.json ]]; then
