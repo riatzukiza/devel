@@ -74,27 +74,43 @@
 	path = orgs/open-hax/electron-workbench
 	url = git@github.com:open-hax/electron-workbench.git
 	branch = device/stealth
+[submodule "orgs/open-hax/agent-actors"]
+	path = orgs/open-hax/agent-actors
+	url = git@github.com:open-hax/agent-actors.git
+	branch = device/stealth
+[submodule "orgs/open-hax/clients"]
+	path = orgs/open-hax/clients
+	url = git@github.com:open-hax/clients.git
+	branch = device/stealth
+[submodule "orgs/open-hax/workbench"]
+	path = orgs/open-hax/workbench
+	url = git@github.com:open-hax/workbench.git
+	branch = device/stealth
+[submodule "orgs/open-hax/plugins/codex"]
+	path = orgs/open-hax/plugins/codex
+	url = git@github.com:open-hax/codex.git
+	branch = device/stealth
+[submodule "orgs/open-hax/cljs-plugin-template"]
+	path = orgs/open-hax/cljs-plugin-template
+	url = git@github.com:open-hax/cljs-plugin-template.git
+	branch = device/stealth
+[submodule "orgs/octave-commons/promethean-agent-system"]
+	path = orgs/octave-commons/promethean-agent-system
+	url = git@github.com:octave-commons/promethean-agent-system.git
+	branch = device/stealth
+[submodule "orgs/riatzukiza/ollama-benchmarks"]
+	path = orgs/riatzukiza/ollama-benchmarks
+	url = git@github.com:riatzukiza/ollama-benchmarks.git
+	branch = device/stealth
 [submodule "orgs/kcrommett/oc-manager"]
 	path = orgs/kcrommett/oc-manager
 	url = git@github.com:kcrommett/oc-manager.git
 	branch = device/stealth
 [submodule ".emacs.d"]
 	path = .emacs.d
-	url = https://github.com/syl20bnr/spacemacs
+	url = git@github.com:syl20bnr/spacemacs.git
 	branch = device/stealth
 [submodule "orgs/moazbuilds"]
 	path = orgs/moazbuilds
-	url = https://github.com/moazbuilds/CodeMachine-CLI
-	branch = device/stealth
-[submodule "orgs/riatzukiza/ollama-benchmarks"]
-	path = orgs/riatzukiza/ollama-benchmarks
-	url = https://github.com/riatzukiza/ollama-benchmarks.git
-	branch = device/stealth
-[submodule "orgs/octave-commons/promethean-agent-system"]
-	path = orgs/octave-commons/promethean-agent-system
-	url = https://github.com/octave-commons/promethean-agent-system.git
-	branch = device/stealth
-[submodule "orgs/open-hax/cljs-plugin-template"]
-	path = orgs/open-hax/cljs-plugin-template
-	url = https://github.com/open-hax/cljs-plugin-template.git
+	url = git@github.com:moazbuilds/CodeMachine-CLI.git
 	branch = device/stealth
