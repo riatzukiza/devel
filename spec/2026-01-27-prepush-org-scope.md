@@ -17,7 +17,7 @@ Limit Nx affected typecheck in the pre-push hook to projects under the riatzukiz
 
 ## Plan
 ### Phase 1: Scope affected projects
-- Use `nx print-affected` to list affected projects and filter by allowed org prefixes.
+- Use `nx show projects --affected` to list affected projects and filter by allowed org prefixes.
 - Run `nx run-many -t typecheck` on the filtered project list.
 
 ### Phase 2: Verify behavior
@@ -31,3 +31,4 @@ Limit Nx affected typecheck in the pre-push hook to projects under the riatzukiz
 ## Changelog
 - 2026-01-27: Spec created.
 - 2026-01-27: Implemented org-scoped affected typecheck filtering.
+- 2026-01-27: Switched to `nx show projects --affected` for Nx 19+.
