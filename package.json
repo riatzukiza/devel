@@ -67,6 +67,6 @@
     "zod": "^3.23.8",
     "c8": "^8.0.0",
     "stryker": "^0.35.1",
-    "@promethean-os/ecosystem-dsl": "file:orgs/riatzukiza/promethean/packages/ecosystem-dsl"
+    "@promethean-os/ecosystem-dsl": "file:orgs/riatzukiza/promethean/cli/ecosystem-dsl"
   }
 }
