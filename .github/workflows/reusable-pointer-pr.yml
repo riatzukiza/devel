@@ -1,0 +1,144 @@
+name: reusable-pointer-pr
+
+on:
+  workflow_call:
+    inputs:
+      parent-repo:
+        description: "owner/repo of parent"
+        required: true
+        type: string
+      parent-branch:
+        description: "Branch in parent to base the PR on"
+        required: false
+        type: string
+        default: release
+      submodule-path:
+        description: "Path to submodule in parent repo"
+        required: true
+        type: string
+      allow-auto-merge:
+        description: "Enable auto-merge when checks pass"
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-pointer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Compute SHAs
+        id: shas
+        run: |
+          echo "child_sha=${GITHUB_SHA}" >> $GITHUB_OUTPUT
+
+      - name: Checkout parent repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.parent-repo }}
+          ref: ${{ inputs.parent-branch }}
+          path: parent
+          fetch-depth: 0
+          submodules: recursive
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Determine current pointer
+        id: pointer
+        run: |
+          set -e
+          path="${{ inputs.submodule-path }}"
+          if ! git -C parent ls-tree HEAD "$path" >/dev/null 2>&1; then
+            echo "Submodule path $path not found in parent" >&2
+            exit 1
+          fi
+          old_sha=$(git -C parent ls-tree HEAD "$path" | awk '{print $3}')
+          echo "old_sha=$old_sha" >> $GITHUB_OUTPUT
+
+      - name: Update submodule to child SHA
+        id: update
+        run: |
+          set -e
+          path="${{ inputs.submodule-path }}"
+          new_sha="${GITHUB_SHA}"
+          old_sha="${{ steps.pointer.outputs.old_sha }}"
+          if [ "$old_sha" = "$new_sha" ]; then
+            echo "No pointer change (old==new)" >&2
+            exit 0
+          fi
+          git -C parent submodule update --init --recursive "$path"
+          git -C parent/$path fetch origin "$new_sha"
+          git -C parent/$path checkout "$new_sha"
+          git -C parent add "$path"
+          echo "updated=1" >> $GITHUB_OUTPUT
+
+      - name: Prepare branch
+        if: steps.update.outputs.updated == '1'
+        id: branch
+        run: |
+          set -e
+          path_sanitized=$(echo "${{ inputs.submodule-path }}" | tr '/' '-')
+          branch="bot/update-${path_sanitized}-${GITHUB_RUN_ID}"
+          git -C parent checkout -b "$branch"
+          echo "name=$branch" >> $GITHUB_OUTPUT
+
+      - name: Commit pointer bump
+        if: steps.update.outputs.updated == '1'
+        run: |
+          set -e
+          path="${{ inputs.submodule-path }}"
+          old_sha="${{ steps.pointer.outputs.old_sha }}"
+          new_sha="${GITHUB_SHA}"
+          git -C parent commit -m "chore: bump ${path} to ${new_sha}" || true
+
+      - name: Generate changelog summary
+        if: steps.update.outputs.updated == '1'
+        id: summary
+        run: |
+          set -e
+          path="${{ inputs.submodule-path }}"
+          old_sha="${{ steps.pointer.outputs.old_sha }}"
+          new_sha="${GITHUB_SHA}"
+          git -C parent/$path log --oneline "$old_sha..$new_sha" > /tmp/submodule-changes.txt || true
+          echo "changes<<EOF" >> $GITHUB_OUTPUT
+          cat /tmp/submodule-changes.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Push branch
+        if: steps.update.outputs.updated == '1'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          git -C parent push origin "${{ steps.branch.outputs.name }}"
+
+      - name: Open PR to parent
+        if: steps.update.outputs.updated == '1'
+        id: pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          body=$(cat <<'EOF'
+Updated submodule `${{ inputs.submodule-path }}` to `${{ github.sha }}`.
+
+Changes since previous pointer:
+```
+${{ steps.summary.outputs.changes }}
+```
+EOF
+)
+          pr_url=$(gh pr create --repo "${{ inputs.parent-repo }}" --base "${{ inputs.parent-branch }}" --head "${{ steps.branch.outputs.name }}" --title "chore: bump ${{ inputs.submodule-path }}" --body "$body")
+          echo "url=$pr_url" >> $GITHUB_OUTPUT
+
+      - name: Auto-merge PR
+        if: steps.update.outputs.updated == '1' && inputs.allow-auto-merge
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          if [ -n "${{ steps.pr.outputs.url }}" ]; then
+            gh pr merge "${{ steps.pr.outputs.url }}" --auto --squash --delete-branch
+          fi
