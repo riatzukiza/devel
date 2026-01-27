@@ -141,3 +141,5 @@ code.lock
 elgrep-data.el
 
 docs.github/**/.cache/
+
+workspaces/
