@@ -32,3 +32,4 @@ Limit Nx affected typecheck in the pre-push hook to projects under the riatzukiz
 - 2026-01-27: Spec created.
 - 2026-01-27: Implemented org-scoped affected typecheck filtering.
 - 2026-01-27: Switched to `nx show projects --affected` for Nx 19+.
+- 2026-01-27: Use mapfile to avoid read exit in hooks.
