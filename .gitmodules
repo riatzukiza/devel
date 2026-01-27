@@ -86,15 +86,3 @@
 	path = orgs/moazbuilds
 	url = https://github.com/moazbuilds/CodeMachine-CLI
 	branch = device/stealth
-[submodule "orgs/riatzukiza/ollama-benchmarks"]
-	path = orgs/riatzukiza/ollama-benchmarks
-	url = https://github.com/riatzukiza/ollama-benchmarks.git
-	branch = device/stealth
-[submodule "orgs/octave-commons/promethean-agent-system"]
-	path = orgs/octave-commons/promethean-agent-system
-	url = https://github.com/octave-commons/promethean-agent-system.git
-	branch = device/stealth
-[submodule "orgs/open-hax/cljs-plugin-template"]
-	path = orgs/open-hax/cljs-plugin-template
-	url = https://github.com/open-hax/cljs-plugin-template.git
-	branch = device/stealth
