@@ -26,14 +26,6 @@ Multi-repository development workspace with git submodules organized under `orgs
 - `giga-watch` - Watch changes and run affected tests automatically
 - `pantheon-commit-msg <action> <result> <repoPath> [version]` - Handle Pantheon commit messages
 
-**Bin utilities:**
-- `install-pre-push-hooks.sh` - Installs `.hooks/pre-push-typecheck.sh` into root + all submodules and appends `.nx/` to git excludes.
-- `setup-branch-protection [--dry-run]` - Applies baseline GitHub branch protection to every GitHub-backed submodule default branch (`ALSO_DEV=true` also guards `dev`; requires `gh` admin auth).
-- `fix-submodules <org>` - Replaces nested git directories with proper submodules under the given org, creating remotes and committing the changes.
-- `github-transfer-submodules <org>` - Transfers each `.gitmodules` repo to the target org via `gh transfer`.
-- `init-pnpm-submodules` - Initializes pnpm workspace packages lacking git repos, creates private repos under `GITHUB_OWNER` (default `octave-commons`), pushes `main`, and adds them as submodules.
-- `opencode-command` - Wrapper for `bin/create-command` with the required `NODE_PATH` for NBB.
-
 **Submodule Management:**
 - `submodule sync [--recursive] [--jobs <n>]` - Sync .gitmodules mappings and initialize submodules
 - `submodule update [--recursive] [--jobs <n>]` - Update submodules to latest remote refs
@@ -152,6 +144,13 @@ Use cross-reference documentation to:
 3. **After Changes**: `submodule update` to sync to latest remote refs
 4. **Before Commit**: `submodule status` again to verify changes are intentional
 5. **Integration**: Use Nx targets for cross-submodule testing and building
+
+### Dirty snapshot workflow
+When the workspace gets chaotic, capture everything on `dirty/stealth` so `device/stealth` stays focused.
+1. **Create branches**: Check out `dirty/stealth` in any dirty submodules and in the root workspace.
+2. **Commit everything**: `git add -A` and commit all tracked + untracked changes inside each dirty submodule, then commit the updated submodule pointers in the root.
+3. **Skip heavy checks**: Do not run typechecks for this snapshot; it is purely a safety capture.
+4. **Return to `device/stealth`**: Switch back for focused work on the target modules.
 
 ### Automation Integration
 - **Giga System**: Automated watching and testing of affected submodules
