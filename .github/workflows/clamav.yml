@@ -1,0 +1,47 @@
+name: Security - ClamAV
+
+on:
+  pull_request:
+    branches: [release]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-clamav-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  clamav-scan:
+    if: github.event.pull_request.base.ref == 'release' && (startsWith(github.head_ref, 'dev/') || github.head_ref == 'main')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install ClamAV
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clamav clamav-daemon
+          sudo freshclam || echo "freshclam failed; continuing with packaged signatures"
+
+      - name: Validate detection with EICAR
+        run: |
+          set -e
+          curl -L -o /tmp/eicar.com.txt https://secure.eicar.org/eicar.com.txt
+          # clamscan returns exit code 1 when malware is detected; treat that as success here.
+          if clamscan /tmp/eicar.com.txt; then
+            echo "EICAR was not detected by ClamAV" >&2
+            exit 1
+          else
+            echo "EICAR detected as expected"
+          fi
+          rm -f /tmp/eicar.com.txt
+
+      - name: Scan repository
+        run: |
+          # clamscan exits 1 when infections are found, 0 if clean, >1 on errors.
+          set -e
+          clamscan -r --infected --exclude-dir='^\.git$' --exclude-dir='^\.nx$' .
