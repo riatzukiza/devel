@@ -110,8 +110,8 @@ run_nx_affected_typecheck() {
     log "$NX_BASE_SELECTION_MSG (merge-base ${base_sha})"
   fi
 
-  if ! affected_projects_raw=$(pnpm nx print-affected --base "$base_sha" --head "$head_ref" --select=projects); then
-    log "Nx print-affected failed; aborting pre-push checks"
+  if ! affected_projects_raw=$(pnpm nx show projects --affected --base "$base_sha" --head "$head_ref"); then
+    log "Nx show projects failed; aborting pre-push checks"
     return 1
   fi
 
@@ -120,7 +120,7 @@ run_nx_affected_typecheck() {
     return 0
   fi
 
-  IFS=',' read -ra affected_projects <<<"$affected_projects_raw"
+  IFS=$'\n' read -r -d '' -a affected_projects <<<"$affected_projects_raw"$'\0'
   for project in "${affected_projects[@]}"; do
     project="${project//[[:space:]]/}"
     if [[ -z "$project" ]]; then
