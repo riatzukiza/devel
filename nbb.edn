@@ -1,0 +1,2 @@
+{:paths ["bin/" "nbb/"]
+ :deps {com.github.seancorfield/honeysql {:mvn/version "2.2.868"}}}

@@ -10,6 +10,18 @@ Multi-repository development workspace with git submodules organized under `orgs
 - `pnpm build` - Build workspace (if src/ exists)
 - `bun run src/hack.ts` - Run the main utility script
 
+**PM2/pm2-clj:**
+- `pm2-clj start <path>/ecosystem.pm2.edn [--env <profile>]` - Start processes from pm2-clj DSL
+- `pm2-clj render <path>/ecosystem.pm2.edn` - Render config to JSON (validate without starting)
+- `pm2 stop <app-name>` - Stop specific PM2 process
+- `pm2 restart <app-name>` - Restart specific PM2 process
+- `pm2 delete <app-name>` - Delete PM2 process
+- `pm2 list` or `pm2 status` - List running processes
+- `pm2 logs <app-name>` - View process logs
+- `pm2 monit` - Real-time monitoring dashboard
+
+**Note**: All ecosystem sources now use `*.pm2.edn` extension (pm2-clj DSL format). See `.opencode/skills/pm2-process-management.md` for detailed PM2 workflows.
+
 **OpenCode Commands:**
 - `create-command [--name COMMAND] [--list] [--run COMMAND] [--force]` - Create/list/run opencode commands with frontmatter validation
 - `opencode-command --list` - List available opencode commands
@@ -18,7 +30,7 @@ Multi-repository development workspace with git submodules organized under `orgs
 
 **Submodule workflows:**
 - `cd orgs/riatzukiza/promethean && pnpm --filter @promethean-os/<pkg> <command>`
-- `cd orgs/sst/opencode && bun dev` (opencode development)
+- `cd orgs/anomalyco/opencode && bun dev` (opencode development)
 
 **Giga System:**
 - `giga-commit <subRepoPath> <action> <result> [files...]` - Propagate commits across submodules
@@ -68,7 +80,7 @@ Multi-repository development workspace with git submodules organized under `orgs
 - **[orgs/openai/codex](orgs/openai/codex/)**: Rust-based Codex CLI and runtime
 
 ### 🌐 Web & Frontend
-- **[orgs/sst/opencode](orgs/sst/opencode/)**: Multiple opencode development branches and experiments
+- **[orgs/anomalyco/opencode](orgs/anomalyco/opencode/)**: Multiple opencode development branches and experiments
 - **[orgs/riatzukiza/openhax](orgs/riatzukiza/openhax/)**: Full-stack application with Reactant + Fastify
 
 ### ⚙️ Configuration & Environment
@@ -80,7 +92,7 @@ Multi-repository development workspace with git submodules organized under `orgs
 ### 🔗 High-Value Patterns
 - **Authentication**: orgs/open-hax/codex ↔ orgs/moofone/codex-ts-sdk ↔ orgs/openai/codex
 - **Agent Development**: orgs/riatzukiza/agent-shell ↔ orgs/bhauman/clojure-mcp ↔ orgs/riatzukiza/promethean
-- **Web Development**: orgs/sst/opencode ↔ orgs/riatzukiza/openhax
+- **Web Development**: orgs/anomalyco/opencode ↔ orgs/riatzukiza/openhax
 - **Environment Setup**: orgs/riatzukiza/dotfiles ↔ all development tools
 - **PR Mirroring**: sst/opencode ↔ riatzukiza/opencode (automated synchronization)
 
@@ -106,7 +118,7 @@ Each repository now has comprehensive cross-reference documentation:
 - **[orgs/openai/codex/AGENTS.md](orgs/openai/codex/AGENTS.md)** - Rust runtime documentation
 
 #### **Web & Frontend**
-- **[orgs/sst/opencode/CROSS_REFERENCES.md](orgs/sst/opencode/CROSS_REFERENCES.md)** - OpenCode development integration
+- **[orgs/anomalyco/opencode/CROSS_REFERENCES.md](orgs/anomalyco/opencode/CROSS_REFERENCES.md)** - OpenCode development integration
 - **[orgs/riatzukiza/openhax/CROSS_REFERENCES.md](orgs/riatzukiza/openhax/CROSS_REFERENCES.md)** - Full-stack patterns
 - **[PR Mirroring Automation](docs/pr-mirroring-automation.md)** - Quick reference for PR synchronization
 
@@ -120,6 +132,30 @@ Use cross-reference documentation to:
 3. **Navigate dependencies** and shared tooling
 4. **Follow best practices** for each technology stack
 5. **Set up development environments** efficiently
+
+### 🧩 Repo Skills
+Use these skills to stay aligned with the workspace workflow:
+- **Skill Authoring** (`.opencode/skills/skill-authoring.md`): when the request is to create or revise skills, or when you need stronger reusable guidance.
+- **OpenCode Skill Creation** (`.opencode/skills/opencode-skill-creation.md`): when creating new skill docs that follow the repo template and update `AGENTS.md`.
+- **OpenCode Agent Authoring** (`.opencode/skills/opencode-agent-authoring.md`): when adding or revising agent behavior guidance.
+- **OpenCode Command Authoring** (`.opencode/skills/opencode-command-authoring.md`): when creating, listing, or running OpenCode commands.
+- **OpenCode Plugin Authoring** (`.opencode/skills/opencode-plugin-authoring.md`): when creating or updating OpenCode plugins.
+- **OpenCode Tool Authoring** (`.opencode/skills/opencode-tool-authoring.md`): when adding or modifying tool definitions and behavior.
+- **MCP Server Integration** (`.opencode/skills/mcp-server-integration.md`): when adding or configuring MCP servers and tools.
+- **LSP Server Integration** (`.opencode/skills/lsp-server-integration.md`): when adding language servers or language intelligence.
+- **OpenCode Model Variant Management** (`.opencode/skills/opencode-model-variant-management.md`): when adding providers, models, or variants.
+- **Skill Optimizing** (`.opencode/skills/skill-optimizing.md`): when optimizing existing skills for clarity and maintainability.
+- **Workspace Navigation** (`.opencode/skills/workspace-navigation.md`): when the request spans multiple repos or you need to locate the correct module before editing.
+- **Submodule Operations** (`.opencode/skills/submodule-ops.md`): when touching anything under `orgs/**`, `.gitmodules`, or submodule pointers.
+- **PM2 Process Management** (`.opencode/skills/pm2-process-management.md`): when starting, stopping, or restarting PM2 processes using pm2-clj.
+- **PM2 Config Rendering** (`.opencode/skills/render-pm2-clj-config.md`): when validating pm2-clj ecosystem configurations or rendering to JSON.
+- **Create PM2 Configs** (`.opencode/skills/create-pm2-clj-config.md`): when creating new pm2-clj ecosystem configuration files.
+- **OpenCode SDK Workflows** (`.opencode/skills/opencode-sdk.md`): when changing OpenCode server endpoints or regenerating SDKs.
+- **OpenCode Plugins** (`.opencode/skills/opencode-plugins.md`): when building or updating OpenCode plugins.
+- **OpenCode Configs & Rules** (`.opencode/skills/opencode-configs.md`): when modifying OpenCode config behavior, rules, commands, or permissions.
+- **OpenCode Agents & Skills** (`.opencode/skills/opencode-agents-skills.md`): when authoring or updating agents and skills.
+- **OpenCode Models & Providers** (`.opencode/skills/opencode-models-providers.md`): when adjusting provider integrations or model selection.
+- **OpenCode Tools, MCP, and ACP** (`.opencode/skills/opencode-tools-mcp.md`): when working on tool definitions or protocol integrations.
 
 ## Development
 

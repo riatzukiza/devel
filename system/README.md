@@ -32,38 +32,61 @@ The structured format is either approved or denied by the user.
 
 ## Automation
 
-### Bootstrapping the PM2 ecosystem
+### Bootstrapping PM2 ecosystem
 
-The DSL generator now does most of the heavy lifting: by default it writes every daemon's `dist/ecosystem.config.mjs` plus the aggregate `ecosystem.config.enhanced.mjs` (see `internal/riatzukiza/promethean/packages/ecosystem-dsl/src/ecosystem_dsl/script.clj:9-156`). Run the generator once to materialize every PM2 config, then start the stack with:
+pm2-clj now does the heavy lifting: it reads each `ecosystem.pm2.edn`, renders a temporary `ecosystem.config.cjs`, and executes PM2. Start the stack with:
 
 ```
-pnpm --filter @promethean-os/ecosystem-dsl generate -- --dir /home/err/devel/system
-pm2 start ecosystem.config.enhanced.mjs
-pm2 start system/daemons/devops/nx-daemon/dist/ecosystem.config.mjs
-pm2 start system/daemons/devops/nx-watcher/dist/ecosystem.config.mjs
+pm2-clj start system/daemons/devops/nx-daemon/ecosystem.pm2.edn
+pm2-clj start system/daemons/devops/nx-watcher/ecosystem.pm2.edn
 ```
 
-The watcher described below keeps the per-daemon dist files and the aggregate config in sync, so once the generator runs there is nothing to hand-edit. Pass `--skip-aggregate` if you prefer to regenerate only the individual daemon configs without writing `ecosystem.config.enhanced.mjs`.
+**See `.opencode/skills/pm2-process-management.md` for detailed PM2 workflows including start, stop, restart, and monitoring commands.**
+pm2-clj start system/daemons/devops/nx-daemon/ecosystem.pm2.edn
+pm2-clj start system/daemons/devops/nx-watcher/ecosystem.pm2.edn
+```
+
+The watcher described below keeps the per-daemon definitions in sync, so once the daemon files are updated there is nothing to hand-edit.
 
 ### Regenerating the ecosystem
 
-The `ecosystem-regenerator` daemon under `system/daemons/devops/ecosystem-watch` keeps `ecosystem.config.enhanced.mjs` fresh by running `pnpm ecosystem:watch` from the workspace root. Any edits to `system/daemons` now trigger the DSL watcher, so new `ecosystem.edn` files propagate into the aggregate PM2 config without manual intervention.
+The `ecosystem-regenerator` daemon under `system/daemons/devops/ecosystem-watch` keeps the PM2 stack fresh by running pm2-clj against updated daemon definitions. Any edits to `system/daemons` now trigger the watcher, so new `ecosystem.pm2.edn` files propagate into PM2 without manual intervention.
+
+### OpenCode services (manual ecosystem.pm2.edn entries)
+
+The workspace root `ecosystem.pm2.edn` also carries local OpenCode-related services that are not generated from `system/daemons/**/ecosystem.pm2.edn`:
+
+- **opencode-server** (headless HTTP server)
+  - Backed by `opencode serve` in `orgs/anomalyco/opencode/packages/opencode`.
+  - PM2 entry uses `bun src/index.ts serve --port 4096 --hostname 127.0.0.1` for a stable local port.
+  - The server exposes the OpenAPI spec at `http://localhost:4096/doc`.
+
+- **oc-web** (OpenCode web UI/docs)
+  - Backed by the Astro site in `orgs/anomalyco/opencode/packages/web`.
+  - PM2 entry runs `pnpm dev -- --host 0.0.0.0 --port 4321`.
+  - Local access: `http://localhost:4321`.
+
+- **oc-manager** (OpenCode metadata TUI)
+  - **Not** run under PM2 because it requires a TTY and user interaction.
+  - On-demand launch options:
+    - `bunx opencode-manager --root ~/.local/share/opencode`
+    - `bun run tui -- --root ~/.local/share/opencode` (from `orgs/kcrommett/oc-manager`)
+    - `./manage_opencode_projects.py --root ~/.local/share/opencode`
 
 ### Internal rebuilds and restarts
 
-Every internal service describes the directories it cares about via `:watch` in its `ecosystem.edn`, so PM2 automatically restarts a process when the corresponding package or service source changes. The Nx-aware `nx-watcher` daemon created by the DSL sees those same patterns and runs `pnpm nx` operations (build/test/lint) on the affected projects before the PM2 restart completes, guaranteeing each process is rebuilt on change.
+Every internal service describes the directories it cares about via `:watch` in its `ecosystem.pm2.edn`, so PM2 automatically restarts a process when the corresponding package or service source changes. The Nx-aware `nx-watcher` daemon sees those same patterns and runs `pnpm nx` operations (build/test/lint) on the affected projects before the PM2 restart completes, guaranteeing each process is rebuilt on change.
 
 ### Daemon generation and PM2 sync
 
-- Source of truth: `system/daemons/**/ecosystem.edn`.
-- Generated (do-not-edit) PM2 configs now live alongside each daemon as `system/daemons/.../dist/ecosystem.config.mjs`. Only the changed daemon’s dist file is reloaded; these are intentionally tucked away so manual edits are obvious mistakes.
-- Aggregate file: `ecosystem.config.enhanced.mjs` is still produced if you want a single `pm2 start` target; pass `--skip-aggregate` to suppress it.
+- Source of truth: `system/daemons/**/ecosystem.pm2.edn`.
+- Generated (do-not-edit) PM2 configs still live alongside each daemon as `system/daemons/.../dist/ecosystem.config.mjs` for legacy workflows.
 - Commands:
-  - One-shot: `pnpm --filter @promethean-os/ecosystem-dsl generate -- --dir system --skip-aggregate` (keeps per-daemon dist files in sync without writing the aggregate).
-  - Watcher: `pnpm --filter @promethean-os/ecosystem-dsl generate:watch -- --dir system --skip-aggregate` (regenerates per-daemon configs on any `ecosystem.edn` change and reloads the affected daemon).
+  - One-shot: `pm2-clj render system/daemons/<group>/<name>/ecosystem.pm2.edn` (prints JSON without starting PM2).
+  - Start: `pm2-clj start system/daemons/<group>/<name>/ecosystem.pm2.edn` (renders + starts PM2).
 - Adding a new daemon (including simple scripts like `pm2 start "script.js" --name "foobar"`):
-  1) Create a folder under `system/daemons/<group>/<name>/` and add `ecosystem.edn` describing the process (example below).
-  2) The watcher writes `dist/ecosystem.config.mjs` for that folder and runs `pm2 start|reload` on that file only.
+  1) Create a folder under `system/daemons/<group>/<name>/` and add `ecosystem.pm2.edn` describing the process (example below).
+  2) Run `pm2-clj start system/daemons/<group>/<name>/ecosystem.pm2.edn` to render and launch it.
   3) Example EDN for a simple script:
      ```clojure
      {:apps [{:name "foobar"
@@ -73,11 +96,11 @@ Every internal service describes the directories it cares about via `:watch` in 
               :watch false
               :autorestart true}]}
      ```
-  4) Start the watcher (command above) or run the one-shot generate to materialize `dist/ecosystem.config.mjs`, then start it with `pm2 start system/daemons/<group>/<name>/dist/ecosystem.config.mjs`.
+  4) Start the watcher (command above) or run `pm2-clj start system/daemons/<group>/<name>/ecosystem.pm2.edn`.
 - Nx automation is now explicit:
-  - `system/daemons/devops/nx-daemon` keeps the Nx background server alive under PM2 so it finally shows up in `pm2 status`. Start it with `pm2 start system/daemons/devops/nx-daemon/dist/ecosystem.config.mjs`.
-  - `system/daemons/devops/nx-watcher` runs `scripts/nx-watcher.mjs`, which listens for file changes and runs `build/test/lint/typecheck/coverage` on the affected projects. Start it with `pm2 start system/daemons/devops/nx-watcher/dist/ecosystem.config.mjs`.
-  - Both daemons are generated/updated like every other service, so edits to their `ecosystem.edn` files regenerate the matching dist files automatically.
+- `system/daemons/devops/nx-daemon` keeps the Nx background server alive under PM2 so it finally shows up in `pm2 status`. Start it with `pm2-clj start system/daemons/devops/nx-daemon/ecosystem.pm2.edn`.
+- `system/daemons/devops/nx-watcher` runs `scripts/nx-watcher.mjs`, which listens for file changes and runs `build/test/lint/typecheck/coverage` on the affected projects. Start it with `pm2-clj start system/daemons/devops/nx-watcher/ecosystem.pm2.edn`.
+- Both daemons are managed like every other service, so edits to their `ecosystem.pm2.edn` files take effect on restart.
 
 ### PM2 actions
 
@@ -107,7 +130,7 @@ Core daemons expose remote actions so automation and operators can invoke mainte
 
 ### External dependency monitoring
 
-Serena now runs via `system/daemons/mcp/serena/ecosystem.edn`, and `system/daemons/devops/serena-updater` executes `scripts/serena-update-check.mjs`. That updater polls the upstream GitHub release, stores the last seen version in `.cache/serena-updater.json`, and issues a `pnpm --dir orgs/riatzukiza/promethean exec pm2 restart serena` whenever a new tag appears so the external dependency is always up to date.
+Serena now runs via `system/daemons/mcp/serena/ecosystem.pm2.edn`, and `system/daemons/devops/serena-updater` executes `scripts/serena-update-check.mjs`. That updater polls the upstream GitHub release, stores the last seen version in `.cache/serena-updater.json`, and issues a `pnpm --dir orgs/riatzukiza/promethean exec pm2 restart serena` whenever a new tag appears so the external dependency is always up to date.
 
 ## Markdown DSL
 

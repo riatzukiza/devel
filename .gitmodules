@@ -22,6 +22,10 @@
 	path = orgs/riatzukiza/openhax
 	url = git@github.com:riatzukiza/openhax.git
 	branch = device/stealth
+[submodule "riatzukiza/ollama-benchmarks"]
+	path = orgs/riatzukiza/ollama-benchmarks
+	url = git@github.com:riatzukiza/ollama-benchmarks.git
+	branch = device/stealth
 [submodule "riatzukiza/riatzukiza.github.io"]
 	path = orgs/riatzukiza/riatzukiza.github.io
 	url = git@github.com:riatzukiza/riatzukiza.github.io.git
@@ -42,17 +46,25 @@
 	path = orgs/riatzukiza/stt
 	url = git@github.com:riatzukiza/stt.git
 	branch = device/stealth
-[submodule "sst/opencode"]
-	path = orgs/sst/opencode
-	url = git@github.com:riatzukiza/opencode.git
-	branch = device/stealth
 [submodule "orgs/open-hax/codex"]
 	path = orgs/open-hax/codex
 	url = git@github.com:open-hax/codex.git
 	branch = device/stealth
+[submodule "orgs/open-hax/agent-actors"]
+	path = orgs/open-hax/agent-actors
+	url = git@github.com:open-hax/agent-actors.git
+	branch = device/stealth
 [submodule "orgs/open-hax/cli-client"]
 	path = orgs/open-hax/cli-client
 	url = git@github.com:open-hax/cli-client.git
+	branch = device/stealth
+[submodule "orgs/open-hax/clients"]
+	path = orgs/open-hax/clients
+	url = git@github.com:open-hax/clients.git
+	branch = device/stealth
+[submodule "orgs/open-hax/cljs-plugin-template"]
+	path = orgs/open-hax/cljs-plugin-template
+	url = git@github.com:open-hax/cljs-plugin-template.git
 	branch = device/stealth
 [submodule "orgs/open-hax/session-orchestrator"]
 	path = orgs/open-hax/session-orchestrator
@@ -62,6 +74,10 @@
 	path = orgs/open-hax/openhax
 	url = git@github.com:open-hax/openhax.git
 	branch = device/stealth
+[submodule "orgs/open-hax/plugins/codex"]
+	path = orgs/open-hax/plugins/codex
+	url = git@github.com:open-hax/codex.git
+	branch = device/stealth
 [submodule "orgs/open-hax/plugin-hub"]
 	path = orgs/open-hax/plugin-hub
 	url = git@github.com:open-hax/plugin-hub.git
@@ -69,6 +85,26 @@
 [submodule "orgs/open-hax/electron-workbench"]
 	path = orgs/open-hax/electron-workbench
 	url = git@github.com:open-hax/electron-workbench.git
+	branch = device/stealth
+[submodule "orgs/open-hax/workbench"]
+	path = orgs/open-hax/workbench
+	url = git@github.com:open-hax/workbench.git
+	branch = device/stealth
+[submodule "orgs/octave-commons/helm"]
+	path = orgs/octave-commons/helm
+	url = git@github.com:octave-commons/helm.git
+	branch = device/stealth
+[submodule "orgs/octave-commons/pantheon"]
+	path = orgs/octave-commons/pantheon
+	url = git@github.com:octave-commons/pantheon.git
+	branch = device/stealth
+[submodule "orgs/octave-commons/promethean"]
+	path = orgs/octave-commons/promethean
+	url = git@github.com:octave-commons/promethean.git
+	branch = device/stealth
+[submodule "orgs/octave-commons/promethean-agent-system"]
+	path = orgs/octave-commons/promethean-agent-system
+	url = git@github.com:octave-commons/promethean-agent-system.git
 	branch = device/stealth
 [submodule "orgs/kcrommett/oc-manager"]
 	path = orgs/kcrommett/oc-manager

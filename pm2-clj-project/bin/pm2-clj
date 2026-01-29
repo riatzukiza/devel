@@ -1,0 +1,2 @@
+#!/usr/bin/env node
+require("../dist/pm2-clj.js");

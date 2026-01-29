@@ -1,0 +1,43 @@
+{:apps [{:name "devel/opencode"
+         :script "bunx"
+         :cwd "."
+         :args ["opencode"
+                "web"
+                "--port"
+                "4096"
+                "--hostname"
+                "127.0.0.1"]
+         :env {:NODE_ENV "production"}
+         :instances 1
+         :interpreter "/usr/bin/env"
+         :autorestart true
+         :watch false
+         :error_file "/home/err/devel/promethean/logs/opencode-server-error.log"
+         :out_file "/home/err/devel/promethean/logs/opencode-server-out.log"
+         :log_file "/home/err/devel/promethean/logs/opencode-server.log"
+         :time true
+         :kill_timeout 5000
+         :restart_delay 5000
+         :max_restarts 10
+         :min_uptime 10000}
+        {:name "promethean-discord-io-duck"
+  :cwd "./orgs/octave-commons/cephalon-clj/cephalon-clj-discord-io"
+         :script "node"
+         :args ["dist/duck.cjs"]
+         :interpreter "none"
+  :out_file "./orgs/octave-commons/cephalon-clj/logs/pm2/cephalon-clj-discord-io-duck.out.log"
+  :error_file "./orgs/octave-commons/cephalon-clj/logs/pm2/cephalon-clj-discord-io-duck.err.log"
+         :log_date_format "YYYY-MM-DD HH:mm:ss"
+         :env {:WS_PORT "8787"}}
+        {:name "promethean-discord-brain-duck"
+  :cwd "./orgs/octave-commons/cephalon-clj/cephalon-clj-brain"
+         :script "clojure"
+         :args ["-M" "-m" "brain.main"]
+         :interpreter "none"
+  :out_file "./orgs/octave-commons/cephalon-clj/logs/pm2/cephalon-clj-brain-duck.out.log"
+  :error_file "./orgs/octave-commons/cephalon-clj/logs/pm2/cephalon-clj-brain-duck.err.log"
+         :log_date_format "YYYY-MM-DD HH:mm:ss"
+         :env {:DISCORD_IO_WS "ws://127.0.0.1:8787/ws"
+               :DUCK_ADMIN_WS_PORT "8790"
+               :OLLAMA_MODEL "qwen3:4b"
+               :OLLAMA_BASE_URL "http://127.0.0.1:11434"}}]}

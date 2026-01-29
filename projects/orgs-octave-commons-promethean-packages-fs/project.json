@@ -1,0 +1,27 @@
+{
+  "name": "orgs-octave-commons-promethean-packages-fs",
+  "projectType": "application",
+  "tags": [
+    "submodule"
+  ],
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/octave-commons/promethean/packages/fs\" test"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/octave-commons/promethean/packages/fs\" build"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/octave-commons/promethean/packages/fs\" typecheck"
+      }
+    }
+  }
+}
