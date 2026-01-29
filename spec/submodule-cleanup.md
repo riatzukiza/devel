@@ -27,7 +27,7 @@
 2. Remove stale dated notes from `book-of-shadows` if they are meant to be pruned, and ensure no accidental data loss.
 3. Delete analyzer caches (`.clj-kondo`, `.cpcache`, `.lsp`) from `openhax` and extend `.gitignore` so they stay untracked.
 4. Purge committed log files from `orgs/sst/opencode`, add `logs/` to `.gitignore`, and verify no tooling depends on those artifacts.
-5. Land Promethean root updates dropping the `mcp-auth` dependency, updating changelog/docs/specs, and regenerating `ecosystem.config.enhanced.mjs`.
+5. Land Promethean root updates dropping the `mcp-auth` dependency, updating changelog/docs/specs, and re-rendering PM2 configs via pm2-clj.
 6. In the nested `packages/mcp` repo, include both source and generated `dist/**` artifacts for the OAuth fixes, along with the new `.env.example` template and Fastify cookie types.
 7. Ensure `.env` (real secrets) remains ignored while `.env.example` is tracked.
 8. Repair the missing `orgs/riatzukiza/stt/opencode-feat-clojure-syntax-highlighting` submodule metadata so recursive status commands no longer fail.
