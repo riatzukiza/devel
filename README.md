@@ -29,7 +29,7 @@ All submodules are now organized under `orgs/` by their respective GitHub organi
 | **riatzukiza** | `book-of-shadows` | Personal documentation | `orgs/riatzukiza/book-of-shadows` |
 | **riatzukiza** | `goblin-lessons` | Educational content | `orgs/riatzukiza/goblin-lessons` |
 | **riatzukiza** | `riatzukiza.github.io` | Personal website | `orgs/riatzukiza/riatzukiza.github.io` |
-| **sst** | `opencode` | Opencode development tools | `orgs/sst/opencode` |
+| **anomalyco** | `opencode` | Opencode development tools | `orgs/anomalyco/opencode` |
 | **bhauman** | `clojure-mcp` | Clojure MCP integration | `orgs/bhauman/clojure-mcp` |
 | **open-hax** | `codex` | Authentication for Codex | `orgs/open-hax/codex` |
 | **moofone** | `codex-ts-sdk` | TypeScript SDK for Codex | `orgs/moofone/codex-ts-sdk` |
@@ -50,7 +50,7 @@ devel/
 │   │   ├── book-of-shadows/       # Documentation
 │   │   ├── goblin-lessons/        # Educational content
 │   │   └── riatzukiza.github.io/ # Personal site
-│   ├── sst/                       # SST organization
+│   ├── anomalyco/                  # Anomaly Co organization  
 │   │   └── opencode/              # Main opencode repo
 │   ├── bhauman/                   # bhauman's repositories
 │   │   └── clojure-mcp/           # Clojure integration
@@ -86,8 +86,35 @@ pnpm install
 
 # Setup development environment
 cd orgs/riatzukiza/promethean && pnpm install
-cd orgs/sst/opencode && bun install
+cd orgs/anomalyco/opencode && bun install
 ```
+
+### PM2 / pm2-clj Quick Start
+
+All PM2 ecosystem sources now use **pm2-clj DSL** format (`*.pm2.edn`):
+
+```bash
+# Start a pm2-clj process
+pm2-clj start <path>/ecosystem.pm2.edn
+
+# Render config (validate without starting)
+pm2-clj render <path>/ecosystem.pm2.edn
+
+# Stop/restart processes
+pm2 stop <app-name>
+pm2 restart <app-name>
+pm2 delete <app-name>
+
+# View logs/monitoring
+pm2 logs <app-name>
+pm2 list
+pm2 status
+pm2 monit
+```
+
+**See `.opencode/skills/pm2-process-management.md` for detailed PM2 workflows.**
+
+---
 
 ## Development Commands
 
@@ -120,7 +147,7 @@ pnpm build
 cd orgs/riatzukiza/promethean && pnpm --filter @promethean-os/<pkg> <command>
 
 # Opencode development
-cd orgs/sst/opencode && bun dev
+cd orgs/anomalyco/opencode && bun dev
 
 # Agent shell development (Emacs Lisp)
 cd orgs/riatzukiza/agent-shell && emacs agent-shell.el
@@ -204,7 +231,7 @@ AI-powered development tools:
 - GitHub Actions and VS Code extensions
 - Multi-language SDK support
 - Agent-based workflow automation
-- **Location**: `orgs/sst/opencode/`
+- **Location**: `orgs/anomalyco/opencode/`
 
 ### Release Monitoring Automation
 
@@ -419,7 +446,7 @@ The workspace maintains comprehensive cross-reference documentation:
 ### Integration Patterns
 - **Authentication**: `orgs/open-hax/codex` ↔ `orgs/moofone/codex-ts-sdk` ↔ `orgs/openai/codex`
 - **Agent Development**: `orgs/riatzukiza/agent-shell` ↔ `orgs/bhauman/clojure-mcp` ↔ `orgs/riatzukiza/promethean`
-- **Web Development**: `orgs/sst/opencode` ↔ `orgs/riatzukiza/openhax`
+- **Web Development**: `orgs/anomalyco/opencode` ↔ `orgs/riatzukiza/openhax`
 - **Environment Setup**: `orgs/riatzukiza/dotfiles` ↔ all development tools
 
 ## Git Cheatsheet

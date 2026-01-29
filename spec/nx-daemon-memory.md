@@ -5,8 +5,8 @@
 
 ## Key Code References
 - `orgs/riatzukiza/promethean/scripts/nx-watcher.mjs:174-205` executes `pnpm nx <command>` for every batch of file changes. The first invocation spins up the Nx daemon and all subsequent commands reuse it. Failing commands or concurrent batches can spawn additional daemon workers.
-- `orgs/riatzukiza/promethean/packages/ecosystem-dsl/src/ecosystem_dsl/core.clj:166-184` generates the PM2 entry (`create-nx-watcher-config`) that always sets `NX_DAEMON=true` and assigns only a `max-memory-restart` for the parent watcher, not for the daemon itself.
-- `orgs/riatzukiza/promethean/packages/ecosystem-dsl/ecosystem.config.enhanced.mjs:33-94` is the emitted PM2 config that runs the watcher script and injects the Nx environment.
+- `system/daemons/devops/nx-watcher/ecosystem.pm2.edn` defines the PM2 entry for the watcher and sets `NX_DAEMON=true` in its env map.
+- `system/daemons/devops/nx-watcher/ecosystem.pm2.edn` is rendered by pm2-clj to run the watcher script and inject the Nx environment.
 - `orgs/riatzukiza/promethean/package.json:7-55` declares the workspace commands (`pnpm nx run-many …`, `pnpm nx affected …`) that developers might run manually—these also trigger the daemon.
 - `orgs/riatzukiza/promethean/nx.json:11-26` does not override `useDaemonProcess`, so Nx defaults to launching the daemon for every task runner.
 

@@ -1,5 +1,16 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "zai-coding-plan": {
+      "models": {
+        "glm-4.7": {
+          "options": {
+            "reasoningEffort": "high"
+          }
+        }
+      }
+    }
+  },
   "mcp":{
     "github":{
       "type":"remote",
@@ -9,20 +20,13 @@
       "type":"remote",
       "url":"http://localhost:3210/github/review"
     },
-    "clojure-centralized":{
+    "cephalon":{
       "type":"local",
-      "command":["./mcp-server.sh", "unified", "7890"],
-      "enabled": true
-    },
-    "clojure-jvm":{
-      "type":"local",
-      "command":["./mcp-server.sh", "jvm", "7891"],
-      "enabled": true
-    },
-    "clojure-cljs":{
-      "type":"local",
-      "command":["./mcp-server.sh", "cljs", "7892"],
-      "enabled": true
+      "command":["/home/err/devel/bin/cephalon", "mcp", "serve", "--port", "7894"]
     }
+  },
+  "plugin": ["@howaboua/pickle-thinker@0.4.0"],
+  "permission":{
+    "*":"allow"
   }
 }
