@@ -62,6 +62,27 @@ pm2-clj start ecosystem.pm2.edn --env development
 pm2-clj start orgs/riatzukiza/promethean/services/sentinel/ecosystem.pm2.edn
 ```
 
+**Cephalon Discord Bots** (Multi-bot system with profiles):
+```bash
+# Start both Duck and OpenSkull bots
+cd orgs/octave-commons/cephalon-clj
+pm2-clj start ecosystem.pm2.edn
+
+# Manage individual bots
+pm2 restart duck-discord-io      # Restart Duck Discord interface
+pm2 restart skull-discord-io     # Restart OpenSkull Discord interface
+pm2 restart duck-brain           # Restart Duck brain process
+pm2 restart skull-brain          # Restart OpenSkull brain process
+
+# View Cephalon process status
+pm2 list | grep -E "(duck|skull)"
+# Shows: duck-discord-io, duck-brain, skull-discord-io, skull-brain
+
+# Cephalon log management
+pm2 logs duck-discord-io --lines 50
+pm2 logs skull-brain --lines 100
+```
+
 ### Environment Profiles
 Use `--env` flag with pm2-clj to select environment:
 ```bash
