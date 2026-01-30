@@ -21,6 +21,23 @@ Locate the right repo, file, and pattern quickly in a multi-repo workspace.
 2. Identify 1-2 reference files that match the requested pattern.
 3. Confirm the expected edit location before changing anything.
 
+## Repository Structure References
+
+**Cephalon Discord Agent System** (`orgs/octave-commons/cephalon-clj/`):
+- **Multi-bot architecture**: Duck (`duck-*`) and OpenSkull (`skull-*`) processes
+- **Profile system**: `CEPHALON_HOME/profiles/duck.edn`, `profiles/skull.edn`
+- **Process files**: `ecosystem.pm2.edn` for PM2 deployment
+- **Documentation**: `docs/duck-deployment.md` for deployment guides
+- **Brain components**: `brain/src/cephalon/brain/` (agent, profiles, permissions)
+- **Discord IO**: `discord-io/` for WebSocket RPC server
+- **Configuration**: Look for profile schemas, agent registration, permission stores
+
+**Common patterns**:
+- Discord bot issues → `discord-io/` or `brain/src/cephalon/brain/tools/discord.clj`
+- Profile configuration → `$CEPHALON_HOME/profiles/` or `brain/src/cephalon/brain/profiles/`
+- Permission system → `brain/src/cephalon/brain/permission_store.clj`, `admin_ws.clj`
+- PM2 deployment → `ecosystem.pm2.edn` in cephalon-clj root
+
 ## Strong Hints
 - Prefer narrow searches first; widen only if needed.
 - Use existing patterns as templates, not guesses.
