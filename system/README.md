@@ -34,27 +34,29 @@ The structured format is either approved or denied by the user.
 
 ### Bootstrapping PM2 ecosystem
 
-pm2-clj now does the heavy lifting: it reads each `ecosystem.pm2.edn`, renders a temporary `ecosystem.config.cjs`, and executes PM2. Start the stack with:
+clobber now does the heavy lifting: it reads each `ecosystem.clj`, renders a temporary `ecosystem.config.cjs`, and executes PM2. Start the stack with:
 
 ```
-pm2-clj start system/daemons/devops/nx-daemon/ecosystem.pm2.edn
-pm2-clj start system/daemons/devops/nx-watcher/ecosystem.pm2.edn
+clobber start system/daemons/devops/nx-daemon/ecosystem.clj
+clobber start system/daemons/devops/nx-watcher/ecosystem.clj
 ```
 
-**See `.opencode/skills/pm2-process-management.md` for detailed PM2 workflows including start, stop, restart, and monitoring commands.**
-pm2-clj start system/daemons/devops/nx-daemon/ecosystem.pm2.edn
-pm2-clj start system/daemons/devops/nx-watcher/ecosystem.pm2.edn
+**See `.opencode/skills/clobber-process-management.md` for detailed PM2 workflows including start, stop, restart, and monitoring commands.**
+clobber start system/daemons/devops/nx-daemon/ecosystem.clj
+clobber start system/daemons/devops/nx-watcher/ecosystem.clj
 ```
 
 The watcher described below keeps the per-daemon definitions in sync, so once the daemon files are updated there is nothing to hand-edit.
 
 ### Regenerating the ecosystem
 
-The `ecosystem-regenerator` daemon under `system/daemons/devops/ecosystem-watch` keeps the PM2 stack fresh by running pm2-clj against updated daemon definitions. Any edits to `system/daemons` now trigger the watcher, so new `ecosystem.pm2.edn` files propagate into PM2 without manual intervention.
+The `ecosystem-regenerator` daemon under `system/daemons/devops/ecosystem-watch` keeps the PM2 stack fresh by running clobber against updated daemon definitions. Any edits to `system/daemons` now trigger the watcher, so new `ecosystem.clj` files propagate into PM2 without manual intervention.
 
-### OpenCode services (manual ecosystem.pm2.edn entries)
+### OpenCode services (manual ecosystem.clj entries)
 
-The workspace root `ecosystem.pm2.edn` also carries local OpenCode-related services that are not generated from `system/daemons/**/ecosystem.pm2.edn`:
+The workspace root `ecosystem.clj` also carries local OpenCode-related services that are not generated from `system/daemons/**/ecosystem.clj`:
+
+**Standard:** the workspace root `ecosystem.clj` is the active entrypoint for current development. When new ecosystem files are created, add them to the root `ecosystem.clj` as well as any templates/examples you maintain, so the active stack stays discoverable in one place.
 
 - **opencode-server** (headless HTTP server)
   - Backed by `opencode serve` in `orgs/anomalyco/opencode/packages/opencode`.
@@ -75,18 +77,18 @@ The workspace root `ecosystem.pm2.edn` also carries local OpenCode-related servi
 
 ### Internal rebuilds and restarts
 
-Every internal service describes the directories it cares about via `:watch` in its `ecosystem.pm2.edn`, so PM2 automatically restarts a process when the corresponding package or service source changes. The Nx-aware `nx-watcher` daemon sees those same patterns and runs `pnpm nx` operations (build/test/lint) on the affected projects before the PM2 restart completes, guaranteeing each process is rebuilt on change.
+Every internal service describes the directories it cares about via `:watch` in its `ecosystem.clj`, so PM2 automatically restarts a process when the corresponding package or service source changes. The Nx-aware `nx-watcher` daemon sees those same patterns and runs `pnpm nx` operations (build/test/lint) on the affected projects before the PM2 restart completes, guaranteeing each process is rebuilt on change.
 
 ### Daemon generation and PM2 sync
 
-- Source of truth: `system/daemons/**/ecosystem.pm2.edn`.
+- Source of truth: `system/daemons/**/ecosystem.clj`.
 - Generated (do-not-edit) PM2 configs still live alongside each daemon as `system/daemons/.../dist/ecosystem.config.mjs` for legacy workflows.
 - Commands:
-  - One-shot: `pm2-clj render system/daemons/<group>/<name>/ecosystem.pm2.edn` (prints JSON without starting PM2).
-  - Start: `pm2-clj start system/daemons/<group>/<name>/ecosystem.pm2.edn` (renders + starts PM2).
+  - One-shot: `clobber render system/daemons/<group>/<name>/ecosystem.clj` (prints JSON without starting PM2).
+  - Start: `clobber start system/daemons/<group>/<name>/ecosystem.clj` (renders + starts PM2).
 - Adding a new daemon (including simple scripts like `pm2 start "script.js" --name "foobar"`):
-  1) Create a folder under `system/daemons/<group>/<name>/` and add `ecosystem.pm2.edn` describing the process (example below).
-  2) Run `pm2-clj start system/daemons/<group>/<name>/ecosystem.pm2.edn` to render and launch it.
+  1) Create a folder under `system/daemons/<group>/<name>/` and add `ecosystem.clj` describing the process (example below).
+  2) Run `clobber start system/daemons/<group>/<name>/ecosystem.clj` to render and launch it.
   3) Example EDN for a simple script:
      ```clojure
      {:apps [{:name "foobar"
@@ -96,11 +98,11 @@ Every internal service describes the directories it cares about via `:watch` in 
               :watch false
               :autorestart true}]}
      ```
-  4) Start the watcher (command above) or run `pm2-clj start system/daemons/<group>/<name>/ecosystem.pm2.edn`.
+   4) Start the watcher (command above) or run `clobber start system/daemons/<group>/<name>/ecosystem.clj`.
 - Nx automation is now explicit:
-- `system/daemons/devops/nx-daemon` keeps the Nx background server alive under PM2 so it finally shows up in `pm2 status`. Start it with `pm2-clj start system/daemons/devops/nx-daemon/ecosystem.pm2.edn`.
-- `system/daemons/devops/nx-watcher` runs `scripts/nx-watcher.mjs`, which listens for file changes and runs `build/test/lint/typecheck/coverage` on the affected projects. Start it with `pm2-clj start system/daemons/devops/nx-watcher/ecosystem.pm2.edn`.
-- Both daemons are managed like every other service, so edits to their `ecosystem.pm2.edn` files take effect on restart.
+- `system/daemons/devops/nx-daemon` keeps the Nx background server alive under PM2 so it finally shows up in `pm2 status`. Start it with `clobber start system/daemons/devops/nx-daemon/ecosystem.clj`.
+- `system/daemons/devops/nx-watcher` runs `scripts/nx-watcher.mjs`, which listens for file changes and runs `build/test/lint/typecheck/coverage` on the affected projects. Start it with `clobber start system/daemons/devops/nx-watcher/ecosystem.clj`.
+- Both daemons are managed like every other service, so edits to their `ecosystem.clj` files take effect on restart.
 
 ### PM2 actions
 
@@ -130,7 +132,7 @@ Core daemons expose remote actions so automation and operators can invoke mainte
 
 ### External dependency monitoring
 
-Serena now runs via `system/daemons/mcp/serena/ecosystem.pm2.edn`, and `system/daemons/devops/serena-updater` executes `scripts/serena-update-check.mjs`. That updater polls the upstream GitHub release, stores the last seen version in `.cache/serena-updater.json`, and issues a `pnpm --dir orgs/riatzukiza/promethean exec pm2 restart serena` whenever a new tag appears so the external dependency is always up to date.
+Serena now runs via `system/daemons/mcp/serena/ecosystem.clj`, and `system/daemons/devops/serena-updater` executes `scripts/serena-update-check.mjs`. That updater polls the upstream GitHub release, stores the last seen version in `.cache/serena-updater.json`, and issues a `pnpm --dir orgs/riatzukiza/promethean exec pm2 restart serena` whenever a new tag appears so the external dependency is always up to date.
 
 ## Markdown DSL
 
