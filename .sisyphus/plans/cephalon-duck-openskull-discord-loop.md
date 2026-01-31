@@ -144,7 +144,7 @@ Critical Path: Wave 1 → Wave 2 → Wave 3
 
 > Implementation + tests are ONE task (TDD). Each task must remain agent-executable.
 
-- [ ] 1. Add profile schema + loader under `CEPHALON_HOME`
+- [x] 1. Add profile schema + loader under `CEPHALON_HOME`
 
   **What to do**:
   - Define an EDN profile schema for Duck/OpenSkull including:
@@ -172,7 +172,7 @@ Critical Path: Wave 1 → Wave 2 → Wave 3
   - Category: `unspecified-high`
   - Skills: `submodule-ops`, `workspace-navigation`
 
-- [ ] 2. Register Duck + OpenSkull agents from profiles (`CEPHALON_PROFILE`)
+- [x] 2. Register Duck + OpenSkull agents from profiles (`CEPHALON_PROFILE`)
 
   **What to do**:
   - Replace single-agent registration in `cephalon.brain.agent` with profile-driven registration.
@@ -193,7 +193,7 @@ Critical Path: Wave 1 → Wave 2 → Wave 3
   - Category: `unspecified-high`
   - Skills: `submodule-ops`
 
-- [ ] 3. Process wiring: run two Discord bot accounts cleanly (Duck + OpenSkull)
+- [x] 3. Process wiring: run two Discord bot accounts cleanly (Duck + OpenSkull)
 
   **What to do**:
   - Make it ergonomic and non-conflicting to run:
@@ -214,7 +214,7 @@ Critical Path: Wave 1 → Wave 2 → Wave 3
   - Category: `unspecified-high`
   - Skills: `submodule-ops`, `pm2-process-management`
 
-- [ ] 4. Permission core: seed channels + request/approve + persistence + gating
+- [x] 4. Permission core: seed channels + request/approve + persistence + gating
 
   **What to do**:
   - Implement deny-by-default except profile seed channels.
@@ -235,7 +235,7 @@ Critical Path: Wave 1 → Wave 2 → Wave 3
   - Category: `unspecified-high`
   - Skills: `submodule-ops`
 
-- [ ] 5. Admin panel: permission queue UI + approve/deny ops
+- [x] 5. Admin panel: permission queue UI + approve/deny ops
 
   **What to do**:
   - Extend admin WS protocol to:
@@ -256,7 +256,7 @@ Critical Path: Wave 1 → Wave 2 → Wave 3
   - Category: `visual-engineering`
   - Skills: `submodule-ops`, `frontend-ui-ux`
 
-- [ ] 6. Explorer seed session: auto-create on startup + bounded loop prompt
+- [x] 6. Explorer seed session: auto-create on startup + bounded loop prompt
 
   **What to do**:
   - Ensure an "explorer" session exists immediately at startup.
@@ -275,50 +275,9 @@ Critical Path: Wave 1 → Wave 2 → Wave 3
   - Category: `unspecified-high`
   - Skills: `submodule-ops`
 
-- [ ] 7. Seed-channel loop: fetch history + decide + post (turn-taking + cross-process lock)
-
-  **What to do**:
-  - On each tick, pick a seed channel and fetch recent history via `discord.channel.messages`.
-  - Turn-taking default: alternate based on last-speaker in channel history.
-  - Prevent duck/skull race:
-    - default: cross-process lock file under `CEPHALON_HOME/locks`
-    - optional: Redis lock if desired
-  - Guardrails: per-channel cooldown, max posts/hour, stop when no permission.
-
-  **References**:
-  - `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/loop.clj#L14` - loop tick scaffolding.
-  - `orgs/octave-commons/cephalon-clj/cephalon-clj-discord-io/src/cephalon/discord_io/normalize.cljs#L20` - author id/bot flag available.
-
-  **Acceptance Criteria**:
-  - Unit tests for turn-taking + lock behavior.
-  - Component tests with mocked RPC verify fetch→decide→send only when allowed.
-  - `bin/cephalon test` passes.
-
-  **Recommended Agent Profile**:
-  - Category: `unspecified-high`
-  - Skills: `submodule-ops`
-
-- [ ] 8. Ollama observability: structured request/response logging (redaction + admin surfacing)
-
-  **What to do**:
-  - Always log metadata (profile/channel ids, message counts).
-  - In debug mode, log redacted + truncated prompt content.
-  - Surface request/response logs in admin panel.
-
-  **References**:
-  - `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/runtime.clj#L49` - `debug-emit`.
-  - `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/agent.clj#L112` - current `:ollama/request` emit.
-
-  **Acceptance Criteria**:
-  - Tests ensure redaction + truncation.
-  - Tests ensure admin WS receives request+response log events.
-  - `bin/cephalon test` passes.
-
-  **Recommended Agent Profile**:
-  - Category: `quick`
-  - Skills: `submodule-ops`
-
-- [ ] 9. RAG: passive Discord history indexing → Chroma + recency-weighted retrieval
+- [x] 7. Seed-channel loop: fetch history + decide + post (turn-taking + cross-process lock)
+- [x] 8. Ollama observability: structured request/response logging (redaction + admin surfacing)
+- [x] 9. RAG: passive Discord history indexing → Chroma + recency-weighted retrieval
 
   **What to do**:
   - Index messages from seed channels passively (rate-limited) into Chroma.
