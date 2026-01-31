@@ -38,7 +38,7 @@
   :error_file "./orgs/octave-commons/cephalon-clj/logs/pm2/cephalon-clj-brain.err.log"
           :log_date_format "YYYY-MM-DD HH:mm:ss"
           :env {:DISCORD_IO_WS "ws://127.0.0.1:8787/ws"
-                :OLLAMA_MODEL "PetrosStav/gemma3-tools:4b"
+               :OLLAMA_MODEL "qwen3-vl:2b-thinking-bf16"
                 :OLLAMA_BASE_URL "http://127.0.0.1:11434"}}]
  :profiles {:duck {:apps [{:name "devel/opencode"
                            :script "bunx"
@@ -80,7 +80,7 @@
   :error_file "./orgs/octave-commons/cephalon-clj/logs/pm2/cephalon-clj-brain-duck.err.log"
                            :log_date_format "YYYY-MM-DD HH:mm:ss"
                            :env {:DISCORD_IO_WS "ws://127.0.0.1:8787/ws"
-                                 :OLLAMA_MODEL "qwen3:4b"
+               :OLLAMA_MODEL "qwen3-vl:2b-thinking-bf16"
                                  :OLLAMA_BASE_URL "http://127.0.0.1:11434"}}]}
              :OpenSkull {:apps [{:name "devel/opencode"
                                :script "bunx"
@@ -123,6 +123,6 @@
   :error_file "./orgs/octave-commons/cephalon-clj/logs/pm2/cephalon-clj-brain-OpenSkull.err.log"
                                :log_date_format "YYYY-MM-DD HH:mm:ss"
                                :env {:DISCORD_IO_WS "ws://127.0.0.1:8787/ws"
-                                     :OLLAMA_MODEL "qwen3:4b"
+                                 :OLLAMA_MODEL "qwen3-vl:2b-thinking-bf16"
                                      :OLLAMA_BASE_URL "http://127.0.0.1:11434"
                                      :OLLAMA_TIMEOUT_MS "600000"}}]}}}

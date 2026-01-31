@@ -39,5 +39,5 @@
          :log_date_format "YYYY-MM-DD HH:mm:ss"
          :env {:DISCORD_IO_WS "ws://127.0.0.1:8787/ws"
                :DUCK_ADMIN_WS_PORT "8790"
-               :OLLAMA_MODEL "qwen3:4b"
+               :OLLAMA_MODEL "qwen3-vl:2b-thinking-bf16"
                :OLLAMA_BASE_URL "http://127.0.0.1:11434"}}]}
