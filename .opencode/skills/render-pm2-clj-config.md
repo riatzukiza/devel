@@ -15,11 +15,11 @@ Render pm2-clj ecosystem files to JSON for validation and debugging without star
 - You need to interact with running PM2 daemon
 
 ## Inputs
-- Path to `ecosystem.pm2.edn` file
+- Path to `ecosystem.pm2.clj` file
 - Optional: output path for rendered JSON
 
 ## Steps
-1. Locate the target `ecosystem.pm2.edn` file
+1. Locate the target `ecosystem.pm2.clj` file
 2. Run `clobber render <path>/ecosystem.clj`
 3. Capture and validate the JSON output
 4. Check for PM2 app structure validity
