@@ -25,9 +25,9 @@ Create new pm2-clj ecosystem configuration files from scratch or templates.
 
 ### 1. Determine Location
 Identify where the new config should live:
-- System daemons: `system/daemons/<group>/<name>/ecosystem.pm2.edn`
-- Org services: `orgs/<org>/<repo>/ecosystem.pm2.edn`
-- Package-level: `orgs/<org>/<repo>/packages/<pkg>/ecosystem.pm2.edn`
+- System daemons: `system/daemons/<group>/<name>/ecosystem.pm2.clj`
+- Org services: `orgs/<org>/<repo>/ecosystem.pm2.clj`
+- Package-level: `orgs/<org>/<repo>/packages/<pkg>/ecosystem.pm2.clj`
 
 ### 2. Create pm2-clj DSL
 Create the EDN structure following pm2-clj conventions:
@@ -76,26 +76,26 @@ Add appropriate fields based on process type:
 ### 4. Validate Config
 Run render to validate:
 ```bash
-pm2-clj render <new-config-path>/ecosystem.pm2.edn | jq '.'
+clobber render <new-config-path>/ecosystem.pm2.clj | jq '.'
 ```
 
 ### 5. Test Start (Optional)
 Test the configuration:
 ```bash
-pm2-clj start <new-config-path>/ecosystem.pm2.edn
+clobber start <new-config-path>/ecosystem.pm2.clj
 pm2 list
 pm2 logs <process-name>
 ```
 
 ## Strong Hints
-- Use `*.pm2.edn` extension for all pm2-clj configs
+- Use `*.pm2.clj` extension for all pm2-clj configs
 - Follow existing ecosystem files as templates
 - Use environment-specific env blocks (`:env`, `:env_production`)
 - Set `:cwd` to the actual working directory
 - Use `:interpreter` for Node.js, leave empty for scripts like `pnpm`
 
 ## Output
-- New `ecosystem.pm2.edn` file at appropriate location
+- New `ecosystem.pm2.clj` file at appropriate location
 - Validation result from pm2-clj render
 - Confirmation that config is ready to use
 
