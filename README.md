@@ -91,14 +91,14 @@ cd orgs/anomalyco/opencode && bun install
 
 ### PM2 / pm2-clj Quick Start
 
-All PM2 ecosystem sources now use **pm2-clj DSL** format (`*.pm2.edn`):
+All PM2 ecosystem sources now use **pm2-clj DSL** format (`*.pm2.clj`):
 
 ```bash
-# Start a pm2-clj process
-pm2-clj start <path>/ecosystem.pm2.edn
+# Start a clobber process
+clobber start <path>/ecosystem.pm2.clj
 
 # Render config (validate without starting)
-pm2-clj render <path>/ecosystem.pm2.edn
+clobber render <path>/ecosystem.pm2.clj
 
 # Stop/restart processes
 pm2 stop <app-name>

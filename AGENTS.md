@@ -11,8 +11,8 @@ Multi-repository development workspace with git submodules organized under `orgs
 - `bun run src/hack.ts` - Run the main utility script
 
 **PM2/pm2-clj:**
-- `pm2-clj start <path>/ecosystem.pm2.edn [--env <profile>]` - Start processes from pm2-clj DSL
-- `pm2-clj render <path>/ecosystem.pm2.edn` - Render config to JSON (validate without starting)
+ - `clobber start <path>/ecosystem.pm2.edn [--env <profile>]` - Start processes from clobber DSL
+ - `clobber render <path>/ecosystem.pm2.edn` - Render config to JSON (validate without starting)
 - `pm2 stop <app-name>` - Stop specific PM2 process
 - `pm2 restart <app-name>` - Restart specific PM2 process
 - `pm2 delete <app-name>` - Delete PM2 process
@@ -20,7 +20,7 @@ Multi-repository development workspace with git submodules organized under `orgs
 - `pm2 logs <app-name>` - View process logs
 - `pm2 monit` - Real-time monitoring dashboard
 
-**Note**: All ecosystem sources now use `*.pm2.edn` extension (pm2-clj DSL format). See `.opencode/skills/pm2-process-management.md` for detailed PM2 workflows.
+**Note**: All ecosystem sources now use `*.clj` extension (clobber DSL format). See `.opencode/skills/pm2-process-management.md` for detailed PM2 workflows.
 
 **OpenCode Commands:**
 - `create-command [--name COMMAND] [--list] [--run COMMAND] [--force]` - Create/list/run opencode commands with frontmatter validation
