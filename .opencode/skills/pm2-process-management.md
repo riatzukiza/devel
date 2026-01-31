@@ -23,7 +23,7 @@ Start, stop, restart, and manage PM2 processes using pm2-clj DSL configurations.
 
 ### Start Processes
 1. Identify the correct `ecosystem.pm2.edn` file for the target process
-2. Use `pm2-clj start <path>/ecosystem.pm2.edn [--env <profile>]`
+2. Use `clobber start <path>/ecosystem.clj [--env <profile>]`
 3. Verify with `pm2 list` or `pm2 status`
 
 ### Stop Processes
@@ -41,32 +41,32 @@ Start, stop, restart, and manage PM2 processes using pm2-clj DSL configurations.
 **System Daemons**:
 ```bash
 # Start a specific daemon
-pm2-clj start system/daemons/<group>/<name>/ecosystem.pm2.edn
+ clobber start system/daemons/<group>/<name>/ecosystem.clj
 
 # Start all daemons (via script)
 cd system/daemons && ./start-all.sh
 
 # Example: start heartbeat daemon
-pm2-clj start system/daemons/services/heartbeat/ecosystem.pm2.edn
+clobber start system/daemons/services/heartbeat/ecosystem.clj
 ```
 
 **Frontend Package**:
 ```bash
 cd orgs/riatzukiza/promethean/packages/frontend
-pm2-clj start ecosystem.pm2.edn --env development
+clobber start ecosystem.clj --env development
 # Starts: frontend-main, frontend-pantheon
 ```
 
 **Sentinel Service**:
 ```bash
-pm2-clj start orgs/riatzukiza/promethean/services/sentinel/ecosystem.pm2.edn
+clobber start orgs/riatzukiza/promethean/services/sentinel/ecosystem.clj
 ```
 
 **Cephalon Discord Bots** (Multi-bot system with profiles):
 ```bash
 # Start both Duck and OpenSkull bots
 cd orgs/octave-commons/cephalon-clj
-pm2-clj start ecosystem.pm2.edn
+clobber start ecosystem.clj
 
 # Manage individual bots
 pm2 restart duck-discord-io      # Restart Duck Discord interface
@@ -86,13 +86,13 @@ pm2 logs skull-brain --lines 100
 ### Environment Profiles
 Use `--env` flag with pm2-clj to select environment:
 ```bash
-pm2-clj start ecosystem.pm2.edn --env development
-pm2-clj start ecosystem.pm2.edn --env production
+clobber start ecosystem.clj --env development
+clobber start ecosystem.clj --env production
 ```
 
 ## Strong Hints
-- All ecosystem sources now use `*.pm2.edn` extension
-- `pm2-clj start` renders config and passes to PM2 automatically
+- All ecosystem sources now use `*.pm2.clj` extension
+- clobber start renders config and passes to PM2 automatically
 - Process names are defined in the `:apps` vector in the EDN file
 - Use `pm2 list` to see running processes and their names
 - Check logs with `pm2 logs <app-name>` or `pm2 monit` for real-time monitoring
