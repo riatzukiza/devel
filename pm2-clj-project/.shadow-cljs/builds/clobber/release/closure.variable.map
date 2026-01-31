@@ -308,9 +308,12 @@ cljs$cst$126$keyword_fn:ef
 cljs$cst$2$meta:Ne
 cljs$cst$3$dup:sa
 cljs$cst$4$print_length:Ge
+clobber$cli$print_usage:hf
+clojure:gf
 goog$UID_PROPERTY_:aa
 goog$string$StringBuffer:ea
 goog$typeOf:t
 goog$uidCounter_:ba
 module$contents$goog$object_getKeys:da
 shadow$js$shim$module$0child_process:cf
+shadow$js$shim$module$0fs:ff
