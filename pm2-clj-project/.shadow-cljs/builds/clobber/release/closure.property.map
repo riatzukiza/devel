@@ -131,6 +131,8 @@ nil_val:ea
 nodes:sa
 ns:jb
 off:R
+read_string:ec
+reader:fc
 rest:xa
 root_iter:Bb
 s:C
