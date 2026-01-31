@@ -10,7 +10,10 @@
   "scripts": {
     "build": "shadow-cljs release pm2-clj && shadow-cljs release clobber",
     "dev:pm2": "shadow-cljs watch pm2-clj",
-    "dev:clobber": "shadow-cljs watch clobber"
+    "dev:clobber": "shadow-cljs watch clobber",
+    "test": "bb test/run_macro_tests.clj && bb test/integration_test.clj",
+    "test:macro": "bb test/run_macro_tests.clj",
+    "test:integration": "bb test/integration_test.clj"
   },
   "dependencies": {
     "pm2": "^5.3.0"
