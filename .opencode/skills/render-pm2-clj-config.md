@@ -20,7 +20,7 @@ Render pm2-clj ecosystem files to JSON for validation and debugging without star
 
 ## Steps
 1. Locate the target `ecosystem.pm2.edn` file
-2. Run `pm2-clj render <path>/ecosystem.pm2.edn`
+2. Run `clobber render <path>/ecosystem.clj`
 3. Capture and validate the JSON output
 4. Check for PM2 app structure validity
 
@@ -29,27 +29,27 @@ Render pm2-clj ecosystem files to JSON for validation and debugging without star
 **Render single config**:
 ```bash
 # Render to stdout
-pm2-clj render system/daemons/services/heartbeat/ecosystem.pm2.edn
+clobber render system/daemons/services/heartbeat/ecosystem.clj
 
 # Render to file
-pm2-clj render system/daemons/services/heartbeat/ecosystem.pm2.edn > /tmp/heartbeat.json
+clobber render system/daemons/services/heartbeat/ecosystem.clj > /tmp/heartbeat.json
 ```
 
 **Validate structure**:
 ```bash
-# Render and pipe to jq for validation
-pm2-clj render ecosystem.pm2.edn | jq '.apps | length'
-pm2-clj render ecosystem.pm2.edn | jq '.apps[].name'
+## Render and pipe to jq for validation
+clobber render ecosystem.clj | jq '.apps | length'
+clobber render ecosystem.clj | jq '.apps[].name'
 ```
 
 **Verify environment variables**:
 ```bash
-pm2-clj render ecosystem.pm2.edn | jq '.apps[].env'
-pm2-clj render ecosystem.pm2.edn | jq '.apps[].env_production'
+clobber render ecosystem.clj | jq '.apps[].env'
+clobber render ecosystem.clj | jq '.apps[].env_production'
 ```
 
 ## Strong Hints
-- pm2-clj outputs JSON to stdout by default
+- clobber outputs JSON to stdout by default
 - Use `jq` for filtering and validation
 - Check that `apps` array is present and non-empty
 - Verify process names, scripts, and environment variables are correct
@@ -70,16 +70,16 @@ pm2-clj render ecosystem.pm2.edn | jq '.apps[].env_production'
 **Validate before starting**:
 ```bash
 # 1. Render and validate
-pm2-clj render system/daemons/services/heartbeat/ecosystem.pm2.edn | jq '.'
+clobber render system/daemons/services/heartbeat/ecosystem.clj | jq '.'
 
 # 2. If valid, start process
-pm2-clj start system/daemons/services/heartbeat/ecosystem.pm2.edn
+clobber start system/daemons/services/heartbeat/ecosystem.clj
 ```
 
 **Compare configs**:
 ```bash
 # Render both configs for comparison
-pm2-clj render ecosystem.pm2.edn > /tmp/current.json
-pm2-clj render ecosystem.pm2.edn.new > /tmp/new.json
+clobber render ecosystem.clj > /tmp/current.json
+clobber render ecosystem.clj.new > /tmp/new.json
 diff /tmp/current.json /tmp/new.json
 ```
