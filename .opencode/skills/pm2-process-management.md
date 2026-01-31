@@ -22,7 +22,7 @@ Start, stop, restart, and manage PM2 processes using pm2-clj DSL configurations.
 ## Steps
 
 ### Start Processes
-1. Identify the correct `ecosystem.pm2.edn` file for the target process
+1. Identify the correct `ecosystem.pm2.clj` file for the target process
 2. Use `clobber start <path>/ecosystem.clj [--env <profile>]`
 3. Verify with `pm2 list` or `pm2 status`
 
