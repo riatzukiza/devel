@@ -4,7 +4,8 @@
             [pm2-clj.eval :as peval]
             [pm2-clj.merge :as m]
             [pm2-clj.pm2 :as pm2]
-            [pm2-clj.util :as u]))
+            [pm2-clj.util :as u]
+            [pm2-clj.internal :as i]))
 
 (def dsl-exts
   #{".pm2.edn" ".pm2.clj" ".pm2.cljs" ".edn" ".clj" ".cljs"})
@@ -60,11 +61,11 @@
         (when-not (and app-name (not (str/blank? app-name)))
           (throw (ex-info "apps.<name>.<key> required for apps keypaths" {:key k})))
         (let [app-map (if (empty? ks)
-                       {:pm2-clj/remove true}
-                       {(first ks) dsl/remove})
+                        {::i/remove-app-flag true}
+                        {(first ks) ::i/remove})
               app-override (merge {:name app-name} app-map)]
           (m/deep-merge eco {:apps [app-override]})))
-      (assoc-in eco (mapv keyword parts) dsl/remove))))
+      (assoc-in eco (mapv keyword parts) ::i/remove))))
 
 (defn- apply-profile [eco mode]
   (if (or (nil? mode) (= mode :default))
@@ -77,7 +78,7 @@
 (defn- strip-dsl-keys [eco]
   (-> eco
       (dissoc :profiles)
-      (update :apps (fn [xs] (vec (map #(dissoc % :pm2-clj/remove) xs))))))
+      (update :apps (fn [xs] (vec (map #(dissoc % ::i/remove-app-flag) xs))))))
 
 (defn- render-config [dsl-path mode sets unsets]
   (let [cwd (.cwd js/process)
@@ -134,8 +135,30 @@
 (defn- cmd-render? [args]
   (= "render" (first args)))
 
+(defn- check-deprecated-formats! [path]
+  "Log deprecation warnings for legacy ecosystem file formats."
+  (when (string? path)
+    (cond
+      (str/ends-with? path ".pm2.edn")
+      (js/console.warn "[DEPRECATED] ecosystem.pm2.edn is deprecated. Convert to ecosystem.cljs")
+
+      (or (str/ends-with? path ".config.js")
+          (str/ends-with? path ".config.cjs")
+          (str/ends-with? path ".config.mjs"))
+      (js/console.warn "[DEPRECATED] ecosystem.config.* files are deprecated. Use ecosystem.cljs")
+
+      :else nil)))
+
+(defn- check-deprecated-command! [cmd]
+  "Log deprecation warning for pm2-clj command name."
+  (when (= cmd "pm2-clj")
+    (js/console.warn "[DEPRECATED] 'pm2-clj' command is deprecated. Use 'clobber' instead.")))
+
 (defn- main []
   (let [argv (vec (-> js/process .-argv (.slice 2)))]
+
+    ;; Check if called as pm2-clj (deprecated)
+    (check-deprecated-command! (.-title js/process))
 
     (when (empty? argv)
       (println "pm2-clj: pass-through PM2 wrapper + DSL translator")
@@ -153,13 +176,16 @@
         (let [dsl-path (second argv3)]
           (when-not dsl-path
             (throw (ex-info "render requires a DSL path" {:args argv3})))
+          (check-deprecated-formats! dsl-path)
           (let [cfg (render-config dsl-path mode sets unsets)]
             (println (js/JSON.stringify (clj->js cfg) nil 2))
             (js/process.exit 0)))
 
         (if-let [dsl-path (->> argv3 (filter dsl-file?) first)]
-          (let [cfg (render-config dsl-path mode sets unsets)
-                tmp (write-temp-cjs! cfg)
-                pm2-args (-> argv3 (replace-first-dsl-file tmp))]
-            (js/process.exit (pm2/run! pm2-args)))
+          (do
+            (check-deprecated-formats! dsl-path)
+            (let [cfg (render-config dsl-path mode sets unsets)
+                  tmp (write-temp-cjs! cfg)
+                  pm2-args (-> argv3 (replace-first-dsl-file tmp))]
+              (js/process.exit (pm2/run! pm2-args))))
           (js/process.exit (pm2/run! argv3)))))))

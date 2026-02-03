@@ -1,4 +1,4 @@
-{:source-paths ["src"]
+{:source-paths ["src" "pm2"]
  :dependencies [[org.babashka/sci "0.9.44"]]
  :builds
  {:pm2-clj {:target :node-script
@@ -6,4 +6,8 @@
             :output-to "dist/pm2-clj.js"}
   :clobber {:target :node-script
             :main clobber.cli/main
-            :output-to "dist/clobber.js"}}}
+            :output-to "dist/clobber.js"}
+  :pm2-config {:target :node-script
+               :main pm2-clj.runtime/-main
+               :output-to "ecosystem.config.cjs"
+               :release {:compiler-options {:optimizations :advanced}}}}}
