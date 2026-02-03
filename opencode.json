@@ -508,21 +508,7 @@
     "pkill *":"ask",
     "git commit *":"allow",
     "git show *":"allow",
-    "git log *":"allow",
-    "pm2 *":"ask",
-    "pm2 logs --nostream *":"allow",
-    "pm2 list":"allow",
-    "pm2 status":"allow",
-    "pm2 show *":"allow",
-    "pm2 stop * ":"ask",
-    "pm2 stop --only *":"allow",
-    "pm2 restart *":"ask",
-    "pm2 restart --only *":"allow",
-    "pm2 delete *":"ask",
-    "pm2 delete --only *":"allow",
-    "pm2 start *":"ask",
-    "pm2 describe *":"allow",
-
+    "git log *":"allow"
 
   }
 }
