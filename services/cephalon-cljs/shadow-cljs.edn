@@ -1,0 +1,10 @@
+{:deps true
+
+  :builds
+  {:cephalon
+   {:target :node-script
+    :output-to "dist/cephalon.js"
+    :main promethean.main/-main
+    :compiler-options {:externs ["externs.js"]}
+    :js-options {:js-provider :require}
+    :devtools {:repl-pprint true}}}}
