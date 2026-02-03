@@ -91,13 +91,13 @@
               dt (- t @last*)]
           (reset! last* t)
           (swap! world*
-                 (fn [w]
-                   (let [incoming (:events-out w)]
-                     (-> w
-                         (assoc :events-in (vec incoming))
-                         (assoc :events-out [])
-                         (assoc :effects [])
-                         (tick/tick dt systems)))))))
+                  (fn [w]
+                    (let [incoming (:events-out w)
+                          w1 (-> w
+                                 (assoc :events-in (vec incoming))
+                                 (assoc :events-out [])
+                                 (assoc :effects []))]
+                      (tick/tick dt systems w1))))))
       tick-ms)))
 
 (defn start-ts-bridge!
