@@ -13,6 +13,6 @@
     "rootDir": "./src",                      /* root directory of TS source files */
     "declaration": false                      /* turn on if you produce d.ts for a library */
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "*.ts"],
   "exclude": ["node_modules", "dist", "**/*.spec.ts"]
 }
