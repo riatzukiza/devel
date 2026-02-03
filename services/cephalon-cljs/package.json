@@ -1,0 +1,19 @@
+{
+  "name": "@promethean-os/cephalon-cljs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cephalon - ClojureScript implementation of always-running mind with vector memory",
+  "main": "dist/cephalon.js",
+  "scripts": {
+    "build": "clojure -M:shadow release cephalon"
+  },
+  "devDependencies": {
+    "shadow-cljs": "^3.3.5"
+  },
+  "dependencies": {
+    "@promethean-os/cephalon-ts": "workspace:*",
+    "chokidar": "^3.6.0",
+    "discord.js": "^14.16.3",
+    "openai": "^4.76.0"
+  }
+}
