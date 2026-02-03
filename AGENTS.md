@@ -160,13 +160,6 @@ Use these skills to stay aligned with the workspace workflow:
 - **OpenCode Models & Providers** (`.opencode/skills/opencode-models-providers.md`): provider/model selection
 - **OpenCode Tools, MCP, ACP** (`.opencode/skills/opencode-tools-mcp.md`): tool definitions + protocols
 
-### Reconstitution Workflows
-- **OpenCode Recover Project** (`.opencode/skills/opencode-recover-project/SKILL.md`): recover projects from sessions/snapshots
-- **OpenCode Review Past Sessions** (`.opencode/skills/opencode-review-past-sessions/SKILL.md`): summarize prior decisions/context
-- **OpenCode Semantic Find Session** (`.opencode/skills/opencode-semantic-find-session/SKILL.md`): locate relevant sessions quickly
-- **OpenCode Extract Diffs** (`.opencode/skills/opencode-extract-diffs/SKILL.md`): normalize snapshot diff dumps to patches
-- **OpenCode Apply Reconstituted Diffs** (`.opencode/skills/opencode-apply-reconstituted-diffs/SKILL.md`): safely apply recovered patches
-
 ### Server Integration
 - **MCP Server Integration** (`.opencode/skills/mcp-server-integration.md`): MCP servers + tools
 - **LSP Server Integration** (`.opencode/skills/lsp-server-integration.md`): language servers + intelligence
