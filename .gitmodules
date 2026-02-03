@@ -102,10 +102,20 @@
 	path = orgs/octave-commons/promethean
 	url = git@github.com:octave-commons/promethean.git
 	branch = device/stealth
+[submodule "orgs/octave-commons/gates-of-aker"]
+	path = orgs/octave-commons/gates-of-aker
+	url = git@github.com:octave-commons/gates-of-aker.git
+	branch = device/stealth
 [submodule "orgs/octave-commons/promethean-agent-system"]
 	path = orgs/octave-commons/promethean-agent-system
 	url = git@github.com:octave-commons/promethean-agent-system.git
 	branch = device/stealth
+
+[submodule "orgs/octave-commons/lineara_conversation_export"]
+	path = orgs/octave-commons/lineara_conversation_export
+	url = git@github.com:octave-commons/lineara_conversation_export.git
+	branch = device/stealth
+
 [submodule "orgs/kcrommett/oc-manager"]
 	path = orgs/kcrommett/oc-manager
 	url = git@github.com:kcrommett/oc-manager.git
@@ -113,4 +123,9 @@
 [submodule ".emacs.d"]
 	path = .emacs.d
 	url = https://github.com/syl20bnr/spacemacs
+	branch = device/stealth
+
+[submodule "orgs/open-hax/museeks"]
+	path = orgs/open-hax/museeks
+	url = https://github.com/open-hax/museeks.git
 	branch = device/stealth
