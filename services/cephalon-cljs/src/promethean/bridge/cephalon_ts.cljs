@@ -1,6 +1,4 @@
-(ns promethean.bridge.cephalon-ts
-  (:require
-    ["@promethean-os/cephalon-ts" :as cephalon-ts]))
+(ns promethean.bridge.cephalon-ts)
 
 (defonce *app (atom nil))
 
@@ -26,10 +24,14 @@
               :tick (or (:tick m) nil)}]
     (clj->js (into {} (remove (fn [[_ v]] (nil? v)) opts)))))
 
+(defn- require-cephalon-ts []
+  (js/require "@promethean-os/cephalon-ts"))
+
 (defn create-cephalon-app!
   "Create a new Cephalon application instance."
   [options]
-  (cephalon-ts/createCephalonApp (clj->js options)))
+  (let [cephalon (require-cephalon-ts)]
+    (.createCephalonApp cephalon (clj->js options))))
 
 (defn start-cephalon!
   "Start a Cephalon application instance."
@@ -53,10 +55,10 @@
          (do
            (js/console.warn "[cephalon-cljs] DUCK_DISCORD_TOKEN/DISCORD_TOKEN not set; TS Cephalon not started")
            (js/Promise.resolve nil))
-         (-> (cephalon-ts/createCephalonApp (->js-opts config))
-             (.then (fn [app]
-                      (reset! *app app)
-                      (.start app)))
+          (-> (create-cephalon-app! (->js-opts config))
+              (.then (fn [app]
+                       (reset! *app app)
+                       (.start app)))
              (.catch (fn [err]
                        (js/console.error "[cephalon-cljs] Failed to start TS Cephalon" err)
                        (throw err)))))))))
