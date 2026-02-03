@@ -39,9 +39,9 @@
     "ecosystem:generate": "pnpm --dir orgs/riatzukiza/promethean --filter @promethean-os/ecosystem-dsl run generate -- --dir ../../../../../system/daemons --output ../../../../../ecosystem.config.enhanced.mjs",
     "ecosystem:watch": "pnpm --dir orgs/riatzukiza/promethean --filter @promethean-os/ecosystem-dsl run generate:watch -- --dir ../../../../../system/daemons --output ../../../../../ecosystem.config.enhanced.mjs",
     "ecosystem:validate": "pnpm --dir orgs/riatzukiza/promethean --filter @promethean-os/ecosystem-dsl run validate -- --dir ../../../../../system/daemons",
-    "index-opencode-sessions": "pnpm -C packages/reconstituter opencode-sessions index",
-    "search-opencode-sessions": "pnpm -C packages/reconstituter opencode-sessions search",
-    "reconstitute": "pnpm -C packages/reconstituter reconstitute",
+    "index-opencode-sessions": "tsx index_opencode_sessions.ts",
+    "search-opencode-sessions": "tsx search_opencode_sessions.ts",
+    "reconstitute": "tsx reconstitute.ts",
     "generate-ecosystem": "npx shadow-cljs release clobber"
   },
   "bin": {
@@ -54,7 +54,7 @@
   "dependencies": {
     "@octokit/rest": "^22.0.1",
     "@opencode-ai/sdk": "^1.1.36",
-    "@promethean-os/lmdb-cache": "0.1.0",
+    "@promethean-os/lmdb-cache": "*",
     "chromadb": "^3.2.2",
     "commander": "^14.0.2",
     "level": "^10.0.0",

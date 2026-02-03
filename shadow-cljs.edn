@@ -1,338 +1,39 @@
-{:source-paths
- ["promethean/packages/frontend/src/kanban/cljs"
-  "promethean/packages/frontend/src/docops/cljs"
-  "promethean/packages/frontend/src/smartgpt-dashboard/cljs"
-  "promethean/packages/frontend/src/chat-ui/cljs"
-  "promethean/packages/frontend/src/opencode-session-manager/cljs"
-  "promethean/packages/frontend/src/openai-server/cljs"
-  "promethean/packages/report-forge/cljs"
-  "pm2-clj-project/src"
-  "ecosystems"
-  "orgs/open-hax/openhax/packages/opencode-reactant/src"
-  "orgs/open-hax/opencode-cljs-plugin-nrepl-eval/src"
-  "orgs/open-hax/museeks/src"
-  "orgs/open-hax/workbench/src/clojurescript"
-  "orgs/open-hax/cljs-plugin-template/src"
-  "orgs/open-hax/cljs-plugin-template/template/src"
-  "orgs/open-hax/opencode-cljs-plugin-delim-auto-fix/src"
-  "orgs/octave-commons/promethean/cli/promethean/src"
-  "orgs/octave-commons/promethean/packages/shadow-ui/src"
-  "orgs/octave-commons/promethean/packages/frontends/kanban-frontend/src/cljs"
-  "orgs/octave-commons/promethean/packages/duck/duck-utils/src/cljs"
-  "orgs/octave-commons/promethean/services/sentinel/src"
-  "orgs/octave-commons/promethean/services/sentinel/test"
-  "orgs/riatzukiza/promethean/cli/promethean/src"
-  "orgs/riatzukiza/promethean/packages/shadow-ui/src"
-  "orgs/riatzukiza/promethean/packages/frontends/kanban-frontend/src/cljs"
-  "orgs/riatzukiza/promethean/packages/duck/duck-utils/src/cljs"
-  "orgs/riatzukiza/promethean/services/sentinel/src"
-  "orgs/riatzukiza/promethean/services/sentinel/test"
-  "orgs/riatzukiza/promethean/packages/report-forge/src/cljs"
-  "orgs/riatzukiza/promethean/packages/frontend/src/chat-ui"
-  "orgs/riatzukiza/promethean/packages/frontend/src/chat-ui/cljs"
-  "orgs/riatzukiza/promethean/packages/frontend/src/docops/cljs"
-  "orgs/riatzukiza/promethean/packages/frontend/src/duck-web/cljs"
-  "orgs/riatzukiza/promethean/packages/frontend/src/kanban/cljs"
-  "orgs/riatzukiza/promethean/packages/frontend/src/main/cljs"
-  "orgs/riatzukiza/promethean/packages/frontend/src/openai-server/cljs"
-  "orgs/riatzukiza/promethean/packages/frontend/src/opencode-session-manager/cljs"
-  "orgs/riatzukiza/promethean/packages/frontend/src/piper/cljs"
-  "orgs/riatzukiza/promethean/packages/frontend/src/report-forge/cljs"
-  "orgs/riatzukiza/promethean/packages/frontend/src/smartgpt-dashboard/cljs"
-  "orgs/riatzukiza/promethean/packages/frontend/../shadow-ui/src"
-  "orgs/riatzukiza/promethean/services/frontend-service/src/cljs"
-  "orgs/riatzukiza/promethean/services/mcp-dev-ui-frontend/src/cljs"
-  "orgs/riatzukiza/openhax/packages/opencode-reactant/src"]
+{:source-paths ["promethean/packages/frontend/src/kanban/cljs"
+                  "promethean/packages/frontend/src/docops/cljs"
+                  "promethean/packages/frontend/src/smartgpt-dashboard/cljs"
+                  "promethean/packages/frontend/src/chat-ui/cljs"
+                  "promethean/packages/frontend/src/opencode-session-manager/cljs"
+                  "promethean/packages/frontend/src/openai-server/cljs"
+                  "promethean/packages/report-forge/cljs"
+                  "pm2-clj-project/src"
+                  "ecosystems"]
 
- :dependencies
- [[org.clojure/core.async "1.6.673"]
-  [org.clojure/tools.logging "1.2.4"]
-  [org.clojure/data.json "2.4.0"]
-  [org.clojure/tools.cli "1.0.214"]
-  [cider/cider-nrepl "0.28.7"]
-  [refactor-nrepl "3.9.1"]
-  [nrepl "1.3.1"]
-  [com.taoensso/timbre "6.3.1"]
-  [binaryage/devtools "1.0.7"]
-  [reagent/reagent "1.2.0"]
-  [re-frame/re-frame "1.4.3"]
-  [cljs-ajax "0.8.4"]
-  [cheshire/cheshire "5.11.0"]
-  [me.raynes/fs "1.4.6"]
-  [reagent "1.2.0"]
-  [cljs-ajax "0.8.4"]
-  [metosin/reitit "0.7.0"]
-  [metosin/reitit-frontend "0.7.0"]
-  [org.clojure/clojure "1.11.1"]
-  [org.clojure/clojurescript "1.11.60"]
-  [org.clojure/tools.logging "1.2.4"]
-  [org.slf4j/slf4j-nop "2.0.16"]
-  [cheshire "5.11.0"]
-  [me.raynes/fs "1.4.6"]
-  [com.taoensso/timbre "6.3.0"]
-  [day8.re-frame/re-frame-10x "1.9.8"]
-  [day8.re-frame/tracing "0.6.2"]
-  [day8.re-frame/tracing-stubs "0.6.2"]
-  [org.clojure/clojurescript "1.11.132"]
-  [promethean/promethean "0.0.1"]]
+  :dependencies [[org.clojure/core.async "1.6.673"]
+                 [org.clojure/tools.logging "1.2.4"]
+                 [org.clojure/data.json "2.4.0"]
+                 [org.clojure/tools.cli "1.0.214"]
+                 [cider/cider-nrepl "0.28.7"]
+                 [refactor-nrepl "3.9.1"]
+                 [nrepl "1.3.1"]
+                 [com.taoensso/timbre "6.3.1"]
+                 [binaryage/devtools "1.0.7"]
+                 [reagent/reagent "1.2.0"]
+                 [re-frame/re-frame "1.4.3"]
+                 [cljs-ajax "0.8.4"]
+                 [cheshire/cheshire "5.11.0"]
+                 [me.raynes/fs "1.4.6"]]
 
- :js-options {:entry-keys ["module" "browser" "main"]
-             :js-provider :require}
+  :js-options {:entry-keys ["module" "browser" "main"]
+               :js-provider :require}
 
- :nrepl {:port 9000
+  :nrepl {:port 9000
           :host "0.0.0.0"}
 
- :jvm-opts ["-Xmx4g" "-Xss2m" "-XX:+UseG1GC" "-XX:ReservedCodeCacheSize=64m"]
+  :jvm-opts ["-Xmx4g" "-Xss2m" "-XX:+UseG1GC" "-XX:ReservedCodeCacheSize=64m"]
 
- :js-package-dirs ["node_modules" "services/sentinel/node_modules"]
-
- :npm-deps {:react "18.3.1"
-             :react-dom "18.3.1"}
-
- :builds
- {:clobber {:target :node-script
-            :main index/-main
-            :output-to ".clobber/index.cjs"
-            :compiler-options {:infer-externs :auto
-                               :source-map true}}
-
-  :cephalon-cljs/cephalon {:target :node-script
-                            :main promethean.main/-main
-                            :output-to "packages/cephalon-cljs/dist/cephalon.js"
-                            :compiler-options {:externs ["externs.js"]}
-                            :js-options {:js-provider :require}
-                            :devtools {:repl-pprint true}}
-
-  :openhax/opencode-reactant/app {:target :browser
-                                :output-dir "orgs/open-hax/openhax/packages/opencode-reactant/resources/public/js"
-                                :asset-path "/js"
-                                :modules {:main {:init-fn opencode.ui.core/init}}
-                                :compiler-options {:warnings-as-errors true
-                                                   :elide-asserts false}
-                                :devtools {:http-root "orgs/open-hax/openhax/packages/opencode-reactant/resources/public"
-                                           :http-port 8700
-                                           :shadow-port 7890
-                                           :hud {:errors :warnings
-                                                 :progress true}
-                                           :autoload true
-                                           :preloads [devtools.preload]}
-                                :build-hooks [(shadow.cljs.build-report/hook {:output-to "orgs/open-hax/openhax/packages/opencode-reactant/target/build-report.html"})]
-                                :closure-defines {opencode.ui.state/REPO_SLUG #shadow/env "REPO_SLUG"}}
-
-  :openhax/opencode-reactant/test {:target :node-script
-                                  :output-to "orgs/open-hax/openhax/packages/opencode-reactant/target/test.js"
-                                  :main opencode.test-runner/-main}}
-
-  :openhax/opencode-cljs-plugin-nrepl-eval/opencode {:target :esm
-                                                    :output-dir "orgs/open-hax/opencode-cljs-plugin-nrepl-eval/dist"
-                                                    :modules {:plugin {:entries [my.opencode.entry]}}
-                                                    :compiler-options {:output-feature-set :es2022}}
-
-  :openhax/museeks/cli {:target :node-script
-                        :main museeks.core/-main
-                        :output-to "orgs/open-hax/museeks/bin/mu"
-                        :output-dir "orgs/open-hax/museeks/target/cli"
-                        :optimizations :advanced
-                        :pretty-print false
-                        :source-map true
-                        :closure-defines {museeks.config/version "0.1.0"}
-                        :devtools {:before-load-async museeks.core/stop
-                                   :after-load museeks.core/start}}
-
-  :openhax/workbench/app {:target :browser
-                        :output-dir "orgs/open-hax/workbench/public/renderer"
-                        :asset-path "/renderer"
-                        :modules {:main {:init-fn opencode-unified.main/main}}
-                        :dev {:compiler-options {:closure-defines {re-frame.trace/trace-enabled? true
-                                                                   day8.re-frame.tracing/trace-enabled? true}}}
-                        :devtools {:http-root "orgs/open-hax/workbench/public" :http-port 8080}}
-
-  :openhax/workbench/renderer {:target :browser
-                              :output-dir "orgs/open-hax/workbench/dist/renderer"
-                              :modules {:main {:init-fn renderer/init}}
-                              :devtools {:http-root "orgs/open-hax/workbench/dist/renderer"
-                                         :http-port 8081}}
-
-  :openhax/workbench/preload {:target :node-script
-                             :output-to "orgs/open-hax/workbench/dist/preload.js"
-                             :main preload/init
-                             :nodejs {:runtime :node}}
-
-  :openhax/workbench/main {:target :node-script
-                          :output-to "orgs/open-hax/workbench/dist/main.js"
-                          :main electron.main/init
-                          :nodejs {:runtime :node}}
-
-  :openhax/workbench/server {:target :node-script
-                           :output-to "orgs/open-hax/workbench/dist/server.js"
-                           :main electron.server/start
-                           :nodejs {:runtime :node}}
-
-  :openhax/workbench/dev {:target :browser
-                          :output-dir "orgs/open-hax/workbench/dev"
-                          :asset-path "/renderer"
-                          :modules {:main {:entries [opencode-unified.main]}}}
-
-  :openhax/cljs-plugin-template/opencode {:target :esm
-                                        :output-dir "orgs/open-hax/cljs-plugin-template/dist"
-                                        :modules {:plugin {:entries [my.opencode.entry]}}
-                                        :compiler-options {:output-feature-set :es2022}}
-
-  :openhax/cljs-plugin-template/template/opencode {:target :esm
-                                              :output-dir "orgs/open-hax/cljs-plugin-template/template/dist"
-                                              :modules {:plugin {:entries [my.opencode.entry]}}
-                                              :compiler-options {:output-feature-set :es2022}}
-
-  :openhax/opencode-cljs-plugin-delim-auto-fix/opencode {:target :esm
-                                                         :output-dir "orgs/open-hax/opencode-cljs-plugin-delim-auto-fix/dist"
-                                                         :modules {:plugin {:entries [my.opencode.entry]}}
-                                                         :compiler-options {:output-feature-set :es2022}}
-
-  :promethean/promethean-cli {:target :node-script
-                              :main promethean.cli.core/-main
-                              :output-to "orgs/riatzukiza/promethean/cli/promethean/dist/promethean_cli.cjs"
-                              :compiler-options {:infer-externs :auto
-                                                 :source-map true}}
-
-  :promethean/shadow-ui {:target :npm-module
-                           :output-dir "orgs/riatzukiza/promethean/packages/shadow-ui/dist"
-                           :entries [promethean.shadow-ui.index]
-                           :compiler-options {:output-feature-set :es-next}}
-
-  :promethean/duck-utils {:target :npm-module
-                           :output-dir "orgs/riatzukiza/promethean/packages/duck/duck-utils/dist"
-                           :entries [promethean.duck-utils.flags]
-                           :compiler-options {:output-feature-set :es-next}}
-
-  :promethean/kanban-frontend {:target :browser
-                                :output-dir "orgs/riatzukiza/promethean/packages/kanban/dist/frontend"
-                                :asset-path "/frontend"
-                                :modules {:main {:entries [core]}}
-                                :devtools {:watch-dir "orgs/riatzukiza/promethean/packages/frontends/kanban-frontend/static"
-                                           :compiler-options {:output-feature-set :es-next}}}
-
-  :promethean/sentinel {:target :node-script
-                         :main promethean.sentinel.core/-main
-                         :output-to "orgs/riatzukiza/promethean/services/sentinel/dist/sentinel.cjs"
-                         :compiler-options {:infer-externs :auto
-                                            :source-map true}}
-
-  :promethean/sentinel-test {:target :node-test
-                               :output-to "orgs/riatzukiza/promethean/services/sentinel/dist/sentinel-tests.cjs"
-                               :autorun true}
-
-  :promethean/sentinel-ui {:target :browser
-                             :output-dir "orgs/riatzukiza/promethean/services/sentinel/dist/ui"
-                             :asset-path "/ui"
-                             :js-options {:js-provider :shadow}
-                             :modules {:main {:entries [promethean.sentinel.ui.core]
-                                          :init-fn promethean.sentinel.ui.core/init}}
-                             :devtools {:watch-dir "orgs/riatzukiza/promethean/services/sentinel/resources/public"
-                                        :http-root "orgs/riatzukiza/promethean/services/sentinel/resources/public"
-                                        :http-port 8701}}
-
-  :promethean/report-forge/render {:target :esm
-                                   :output-dir "orgs/riatzukiza/promethean/packages/report-forge/dist/cljs"
-                                   :modules {:main {:entries [promethean.render]}}
-                                   :devtools {:enabled false}}
-
-  :promethean/frontend/main {:target :browser
-                             :output-dir "orgs/riatzukiza/promethean/packages/frontend/dist/main"
-                             :asset-path "/js"
-                             :modules {:main {:init-fn promethean.main.app/init
-                                          :default true}}
-                             :devtools {:http-root "orgs/riatzukiza/promethean/packages/frontend/static"
-                                        :http-port 3000
-                                        :http-resource-root "/"
-                                        :preloads [devtools.preload
-                                                   day8.re-frame-10x.preload]}
-                             :dev {:compiler-options {:closure-defines {re-frame.trace/trace-enabled? true
-                                                                        day8.re.frame.tracing/trace-enabled? true}}}}
-
-  :promethean/frontend-service/frontend-service {:target :node-script
-                                          :main promethean.frontend-service.core/-main
-                                          :output-to "orgs/riatzukiza/promethean/services/frontend-service/dist/frontend_service.cjs"
-                                          :compiler-options {:infer-externs :auto
-                                                             :source-map true
-                                                             :output-feature-set :es-next
-                                                             :optimizations :simple
-                                                             :checked-arrays :warn
-                                                             :fn-invoke-direct true
-                                                             :static-fns true
-                                                             :elide-asserts false
-                                                             :parallel-build true}
-                                          :devtools {:watch-dir "orgs/riatzukiza/promethean/services/frontend-service/static"
-                                                     :watch-include ["orgs/riatzukiza/promethean/services/frontend-service/src/cljs"]
-                                                     :autoload true
-                                                     :before-load-async promethean.frontend-service.core/stop!
-                                                     :after-load promethean.frontend-service.core/start!}
-                                          :build-hooks [(shadow.cljs.build-report/hook {:output-to "orgs/riatzukiza/promethean/services/frontend-service/target/report.html"})]
-                                          :dev {:compiler-options {:source-map-detail-level :all
-                                                             :pseudo-names true
-                                                             :pretty-print true}}
-                                          :release {:compiler-options {:optimizations :advanced
-                                                                 :elide-asserts true
-                                                                 :source-map false
-                                                                 :infer-externs :auto}}}
-
-  :promethean/frontend-service/frontend-service-test {:target :node-script
-                                                :main promethean.frontend-service.dsl-simple-test/-main
-                                                :output-to "orgs/riatzukiza/promethean/services/frontend-service/dist/dsl_test.cjs"
-                                                :compiler-options {:infer-externs :auto
-                                                                   :source-map true
-                                                                   :output-feature-set :es-next
-                                                                   :optimizations :simple}}}
-
-  :promethean/mcp-dev-ui-frontend/dev-ui {:target :browser
-                                            :output-dir "orgs/riatzukiza/promethean/services/mcp-dev-ui-frontend/dist/dev-ui"
-                                            :asset-path "/ui/assets"
-                                            :modules {:main {:init-fn promethean.mcp.dev-ui.core/init}}
-                                            :devtools {:watch-dir "orgs/riatzukiza/promethean/services/mcp-dev-ui-frontend/dist/dev-ui"}}}
-
-  :riatzukiza/openhax/opencode-reactant/app {:target :browser
-                                             :output-dir "orgs/riatzukiza/openhax/packages/opencode-reactant/resources/public/js"
-                                             :asset-path "/js"
-                                             :modules {:main {:init-fn opencode.ui.core/init}}
-                                             :compiler-options {:warnings-as-errors true
-                                                                :elide-asserts false}
-                                             :devtools {:http-root "orgs/riatzukiza/openhax/packages/opencode-reactant/resources/public"
-                                                        :http-port 8700
-                                                        :shadow-port 7890
-                                                        :hud {:errors :warnings
-                                                              :progress true}
-                                                        :autoload true
-                                                        :preloads [devtools.preload]}
-                                             :build-hooks [(shadow.cljs.build-report/hook {:output-to "orgs/riatzukiza/openhax/packages/opencode-reactant/target/build-report.html"})]
-                                             :closure-defines {opencode.ui.state/REPO_SLUG #shadow/env "REPO_SLUG"}}
-
-  :helm/ui/opencode-hub/app {:target :browser
-                             :output-dir "orgs/octave-commons/helm/ui/resources/public/js"
-                             :asset-path "/ui/js"
-                             :modules {:main {:init-fn opencode-hub.core/init}}
-                             :compiler-options {:warnings-as-errors true
-                                                :elide-asserts false}
-                             :devtools {:http-root "orgs/octave-commons/helm/ui/resources/public"
-                                        :http-port 8700
-                                        :shadow-port 7890
-                                        :hud {:errors :warnings
-                                              :progress}
-                                        :autoload true
-                                        :preloads [devtools.preload]}}
-
-  :ecosystem-dsl/node {:target :node-library
-                      :output-to "orgs/riatzukiza/promethean/cli/ecosystem-dsl/target/node/ecosystem-dsl.js"
-                      :output-dir "orgs/riatzukiza/promethean/cli/ecosystem-dsl/target/node"
-                      :main ecosystem-dsl.core/init
-                      :exports {:generate ecosystem-dsl.core/generate-ecosystem!
-                               :validate ecosystem-dsl.core/validate-edn-structure
-                               :watch ecosystem-dsl.core/start-file-watcher}
-                      :compiler-options {:optimizations :simple
-                                         :target :nodejs
-                                         :nodejs-rt true}}
-
-  :ecosystem-dsl/script {:target :node-script
-                         :output-to "orgs/riatzukiza/promethean/cli/ecosystem-dsl/target/scripts/generate-ecosystem.js"
-                         :main ecosystem-dsl.core/main
-                         :compiler-options {:optimizations :simple
-                                            :target :nodejs
-                                            :nodejs-rt true}}}}
+  :builds
+  {:clobber {:target :node-script
+             :main index/-main
+             :output-to ".clobber/index.cjs"
+             :compiler-options {:infer-externs :auto
+                                :source-map true}}}}
