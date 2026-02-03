@@ -1,2 +1,34 @@
 #!/usr/bin/env node
-require("../dist/pm2-clj.js");
+/**
+ * pm2-clj wrapper
+ * 
+ * Simple pass-through wrapper that:
+ * - Parses --mode and --entry flags
+ * - Sets PM2_CLJ_MODE and PM2_CLJ_ENTRY environment variables
+ * - Runs pm2 with remaining arguments
+ */
+
+const { spawnSync } = require("child_process");
+
+function takeFlag(argv, flag) {
+  const i = argv.indexOf(flag);
+  if (i === -1) return [null, argv];
+  const v = argv[i + 1] ?? null;
+  const out = argv.slice(0, i).concat(argv.slice(i + 2));
+  return [v, out];
+}
+
+const argv0 = process.argv.slice(2);
+
+let entry, mode, argv;
+[entry, argv] = takeFlag(argv0, "--entry");
+[mode, argv]  = takeFlag(argv,  "--mode");
+
+// pm2 pass-through env injection
+const env = { ...process.env };
+if (entry) env.PM2_CLJ_ENTRY = entry;
+if (mode)  env.PM2_CLJ_MODE  = mode;
+
+// Run pm2
+const r = spawnSync("pm2", argv, { stdio: "inherit", env });
+process.exit(r.status ?? 1);
