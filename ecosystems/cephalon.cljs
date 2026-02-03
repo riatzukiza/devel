@@ -5,20 +5,6 @@
 ;; TypeScript implementation: services/cephalon-ts
 ;; ClojureScript implementation: services/cephalon-cljs
 
-(clobber.macro/defapp "duck-cephalon-ts"
-  {:script "node"
-   :cwd "/home/err/devel/services/cephalon-ts"
-   :args ["dist/cli.js"]
-   :env {:NODE_ENV "production"
-         :DUCK_DISCORD_TOKEN (clobber.macro/env-var :DUCK_DISCORD_TOKEN "")}
-   :autorestart true
-   :max-restarts 5
-   :min-uptime "10s"
-   :log-date-format "YYYY-MM-DD HH:mm:ss Z"
-   :error-file "./logs/cephalon-error.log"
-   :out-file "./logs/cephalon-out.log"
-   :merge-logs true
-   :kill-timeout 5000})
 
 (clobber.macro/defapp "duck-cephalon-ui"
   {:script "npm"
