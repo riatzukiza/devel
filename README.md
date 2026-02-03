@@ -89,27 +89,44 @@ cd orgs/riatzukiza/promethean && pnpm install
 cd orgs/anomalyco/opencode && bun install
 ```
 
-### PM2 / pm2-clj Quick Start
+### Ecosystem Process Management (PM2)
 
-All PM2 ecosystem sources now use **pm2-clj DSL** format (`*.pm2.clj`):
+All processes are managed through the **ecosystem system**. Define apps in `ecosystems/*.cljs` files and compile with shadow-cljs.
 
 ```bash
-# Start a clobber process
-clobber start <path>/ecosystem.pm2.clj
+# Compile ecosystems to PM2 config
+npx shadow-cljs release clobber
 
-# Render config (validate without starting)
-clobber render <path>/ecosystem.pm2.clj
+# Start all processes from compiled config
+pm2 start ecosystem.config.cjs
 
-# Stop/restart processes
-pm2 stop <app-name>
-pm2 restart <app-name>
-pm2 delete <app-name>
+# Individual process management
+pm2 list                    # List running processes
+pm2 stop <app-name>         # Stop specific process
+pm2 restart <app-name>      # Restart specific process
+pm2 delete <app-name>       # Delete process from PM2
+pm2 logs <app-name>         # View process logs
+pm2 monit                   # Real-time monitoring dashboard
+```
 
-# View logs/monitoring
-pm2 logs <app-name>
-pm2 list
-pm2 status
-pm2 monit
+**Ecosystem Files:**
+- Location: `ecosystems/*.cljs`
+- Format: ClojureScript using `clobber.macro/defapp`
+- Output: `.clobber/index.cjs` (CommonJS for PM2)
+- Entry: `ecosystem.config.cjs` (requires `.clobber/index.cjs`)
+
+**Example:**
+```clojure
+;; ecosystems/myapp.cljs
+(ns myapp
+  (:require [clobber.macro]))
+
+(clobber.macro/defapp "my-service"
+  {:script "node"
+   :args ["dist/index.js"]
+   :cwd "/path/to/service"
+   :env {:NODE_ENV "production"}
+   :autorestart true})
 ```
 
 **See `.opencode/skills/pm2-process-management.md` for detailed PM2 workflows.**

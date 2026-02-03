@@ -145,3 +145,5 @@ docs.github/**/.cache/
 workspaces/
 orgs/private/
 orgs/snorkel-ai/
+.shadow-cljs
+.shadow-cljs/
