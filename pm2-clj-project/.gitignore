@@ -1,0 +1,21 @@
+# pm2-clj-project
+
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist/
+
+# Shadow-cljs cache and build files
+.shadow-cljs/
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
