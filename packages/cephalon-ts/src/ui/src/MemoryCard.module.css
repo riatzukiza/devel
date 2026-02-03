@@ -1,0 +1,114 @@
+.memoryCard {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.memoryCard:hover {
+  border-color: #58a6ff;
+  box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.id {
+  font-family: monospace;
+  font-size: 12px;
+  color: #8b949e;
+}
+
+.badges {
+  display: flex;
+  gap: 6px;
+}
+
+.role {
+  background: #238636;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.kind {
+  background: #1f6feb;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.pinned {
+  background: #f0c14b;
+  color: #24292e;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.content {
+  color: #c9d1d9;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 12px 0;
+  max-height: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #30363d;
+}
+
+.timestamp {
+  font-size: 12px;
+  color: #8b949e;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.actionBtn {
+  background: transparent;
+  border: 1px solid #30363d;
+  color: #8b949e;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.actionBtn:hover {
+  background: #21262d;
+  border-color: #8b949e;
+  color: #c9d1d9;
+}
+
+.pinBtn:hover {
+  color: #f0c14b;
+  border-color: #f0c14b;
+}
+
+.deleteBtn:hover {
+  color: #f85149;
+  border-color: #f85149;
+}
