@@ -1,4 +1,8 @@
-;; clobber.macro - ClojureScript macros for PM2 ecosystem configuration
+;; clobber.macro - ClojureScript macros/functions for PM2 ecosystem configuration
+;;
+;; NOTE: We use regular functions instead of macros because nbb interprets
+;; CLJS without compile-time macro expansion. Functions work because they're
+;; evaluated at runtime.
 ;;
 ;; This namespace provides:
 ;; - defapp: Define a PM2 application
@@ -9,16 +13,19 @@
 (ns clobber.macro
   (:require [clojure.string :as str]))
 
-;; Registry for apps and profiles
+;; Registry for apps and profiles - using atoms for mutable state
 (defonce app-registry (atom []))
 (defonce profile-registry (atom {}))
+
+;; Dynamic var for eval function (used by defprofile)
+(def ^:dynamic *eval-fn* nil)
 
 (defn- reset-registries! []
   "Reset app and profile registries. Call before each ecosystem evaluation."
   (reset! app-registry [])
   (reset! profile-registry {}))
 
-(defmacro defapp
+(defn defapp
   "Define a PM2 application.
    
    (defapp \"my-app\" {:script \"dist/index.js\" :instances 1})
@@ -27,13 +34,12 @@
      name: String name of the app
      opts: Map of PM2 configuration options"
   [name opts]
-  `(do
-     ;; Ensure registry is reset before first defapp
-     (when (empty? @app-registry)
-       (reset! app-registry []))
-     (swap! app-registry conj (assoc ~(if (map? opts) opts `~opts) :name ~name))))
+  ;; Ensure registry is reset before first defapp
+  (when (empty? @app-registry)
+    (reset! app-registry []))
+  (swap! app-registry conj (assoc opts :name name)))
 
-(defmacro defprofile
+(defn defprofile
   "Define a named profile with app overrides.
    
    (defprofile :dev
@@ -41,17 +47,18 @@
    
    The profile can override base apps or add new ones."
   [name & body]
-  `(do
-     ;; Ensure registry is fresh for profile
-     (let [fresh-registry# (atom [])
-           fresh-profile# (atom {})]
-       (binding [*eval-fn* (fn [form#]
-                             (case (first form#)
-                               defapp (let [[_ app-name# app-opts#] form#]
-                                       (swap! fresh-registry# conj (assoc app-opts# :name app-name#)))
-                               nil))]
-         ~@body)
-       (swap! profile-registry assoc ~name {:apps @fresh-registry#}))))
+  ;; Ensure registry is fresh for profile
+  (let [fresh-registry (atom [])
+        fresh-profile (atom {})]
+    (binding [*eval-fn* (fn [form]
+                          (case (first form)
+                            defapp (let [[_ app-name app-opts] form]
+                                     (swap! fresh-registry conj (assoc app-opts :name app-name)))
+                            nil))]
+      (doseq [form body]
+        (when *eval-fn*
+          (*eval-fn* form))))
+    (swap! profile-registry assoc name {:apps @fresh-registry})))
 
 (defn- evaluate-profile
   "Evaluate a profile and merge its apps into the main registry."
@@ -74,7 +81,7 @@
     (evaluate-profile profile))
   {:apps (vec @app-registry)})
 
-(defmacro ecosystem-output
+(defn ecosystem-output
   "Generate and print ecosystem configuration as EDN to stdout.
    
    Used by nbb subprocess execution to pass macro-expanded data
@@ -83,25 +90,24 @@
    Usage:
      (clobber.macro/ecosystem-output)
      ;; or
-     (clobber.macro/ecosystem-output {:profile :dev})
+     (clobber.macro/ecosystem-output :dev)
    
    Prints EDN to stdout for capture by parent process."
-  [& opts]
-  (let [merge-map (first opts)]
-    `(let [eco# ~(if merge-map
-                   `(ecosystem :profile ~(keyword (name merge-map)))
-                   `(ecosystem))]
-       (println (pr-str eco#)))))
+  [& [profile-kw]]
+  (let [eco (if profile-kw
+              (ecosystem :profile (keyword (name profile-kw)))
+              (ecosystem))]
+    (println (pr-str eco))))
 
 ;; Environment variable helper
-(defmacro env-var
+(defn env-var
   "Get environment variable with fallback.
    
    (env-var :VAR_NAME :fallback)
    (env-var :VAR_NAME)  ; no fallback
    
-   Expands to: (.-VAR_NAME js/process.env) or fallback"
+   Returns the env var value or fallback."
   ([var-sym]
-   `(get-in js/process.env [(name ~var-sym) ""]))
+   (get-in js/process.env [(name var-sym) ""]))
   ([var-sym fallback]
-   `(or (get-in js/process.env [(name ~var-sym) ""]) ~fallback)))
+   (or (get-in js/process.env [(name var-sym) ""]) fallback)))
