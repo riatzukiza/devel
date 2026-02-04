@@ -15,9 +15,9 @@
    :interpreter "/usr/bin/env"
    :autorestart true
    :watch false
-   :error_file "/home/err/devel/promethean/logs/opencode-server-error.log"
-   :out_file "/home/err/devel/promethean/logs/opencode-server-out.log"
-   :log_file "/home/err/devel/promethean/logs/opencode-server.log"
+   :error_file "./logs/opencode-server-error.log"
+   :out_file "./logs/opencode-server-out.log"
+   :log_file "./logs/opencode-server.log"
    :time true
    :kill_timeout 5000
    :restart_delay 5000
