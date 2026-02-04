@@ -1,3 +1,7 @@
+;; Ecosystem: sentinel.cljs
+;; - :script paths resolve relative to :cwd; verify build outputs
+;; - Rebuild PM2 config with: pnpm generate-ecosystem
+
 (ns sentinel
   (:require [clobber.macro]))
 

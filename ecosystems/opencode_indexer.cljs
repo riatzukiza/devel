@@ -1,3 +1,7 @@
+;; Ecosystem: opencode_indexer.cljs
+;; - :script paths resolve relative to :cwd; keep command entries accurate
+;; - Rebuild PM2 config with: pnpm generate-ecosystem
+
 (ns opencode-indexer
   (:require [clobber.macro]))
 

@@ -1,7 +1,12 @@
+;; Ecosystem: index.cljs
+;; - Requires ecosystem namespaces so defapp side effects register apps
+;; - Exports module.exports for PM2 via clobber.macro/ecosystem
+
 (ns index
   (:require [clobber.macro]
-            [opencode-indexer]
-            [services-cephalon]))
+            [opencode]
+            [services-cephalon]
+            [services-openplanner]))
 
 ;; The ecosystem and cephalon namespaces load and register all apps via defapp
 ;; when they're required. No need to call anything - the side effects happen

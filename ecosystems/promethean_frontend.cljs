@@ -1,3 +1,7 @@
+;; Ecosystem: promethean_frontend.cljs
+;; - :script paths resolve relative to :cwd; verify build outputs
+;; - Rebuild PM2 config with: pnpm generate-ecosystem
+
 (ns promethean-frontend
   (:require [clobber.macro]))
 
