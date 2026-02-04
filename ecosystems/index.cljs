@@ -1,7 +1,7 @@
 (ns index
   (:require [clobber.macro]
-            [ecosystem]
-            [cephalon]))
+            [opencode-indexer]
+            [services-cephalon]))
 
 ;; The ecosystem and cephalon namespaces load and register all apps via defapp
 ;; when they're required. No need to call anything - the side effects happen

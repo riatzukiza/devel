@@ -3,7 +3,7 @@
 
 (clobber.macro/defapp "frontend-main"
   {:script "shadow-cljs"
-   :cwd "/home/err/devel/orgs/riatzukiza/promethean/packages/frontend"
+   :cwd "./orgs/riatzukiza/promethean/packages/frontend"
    :interpreter "node"
    :interpreter_args "--max-old-space-size=4096"
    :watch false
@@ -20,7 +20,7 @@
 (clobber.macro/defapp "frontend-pantheon"
   {:script "vite"
    :args "--port 3001 --host 0.0.0.0"
-   :cwd "/home/err/devel/orgs/riatzukiza/promethean/packages/frontend"
+   :cwd "./orgs/riatzukiza/promethean/packages/frontend"
    :interpreter "node"
    :interpreter_args "--max-old-space-size=4096"
    :watch false

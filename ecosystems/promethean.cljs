@@ -37,9 +37,9 @@
    :interpreter "/usr/bin/env"
    :autorestart true
    :watch ["./packages/autocommit/dist"]
-   :error_file "/home/err/devel/promethean/logs/autocommit-error.log"
-   :out_file "/home/err/devel/promethean/logs/autocommit-out.log"
-   :log_file "/home/err/devel/promethean/logs/autocommit.log"
+   :error_file "./logs/autocommit-error.log"
+   :out_file "./logs/autocommit-out.log"
+   :log_file "./logs/autocommit.log"
    :time true
    :kill_timeout 5000
    :restart_delay 5000
