@@ -1,0 +1,23 @@
+{
+  "name": "@promethean-os/cephalon-cljs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cephalon - ClojureScript implementation of always-running mind with vector memory",
+  "main": "dist/cephalon.js",
+  "scripts": {
+    "build": "clojure -M:shadow release cephalon",
+    "test": "clojure -M:shadow:test compile test && node --enable-source-maps target/test.js",
+    "test:coverage": "clojure -M:shadow:test compile test && c8 -r text -r lcov --report-dir coverage node --enable-source-maps target/test.js"
+  },
+  "devDependencies": {
+    "c8": "^10.1.2",
+    "shadow-cljs": "^3.3.5"
+  },
+  "dependencies": {
+    "@promethean-os/cephalon-ts": "workspace:*",
+    "chokidar": "^3.6.0",
+    "discord.js": "^14.16.3",
+    "openai": "^4.76.0",
+    "source-map-support": "^0.5.21"
+  }
+}

@@ -1,0 +1,12 @@
+{:source-paths ["src"]
+
+ :dependencies
+ []
+
+ :builds
+ {:opencode
+  {:target :esm
+   :output-dir "dist"
+   :modules {:plugin {:entries [my.opencode.entry]}}
+   :compiler-options
+   {:output-feature-set :es2022}}}}

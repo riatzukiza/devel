@@ -1,0 +1,13 @@
+{
+  "$schema": "https://stryker-mutator.io/schema/stryker-schema.json",
+  "mutate": ["src/octavia/**/*.ts"],
+  "testRunner": "command",
+  "commandRunner": {
+    "command": "pnpm run test:octavia"
+  },
+  "coverageAnalysis": "off",
+  "reporters": ["clear-text", "progress", "html"],
+  "htmlReporter": {
+    "baseDir": "reports/stryker/octavia"
+  }
+}

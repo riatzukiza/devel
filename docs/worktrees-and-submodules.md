@@ -145,7 +145,7 @@ References (authoritative):
     ```
   - Per‑module update strategy:
     ```ini
-    [submodule "opencode-openai-codex-auth"]
+    [submodule "orgs/open-hax/codex"]
       update = rebase
     [submodule "openai/codex"]
       update = checkout

@@ -1,206 +1,39 @@
-{:source-paths ["promethean/packages/promethean-cli/src"
-                 "promethean/packages/shadow-ui/src"
-                 "promethean/packages/frontends/kanban-frontend/src/cljs"
-                 "promethean/packages/duck-utils/src/cljs"
-                 "promethean/packages/opencode-unified/src/clojurescript"
-                 "promethean/packages/frontend-service/src/cljs"
-                 "promethean/packages/frontends/docops-frontend/src/cljs"
-                 "promethean/packages/frontends/health-dashboard-frontend/src/cljs"
-                 "promethean/packages/frontends/llm-chat-frontend/src/cljs"
-                 "promethean/packages/frontends/markdown-graph-frontend/src/cljs"
-                 "promethean/packages/frontends/portfolio-frontend/src/cljs"
-                 "promethean/packages/frontends/smart-chat-frontend/src/cljs"
-                 "promethean/packages/frontends/smartgpt-dashboard-frontend/src/cljs"
-                 "promethean/pseudo/opencode-cljs-electron/src/clojurescript"
-                 "promethean/pseudo/agent-generator/src"
-                 "promethean/pseudo/opencode-session-manager/src"
-                 "promethean/packages/mcp-dev-ui-frontend/src"
-                 "promethean/packages/report-forge/src"
-                 "promethean/packages/ecosystem-dsl/src"
-                 "riatzukiza/openhax/packages/opencode-reactant/src"]
+{:source-paths ["promethean/packages/frontend/src/kanban/cljs"
+                  "promethean/packages/frontend/src/docops/cljs"
+                  "promethean/packages/frontend/src/smartgpt-dashboard/cljs"
+                  "promethean/packages/frontend/src/chat-ui/cljs"
+                  "promethean/packages/frontend/src/opencode-session-manager/cljs"
+                  "promethean/packages/frontend/src/openai-server/cljs"
+                  "promethean/packages/report-forge/cljs"
+                  "pm2-clj-project/src"
+                  "ecosystems"]
 
- :dependencies [[org.clojure/core.async "1.6.673"]
-                [org.clojure/tools.logging "1.2.4"]
-                [org.clojure/data.json "2.4.0"]
-                [org.clojure/tools.cli "1.0.214"]
-                [cider/cider-nrepl "0.28.7"]
-                [refactor-nrepl "3.9.1"]
-                [nrepl "1.3.1"]
-                [com.taoensso/timbre "6.3.1"]
-                [binaryage/devtools "1.0.7"]
-                [reagent/reagent "1.2.0"]
-                [re-frame/re-frame "1.4.3"]
-                [cljs-ajax "0.8.4"]
-                [cheshire/cheshire "5.11.0"]
-                [me.raynes/fs "1.4.6"]]
+  :dependencies [[org.clojure/core.async "1.6.673"]
+                 [org.clojure/tools.logging "1.2.4"]
+                 [org.clojure/data.json "2.4.0"]
+                 [org.clojure/tools.cli "1.0.214"]
+                 [cider/cider-nrepl "0.28.7"]
+                 [refactor-nrepl "3.9.1"]
+                 [nrepl "1.3.1"]
+                 [com.taoensso/timbre "6.3.1"]
+                 [binaryage/devtools "1.0.7"]
+                 [reagent/reagent "1.2.0"]
+                 [re-frame/re-frame "1.4.3"]
+                 [cljs-ajax "0.8.4"]
+                 [cheshire/cheshire "5.11.0"]
+                 [me.raynes/fs "1.4.6"]]
 
- :js-options {:entry-keys ["module" "browser" "main"]
-              :js-provider :require}
+  :js-options {:entry-keys ["module" "browser" "main"]
+               :js-provider :require}
 
- :nrepl {:port 9000
-         :host "0.0.0.0"}
+  :nrepl {:port 9000
+          :host "0.0.0.0"}
 
- :jvm-opts ["-Xmx4g" "-Xss2m" "-XX:+UseG1GC" "-XX:ReservedCodeCacheSize=64m"]
+  :jvm-opts ["-Xmx4g" "-Xss2m" "-XX:+UseG1GC" "-XX:ReservedCodeCacheSize=64m"]
 
- :builds
- {:;; Promethean CLI (Node.js)
-  promethean-cli
-  {:target :node-script
-   :main promethean.cli.core/-main
-   :output-to "promethean/packages/promethean-cli/dist/promethean_cli.cjs"
-   :compiler-options {:infer-externs :auto
-                      :source-map true}}
-
-  ;; Shadow UI (NPM module)
-  shadow-ui
-  {:target :npm-module
-   :output-dir "promethean/packages/shadow-ui/dist"
-   :entries [promethean.shadow-ui.index]
-   :compiler-options {:output-feature-set :es-next}}
-
-  ;; Duck Utils (NPM module)
-  duck-utils
-  {:target :npm-module
-   :output-dir "promethean/packages/duck-utils/dist"
-   :entries [promethean.duck-utils.flags]
-   :compiler-options {:output-feature-set :es-next}}
-
-  ;; Opencode Unified (Browser/Electron)
-  opencode-unified
-  {:target :browser
-   :output-dir "promethean/packages/opencode-unified/public/renderer"
-   :asset-path "/renderer"
-   :modules {:main {:init-fn opencode-unified.main/main}}
-   :dev {:compiler-options {:closure-defines {re-frame.trace/trace-enabled? true
-                                              day8.re-frame.tracing/trace-enabled? true}}}
-   :devtools {:http-root "promethean/packages/opencode-unified/public"
-              :http-port 8080}}
-
-  ;; Frontend Service (Node.js)
-  frontend-service
-  {:target :node-script
-   :main promethean.frontend-service.core/-main
-   :output-to "promethean/packages/frontend-service/dist/frontend_service.cjs"
-   :compiler-options {:infer-externs :auto
-                      :source-map true
-                      :output-feature-set :es-next}
-   :devtools {:watch-dir "promethean/packages/frontend-service/static"}}
-
-  ;; Frontend Service Tests
-  frontend-service-test
-  {:target :node-test
-   :main promethean.frontend-service.test.dsl-test
-   :output-to "promethean/packages/frontend-service/dist/test.cjs"
-   :compiler-options {:infer-externs :auto
-                      :source-map true
-                      :output-feature-set :es-next}
-   :ns-regexp ".*-test"}
-
-  ;; Kanban Frontend
-  kanban-frontend
-  {:target :browser
-   :output-dir "promethean/packages/kanban/dist/frontend"
-   :asset-path "/frontend"
-   :modules {:main {:entries [core]}}
-   :devtools {:watch-dir "promethean/packages/frontends/kanban-frontend/static"
-              :compiler-options {:output-feature-set :es-next}}}
-
-  ;; DocOps Frontend
-  docops-frontend
-  {:target :browser
-   :output-dir "promethean/packages/frontends/docops-frontend/dist/frontend"
-   :asset-path "/frontend"
-   :modules {:main {:entries [promethean.frontends.docops.app]}}
-   :devtools {:watch-dir "promethean/packages/frontends/docops-frontend/static"}}
-
-  ;; Health Dashboard Frontend
-  health-dashboard-frontend
-  {:target :browser
-   :output-dir "promethean/packages/frontends/health-dashboard-frontend/dist/frontend"
-   :asset-path "/frontend"
-   :modules {:main {:entries [promethean.frontends.health_dashboard.app]}}
-   :devtools {:watch-dir "promethean/packages/frontends/health-dashboard-frontend/static"}}
-
-  ;; LLM Chat Frontend
-  llm-chat-frontend
-  {:target :browser
-   :output-dir "promethean/packages/frontends/llm-chat-frontend/dist/frontend"
-   :asset-path "/frontend"
-   :modules {:main {:entries [promethean.frontends.llm_chat.app]}}
-   :devtools {:watch-dir "promethean/packages/frontends/llm-chat-frontend/static"}}
-
-  ;; Markdown Graph Frontend
-  markdown-graph-frontend
-  {:target :browser
-   :output-dir "promethean/packages/frontends/markdown-graph-frontend/dist/frontend"
-   :asset-path "/frontend"
-   :modules {:main {:entries [promethean.frontends.markdown_graph.app]}}
-   :devtools {:watch-dir "promethean/packages/frontends/markdown-graph-frontend/static"}}
-
-  ;; Portfolio Frontend
-  portfolio-frontend
-  {:target :browser
-   :output-dir "promethean/packages/frontends/portfolio-frontend/dist/frontend"
-   :asset-path "/frontend"
-   :modules {:main {:entries [promethean.frontends.portfolio.app]}}
-   :devtools {:watch-dir "promethean/packages/frontends/portfolio-frontend/static"}}
-
-  ;; Smart Chat Frontend
-  smart-chat-frontend
-  {:target :browser
-   :output-dir "promethean/packages/frontends/smart-chat-frontend/dist/frontend"
-   :asset-path "/frontend"
-   :modules {:main {:entries [promethean.frontends.smart_chat.app]}}
-   :devtools {:watch-dir "promethean/packages/frontends/smart-chat-frontend/static"}}
-
-  ;; SmartGPT Dashboard Frontend
-  smartgpt-dashboard-frontend
-  {:target :browser
-   :output-dir "promethean/packages/frontends/smartgpt-dashboard-frontend/dist/frontend"
-   :asset-path "/frontend"
-   :modules {:main {:entries [promethean.frontends.smartgpt_dashboard.app]}}
-   :devtools {:watch-dir "promethean/packages/frontends/smartgpt-dashboard-frontend/static"}}
-
-  ;; Opencode Reactant (Riatzukiza)
-  opencode-reactant
-  {:target :browser
-   :output-dir "riatzukiza/openhax/packages/opencode-reactant/resources/public/js"
-   :asset-path "/js"
-   :modules {:main {:init-fn opencode.ui.core/init}}
-   :compiler-options {:warnings-as-errors true
-                      :elide-asserts false}
-   :devtools {:http-root "riatzukiza/openhax/packages/opencode-reactant/resources/public"
-              :http-port 8700
-              :shadow-port 7890
-              :hud {:errors :warnings
-                    :progress true}
-              :autoload true
-              :preloads [devtools.preload]}
-   :build-hooks [(shadow.cljs.build-report/hook {:output-to "riatzukiza/openhax/packages/opencode-reactant/target/build-report.html"})]
-   :closure-defines {opencode.ui.state/REPO_SLUG #shadow/env "REPO_SLUG"}}
-
-  ;; Report Forge
-  report-forge
-  {:target :browser
-   :output-dir "promethean/packages/report-forge/dist"
-   :asset-path "/"
-   :modules {:main {:entries [promethean.report-forge.core]}}
-   :devtools {:http-root "promethean/packages/report-forge/public"
-              :http-port 8082}}
-
-  ;; MCP Dev UI Frontend
-  mcp-dev-ui-frontend
-  {:target :browser
-   :output-dir "promethean/packages/mcp-dev-ui-frontend/dist"
-   :asset-path "/"
-   :modules {:main {:entries [promethean.mcp-dev-ui.core]}}
-   :devtools {:http-root "promethean/packages/mcp-dev-ui-frontend/public"
-              :http-port 8083}}
-
-  ;; Ecosystem DSL
-  ecosystem-dsl
-  {:target :node-script
-   :main promethean.ecosystem.dsl/-main
-   :output-to "promethean/packages/ecosystem-dsl/dist/ecosystem_dsl.cjs"
-   :compiler-options {:infer-externs :auto
-                      :source-map true}}}
+  :builds
+  {:clobber {:target :node-script
+             :main index/-main
+             :output-to ".clobber/index.cjs"
+             :compiler-options {:infer-externs :auto
+                                :source-map true}}}}

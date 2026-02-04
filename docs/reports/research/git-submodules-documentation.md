@@ -10,7 +10,7 @@ The workspace contains **13 primary submodules** organized into several categori
 
 ### 🏗️ Development Infrastructure
 - **promethean** - Local LLM enhancement system and autonomous agent framework
-- **opencode-openai-codex-auth** - OpenAI Codex OAuth authentication plugin for opencode
+- **open-hax/codex** - Open Hax Codex OAuth authentication plugin for opencode
 - **agent-shell** - Emacs-based agent shell for ACP (Agent Client Protocol)
 - **clojure-mcp** - MCP server for Clojure REPL-driven development
 
@@ -48,7 +48,7 @@ The workspace contains **13 primary submodules** organized into several categori
 
 ---
 
-#### [opencode-openai-codex-auth](https://github.com/numman-ali/opencode-openai-codex-auth)
+#### [open-hax/codex](https://github.com/open-hax/codex)
 **Purpose**: OAuth authentication plugin enabling ChatGPT Plus/Pro backend access for opencode
 **Key Features**:
 - 7-step fetch flow for OpenAI platform → ChatGPT backend transformation
@@ -57,9 +57,9 @@ The workspace contains **13 primary submodules** organized into several categori
 - Comprehensive request/response transformation pipeline
 
 **Documentation Links**:
-- [Main AGENTS.md](https://github.com/numman-ali/opencode-openai-codex-auth/blob/main/AGENTS.md)
-- [README.md](https://github.com/numman-ali/opencode-openai-codex-auth/blob/main/README.md)
-- [Architecture Documentation](https://github.com/numman-ali/opencode-openai-codex-auth/tree/main/docs)
+- [Main AGENTS.md](https://github.com/open-hax/codex/blob/main/AGENTS.md)
+- [README.md](https://github.com/open-hax/codex/blob/main/README.md)
+- [Architecture Documentation](https://github.com/open-hax/codex/tree/main/docs)
 
 **Cross-Reference Value**: Critical for authentication patterns, OAuth flows, and backend API integration
 
@@ -206,28 +206,28 @@ The workspace contains **13 primary submodules** organized into several categori
 ### 🔗 High-Value Cross-References
 
 #### Authentication & OAuth Patterns
-- **opencode-openai-codex-auth** → **openai/codex**: OAuth implementation mirrors Codex CLI patterns
-- **opencode-openai-codex-auth** → **moofone/codex-ts-sdk**: TypeScript SDK integration patterns
+- **open-hax/codex** → **openai/codex**: OAuth implementation mirrors Codex CLI patterns
+- **open-hax/codex** → **moofone/codex-ts-sdk**: TypeScript SDK integration patterns
 - **agent-shell** → All agents: Universal authentication and environment management
 
 #### Agent & Protocol Implementation
 - **agent-shell** → **clojure-mcp**: ACP protocol implementation reference
 - **promethean** → **clojure-mcp**: Agent orchestration and tool management patterns
-- **promethean** → **opencode-openai-codex-auth**: Plugin architecture and request transformation
+- **promethean** → **open-hax/codex**: Plugin architecture and request transformation
 
 #### Development Workflow Integration
 - **clojure-mcp** → **promethean**: REPL-driven development patterns for agent enhancement
-- **stt** → **opencode-openai-codex-auth**: Plugin development and testing workflows
+- **stt** → **open-hax/codex**: Plugin development and testing workflows
 - **riatzukiza/openhax** → **agent-shell**: Emacs integration patterns for development
 
 #### TypeScript & Rust Integration
 - **moofone/codex-ts-sdk** → **openai/codex**: Native binding patterns and API compatibility
-- **opencode-openai-codex-auth** → **moofone/codex-ts-sdk**: SDK usage patterns and integration
+- **open-hax/codex** → **moofone/codex-ts-sdk**: SDK usage patterns and integration
 
 ### 🛠️ Recommended Tooling Reuse Patterns
 
 #### For Authentication Development
-1. **Reference**: `opencode-openai-codex-auth` for OAuth flow implementation
+1. **Reference**: `open-hax/codex` for OAuth flow implementation
 2. **Patterns**: 7-step fetch flow, token refresh, request transformation
 3. **Integration**: Use with `moofone/codex-ts-sdk` for TypeScript clients
 
@@ -251,7 +251,7 @@ The workspace contains **13 primary submodules** organized into several categori
 ### 🚀 Quick Start Decision Tree
 
 #### **Need Authentication?**
-→ `opencode-openai-codex-auth` → OAuth patterns & token management
+→ `open-hax/codex` → OAuth patterns & token management
 → `moofone/codex-ts-sdk` → TypeScript SDK integration
 
 #### **Building Agent Tools?**
@@ -277,7 +277,7 @@ The workspace contains **13 primary submodules** organized into several categori
 
 #### **Implementation Patterns**
 1. **Architecture Reference**: `promethean/docs/` for system design
-2. **API Integration**: `opencode-openai-codex-auth/AGENTS.md` for request flows
+2. **API Integration**: `open-hax/codex/AGENTS.md` for request flows
 3. **Protocol Implementation**: `agent-shell/README.org` for ACP patterns
 4. **Language Tools**: `clojure-mcp/README.md` for MCP server implementation
 
@@ -294,7 +294,7 @@ The workspace contains **13 primary submodules** organized into several categori
 |----------|---------|--------------|
 | `/home/err/devel/AGENTS.md` | Workspace-level commands and style | Current |
 | `/home/err/devel/openai/codex/AGENTS.md` | Rust/Codex development patterns | Current |
-| `/home/err/devel/opencode-openai-codex-auth/AGENTS.md` | OAuth plugin development | Current |
+| `/home/err/devel/orgs/open-hax/codex/AGENTS.md` | OAuth plugin development | Current |
 | `/home/err/devel/promethean/AGENTS.md` | Agent orchestration practices | Current |
 | `/home/err/devel/stt/opencode/AGENTS.md` | Opencode development | Current |
 | `/home/err/devel/riatzukiza/openhax/AGENTS.md` | Full-stack development | Current |

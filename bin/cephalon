@@ -1,0 +1,305 @@
+#!/usr/bin/env bb
+
+(ns cephalon
+  (:require [babashka.fs :as fs]
+            [babashka.process :refer [process]]
+            [clojure.string :as str]))
+
+(def root-dir
+  (-> *file* fs/real-path fs/parent fs/parent str))
+
+(def bridge-dir (str root-dir "/orgs/octave-commons/cephalon-clj"))
+(def admin-tui-dir (str bridge-dir "/cephalon-clj-admin-tui"))
+(def brain-dir (str bridge-dir "/cephalon-clj-brain"))
+
+(def cephalon-home (or (System/getenv "CEPHALON_HOME") (str (System/getProperty "user.home") "/.cephalon")))
+(def cephalon-sessions-dir (str cephalon-home "/sessions"))
+(def cephalon-logs-dir (str cephalon-home "/logs"))
+(def cephalon-tools-dir (str cephalon-home "/tools"))
+(def cephalon-enabled-tools-file (str cephalon-tools-dir "/enabled"))
+
+(defn base-env
+  []
+  {"HOME" (or (System/getenv "HOME") (System/getProperty "user.home"))
+   "XDG_CONFIG_HOME" cephalon-home})
+
+(defn ensure-cephalon-home []
+  (doseq [dir [cephalon-sessions-dir cephalon-logs-dir cephalon-tools-dir]]
+    (fs/create-dirs dir)))
+
+(defn print-usage []
+  (println "Usage: cephalon [start|attach|test|admin-tui|lanterna|brain|ui|tools|mcp|help]")
+  (println "")
+  (println "Commands:")
+  (println "  start      Start brain + Lanterna admin TUI")
+  (println "  attach     Start Lanterna admin TUI attached to an existing WS (arg: port or url)")
+  (println "  test       Run brain tests + admin-tui tests")
+  (println "  admin-tui  Start the Opentui admin panel only (experimental)")
+  (println "  lanterna   Start the Lanterna admin TUI only")
+  (println "  brain      Start the brain service only")
+  (println "  ui         Start the HumbleUI admin client only")
+  (println "  tools      Manage tool availability (list/enable/disable)")
+  (println "  mcp        MCP server utilities (serve/config/tools)")
+  (println "  help       Show this help")
+  (println "")
+  (println "Environment overrides:")
+  (println "  DISCORD_IO_WS               (default: ws://127.0.0.1:8787/ws)")
+  (println "  OLLAMA_BASE_URL             (default: http://127.0.0.1:11434)")
+  (println "  OLLAMA_MODEL                (default: qwen3:4b)")
+  (println "  DUCK_ADMIN_WS_PORT          (default: 8788)")
+  (println "  DUCK_ADMIN_WS_URL           (default: ws://127.0.0.1:8788)")
+  (println "  DUCK_ADMIN_SESSION_LOOP_MAX (default: 4)")
+  (println "  OPENHAX_DISCORD_TOKEN       (fallback for DISCORD_TOKEN in MCP serve)")
+  (println "  CEPHALON_MCP_PORT           (default: 7894)")
+  (println "  CEPHALON_HOME               (default: ~/.cephalon)"))
+
+(defn run
+  [cmd opts]
+  (let [proc (process cmd (merge {:inherit true} opts))
+        result @proc]
+    (when (not= 0 (:exit result))
+      (System/exit (:exit result)))))
+
+(defn start-brain []
+  (ensure-cephalon-home)
+  (let [ws-url (or (System/getenv "DISCORD_IO_WS") "ws://127.0.0.1:8787/ws")
+        base-url (or (System/getenv "OLLAMA_BASE_URL") "http://127.0.0.1:11434")
+        model (or (System/getenv "OLLAMA_MODEL") "qwen3:4b")
+        admin-port (or (System/getenv "DUCK_ADMIN_WS_PORT") "8788")]
+    (println (str "Starting brain (admin WS on :" admin-port ")..."))
+    (println (str "DISCORD_IO_WS=" ws-url))
+    (println (str "OLLAMA_BASE_URL=" base-url))
+    (println (str "OLLAMA_MODEL=" model))
+    (run ["clojure" "-M" "-m" "cephalon.brain.main"]
+         {:dir brain-dir
+          :env (merge (base-env)
+                      {"DISCORD_IO_WS" ws-url
+                       "OLLAMA_BASE_URL" base-url
+                       "OLLAMA_MODEL" model
+                       "DUCK_ADMIN_WS_PORT" admin-port})})))
+
+(defn start-admin-tui []
+  (ensure-cephalon-home)
+  (let [admin-url (or (System/getenv "DUCK_ADMIN_WS_URL") "ws://127.0.0.1:8788")]
+    (println (str "Starting admin TUI (dev, WS: " admin-url ")..."))
+    (run ["npm" "run" "dev"]
+         {:dir admin-tui-dir
+          :env {"DUCK_ADMIN_WS_URL" admin-url}})))
+
+(defn start-admin-tui-prod []
+  (ensure-cephalon-home)
+  (let [admin-url (or (System/getenv "DUCK_ADMIN_WS_URL") "ws://127.0.0.1:8788")
+        dist-file (str admin-tui-dir "/dist/admin.cjs")]
+    (println (str "Starting admin TUI (prod, WS: " admin-url ")..."))
+    (when-not (fs/exists? dist-file)
+      (run ["npm" "run" "build"] {:dir admin-tui-dir}))
+    (run ["npm" "start"]
+         {:dir admin-tui-dir
+          :env {"DUCK_ADMIN_WS_URL" admin-url}})))
+
+(defn start-admin-tui-lanterna []
+  (ensure-cephalon-home)
+  (let [admin-url (or (System/getenv "DUCK_ADMIN_WS_URL") "ws://127.0.0.1:8788")]
+    (println (str "Starting Lanterna admin TUI (WS: " admin-url ")..."))
+    (run ["clojure" "-M" "-m" "cephalon.brain.admin-tui"]
+         {:dir brain-dir
+          :env (merge (base-env)
+                      {"DUCK_ADMIN_WS_URL" admin-url})})))
+
+(defn run-tests []
+  (ensure-cephalon-home)
+  (println "Running brain tests...")
+  (run ["clojure" "-M" "-m" "cephalon.brain.test-runner"]
+       {:dir brain-dir
+        :env (base-env)})
+  (println "Running admin-tui tests...")
+  (run ["npm" "test"] {:dir admin-tui-dir}))
+
+(defn start-humble-ui []
+  (ensure-cephalon-home)
+  (let [display (or (System/getenv "DISPLAY") (System/getenv "WAYLAND_DISPLAY"))
+        admin-url (or (System/getenv "DUCK_ADMIN_WS_URL") "ws://127.0.0.1:8788")]
+    (when (str/blank? display)
+      (println "No display detected. HumbleUI requires an X11/Wayland display.")
+      (println "Tip: run with xvfb-run, e.g. `xvfb-run -a cephalon ui`, or set DISPLAY.")
+      (System/exit 1))
+    (when-not (zero? (:exit @(process ["xdpyinfo"] {:out :string :err :string})))
+      (println "Display check failed. HumbleUI requires a working X11/Wayland display.")
+      (println "Tip: run with xvfb-run, e.g. `xvfb-run -a cephalon ui`, or fix DISPLAY.")
+      (System/exit 1))
+    (println (str "Starting HumbleUI admin client (WS: " admin-url ")..."))
+    (run ["clojure" "-M:ui"]
+         {:dir brain-dir
+          :env (merge (base-env)
+                      {"DUCK_ADMIN_WS_URL" admin-url})})))
+
+(defn mcp-env []
+  (let [profile (System/getenv "CEPHALON_PROFILE")
+        open-token (System/getenv "OPENHAX_DISCORD_TOKEN")
+        discord-token (System/getenv "DISCORD_TOKEN")
+        duck-token (System/getenv "DUCK_DISCORD_TOKEN")
+        skull-token (System/getenv "SKULL_DISCORD_TOKEN")
+        duck-debug (System/getenv "DUCK_DEBUG")
+        duck-loop-enabled (System/getenv "DUCK_LOOP_ENABLED")
+        duck-loop-interval (System/getenv "DUCK_LOOP_INTERVAL_MS")]
+    (cond-> {}
+      open-token (assoc "OPENHAX_DISCORD_TOKEN" open-token)
+      discord-token (assoc "DISCORD_TOKEN" discord-token)
+      ;; Profile-based token selection
+      profile (assoc "CEPHALON_PROFILE" profile)
+      (= profile "duck") (assoc "DISCORD_TOKEN" (or duck-token discord-token open-token))
+      (= profile "openskull") (assoc "DISCORD_TOKEN" (or skull-token discord-token open-token))
+      ;; Fallback: use OPENHAX_DISCORD_TOKEN if DISCORD_TOKEN is blank
+      (and open-token (str/blank? discord-token)) (assoc "DISCORD_TOKEN" open-token)
+      duck-debug (assoc "DUCK_DEBUG" duck-debug)
+      duck-loop-enabled (assoc "DUCK_LOOP_ENABLED" duck-loop-enabled)
+      duck-loop-interval (assoc "DUCK_LOOP_INTERVAL_MS" duck-loop-interval))))
+
+(defn start-mcp-server [args]
+  (ensure-cephalon-home)
+  (let [default-port (or (System/getenv "CEPHALON_MCP_PORT") "7894")
+        port-provided? (some #{"--port"} args)
+        port-value (or (some->> args (drop-while #(not= "--port" %)) second) default-port)
+        run-args (if port-provided?
+                   args
+                   (into ["--port" port-value] args))]
+    (println (str "Starting MCP server (port " port-value ")..."))
+    (run (into ["clojure" "-M" "-m" "cephalon.brain.mcp-server"] run-args)
+         {:dir brain-dir
+          :env (merge (base-env) (mcp-env))})))
+
+(defn mcp-config [args]
+  (run (into ["clojure" "-M" "-m" "cephalon.brain.mcp" "config"] args)
+       {:dir brain-dir
+        :env (base-env)}))
+
+(defn mcp-tools [args]
+  (run (into ["clojure" "-M" "-m" "cephalon.brain.mcp" "tools"] args)
+       {:dir brain-dir
+        :env (base-env)}))
+
+(defn tool-sources []
+  (let [pattern (str brain-dir "/src/cephalon/brain/tools/*.clj")]
+    (sort (map str (fs/glob pattern)))))
+
+(defn extract-tools [content]
+  (let [remote (map second (re-seq #"\(def-remote-tool\s+([^\s\)]+)" content))
+        local (map second (re-seq #"\(def-tool\s+([^\s\)]+)" content))]
+    (->> (concat remote local) (remove nil?) distinct sort)))
+
+(defn tools-list-available []
+  (ensure-cephalon-home)
+  (let [paths (tool-sources)]
+    (when (empty? paths)
+      (println (str "No tool sources found in " brain-dir "/src/cephalon/brain/tools") )
+      (System/exit 1))
+    (let [names (->> paths
+                     (map slurp)
+                     (mapcat extract-tools)
+                     distinct
+                     sort)]
+      (doseq [name names]
+        (println name)))))
+
+(defn tools-enable [tool]
+  (ensure-cephalon-home)
+  (when (str/blank? tool)
+    (println "Tool name required")
+    (System/exit 1))
+  (when-not (fs/exists? cephalon-enabled-tools-file)
+    (spit cephalon-enabled-tools-file ""))
+  (let [current (set (str/split-lines (slurp cephalon-enabled-tools-file)))]
+    (if (contains? current tool)
+      (println (str "Tool already enabled: " tool))
+      (do
+        (spit cephalon-enabled-tools-file (str (str/join "\n" (conj current tool)) "\n"))
+        (println (str "Enabled tool: " tool))))))
+
+(defn tools-disable [tool]
+  (ensure-cephalon-home)
+  (when (str/blank? tool)
+    (println "Tool name required")
+    (System/exit 1))
+  (when-not (fs/exists? cephalon-enabled-tools-file)
+    (println "No enabled tools list found")
+    (System/exit 1))
+  (let [current (set (remove str/blank? (str/split-lines (slurp cephalon-enabled-tools-file))))]
+    (if (contains? current tool)
+      (do
+        (spit cephalon-enabled-tools-file (str (str/join "\n" (sort (disj current tool))) "\n"))
+        (println (str "Disabled tool: " tool)))
+      (println (str "Tool not enabled: " tool)))))
+
+(defn start-both []
+  (let [ws-url (or (System/getenv "DISCORD_IO_WS") "ws://127.0.0.1:8787/ws")
+        base-url (or (System/getenv "OLLAMA_BASE_URL") "http://127.0.0.1:11434")
+        model (or (System/getenv "OLLAMA_MODEL") "qwen3:4b")
+        admin-port (or (System/getenv "DUCK_ADMIN_WS_PORT") "8788")
+        admin-url (or (System/getenv "DUCK_ADMIN_WS_URL") "ws://127.0.0.1:8788")
+        proc (process ["clojure" "-M" "-m" "cephalon.brain.main"]
+                      {:dir brain-dir
+                       :env (merge (base-env)
+                                   {"DISCORD_IO_WS" ws-url
+                                    "OLLAMA_BASE_URL" base-url
+                                    "OLLAMA_MODEL" model
+                                    "DUCK_ADMIN_WS_PORT" admin-port})
+                       :inherit true})]
+    (Thread/sleep 2000)
+    (run ["clojure" "-M" "-m" "cephalon.brain.admin-tui"]
+         {:dir brain-dir
+          :env (merge (base-env)
+                      {"DUCK_ADMIN_WS_URL" admin-url})})
+    @proc))
+
+(def args (vec *command-line-args*))
+(def command (or (first args) "start"))
+(def rest-args (vec (rest args)))
+
+(case command
+  "start" (start-both)
+  "attach" (let [target (first rest-args)]
+             (if (str/blank? target)
+               (start-admin-tui-lanterna)
+               (if (re-matches #"\d+" target)
+                 (let [admin-url (str "ws://127.0.0.1:" target)]
+                   (run ["clojure" "-M" "-m" "cephalon.brain.admin-tui"]
+                        {:dir brain-dir
+                         :env (merge (base-env)
+                                     {"DUCK_ADMIN_WS_URL" admin-url})}))
+                 (run ["clojure" "-M" "-m" "cephalon.brain.admin-tui"]
+                      {:dir brain-dir
+                       :env (merge (base-env)
+                                   {"DUCK_ADMIN_WS_URL" target})}))))
+  "test" (run-tests)
+  "admin-tui" (start-admin-tui)
+  "lanterna" (start-admin-tui-lanterna)
+  "brain" (start-brain)
+  "ui" (start-humble-ui)
+  "tools" (let [subcommand (or (first rest-args) "")
+                sub-args (vec (rest rest-args))]
+            (case subcommand
+              "list" (if (= "--available" (first sub-args))
+                       (tools-list-available)
+                       (do (println "Usage: cephalon tools list --available")
+                           (System/exit 1)))
+              "enable" (tools-enable (first sub-args))
+              "disable" (tools-disable (first sub-args))
+              (do
+                (println "Usage: cephalon tools list --available | tools enable <tool> | tools disable <tool>")
+                (System/exit 1))))
+  "mcp" (let [subcommand (or (first rest-args) "")
+                sub-args (vec (rest rest-args))]
+            (case subcommand
+              "serve" (start-mcp-server sub-args)
+              "config" (mcp-config sub-args)
+              "tools" (mcp-tools sub-args)
+              (do
+                (println "Usage: cephalon mcp serve [--port <port>] | mcp config | mcp tools [--agent duck|openskull|all]")
+                (System/exit 1))))
+  "help" (print-usage)
+  "-h" (print-usage)
+  "--help" (print-usage)
+  (do
+    (println (str "Unknown command: " command))
+    (print-usage)
+    (System/exit 1)))

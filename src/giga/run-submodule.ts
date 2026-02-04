@@ -64,7 +64,7 @@ async function runGenericTarget(label: string, dir: string, target: string): Pro
 
   if (await hasNxConfig(dir)) {
     console.log(`[${target}] ${label}: running Nx run-many fallback`);
-    return runNxTarget(dir, target, manager);
+    return runNxTarget(label, dir, target, manager);
   }
 
   console.log(`No ${target} script or nx.json in ${label}; skipping.`);
@@ -81,20 +81,20 @@ async function runTypecheck(label: string, dir: string): Promise<boolean> {
 
   if (await hasNxConfig(dir)) {
     console.log(`[typecheck] ${label}: running Nx run-many fallback`);
-    return runNxTarget(dir, "typecheck", manager);
+    return runNxTarget(label, dir, "typecheck", manager);
   }
 
   if (pkg) {
     const tsconfig = await findTsconfig(dir);
     if (tsconfig) {
       console.log(`[typecheck] ${label}: no script found, running TypeScript on ${tsconfig}`);
-      return runTypeScriptCheck(dir, tsconfig, manager);
+      return runTypeScriptCheck(label, dir, tsconfig, manager);
     }
   }
 
   if (await pathExists(join(dir, "Cargo.toml"))) {
     console.log(`[typecheck] ${label}: detected Cargo project, running cargo check`);
-    return run(["cargo", "check"], dir);
+    return run(["cargo", "check"], dir, { label: `[typecheck] ${label}` });
   }
 
   console.warn(`[typecheck] Skipping ${label}: no supported typecheck strategy detected`);
@@ -159,14 +159,14 @@ async function runPackageScript(manager: NodePackageManager, dir: string, script
   return run(cmd, dir);
 }
 
-async function runNxTarget(dir: string, target: string, manager: NodePackageManager | null): Promise<boolean> {
+async function runNxTarget(label: string, dir: string, target: string, manager: NodePackageManager | null): Promise<boolean> {
   const args = ["run-many", `--target=${target}`, "--all"];
-  return run(buildBinaryCommand(manager, "nx", args), dir);
+  return run(buildBinaryCommand(manager, "nx", args), dir, { label: `nx:${target} ${label}` });
 }
 
-async function runTypeScriptCheck(dir: string, tsconfig: string, manager: NodePackageManager | null): Promise<boolean> {
+async function runTypeScriptCheck(label: string, dir: string, tsconfig: string, manager: NodePackageManager | null): Promise<boolean> {
   const args = ["-p", tsconfig, "--noEmit"];
-  return run(buildBinaryCommand(manager, "tsc", args), dir);
+  return run(buildBinaryCommand(manager, "tsc", args), dir, { label: `tsc ${label}` });
 }
 
 function buildBinaryCommand(manager: NodePackageManager | null, bin: string, args: string[]): string[] {
@@ -202,22 +202,37 @@ async function pathExists(p: string): Promise<boolean> {
   }
 }
 
-async function run(cmd: string[], cwd: string = process.cwd()): Promise<boolean> {
-  console.log(`> ${cmd.join(" ")}`);
+type RunOptions = {
+  readonly label?: string;
+};
+
+async function run(cmd: string[], cwd: string = process.cwd(), options?: RunOptions): Promise<boolean> {
+  const prefix = options?.label ? `[${options.label}] ` : "";
+  console.log(`${prefix}> ${cmd.join(" ")}`);
   const proc = spawn({ cmd, cwd, stdout: "pipe", stderr: "pipe" });
-  const [out, err] = await Promise.all([
+  const [out, err, exitCode] = await Promise.all([
     new Response(proc.stdout).text(),
     new Response(proc.stderr).text(),
+    proc.exited,
   ]);
-  if (out.trim()) console.log(out.trim());
-  if (proc.exitCode === 0) {
+  const trimmedOut = out.trim();
+  if (trimmedOut) {
+    logWithPrefix(trimmedOut, prefix, console.log);
+  }
+  if (exitCode === 0) {
     return true;
   }
   const errorText = err.trim();
   if (errorText) {
-    console.warn(errorText);
+    logWithPrefix(errorText, prefix, console.warn);
   }
   return false;
+}
+
+function logWithPrefix(text: string, prefix: string, logger: (line: string) => void): void {
+  for (const line of text.split("\n")) {
+    logger(`${prefix}${line}`);
+  }
 }
 
 if (import.meta.main) {

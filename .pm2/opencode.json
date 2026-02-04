@@ -1,0 +1,32 @@
+{
+  "apps": [
+    {
+      "args": [
+        "opencode-ai@latest",
+        "web",
+        "--port",
+        "4096",
+        "--hostname",
+        "127.0.0.1"
+      ],
+      "interpreter": "/usr/bin/env",
+      "log_file": "/home/err/devel/promethean/logs/opencode-server.log",
+      "script": "bunx",
+      "max_restarts": 10,
+      "name": "devel/opencode",
+      "time": true,
+      "kill_timeout": 5000,
+      "cwd": ".",
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "autorestart": true,
+      "restart_delay": 5000,
+      "instances": 1,
+      "watch": false,
+      "min_uptime": 10000,
+      "out_file": "/home/err/devel/promethean/logs/opencode-server-out.log",
+      "error_file": "/home/err/devel/promethean/logs/opencode-server-error.log"
+    }
+  ]
+}

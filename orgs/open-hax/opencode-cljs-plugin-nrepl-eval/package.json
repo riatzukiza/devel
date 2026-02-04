@@ -1,0 +1,18 @@
+{
+  "name": "@openhax/opencode-cljs-plugin-nrepl-eval",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "watch": "shadow-cljs watch opencode",
+    "build": "shadow-cljs release opencode",
+    "plugin:copy": "mkdir -p .opencode/plugins && cp dist/plugin.js .opencode/plugins/nrepl-eval.js",
+    "plugin:link": "mkdir -p .opencode/plugins && ln -sf $(pwd)/dist/plugin.js .opencode/plugins/nrepl-eval.js"
+  },
+  "dependencies": {
+    "@opencode-ai/plugin": "^0.0.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "shadow-cljs": "^2.28.20"
+  }
+}

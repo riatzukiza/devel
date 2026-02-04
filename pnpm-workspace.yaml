@@ -1,0 +1,24 @@
+packages:
+  - .
+  - services/*
+  - orgs/riatzukiza/promethean/packages/*
+  - orgs/riatzukiza/promethean/packages/*/*
+  - orgs/riatzukiza/promethean/cli/*
+  - orgs/riatzukiza/promethean/cli/*/*
+  - orgs/riatzukiza/promethean/cli/*/*/*
+  - orgs/riatzukiza/promethean/services/*
+  - orgs/riatzukiza/promethean/services/*/*
+  - orgs/riatzukiza/promethean/services/*/*/*
+  - orgs/riatzukiza/promethean/experimental/*
+  - orgs/riatzukiza/promethean/experimental/*/*
+  - orgs/riatzukiza/promethean/experimental/*/*/*
+  - orgs/riatzukiza/promethean/pipelines/*
+  - orgs/riatzukiza/promethean/pipelines/*/*
+  - orgs/riatzukiza/promethean/tools/*
+  - orgs/riatzukiza/promethean/.opencode/*
+  - orgs/riatzukiza/promethean/scripts
+  - '!orgs/riatzukiza/promethean/packages/discord'
+  - '!**/stryker-tmp/**'
+
+link-workspace-packages: true
+prefer-workspace-packages: true
