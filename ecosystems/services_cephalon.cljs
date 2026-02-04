@@ -1,19 +1,23 @@
+;; Ecosystem: services_cephalon.cljs
+;; - :script paths resolve relative to :cwd; point at real build outputs
+;; - After edits, run: pnpm generate-ecosystem
+
 (ns services-cephalon
   (:require [clobber.macro]))
 
 (clobber.macro/defapp "cephalon"
-  {:script "./dist/main.js"
+  {:script "./dist/cephalon.js"
    :cwd "./services/cephalon-cljs"
-   :env {:NODE_ENV "production"}
+   :env {:NODE_ENV "production"
+         :NODE_OPTIONS "--enable-source-maps"}
    :autorestart true
    :max-restarts 5
    :min_uptime "10s"
-   :log_date_format "YYYY-MM-DD HH:mm:ss Z"
-   :error_file "./logs/cephalon-error.log"
-   :out_file "./logs/cephalon-out.log"
+   :log-date-format "YYYY-MM-DD HH:mm:ss Z"
+   :error-file "./logs/cephalon-error.log"
+   :out-file "./logs/cephalon-out.log"
    :merge_logs true
-   :kill_timeout 5000
-   :env_file nil})
+   :kill-timeout 5000})
 
 
 (clobber.macro/defapp "duck-cephalon-ui"

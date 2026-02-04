@@ -1,3 +1,7 @@
+;; Ecosystem: cephalon.cljs
+;; - :script paths resolve relative to :cwd; keep build outputs in sync
+;; - Rebuild PM2 config with: pnpm generate-ecosystem
+
 (ns cephalon
   (:require [clobber.macro]))
 

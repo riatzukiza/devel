@@ -1,3 +1,7 @@
+;; Ecosystem: gates_of_aker.cljs
+;; - :script paths resolve relative to :cwd; verify build outputs
+;; - Rebuild PM2 config with: pnpm generate-ecosystem
+
 (ns gates-of-aker
   (:require [clobber.macro :refer [defapp ecosystem-output]]))
 

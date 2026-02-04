@@ -1,3 +1,7 @@
+;; Ecosystem: ecosystem.cljs
+;; - :script paths resolve relative to :cwd; keep them in sync with builds
+;; - Rebuild PM2 config with: pnpm generate-ecosystem
+
 (ns ecosystem
   (:require [clobber.macro]))
 

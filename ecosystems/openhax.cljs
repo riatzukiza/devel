@@ -1,3 +1,7 @@
+;; Ecosystem: openhax.cljs
+;; - :script paths resolve relative to :cwd; verify build outputs
+;; - Rebuild PM2 config with: pnpm generate-ecosystem
+
 (ns openhax
   (:require [clobber.macro]))
 
