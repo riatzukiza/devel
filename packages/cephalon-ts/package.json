@@ -33,7 +33,8 @@
     "build": "tsup && cp -r src/ui/public dist/",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "tsc -p tsconfig.test.json && ava",
-    "test:watch": "tsc -p tsconfig.test.json --watch & ava --watch"
+    "test:watch": "tsc -p tsconfig.test.json --watch & ava --watch",
+    "test:coverage": "c8 -r text -r lcov --report-dir coverage pnpm test"
   },
   "dependencies": {
     "@fastify/cors": "^9.0.1",

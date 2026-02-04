@@ -32,6 +32,9 @@
     (cephalon/run-loop! {:bus bus} c session-id {:interval-ms 1200})
 
     (let [notes-dir "docs/notes"
+          notes-path (io/file notes-dir)
+          _ (when-not (.exists notes-path)
+              (.mkdirs notes-path))
           _ (fs/start-watch!
               {:dir notes-dir
                :handler (fn [{:keys [op path]}]
