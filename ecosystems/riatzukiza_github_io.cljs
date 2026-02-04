@@ -1,3 +1,7 @@
+;; Ecosystem: riatzukiza_github_io.cljs
+;; - :script paths resolve relative to :cwd; verify build outputs
+;; - Rebuild PM2 config with: pnpm generate-ecosystem
+
 (ns riatzukiza-github-io
   (:require [clobber.macro]))
 
