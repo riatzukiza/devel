@@ -15,21 +15,22 @@
         stopped? (atom false)
         pool (Executors/newSingleThreadExecutor)]
     (.submit pool
+             ^Runnable
              (fn []
-               (while (not @stopped?)
-                 (when-let [^WatchKey key (.poll watcher 250 TimeUnit/MILLISECONDS)]
-                   (doseq [ev (.pollEvents key)]
-                     (let [kind (.kind ev)
-                           ctx (.context ev)
-                           p (.resolve dir-path ^Path ctx)
-                           path-str (.toString p)]
-                       (when (str/ends-with? path-str ".md")
-                         (handler {:op (cond
-                                         (= kind StandardWatchEventKinds/ENTRY_CREATE) :fs/create
-                                         (= kind StandardWatchEventKinds/ENTRY_MODIFY) :fs/modify
-                                         :else :fs/other)
-                                   :path path-str}))))
-                   (.reset key)))))
+                (while (not @stopped?)
+                  (when-let [^WatchKey key (.poll watcher 250 TimeUnit/MILLISECONDS)]
+                    (doseq [ev (.pollEvents key)]
+                      (let [kind (.kind ev)
+                            ctx (.context ev)
+                            p (.resolve dir-path ^Path ctx)
+                            path-str (.toString p)]
+                        (when (str/ends-with? path-str ".md")
+                          (handler {:op (cond
+                                          (= kind StandardWatchEventKinds/ENTRY_CREATE) :fs/create
+                                          (= kind StandardWatchEventKinds/ENTRY_MODIFY) :fs/modify
+                                          :else :fs/other)
+                                    :path path-str}))))
+                    (.reset key)))))
     (fn stop! []
       (reset! stopped? true)
       (try (.close watcher) (catch Throwable _))
