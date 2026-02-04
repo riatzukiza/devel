@@ -82,7 +82,8 @@ Paths: src/auth.ts, src/middleware.ts, tests/auth.test.ts
 ### Environment Configuration
 - **OPENCODE_BASE_URL**: OpenCode server URL (default: http://localhost:4096)
 - **CHROMA_URL**: ChromaDB server URL (default: http://localhost:8000)
-- **CHROMA_COLLECTION**: Collection name (default: opencode_messages_v1)
+- **CHROMA_COLLECTION**: Base collection name (default: opencode_messages_v1; model suffix appended)
+- **OPENCODE_THROTTLE_MS**: Minimum delay between OpenCode API calls (default: 200)
 - **OLLAMA_URL**: Ollama server URL (default: http://localhost:11434)
 - **OLLAMA_EMBED_MODEL**: Embedding model (default: qwen3-embedding:8b)
 - **LEVEL_DIR**: LevelDB cache directory (default: .reconstitute/level)
@@ -128,6 +129,19 @@ pnpm -C packages/reconstituter opencode-sessions search "api design" --session s
 
 # Combine filters
 pnpm -C packages/reconstituter opencode-sessions search "database schema" --k 5 --session ses_xyz789
+```
+
+### Indexer Service (PM2)
+```bash
+# Compile ecosystem configuration
+pnpm generate-ecosystem
+
+# Start or restart the indexer service
+pm2 start ecosystem.config.cjs --only opencode-indexer
+pm2 restart opencode-indexer
+
+# Inspect logs
+pm2 logs opencode-indexer --lines 100
 ```
 
 ### View Help

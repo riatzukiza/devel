@@ -1,0 +1,39 @@
+name: Fix Clojure Namespace Mismatch
+description: Automated repair workflow for namespace vs file path errors in Clojure projects
+
+triggers:
+  - tool_output:
+      tool: audit_clojure_ns
+      condition: "result.status === 'mismatch'"
+
+steps:
+  - name: analyze_mismatch
+    instruction: |
+      Analyze the audit output to determine the best fix approach.
+      
+      If the file path contains dashes (e.g., `my-app/core.clj`):
+        → The filename is wrong. Move the file to the expected path.
+      
+      If the namespace declaration contains underscores (e.g., `(ns my_app.core)`):
+        → The namespace is wrong. Update the `(ns ...)` declaration.
+      
+      If both seem wrong but the expected path looks correct:
+        → Move the file to match the standard convention.
+      
+      Execute the appropriate fix command from the recommendations.
+
+  - name: verify_fix
+    instruction: |
+      Run `audit_clojure_ns` again on the file (now at its new location if moved).
+      Confirm status is 'ok'.
+      
+      If still not 'ok', review the recommendations again and try the alternative fix.
+
+  - name: report_result
+    instruction: |
+      Summarize what was fixed:
+      - Original mismatch type
+      - Action taken (moved file / updated namespace)
+      - Verification result
+      
+      If the original error was a classpath/loading error, confirm the fix should resolve it.

@@ -1,6 +1,3 @@
-# OpenCode Command: pr-mirror
-
-```yaml
 name: pr-mirror
 description: Mirror PRs between sst/opencode and riatzukiza/opencode
 usage: |
