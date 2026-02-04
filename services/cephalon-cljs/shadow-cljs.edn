@@ -5,6 +5,12 @@
    {:target :node-script
     :output-to "dist/cephalon.js"
     :main promethean.main/-main
-    :compiler-options {:externs ["externs.js"]}
+    :compiler-options {:externs ["externs.js"]
+                      :source-map true}
     :js-options {:js-provider :require}
-    :devtools {:repl-pprint true}}}}
+    :devtools {:repl-pprint true}}
+   :test
+  {:target :node-script
+   :output-to "target/test.js"
+   :main promethean.test-runner/-main
+   :compiler-options {:source-map true}}}}

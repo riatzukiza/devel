@@ -9,9 +9,10 @@ module.exports = function configKarma(config) {
       "karma-cljs-test",
       "karma-chrome-launcher",
       "karma-coverage",
+      "karma-sourcemap-loader",
     ],
     preprocessors: {
-      "out/test.js": ["coverage"],
+      "out/test.js": ["coverage", "sourcemap"],
     },
     reporters: ["progress", "coverage"],
     coverageReporter: {

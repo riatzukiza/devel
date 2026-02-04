@@ -47,16 +47,16 @@
 
 (defn entities-with
   "Find all entity IDs that have all the specified component keys"
-  [world & keys]
-  (let [required-keys (if (and (= 1 (count keys)) (vector? (first keys)))
-                        (first keys)
-                        keys)
+  [world & component-keys]
+  (let [required-keys (if (and (= 1 (count component-keys)) (vector? (first component-keys)))
+                        (first component-keys)
+                        component-keys)
         required-set (set required-keys)]
     (filter (fn [eid]
               (let [entity (get-entity world eid)]
                 (and entity
                       (every? #(contains? entity %) required-set))))
-            (keys (:entities world)))))
+            (clojure.core/keys (:entities world)))))
 
 ;; ============================================================================
 ;; Component Queries

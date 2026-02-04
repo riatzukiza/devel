@@ -3,7 +3,7 @@
 
 (defn- has-frontmatter?
   [s]
-  (boolean (re-find #"(?s)^---\s*\n.*?\n---\s*\n" (or s ""))))
+  (boolean (re-find #"^---\s*\n[\s\S]*?\n---\s*\n" (or s ""))))
 
 
 (defn- strip-quotes
@@ -53,7 +53,7 @@
 (defn parse-frontmatter
   [md]
   (when (has-frontmatter? md)
-    (let [m (re-find #"(?s)^---\s*\n(.*?)\n---\s*\n" (or md ""))]
+    (let [m (re-find #"^---\s*\n([\s\S]*?)\n---\s*\n" (or md ""))]
       (when m
         (let [yaml (second m)]
           (when (and yaml (not (str/blank? yaml)))

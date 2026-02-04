@@ -17,7 +17,7 @@
       (js/setTimeout
         (fn []
           (let [evt (first (:events-out @world*))]
-            (is (= :fs.read.result (:event/type evt)))
+            (is (= :fs/read.result (:event/type evt)))
             (is (= "eff-1" (get-in evt [:event/payload :effect-id]))))
           (done))
         0))))
