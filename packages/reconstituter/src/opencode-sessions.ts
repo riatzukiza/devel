@@ -16,13 +16,14 @@
  * Environment:
  *   OPENCODE_BASE_URL     - OpenCode server URL (default: http://localhost:4096)
  *   CHROMA_URL           - Chroma server URL (default: http://localhost:8000)
- *   CHROMA_COLLECTION    - Chroma collection name (default: opencode_messages_v1)
+ *   CHROMA_COLLECTION    - Chroma collection base name (default: opencode_messages_v1)
  *   CHROMA_TENANT        - Chroma tenant (optional)
  *   CHROMA_DATABASE      - Chroma database (optional)
  *   CHROMA_TOKEN         - Chroma auth token (optional)
+ *   OPENCODE_THROTTLE_MS - Minimum delay between OpenCode API calls (default: 200)
  *   LEVEL_DIR            - LevelDB directory (default: .reconstitute/level)
  *   OLLAMA_URL           - Ollama server URL (default: http://localhost:11434)
- *   OLLAMA_EMBED_MODEL   - Embedding model (default: qwen3-embedding:8b)
+ *   OLLAMA_EMBED_MODEL   - Embedding model (default: qwen3-embedding:0.6b)
  *   OLLAMA_NUM_CTX       - Context length (default: 32768)
  *   BATCH_SIZE           - Batch size for embedding (default: 32)
  *   EMBED_TTL_MS         - Embed cache TTL in ms (default: 30 days)
@@ -59,6 +60,8 @@ export interface Env {
   CHROMA_TENANT?: string;
   CHROMA_DATABASE?: string;
   CHROMA_TOKEN?: string;
+  OPENCODE_THROTTLE_MS: number;
+  CHROMA_COLLECTION_BASE: string;
   CHROMA_COLLECTION: string;
   LEVEL_DIR: string;
   OLLAMA_URL: string;
@@ -84,16 +87,21 @@ export interface CliArgs {
 // ============================================================================
 
 export function env(): Env {
+  const baseCollection = process.env.CHROMA_COLLECTION ?? "opencode_messages_v1";
+  const embedModel = process.env.OLLAMA_EMBED_MODEL ?? "qwen3-embedding:0.6b";
+
   return {
     OPENCODE_BASE_URL: process.env.OPENCODE_BASE_URL ?? "http://localhost:4096",
     CHROMA_URL: process.env.CHROMA_URL ?? "http://localhost:8000",
     CHROMA_TENANT: process.env.CHROMA_TENANT,
     CHROMA_DATABASE: process.env.CHROMA_DATABASE,
     CHROMA_TOKEN: process.env.CHROMA_TOKEN,
-    CHROMA_COLLECTION: process.env.CHROMA_COLLECTION ?? "opencode_messages_v1",
+    OPENCODE_THROTTLE_MS: Number(process.env.OPENCODE_THROTTLE_MS ?? "200"),
+    CHROMA_COLLECTION_BASE: baseCollection,
+    CHROMA_COLLECTION: saltCollectionName(baseCollection, embedModel),
     LEVEL_DIR: process.env.LEVEL_DIR ?? ".reconstitute/level",
     OLLAMA_URL: process.env.OLLAMA_URL ?? "http://localhost:11434",
-    OLLAMA_EMBED_MODEL: process.env.OLLAMA_EMBED_MODEL ?? "qwen3-embedding:8b",
+    OLLAMA_EMBED_MODEL: embedModel,
     OLLAMA_NUM_CTX: Number(process.env.OLLAMA_NUM_CTX ?? "32768"),
     BATCH_SIZE: Number(process.env.BATCH_SIZE ?? "32"),
     EMBED_TTL_MS: Number(process.env.EMBED_TTL_MS ?? `${1000 * 60 * 60 * 24 * 30}`),
@@ -106,6 +114,18 @@ export function env(): Env {
 
 function sha256(s: string): string {
   return crypto.createHash("sha256").update(s).digest("hex");
+}
+
+function sanitizeModelSuffix(model: string): string {
+  const normalized = model.toLowerCase().replace(/[^a-z0-9]+/g, "_");
+  const trimmed = normalized.replace(/^_+|_+$/g, "");
+  return trimmed || "model";
+}
+
+function saltCollectionName(base: string, model: string): string {
+  const suffix = sanitizeModelSuffix(model);
+  const token = `__${suffix}`;
+  return base.endsWith(token) ? base : `${base}${token}`;
 }
 
 async function ttlGet<T>(db: Level<string, any>, key: string): Promise<T | null> {
@@ -122,6 +142,41 @@ async function ttlGet<T>(db: Level<string, any>, key: string): Promise<T | null>
 async function ttlSet<T>(db: Level<string, any>, key: string, value: T, ttlMs: number) {
   await db.put(key, { value, expiresAt: Date.now() + ttlMs });
 }
+
+const sleep = (ms: number): Promise<void> =>
+  new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+
+const createChromaClient = (E: Env): ChromaClient => {
+  const common = {
+    ...(E.CHROMA_TENANT ? { tenant: E.CHROMA_TENANT } : {}),
+    ...(E.CHROMA_DATABASE ? { database: E.CHROMA_DATABASE } : {}),
+    ...(E.CHROMA_TOKEN
+      ? {
+          auth: {
+            provider: "token",
+            credentials: E.CHROMA_TOKEN,
+            tokenHeaderType: "AUTHORIZATION",
+          },
+        }
+      : {}),
+  };
+
+  try {
+    const url = new URL(E.CHROMA_URL);
+    const port = url.port ? Number(url.port) : undefined;
+
+    return new ChromaClient({
+      host: url.hostname,
+      port,
+      ssl: url.protocol === "https:",
+      ...common,
+    });
+  } catch {
+    return new ChromaClient({ path: E.CHROMA_URL, ...common });
+  }
+};
 
 export function flattenForEmbedding(ollamaMsgs: OllamaMessage[]): string {
   const lines: string[] = [];
@@ -271,34 +326,38 @@ export async function indexSessions(): Promise<void> {
   console.log("Starting OpenCode session indexing...");
   console.log(`Chroma URL: ${E.CHROMA_URL}`);
   console.log(`Collection: ${E.CHROMA_COLLECTION}`);
+  console.log(`Collection base: ${E.CHROMA_COLLECTION_BASE}`);
   console.log(`Ollama URL: ${E.OLLAMA_URL}`);
   console.log(`Embedding model: ${E.OLLAMA_EMBED_MODEL}`);
   console.log(`Batch size: ${E.BATCH_SIZE}`);
   console.log("");
 
   const client = createOpencodeClient({ baseUrl: E.OPENCODE_BASE_URL });
-  const chroma = new ChromaClient({
-    path: E.CHROMA_URL,
-    ...(E.CHROMA_TENANT ? { tenant: E.CHROMA_TENANT } : {}),
-    ...(E.CHROMA_DATABASE ? { database: E.CHROMA_DATABASE } : {}),
-    ...(E.CHROMA_TOKEN
-      ? {
-          auth: {
-            provider: "token",
-            credentials: E.CHROMA_TOKEN,
-            tokenHeaderType: "AUTHORIZATION",
-          },
-        }
-      : {}),
-  });
+  const chroma = createChromaClient(E);
 
   const collection = await chroma.getOrCreateCollection({
     name: E.CHROMA_COLLECTION,
+    embeddingFunction: null,
     metadata: { description: "OpenCode sessions indexed for reconstitute", source: "opencode" },
   });
 
   const db = new Level<string, any>(E.LEVEL_DIR, { valueEncoding: "json" });
 
+  let lastOpencodeCall = 0;
+  const throttleOpencode = async (): Promise<void> => {
+    const delay = E.OPENCODE_THROTTLE_MS;
+    if (delay <= 0) {
+      lastOpencodeCall = Date.now();
+      return;
+    }
+
+    const now = Date.now();
+    const waitMs = lastOpencodeCall + delay - now;
+    if (waitMs > 0) await sleep(waitMs);
+    lastOpencodeCall = Date.now();
+  };
+
+  await throttleOpencode();
   const sessions = unwrap<any[]>(await client.session.list());
   console.log(`Found ${sessions.length} sessions`);
 
@@ -309,6 +368,7 @@ export async function indexSessions(): Promise<void> {
     if (!sessionId) continue;
 
     const sessionTitle = s.title ?? "";
+    await throttleOpencode();
     const messages = unwrap<any[]>(await client.session.messages({ path: { id: sessionId } }));
 
     await db.put(`sess:${sessionId}:meta`, { id: sessionId, title: sessionTitle });
@@ -394,24 +454,15 @@ export async function searchSessions(args: SearchArgs): Promise<void> {
   console.log(`Top-K: ${args.k}`);
   if (args.session) console.log(`Session filter: ${args.session}`);
   console.log(`Collection: ${E.CHROMA_COLLECTION}`);
+  console.log(`Collection base: ${E.CHROMA_COLLECTION_BASE}`);
   console.log("");
 
-  const chroma = new ChromaClient({
-    path: E.CHROMA_URL,
-    ...(E.CHROMA_TENANT ? { tenant: E.CHROMA_TENANT } : {}),
-    ...(E.CHROMA_DATABASE ? { database: E.CHROMA_DATABASE } : {}),
-    ...(E.CHROMA_TOKEN
-      ? {
-          auth: {
-            provider: "token",
-            credentials: E.CHROMA_TOKEN,
-            tokenHeaderType: "AUTHORIZATION",
-          },
-        }
-      : {}),
-  });
+  const chroma = createChromaClient(E);
 
-  const collection = await chroma.getOrCreateCollection({ name: E.CHROMA_COLLECTION });
+  const collection = await chroma.getOrCreateCollection({
+    name: E.CHROMA_COLLECTION,
+    embeddingFunction: null,
+  });
 
   const qEmb = await ollamaEmbedOne(E, args.query);
   const where = args.session ? { session_id: args.session } : undefined;
@@ -547,13 +598,14 @@ EXAMPLES
 ENVIRONMENT VARIABLES
   OPENCODE_BASE_URL     OpenCode server URL (default: http://localhost:4096)
   CHROMA_URL            ChromaDB server URL (default: http://localhost:8000)
-  CHROMA_COLLECTION     Chroma collection name (default: opencode_messages_v1)
+  CHROMA_COLLECTION     Chroma collection base name (default: opencode_messages_v1)
   CHROMA_TENANT         Chroma tenant (optional)
   CHROMA_DATABASE       Chroma database (optional)
   CHROMA_TOKEN          Chroma auth token (optional)
+  OPENCODE_THROTTLE_MS  Minimum delay between OpenCode API calls (default: 200)
   LEVEL_DIR             LevelDB directory (default: .reconstitute/level)
   OLLAMA_URL            Ollama server URL (default: http://localhost:11434)
-  OLLAMA_EMBED_MODEL    Embedding model (default: qwen3-embedding:8b)
+  OLLAMA_EMBED_MODEL    Embedding model (default: qwen3-embedding:0.6b)
   OLLAMA_NUM_CTX        Context length (default: 32768)
   BATCH_SIZE            Batch size for embedding (default: 32)
   EMBED_TTL_MS          Embed cache TTL in ms (default: 30 days)

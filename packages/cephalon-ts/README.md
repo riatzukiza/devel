@@ -24,7 +24,7 @@ services/cephalon/
 │   └── main.ts                # Entry point
 ├── policy/
 │   └── cephalon.policy.edn    # Configuration
-└── ecosystem.cljs             # PM2 config
+└── ecosystems/services_cephalon.cljs  # PM2 config (root)
 ```
 
 ## Implemented Components
@@ -91,7 +91,8 @@ DUCK_DISCORD_TOKEN=xxx pnpm dev
 
 ### Production (PM2)
 ```bash
-clobber start services/cephalon/ecosystem.cljs
+npx shadow-cljs release clobber
+pm2 start ecosystem.config.cjs
 ```
 
 ## Testing

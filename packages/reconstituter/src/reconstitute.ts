@@ -10,6 +10,7 @@ import { Level } from "level";
 import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 
 // -----------------------------
 // Types
@@ -54,7 +55,9 @@ type Env = {
   CHROMA_TENANT?: string;
   CHROMA_DATABASE?: string;
   CHROMA_TOKEN?: string;
+  CHROMA_COLLECTION_SESSIONS_BASE: string;
   CHROMA_COLLECTION_SESSIONS: string;
+  CHROMA_COLLECTION_NOTES_BASE: string;
   CHROMA_COLLECTION_NOTES: string;
 
   OLLAMA_BASE_URL: string;
@@ -84,6 +87,10 @@ type Hit = { id: string; distance: number | null; meta: any };
 // -----------------------------
 
 function env(): Env {
+  const baseSessions = process.env.CHROMA_COLLECTION_SESSIONS ?? "opencode_messages_v1";
+  const baseNotes = process.env.CHROMA_COLLECTION_NOTES ?? "reconstitute_notes_v1";
+  const embedModel = process.env.OLLAMA_EMBED_MODEL ?? "qwen3-embedding:0.6b";
+
   return {
     LEVEL_DIR: process.env.LEVEL_DIR ?? ".reconstitute/level",
     OUTPUT_DIR: process.env.OUTPUT_DIR ?? ".reconstitute/output",
@@ -95,11 +102,13 @@ function env(): Env {
     CHROMA_TENANT: process.env.CHROMA_TENANT || undefined,
     CHROMA_DATABASE: process.env.CHROMA_DATABASE || undefined,
     CHROMA_TOKEN: process.env.CHROMA_TOKEN || undefined,
-    CHROMA_COLLECTION_SESSIONS: process.env.CHROMA_COLLECTION_SESSIONS ?? "opencode_messages_v1",
-    CHROMA_COLLECTION_NOTES: process.env.CHROMA_COLLECTION_NOTES ?? "reconstitute_notes_v1",
+    CHROMA_COLLECTION_SESSIONS_BASE: baseSessions,
+    CHROMA_COLLECTION_SESSIONS: saltCollectionName(baseSessions, embedModel),
+    CHROMA_COLLECTION_NOTES_BASE: baseNotes,
+    CHROMA_COLLECTION_NOTES: saltCollectionName(baseNotes, embedModel),
 
     OLLAMA_BASE_URL: process.env.OLLAMA_BASE_URL ?? "http://localhost:11434",
-    OLLAMA_EMBED_MODEL: process.env.OLLAMA_EMBED_MODEL ?? "qwen3-embedding:4b",
+    OLLAMA_EMBED_MODEL: embedModel,
     OLLAMA_EMBED_NUM_CTX: Number(process.env.OLLAMA_EMBED_NUM_CTX ?? "32768"),
     OLLAMA_CHAT_MODEL: process.env.OLLAMA_CHAT_MODEL ?? "qwen3-vl:8b-instruct",
     OLLAMA_CHAT_NUM_CTX: Number(process.env.OLLAMA_CHAT_NUM_CTX ?? "131072"),
@@ -127,11 +136,23 @@ function nowIso(): string {
   return new Date().toISOString();
 }
 
-function normalizePathKey(p: string): string {
+function sanitizeModelSuffix(model: string): string {
+  const normalized = model.toLowerCase().replace(/[^a-z0-9]+/g, "_");
+  const trimmed = normalized.replace(/^_+|_+$/g, "");
+  return trimmed || "model";
+}
+
+function saltCollectionName(base: string, model: string): string {
+  const suffix = sanitizeModelSuffix(model);
+  const token = `__${suffix}`;
+  return base.endsWith(token) ? base : `${base}${token}`;
+}
+
+export function normalizePathKey(p: string): string {
   return (p ?? "").replace(/\\/g, "/").replace(/\/+/g, "/").trim();
 }
 
-function isWithinRoot(candidate: string, root: string): boolean {
+export function isWithinRoot(candidate: string, root: string): boolean {
   const c = normalizePathKey(candidate);
   const r = normalizePathKey(root).replace(/\/+$/, "");
   if (!r) return false;
@@ -415,7 +436,7 @@ function flattenMessageParts(entry: any): { role: "user" | "assistant" | "system
   return { role, text: textChunks.join("\n").trim(), toolish };
 }
 
-function opencodeEntryToOllamaReplay(entry: any): OllamaMessage[] {
+export function opencodeEntryToOllamaReplay(entry: any): OllamaMessage[] {
   const { role, text, toolish } = flattenMessageParts(entry);
 
   const toolCalls: Array<{ name: string; args: Record<string, unknown> }> = [];
@@ -455,7 +476,7 @@ function opencodeEntryToOllamaReplay(entry: any): OllamaMessage[] {
   return msgs;
 }
 
-function flattenForEmbedding(ollamaMsgs: OllamaMessage[]): string {
+export function flattenForEmbedding(ollamaMsgs: OllamaMessage[]): string {
   const lines: string[] = [];
   for (const m of ollamaMsgs) {
     if (m.role === "tool") {
@@ -472,7 +493,7 @@ function flattenForEmbedding(ollamaMsgs: OllamaMessage[]): string {
   return lines.join("\n");
 }
 
-function extractPathsLoose(text: string): string[] {
+export function extractPathsLoose(text: string): string[] {
   const paths = new Set<string>();
   const re = /(^|[\s"'`(])((?:\.{0,2}\/)?(?:[A-Za-z0-9_.-]+\/)+[A-Za-z0-9_.-]+)(?=$|[\s"'`),.:;])/g;
   for (const m of text.matchAll(re)) paths.add(normalizePathKey(m[2]));
@@ -1374,7 +1395,10 @@ async function main() {
   throw new Error(`Unknown command: ${cmd}`);
 }
 
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+const entryHref = pathToFileURL(process.argv[1] ?? "").href;
+if (entryHref === import.meta.url) {
+  main().catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
+}
