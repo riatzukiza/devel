@@ -1,5 +1,15 @@
 # PM2 Ecosystem → pm2-clj Migration - COMPLETE
 
+## 2026-02-03 Update
+
+The workspace has since consolidated all PM2 ecosystem configuration into `ecosystems/*.cljs` at the repo root.
+The legacy `ecosystem.pm2.edn` file has been removed. Use:
+
+```bash
+npx shadow-cljs release clobber
+pm2 start ecosystem.config.cjs
+```
+
 **Date**: 2026-01-28
 **Status**: ✅ COMPLETE
 
