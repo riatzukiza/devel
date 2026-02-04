@@ -9,9 +9,17 @@ export async function runIndexer(deps: IndexerDeps): Promise<void> {
   await deps.indexSessions();
 }
 
+export function resolveDeps(): IndexerDeps {
+  if (process.env.OPENCODE_INDEXER_NOOP === "1") {
+    return { indexSessions: async () => {} };
+  }
+
+  return { indexSessions };
+}
+
 async function main(): Promise<void> {
   try {
-    await runIndexer({ indexSessions });
+    await runIndexer(resolveDeps());
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     console.error("opencode-indexer failed:", message);

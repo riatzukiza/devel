@@ -1,6 +1,7 @@
 (ns promethean.main
   "Cephalon main entry point"
   (:require
+    [source-map-support :refer [install]]
     [promethean.ecs.world :as world]
     [promethean.ecs.tick :as tick]
     [promethean.sys.route :as sys.route]
@@ -19,8 +20,9 @@
     [promethean.eidolon.vector-store :as vec.store]
     [promethean.bridge.cephalon-ts :as cephalon-ts]))
 
-;; Set up browser globals for Node.js environment
+;; Enable source map support for better stack traces
 (when-not (exists? js/window)
+  (install)
   (set! js/window (js-obj)))
 
 ;; ============================================================================
