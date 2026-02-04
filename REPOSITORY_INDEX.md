@@ -9,7 +9,7 @@ This index provides rapid access to all repositories and their specialized capab
 | Repository | Purpose | Key Features | AGENTS.md |
 |-------------|---------|---------------|------------|
 | [promethean](promethean/) | Local LLM Enhancement | Agent orchestration, cloud LLM integration | ✅ |
-| [opencode-openai-codex-auth](opencode-openai-codex-auth/) | OAuth Authentication | 7-step fetch flow, token management | ✅ |
+| [open-hax/codex](open-hax/codex/) | OAuth Authentication | 7-step fetch flow, token management | ✅ |
 | [agent-shell](agent-shell/) | Emacs Agent Shell | ACP protocol, multi-agent support | ✅ |
 | [clojure-mcp](clojure-mcp/) | Clojure MCP Server | REPL-driven development, syntax-aware editing | ✅ |
 | [moofone/codex-ts-sdk](moofone/codex-ts-sdk/) | TypeScript SDK | Native Rust integration, cloud tasks | ✅ |
@@ -25,7 +25,7 @@ This index provides rapid access to all repositories and their specialized capab
 
 ### **Need Authentication?**
 ```
-OAuth Implementation → opencode-openai-codex-auth
+OAuth Implementation → open-hax/codex
 TypeScript Integration → moofone/codex-ts-sdk
 Rust CLI Patterns → openai/codex
 ```
@@ -61,7 +61,7 @@ Cross-Platform → agent-shell (DevContainer)
 ## 🔗 Integration Patterns
 
 ### **Authentication Ecosystem**
-- **opencode-openai-codex-auth** provides OAuth patterns
+- **open-hax/codex** provides OAuth patterns
 - **moofone/codex-ts-sdk** implements TypeScript SDK
 - **openai/codex** defines Rust CLI standards
 - **agent-shell** offers multi-provider authentication
@@ -84,7 +84,7 @@ Cross-Platform → agent-shell (DevContainer)
 
 ### **Remote Documentation**
 - [promethean](https://github.com/riatzukiza/promethean) - Agent orchestration
-- [opencode-openai-codex-auth](https://github.com/numman-ali/opencode-openai-codex-auth) - OAuth patterns
+- [open-hax/codex](https://github.com/open-hax/codex) - OAuth patterns
 - [agent-shell](https://github.com/riatzukiza/agent-shell) - ACP implementation
 - [clojure-mcp](https://github.com/bhauman/clojure-mcp) - MCP server patterns
 - [moofone/codex-ts-sdk](https://github.com/moofone/codex-ts-sdk) - TypeScript SDK
@@ -140,7 +140,7 @@ cd opencode-hub && pnpm build
 cd moofone/codex-ts-sdk && npm run setup
 
 # OAuth plugin development
-cd opencode-openai-codex-auth && npm run build
+cd orgs/open-hax/codex && npm run build
 
 # Rust CLI development
 cd openai/codex && cargo build

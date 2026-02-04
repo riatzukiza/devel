@@ -40,7 +40,7 @@ Root workspace: /home/err/devel
 - openhax
 - stt
 - codex
-- opencode-openai-codex-auth
+- open-hax/codex (migrated from the prior OAuth auth plugin repo)
 - utils
 - mcp
 - persistence

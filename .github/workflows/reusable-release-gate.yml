@@ -1,0 +1,37 @@
+name: reusable-release-gate
+
+on:
+  workflow_call:
+    inputs:
+      allow-heads:
+        description: "Comma-separated allowed head refs"
+        required: false
+        type: string
+        default: "main"
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enforce head branch
+        run: |
+          allowed="${{ inputs.allow-heads }}"
+          head="${GITHUB_HEAD_REF:-$(git rev-parse --abbrev-ref HEAD)}"
+          base="$GITHUB_BASE_REF"
+          IFS="," read -ra arr <<< "$allowed"
+          ok=0
+          for a in "${arr[@]}"; do
+            if [ "$head" = "$a" ]; then ok=1; fi
+          done
+          if [ "$base" != "release" ]; then
+            echo "Base branch is not release (base=$base); failing" >&2
+            exit 1
+          fi
+          if [ $ok -ne 1 ]; then
+            echo "Head $head not allowed (allowed: $allowed)" >&2
+            exit 1
+          fi
+          echo "Head $head allowed into $base"

@@ -1,164 +1,18 @@
-{:paths ["clojure-mcp/src"
-          "clojure-mcp/resources"
-          "promethean/src"
-          "promethean/packages/clj-hacks/src"
-          "promethean/packages/ecosystem-dsl/src"
-          "promethean/packages/omni-tools/src"
-          "promethean/packages/mcp-dev-ui-frontend/src"
-          "promethean/pseudo/agent-generator/src"
-          "promethean/pseudo/opencode-cljs-electron/src"
-          "promethean/pseudo/opencode-session-manager/src"]
-
- :deps {org.clojure/clojure {:mvn/version "1.12.1"}
-        org.clojure/core.async {:mvn/version "1.6.673"}
-        org.clojure/data.json {:mvn/version "2.5.1"}
-        org.clojure/tools.logging {:mvn/version "1.3.0"}
-        org.clojure/tools.cli {:mvn/version "1.1.230"}
-        nrepl/nrepl {:mvn/version "1.3.1"}
-        cider/cider-nrepl {:mvn/version "0.28.7"}
-        refactor-nrepl {:mvn/version "3.9.1"}
-
-        ;; Shadow-CLJS
-        thheller/shadow-cljs {:mvn/version "2.28.23"}
-        
-        ;; Frontend frameworks
-        reagent/reagent {:mvn/version "1.2.0"}
-        re-frame/re-frame {:mvn/version "1.4.3"}
-        
-        ;; Utilities
-        cheshire/cheshire {:mvn/version "5.11.0"}
-        com.taoensso/timbre {:mvn/version "6.3.0"}
-        me.raynes/fs {:mvn/version "1.4.6"}
-        binaryage/devtools {:mvn/version "1.0.7"}
-        
-        ;; Template and validation
-        pogonos/pogonos {:mvn/version "0.2.1"}
-        metosin/malli {:mvn/version "0.19.1"}
-        
-        ;; Code manipulation
-        rewrite-clj/rewrite-clj {:mvn/version "1.1.47"}
-        dev.weavejester/cljfmt {:mvn/version "0.13.1"}
-        clj-kondo/clj-kondo {:mvn/version "2024.03.13"}
-        org.clojars.oakes/parinfer {:mvn/version "0.4.0"}
-        
-        ;; LLM ecosystem
-        org.apache.tika/tika-core {:mvn/version "3.2.0"}
-        io.modelcontextprotocol.sdk/mcp {:mvn/version "0.12.1"}
-        dev.langchain4j/langchain4j {:mvn/version "1.2.0"}
-        dev.langchain4j/langchain4j-open-ai {:mvn/version "1.2.0"}
-        dev.langchain4j/langchain4j-anthropic {:mvn/version "1.2.0"}
-        dev.langchain4j/langchain4j-google-ai-gemini {:mvn/version "1.2.0"}
-        
-        ;; Diff utilities
-        io.github.java-diff-utils/java-diff-utils {:mvn/version "4.15"}
-        
-        ;; Web servers
-        jakarta.servlet/jakarta.servlet-api {:mvn/version "6.1.0"}
-        org.eclipse.jetty/jetty-server {:mvn/version "11.0.20"}
-        org.eclipse.jetty/jetty-servlet {:mvn/version "11.0.20"}}
-
- :aliases
- {;; Central REPL for all Clojure/JVM projects
-  :repl {:extra-paths ["clojure-mcp/dev" "clojure-mcp/test" "promethean/dev"]
-         :extra-deps {ch.qos.logback/logback-classic {:mvn/version "1.4.14"}}
-:jvm-opts ["-Djdk.attach.allowAttachSelf"
-                   "-Xmx1g" "-Xss1m" "-XX:+UseG1GC"]
-         :main-opts ["-m" "nrepl.cmdline" "--port" "7888"
-                     "--middleware" "[cider.nrepl/cider-middleware refactor-nrepl.middleware/wrap-refactor]"]}
-
-  ;; Clojure-MCP server
-  :mcp {:extra-deps {org.slf4j/slf4j-nop {:mvn/version "2.0.16"}}
-        :exec-fn clojure-mcp.main/start-mcp-server
-        :exec-args {:port 7888}}
-
-  ;; Shadow-CLJS with MCP integration
-  :mcp-shadow {:extra-deps {org.slf4j/slf4j-nop {:mvn/version "2.0.16"}}
-               :exec-fn clojure-mcp.main-examples.shadow-main/start-mcp-server
-               :exec-args {:port 7888 :shadow-build "app" :shadow-port 7889}}
-
-  ;; Development with logging
-  :dev {:extra-paths ["clojure-mcp/dev" "clojure-mcp/test" "promethean/dev"]
-        :extra-deps {ch.qos.logback/logback-classic {:mvn/version "1.4.14"}}
-        :jvm-opts ["-Djdk.attach.allowAttachSelf"
-                   "-Xmx4g" "-Xss2m" "-XX:+UseG1GC"]}
-
-  ;; Testing
-  :test {:extra-paths ["clojure-mcp/test" "promethean/test"]
-         :extra-deps {ch.qos.logback/logback-classic {:mvn/version "1.4.14"}
-                      org.clojure/test.check {:mvn/version "1.1.1"}
-                      io.github.cognitect-labs/test-runner
-                      {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
-         :main-opts ["-m" "cognitect.test-runner"]}
-
-  ;; Linting
-  :lint {:extra-deps {clj-kondo/clj-kondo {:mvn/version "2025.02.20"}}
-         :main-opts ["-m" "clj-kondo.main" "--lint" "src"]}
-
-  ;; Build tools
-  :build {:deps {io.github.clojure/tools.build
-                 {:git/tag "v0.9.2" :git/sha "fe6b140"}
-                 slipset/deps-deploy {:mvn/version "0.2.0"}}
-          :ns-default build}
-
-  ;; Promethean ecosystem
-  :ecosystem {:extra-paths ["promethean/packages/ecosystem-dsl/src" "promethean/scripts"]
-              :extra-deps {org.clojure/tools.cli {:mvn/version "1.0.214"}
-                           org.clojure/data.json {:mvn/version "2.4.0"}
-                           cheshire/cheshire {:mvn/version "5.11.0"}
-                           com.taoensso/timbre {:mvn/version "6.3.0"}}
-              :main-opts ["-m" "generate-ecosystem"]}
-
-  ;; Clojure hacks
-  :clj-hacks {:replace-deps {clj-hacks/clj-hacks {:local/root "promethean/packages/clj-hacks"}}
-              :main-opts ["-m" "clj-hacks.cli"]}
-
-   ;; Docker-ready REPL
-   :docker-repl {:extra-paths ["clojure-mcp/dev" "clojure-mcp/test"]
-                 :extra-deps {ch.qos.logback/logback-classic {:mvn/version "1.4.14"}}
-                 :jvm-opts ["-Djdk.attach.allowAttachSelf"]
-                 :main-opts ["-m" "nrepl.cmdline" "--port" "7888" "--bind" "0.0.0.0"]}
-
-   ;; Centralized MCP server for all Clojure runtimes
-   :mcp-central {:extra-deps {com.bhauman/clojure-mcp {:git/url "https://github.com/bhauman/clojure-mcp.git"
-                                                        :git/tag "v0.1.11-alpha"
-                                                        :git/sha "7739dba"}
-                             org.slf4j/slf4j-nop {:mvn/version "2.0.16"}}
-                 :extra-paths ["src"]
-                 :exec-fn centralized-clojure-mcp.server/start-unified-mcp
-                 :exec-args {:port 7890}}
-
-   ;; JVM-specific MCP server
-   :mcp-jvm {:extra-deps {com.bhauman/clojure-mcp {:git/url "https://github.com/bhauman/clojure-mcp.git"
-                                                    :git/tag "v0.1.11-alpha"
-                                                    :git/sha "7739dba"}
-                          org.slf4j/slf4j-nop {:mvn/version "2.0.16"}}
-              :extra-paths ["src"]
-              :exec-fn centralized-clojure-mcp.server/start-jvm-mcp
-              :exec-args {:port 7891}}
-
-   ;; ClojureScript-specific MCP server
-   :mcp-cljs {:extra-deps {com.bhauman/clojure-mcp {:git/url "https://github.com/bhauman/clojure-mcp.git"
-                                                     :git/tag "v0.1.11-alpha"
-                                                     :git/sha "7739dba"}
-                           org.slf4j/slf4j-nop {:mvn/version "2.0.16"}}
-               :extra-paths ["src"]
-               :exec-fn centralized-clojure-mcp.server/start-cljs-mcp
-               :exec-args {:port 7892}}
-
-   ;; Development mode with logging
-   :mcp-dev {:extra-deps {com.bhauman/clojure-mcp {:git/url "https://github.com/bhauman/clojure-mcp.git"
-                                                     :git/tag "v0.1.11-alpha"
-                                                     :git/sha "7739dba"}
-                           ch.qos.logback/logback-classic {:mvn/version "1.4.14"}}
-             :extra-paths ["src"]
-             :exec-fn centralized-clojure-mcp.server/start-unified-mcp
-             :exec-args {:port 7890}}
-
-   ;; Test the MCP server
-   :mcp-test {:extra-deps {com.bhauman/clojure-mcp {:git/url "https://github.com/bhauman/clojure-mcp.git"
-                                                      :git/tag "v0.1.11-alpha"
-                                                      :git/sha "7739dba"}
-                            org.slf4j/slf4j-nop {:mvn/version "2.0.16"}}
-               :extra-paths ["src"]
-               :exec-fn centralized-clojure-mcp.server/start-unified-mcp
-               :exec-args {:port 7893 :test-mode true}}}}
+{:paths ["src" "."]
+ :deps {org.clojure/clojure {:mvn/version "1.11.3"}
+        http-kit/http-kit {:mvn/version "2.8.0"}
+        metosin/reitit-ring {:mvn/version "0.7.2"}
+        cheshire/cheshire {:mvn/version "5.13.0"}
+        clj-http/clj-http {:mvn/version "3.12.3"}
+        org.clojure/tools.logging {:mvn/version "1.3.1"}}
+ :aliases {:test {:extra-paths ["test"]
+                :extra-deps {org.clojure/test.check {:mvn/version "1.1.1"}
+                             ring/ring-mock {:mvn/version "0.4.0"}}
+                :main-opts ["-m" "cognitect.test-runner.api/test"]}
+            :coverage {:extra-paths ["test"]
+                      :extra-deps {cloverage/cloverage {:mvn/version "1.2.4"}}
+                      :main-opts ["-m" "cloverage.coverage.api/run"]}
+            :dev {:extra-paths ["dev"]
+                  :extra-deps {org.clojure/tools.namespace {:mvn/version "1.1.0"}}
+                  :main-opts ["-m" "clojure.tools.namespace.repl/find"]}
+            :run {:main-opts ["-m" "pandora.server"]}}}

@@ -1,0 +1,13 @@
+{:deps {org.clojure/clojure {:mvn/version "1.11.1"}
+         org.clojure/tools.logging {:mvn/version "1.2.4"}
+         org.clojure/data.json {:mvn/version "2.4.0"}
+         cheshire/cheshire {:mvn/version "5.11.0"}
+         com.taoensso/timbre {:mvn/version "6.3.0"}
+         com.cognitect/transit-clj {:mvn/version "1.0.333"}
+         org.clojure/clojurescript {:mvn/version "1.12.134"}}
+ :paths ["src"]
+ :aliases {:shadow
+           {:main-opts ["-m" "shadow.cljs.devtools.cli"]
+            :extra-deps {thheller/shadow-cljs {:mvn/version "3.3.5"}}}
+           :test {:extra-paths ["test"]
+                  :extra-deps {org.clojure/test.check {:mvn/version "1.1.1"}}}}}

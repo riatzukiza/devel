@@ -12,8 +12,8 @@ This document provides a comprehensive index of all cross-references and interco
 | **[stt](stt/)** | OpenCode development branches | TypeScript | opencode-hub, riatzukiza/openhax |
 | **[agent-shell](agent-shell/)** | Emacs-based ACP shell | Emacs Lisp | promethean, clojure-mcp |
 | **[clojure-mcp](clojure-mcp/)** | MCP server for Clojure | Clojure | promethean, agent-shell |
-| **[opencode-openai-codex-auth](opencode-openai-codex-auth/)** | OAuth authentication | TypeScript | moofone/codex-ts-sdk |
-| **[moofone/codex-ts-sdk](moofone/codex-ts-sdk/)** | TypeScript SDK | TypeScript | opencode-openai-codex-auth |
+| **[open-hax/codex](open-hax/codex/)** | OAuth authentication | TypeScript | moofone/codex-ts-sdk |
+| **[moofone/codex-ts-sdk](moofone/codex-ts-sdk/)** | TypeScript SDK | TypeScript | open-hax/codex |
 | **[opencode-hub](opencode-hub/)** | Package coordination | TypeScript | stt, riatzukiza/openhax |
 | **[riatzukiza/openhax](riatzukiza/openhax/)** | Full-stack application | TypeScript | opencode-hub, stt |
 | **[dotfiles](dotfiles/)** | Environment configuration | Shell/Emacs Lisp | All repositories |
@@ -40,7 +40,7 @@ dotfiles (Environment Setup)
 ### 🔐 Authentication & SDK Pipeline
 
 ```
-opencode-openai-codex-auth (OAuth)
+open-hax/codex (OAuth)
     ↕
 moofone/codex-ts-sdk (TypeScript SDK)
     ↕
@@ -48,7 +48,7 @@ openai/codex (Rust Runtime)
 ```
 
 **Key Integration Points:**
-- **Authentication Flow**: opencode-openai-codex-auth provides OAuth for SDK integration
+- **Authentication Flow**: open-hax/codex provides OAuth for SDK integration
 - **TypeScript Integration**: moofone/codex-ts-sdk bridges authentication with cloud tasks
 - **Runtime Support**: openai/codex provides Rust-based CLI and runtime capabilities
 
@@ -78,7 +78,7 @@ dotfiles (Environment)
 4. **Development**: clojure-mcp → REPL-driven development environment
 
 ### 🔐 Authentication Integration Workflow
-1. **Authentication**: opencode-openai-codex-auth → OAuth plugin setup
+1. **Authentication**: open-hax/codex → OAuth plugin setup
 2. **SDK Integration**: moofone/codex-ts-sdk → TypeScript SDK with cloud tasks
 3. **Runtime**: openai/codex → Rust-based CLI and execution environment
 
@@ -97,7 +97,7 @@ Each repository maintains its own detailed cross-reference documentation:
 - **[promethean/CROSS_REFERENCES.md](promethean/CROSS_REFERENCES.md)** - Agent framework dependencies and integrations
 - **[agent-shell/CROSS_REFERENCES.md](agent-shell/CROSS_REFERENCES.md)** - ACP protocol and Emacs integration patterns
 - **[clojure-mcp/CROSS_REFERENCES.md](clojure-mcp/CROSS_REFERENCES.md)** - MCP server and REPL development workflows
-- **[opencode-openai-codex-auth/CROSS_REFERENCES.md](opencode-openai-codex-auth/CROSS_REFERENCES.md)** - OAuth authentication and plugin patterns
+- **[open-hax/codex/CROSS_REFERENCES.md](open-hax/codex/CROSS_REFERENCES.md)** - OAuth authentication and plugin patterns
 
 #### **Tooling & SDKs**
 - **[moofone/codex-ts-sdk/CROSS_REFERENCES.md](moofone/codex-ts-sdk/CROSS_REFERENCES.md)** - TypeScript SDK and cloud task integration
@@ -111,6 +111,7 @@ Each repository maintains its own detailed cross-reference documentation:
 #### **Workspace Automation**
 - **[PR Mirroring Documentation](docs/pr-mirroring.md)** - Automated PR synchronization between sst/opencode and riatzukiza/opencode
 - **[PR Mirroring Automation](docs/pr-mirroring-automation.md)** - Quick reference for PR synchronization script
+- **[OpenCode PM2 Services](../system/README.md#opencode-services-manual-ecosystemconfigmjs-entries)** - Local PM2 entries for opencode-server, oc-web, and oc-manager run instructions
 
 #### **Configuration & Environment**
 - **[dotfiles/CROSS_REFERENCES.md](dotfiles/CROSS_REFERENCES.md)** - System configuration and environment setup
@@ -120,7 +121,7 @@ Each repository maintains its own detailed cross-reference documentation:
 ### Critical Path Dependencies
 1. **Environment Foundation**: dotfiles → all repositories
 2. **Agent Framework**: promethean → agent-shell → clojure-mcp
-3. **Authentication**: opencode-openai-codex-auth → moofone/codex-ts-sdk → openai/codex
+3. **Authentication**: open-hax/codex → moofone/codex-ts-sdk → openai/codex
 4. **Web Development**: stt → opencode-hub → riatzukiza/openhax
 
 ### Shared Tooling Dependencies
@@ -139,7 +140,7 @@ Each repository maintains its own detailed cross-reference documentation:
 - **Environment**: dotfiles (configuration)
 
 #### For Authentication Integration:
-- **OAuth**: opencode-openai-codex-auth
+- **OAuth**: open-hax/codex
 - **TypeScript SDK**: moofone/codex-ts-sdk
 - **Runtime**: openai/codex
 
@@ -158,7 +159,7 @@ Each repository maintains its own detailed cross-reference documentation:
 4. **Document Dependencies**: Keep cross-reference documentation updated
 
 #### Tooling Reuse:
-1. **Authentication Patterns**: OAuth integration from opencode-openai-codex-auth
+1. **Authentication Patterns**: OAuth integration from open-hax/codex
 2. **Agent Frameworks**: ACP protocol patterns from agent-shell
 3. **Development Workflows**: REPL-driven development from clojure-mcp
 4. **Package Management**: Coordination patterns from opencode-hub

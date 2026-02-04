@@ -1,8 +1,8 @@
 #!/usr/bin/env bun
 
-import { Command } from 'commander';
-import { spawn } from 'bun';
-import { smartCommitCommand } from '../src/submodule/smart-commit';
+import { Command } from "commander";
+import { spawn } from "bun";
+import { smartCommitCommand } from "../src/submodule/smart-commit";
 
 const ROOT = process.cwd();
 
@@ -12,133 +12,144 @@ interface CommandOptions {
 }
 
 async function runCommand(cmd: string[], cwd: string = ROOT): Promise<boolean> {
-  console.log(`> ${cmd.join(' ')}`);
-  const proc = spawn({ cmd, cwd, stdout: 'inherit', stderr: 'inherit' });
+  console.log(`> ${cmd.join(" ")}`);
+  const proc = spawn({ cmd, cwd, stdout: "inherit", stderr: "inherit" });
   const exitCode = await proc.exited;
   return exitCode === 0;
 }
 
 async function syncCommand(options: CommandOptions) {
-  const args = ['submodule', 'sync'];
-  if (options.recursive) args.push('--recursive');
-  
-  console.log('[submodule] syncing .gitmodules mappings');
-  await runCommand(['git', ...args]);
-  
-  args.splice(2, 0, 'update', '--init');
-  const jobs = options.jobs || parseInt(process.env.SUBMODULE_JOBS || '8');
-  args.push('--jobs', jobs.toString());
-  
-  console.log('[submodule] initializing/updating submodules');
-  await runCommand(['git', ...args]);
+  const args = ["submodule", "sync"];
+  if (options.recursive) args.push("--recursive");
+
+  console.log("[submodule] syncing .gitmodules mappings");
+  await runCommand(["git", ...args]);
+
+  args.splice(2, 0, "update", "--init");
+  const jobs = options.jobs || parseInt(process.env.SUBMODULE_JOBS || "8");
+  args.push("--jobs", jobs.toString());
+
+  console.log("[submodule] initializing/updating submodules");
+  await runCommand(["git", ...args]);
 }
 
 async function updateCommand(options: CommandOptions) {
-  const fetchArgs = ['submodule', 'foreach'];
-  if (options.recursive) fetchArgs.push('--recursive');
-  fetchArgs.push('git fetch --all --tags --prune');
-  
-  console.log('[submodule] pulling remote refs for every submodule...');
-  await runCommand(['git', ...fetchArgs]);
-  
-  const updateArgs = ['submodule', 'update', '--remote', '--merge'];
-  if (options.recursive) updateArgs.push('--recursive');
-  const jobs = options.jobs || parseInt(process.env.SUBMODULE_JOBS || '8');
-  updateArgs.push('--jobs', jobs.toString());
-  
-  console.log('[submodule] updating to the latest tracked refs...');
-  await runCommand(['git', ...updateArgs]);
+  const fetchArgs = ["submodule", "foreach"];
+  if (options.recursive) fetchArgs.push("--recursive");
+  fetchArgs.push("git fetch --all --tags --prune");
+
+  console.log("[submodule] pulling remote refs for every submodule...");
+  await runCommand(["git", ...fetchArgs]);
+
+  const updateArgs = ["submodule", "update", "--remote", "--merge"];
+  if (options.recursive) updateArgs.push("--recursive");
+  const jobs = options.jobs || parseInt(process.env.SUBMODULE_JOBS || "8");
+  updateArgs.push("--jobs", jobs.toString());
+
+  console.log("[submodule] updating to the latest tracked refs...");
+  await runCommand(["git", ...updateArgs]);
 }
 
 async function statusCommand(options: CommandOptions) {
-  const args = ['submodule', 'status'];
-  if (options.recursive) args.push('--recursive');
-  
-  console.log('[submodule] pinned commits');
-  await runCommand(['git', ...args]);
-  
-  console.log('\n[submodule] dirty worktrees');
-  const dirtyArgs = ['submodule', 'foreach'];
-  if (options.recursive) dirtyArgs.push('--recursive');
-  
+  const args = ["submodule", "status"];
+  if (options.recursive) args.push("--recursive");
+
+  console.log("[submodule] pinned commits");
+  await runCommand(["git", ...args]);
+
+  console.log("\n[submodule] dirty worktrees");
+  const dirtyArgs = ["submodule", "foreach"];
+  if (options.recursive) dirtyArgs.push("--recursive");
+
   const script = `
-    short_status=$(git status --short)
-    if [ -n "$short_status" ]; then
-      printf "\n[%s]\n%s\n" "$name" "$short_status"
-    fi
+  short_status=$(git status --short)
+  if [ -n "$short_status" ]; then
+  printf "\n[%s]\n%s\n" "$name" "$short_status"
+  fi
   `;
-  
-  await runCommand(['git', ...dirtyArgs, script]);
+
+  await runCommand(["git", ...dirtyArgs, script]);
 }
 
 const program = new Command();
 
 program
-  .name('submodule')
-  .description('CLI tool for managing git submodules in the devel workspace')
-  .version('1.0.0');
+  .name("submodule")
+  .description("CLI tool for managing git submodules in the devel workspace")
+  .version("1.0.0");
 
 program
-  .command('sync')
-  .description('Sync .gitmodules mappings and initialize/update submodules')
-  .option('-r, --recursive', 'Include nested submodules recursively')
-  .option('-j, --jobs <number>', 'Number of parallel jobs', '8')
+  .command("sync")
+  .description("Sync .gitmodules mappings and initialize/update submodules")
+  .option("-r, --recursive", "Include nested submodules recursively")
+  .option("-j, --jobs <number>", "Number of parallel jobs", "8")
   .action(syncCommand);
 
 program
-  .command('update')
-  .description('Fetch remote refs and update to latest tracked commits')
-  .option('-r, --recursive', 'Include nested submodules recursively')
-  .option('-j, --jobs <number>', 'Number of parallel jobs', '8')
+  .command("update")
+  .description("Fetch remote refs and update to latest tracked commits")
+  .option("-r, --recursive", "Include nested submodules recursively")
+  .option("-j, --jobs <number>", "Number of parallel jobs", "8")
   .action(updateCommand);
 
 program
-  .command('status')
-  .description('Show pinned commits and dirty submodule worktrees')
-  .option('-r, --recursive', 'Include nested submodules recursively')
+  .command("status")
+  .description("Show pinned commits and dirty submodule worktrees")
+  .option("-r, --recursive", "Include nested submodules recursively")
   .action(statusCommand);
 
 // Legacy command aliases for backward compatibility
 program
-  .command('submodules-sync')
+  .command("submodules-sync")
   .description('[Legacy] Alias for "sync" command')
-  .option('-r, --recursive', 'Include nested submodules recursively')
-  .option('-j, --jobs <number>', 'Number of parallel jobs', '8')
+  .option("-r, --recursive", "Include nested submodules recursively")
+  .option("-j, --jobs <number>", "Number of parallel jobs", "8")
   .action((options) => {
-    console.warn('[warn] "submodules-sync" is deprecated, use "submodule sync" instead');
+    console.warn(
+      '[warn] "submodules-sync" is deprecated, use "submodule sync" instead',
+    );
     syncCommand(options);
   });
 
 program
-  .command('submodules-update')
+  .command("submodules-update")
   .description('[Legacy] Alias for "update" command')
-  .option('-r, --recursive', 'Include nested submodules recursively')
-  .option('-j, --jobs <number>', 'Number of parallel jobs', '8')
+  .option("-r, --recursive", "Include nested submodules recursively")
+  .option("-j, --jobs <number>", "Number of parallel jobs", "8")
   .action((options) => {
-    console.warn('[warn] "submodules-update" is deprecated, use "submodule update" instead');
+    console.warn(
+      '[warn] "submodules-update" is deprecated, use "submodule update" instead',
+    );
     updateCommand(options);
   });
 
 program
-  .command('submodules-status')
+  .command("submodules-status")
   .description('[Legacy] Alias for "status" command')
-  .option('-r, --recursive', 'Include nested submodules recursively')
+  .option("-r, --recursive", "Include nested submodules recursively")
   .action((options) => {
-    console.warn('[warn] "submodules-status" is deprecated, use "submodule status" instead');
+    console.warn(
+      '[warn] "submodules-status" is deprecated, use "submodule status" instead',
+    );
     statusCommand(options);
   });
 
 // Smart commit subcommand
 const smartCmd = program
-  .command('smart')
-  .description('Smart commit operations');
+  .command("smart")
+  .description("Smart commit operations");
 
 smartCmd
-  .command('commit')
-  .description('Perform intelligent commit across submodule hierarchy with pantheon integration')
-  .argument('<message>', 'Message describing the changes')
-  .option('--dry-run', 'Show what would be committed without actually committing')
-  .option('-r, --recursive', 'Include nested submodules recursively')
+  .command("commit")
+  .description(
+    "Perform intelligent commit across submodule hierarchy with pantheon integration",
+  )
+  .argument("<message>", "Message describing the changes")
+  .option(
+    "--dry-run",
+    "Show what would be committed without actually committing",
+  )
+  .option("-r, --recursive", "Include nested submodules recursively")
   .action(async (message, options) => {
     await smartCommitCommand(message, {
       dryRun: options.dryRun,

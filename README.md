@@ -29,9 +29,9 @@ All submodules are now organized under `orgs/` by their respective GitHub organi
 | **riatzukiza** | `book-of-shadows` | Personal documentation | `orgs/riatzukiza/book-of-shadows` |
 | **riatzukiza** | `goblin-lessons` | Educational content | `orgs/riatzukiza/goblin-lessons` |
 | **riatzukiza** | `riatzukiza.github.io` | Personal website | `orgs/riatzukiza/riatzukiza.github.io` |
-| **sst** | `opencode` | Opencode development tools | `orgs/sst/opencode` |
+| **anomalyco** | `opencode` | Opencode development tools | `orgs/anomalyco/opencode` |
 | **bhauman** | `clojure-mcp` | Clojure MCP integration | `orgs/bhauman/clojure-mcp` |
-| **numman-ali** | `opencode-openai-codex-auth` | Authentication for Codex | `orgs/numman-ali/opencode-openai-codex-auth` |
+| **open-hax** | `codex` | Authentication for Codex | `orgs/open-hax/codex` |
 | **moofone** | `codex-ts-sdk` | TypeScript SDK for Codex | `orgs/moofone/codex-ts-sdk` |
 | **openai** | `codex` | OpenAI Codex integration | `orgs/openai/codex` |
 
@@ -50,12 +50,12 @@ devel/
 │   │   ├── book-of-shadows/       # Documentation
 │   │   ├── goblin-lessons/        # Educational content
 │   │   └── riatzukiza.github.io/ # Personal site
-│   ├── sst/                       # SST organization
+│   ├── anomalyco/                  # Anomaly Co organization  
 │   │   └── opencode/              # Main opencode repo
 │   ├── bhauman/                   # bhauman's repositories
 │   │   └── clojure-mcp/           # Clojure integration
-│   ├── numman-ali/                # numman-ali's repositories
-│   │   └── opencode-openai-codex-auth/ # Auth plugin
+│   ├── open-hax/                  # open-hax organization
+│   │   └── codex/                 # Auth plugin
 │   ├── moofone/                   # moofone's repositories
 │   │   └── codex-ts-sdk/          # TypeScript SDK
 │   └── openai/                    # OpenAI organization
@@ -86,8 +86,52 @@ pnpm install
 
 # Setup development environment
 cd orgs/riatzukiza/promethean && pnpm install
-cd orgs/sst/opencode && bun install
+cd orgs/anomalyco/opencode && bun install
 ```
+
+### Ecosystem Process Management (PM2)
+
+All processes are managed through the **ecosystem system**. Define apps in `ecosystems/*.cljs` files and compile with shadow-cljs.
+
+```bash
+# Compile ecosystems to PM2 config
+npx shadow-cljs release clobber
+
+# Start all processes from compiled config
+pm2 start ecosystem.config.cjs
+
+# Individual process management
+pm2 list                    # List running processes
+pm2 stop <app-name>         # Stop specific process
+pm2 restart <app-name>      # Restart specific process
+pm2 delete <app-name>       # Delete process from PM2
+pm2 logs <app-name>         # View process logs
+pm2 monit                   # Real-time monitoring dashboard
+```
+
+**Ecosystem Files:**
+- Location: `ecosystems/*.cljs`
+- Format: ClojureScript using `clobber.macro/defapp`
+- Output: `.clobber/index.cjs` (CommonJS for PM2)
+- Entry: `ecosystem.config.cjs` (requires `.clobber/index.cjs`)
+
+**Example:**
+```clojure
+;; ecosystems/myapp.cljs
+(ns myapp
+  (:require [clobber.macro]))
+
+(clobber.macro/defapp "my-service"
+  {:script "node"
+   :args ["dist/index.js"]
+   :cwd "/path/to/service"
+   :env {:NODE_ENV "production"}
+   :autorestart true})
+```
+
+**See `.opencode/skills/pm2-process-management.md` for detailed PM2 workflows.**
+
+---
 
 ## Development Commands
 
@@ -104,6 +148,15 @@ pnpm typecheck
 pnpm build
 ```
 
+### Bin Utilities
+
+- `bin/install-pre-push-hooks.sh`: Installs `.hooks/pre-push-typecheck.sh` into the root repo and every submodule, adding `.nx/` to git excludes.
+- `bin/setup-branch-protection [--dry-run]`: Applies baseline GitHub branch protection to every GitHub-backed submodule default branch (set `ALSO_DEV=true` to also guard `dev`; requires `gh` admin access).
+- `bin/fix-submodules <org>`: Converts nested git directories into proper submodules under the given org, creating GitHub remotes when missing and committing the replacements.
+- `bin/github-transfer-submodules <org>`: Transfers each `.gitmodules` repo to the target org via `gh transfer`.
+- `bin/init-pnpm-submodules`: Initializes pnpm workspace packages that lack git repos, creates private GitHub repos under `GITHUB_OWNER` (default `octave-commons`), pushes `main`, and adds them back as submodules.
+- `bin/opencode-command`: Wrapper for `bin/create-command` with the required `NODE_PATH` set for NBB.
+
 ### Submodule Workflows
 
 ```bash
@@ -111,7 +164,7 @@ pnpm build
 cd orgs/riatzukiza/promethean && pnpm --filter @promethean-os/<pkg> <command>
 
 # Opencode development
-cd orgs/sst/opencode && bun dev
+cd orgs/anomalyco/opencode && bun dev
 
 # Agent shell development (Emacs Lisp)
 cd orgs/riatzukiza/agent-shell && emacs agent-shell.el
@@ -195,7 +248,15 @@ AI-powered development tools:
 - GitHub Actions and VS Code extensions
 - Multi-language SDK support
 - Agent-based workflow automation
-- **Location**: `orgs/sst/opencode/`
+- **Location**: `orgs/anomalyco/opencode/`
+
+### Release Monitoring Automation
+
+- `.github/workflows/codex-release-watch.yml` polls `sst/opencode` (`v*`) and `openai/codex` (`rust-v*`) releases daily or on demand.
+- `scripts/codex-release-monitor.mjs` clones upstream tags, captures diffs, and drives the `release-impact` OpenCode agent with `release-context.md` + `release-diff.patch` attachments.
+- Agent guidance lives in `.opencode/agent/release-impact.md`, enforcing a strict JSON impact schema for automation.
+- Findings auto-create GitHub issues labeled `codex-release-watch`; successful runs update `.github/release-watch/state.json` so the next diff always references the last reviewed tag.
+- Requires `OPENCODE_API_KEY` secret and (optionally) `RELEASE_WATCH_MODEL` repo var to select a model (defaults to `openai/gpt-5-codex-high`).
 
 ### Agent Shell
 
@@ -400,9 +461,9 @@ The workspace maintains comprehensive cross-reference documentation:
 - **Individual CROSS_REFERENCES.md files**: Located in each repository
 
 ### Integration Patterns
-- **Authentication**: `orgs/numman-ali/opencode-openai-codex-auth` ↔ `orgs/moofone/codex-ts-sdk` ↔ `orgs/openai/codex`
+- **Authentication**: `orgs/open-hax/codex` ↔ `orgs/moofone/codex-ts-sdk` ↔ `orgs/openai/codex`
 - **Agent Development**: `orgs/riatzukiza/agent-shell` ↔ `orgs/bhauman/clojure-mcp` ↔ `orgs/riatzukiza/promethean`
-- **Web Development**: `orgs/sst/opencode` ↔ `orgs/riatzukiza/openhax`
+- **Web Development**: `orgs/anomalyco/opencode` ↔ `orgs/riatzukiza/openhax`
 - **Environment Setup**: `orgs/riatzukiza/dotfiles` ↔ all development tools
 
 ## Git Cheatsheet
@@ -463,3 +524,19 @@ For workspace-specific issues:
 - Review individual submodule README files
 - Use workspace-level commands for cross-submodule operations
 - Navigate using the `orgs/` structure for specific repositories
+
+<!-- PACKAGE-DOC-MATRIX:START -->
+
+> This section is auto-generated by scripts/package-doc-matrix.ts. Do not edit manually.
+
+## Internal Dependencies
+
+_None (external-only)._
+
+## Internal Dependents
+
+_None (external-only)._
+
+_Last updated: 2025-11-16T11:25:38.889Z_
+
+<!-- PACKAGE-DOC-MATRIX:END -->

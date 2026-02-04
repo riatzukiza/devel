@@ -1,0 +1,115 @@
+#!/usr/bin/env bun
+
+import { Command } from "commander";
+import { execSync, spawnSync } from "child_process";
+import * as fs from "fs";
+import * as path from "path";
+
+const program = new Command();
+
+program
+  .option("-r, --repo <repo>", "Path to main repo (defaults to cwd)")
+  .argument("<org>", "GitHub organization for new remotes")
+  .parse();
+
+const options = program.opts();
+const org = program.args[0];
+const mainRepoDir = options.repo || process.cwd();
+
+// Helper function to run shell commands
+function run(cmd: string, opts = {}) {
+  console.log(`Running: ${cmd}`);
+  return execSync(cmd, { stdio: "pipe", ...opts })
+    .toString()
+    .trim();
+}
+
+// Find all nested .git directories
+function findNestedGitRepos(root: string) {
+  const results: string[] = [];
+  function search(dir: string) {
+    fs.readdirSync(dir, { withFileTypes: true }).forEach((entry) => {
+      if (entry.isDirectory()) {
+        if (entry.name === ".git") {
+          results.push(dir);
+        } else {
+          search(path.join(dir, entry.name));
+        }
+      }
+    });
+  }
+  search(root);
+  // Exclude the main repo itself
+  return results.filter(
+    (repo) => path.resolve(repo) !== path.resolve(mainRepoDir),
+  );
+}
+
+// Check if a GitHub repository exists
+function githubRepoExists(org: string, repoName: string): boolean {
+  try {
+    run(`gh repo view ${org}/${repoName}`);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+// Create a GitHub repository under the org
+function createGithubRepo(org: string, repoName: string) {
+  run(`gh repo create ${org}/${repoName} --public --confirm`);
+}
+
+// Remove nested repo from main repo (cached)
+function removeNestedRepoFromMain(mainRepo: string, nestedRepoRelPath: string) {
+  run(`git -C "${mainRepo}" rm -r --cached "${nestedRepoRelPath}"`);
+  run(
+    `git -C "${mainRepo}" commit -m "Remove improperly nested repo ${nestedRepoRelPath}"`,
+  );
+}
+
+// Add as submodule
+function addSubmodule(mainRepo: string, remoteUrl: string, subDir: string) {
+  run(`git -C "${mainRepo}" submodule add "${remoteUrl}" "${subDir}"`);
+  run(`git -C "${mainRepo}" commit -m "Add ${subDir} as proper submodule"`);
+}
+
+// Main script logic
+function main() {
+  // Ensure inside a git repo
+  if (!fs.existsSync(path.join(mainRepoDir, ".git"))) {
+    console.error("Not inside a git repo. Use --repo to specify.");
+    process.exit(1);
+  }
+  const nestedRepos = findNestedGitRepos(mainRepoDir);
+  if (nestedRepos.length === 0) {
+    console.log("No nested git repos found.");
+    return;
+  }
+  nestedRepos.forEach((nestedRepoAbs) => {
+    const nestedRel = path.relative(mainRepoDir, nestedRepoAbs);
+    const repoName = path.basename(nestedRepoAbs);
+    let remoteUrl = "";
+    // Check existing remote
+    try {
+      remoteUrl = run(
+        `git -C "${nestedRepoAbs}" config --get remote.origin.url`,
+      );
+    } catch (e) {
+      console.warn(`No remote found for ${nestedRel}, skipping.`);
+      return;
+    }
+    // If not under our org, create repo
+    if (!githubRepoExists(org, repoName)) {
+      createGithubRepo(org, repoName);
+      remoteUrl = `git@github.com:${org}/${repoName}.git`;
+      run(`git -C "${nestedRepoAbs}" remote set-url origin "${remoteUrl}"`);
+      run(`git -C "${nestedRepoAbs}" push --set-upstream origin main`);
+    }
+    removeNestedRepoFromMain(mainRepoDir, nestedRel);
+    addSubmodule(mainRepoDir, remoteUrl, nestedRel);
+    console.log(`Properly added ${nestedRel} as submodule under ${org}.`);
+  });
+}
+
+main();

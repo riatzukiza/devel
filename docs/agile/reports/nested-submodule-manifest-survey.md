@@ -9,7 +9,7 @@ Date: 2025-11-05
 | dotfiles | git@github.com:riatzukiza/dotfiles.git | bootstrap scripts + symlinks |
 | agent-shell | git@github.com:riatzukiza/agent-shell.git | Emacs extensions |
 | clojure-mcp | git@github.com:bhauman/clojure-mcp.git | external upstream |
-| opencode-openai-codex-auth | git@github.com:numman-ali/opencode-openai-codex-auth.git | npm workspace |
+| open-hax/codex | git@github.com:open-hax/codex.git | npm workspace |
 | openai/codex | org-14957082@github.com:openai/codex.git | GitHub App scoped remote |
 | stt/opencode | git@github.com:sst/opencode.git | upstream remote with nested forks |
 | moofone/codex-ts-sdk | git@github.com:moofone/codex-ts-sdk.git | TypeScript SDK |

@@ -9,7 +9,7 @@ This report captures the current recursive submodule status and highlights recen
 The following output is equivalent to `git submodule summary` and shows the range and top messages for each changed submodule at the root level:
 
 ```
-* orgs/numman-ali/opencode-openai-codex-auth 0d3a228...c13f329 (24):
+* orgs/open-hax/codex 0d3a228...c13f329 (24):
   > ignore stryker files
   > add a new test
   > remove duplicate import
@@ -81,7 +81,7 @@ Output of `git submodule status --recursive` as of this report:
 ```
  cdc2b11b79572dac79ec7a119b9cb8b0196da59a orgs/bhauman/clojure-mcp (v0.1.10-alpha-40-gcdc2b11)
  24bfe873d836a87751ef59897c7c787e04695fc8 orgs/moofone/codex-ts-sdk (v0.0.7-24-g24bfe87)
-+c13f3296f610be06242ddd96736bcf577e843b98 orgs/numman-ali/opencode-openai-codex-auth (v3.1.0-75-gc13f329)
++c13f3296f610be06242ddd96736bcf577e843b98 orgs/open-hax/codex (v3.1.0-75-gc13f329)
  2f9ad78b97c1a5d26e48ea1677fd79a81469132f orgs/openai/codex (rust-v0.0.2504301132-1629-g2f9ad78b)
  0de8e0dc13f56c17d735aa0bcba078cc4b7d3b1b orgs/riatzukiza/agent-shell (heads/device/stealth)
  7535e18eb080760695f4f44310c45fda1d9d0402 orgs/riatzukiza/book-of-shadows (heads/device/stealth)

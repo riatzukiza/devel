@@ -10,7 +10,7 @@ Keep the current OAuth bridge stable while building a first-class integration be
 4. **Downstream adoption:** Once the Codex API lands, build an Opencode plugin that speaks the new interface, letting users mix Codex’s UI/runtime with Opencode’s tool graph, model catalog, MCP servers, etc.
 
 ## Tasks
-- [x] Warn users when caching is disabled because the host omitted conversation IDs (`opencode-openai-codex-auth`).
+- [x] Warn users when caching is disabled because the host omitted conversation IDs (`open-hax/codex`).
 - [x] Scaffold `@promethean-os/opencode-openai-codex-sdk` with the native SDK wired up (currently returns 501 until streaming is implemented).
 - [ ] Implement the HTTP↔SDK bridge so `/v1/responses` payloads become SDK `sendUserTurn` submissions and stream Codex events back to OpenCode.
 - [ ] Draft the Codex CLI plugin/tool API design (Rust interfaces, serialization, tool lifecycle) and circulate for feedback.

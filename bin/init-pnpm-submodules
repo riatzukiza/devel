@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# Target GitHub organization or user to create repos under
+GITHUB_OWNER="octave-commons"
+
+# Main repository root
+MAIN_REPO_ROOT=$(pwd)
+
+# Run git status on all workspace packages - only process those without a git repo
+pnpm -r exec bash -c '
+if [ ! -d .git ]; then
+  echo "$PWD"
+fi
+' > uninitialized_repos.txt
+
+# Process each path without git repo
+while IFS= read -r pkg_path; do
+  cd "$pkg_path" || continue
+
+  echo "Initializing repo and creating GitHub repo for $(basename "$pkg_path")"
+
+  # Initialize git repo
+  git init
+  git add .
+  git commit -m "Initial commit for $(basename "$pkg_path")"
+
+  # Create remote repo on GitHub via gh CLI, private repo (remove --private if public desired)
+  gh repo create "${GITHUB_OWNER}/$(basename "$pkg_path")" --private --confirm
+
+  # Add remote and push
+  git remote add origin "git@github.com:${GITHUB_OWNER}/$(basename "$pkg_path").git"
+  git branch -M main
+  git push -u origin main
+
+  # Go back to main repo root
+  cd "$MAIN_REPO_ROOT" || exit
+
+  # Add submodule
+  git submodule add -f "git@github.com:${GITHUB_OWNER}/$(basename "$pkg_path").git" "$pkg_path"
+
+done < uninitialized_repos.txt

@@ -1,52 +1,131 @@
 [submodule "promethean"]
 	path = orgs/riatzukiza/promethean
 	url = git@github.com:riatzukiza/promethean.git
+	branch = device/stealth
 [submodule "dotfiles"]
 	path = orgs/riatzukiza/dotfiles
 	url = git@github.com:riatzukiza/dotfiles.git
+	branch = device/stealth
 [submodule "agent-shell"]
 	path = orgs/riatzukiza/agent-shell
 	url = git@github.com:riatzukiza/agent-shell.git
-[submodule "clojure-mcp"]
-	path = orgs/bhauman/clojure-mcp
-	url = git@github.com:bhauman/clojure-mcp.git
-[submodule "opencode-openai-codex-auth"]
-	path = orgs/numman-ali/opencode-openai-codex-auth
-	url = git@github.com:numman-ali/opencode-openai-codex-auth.git
+	branch = device/stealth
 [submodule "openai/codex"]
 	path = orgs/openai/codex
 	url = org-14957082@github.com:openai/codex.git
+	branch = device/stealth
 [submodule "moofone/codex-ts-sdk"]
 	path = orgs/moofone/codex-ts-sdk
 	url = git@github.com:moofone/codex-ts-sdk.git
+	branch = device/stealth
 [submodule "riatzukiza/openhax"]
 	path = orgs/riatzukiza/openhax
 	url = git@github.com:riatzukiza/openhax.git
+	branch = device/stealth
+[submodule "riatzukiza/ollama-benchmarks"]
+	path = orgs/riatzukiza/ollama-benchmarks
+	url = git@github.com:riatzukiza/ollama-benchmarks.git
+	branch = device/stealth
 [submodule "riatzukiza/riatzukiza.github.io"]
 	path = orgs/riatzukiza/riatzukiza.github.io
 	url = git@github.com:riatzukiza/riatzukiza.github.io.git
+	branch = device/stealth
 [submodule "riatzukiza/desktop"]
 	path = orgs/riatzukiza/desktop
 	url = git@github.com:riatzukiza/desktop.git
+	branch = device/stealth
 [submodule "riatzukiza/book-of-shadows"]
 	path = orgs/riatzukiza/book-of-shadows
 	url = git@github.com:riatzukiza/book-of-shadows.git
+	branch = device/stealth
 [submodule "riatzukiza/goblin-lessons"]
 	path = orgs/riatzukiza/goblin-lessons
 	url = git@github.com:riatzukiza/goblin-lessons.git
-[submodule "sst/opencode"]
-	path = orgs/sst/opencode
-	url = git@github.com:riatzukiza/opencode.git
+	branch = device/stealth
+[submodule "riatzukiza/stt"]
+	path = orgs/riatzukiza/stt
+	url = git@github.com:riatzukiza/stt.git
+	branch = device/stealth
+[submodule "orgs/open-hax/codex"]
+	path = orgs/open-hax/codex
+	url = git@github.com:open-hax/codex.git
+	branch = device/stealth
+[submodule "orgs/open-hax/agent-actors"]
+	path = orgs/open-hax/agent-actors
+	url = git@github.com:open-hax/agent-actors.git
+	branch = device/stealth
+[submodule "orgs/open-hax/cli-client"]
+	path = orgs/open-hax/cli-client
+	url = git@github.com:open-hax/cli-client.git
+	branch = device/stealth
+[submodule "orgs/open-hax/clients"]
+	path = orgs/open-hax/clients
+	url = git@github.com:open-hax/clients.git
+	branch = device/stealth
+[submodule "orgs/open-hax/cljs-plugin-template"]
+	path = orgs/open-hax/cljs-plugin-template
+	url = git@github.com:open-hax/cljs-plugin-template.git
+	branch = device/stealth
+[submodule "orgs/open-hax/session-orchestrator"]
+	path = orgs/open-hax/session-orchestrator
+	url = git@github.com:open-hax/session-orchestrator.git
+	branch = device/stealth
+[submodule "orgs/open-hax/openhax"]
+	path = orgs/open-hax/openhax
+	url = git@github.com:open-hax/openhax.git
+	branch = device/stealth
+[submodule "orgs/open-hax/plugins/codex"]
+	path = orgs/open-hax/plugins/codex
+	url = git@github.com:open-hax/codex.git
+	branch = device/stealth
+[submodule "orgs/open-hax/plugin-hub"]
+	path = orgs/open-hax/plugin-hub
+	url = git@github.com:open-hax/plugin-hub.git
+	branch = device/stealth
+[submodule "orgs/open-hax/electron-workbench"]
+	path = orgs/open-hax/electron-workbench
+	url = git@github.com:open-hax/electron-workbench.git
+	branch = device/stealth
+[submodule "orgs/open-hax/workbench"]
+	path = orgs/open-hax/workbench
+	url = git@github.com:open-hax/workbench.git
+	branch = device/stealth
+[submodule "orgs/octave-commons/helm"]
+	path = orgs/octave-commons/helm
+	url = git@github.com:octave-commons/helm.git
+	branch = device/stealth
+[submodule "orgs/octave-commons/pantheon"]
+	path = orgs/octave-commons/pantheon
+	url = git@github.com:octave-commons/pantheon.git
+	branch = device/stealth
+[submodule "orgs/octave-commons/promethean"]
+	path = orgs/octave-commons/promethean
+	url = git@github.com:octave-commons/promethean.git
+	branch = device/stealth
+[submodule "orgs/octave-commons/gates-of-aker"]
+	path = orgs/octave-commons/gates-of-aker
+	url = git@github.com:octave-commons/gates-of-aker.git
+	branch = device/stealth
+[submodule "orgs/octave-commons/promethean-agent-system"]
+	path = orgs/octave-commons/promethean-agent-system
+	url = git@github.com:octave-commons/promethean-agent-system.git
+	branch = device/stealth
+
+[submodule "orgs/octave-commons/lineara_conversation_export"]
+	path = orgs/octave-commons/lineara_conversation_export
+	url = git@github.com:octave-commons/lineara_conversation_export.git
+	branch = device/stealth
+
 [submodule "orgs/kcrommett/oc-manager"]
 	path = orgs/kcrommett/oc-manager
 	url = git@github.com:kcrommett/oc-manager.git
+	branch = device/stealth
 [submodule ".emacs.d"]
 	path = .emacs.d
 	url = https://github.com/syl20bnr/spacemacs
-	branch = develop
-[submodule "orgs/riatzukiza/opencode-openai-codex-auth"]
-	path = orgs/riatzukiza/opencode-openai-codex-auth
-	url = https://github.com/riatzukiza/opencode-openai-codex-auth
-[submodule "orgs/moazbuilds"]
-	path = orgs/moazbuilds
-	url = https://github.com/moazbuilds/CodeMachine-CLI
+	branch = device/stealth
+
+[submodule "orgs/open-hax/museeks"]
+	path = orgs/open-hax/museeks
+	url = https://github.com/open-hax/museeks.git
+	branch = device/stealth

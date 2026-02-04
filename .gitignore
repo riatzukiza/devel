@@ -1,6 +1,8 @@
 # Development workspace .gitignore
 
 # Cache and temporary files
+index.jsonl
+.octavia/
 .cache/
 *.tmp
 *.temp
@@ -33,6 +35,7 @@ Thumbs.db
 .env.development.local
 .env.test.local
 .env.production.local
+.envrc
 *.pem
 *.key
 *.p12
@@ -138,3 +141,9 @@ code.lock
 elgrep-data.el
 
 docs.github/**/.cache/
+
+workspaces/
+orgs/private/
+orgs/snorkel-ai/
+.shadow-cljs
+.shadow-cljs/
