@@ -1,4 +1,4 @@
-import { Plugin, ProjectConfiguration } from "@nx/devkit";
+import { NxPlugin } from "@nx/devkit";
 import { readFileSync, existsSync } from "fs";
 import { join } from "path";
 import { writeFile } from "fs/promises";
@@ -23,22 +23,20 @@ interface Graph {
   edges: Edge[];
 }
 
-export function createGraphWriterPlugin(): Plugin {
+export function createGraphWriterPlugin(): NxPlugin {
   return {
     name: "giga-graph-writer",
-    createNodes: [
-      {
-        files: ["**/.gitmodules"],
-        createNodes: async (_, ctx) => {
-          const rootPath = ctx.workspaceRoot;
-          const depsPath = join(rootPath, "tools/nx-plugins/giga/deps.json");
-          const graph = readGraph(rootPath, depsPath);
-          // Write graph to a known temp location so the plugin can read it
-          const outPath = join(rootPath, "tmp/giga-graph.json");
-          await writeFile(outPath, JSON.stringify(graph, null, 2));
-          // Return empty config to avoid Nx project conflicts
-          return {};
-        },
+    createNodesV2: [
+      "**/.gitmodules",
+      async (configFiles, _options, ctx) => {
+        const rootPath = ctx.workspaceRoot;
+        const depsPath = join(rootPath, "tools/nx-plugins/giga/deps.json");
+        const graph = readGraph(rootPath, depsPath);
+        // Write graph to a known temp location so the plugin can read it
+        const outPath = join(rootPath, "tmp/giga-graph.json");
+        await writeFile(outPath, JSON.stringify(graph, null, 2));
+        const result = { projects: {} };
+        return configFiles.map((file) => [file, result] as const);
       },
     ],
   };
@@ -82,6 +80,14 @@ function readGraph(rootPath: string, depsPath?: string): Graph {
           build: {
             executor: "nx:run-commands",
             options: { command: `bun run src/giga/run-submodule.ts "${subPath}" build` }
+          },
+          lint: {
+            executor: "nx:run-commands",
+            options: { command: `bun run src/giga/run-submodule.ts "${subPath}" lint` }
+          },
+          typecheck: {
+            executor: "nx:run-commands",
+            options: { command: `bun run src/giga/run-submodule.ts "${subPath}" typecheck` }
           }
         }
       }

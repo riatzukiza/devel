@@ -1,6 +1,14 @@
 {
   "$schema": "https://json.schemastore.org/nx.json",
   "npmScope": "giga",
+  "plugins": [
+    {
+      "plugin": "./tools/nx-plugins/giga/plugin.cjs",
+      "options": {
+        "depsMapPath": "tools/nx-plugins/giga/deps.json"
+      }
+    }
+  ],
   "release": {
     "version": {
       "preVersionCommand": "pnpm run giga:nx:generate"
@@ -15,6 +23,12 @@
       "cache": true
     },
     "build": {
+      "cache": true
+    },
+    "lint": {
+      "cache": true
+    },
+    "typecheck": {
       "cache": true
     },
     "publish": {
