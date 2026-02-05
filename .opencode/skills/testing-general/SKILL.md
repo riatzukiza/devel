@@ -71,6 +71,12 @@ src/
     └── e2e/               # E2E tests (optional)
 ```
 
+## Workspace Testing Standards
+- Use `sleep` from the test utils instead of `setTimeout`.
+- Mock at module boundaries with `esmock`.
+- Place tests in `src/tests/` when following workspace conventions.
+- Keep tests deterministic and parallel-friendly.
+
 ## Mocking Strategy
 
 | Layer | Tool | Use For |

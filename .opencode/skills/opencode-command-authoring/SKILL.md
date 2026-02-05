@@ -29,6 +29,22 @@ Create and manage OpenCode commands with valid frontmatter and predictable execu
 4. Use `opencode-command --list` to verify registration.
 5. Run the command with `opencode-command --run <name>`.
 
+## Common Commands
+
+```bash
+# Create a command
+create-command --name <command>
+
+# List commands
+opencode-command --list
+
+# Create a new command file
+opencode-command --name <command>
+
+# Run an existing command
+opencode-command --run <command>
+```
+
 ## Output
 - A command file in `.opencode/command/<name>.md`.
 - Successful command execution or validation output.
