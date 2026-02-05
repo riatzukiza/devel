@@ -43,6 +43,10 @@ Locate the right repo, file, and pattern quickly in a multi-repo workspace.
 - Permission system → `brain/src/cephalon/brain/permission_store.clj`, `admin_ws.clj`
 - PM2 deployment → `ecosystem.pm2.clj` in cephalon-clj root
 
+## Cross-Reference Docs
+- Use `docs/MASTER_CROSS_REFERENCE_INDEX.md` for ecosystem navigation.
+- Check per-repo `CROSS_REFERENCES.md` files for integration issues.
+
 ## Strong Hints
 - Prefer narrow searches first; widen only if needed.
 - Use existing patterns as templates, not guesses.
