@@ -1,3 +1,17 @@
+---
+uuid: e758e1dc-837a-4b8a-97d6-760d51ea00eb
+title: "Nx Orchestration for Giga Repo (Design Spec)"
+slug: nx-giga-repo
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.408448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Nx Orchestration for Giga Repo (Design Spec)
 
 Goal: Establish a root-level Nx-driven orchestration that watches file changes across the entire giga repo (including git submodules), runs tests/build for only affected projects, and automatically commits/tag-propagates submodule updates up the hierarchy with structured, Pantheon-generated commit messages.

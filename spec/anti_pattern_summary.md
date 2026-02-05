@@ -1,12 +1,17 @@
 ---
-title: Comprehensive Anti-Pattern & Technical Debt Summary
+uuid: 7d035d94-4146-45e3-9358-026c0cacdd15
+title: "Comprehensive Anti-Pattern & Technical Debt Summary"
+slug: anti_pattern_summary
 status: done
-owner: assistant
-created_at: 2026-02-03
-updated_at: 2026-02-03
+priority: P2
 tags: [anti-pattern, technical-debt, summary]
+created_at: 2026-02-03
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
 ---
-
 # Comprehensive Anti-Pattern & Technical Debt Summary
 
 ## Overview

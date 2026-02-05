@@ -1,3 +1,17 @@
+---
+uuid: "11025ec3-b8df-4b6e-b062-9854dd0f17e2"
+title: "Submodule sync: device/stealth (2025-11-20)"
+slug: "2025-11-20-submodule-sync-device-stealth"
+status: "icebox"
+priority: "P2"
+labels: ["submodule", "device", "stealth", "orgs"]
+created_at: "2026-02-03T06:36:00.407448Z"
+estimates:
+  complexity: ""
+  scale: ""
+  time_to_completion: ""
+---
+
 # Submodule sync: device/stealth (2025-11-20)
 
 ## Context

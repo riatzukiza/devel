@@ -1,3 +1,17 @@
+---
+uuid: 8586c68e-308e-46ad-b75d-83256dd1f218
+title: "Promethean Discord IO Bridge → agent-system consolidation"
+slug: promethean-discord-io-bridge-agent-consolidation
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.409448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Promethean Discord IO Bridge → agent-system consolidation
 
 ## Scope

@@ -1,3 +1,17 @@
+---
+uuid: c2a28ae3-ac04-4918-bbcd-6f4474882f35
+title: "Opencode org rename (sst -> anomalyco)"
+slug: opencode-org-rename
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.409448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Opencode org rename (sst -> anomalyco)
 
 ## Summary

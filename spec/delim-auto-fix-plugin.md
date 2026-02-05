@@ -1,3 +1,17 @@
+---
+uuid: 98df9b2e-a2bd-4f8c-b436-9fc197f4c67c
+title: "Delimiter Diagnose + Auto-Fix Plugin"
+slug: delim-auto-fix-plugin
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.407448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Delimiter Diagnose + Auto-Fix Plugin
 
 ## Goal
