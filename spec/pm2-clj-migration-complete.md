@@ -1,3 +1,17 @@
+---
+uuid: "a12b9875-3c70-42ba-a5fe-66c8f245580c"
+title: "PM2 Ecosystem → pm2-clj Migration - COMPLETE"
+slug: "pm2-clj-migration-complete"
+status: "done"
+priority: "P2"
+labels: ["pm2", "ecosystem", "clj", "complete"]
+created_at: "2026-02-04T20:15:32.027168Z"
+estimates:
+  complexity: ""
+  scale: ""
+  time_to_completion: ""
+---
+
 # PM2 Ecosystem → pm2-clj Migration - COMPLETE
 
 ## 2026-02-03 Update
