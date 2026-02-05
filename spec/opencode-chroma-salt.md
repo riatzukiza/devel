@@ -1,3 +1,17 @@
+---
+uuid: 4d0146fd-6b56-4a49-8511-8d0d5dfdcab9
+title: "Spec: Salt Chroma Collection Names With Model"
+slug: opencode-chroma-salt
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T21:41:34.838562Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Spec: Salt Chroma Collection Names With Model
 
 ## Summary

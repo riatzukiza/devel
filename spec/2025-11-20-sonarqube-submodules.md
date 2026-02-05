@@ -1,3 +1,17 @@
+---
+uuid: "124665c4-e7d1-4509-aa83-a072f02dbfb9"
+title: "SonarQube coverage for all submodules"
+slug: "2025-11-20-sonarqube-submodules"
+status: "icebox"
+priority: "P2"
+labels: ["coverage", "sonar", "sonarqube", "all"]
+created_at: "2026-02-03T06:36:00.407448Z"
+estimates:
+  complexity: ""
+  scale: ""
+  time_to_completion: ""
+---
+
 # SonarQube coverage for all submodules
 
 ## Context & references

@@ -1,3 +1,17 @@
+---
+uuid: 2c568578-f3f9-427e-87d8-e7c0c63fe123
+title: "Nx Daemon Entry & Memory Control"
+slug: nx-daemon-memory
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-04T20:15:32.027168Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Nx Daemon Entry & Memory Control
 
 ## Context

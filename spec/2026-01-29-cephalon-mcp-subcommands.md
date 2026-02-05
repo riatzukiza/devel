@@ -1,3 +1,17 @@
+---
+uuid: b2aab092-9a32-423b-a225-3f514a2cb69f
+title: "Cephalon MCP Subcommands"
+slug: 2026-01-29-cephalon-mcp-subcommands
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.407448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Cephalon MCP Subcommands
 
 ## Context

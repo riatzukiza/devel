@@ -1,3 +1,17 @@
+---
+uuid: 2ace916e-1db7-40ba-905f-b50af690e11f
+title: "GLM Model Variants for OpenCode Agents"
+slug: glm-agent-variants
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.408448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # GLM Model Variants for OpenCode Agents
 
 ## Executive Summary

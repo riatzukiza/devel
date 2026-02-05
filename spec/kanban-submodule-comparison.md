@@ -1,3 +1,17 @@
+---
+uuid: e38f20d9-f32a-4fa5-aa7c-9cbddce9a9fb
+title: "Kanban Submodule Comparison"
+slug: kanban-submodule-comparison
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.408448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Kanban Submodule Comparison
 
 ## Context

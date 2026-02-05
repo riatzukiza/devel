@@ -1,12 +1,17 @@
 ---
-title: Test Hygiene & Code Quality Anti-Patterns
+uuid: c7327772-708c-4068-8139-12110ae27cd0
+title: "Test Hygiene & Code Quality Anti-Patterns"
+slug: test_hygiene
 status: todo
-owner: assistant
-created_at: 2026-02-03
-updated_at: 2026-02-03
+priority: P2
 tags: [testing, quality, hygiene]
+created_at: 2026-02-03
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
 ---
-
 # Test Hygiene & Code Quality Anti-Patterns
 
 ## Overview

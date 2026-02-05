@@ -1,3 +1,17 @@
+---
+uuid: ff096333-2926-40dc-af10-520b073d13df
+title: "Fix run-submodule Typecheck Exit Codes"
+slug: nx-typecheck-runner
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.408448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Fix run-submodule Typecheck Exit Codes
 # Fix run-submodule Typecheck Exit Codes
 

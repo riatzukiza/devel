@@ -10,6 +10,14 @@ estimates:
   complexity: ""
   scale: ""
   time_to_completion: ""
+lastCommitSha: "4824c99a944c3ef473167b7326337eaac48c7911"
+commitHistory:
+  -
+    sha: "4824c99a944c3ef473167b7326337eaac48c7911"
+    timestamp: "2026-02-04 19:48:00 -0600\n\ndiff --git a/spec/pm2-clj-migration-complete.md b/spec/pm2-clj-migration-complete.md\nindex d0e5192..7331e5a 100644\n--- a/spec/pm2-clj-migration-complete.md\n+++ b/spec/pm2-clj-migration-complete.md\n@@ -1,3 +1,17 @@\n+---\n+uuid: \"a12b9875-3c70-42ba-a5fe-66c8f245580c\"\n+title: \"PM2 Ecosystem → pm2-clj Migration - COMPLETE\"\n+slug: \"pm2-clj-migration-complete\"\n+status: \"done\"\n+priority: \"P2\"\n+labels: [\"pm2\", \"ecosystem\", \"clj\", \"complete\"]\n+created_at: \"2026-02-04T20:15:32.027168Z\"\n+estimates:\n+  complexity: \"\"\n+  scale: \"\"\n+  time_to_completion: \"\"\n+---\n+\n # PM2 Ecosystem → pm2-clj Migration - COMPLETE\n \n ## 2026-02-03 Update"
+    message: "Change task status: a12b9875-3c70-42ba-a5fe-66c8f245580c - PM2 Ecosystem → pm2-clj Migration - COMPLETE - incoming → done"
+    author: "Error"
+    type: "status_change"
 ---
 
 # PM2 Ecosystem → pm2-clj Migration - COMPLETE

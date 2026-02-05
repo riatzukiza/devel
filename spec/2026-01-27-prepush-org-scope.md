@@ -1,3 +1,17 @@
+---
+uuid: "7aad29cc-abf6-4267-bbae-53e4dcd8ae8e"
+title: "Pre-push typecheck org scope (2026-01-27)"
+slug: "2026-01-27-prepush-org-scope"
+status: "done"
+priority: "P2"
+labels: ["pre", "push", "typecheck", "org"]
+created_at: "2026-02-03T06:36:00.407448Z"
+estimates:
+  complexity: ""
+  scale: ""
+  time_to_completion: ""
+---
+
 # Pre-push typecheck org scope (2026-01-27)
 
 ## Summary

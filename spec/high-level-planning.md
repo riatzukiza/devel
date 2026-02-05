@@ -1,3 +1,17 @@
+---
+uuid: f0504d62-867d-4e5c-8bac-4b24803d422e
+title: "High-level planning across Promethean + benchmarks"
+slug: high-level-planning
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.408448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # High-level planning across Promethean + benchmarks
 
 ## Scope

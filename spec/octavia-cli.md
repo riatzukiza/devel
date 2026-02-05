@@ -1,3 +1,17 @@
+---
+uuid: 2c85be73-882f-4f6a-849f-c36105d2d4c2
+title: "Octavia CLI (\"octavia\")"
+slug: octavia-cli
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.408448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Octavia CLI ("octavia")
 
 ## Context & Inputs

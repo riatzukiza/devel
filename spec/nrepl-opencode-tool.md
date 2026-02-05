@@ -1,3 +1,17 @@
+---
+uuid: f0a81a29-3cd6-4b80-9d30-b62cc0b351ee
+title: "nREPL Eval OpenCode Tool"
+slug: nrepl-opencode-tool
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.408448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # nREPL Eval OpenCode Tool
 
 ## Goal

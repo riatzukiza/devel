@@ -1,3 +1,17 @@
+---
+uuid: "f8026c82-e2c1-46de-99cb-18b8828150d5"
+title: "Top-level submodule branch sync hooks (2025-11-16)"
+slug: "2025-11-16-top-level-submodule-branch-sync"
+status: "icebox"
+priority: "P2"
+labels: ["hooks", "submodule", "branch", "sync"]
+created_at: "2026-02-03T06:36:00.407448Z"
+estimates:
+  complexity: ""
+  scale: ""
+  time_to_completion: ""
+---
+
 # Top-level submodule branch sync hooks (2025-11-16)
 
 ## Context

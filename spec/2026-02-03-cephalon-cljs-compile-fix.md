@@ -1,3 +1,17 @@
+---
+uuid: 082147de-b6b4-49bf-8cad-bd00077056cc
+title: "Cephalon CLJS Compile Fix"
+slug: 2026-02-03-cephalon-cljs-compile-fix
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T07:24:44.248935Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Cephalon CLJS Compile Fix
 
 ## Context

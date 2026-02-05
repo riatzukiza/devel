@@ -1,3 +1,17 @@
+---
+uuid: 0324a2b7-c2bd-4a5d-b4eb-44858237ecef
+title: "Cephalon CLJS Source Map Debugging"
+slug: 2026-02-03-cephalon-cljs-sourcemaps
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T23:18:17.617559Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Cephalon CLJS Source Map Debugging
 
 ## Context

@@ -1,3 +1,17 @@
+---
+uuid: a9b3e808-93c5-4159-81ff-8bc3bd92311c
+title: "Cephalon TS import resolution for tests"
+slug: 2026-02-02-cephalon-ts-import-resolution
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T05:57:56.493509Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Cephalon TS import resolution for tests
 
 ## Context

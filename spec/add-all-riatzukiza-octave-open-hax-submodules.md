@@ -1,3 +1,17 @@
+---
+uuid: c1f5f0bb-51dd-4e45-bb9e-57ac32b43b5f
+title: "Add all riatzukiza, octave-commons, and open-hax repositories as submodules"
+slug: add-all-riatzukiza-octave-open-hax-submodules
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.407448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Add all riatzukiza, octave-commons, and open-hax repositories as submodules
 
 ## Context

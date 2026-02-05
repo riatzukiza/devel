@@ -1,3 +1,17 @@
+---
+uuid: 7f1617cb-0d8d-4c40-a9d9-b99c08e1ca84
+title: "Issues & PR Projection Tool"
+slug: issues-projection-tool
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.408448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Issues & PR Projection Tool
 
 ## Context

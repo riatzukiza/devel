@@ -1,3 +1,17 @@
+---
+uuid: 2f8d9688-58f2-4e01-870d-c0d70c9625f7
+title: "OpenCode Skill Pack and Optimization Guide"
+slug: 2026-01-28-opencode-skill-pack
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.407448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # OpenCode Skill Pack and Optimization Guide
 
 ## Context

@@ -1,3 +1,17 @@
+---
+uuid: 5e3dba33-3dcc-482a-9b77-9451c1c6ea0e
+title: "oh-my-opencode Installation Plan"
+slug: oh-my-opencode-installation
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.408448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # oh-my-opencode Installation Plan
 
 ## User Configuration

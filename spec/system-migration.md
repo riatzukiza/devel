@@ -1,3 +1,17 @@
+---
+uuid: 2a35e8c0-c1e8-4390-accb-71d5086c977a
+title: spec/system-migration.md
+slug: system-migration
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.409448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # spec/system-migration.md
 
 ## Objective

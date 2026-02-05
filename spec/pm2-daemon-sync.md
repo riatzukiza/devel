@@ -1,3 +1,17 @@
+---
+uuid: 50904cae-15d5-4382-885b-5e6b50c005b2
+title: "PM2 daemon sync and regeneration"
+slug: pm2-daemon-sync
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T23:06:07.752630Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # PM2 daemon sync and regeneration
 
 ## Context and references

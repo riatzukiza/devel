@@ -1,3 +1,17 @@
+---
+uuid: 118e1d24-609b-4da3-a801-355f75c82fa4
+title: "device/stealth submodule sync"
+slug: device-stealth-submodules
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.408448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # device/stealth submodule sync
 
 ## Context

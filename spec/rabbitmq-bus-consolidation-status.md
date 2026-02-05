@@ -1,3 +1,17 @@
+---
+uuid: "27d1997c-40c5-4687-8534-bc3287a1ec80"
+title: "RabbitMQ Messaging Consolidation – Status (2025-11-17)"
+slug: "rabbitmq-bus-consolidation-status"
+status: "icebox"
+priority: "P2"
+labels: ["rabbitmq", "consolidation", "messaging", "status"]
+created_at: "2026-02-03T06:36:00.409448Z"
+estimates:
+  complexity: ""
+  scale: ""
+  time_to_completion: ""
+---
+
 # RabbitMQ Messaging Consolidation – Status (2025-11-17)
 
 ## Reference
