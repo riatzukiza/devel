@@ -5,7 +5,7 @@
 (ns index
   (:require [clobber.macro]
             [opencode]
-            [services-cephalon]
+            [cephalon-stable]
             [services-openplanner]))
 
 ;; The ecosystem and cephalon namespaces load and register all apps via defapp

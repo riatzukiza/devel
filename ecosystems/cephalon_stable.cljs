@@ -2,13 +2,14 @@
 ;; - :script paths resolve relative to :cwd; point at real build outputs
 ;; - After edits, run: pnpm generate-ecosystem
 
-(ns services-cephalon
+(ns cephalon-stable
   (:require [clobber.macro]))
 
-(clobber.macro/defapp "cephalon"
+(clobber.macro/defapp "duck-cephalon"
   {:script "./dist/cephalon.js"
    :cwd "./services/cephalon-cljs"
    :env {:NODE_ENV "production"
+         :AGENT_NAME "Promethean Duckman"
          :NODE_OPTIONS "--enable-source-maps"}
    :autorestart true
    :max-restarts 5

@@ -1,4 +1,4 @@
-(ns ecosystem
+(ns opencode
   (:require [clobber.macro]))
 (clobber.macro/defapp "devel/opencode"
   {:script "bunx"

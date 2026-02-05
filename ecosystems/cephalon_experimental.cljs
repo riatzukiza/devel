@@ -2,7 +2,7 @@
 ;; - :script paths resolve relative to :cwd; keep build outputs in sync
 ;; - Rebuild PM2 config with: pnpm generate-ecosystem
 
-(ns cephalon
+(ns cephalon-experimental
   (:require [clobber.macro]))
 
 ;; Cephalon - "always-running mind" with vector memory, persistent memory, and event subscriptions
