@@ -6,7 +6,7 @@ description: "Build all affected submodules across the workspace, including runn
 # Skill: Workspace Build
 
 ## Goal
-Build all affected submodules across the workspace, including running tests for changed files, using Nx for affected project detection.
+Build affected submodules across the workspace using Nx affected detection, with a full-run fallback available.
 
 ## Use This Skill When
 - You need to build all affected submodules after making changes
@@ -18,14 +18,14 @@ Build all affected submodules across the workspace, including running tests for 
 - The change is unrelated to the codebase being built
 
 ## Inputs
-- File paths to check for changes (default: none - builds all)
-- Target to run (test, build, or both)
+- File paths to check for changes (default: affected files from git working tree + staged + untracked)
+- Target to run (build)
 
 ## Steps
-1. Run `pnpm giga:affected` to build and test affected submodules
-2. Uses Nx to detect affected projects based on file changes
-3. Runs `nx affected --target=test --build` for affected projects
-4. Reports build/test results for each affected submodule
+1. Run `pnpm build` to build affected submodules
+2. Script uses `scripts/nx-affected.mjs` to collect uncommitted changes
+3. Runs `nx affected --target=build` with the computed file list
+4. Use `pnpm build:all` to force a full run
 
 ## Output
 - Build/test summary for each affected submodule
@@ -40,19 +40,15 @@ Build all affected submodules across the workspace, including running tests for 
 
 ## Common Commands
 
-### Build and Test Affected Submodules
+### Build Affected Submodules
 ```bash
-# Build and test all affected submodules
-pnpm giga:affected
+# Build affected submodules
+pnpm build
 
-# Run tests for affected files only
-nx affected --target=test
+# Build all submodules
+pnpm build:all
 
-# Build affected files only
-nx affected --target=build
-
-# Test and build with specific files
-nx affected --target=test --files src/some/file.ts
+# Build with specific files
 nx affected --target=build --files src/some/file.ts
 ```
 
@@ -69,7 +65,7 @@ nx build
 ## References
 - Nx config: `nx.json`
 - Giga Nx plugin: `tools/nx-plugins/giga/`
-- Build script: `package.json` → `giga:affected`
+- Build runner: `scripts/nx-affected.mjs`
 
 ## Important Constraints
 - **Affected Detection**: Only builds submodules affected by your changes
