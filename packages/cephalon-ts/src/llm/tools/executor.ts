@@ -21,6 +21,7 @@ export class ToolExecutor {
   > = new Map();
   private eventBus: InMemoryEventBus;
   private chromaStore?: import("../../chroma/client.js").ChromaMemoryStore;
+  private openPlannerClient?: import("../../openplanner/client.js").OpenPlannerClient;
   private discordApiClient: import("../../discord/api-client.js").DiscordApiClient;
 
   constructor(
@@ -29,6 +30,7 @@ export class ToolExecutor {
   ) {
     this.eventBus = eventBus;
     this.chromaStore = options.chromaStore;
+    this.openPlannerClient = options.openPlannerClient;
     if (!options.discordApiClient) {
       throw new Error(
         "DiscordApiClient is required. Pass a single shared instance from main.ts",
@@ -131,6 +133,7 @@ export class ToolExecutor {
   private registerDefaultTools(): void {
     const baseDeps: ToolDependencies = {
       chromaStore: this.chromaStore,
+      openPlannerClient: this.openPlannerClient,
       discordApiClient: this.discordApiClient,
     };
 

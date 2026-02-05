@@ -45,17 +45,17 @@ export const TOOL_REGISTRY: Record<string, ToolRegistryEntry> = {
         [];
 
       try {
-        if (deps.chromaStore) {
-          const searchResults = await deps.chromaStore.search(query, {
+        if (deps.openPlannerClient) {
+          const searchResults = await deps.openPlannerClient.searchFts(query, {
             limit,
-            queueKey: deps.sessionId,
+            session: deps.sessionId,
           });
           results = searchResults.map((r) => ({
             id: r.id,
-            content: r.content,
-            similarity: r.distance,
+            content: r.text ?? "",
+            similarity: r.score,
           }));
-          console.log(`[TOOL]   Found ${results.length} memories from Chroma`);
+          console.log(`[TOOL]   Found ${results.length} memories from OpenPlanner`);
         }
 
         return {

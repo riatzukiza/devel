@@ -8,6 +8,7 @@ import { readFileSync } from "fs";
 import type { ChromaMemoryStore } from "../chroma/client.js";
 import type { MemoryStore } from "../core/memory-store.js";
 import type { Memory } from "../types/index.js";
+import type { OpenPlannerClient } from "../openplanner/client.js";
 
 // Handle both ESM (import.meta.url) and CJS (module.parent.filename or __dirname)
 function getDirname(): string {
@@ -250,32 +251,35 @@ interface PinBody {
 
 export interface MemoryUIConfig {
   port: number;
-  chromaStore: ChromaMemoryStore;
+  chromaStore?: ChromaMemoryStore;
+  openPlannerClient?: OpenPlannerClient;
   memoryStore: MemoryStore;
 }
 
 export class MemoryUIServer {
-  private fastify: ReturnType<typeof Fastify>;
-  private chromaStore: ChromaMemoryStore;
+  private fastify: any;
+  private chromaStore?: ChromaMemoryStore;
+  private openPlannerClient?: OpenPlannerClient;
   private memoryStore: MemoryStore;
   private port: number;
 
   constructor(config: MemoryUIConfig) {
     this.port = config.port;
     this.chromaStore = config.chromaStore;
+    this.openPlannerClient = config.openPlannerClient;
     this.memoryStore = config.memoryStore;
     this.fastify = Fastify({ logger: false });
   }
 
   async start(): Promise<void> {
-    await this.fastify.register(fastifyCors, {
+    await this.fastify.register(fastifyCors as never, {
       origin: true,
     });
 
     // Register API routes FIRST so they take precedence
     this.registerRoutes();
 
-    await this.fastify.register(fastifyStatic, {
+    await this.fastify.register(fastifyStatic as never, {
       root: PUBLIC_DIR,
       prefix: "/",
       decorateReply: false,
@@ -305,7 +309,12 @@ export class MemoryUIServer {
 
   private registerRoutes(): void {
     this.fastify.get("/api/memories/count", async () => {
-      const count = await this.chromaStore.getMemoryCount();
+      if (this.chromaStore) {
+        const count = await this.chromaStore.getMemoryCount();
+        return { count };
+      }
+      const memories = await this.loadAllMemories();
+      const count = memories.length;
       return { count };
     });
 
@@ -316,9 +325,25 @@ export class MemoryUIServer {
         return { error: "Query parameter required" };
       }
 
-      const results = await this.chromaStore.search(query, {
-        limit: parseInt(limit, 10),
-      });
+      const parsedLimit = parseInt(limit, 10);
+      const results = this.chromaStore
+        ? await this.chromaStore.search(query, { limit: parsedLimit })
+        : this.openPlannerClient
+          ? (await this.openPlannerClient.searchFts(query, {
+              limit: parsedLimit,
+            })).map((result) => ({
+              id: result.id,
+              content: result.text ?? "",
+              metadata: {
+                cephalonId: String(result.meta?.cephalon_id ?? ""),
+                sessionId: String(result.source_ref?.session ?? ""),
+                timestamp: result.ts ? Date.parse(result.ts) : 0,
+                kind: String(result.kind ?? ""),
+                source: String(result.source ?? ""),
+              },
+              distance: result.score,
+            }))
+          : [];
 
       return { results };
     });

@@ -14,12 +14,14 @@ import type {
   InclusionLog,
 } from '../types/index.js';
 import type { MemoryStore } from './memory-store.js';
+import type { OpenPlannerClient } from '../openplanner/client.js';
 
 export interface MongoDBMemoryStoreConfig {
   cephalonId: string;
   uri?: string;
   databaseName?: string;
   collectionName?: string;
+  openPlannerClient?: OpenPlannerClient;
 }
 
 export class MongoDBMemoryStore implements MemoryStore {
@@ -73,6 +75,16 @@ export class MongoDBMemoryStore implements MemoryStore {
     try {
       await this.collection.insertOne(memory);
       console.log(`[MongoDBMemoryStore] Inserted memory: ${memory.id}`);
+      if (this.config.openPlannerClient) {
+        try {
+          await this.config.openPlannerClient.emitMemoryCreated(memory);
+        } catch (error) {
+          console.error(
+            `[MongoDBMemoryStore] Error emitting memory ${memory.id} to OpenPlanner:`,
+            error,
+          );
+        }
+      }
     } catch (error) {
       // Duplicate key error is acceptable (memory already exists)
       if (
