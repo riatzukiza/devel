@@ -1,12 +1,17 @@
 ---
-title: Architectural Coupling Analysis
+uuid: a8d6268d-14ce-4b98-b19b-68a1f73e3a54
+title: "Architectural Coupling Analysis"
+slug: architectural_coupling
 status: todo
-owner: assistant
-created_at: 2026-02-03
-updated_at: 2026-02-03
+priority: P2
 tags: [architecture, coupling]
+created_at: 2026-02-03
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
 ---
-
 # Architectural Coupling Analysis
 
 ## Overview

@@ -1,3 +1,17 @@
+---
+uuid: cdecb231-5d26-4454-8b6c-dcbec6ea37a7
+title: "Spec: Cephalon Phase 1 Consolidation (CLJS)"
+slug: cephalon-consolidation-phase1
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T18:38:09.348784Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Spec: Cephalon Phase 1 Consolidation (CLJS)
 
 ## Summary

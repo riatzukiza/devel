@@ -1,12 +1,17 @@
 ---
-title: Promethean Extraction & Consolidation Strategy
+uuid: d7a3aec9-50f8-44a3-8231-bfcc5cfe1c5d
+title: "Promethean Extraction & Consolidation Strategy"
+slug: promethean_extraction_strategy
 status: todo
-owner: assistant
-created_at: 2026-02-03
-updated_at: 2026-02-03
+priority: P2
 tags: [architecture, migration, promethean, giga-repo]
+created_at: 2026-02-03
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
 ---
-
 # Promethean Extraction & Consolidation Strategy
 
 ## Context

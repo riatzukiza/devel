@@ -1,3 +1,17 @@
+---
+uuid: a34797ed-da62-4304-8cc7-8007830dbd84
+title: "Pre-push Nx Affected Typecheck"
+slug: pre-push-affected-typecheck
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.409448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Pre-push Nx Affected Typecheck
 
 ## Context

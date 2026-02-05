@@ -1,3 +1,17 @@
+---
+uuid: 3ddd8718-064d-457e-90a2-ecd5283e8a6b
+title: "Pre-push typecheck fixes (2026-01-27)"
+slug: 2026-01-27-prepush-typecheck-fixes
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.407448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Pre-push typecheck fixes (2026-01-27)
 
 ## Summary

@@ -1,3 +1,17 @@
+---
+uuid: "ad8b6eaa-d93b-48a8-a957-26b476992653"
+title: "Bin scripts doc review (2025-11-19)"
+slug: "2025-11-19-bin-doc-review"
+status: "icebox"
+priority: "P2"
+labels: ["bin", "scripts", "review", "doc"]
+created_at: "2026-02-03T06:36:00.407448Z"
+estimates:
+  complexity: ""
+  scale: ""
+  time_to_completion: ""
+---
+
 # Bin scripts doc review (2025-11-19)
 
 ## Objective
