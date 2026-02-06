@@ -1,11 +1,11 @@
 /**
  * opencode-sessions.ts
  *
- * Unified CLI for managing OpenCode sessions with ChromaDB embeddings.
+ * Unified CLI for managing OpenCode sessions with OpenPlanner events.
  *
  * Commands:
- *   index         Index all OpenCode sessions into ChromaDB
- *   search        Search indexed sessions using semantic similarity
+ *   index         Index all OpenCode sessions into OpenPlanner
+ *   search        Search indexed sessions using OpenPlanner FTS
  *   help          Show this help message
  *
  * Usage:
@@ -15,26 +15,25 @@
  *
  * Environment:
  *   OPENCODE_BASE_URL     - OpenCode server URL (default: http://localhost:4096)
- *   CHROMA_URL           - Chroma server URL (default: http://localhost:8000)
- *   CHROMA_COLLECTION    - Chroma collection base name (default: opencode_messages_v1)
- *   CHROMA_TENANT        - Chroma tenant (optional)
- *   CHROMA_DATABASE      - Chroma database (optional)
- *   CHROMA_TOKEN         - Chroma auth token (optional)
- *   OPENCODE_THROTTLE_MS - Minimum delay between OpenCode API calls (default: 200)
- *   LEVEL_DIR            - LevelDB directory (default: .reconstitute/level)
- *   OLLAMA_URL           - Ollama server URL (default: http://localhost:11434)
- *   OLLAMA_EMBED_MODEL   - Embedding model (default: qwen3-embedding:0.6b)
- *   OLLAMA_NUM_CTX       - Context length (default: 32768)
- *   BATCH_SIZE           - Batch size for embedding (default: 32)
- *   EMBED_TTL_MS         - Embed cache TTL in ms (default: 30 days)
+ *   OPENPLANNER_URL       - OpenPlanner server URL (default: http://localhost:7777)
+ *   OPENPLANNER_API_KEY   - OpenPlanner API key (optional)
+ *   OPENCODE_THROTTLE_MS  - Minimum delay between OpenCode API calls (default: 200)
+ *   LEVEL_DIR             - LevelDB directory (default: .reconstitute/level)
+ *   BATCH_SIZE            - Batch size for indexing (default: 32)
  */
 import "dotenv/config";
 
-import { ChromaClient } from "chromadb";
 import { createOpencodeClient } from "@opencode-ai/sdk";
 import { Level } from "level";
 import crypto from "node:crypto";
 import { pathToFileURL } from "node:url";
+import {
+  formatSearchResults,
+  indexEvents,
+  messageToEvent,
+  openPlannerEnv,
+  searchFts,
+} from "./openplanner-client.js";
 
 // ============================================================================
 // Types and Interfaces
@@ -56,19 +55,11 @@ export type OllamaMessage =
 
 export interface Env {
   OPENCODE_BASE_URL: string;
-  CHROMA_URL: string;
-  CHROMA_TENANT?: string;
-  CHROMA_DATABASE?: string;
-  CHROMA_TOKEN?: string;
+  OPENPLANNER_URL: string;
+  OPENPLANNER_API_KEY?: string;
   OPENCODE_THROTTLE_MS: number;
-  CHROMA_COLLECTION_BASE: string;
-  CHROMA_COLLECTION: string;
   LEVEL_DIR: string;
-  OLLAMA_URL: string;
-  OLLAMA_EMBED_MODEL: string;
-  OLLAMA_NUM_CTX: number;
   BATCH_SIZE: number;
-  EMBED_TTL_MS: number;
 }
 
 export interface SearchArgs {
@@ -87,24 +78,15 @@ export interface CliArgs {
 // ============================================================================
 
 export function env(): Env {
-  const baseCollection = process.env.CHROMA_COLLECTION ?? "opencode_messages_v1";
-  const embedModel = process.env.OLLAMA_EMBED_MODEL ?? "qwen3-embedding:0.6b";
+  const opEnv = openPlannerEnv();
 
   return {
     OPENCODE_BASE_URL: process.env.OPENCODE_BASE_URL ?? "http://localhost:4096",
-    CHROMA_URL: process.env.CHROMA_URL ?? "http://localhost:8000",
-    CHROMA_TENANT: process.env.CHROMA_TENANT,
-    CHROMA_DATABASE: process.env.CHROMA_DATABASE,
-    CHROMA_TOKEN: process.env.CHROMA_TOKEN,
+    OPENPLANNER_URL: opEnv.OPENPLANNER_URL,
+    OPENPLANNER_API_KEY: opEnv.OPENPLANNER_API_KEY,
     OPENCODE_THROTTLE_MS: Number(process.env.OPENCODE_THROTTLE_MS ?? "200"),
-    CHROMA_COLLECTION_BASE: baseCollection,
-    CHROMA_COLLECTION: saltCollectionName(baseCollection, embedModel),
     LEVEL_DIR: process.env.LEVEL_DIR ?? ".reconstitute/level",
-    OLLAMA_URL: process.env.OLLAMA_URL ?? "http://localhost:11434",
-    OLLAMA_EMBED_MODEL: embedModel,
-    OLLAMA_NUM_CTX: Number(process.env.OLLAMA_NUM_CTX ?? "32768"),
     BATCH_SIZE: Number(process.env.BATCH_SIZE ?? "32"),
-    EMBED_TTL_MS: Number(process.env.EMBED_TTL_MS ?? `${1000 * 60 * 60 * 24 * 30}`),
   };
 }
 
@@ -116,67 +98,10 @@ function sha256(s: string): string {
   return crypto.createHash("sha256").update(s).digest("hex");
 }
 
-function sanitizeModelSuffix(model: string): string {
-  const normalized = model.toLowerCase().replace(/[^a-z0-9]+/g, "_");
-  const trimmed = normalized.replace(/^_+|_+$/g, "");
-  return trimmed || "model";
-}
-
-function saltCollectionName(base: string, model: string): string {
-  const suffix = sanitizeModelSuffix(model);
-  const token = `__${suffix}`;
-  return base.endsWith(token) ? base : `${base}${token}`;
-}
-
-async function ttlGet<T>(db: Level<string, any>, key: string): Promise<T | null> {
-  try {
-    const v = await db.get(key);
-    if (!v) return null;
-    if (typeof v.expiresAt === "number" && Date.now() > v.expiresAt) return null;
-    return v.value as T;
-  } catch {
-    return null;
-  }
-}
-
-async function ttlSet<T>(db: Level<string, any>, key: string, value: T, ttlMs: number) {
-  await db.put(key, { value, expiresAt: Date.now() + ttlMs });
-}
-
 const sleep = (ms: number): Promise<void> =>
   new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
-
-const createChromaClient = (E: Env): ChromaClient => {
-  const common = {
-    ...(E.CHROMA_TENANT ? { tenant: E.CHROMA_TENANT } : {}),
-    ...(E.CHROMA_DATABASE ? { database: E.CHROMA_DATABASE } : {}),
-    ...(E.CHROMA_TOKEN
-      ? {
-          auth: {
-            provider: "token",
-            credentials: E.CHROMA_TOKEN,
-            tokenHeaderType: "AUTHORIZATION",
-          },
-        }
-      : {}),
-  };
-
-  try {
-    const url = new URL(E.CHROMA_URL);
-    const port = url.port ? Number(url.port) : undefined;
-
-    return new ChromaClient({
-      host: url.hostname,
-      port,
-      ssl: url.protocol === "https:",
-      ...common,
-    });
-  } catch {
-    return new ChromaClient({ path: E.CHROMA_URL, ...common });
-  }
-};
 
 export function flattenForEmbedding(ollamaMsgs: OllamaMessage[]): string {
   const lines: string[] = [];
@@ -254,66 +179,10 @@ export function opencodeMessageToOllamaParts(entry: any): OllamaMessage[] {
 }
 
 function unwrap<T>(resp: any): T {
-  return (resp && typeof resp === "object" && "data" in resp) ? (resp.data as T) : (resp as T);
-}
-
-// ============================================================================
-// Embedding Functions
-// ============================================================================
-
-async function ollamaEmbedMany(E: Env, db: Level<string, any>, inputs: string[]): Promise<number[][]> {
-  const embeddings: number[][] = [];
-
-  for (const input of inputs) {
-    const text = input ?? "";
-    const ck = `cache:embed:${E.OLLAMA_EMBED_MODEL}:${sha256(text)}`;
-    const cached = await ttlGet<number[]>(db, ck);
-    if (cached) {
-      embeddings.push(cached);
-      continue;
-    }
-
-    const resp = await fetch(`${E.OLLAMA_URL}/api/embed`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: E.OLLAMA_EMBED_MODEL,
-        input: text,
-        truncate: true,
-        options: { num_ctx: E.OLLAMA_NUM_CTX },
-      }),
-    });
-
-    if (!resp.ok) throw new Error(`Ollama embed failed: ${resp.status} ${await resp.text()}`);
-    const json = (await resp.json()) as { embeddings?: number[][] };
-    const emb = json.embeddings?.[0] as number[];
-    if (!emb || !Array.isArray(emb)) throw new Error(`Invalid embed response: ${JSON.stringify(json).slice(0, 200)}`);
-
-    await ttlSet(db, ck, emb, E.EMBED_TTL_MS);
-    embeddings.push(emb);
+  if (resp && typeof resp === "object" && "data" in resp) {
+    return unwrap(resp.data);
   }
-
-  return embeddings;
-}
-
-async function ollamaEmbedOne(E: Env, input: string): Promise<number[]> {
-  const resp = await fetch(`${E.OLLAMA_URL}/api/embed`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: E.OLLAMA_EMBED_MODEL,
-      input,
-      truncate: true,
-      options: { num_ctx: E.OLLAMA_NUM_CTX },
-    }),
-  });
-
-  if (!resp.ok) throw new Error(`Ollama embed failed: ${resp.status} ${await resp.text()}`);
-  const json = (await resp.json()) as { embeddings?: number[][] };
-  const emb = json.embeddings?.[0] as number[];
-  if (!emb || !Array.isArray(emb)) throw new Error(`Invalid embed response: ${JSON.stringify(json).slice(0, 200)}`);
-
-  return emb;
+  return resp as T;
 }
 
 // ============================================================================
@@ -324,23 +193,12 @@ export async function indexSessions(): Promise<void> {
   const E = env();
 
   console.log("Starting OpenCode session indexing...");
-  console.log(`Chroma URL: ${E.CHROMA_URL}`);
-  console.log(`Collection: ${E.CHROMA_COLLECTION}`);
-  console.log(`Collection base: ${E.CHROMA_COLLECTION_BASE}`);
-  console.log(`Ollama URL: ${E.OLLAMA_URL}`);
-  console.log(`Embedding model: ${E.OLLAMA_EMBED_MODEL}`);
+  console.log(`OpenPlanner URL: ${E.OPENPLANNER_URL}`);
+  console.log(`OpenCode URL: ${E.OPENCODE_BASE_URL}`);
   console.log(`Batch size: ${E.BATCH_SIZE}`);
   console.log("");
 
   const client = createOpencodeClient({ baseUrl: E.OPENCODE_BASE_URL });
-  const chroma = createChromaClient(E);
-
-  const collection = await chroma.getOrCreateCollection({
-    name: E.CHROMA_COLLECTION,
-    embeddingFunction: null,
-    metadata: { description: "OpenCode sessions indexed for reconstitute", source: "opencode" },
-  });
-
   const db = new Level<string, any>(E.LEVEL_DIR, { valueEncoding: "json" });
 
   let lastOpencodeCall = 0;
@@ -358,8 +216,11 @@ export async function indexSessions(): Promise<void> {
   };
 
   await throttleOpencode();
-  const sessions = unwrap<any[]>(await client.session.list());
-  console.log(`Found ${sessions.length} sessions`);
+  const sessionsResp = await client.session.list();
+  const sessions = unwrap<any[]>(sessionsResp);
+  console.log(`sessionsResp: ${JSON.stringify(sessionsResp)}`);
+  console.log(`sessions: ${JSON.stringify(sessions)}`);
+  console.log(`Found ${sessions?.length} sessions`);
 
   let totalRecords = 0;
 
@@ -373,11 +234,7 @@ export async function indexSessions(): Promise<void> {
 
     await db.put(`sess:${sessionId}:meta`, { id: sessionId, title: sessionTitle });
     const idsInOrder: string[] = [];
-
-    const docsToEmbed: string[] = [];
-    const metas: any[] = [];
-    const ids: string[] = [];
-    const ollamaBlobs: Record<string, OllamaMessage[]> = {};
+    const eventsToIndex: any[] = [];
 
     for (let i = 0; i < messages.length; i++) {
       const entry = messages[i];
@@ -394,47 +251,31 @@ export async function indexSessions(): Promise<void> {
       const prevHash = await db.get(`msg:${rowId}:hash`).catch(() => null);
       if (prevHash === docHash) continue;
 
-      ollamaBlobs[rowId] = ollamaMsgs;
-
       const paths = extractPathsLoose(doc);
-
-      ids.push(rowId);
-      docsToEmbed.push(doc);
-      metas.push({
-        session_id: sessionId,
-        session_title: sessionTitle,
-        message_id: msgId,
-        message_index: i,
+      
+      const event = messageToEvent({
+        sessionId,
+        messageId: msgId,
+        messageIndex: i,
+        text: doc,
+        createdAt,
         role: entry?.info?.role ?? entry?.info?.type ?? "assistant",
-        created_at: createdAt,
-        paths: paths.join("|"),
+        sessionTitle,
+        paths,
       });
 
+      eventsToIndex.push(event);
       await db.put(`msg:${rowId}:hash`, docHash);
+      await db.put(`msg:${rowId}:ollama`, ollamaMsgs);
     }
 
     await db.put(`sess:${sessionId}:order`, idsInOrder);
 
-    for (let start = 0; start < docsToEmbed.length; start += E.BATCH_SIZE) {
-      const batchDocs = docsToEmbed.slice(start, start + E.BATCH_SIZE);
-      const batchIds = ids.slice(start, start + E.BATCH_SIZE);
-      const batchMetas = metas.slice(start, start + E.BATCH_SIZE);
-
-      const embeddings = await ollamaEmbedMany(E, db, batchDocs);
-
-      await collection.upsert({
-        ids: batchIds,
-        embeddings,
-        documents: batchDocs,
-        metadatas: batchMetas,
-      });
-
-      for (const id of batchIds) {
-        if (ollamaBlobs[id]) await db.put(`msg:${id}:ollama`, ollamaBlobs[id]);
-      }
-
-      totalRecords += batchIds.length;
-      console.log(`Upserted ${batchIds.length} rows to ${E.CHROMA_COLLECTION} (total: ${totalRecords})`);
+    for (let start = 0; start < eventsToIndex.length; start += E.BATCH_SIZE) {
+      const batch = eventsToIndex.slice(start, start + E.BATCH_SIZE);
+      await indexEvents(batch);
+      totalRecords += batch.length;
+      console.log(`Indexed ${batch.length} events to OpenPlanner (total: ${totalRecords})`);
     }
   }
 
@@ -449,72 +290,18 @@ export async function indexSessions(): Promise<void> {
 export async function searchSessions(args: SearchArgs): Promise<void> {
   const E = env();
 
-  console.log("Searching OpenCode sessions...");
+  console.log("Searching OpenCode sessions via OpenPlanner...");
   console.log(`Query: "${args.query}"`);
   console.log(`Top-K: ${args.k}`);
   if (args.session) console.log(`Session filter: ${args.session}`);
-  console.log(`Collection: ${E.CHROMA_COLLECTION}`);
-  console.log(`Collection base: ${E.CHROMA_COLLECTION_BASE}`);
   console.log("");
 
-  const chroma = createChromaClient(E);
-
-  const collection = await chroma.getOrCreateCollection({
-    name: E.CHROMA_COLLECTION,
-    embeddingFunction: null,
+  const results = await searchFts(args.query, {
+    limit: args.k,
+    session: args.session,
   });
 
-  const qEmb = await ollamaEmbedOne(E, args.query);
-  const where = args.session ? { session_id: args.session } : undefined;
-
-  const res = await collection.query({
-    queryEmbeddings: [qEmb],
-    nResults: args.k,
-    where,
-    include: ["documents", "metadatas", "distances"] as any[],
-  });
-
-  const ids = (res?.ids?.[0] ?? []);
-  const docs = (res?.documents?.[0] ?? []);
-  const metas = (res?.metadatas?.[0] ?? []);
-  const dists = (res?.distances?.[0] ?? []);
-
-  if (!ids.length) {
-    console.log("No matches found.");
-    return;
-  }
-
-  console.log(`Found ${ids.length} results:\n`);
-
-  const grouped = new Map<string, Array<{ id: string; dist: number; doc: string; meta: any }>>();
-  for (let i = 0; i < ids.length; i++) {
-    const meta = metas[i] ?? {};
-    const sid = String(meta.session_id ?? "unknown");
-    const arr = grouped.get(sid) ?? [];
-    arr.push({ id: ids[i], dist: dists[i] ?? 0, doc: docs[i] ?? "", meta });
-    grouped.set(sid, arr);
-  }
-
-  for (const [sid, items] of grouped.entries()) {
-    console.log(`=== session_id: ${sid} (hits: ${items.length}) ===`);
-    for (const it of items) {
-      const mi = it.meta?.message_index ?? "?";
-      const role = it.meta?.role ?? "?";
-      const createdAt = it.meta?.created_at ?? "";
-      const title = it.meta?.session_title ?? "";
-      const paths = it.meta?.paths ?? "";
-
-      console.log(`\n--- Result ---`);
-      console.log(`ID: ${it.id}`);
-      console.log(`Distance: ${it.dist.toFixed(4)}`);
-      console.log(`Message Index: ${mi}`);
-      console.log(`Role: ${role}`);
-      console.log(`Session Title: ${title}`);
-      console.log(`Created: ${new Date(createdAt).toISOString()}`);
-      if (paths) console.log(`Paths: ${paths.replace(/\|/g, ", ")}`);
-      console.log(`\n${it.doc}\n`);
-    }
-  }
+  console.log(formatSearchResults(results));
 }
 
 // ============================================================================
@@ -568,14 +355,14 @@ function showHelp(): void {
   console.log(`
 OpenCode Sessions CLI
 
-A unified tool for indexing and searching OpenCode sessions using ChromaDB embeddings.
+A unified tool for indexing and searching OpenCode sessions using OpenPlanner events.
 
 USAGE
   pnpm -C packages/reconstituter opencode-sessions <command> [options]
 
 COMMANDS
-  index                 Index all OpenCode sessions into ChromaDB
-  search <query>        Search indexed sessions using semantic similarity
+  index                 Index all OpenCode sessions into OpenPlanner
+  search <query>        Search indexed sessions using OpenPlanner FTS
   help                  Show this help message
 
 SEARCH OPTIONS
@@ -597,18 +384,11 @@ EXAMPLES
 
 ENVIRONMENT VARIABLES
   OPENCODE_BASE_URL     OpenCode server URL (default: http://localhost:4096)
-  CHROMA_URL            ChromaDB server URL (default: http://localhost:8000)
-  CHROMA_COLLECTION     Chroma collection base name (default: opencode_messages_v1)
-  CHROMA_TENANT         Chroma tenant (optional)
-  CHROMA_DATABASE       Chroma database (optional)
-  CHROMA_TOKEN          Chroma auth token (optional)
+  OPENPLANNER_URL       OpenPlanner server URL (default: http://localhost:7777)
+  OPENPLANNER_API_KEY   OpenPlanner API key (optional)
   OPENCODE_THROTTLE_MS  Minimum delay between OpenCode API calls (default: 200)
   LEVEL_DIR             LevelDB directory (default: .reconstitute/level)
-  OLLAMA_URL            Ollama server URL (default: http://localhost:11434)
-  OLLAMA_EMBED_MODEL    Embedding model (default: qwen3-embedding:0.6b)
-  OLLAMA_NUM_CTX        Context length (default: 32768)
-  BATCH_SIZE            Batch size for embedding (default: 32)
-  EMBED_TTL_MS          Embed cache TTL in ms (default: 30 days)
+  BATCH_SIZE            Batch size for indexing (default: 32)
 `);
 }
 

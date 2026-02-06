@@ -1,3 +1,17 @@
+---
+uuid: 066e6413-bde6-4ca2-868b-400438a0c06f
+title: "GLM Model Variants for OpenCode - Analysis & Implementation Plan"
+slug: glm-model-variants-analysis
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.408448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # GLM Model Variants for OpenCode - Analysis & Implementation Plan
 
 ## Executive Summary

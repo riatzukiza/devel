@@ -1,3 +1,17 @@
+---
+uuid: 82adbcd5-f93d-450d-90d0-1c2370f039a1
+title: "Spec: Commit Open Hax Codex Migration Changes"
+slug: open-hax-submodule-migration
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.408448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Spec: Commit Open Hax Codex Migration Changes
 
 ## References

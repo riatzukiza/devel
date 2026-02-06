@@ -1,3 +1,17 @@
+---
+uuid: 6417ac97-ed3f-4a8c-94c2-ed427ed8abdd
+title: "Cross-Link README Coverage For Workspace Packages"
+slug: package-doc-matrix
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.409448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Cross-Link README Coverage For Workspace Packages
 
 ## Context

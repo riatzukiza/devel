@@ -5,7 +5,7 @@ import {
   isWithinRoot,
   normalizePathKey,
   opencodeEntryToOllamaReplay,
-} from "./reconstitute.ts";
+} from "./reconstitute.js";
 
 test("normalizePathKey collapses slashes and backslashes", (t) => {
   const value = normalizePathKey("services\\opencode-indexer//src//index.ts");

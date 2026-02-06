@@ -3,7 +3,7 @@
 Generates a virtual Nx project graph from the `.gitmodules` file at the repo root.
 - Each submodule under `orgs/` becomes a virtual project named `orgs-<org>-<repo>`.
 - Implicit dependency: the `giga` root project depends on every submodule.
-- Provides `test` and `build` targets for each virtual project, proxying to the submodule’s native tooling via the shared runner.
+- Provides `test`, `build`, `lint`, and `typecheck` targets for each virtual project, proxying to the submodule’s native tooling via the shared runner.
 - Optional: can add synthetic dependencies between submodules via a simple config file.
 
 ## Registration
@@ -14,7 +14,7 @@ Add the plugin to `nx.json`:
 {
   "plugins": [
     {
-      "plugin": "./tools/nx-plugins/giga/plugin.js",
+      "plugin": "./tools/nx-plugins/giga/plugin.cjs",
       "options": {}
     }
   ]
@@ -24,7 +24,7 @@ Add the plugin to `nx.json`:
 ## Features
 
 - Virtual project graph (no on-disk `project.json` files needed).
-- Targets: `test`, `build` delegate to `src/giga/run-submodule.ts`.
+- Targets: `test`, `build`, `lint`, `typecheck` delegate to `src/giga/run-submodule.ts`.
 - Automatic re-generation when `.gitmodules` changes.
 - Support for custom dependency map `tools/nx-plugins/giga/deps.json` (repo → array of dep repos).
 
@@ -33,6 +33,7 @@ Add the plugin to `nx.json`:
 ```sh
 pnpm nx show projects          # lists submodules as virtual projects
 pnpm nx run orgs-riatzukiza-promethean:test
+pnpm nx run orgs-riatzukiza-promethean:typecheck
 pnpm nx run-many --target=test --all
 pnpm affected --target=build --files=orgs/riatzukiza/promethean/src/foo.ts
 ```

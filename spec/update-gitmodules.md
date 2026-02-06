@@ -1,3 +1,17 @@
+---
+uuid: f84bd66e-6a47-4ad2-b861-0a701a8216a5
+title: "Update gitmodules for targeted org repos"
+slug: update-gitmodules
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.409448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Update gitmodules for targeted org repos
 
 ## Code files and references

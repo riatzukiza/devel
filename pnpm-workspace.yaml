@@ -1,5 +1,7 @@
 packages:
   - .
+  - packages/cephalon-ts
+  - packages/reconstituter
   - services/*
   - orgs/riatzukiza/promethean/packages/*
   - orgs/riatzukiza/promethean/packages/*/*
@@ -22,3 +24,6 @@ packages:
 
 link-workspace-packages: true
 prefer-workspace-packages: true
+
+onlyBuiltDependencies:
+  - duckdb

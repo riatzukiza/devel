@@ -1,3 +1,17 @@
+---
+uuid: 8e162a1d-3821-4f05-b490-21e5b818812a
+title: "Rebrand `openhax/codex` Package and Documentation"
+slug: openhax-codex-rebrand
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.409448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Rebrand `openhax/codex` Package and Documentation
 
 ## Background & References

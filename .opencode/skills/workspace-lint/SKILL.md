@@ -6,7 +6,7 @@ description: "Lint all TypeScript and markdown files across the entire workspace
 # Skill: Workspace Lint
 
 ## Goal
-Lint all TypeScript and markdown files across the entire workspace, including all submodules under `orgs/**`.
+Lint affected TypeScript and markdown files across the workspace using Nx affected detection, with a full-run fallback available.
 
 ## Use This Skill When
 - You need to verify code quality across multiple repositories
@@ -18,14 +18,14 @@ Lint all TypeScript and markdown files across the entire workspace, including al
 - The change is unrelated to TypeScript or markdown files
 
 ## Inputs
-- File paths to lint (default: all `.ts` files in workspace and submodules)
+- File paths to lint (default: affected files from git working tree + staged + untracked)
 - Lint options (if any from workspace scripts)
 
 ## Steps
-1. Run `pnpm lint` to lint all TypeScript files across the workspace
-2. Script uses `eslint.config.mjs` from workspace root
-3. Checks all `src/` files and recursively `orgs/**` directories
-4. Reports all lint errors and warnings
+1. Run `pnpm lint` to lint affected projects
+2. Script uses `scripts/nx-affected.mjs` to collect uncommitted changes
+3. Runs `nx affected --target=lint` with the computed file list
+4. Use `pnpm lint:all` to force a full run
 
 ## Output
 - Lint error/warning summary
@@ -43,10 +43,13 @@ Lint all TypeScript and markdown files across the entire workspace, including al
 
 ## Common Commands
 
-### Lint All Workspace Files
+### Lint Affected Workspace Files
 ```bash
-# Lint all TypeScript files
+# Lint affected projects
 pnpm lint
+
+# Full run across all projects
+pnpm lint:all
 
 # Lint all markdown files
 pnpm lint:md
@@ -72,9 +75,9 @@ cd orgs/riatzukiza/promethean && pnpm lint
 ```
 
 ## References
+- Lint runner: `scripts/nx-affected.mjs`
 - ESLint config: `eslint.config.mjs`
-- Lint script: `package.json`
-- Submodule lint commands: Individual package.json scripts in each org
+- Nx config: `nx.json`
 
 ## Important Constraints
 - **ESM Modules**: Script enforces ESM modules (no CommonJS require/module.exports)

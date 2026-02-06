@@ -8,6 +8,7 @@ import type { ToolResult } from "../../types/index.js";
 import type { ToolDefinition } from "../../prompts/index.js";
 import type { DiscordApiClient } from "../../discord/api-client.js";
 import type { ChromaMemoryStore } from "../../chroma/client.js";
+import type { OpenPlannerClient } from "../../openplanner/client.js";
 
 /**
  * Tool call interface
@@ -35,6 +36,7 @@ export type ToolRegistryEntry = {
  */
 export type ToolDependencies = {
   chromaStore?: ChromaMemoryStore;
+  openPlannerClient?: OpenPlannerClient;
   discordApiClient: DiscordApiClient;
   sessionId?: string;
 };
@@ -44,5 +46,6 @@ export type ToolDependencies = {
  */
 export interface ToolExecutorOptions {
   chromaStore?: ChromaMemoryStore;
+  openPlannerClient?: OpenPlannerClient;
   discordApiClient: DiscordApiClient;
 }

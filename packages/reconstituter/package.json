@@ -29,7 +29,7 @@
     "start": "node dist/reconstitute.js",
     "reconstitute": "tsx src/reconstitute.ts",
     "opencode-sessions": "tsx src/opencode-sessions.ts",
-    "test": "pnpm run build && ava"
+    "test": "pnpm run build && ava dist/*.test.js"
   },
   "dependencies": {
     "@chroma-core/ollama": "^0.1.8",

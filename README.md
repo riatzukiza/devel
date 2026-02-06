@@ -138,14 +138,23 @@ pm2 monit                   # Real-time monitoring dashboard
 ### Workspace Level
 
 ```bash
-# Lint all TypeScript files across workspace
+# Lint affected projects across workspace
 pnpm lint
 
-# Type check with strict TypeScript
+# Lint all projects
+pnpm lint:all
+
+# Typecheck affected projects
 pnpm typecheck
 
-# Build workspace (if src/ exists)
+# Typecheck all projects
+pnpm typecheck:all
+
+# Build affected projects
 pnpm build
+
+# Build all projects
+pnpm build:all
 ```
 
 ### Bin Utilities
