@@ -86,6 +86,12 @@ export const createNodesV2: CreateNodesV2<GigaPluginOptions> = [
             command: "bun run src/giga/giga-watch.ts",
           },
         },
+        "test-tools": {
+          executor: "nx:run-commands",
+          options: {
+            command: "bun test ./.opencode/tools/tests/fix_clojure_delimiters.test.js",
+          },
+        },
       },
       implicitDependencies: projectNames,
     };
