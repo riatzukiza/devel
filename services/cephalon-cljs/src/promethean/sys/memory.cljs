@@ -1,5 +1,7 @@
 (ns promethean.sys.memory
   (:require
+    [promethean.debug.log :as log]
+    [promethean.openplanner.client :as openplanner]
     [promethean.memory.model :as mm]
     [promethean.memory.dedupe :as dedupe]
     [promethean.memory.tags :as tags]
@@ -15,6 +17,53 @@
    :event/type :memory/created
    :event/source {:kind :memory}
    :event/payload {:memory mem}})
+
+(defn- iso-ts [ms]
+  (.toISOString (js/Date. ms)))
+
+(defn- memory->openplanner-event [mem]
+  (let [meta (:memory/meta mem)
+        source-ref (cond-> {:session (or (:memory/session-id mem)
+                                         (:session/id meta)
+                                         "unknown")}
+                     (:memory/event-id mem) (assoc :message (:memory/event-id mem))
+                     (:discord/message-id meta) (assoc :message (:discord/message-id meta)))]
+    {:schema "openplanner.event.v1"
+     :id (:memory/id mem)
+     :ts (iso-ts (:memory/ts mem))
+     :source "cephalon-cljs"
+     :kind "memory.created"
+     :source_ref source-ref
+     :text (:memory/text mem)
+     :meta {:memory_kind (name (:memory/kind mem))
+            :role (name (:memory/role mem))}
+     :extra {:memory_id (:memory/id mem)
+             :memory_ts (:memory/ts mem)
+             :memory_meta meta
+             :memory_tags (:memory/tags mem)
+             :memory_nexus_keys (:memory/nexus-keys mem)}}))
+
+(def openplanner-post-events! openplanner/post-events!)
+
+(defn- emit-openplanner-memory-created! [w mem]
+  (let [cfg (merge (openplanner/config-from-env)
+                   (get-in w [:env :config :openplanner]))
+        event (memory->openplanner-event mem)]
+    (when (seq (:api-key cfg))
+      (try
+        (-> (openplanner-post-events! cfg [event])
+            (.catch
+              (fn [err]
+                (log/error "OpenPlanner memory ingestion failed"
+                           {:error (str err)
+                            :memory-id (:memory/id mem)
+                            :openplanner-url (:url cfg)})
+                nil)))
+        (catch js/Error err
+          (log/error "OpenPlanner memory ingestion threw synchronously"
+                     {:error (str err)
+                      :memory-id (:memory/id mem)
+                      :openplanner-url (:url cfg)}))))))
 
 (defn- event->memory [evt]
   (let [t (:event/type evt)]
@@ -59,6 +108,7 @@
                          (assoc :memory/tags tgs))
                 mem2 (assoc mem1 :memory/nexus-keys (nk/keys-for-memory mem1))]
             (ms/put-memory! store mem2)
+            (emit-openplanner-memory-created! w mem2)
             ;; Emit created event regardless; downstream can choose to ignore deduped via store stats
             (emit w (make-created-event mem2)))
           w))
