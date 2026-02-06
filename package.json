@@ -64,6 +64,7 @@
     "chromadb": "^3.2.2",
     "commander": "^14.0.2",
     "level": "^10.0.0",
+    "parinfer": "^3.13.1",
     "redis": "^5.9.0",
     "shadow-cljs": "^3.3.5"
   },
@@ -72,6 +73,7 @@
     "@nx/js": "^20.0.0",
     "@openai/agents": "^0.2.1",
     "@promethean-os/ecosystem-dsl": "file:orgs/riatzukiza/promethean/cli/ecosystem-dsl",
+    "@promethean-os/kanban": "workspace:*",
     "@types/node": "^20.11.30",
     "c8": "^8.0.0",
     "dotenv": "^17.2.3",
