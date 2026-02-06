@@ -176,7 +176,7 @@
           (let [hits
                 (->> (array-seq diags)
                      (mapcat (fn [d]
-                               (let [msg (or (.-message d) "")
+                               (let [msg (str (or (.-message d) ""))
                                      pos1 (start-pos-1based d)
                                      lines (let [ls (split-kondo-lines msg)]
                                              (if (seq ls) ls [msg]))]
