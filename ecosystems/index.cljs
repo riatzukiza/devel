@@ -5,6 +5,7 @@
 (ns index
   (:require [clobber.macro]
             [opencode]
+            [openhax]
             [cephalon-stable]
             [services-openplanner]))
 
