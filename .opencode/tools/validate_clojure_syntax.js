@@ -27,9 +27,17 @@ const runKondo = async (filePath) => {
     return { ok: false, error: "Bun runtime not available for clj-kondo execution" };
   }
 
-  const kondoPath = globalThis.Bun.which("clj-kondo");
+  let kondoPath = globalThis.Bun.which("clj-kondo");
+  
   if (!kondoPath) {
-    return { ok: false, error: "clj-kondo not found in PATH" };
+     const localPath = path.resolve(process.cwd(), "node_modules", ".bin", "clj-kondo");
+     if (await fs.stat(localPath).then(() => true).catch(() => false)) {
+       kondoPath = localPath;
+     }
+  }
+
+  if (!kondoPath) {
+    return { ok: false, error: "clj-kondo not found in PATH or node_modules/.bin" };
   }
 
   const proc = globalThis.Bun.spawn([kondoPath, "--lint", filePath], {

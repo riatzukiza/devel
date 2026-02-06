@@ -1,7 +1,8 @@
 import path from "node:path";
 import fs from "node:fs/promises";
 import { tool } from "@opencode-ai/plugin";
-import * as parinfer from "parinfer";
+
+import parinfer from "parinfer";
 
 const allowedExtensions = new Set([".clj", ".cljs", ".cljc"]);
 const allowedModes = new Set(["parinfer-indent", "parinfer-paren", "cljstyle"]);
@@ -25,22 +26,33 @@ const formatError = (error) => {
 };
 
 const applyParinfer = (text, mode) => {
-  const result = mode === "parinfer-paren"
-    ? parinfer.parenMode(text)
-    : parinfer.indentMode(text);
+  try {
+    let result;
+    if (mode === "parinfer-indent") {
+      result = parinfer.indentMode(text);
+    } else if (mode === "parinfer-paren") {
+      result = parinfer.parenMode(text);
+    } else {
+      return { ok: false, error: `Invalid parinfer mode: ${mode}` };
+    }
 
-  if (result?.error) {
+    if (!result.success) {
+      return {
+        ok: false,
+        error: result.error ? `Line ${result.error.lineNo}: ${result.error.message}` : "Unknown Parinfer error",
+      };
+    }
+
+    return {
+      ok: true,
+      text: result.text,
+    };
+  } catch (error) {
     return {
       ok: false,
-      error: formatError(result.error),
+      error: `Parinfer execution failed: ${formatError(error)}`,
     };
   }
-
-  return {
-    ok: true,
-    text: result?.text ?? text,
-    changedLines: result?.changedLines ?? [],
-  };
 };
 
 const applyCljstyle = async (text) => {
