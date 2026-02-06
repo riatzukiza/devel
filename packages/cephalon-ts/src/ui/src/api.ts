@@ -56,7 +56,28 @@ export interface SearchResponse {
   }>
 }
 
+export interface SessionStats {
+  id: string
+  memoryCount: number
+  lastActivity: number | null
+  priorityClass: string
+  persona?: string
+  credits?: number
+}
+
 const API_BASE = '/api/memories'
+const SESSION_API_BASE = '/api/sessions'
+
+// Get session stats
+export const getSessionStats = async (): Promise<SessionStats[]> => {
+  try {
+    const res = await fetch(`${SESSION_API_BASE}/stats`)
+    if (!res.ok) return []
+    return await res.json() as SessionStats[]
+  } catch {
+    return []
+  }
+}
 
 // Count endpoint
 export const getCount = async (): Promise<number> => {

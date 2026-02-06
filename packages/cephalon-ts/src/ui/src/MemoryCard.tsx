@@ -19,6 +19,7 @@ const MemoryCard: React.FC<Props> = ({ memory, selected, onClick, onPin, onUnpin
     <div 
       className={`${styles.card} ${selected ? styles.selected : ''}`} 
       onClick={onClick}
+      data-testid="memory-card"
     >
       <div className={styles.header}>
         <span className={`${styles.badge} ${styles[`badge${memory.role.charAt(0).toUpperCase() + memory.role.slice(1)}`]}`}>
