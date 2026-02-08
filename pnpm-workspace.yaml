@@ -1,6 +1,7 @@
 packages:
   - .
   - packages/cephalon-ts
+  - packages/mcp-runtime
   - packages/reconstituter
   - services/*
   - orgs/riatzukiza/promethean/packages/*

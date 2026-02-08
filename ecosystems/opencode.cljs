@@ -53,29 +53,53 @@
     :max_restarts 1
     :min_uptime 60000})
 
-(clobber.macro/defapp "mcp-fs-oauth"
+(clobber.macro/defapp "mcp-fs-oauth-stable"
   {:script "bun"
    :cwd "./services/mcp-fs-oauth"
-   :args ["run" "dev"]
+   :args ["run" "start:stable"]
    :interpreter "/usr/bin/env"
-   :env {:PORT "3001"
-         :PUBLIC_BASE_URL "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net"
-         :AUTH_LOGIN_PROVIDER "github"
-         :OWNER_PASSWORD "change-me"
-         :STORAGE_MODE "local"
+    :env {:PORT "3001"
+          :PUBLIC_BASE_URL "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net"
+          :AUTH_LOGIN_PROVIDER "github"
+          :OWNER_PASSWORD "change-me"
+          :STORAGE_MODE "local"
 
-         :LOCAL_ROOT "./storage"
-         :AUTO_APPROVE "true"}
+          :LOCAL_ROOT "/home/err/devel"
+           :AUTO_APPROVE "true"}
    :autorestart true
    :watch false
-   :error_file "./logs/mcp-fs-oauth-error.log"
-   :out_file "./logs/mcp-fs-oauth-out.log"
-   :log_file "./logs/mcp-fs-oauth.log"
+   :error_file "./logs/mcp-fs-oauth-stable-error.log"
+   :out_file "./logs/mcp-fs-oauth-stable-out.log"
+   :log_file "./logs/mcp-fs-oauth-stable.log"
    :time true
    :kill_timeout 5000
    :restart_delay 5000
    :max_restarts 5
    :min_uptime 10000})
+
+(clobber.macro/defapp "mcp-fs-oauth-dev"
+  {:script "bun"
+   :cwd "./services/mcp-fs-oauth"
+   :args ["run" "dev:proxy"]
+   :interpreter "/usr/bin/env"
+    :env {:PORT "3002"
+          :PUBLIC_BASE_URL "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net"
+          :AUTH_LOGIN_PROVIDER "github"
+          :OWNER_PASSWORD "change-me"
+          :STORAGE_MODE "local"
+
+          :LOCAL_ROOT "/home/err/devel"
+          :AUTO_APPROVE "true"}
+   :autorestart true
+   :watch false
+   :error_file "./logs/mcp-fs-oauth-dev-error.log"
+   :out_file "./logs/mcp-fs-oauth-dev-out.log"
+   :log_file "./logs/mcp-fs-oauth-dev.log"
+   :time true
+   :kill_timeout 5000
+   :restart_delay 1000
+   :max_restarts 20
+   :min_uptime 2000})
 
 (clobber.macro/defapp "api-gateway"
   {:script "node"
@@ -86,9 +110,10 @@
          :API_GATEWAY_PORT "8788"
          :API_GATEWAY_HOST "0.0.0.0"
          :OAUTH_ENABLED "true"
-         :ALLOWED_HOSTS "localhost,127.0.0.1,.tailbe888a.ts.net"
-         :MCP_FS_OAUTH_URL "http://127.0.0.1:3001"
-         :OAUTH_ISSUER "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net"}
+          :ALLOWED_HOSTS "localhost,127.0.0.1,.tailbe888a.ts.net"
+          :MCP_FS_OAUTH_URL "http://127.0.0.1:3001"
+          :MCP_FS_OAUTH_DEV_URL "http://127.0.0.1:3002"
+          :OAUTH_ISSUER "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net"}
    :autorestart true
    :watch false
    :error_file "./logs/api-gateway-error.log"
