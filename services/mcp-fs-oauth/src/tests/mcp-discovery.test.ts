@@ -2,8 +2,11 @@ import { describe, it, expect, beforeAll, afterAll } from "bun:test";
 import { Redis } from "ioredis";
 
 const MCP_URL = process.env.MCP_TEST_URL || "http://127.0.0.1:3001/mcp";
-const GATEWAY_URL = process.env.GATEWAY_TEST_URL || "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp";
+const GATEWAY_URL = process.env.GATEWAY_TEST_URL || "http://127.0.0.1:8788/mcp";
+const GATEWAY_BEARER = process.env.GATEWAY_TEST_BEARER || "test-token";
+const RUN_GATEWAY_TESTS = process.env.RUN_GATEWAY_TESTS === "true";
 const REDIS_URL = process.env.REDIS_URL || "redis://127.0.0.1:6379";
+const gatewayDescribe = RUN_GATEWAY_TESTS ? describe : describe.skip;
 
 describe("MCP Server Discovery", () => {
   describe("Initialize Request", () => {
@@ -116,7 +119,7 @@ describe("MCP Server Discovery", () => {
       sessionId = initResponse.headers.get("mcp-session-id")!;
     });
 
-    it("should list all 4 filesystem tools", async () => {
+    it("should list filesystem + exec tools", async () => {
       const response = await fetch(MCP_URL, {
         method: "POST",
         headers: {
@@ -138,13 +141,15 @@ describe("MCP Server Discovery", () => {
       expect(dataMatch).toBeTruthy();
       
       const data = JSON.parse(dataMatch![1]);
-      expect(data.result.tools).toHaveLength(4);
+      expect(data.result.tools).toHaveLength(10);
       
       const toolNames = data.result.tools.map((t: any) => t.name);
       expect(toolNames).toContain("fs_list");
       expect(toolNames).toContain("fs_read");
       expect(toolNames).toContain("fs_write");
       expect(toolNames).toContain("fs_delete");
+      expect(toolNames).toContain("fs_glob");
+      expect(toolNames).toContain("fs_grep");
     });
 
     it("should have correct schema for fs_list tool", async () => {
@@ -329,14 +334,14 @@ describe("Redis Session Sharing", () => {
   });
 });
 
-describe("API Gateway CORS", () => {
+gatewayDescribe("API Gateway CORS", () => {
   it("should return CORS headers for initialize", async () => {
     const response = await fetch(GATEWAY_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json, text/event-stream",
-        "Authorization": "Bearer test-token",
+        "Authorization": `Bearer ${GATEWAY_BEARER}`,
       },
       body: JSON.stringify({
         jsonrpc: "2.0",
@@ -361,7 +366,7 @@ describe("API Gateway CORS", () => {
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json, text/event-stream",
-        "Authorization": "Bearer test-token",
+        "Authorization": `Bearer ${GATEWAY_BEARER}`,
       },
       body: JSON.stringify({
         jsonrpc: "2.0",
@@ -397,7 +402,7 @@ describe("API Gateway CORS", () => {
   });
 });
 
-describe("End-to-End Gateway Flow", () => {
+gatewayDescribe("End-to-End Gateway Flow", () => {
   it("should complete full discovery flow through gateway", async () => {
     // Step 1: Initialize
     const initResponse = await fetch(GATEWAY_URL, {
@@ -405,7 +410,7 @@ describe("End-to-End Gateway Flow", () => {
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json, text/event-stream",
-        "Authorization": "Bearer test-token",
+        "Authorization": `Bearer ${GATEWAY_BEARER}`,
       },
       body: JSON.stringify({
         jsonrpc: "2.0",
@@ -429,7 +434,7 @@ describe("End-to-End Gateway Flow", () => {
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json, text/event-stream",
-        "Authorization": "Bearer test-token",
+        "Authorization": `Bearer ${GATEWAY_BEARER}`,
         "mcp-session-id": sessionId,
       },
       body: JSON.stringify({
@@ -443,7 +448,7 @@ describe("End-to-End Gateway Flow", () => {
     expect(toolsResponse.status).toBe(200);
     const toolsText = await toolsResponse.text();
     const toolsData = JSON.parse(toolsText.match(/data: (.+)/)![1]);
-    expect(toolsData.result.tools).toHaveLength(4);
+    expect(toolsData.result.tools).toHaveLength(10);
 
     // Step 3: List resources
     const resourcesResponse = await fetch(GATEWAY_URL, {
@@ -451,7 +456,7 @@ describe("End-to-End Gateway Flow", () => {
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json, text/event-stream",
-        "Authorization": "Bearer test-token",
+        "Authorization": `Bearer ${GATEWAY_BEARER}`,
         "mcp-session-id": sessionId,
       },
       body: JSON.stringify({
