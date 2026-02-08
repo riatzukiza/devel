@@ -113,6 +113,8 @@ export async function addOAuthProtection(app: FastifyInstance, cfg: GatewayConfi
       });
     }
 
-    return;
+    // All protected paths require OAuth token verification
+    await checkOAuth(req, reply, cfg);
+    if (reply.sent) return;
   });
 }

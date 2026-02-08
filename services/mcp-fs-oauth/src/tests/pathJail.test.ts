@@ -28,11 +28,11 @@ describe("pathJail", () => {
       }).toThrow("Path escapes root");
     });
 
-    it("should treat absolute paths as relative to root", () => {
-      // Leading slashes are stripped, so /etc/passwd becomes etc/passwd under root
-      const result = resolveWithinRoot("/app/root", "/etc/passwd");
-      expect(result.absPath).toBe("/app/root/etc/passwd");
-      expect(result.relPath).toBe("etc/passwd");
+    it("should reject absolute paths outside root", () => {
+      // Absolute paths outside the root are rejected for security
+      expect(() => {
+        resolveWithinRoot("/app/root", "/etc/passwd");
+      }).toThrow("Path /etc/passwd is outside of LOCAL_ROOT /app/root");
     });
 
     it("should handle empty path as root", () => {
