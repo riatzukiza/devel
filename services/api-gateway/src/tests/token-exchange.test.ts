@@ -8,6 +8,7 @@ import { proxyToMcp } from "../lib/mcp-proxy.js";
 
 void test("token exchange logging for successful response", async () => {
   const upstream = Fastify();
+  await upstream.register(formbody as unknown as FastifyPluginCallback);
   
   // Mock token endpoint that returns success
   upstream.post("/token", async (req, reply) => {
@@ -44,6 +45,9 @@ void test("token exchange logging for successful response", async () => {
     const res = await app.inject({
       method: "POST",
       url: `/token`,
+      headers: {
+        "content-type": "application/x-www-form-urlencoded"
+      },
       payload: "grant_type=authorization_code&code=test_code&redirect_uri=https://example.com/callback"
     });
     
@@ -61,6 +65,7 @@ void test("token exchange logging for successful response", async () => {
 
 void test("token exchange logging for error response", async () => {
   const upstream = Fastify();
+  await upstream.register(formbody as unknown as FastifyPluginCallback);
   
   // Mock token endpoint that returns error
   upstream.post("/token", async (req, reply) => {
@@ -96,6 +101,9 @@ void test("token exchange logging for error response", async () => {
     const res = await app.inject({
       method: "POST", 
       url: `/token`,
+      headers: {
+        "content-type": "application/x-www-form-urlencoded"
+      },
       payload: "grant_type=authorization_code&code=invalid_code"
     });
     
@@ -112,6 +120,7 @@ void test("token exchange logging for error response", async () => {
 
 void test("preserves content-type for form-urlencoded requests", async () => {
   const upstream = Fastify();
+  await upstream.register(formbody as unknown as FastifyPluginCallback);
   
   let receivedContentType: string | undefined;
   
@@ -145,6 +154,9 @@ void test("preserves content-type for form-urlencoded requests", async () => {
     await app.inject({
       method: "POST",
       url: `/token`,
+      headers: {
+        "content-type": "application/x-www-form-urlencoded"
+      },
       payload: "grant_type=authorization_code"
     });
     

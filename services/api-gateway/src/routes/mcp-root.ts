@@ -14,7 +14,7 @@ export const mcpRootRoutes: FastifyPluginAsync<McpRootRouteOptions> = async (app
   };
 
   app.all("/mcp", proxyHandler);
-  app.all("/mcp/*", proxyHandler);
+  app.all("/mcp/", proxyHandler);
 
   app.all("/authorize", proxyHandler);
   app.all("/token", proxyHandler);
