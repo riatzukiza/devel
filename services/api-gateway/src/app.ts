@@ -4,6 +4,7 @@ import Fastify, { type FastifyInstance, type FastifyPluginCallback } from "fasti
 import type { GatewayConfig } from "./lib/config.js";
 import { addOAuthProtection } from "./lib/oauth-protection.js";
 import { mcpRoutes } from "./routes/mcp.js";
+import { mcpDevRoutes } from "./routes/mcp-dev.js";
 import { mcpRootRoutes } from "./routes/mcp-root.js";
 import { opencodeRoutes } from "./routes/opencode.js";
 import { openplannerRoutes } from "./routes/openplanner.js";
@@ -51,6 +52,12 @@ export async function createApp(cfg: GatewayConfig): Promise<FastifyInstance> {
   await app.register(mcpRootRoutes, {
     mcpUrl: cfg.mcpUrl
   });
+
+  if (cfg.mcpDevUrl) {
+    await app.register(mcpDevRoutes, {
+      mcpDevUrl: cfg.mcpDevUrl
+    });
+  }
 
   app.get("/health/openplanner", async (_req, reply) => {
     try {

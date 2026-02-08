@@ -36,11 +36,26 @@ function buildHeaders(req: FastifyRequest, hasBody: boolean): Record<string, str
   const mcpSessionId = req.headers["mcp-session-id"];
 
   const forwardHost = typeof req.headers.host === "string" ? req.headers.host : undefined;
+  const forwardedHost = forwardHost;
+  const forwardedProtoHeader = req.headers["x-forwarded-proto"];
+  const forwardedProto = typeof forwardedProtoHeader === "string"
+    ? forwardedProtoHeader
+    : (req.protocol || "http");
+
+  const forwardedForHeader = req.headers["x-forwarded-for"];
+  const forwardedFor = typeof forwardedForHeader === "string"
+    ? forwardedForHeader
+    : (Array.isArray(forwardedForHeader) && typeof forwardedForHeader[0] === "string"
+      ? forwardedForHeader[0]
+      : req.ip);
   
   const finalHeaders: Record<string, string> = {
     ...baseHeaders,
     ...(auth ? { authorization: auth } : {}),
     ...(typeof mcpSessionId === "string" && mcpSessionId.length > 0 ? { "mcp-session-id": mcpSessionId } : {}),
+    ...(forwardedHost ? { "x-forwarded-host": forwardedHost } : {}),
+    ...(forwardedProto ? { "x-forwarded-proto": forwardedProto } : {}),
+    ...(forwardedFor ? { "x-forwarded-for": forwardedFor } : {}),
     // Forward original host for proper auth routing
     ...(forwardHost ? { host: forwardHost } : {}),
   };
@@ -102,6 +117,22 @@ function buildBody(req: FastifyRequest): string | undefined {
   }
 
   return JSON.stringify(req.body);
+}
+
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) return error.message;
+  return String(error);
+}
+
+function isExpectedStreamClosure(error: unknown): boolean {
+  const message = getErrorMessage(error).toLowerCase();
+  return (
+    message.includes("aborted") ||
+    message.includes("terminated") ||
+    message.includes("premature close") ||
+    message.includes("stream closed") ||
+    message.includes("invalid state")
+  );
 }
 
 export async function proxyToMcp(
@@ -195,6 +226,13 @@ export async function proxyToMcp(
     if (contentType.includes("text/event-stream") && response.body) {
       finalReply.hijack();
       const raw = finalReply.raw;
+      const reader = response.body.getReader();
+      let clientClosed = false;
+
+      raw.on("close", () => {
+        clientClosed = true;
+        void reader.cancel().catch(() => undefined);
+      });
       
       // Write headers manually for hijacked response
       raw.writeHead(response.status, {
@@ -204,17 +242,20 @@ export async function proxyToMcp(
         "Access-Control-Expose-Headers": "mcp-session-id",
         ...(mcpSessionId ? { "mcp-session-id": mcpSessionId } : {}),
       });
-      
-      const reader = response.body.getReader();
-      
+
       const pipeStream = async (): Promise<void> => {
         const streamRecursive = async (): Promise<void> => {
           const { done, value } = await reader.read();
           if (done) {
-            raw.end();
+            if (!raw.writableEnded) {
+              raw.end();
+            }
             return;
           }
-          if (value && value.length > 0) {
+          if (clientClosed) {
+            return;
+          }
+          if (value && value.length > 0 && !raw.destroyed) {
             raw.write(Buffer.from(value));
           }
           return streamRecursive();
@@ -223,7 +264,11 @@ export async function proxyToMcp(
       };
 
       void pipeStream().catch((streamError: unknown) => {
-        req.log.error({ error: streamError }, "failed to stream MCP response");
+        if (clientClosed || isExpectedStreamClosure(streamError)) {
+          req.log.debug({ error: getErrorMessage(streamError) }, "MCP stream closed by client/upstream");
+        } else {
+          req.log.error({ error: streamError }, "failed to stream MCP response");
+        }
         if (!raw.writableEnded) {
           raw.end();
         }
