@@ -319,7 +319,9 @@ export class SimpleOAuthProvider implements OAuthServerProvider {
     this.codes.delete(authorizationCode);
     this.deletePersistedCode(authorizationCode);
 
-    const tokens = this.issueTokens(rec.clientId, rec.scopes, rec.resource, rec.subject, rec.extra);
+    // Ensure 'mcp' scope is always included for MCP server access
+    const finalScopes = rec.scopes.includes("mcp") ? rec.scopes : [...rec.scopes, "mcp"];
+    const tokens = this.issueTokens(rec.clientId, finalScopes, rec.resource, rec.subject, rec.extra);
     return tokens;
   }
 
@@ -349,7 +351,10 @@ export class SimpleOAuthProvider implements OAuthServerProvider {
     }
 
     const finalScopes = (scopes && scopes.length > 0) ? scopes : rec.scopes;
-    // No scope escalation
+    // Ensure 'mcp' scope is always included for MCP server access
+    const scopesWithMcp = finalScopes.includes("mcp") ? finalScopes : [...finalScopes, "mcp"];
+    
+    // No scope escalation (check against original scopes, not the one with mcp added)
     for (const s of finalScopes) {
       if (!rec.scopes.includes(s)) throw new InvalidScopeError(`Scope not authorized: ${s}`);
     }
@@ -358,7 +363,7 @@ export class SimpleOAuthProvider implements OAuthServerProvider {
     this.refreshTokens.delete(refreshToken);
     this.deletePersistedRefreshToken(refreshToken);
 
-    const tokens = this.issueTokens(rec.clientId, finalScopes, rec.resource, rec.subject, rec.extra);
+    const tokens = this.issueTokens(rec.clientId, scopesWithMcp, rec.resource, rec.subject, rec.extra);
     return tokens;
   }
 
