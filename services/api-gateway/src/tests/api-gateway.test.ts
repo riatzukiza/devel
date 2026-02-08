@@ -272,3 +272,127 @@ void test("rejects workspace path traversal", async () => {
     rmSync(workspaceRoot, { recursive: true, force: true });
   }
 });
+
+void test("proxies /mcp/dev to development MCP backend", async () => {
+  const upstream = Fastify();
+  upstream.post("/mcp", async (_req, reply) => {
+    await reply.header("content-type", "application/json")
+      .send({ ok: true, backend: "dev" });
+  });
+  upstream.post("/mcp/", async (_req, reply) => {
+    await reply.header("content-type", "application/json")
+      .send({ ok: true, backend: "dev" });
+  });
+  await upstream.listen({ host: "127.0.0.1", port: 0 });
+
+  const address = upstream.server.address();
+  if (!address || typeof address === "string") {
+    throw new Error("failed to determine upstream port");
+  }
+
+  const app = await createApp({
+    host: "127.0.0.1",
+    port: 0,
+    openplannerUrl: "http://127.0.0.1:7777",
+    openplannerApiKey: null,
+    opencodeUrl: "http://127.0.0.1:4096",
+    opencodeApiKey: null,
+    workspaceRoot: "/tmp",
+    mcpUrl: "http://127.0.0.1:3001",
+    mcpDevUrl: `http://127.0.0.1:${address.port}`,
+    oauthEnabled: false,
+    oauthIssuer: "http://localhost:3001",
+    oauthAudience: "api-gateway",
+    allowedHosts: ["localhost", "127.0.0.1"]
+  });
+
+  try {
+    const res = await app.inject({
+      method: "POST",
+      url: "/mcp/dev",
+      headers: {
+        "content-type": "application/json"
+      },
+      payload: {
+        jsonrpc: "2.0",
+        method: "initialize",
+        id: 1,
+        params: {}
+      }
+    });
+
+    assert.equal(res.statusCode, 200);
+    assert.deepEqual(res.json(), { ok: true, backend: "dev" });
+
+    const trailingSlashRes = await app.inject({
+      method: "POST",
+      url: "/mcp/dev/",
+      headers: {
+        "content-type": "application/json"
+      },
+      payload: {
+        jsonrpc: "2.0",
+        method: "initialize",
+        id: 2,
+        params: {}
+      }
+    });
+
+    assert.equal(trailingSlashRes.statusCode, 200);
+    assert.deepEqual(trailingSlashRes.json(), { ok: true, backend: "dev" });
+  } finally {
+    await app.close();
+    await upstream.close();
+  }
+});
+
+void test("proxies /mcp/ trailing slash to stable MCP backend", async () => {
+  const upstream = Fastify();
+  upstream.post("/mcp/", async (_req, reply) => {
+    await reply.header("content-type", "application/json")
+      .send({ ok: true, backend: "stable" });
+  });
+  await upstream.listen({ host: "127.0.0.1", port: 0 });
+
+  const address = upstream.server.address();
+  if (!address || typeof address === "string") {
+    throw new Error("failed to determine upstream port");
+  }
+
+  const app = await createApp({
+    host: "127.0.0.1",
+    port: 0,
+    openplannerUrl: "http://127.0.0.1:7777",
+    openplannerApiKey: null,
+    opencodeUrl: "http://127.0.0.1:4096",
+    opencodeApiKey: null,
+    workspaceRoot: "/tmp",
+    mcpUrl: `http://127.0.0.1:${address.port}`,
+    oauthEnabled: false,
+    oauthIssuer: "http://localhost:3001",
+    oauthAudience: "api-gateway",
+    allowedHosts: ["localhost", "127.0.0.1"]
+  });
+
+  try {
+    const res = await app.inject({
+      method: "POST",
+      url: "/mcp/",
+      headers: {
+        "content-type": "application/json"
+      },
+      payload: {
+        jsonrpc: "2.0",
+        method: "initialize",
+        id: 3,
+        params: {}
+      }
+    });
+
+    assert.equal(res.statusCode, 200);
+    assert.deepEqual(res.json(), { ok: true, backend: "stable" });
+  } finally {
+    await app.close();
+    await upstream.close();
+  }
+});
