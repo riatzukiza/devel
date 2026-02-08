@@ -1,6 +1,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import type { FastifyPluginAsync } from "fastify";
+
+import type { FastifyPluginAsync, FastifyReply } from "fastify";
 
 type WorkspaceRouteOptions = {
   workspaceRoot: string;
@@ -62,6 +63,121 @@ function parseListLimit(value: string | undefined): number {
   return Math.min(MAX_LIST_LIMIT, Math.max(1, parsed));
 }
 
+async function getAbsolutePath(rootPath: string, relativePath: string): Promise<string> {
+  return resolveInsideRoot(rootPath, relativePath);
+}
+
+async function getVisibleEntries(
+  absolutePath: string, 
+  includeHidden: boolean
+): Promise<Array<import("node:fs").Dirent>> {
+  const directoryEntries = await fs.readdir(absolutePath, { withFileTypes: true });
+  return directoryEntries
+    .filter((entry) => {
+      if (!includeHidden && entry.name.startsWith(".")) {
+        return false;
+      }
+      if (entry.isDirectory() && SKIPPED_DIRS.has(entry.name)) {
+        return false;
+      }
+      return true;
+    })
+    .sort((left, right) => {
+      const leftType = left.isDirectory() ? 0 : 1;
+      const rightType = right.isDirectory() ? 0 : 1;
+      if (leftType !== rightType) {
+        return leftType - rightType;
+      }
+      return left.name.localeCompare(right.name);
+    });
+}
+
+async function listDirectory(
+  rootPath: string, 
+  absolutePath: string, 
+  includeHidden: boolean, 
+  listLimit: number
+): Promise<{ 
+  ok: boolean; 
+  root: string; 
+  path: string; 
+  entries: Array<{ 
+    name: string; 
+    path: string; 
+    type: string; 
+    mtimeMs: number; 
+    size?: number; 
+  }>; 
+  truncated: boolean; 
+}> {
+  const visibleEntries = await getVisibleEntries(absolutePath, includeHidden);
+  const limitedEntries = visibleEntries.slice(0, listLimit);
+  
+  const entries = await Promise.all(
+    limitedEntries.map(async (entry) => {
+      const childPath = path.join(absolutePath, entry.name);
+      const childStat = await fs.stat(childPath);
+      return {
+        name: entry.name,
+        path: toRelativePath(rootPath, childPath),
+        type: entry.isDirectory() ? "directory" : "file",
+        mtimeMs: childStat.mtimeMs,
+        size: entry.isFile() ? childStat.size : undefined
+      };
+    })
+  );
+
+  return {
+    ok: true,
+    root: rootPath,
+    path: toRelativePath(rootPath, absolutePath),
+    entries,
+    truncated: visibleEntries.length > listLimit
+  };
+}
+
+async function readFile(
+  rootPath: string, 
+  relativePath: string, 
+  reply: FastifyReply
+): Promise<void> {
+  if (relativePath === ".") {
+    return reply.code(400).send({ ok: false, error: "file path is required" });
+  }
+
+  const absolutePath = await getAbsolutePath(rootPath, relativePath).catch((error) => {
+    reply.code(400).send({ ok: false, error: errMessage(error) });
+    return "";
+  });
+  if (!absolutePath) return;
+
+  try {
+    const fileStat = await fs.stat(absolutePath);
+    if (!fileStat.isFile()) {
+      return reply.code(400).send({ ok: false, error: "path is not a file" });
+    }
+
+    if (fileStat.size > MAX_FILE_BYTES) {
+      return reply.code(413).send({
+        ok: false,
+        error: `file exceeds ${MAX_FILE_BYTES} byte limit`
+      });
+    }
+
+    const content = await fs.readFile(absolutePath, "utf8");
+    return reply.send({
+      ok: true,
+      root: rootPath,
+      path: toRelativePath(rootPath, absolutePath),
+      size: fileStat.size,
+      mtimeMs: fileStat.mtimeMs,
+      content
+    });
+  } catch (error) {
+    return reply.code(404).send({ ok: false, error: errMessage(error) });
+  }
+}
+
 export const workspaceRoutes: FastifyPluginAsync<WorkspaceRouteOptions> = async (app, opts) => {
   const rootPath = path.resolve(opts.workspaceRoot);
 
@@ -72,121 +188,35 @@ export const workspaceRoutes: FastifyPluginAsync<WorkspaceRouteOptions> = async 
 
   app.get<{ Querystring: ListQuery }>("/workspace/list", async (req, reply) => {
     const relativePath = sanitizeRelativePath(req.query.path);
-    const includeHidden = req.query.includeHidden === "true";
     const listLimit = parseListLimit(req.query.limit);
 
-    let absolutePath: string;
-    try {
-      absolutePath = resolveInsideRoot(rootPath, relativePath);
-    } catch (error) {
+    const absolutePath = await getAbsolutePath(rootPath, relativePath).catch((error) => {
       reply.code(400).send({ ok: false, error: errMessage(error) });
-      return;
-    }
+      return "";
+    });
+    if (!absolutePath) return;
 
-    let directoryStat: Awaited<ReturnType<typeof fs.stat>>;
-    try {
-      directoryStat = await fs.stat(absolutePath);
-    } catch (error) {
+    const directoryStat = await fs.stat(absolutePath).catch((error) => {
       reply.code(404).send({ ok: false, error: errMessage(error) });
-      return;
-    }
+      return null;
+    });
+    if (!directoryStat) return;
 
     if (!directoryStat.isDirectory()) {
-      reply.code(400).send({ ok: false, error: "path is not a directory" });
-      return;
+      return reply.code(400).send({ ok: false, error: "path is not a directory" });
     }
 
     try {
-      const directoryEntries = await fs.readdir(absolutePath, { withFileTypes: true });
-      const visibleEntries = directoryEntries
-        .filter((entry) => {
-          if (!includeHidden && entry.name.startsWith(".")) {
-            return false;
-          }
-          if (entry.isDirectory() && SKIPPED_DIRS.has(entry.name)) {
-            return false;
-          }
-          return true;
-        })
-        .sort((left, right) => {
-          const leftType = left.isDirectory() ? 0 : 1;
-          const rightType = right.isDirectory() ? 0 : 1;
-          if (leftType !== rightType) {
-            return leftType - rightType;
-          }
-          return left.name.localeCompare(right.name);
-        });
-
-      const limitedEntries = visibleEntries.slice(0, listLimit);
-      const entries = await Promise.all(
-        limitedEntries.map(async (entry) => {
-          const childPath = path.join(absolutePath, entry.name);
-          const childStat = await fs.stat(childPath);
-          return {
-            name: entry.name,
-            path: toRelativePath(rootPath, childPath),
-            type: entry.isDirectory() ? "directory" : "file",
-            mtimeMs: childStat.mtimeMs,
-            size: entry.isFile() ? childStat.size : undefined
-          };
-        })
-      );
-
-      reply.send({
-        ok: true,
-        root: rootPath,
-        path: toRelativePath(rootPath, absolutePath),
-        entries,
-        truncated: visibleEntries.length > listLimit
-      });
+      const result = await listDirectory(rootPath, absolutePath, req.query.includeHidden === "true", listLimit);
+      return reply.send(result);
     } catch (error) {
-      reply.code(500).send({ ok: false, error: errMessage(error) });
+      return reply.code(500).send({ ok: false, error: errMessage(error) });
     }
   });
 
   app.get<{ Querystring: ReadFileQuery }>("/workspace/file", async (req, reply) => {
     const relativePath = sanitizeRelativePath(req.query.path);
-
-    if (relativePath === ".") {
-      reply.code(400).send({ ok: false, error: "file path is required" });
-      return;
-    }
-
-    let absolutePath: string;
-    try {
-      absolutePath = resolveInsideRoot(rootPath, relativePath);
-    } catch (error) {
-      reply.code(400).send({ ok: false, error: errMessage(error) });
-      return;
-    }
-
-    try {
-      const fileStat = await fs.stat(absolutePath);
-      if (!fileStat.isFile()) {
-        reply.code(400).send({ ok: false, error: "path is not a file" });
-        return;
-      }
-
-      if (fileStat.size > MAX_FILE_BYTES) {
-        reply.code(413).send({
-          ok: false,
-          error: `file exceeds ${MAX_FILE_BYTES} byte limit`
-        });
-        return;
-      }
-
-      const content = await fs.readFile(absolutePath, "utf8");
-      reply.send({
-        ok: true,
-        root: rootPath,
-        path: toRelativePath(rootPath, absolutePath),
-        size: fileStat.size,
-        mtimeMs: fileStat.mtimeMs,
-        content
-      });
-    } catch (error) {
-      reply.code(404).send({ ok: false, error: errMessage(error) });
-    }
+    return readFile(rootPath, relativePath, reply);
   });
 
   const writeFileHandler = async (req: { body: WriteFileBody }, reply: { code: (status: number) => { send: (value: unknown) => void }; send: (value: unknown) => void }): Promise<void> => {
@@ -204,13 +234,11 @@ export const workspaceRoutes: FastifyPluginAsync<WorkspaceRouteOptions> = async 
       return;
     }
 
-    let absolutePath: string;
-    try {
-      absolutePath = resolveInsideRoot(rootPath, relativePath);
-    } catch (error) {
+    const absolutePath = await getAbsolutePath(rootPath, relativePath).catch((error) => {
       reply.code(400).send({ ok: false, error: errMessage(error) });
-      return;
-    }
+      return "";
+    });
+    if (!absolutePath) return;
 
     try {
       await fs.mkdir(path.dirname(absolutePath), { recursive: true });

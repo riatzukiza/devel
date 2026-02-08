@@ -1,4 +1,5 @@
 import type { FastifyPluginAsync } from "fastify";
+
 import { proxyToOpenPlanner } from "../lib/openplanner-proxy.js";
 
 type OpenPlannerRouteOptions = {

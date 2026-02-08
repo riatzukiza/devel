@@ -16,7 +16,7 @@ export const jobRoutes: FastifyPluginAsync = async (app) => {
   app.get("/jobs/:id", async (req, reply) => {
     const { id } = req.params as any;
     const job = (app as any).jobs.get(id);
-    if (!job) return reply.notFound("job not found");
+    if (!job) return reply.status(404).send({ error: "job not found" });
     return { ok: true, job };
   });
 

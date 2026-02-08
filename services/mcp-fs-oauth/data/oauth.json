@@ -1,0 +1,526 @@
+{
+  "version": 1,
+  "codes": {
+    "ZucH3ELWAg77CF5nb_G_O50zEAbL6YCR95LzbArWkrY": {
+      "code": "ZucH3ELWAg77CF5nb_G_O50zEAbL6YCR95LzbArWkrY",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "redirectUri": "https://chatgpt.com/connector_platform_oauth_redirect",
+      "codeChallenge": "9KRgmYO--02qQV9BQP47whg0V5KR18ffe1kmSi3Jkfc",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770506225
+    },
+    "DcOcUUijuHHP4Lp5TCGjgbE2Uijrc7snNL86c37r_p4": {
+      "code": "DcOcUUijuHHP4Lp5TCGjgbE2Uijrc7snNL86c37r_p4",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "redirectUri": "https://chatgpt.com/connector_platform_oauth_redirect",
+      "codeChallenge": "ZvUfnmBa62090yoA-TIIZO9PL62bsm33YlCOd253FPw",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770506802
+    },
+    "cDJ3TJoaINx0I3DP5oH7TnjLOHBzWWDSKkjNK5IBkbY": {
+      "code": "cDJ3TJoaINx0I3DP5oH7TnjLOHBzWWDSKkjNK5IBkbY",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "redirectUri": "https://chatgpt.com/connector_platform_oauth_redirect",
+      "codeChallenge": "IFRDXY9UQpAVg2VEAyqXWOArB7cdhE7Bhk1oN3VmU4o",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770507051
+    },
+    "xMSOyhIpXpJq8LdFT9uIorLBPFvOU_3QYGStqrUfbvc": {
+      "code": "xMSOyhIpXpJq8LdFT9uIorLBPFvOU_3QYGStqrUfbvc",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "redirectUri": "https://chatgpt.com/connector_platform_oauth_redirect",
+      "codeChallenge": "P2bAOjC57VUx3sJOrn8wSbo0-vuatOszu5rfNjHUg1A",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770507491
+    },
+    "x8CAE6n54M1t-iwSOCHc8HGzkTUoKtNIrrttUlqLgZc": {
+      "code": "x8CAE6n54M1t-iwSOCHc8HGzkTUoKtNIrrttUlqLgZc",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "redirectUri": "https://chatgpt.com/connector_platform_oauth_redirect",
+      "codeChallenge": "yFr7B676X5uIMBPFijWrEkJTQ3AmP8X7O1WNgmeJIG0",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770508173
+    },
+    "wOVUSGO7MNadbYE9jbH6sttomHLyl0GO1w0NqCJmmtk": {
+      "code": "wOVUSGO7MNadbYE9jbH6sttomHLyl0GO1w0NqCJmmtk",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "redirectUri": "https://chatgpt.com/connector_platform_oauth_redirect",
+      "codeChallenge": "53BlTq5a3Y-pfQ3NeWbbWjwtQh3Bly3jo1tXeNKLpJI",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770508334
+    },
+    "GKLZmxrWqt8s1i7LFLQlwrfx11JROmzvGSK8dKxFHy4": {
+      "code": "GKLZmxrWqt8s1i7LFLQlwrfx11JROmzvGSK8dKxFHy4",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "redirectUri": "https://chatgpt.com/connector_platform_oauth_redirect",
+      "codeChallenge": "bKG2IkHlpOh9bUZnyBl1uooWiCn5KY7QL8NNWiunvHA",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770508498
+    },
+    "MfDwD7WDiKU-yD-t5dQf1cvjX-ZnixH5_mZgAjnDRP0": {
+      "code": "MfDwD7WDiKU-yD-t5dQf1cvjX-ZnixH5_mZgAjnDRP0",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "redirectUri": "https://chatgpt.com/connector_platform_oauth_redirect",
+      "codeChallenge": "-wyevER1Rk6J9_D-IzRyYlgf751rg95YTuDXdgrrG_g",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770508848
+    },
+    "RmFRfVRM5MFUv6eesHVLqry_MFSmxmb2jBsef26F0Ok": {
+      "code": "RmFRfVRM5MFUv6eesHVLqry_MFSmxmb2jBsef26F0Ok",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "redirectUri": "https://chatgpt.com/connector_platform_oauth_redirect",
+      "codeChallenge": "NGLMnxA_Sg8TeaJyQF_X8p4wOUbYM2G5DAra0IGNO2Q",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770509284
+    },
+    "IfCq0e-RTsbhBa525ILcFk-X7lb_bxPZc0uyHK9AKjs": {
+      "code": "IfCq0e-RTsbhBa525ILcFk-X7lb_bxPZc0uyHK9AKjs",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "redirectUri": "https://chatgpt.com/connector_platform_oauth_redirect",
+      "codeChallenge": "ONrouPDrDnEEOKEkkPCaaspyqB9kCDoBYJhrLgfRF0Q",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770509998
+    },
+    "PoN9vKtXFovwtmLDgpXxYgmxgMf532pWnUcbrnmOCsQ": {
+      "code": "PoN9vKtXFovwtmLDgpXxYgmxgMf532pWnUcbrnmOCsQ",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "redirectUri": "https://chatgpt.com/connector_platform_oauth_redirect",
+      "codeChallenge": "6uozEfw6D5trOzY5Ao4jMYANTqdovQL-DpYJtMgxCec",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770510203
+    },
+    "3JnNPAmpgHjeK8VQ-I-Qn8VNcz-LrMuJE1BREgaWcp8": {
+      "code": "3JnNPAmpgHjeK8VQ-I-Qn8VNcz-LrMuJE1BREgaWcp8",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "redirectUri": "https://chatgpt.com/connector_platform_oauth_redirect",
+      "codeChallenge": "B6YvTQscc515rYrn5Em3PAYLXowiCeKss4AYLorWoYU",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770510369
+    },
+    "HJxVZfMkGvgwykG8StIF1FALU6AykaqERW5h899IZSc": {
+      "code": "HJxVZfMkGvgwykG8StIF1FALU6AykaqERW5h899IZSc",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "redirectUri": "https://chatgpt.com/connector_platform_oauth_redirect",
+      "codeChallenge": "11tIiCyLAZycJm7QNcvAph5jn4ifgmwI_REekS06hEM",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770514110
+    }
+  },
+  "accessTokens": {
+    "F4YM2n7Ym91whPjpw0ojpa1n7AmawhnNPwAzdbjfU9g": {
+      "token": "F4YM2n7Ym91whPjpw0ojpa1n7AmawhnNPwAzdbjfU9g",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770513814
+    },
+    "o9oSbzsG-PHw63S14ETLIoxW2_i9-LASE4L8UxCsT0Y": {
+      "token": "o9oSbzsG-PHw63S14ETLIoxW2_i9-LASE4L8UxCsT0Y",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770513922
+    },
+    "99_mAQb906LUgKTA7lSXYx5MI9tPxT5s-aL7MtlknPE": {
+      "token": "99_mAQb906LUgKTA7lSXYx5MI9tPxT5s-aL7MtlknPE",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770514335
+    },
+    "ew7CBtyjDj07fojsJsjEhLa2X2Bg5XhPPt_LXLoP4dc": {
+      "token": "ew7CBtyjDj07fojsJsjEhLa2X2Bg5XhPPt_LXLoP4dc",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770514647
+    },
+    "liKDkw0jYNDoraG6VNuFUPrzIUE8qf0ow5QPPHgQj7k": {
+      "token": "liKDkw0jYNDoraG6VNuFUPrzIUE8qf0ow5QPPHgQj7k",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770517485
+    },
+    "VkmF3s4NxBS2ySlAUz8ZhodXsgel0psYW9nGMw44LWA": {
+      "token": "VkmF3s4NxBS2ySlAUz8ZhodXsgel0psYW9nGMw44LWA",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770518347
+    },
+    "2Yge4GT89JM86d1U2pC_ArBwZ_2IoTsGCYPfMiIbvIU": {
+      "token": "2Yge4GT89JM86d1U2pC_ArBwZ_2IoTsGCYPfMiIbvIU",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770518440
+    },
+    "0ZQZ7mbeK2cHcGw7FcssXrBU97sa9ShqSL4OBKKFzqw": {
+      "token": "0ZQZ7mbeK2cHcGw7FcssXrBU97sa9ShqSL4OBKKFzqw",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770518941
+    },
+    "9AJFlx2ARZvluGAhQuWSkJaiKiRrxpLxVwL8p9lQY9o": {
+      "token": "9AJFlx2ARZvluGAhQuWSkJaiKiRrxpLxVwL8p9lQY9o",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770518998
+    },
+    "mpm51BLbPCWy1E5WiE8gS0r7OrToP27SB7iJD5U3HrQ": {
+      "token": "mpm51BLbPCWy1E5WiE8gS0r7OrToP27SB7iJD5U3HrQ",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770519051
+    },
+    "BC8TZK6IC7YYC6N29B-2A14DHdmQJWnzzyYt4rvWecA": {
+      "token": "BC8TZK6IC7YYC6N29B-2A14DHdmQJWnzzyYt4rvWecA",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1770519496
+    }
+  },
+  "refreshTokens": {
+    "3NDfar9pJoADbsFata75zWNQDxudX4ZCfz-BFwOkQ1c": {
+      "token": "3NDfar9pJoADbsFata75zWNQDxudX4ZCfz-BFwOkQ1c",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1773102214
+    },
+    "Hw8G39wBfp_IHtl_1f4Rf1il5vqa9wmGAWk5uzps-Rg": {
+      "token": "Hw8G39wBfp_IHtl_1f4Rf1il5vqa9wmGAWk5uzps-Rg",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1773102322
+    },
+    "MRy7HMHu0qTSmX5UOkMOaHbPxo2yjK9ApYoVAkR2P2o": {
+      "token": "MRy7HMHu0qTSmX5UOkMOaHbPxo2yjK9ApYoVAkR2P2o",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1773102735
+    },
+    "NwVOWTMjJ3RYFWlfZqg1M4QqWsTRladdTDYCUvnzuhM": {
+      "token": "NwVOWTMjJ3RYFWlfZqg1M4QqWsTRladdTDYCUvnzuhM",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1773103047
+    },
+    "pcgV7e6dtK6dwChzLaSjD_EbgT91y-6aBcr8Kc-rhCg": {
+      "token": "pcgV7e6dtK6dwChzLaSjD_EbgT91y-6aBcr8Kc-rhCg",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1773105885
+    },
+    "1eHHtGaxd2TH3FaDiCE4OMa-nQyq_xgi6w8Cvac0_SU": {
+      "token": "1eHHtGaxd2TH3FaDiCE4OMa-nQyq_xgi6w8Cvac0_SU",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1773106747
+    },
+    "7vDxV_QE4mFGMr2BIb4EjuTmmobSCxzcvYsQAziPO2s": {
+      "token": "7vDxV_QE4mFGMr2BIb4EjuTmmobSCxzcvYsQAziPO2s",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1773106840
+    },
+    "lLIAjNzK-w_exPH8lwqAyWG7uioKQvn-4Qje47bTgbE": {
+      "token": "lLIAjNzK-w_exPH8lwqAyWG7uioKQvn-4Qje47bTgbE",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1773107341
+    },
+    "xa0HFuvswnYdqNV3QHlznG5HYjjkvhk32T1jwTzKoIE": {
+      "token": "xa0HFuvswnYdqNV3QHlznG5HYjjkvhk32T1jwTzKoIE",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1773107398
+    },
+    "2RAPD8RGlY5kYBtouXQskPjAinxPdpcP4BestC1hlCw": {
+      "token": "2RAPD8RGlY5kYBtouXQskPjAinxPdpcP4BestC1hlCw",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1773107451
+    },
+    "ICkuDSIBnUlY1PZB1Z150aAJPeVjhWn5XV4BFOoLtj0": {
+      "token": "ICkuDSIBnUlY1PZB1Z150aAJPeVjhWn5XV4BFOoLtj0",
+      "clientId": "mcp_client_1761003752457_1krtcyb4oxe",
+      "scopes": [
+        "user:email"
+      ],
+      "resource": "https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net/mcp",
+      "subject": "github:10676925",
+      "extra": {
+        "provider": "github",
+        "login": "riatzukiza"
+      },
+      "expiresAt": 1773107896
+    }
+  },
+  "lastSaved": 1770505877313
+}
