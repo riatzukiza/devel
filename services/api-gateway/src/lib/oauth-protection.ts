@@ -56,6 +56,10 @@ function isPublicPath(pathname: string): boolean {
   );
 }
 
+function isMcpPath(pathname: string): boolean {
+  return pathname === "/mcp" || pathname.startsWith("/mcp/");
+}
+
 async function checkOAuth(
   req: FastifyRequest, 
   reply: FastifyReply, 
@@ -111,6 +115,12 @@ export async function addOAuthProtection(app: FastifyInstance, cfg: GatewayConfi
         error: "Forbidden",
         message: "Access from this host is blocked"
       });
+    }
+
+    // MCP bearer tokens are validated by the MCP resource server.
+    // Gateway JWT validation here can reject valid opaque MCP tokens.
+    if (isMcpPath(pathname)) {
+      return;
     }
 
     // All protected paths require OAuth token verification
