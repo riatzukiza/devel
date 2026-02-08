@@ -126,6 +126,16 @@ export async function proxyToMcp(
   const body = buildBody(req);
   const headers = buildHeaders(req, body !== undefined);
 
+  // Create redacted headers for logging (never log Authorization header)
+  const redactedHeaders: Record<string, string> = {};
+  for (const [key, value] of Object.entries(req.headers)) {
+    if (key.toLowerCase() === "authorization") {
+      redactedHeaders[key] = "[REDACTED]";
+    } else if (typeof value === "string") {
+      redactedHeaders[key] = value;
+    }
+  }
+
   // Token exchange detection for enhanced logging
   const isTokenEndpoint = path.includes("token");
   if (isTokenEndpoint) {
@@ -134,7 +144,7 @@ export async function proxyToMcp(
       method: req.method, 
       contentType: req.headers["content-type"], 
       bodyLength: body?.length,
-      headers: req.headers 
+      headers: redactedHeaders 
     }, "token exchange request");
   } else {
     req.log.info({ 
@@ -142,7 +152,7 @@ export async function proxyToMcp(
       method: req.method, 
       contentType: req.headers["content-type"], 
       body,
-      headers: req.headers 
+      headers: redactedHeaders 
     }, "proxying to MCP");
   }
 
@@ -168,7 +178,7 @@ export async function proxyToMcp(
     const replyWithHeaders = reply.code(response.status)
       .header("content-type", contentType)
       .header("Access-Control-Allow-Origin", "*")
-      .header("Access-Control-Expose-Headers", "mcp-session-id");
+      .header("Access-Control-Expose-Headers", "mcp-session-id, x-mcp-session-id");
     
     const replyWithCache = cacheControl 
       ? replyWithHeaders.header("cache-control", cacheControl) 

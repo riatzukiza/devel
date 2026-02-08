@@ -43,7 +43,7 @@ const ENV = z.object({
   TRUSTED_CLIENT_IDS: z.string().optional(),
 
   STORAGE_MODE: z.enum(["auto", "local", "github"]).default("auto"),
-  LOCAL_ROOT: z.string().optional(),
+  LOCAL_ROOT: z.string().default("/home/err/devel/"),
 
   GITHUB_REPO_OWNER: z.string().optional(),
   GITHUB_REPO_NAME: z.string().optional(),
@@ -72,7 +72,7 @@ const oauth = new SimpleOAuthProvider(publicBaseUrl, toBool(ENV.AUTO_APPROVE), [
 ], 60 * 60, 30 * 24 * 60 * 60, ENV.OAUTH_PERSISTENCE_PATH);
 
 const mode = ENV.STORAGE_MODE as FsBackendName;
-const local = ENV.LOCAL_ROOT ? new LocalFsBackend(path.resolve(ENV.LOCAL_ROOT)) : null;
+const local = new LocalFsBackend(path.resolve(ENV.LOCAL_ROOT));
 const github = (ENV.GITHUB_REPO_OWNER && ENV.GITHUB_REPO_NAME && ENV.GITHUB_REPO_TOKEN)
   ? new GitHubRepoBackend(
       ENV.GITHUB_REPO_OWNER,
@@ -341,10 +341,25 @@ const bearer = requireBearerAuth({
 });
 
 const maybeBearer: express.RequestHandler = (req, res, next) => {
-  const host = req.headers.host ?? "";
-  if (host.startsWith("localhost") || host.startsWith("127.0.0.1")) {
+  // Check if unauthenticated local access is enabled via environment
+  const allowUnauthLocal = process.env.ALLOW_UNAUTH_LOCAL === "true";
+  
+  if (!allowUnauthLocal) {
+    return bearer(req, res, next);
+  }
+  
+  // Verify actual connection is from loopback, don't trust Host header
+  const remoteAddr = req.socket?.remoteAddress ?? "";
+  const isLoopback = remoteAddr === "::1" || 
+                     remoteAddr === "127.0.0.1" ||
+                     remoteAddr === "::ffff:127.0.0.1" ||
+                     remoteAddr.startsWith("127.");
+  
+  if (isLoopback) {
     return next();
   }
+  
+  // For non-loopback connections, require authentication
   return bearer(req, res, next);
 };
 

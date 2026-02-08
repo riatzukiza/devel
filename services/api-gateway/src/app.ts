@@ -18,14 +18,14 @@ export async function createApp(cfg: GatewayConfig): Promise<FastifyInstance> {
   await app.register(formbody as unknown as FastifyPluginCallback);
 
   app.addHook("onRequest", async (req, reply) => {
-
+    // Simplified CORS: use wildcard since we use Bearer tokens (header-based auth)
+    // Browser credentials (cookies) are not used, so we don't need Access-Control-Allow-Credentials
     const requestOrigin = req.headers.origin;
     reply.header("Access-Control-Allow-Origin", requestOrigin ?? "*");
     reply.header("Vary", "Origin");
-    reply.header("Access-Control-Allow-Credentials", "true");
     reply.header(
       "Access-Control-Allow-Headers",
-      "Authorization, Content-Type, Accept, X-Requested-With"
+      "Authorization, Content-Type, Accept, X-Requested-With, X-MCP-Session-ID"
     );
     reply.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
   });
