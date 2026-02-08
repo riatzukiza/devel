@@ -1,13 +1,12 @@
 import type { FastifyPluginAsync } from "fastify";
 import { all } from "../../lib/duckdb.js";
 import type { FtsSearchRequest, VectorSearchRequest } from "../../lib/types.js";
-
 export const searchRoutes: FastifyPluginAsync = async (app) => {
   app.post<{ Body: FtsSearchRequest }>("/search/fts", async (req, reply) => {
     const body = req.body ?? ({} as any);
     const q = body.q;
     const limit = body.limit ?? 20;
-    if (!q || typeof q !== "string") return reply.badRequest("q is required");
+    if (!q || typeof q !== "string") return reply.status(400).send({ error: "q is required" });
 
     const lim = Math.max(1, Math.min(200, Number(limit)));
 
@@ -67,9 +66,12 @@ export const searchRoutes: FastifyPluginAsync = async (app) => {
     const q = body.q;
     const k = body.k ?? 20;
 
-    if (!q || typeof q !== "string") return reply.badRequest("q is required");
+    if (!q || typeof q !== "string") return reply.status(400).send({ error: "q is required" });
 
-    const collection = await app.chroma.client.getCollection({ name: app.chroma.collectionName, embeddingFunction: undefined as any });
+    const collection = await app.chroma.client.getCollection({ 
+      name: app.chroma.collectionName, 
+      embeddingFunction: app.chroma.embeddingFunction as any
+    });
     const result = await collection.query({
       queryTexts: [q],
       nResults: Math.max(1, Math.min(200, Number(k))),
