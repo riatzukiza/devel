@@ -11,7 +11,7 @@ export const blobRoutes: FastifyPluginAsync = async (app) => {
     await fs.mkdir(p.blobsDir, { recursive: true });
 
     const mp = await (req as any).file();
-    if (!mp) return reply.badRequest("expected multipart field 'file'");
+    if (!mp) return reply.status(400).send({ error: "expected multipart field 'file'" });
 
     const buf: Buffer = await mp.toBuffer();
     const sha = sha256Bytes(buf);
@@ -30,7 +30,7 @@ export const blobRoutes: FastifyPluginAsync = async (app) => {
 
   app.get("/blobs/:sha256", async (req, reply) => {
     const { sha256 } = req.params as any;
-    if (!/^[a-f0-9]{64}$/.test(sha256)) return reply.badRequest("invalid sha256");
+    if (!/^[a-f0-9]{64}$/.test(sha256)) return reply.status(400).send({ error: "invalid sha256" });
 
     const cfg = (app as any).openplannerConfig;
     const p = paths(cfg?.dataDir ?? process.env.OPENPLANNER_DATA_DIR ?? "./openplanner-lake");
@@ -41,7 +41,7 @@ export const blobRoutes: FastifyPluginAsync = async (app) => {
       reply.header("Content-Type", "application/octet-stream");
       return reply.send(buf);
     } catch {
-      return reply.notFound("blob not found");
+      return reply.status(404).send({ error: "blob not found" });
     }
   });
 };
