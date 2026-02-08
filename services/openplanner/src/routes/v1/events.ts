@@ -23,7 +23,7 @@ function validateEvent(ev: EventEnvelopeV1) {
 export const eventRoutes: FastifyPluginAsync = async (app) => {
   app.post<{ Body: EventIngestRequest }>("/events", async (req, reply) => {
     const body = req.body;
-    if (!body || !Array.isArray(body.events)) return reply.badRequest("expected { events: [...] }");
+    if (!body || !Array.isArray(body.events)) return reply.status(400).send({ error: "expected { events: [...] }" });
 
     const ids: string[] = [];
 
@@ -73,6 +73,31 @@ export const eventRoutes: FastifyPluginAsync = async (app) => {
       ]);
 
       ids.push(ev.id);
+
+      if (ev.text) {
+        try {
+          const collection = await app.chroma.client.getCollection({ 
+            name: app.chroma.collectionName, 
+            embeddingFunction: app.chroma.embeddingFunction as any
+          });
+          await collection.add({
+            ids: [ev.id],
+            documents: [ev.text],
+            metadatas: [{
+              ts: ev.ts,
+              source: ev.source,
+              kind: ev.kind,
+              project: (sr as any).project,
+              session: (sr as any).session,
+              author: author ?? "",
+              role: role ?? "",
+              model: model ?? ""
+            }] as any
+          });
+        } catch (err) {
+          app.log.error(err, "Failed to index event into ChromaDB");
+        }
+      }
     }
 
     return { ok: true, count: ids.length, ids, ftsEnabled: app.duck.ftsEnabled };

@@ -1,15 +1,24 @@
-import Fastify, { type FastifyInstance } from "fastify";
+import formbody from "@fastify/formbody";
+import Fastify, { type FastifyInstance, type FastifyPluginCallback } from "fastify";
+
 import type { GatewayConfig } from "./lib/config.js";
+import { addOAuthProtection } from "./lib/oauth-protection.js";
+import { mcpRoutes } from "./routes/mcp.js";
+import { mcpRootRoutes } from "./routes/mcp-root.js";
+import { opencodeRoutes } from "./routes/opencode.js";
 import { openplannerRoutes } from "./routes/openplanner.js";
 import { workspaceRoutes } from "./routes/workspace.js";
 
-export async function buildApp(cfg: GatewayConfig): Promise<FastifyInstance> {
+export async function createApp(cfg: GatewayConfig): Promise<FastifyInstance> {
   const app = Fastify({
     logger: true,
     bodyLimit: 50 * 1024 * 1024
   });
 
+  await app.register(formbody as unknown as FastifyPluginCallback);
+
   app.addHook("onRequest", async (req, reply) => {
+
     const requestOrigin = req.headers.origin;
     reply.header("Access-Control-Allow-Origin", requestOrigin ?? "*");
     reply.header("Vary", "Origin");
@@ -25,12 +34,23 @@ export async function buildApp(cfg: GatewayConfig): Promise<FastifyInstance> {
     reply.code(204).send();
   });
 
+  app.options("/api/opencode/*", async (_req, reply) => {
+    reply.code(204).send();
+  });
+
   app.options("/*", async (_req, reply) => {
     reply.code(204).send();
   });
 
   app.get("/", async () => ({ ok: true, name: "api-gateway", version: "0.1.0" }));
   app.get("/health", async () => ({ ok: true, service: "api-gateway" }));
+
+  await addOAuthProtection(app, cfg);
+
+  // Register root-level MCP routes (including OAuth endpoints)
+  await app.register(mcpRootRoutes, {
+    mcpUrl: cfg.mcpUrl
+  });
 
   app.get("/health/openplanner", async (_req, reply) => {
     try {
@@ -54,9 +74,20 @@ export async function buildApp(cfg: GatewayConfig): Promise<FastifyInstance> {
     openplannerApiKey: cfg.openplannerApiKey
   });
 
+  await app.register(opencodeRoutes, {
+    prefix: "/api",
+    opencodeUrl: cfg.opencodeUrl,
+    opencodeApiKey: cfg.opencodeApiKey
+  });
+
   await app.register(workspaceRoutes, {
     prefix: "/api",
     workspaceRoot: cfg.workspaceRoot
+  });
+
+  await app.register(mcpRoutes, {
+    prefix: "/api",
+    mcpUrl: cfg.mcpUrl
   });
 
   return app;

@@ -15,14 +15,14 @@ export async function buildApp(cfg: OpenPlannerConfig): Promise<FastifyInstance>
 
   (app as any).openplannerConfig = cfg;
 
-  await app.register(sensible);
-  await app.register(multipart, {
+  await app.register(sensible as any);
+  await app.register(multipart as any, {
     limits: { fileSize: 200 * 1024 * 1024 }
   });
 
-  await app.register(authPlugin, cfg);
-  await app.register(duckdbPlugin, cfg);
-  await app.register(chromaPlugin, cfg);
+  await app.register(authPlugin as any, cfg);
+  await app.register(duckdbPlugin as any, cfg);
+  await app.register(chromaPlugin as any, cfg);
 
   await app.register(v1Routes, { prefix: "/v1" });
 
