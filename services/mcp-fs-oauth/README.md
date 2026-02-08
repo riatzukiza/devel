@@ -54,6 +54,35 @@ ChatGPT will discover the protected resource metadata and complete the OAuth flo
 
 Each tool accepts an optional `backend` override: `auto | local | github`.
 
+## Exec allowlist patterns
+
+`exec_run` now enforces glob-style allowlist patterns (similar to OpenCode permissions),
+for example `"git *"` or `"pnpm test *"`.
+
+- Set `MCP_EXEC_CONFIG` to a JSON file.
+- Each command may define `allowPatterns` and `denyPatterns`.
+- You can also define global `allowPatterns` / `denyPatterns` at config root.
+- If `allowExtraArgs=true`, at least one allow pattern must be present.
+
+Example:
+
+```json
+{
+  "allowPatterns": ["git *"],
+  "commands": [
+    {
+      "id": "git-status",
+      "description": "Run git status",
+      "command": "git",
+      "args": ["status"],
+      "allowExtraArgs": true,
+      "allowPatterns": ["git status *"],
+      "denyPatterns": ["*--force*", "*reset --hard*"]
+    }
+  ]
+}
+```
+
 ## Notes
 
 - For GitHub storage write/delete, you need a token with repo content permissions.
