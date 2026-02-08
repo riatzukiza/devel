@@ -5,12 +5,18 @@
   "type": "module",
   "scripts": {
     "dev": "bun run --watch src/index.ts",
+    "dev:proxy": "bun run --watch src/index.ts",
     "build": "tsc -p tsconfig.json",
     "start": "bun run dist/index.js",
+    "start:stable": "bun run dist/index.js",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "test": "bun test",
+    "test:integration": "node scripts/run-integration-tests.mjs",
+    "test:all": "node scripts/run-integration-tests.mjs && bun test"
   },
   "dependencies": {
+    "@workspace/mcp-runtime": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
