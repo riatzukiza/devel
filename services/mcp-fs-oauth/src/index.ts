@@ -1,5 +1,4 @@
 import "dotenv/config";
-import { randomUUID } from "node:crypto";
 import path from "node:path";
 
 import express from "express";
@@ -8,17 +7,21 @@ import proxy from "express-http-proxy";
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { Redis } from "ioredis";
-import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
-import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import { mcpAuthRouter, getOAuthProtectedResourceMetadataUrl } from "@modelcontextprotocol/sdk/server/auth/router.js";
 import { requireBearerAuth } from "@modelcontextprotocol/sdk/server/auth/middleware/bearerAuth.js";
+import {
+  createMcpHttpRouter,
+  type McpHttpRequest,
+  type McpHttpResponse,
+} from "@workspace/mcp-runtime";
 
 import { SimpleOAuthProvider } from "./auth/simpleOAuthProvider.js";
 import { installLoginUi } from "./auth/loginUi.js";
 import { LocalFsBackend } from "./fs/localFs.js";
 import { GitHubRepoBackend } from "./fs/githubFs.js";
-import { VirtualFs } from "./fs/virtualFs.js";
+import { VirtualFs, type TreePageResult } from "./fs/virtualFs.js";
 import type { FsBackendName } from "./fs/types.js";
+import { listExecCommands, runExecCommand } from "./tools/exec.js";
 
 type LoginProvider = "password" | "github" | "google";
 
@@ -83,7 +86,7 @@ const github = (ENV.GITHUB_REPO_OWNER && ENV.GITHUB_REPO_NAME && ENV.GITHUB_REPO
     )
   : null;
 
-const vfs = new VirtualFs(mode, local, github);
+const vfs = new VirtualFs(mode, local, github, path.resolve(ENV.LOCAL_ROOT));
 
 const app = express();
 
@@ -227,8 +230,6 @@ installLoginUi(app, oauth, {
 
 app.get("/health", (_req, res) => res.json({ ok: true }));
 
-const transports = new Map<string, StreamableHTTPServerTransport>();
-
 const redis = new Redis({
   host: process.env.REDIS_HOST || "127.0.0.1",
   port: parseInt(process.env.REDIS_PORT || "6379"),
@@ -241,6 +242,26 @@ redis.on("connect", () => {
 redis.on("error", (err) => {
   console.error("[redis] Redis connection error:", err.message);
 });
+
+function formatTreePageText(page: TreePageResult): string {
+  const root = page.path.length > 0 ? page.path : ".";
+  const lines: string[] = [page.offset > 0 ? `${root} @${page.offset}` : root];
+
+  if (page.entries.length === 0) {
+    lines.push("(empty)");
+  } else {
+    for (const entry of page.entries) {
+      const indent = "  ".repeat(Math.max(0, entry.depth - 1));
+      lines.push(`${indent}${entry.name}${entry.kind === "dir" ? "/" : ""}`);
+    }
+  }
+
+  if (page.hasMore && page.nextCursor) {
+    lines.push(`next ${page.nextCursor}`);
+  }
+
+  return lines.join("\n");
+}
 
 function createServer(): McpServer {
   const server = new McpServer({
@@ -255,6 +276,11 @@ function createServer(): McpServer {
       inputSchema: {
         path: z.string().optional().default(""),
         backend: z.enum(["auto", "local", "github"]).optional(),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        openWorldHint: false,
       }
     },
     async ({ path, backend }) => {
@@ -272,6 +298,11 @@ function createServer(): McpServer {
       inputSchema: {
         path: z.string(),
         backend: z.enum(["auto", "local", "github"]).optional(),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        openWorldHint: false,
       }
     },
     async ({ path, backend }) => {
@@ -291,6 +322,11 @@ function createServer(): McpServer {
         content: z.string(),
         message: z.string().optional(),
         backend: z.enum(["auto", "local", "github"]).optional(),
+      },
+      annotations: {
+        readOnlyHint: false,
+        destructiveHint: false,
+        openWorldHint: false,
       }
     },
     async ({ path, content, message, backend }) => {
@@ -309,12 +345,221 @@ function createServer(): McpServer {
         path: z.string(),
         message: z.string().optional(),
         backend: z.enum(["auto", "local", "github"]).optional(),
+      },
+      annotations: {
+        readOnlyHint: false,
+        destructiveHint: true,
+        openWorldHint: false,
       }
     },
     async ({ path, message, backend }) => {
       const out = await vfs.deletePath(path, message, backend);
       return {
         content: [{ type: "text", text: JSON.stringify(out, null, 2) }],
+      };
+    }
+  );
+
+  server.registerTool(
+    "fs_tree",
+    {
+      description: "Compact text tree output. Large trees include a next cursor on the last line.",
+      inputSchema: {
+        path: z.string().optional().default(""),
+        maxDepth: z.number().min(1).max(10).optional().default(3),
+        cursor: z.string().optional().describe("Opaque cursor from a previous fs_tree page"),
+        pageSize: z.number().int().min(1).max(2000).optional().default(250),
+        includeHidden: z.boolean().optional().default(false),
+        backend: z.enum(["auto", "local", "github"]).optional(),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        openWorldHint: false,
+      }
+    },
+    async ({ path, maxDepth, cursor, pageSize, includeHidden, backend }) => {
+      const page = await vfs.treePage(
+        path,
+        maxDepth,
+        {
+          cursor,
+          pageSize,
+          includeHidden,
+        },
+        backend,
+      );
+
+      return {
+        content: [{ type: "text", text: formatTreePageText(page) }],
+      };
+    }
+  );
+
+  server.registerTool(
+    "fs_glob",
+    {
+      description: "Find file paths by glob pattern (fast way to narrow scope before fs_read/fs_tree).",
+      inputSchema: {
+        pattern: z.string().default("**/*").describe("Glob pattern such as **/*.ts or docs/**/*.md"),
+        path: z.string().optional().default(""),
+        maxResults: z.number().int().min(1).max(1000).optional().default(200),
+        includeHidden: z.boolean().optional().default(false),
+        includeDirectories: z.boolean().optional().default(true),
+        backend: z.enum(["auto", "local", "github"]).optional(),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        openWorldHint: false,
+      }
+    },
+    async ({ pattern, path, maxResults, includeHidden, includeDirectories, backend }) => {
+      const result = await vfs.glob(
+        pattern,
+        {
+          path,
+          maxResults,
+          includeHidden,
+          includeDirectories,
+        },
+        backend,
+      );
+
+      const response = {
+        ok: true,
+        ...result,
+        guidance: result.truncated
+          ? [
+              "Result set hit maxResults; refine pattern or path.",
+              "Use fs_grep for content matching after narrowing with fs_glob.",
+            ]
+          : ["Glob completed without truncation."],
+      };
+
+      return {
+        content: [{ type: "text", text: JSON.stringify(response, null, 2) }],
+      };
+    }
+  );
+
+  server.registerTool(
+    "fs_search",
+    {
+      description: "Search literal text across files. For regex workflows, use fs_grep.",
+      inputSchema: {
+        query: z.string(),
+        path: z.string().optional().default(""),
+        glob: z.string().optional().default("*"),
+        maxResults: z.number().min(1).max(100).optional().default(50),
+        includeHidden: z.boolean().optional().default(false),
+        backend: z.enum(["auto", "local", "github"]).optional(),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        openWorldHint: false,
+      }
+    },
+    async ({ query, path, glob, maxResults, includeHidden, backend }) => {
+      const results = await vfs.search(query, { path, glob, maxResults, includeHidden }, backend);
+      return {
+        content: [{ type: "text", text: JSON.stringify(results, null, 2) }],
+      };
+    }
+  );
+
+  server.registerTool(
+    "fs_grep",
+    {
+      description: "Regex search across files (grep-style). On local backend this uses ripgrep, respecting .gitignore/.ignore by default.",
+      inputSchema: {
+        pattern: z.string().describe("Regular expression pattern"),
+        path: z.string().optional().default(""),
+        include: z.string().optional().default("**/*"),
+        exclude: z.string().optional().describe("Glob pattern to exclude"),
+        maxResults: z.number().int().min(1).max(1000).optional().default(200),
+        caseSensitive: z.boolean().optional().default(false),
+        includeHidden: z.boolean().optional().default(false),
+        backend: z.enum(["auto", "local", "github"]).optional(),
+      },
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        openWorldHint: false,
+      }
+    },
+    async ({ pattern, path, include, exclude, maxResults, caseSensitive, includeHidden, backend }) => {
+      const result = await vfs.grep(
+        pattern,
+        {
+          path,
+          include,
+          exclude,
+          maxResults,
+          caseSensitive,
+          includeHidden,
+        },
+        backend,
+      );
+
+      const response = {
+        ok: true,
+        ...result,
+        guidance: result.truncated
+          ? [
+              "Result set hit maxResults; refine pattern/include/path for the next query.",
+              "Use fs_glob first to target a smaller file set before fs_grep.",
+            ]
+          : ["Grep completed without truncation."],
+      };
+
+      return {
+        content: [{ type: "text", text: JSON.stringify(response, null, 2) }],
+      };
+    }
+  );
+
+  server.registerTool(
+    "exec_list",
+    {
+      description: "List all allowlisted shell commands that can be executed",
+      inputSchema: {},
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        openWorldHint: false,
+      }
+    },
+    async () => {
+      const commands = await listExecCommands();
+      return {
+        content: [{ type: "text", text: JSON.stringify(commands, null, 2) }],
+      };
+    }
+  );
+
+  server.registerTool(
+    "exec_run",
+    {
+      description: "Execute an allowlisted shell command. Invocation must match glob-style allowPatterns (OpenCode-like permissions).",
+      inputSchema: {
+        commandId: z.string().describe("The ID of the allowlisted command to run"),
+        args: z.array(z.string()).optional().describe("Additional arguments (if allowed by command)"),
+        timeoutMs: z.number().int().positive().optional().describe("Timeout in milliseconds"),
+      },
+      annotations: {
+        readOnlyHint: false,
+        destructiveHint: false,
+        openWorldHint: false,
+      }
+    },
+    async ({ commandId, args, timeoutMs }) => {
+      const result = await runExecCommand(commandId, args, timeoutMs);
+      return {
+        content: [
+          { type: "text", text: `Exit code: ${result.exitCode}\n\nStdout:\n${result.stdout}\n\nStderr:\n${result.stderr}` },
+        ],
       };
     }
   );
@@ -340,104 +585,144 @@ const bearer = requireBearerAuth({
   resourceMetadataUrl,
 });
 
-const maybeBearer: express.RequestHandler = (req, res, next) => {
-  // Check if unauthenticated local access is enabled via environment
-  const allowUnauthLocal = process.env.ALLOW_UNAUTH_LOCAL === "true";
-  
-  if (!allowUnauthLocal) {
-    return bearer(req, res, next);
+function firstHeaderValue(value: string | string[] | undefined): string | undefined {
+  if (typeof value === "string") {
+    return value;
   }
-  
-  // Verify actual connection is from loopback, don't trust Host header
+  if (Array.isArray(value) && typeof value[0] === "string") {
+    return value[0];
+  }
+  return undefined;
+}
+
+function normalizeHost(value: string | undefined): string {
+  if (!value) return "";
+  const first = value.split(",")[0]?.trim() ?? "";
+  const noBrackets = first.replace(/^\[/, "").replace(/\]$/, "");
+  const hostPart = noBrackets.split(":")[0] ?? "";
+  return hostPart.toLowerCase();
+}
+
+function normalizeForwardedIp(value: string | undefined): string {
+  if (!value) return "";
+  return (value.split(",")[0] ?? "").trim().toLowerCase();
+}
+
+function isLoopbackAddress(value: string): boolean {
+  const addr = value.toLowerCase();
+  return (
+    addr === "::1" ||
+    addr === "127.0.0.1" ||
+    addr === "::ffff:127.0.0.1" ||
+    addr.startsWith("127.")
+  );
+}
+
+function isLocalHost(value: string): boolean {
+  return value === "localhost" || value === "127.0.0.1" || value === "::1";
+}
+
+const maybeBearer: express.RequestHandler = (req, res, next) => {
   const remoteAddr = req.socket?.remoteAddress ?? "";
-  const isLoopback = remoteAddr === "::1" || 
-                     remoteAddr === "127.0.0.1" ||
-                     remoteAddr === "::ffff:127.0.0.1" ||
-                     remoteAddr.startsWith("127.");
-  
-  if (isLoopback) {
+  const rawForwardedHost = firstHeaderValue(req.headers["x-forwarded-host"] as string | string[] | undefined);
+  const rawHost = firstHeaderValue(req.headers.host as string | string[] | undefined);
+  const effectiveHost = normalizeHost(rawForwardedHost ?? rawHost);
+  const rawForwardedFor = firstHeaderValue(req.headers["x-forwarded-for"] as string | string[] | undefined);
+  const forwardedClientIp = normalizeForwardedIp(rawForwardedFor);
+
+  const isLocalRequest = isLocalHost(effectiveHost) &&
+    (forwardedClientIp.length === 0 || isLoopbackAddress(forwardedClientIp)) &&
+    isLoopbackAddress(remoteAddr);
+
+  if (isLocalRequest) {
     return next();
   }
-  
-  // For non-loopback connections, require authentication
+
+  // Optional test-mode bypass for loopback-only traffic.
+  // Never bypass auth for externally forwarded hosts.
+  const allowUnauthLocal = process.env.ALLOW_UNAUTH_LOCAL === "true";
+  const isLoopbackOnly =
+    isLoopbackAddress(remoteAddr) &&
+    (forwardedClientIp.length === 0 || isLoopbackAddress(forwardedClientIp)) &&
+    (effectiveHost.length === 0 || isLocalHost(effectiveHost));
+
+  if (allowUnauthLocal && isLoopbackOnly) {
+    return next();
+  }
+
   return bearer(req, res, next);
 };
 
-// Apply body parsers to MCP routes that need JSON parsing
-app.post("/mcp", jsonParser, maybeBearer, async (req, res) => {
-  const sessionId = req.headers["mcp-session-id"] as string | undefined;
-  const transport = sessionId ? transports.get(sessionId) : undefined;
-
-  if (!transport) {
-    if (!isInitializeRequest(req.body)) {
-      return res.status(400).json({
-        jsonrpc: "2.0",
-        error: { code: -32000, message: "Bad Request: Server not initialized" },
-        id: null,
-      });
+const mcpRouter = createMcpHttpRouter({
+  createServer,
+  onSessionInitialized: async (sessionId: string) => {
+    await redis.setex(`mcp:session:${sessionId}`, 3600, JSON.stringify({
+      createdAt: Date.now(),
+      processId: process.pid,
+    }));
+  },
+  onSessionClosed: async (sessionId: string) => {
+    await redis.del(`mcp:session:${sessionId}`);
+  },
+  onUnknownSession: async (sessionId: string, _req: McpHttpRequest, res: McpHttpResponse) => {
+    const sessionData = await redis.get(`mcp:session:${sessionId}`);
+    if (!sessionData) {
+      return false;
     }
 
-    const newTransport = new StreamableHTTPServerTransport({
-      sessionIdGenerator: randomUUID,
-      onsessioninitialized: async (sid) => {
-        transports.set(sid, newTransport);
-        await redis.setex(`mcp:session:${sid}`, 3600, JSON.stringify({
-          createdAt: Date.now(),
-          processId: process.pid,
-        }));
-      },
-    });
-
-    newTransport.onclose = () => {
-      if (newTransport.sessionId) {
-        transports.delete(newTransport.sessionId);
-        redis.del(`mcp:session:${newTransport.sessionId}`).catch(console.error);
-      }
+    type SessionRecord = {
+      processId?: number;
+      createdAt?: number;
     };
 
-    const server = createServer();
-    
-    // Log that server was created (tools and resources are registered in createServer)
-    console.log("[mcp] Server created with VirtualFs backend");
-    
-    await server.connect(newTransport);
-    await newTransport.handleRequest(req, res, req.body);
-    return;
-  }
+    let parsed: SessionRecord | null = null;
+    try {
+      parsed = JSON.parse(sessionData) as SessionRecord;
+    } catch {
+      parsed = null;
+    }
 
-  await transport.handleRequest(req, res, req.body);
+    const ownerPid = parsed?.processId;
+    const hasOwnerPid = typeof ownerPid === "number" && Number.isInteger(ownerPid) && ownerPid > 0;
+
+    // Same process should never miss an in-memory transport for a live session.
+    // Treat this as stale metadata and clear it so clients can re-initialize cleanly.
+    if (hasOwnerPid && ownerPid === process.pid) {
+      await redis.del(`mcp:session:${sessionId}`);
+      return false;
+    }
+
+    // If another process no longer exists, session metadata is stale.
+    if (hasOwnerPid) {
+      let alive = true;
+      try {
+        process.kill(ownerPid, 0);
+      } catch {
+        alive = false;
+      }
+
+      if (!alive) {
+        await redis.del(`mcp:session:${sessionId}`);
+        return false;
+      }
+    }
+
+    res.status(409).send(`Session ${sessionId} is owned by another active process. Re-initialize MCP session.`);
+    return true;
+  },
 });
 
-async function handleSession(req: express.Request, res: express.Response): Promise<void> {
-  const sessionId = (req.headers["mcp-session-id"] || req.query.sessionId) as string | undefined;
-  if (!sessionId) {
-    res.status(400).send("Missing mcp-session-id");
-    return;
-  }
-  
-  // Check local transport first
-  const localTransport = transports.get(sessionId);
-  if (localTransport) {
-    await localTransport.handleRequest(req, res);
-    return;
-  }
-  
-  // Check Redis for session existence (session from another process)
-  const sessionData = await redis.get(`mcp:session:${sessionId}`);
-  if (sessionData) {
-    res.status(400).send(`Session ${sessionId} exists on another process. Use sticky sessions.`);
-    return;
-  }
-  
-  res.status(400).send(`Invalid mcp-session-id: ${sessionId}`);
-}
+// Apply body parsers to MCP routes that need JSON parsing
+app.post("/mcp", jsonParser, maybeBearer, async (req, res) => {
+  await mcpRouter.handlePost(req, res);
+});
 
 app.get("/mcp", maybeBearer, async (req, res) => {
-  await handleSession(req, res);
+  await mcpRouter.handleSession(req, res);
 });
 
 app.delete("/mcp", maybeBearer, async (req, res) => {
-  await handleSession(req, res);
+  await mcpRouter.handleSession(req, res);
 });
 
 // Apply body parsers to other routes that need them
@@ -453,8 +738,10 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
   });
 });
 
-app.listen(ENV.PORT, () => {
-  console.log(`mcp-fs-oauth listening on ${ENV.PORT}`);
+const listener = app.listen(ENV.PORT, () => {
+  const address = listener.address();
+  const boundPort = typeof address === "object" && address ? address.port : ENV.PORT;
+  console.log(`mcp-fs-oauth listening on ${boundPort}`);
   console.log(`public base: ${publicBaseUrl.toString()}`);
   console.log(`mcp endpoint: ${resourceServerUrl.toString()}`);
   console.log(`resource metadata: ${resourceMetadataUrl}`);
