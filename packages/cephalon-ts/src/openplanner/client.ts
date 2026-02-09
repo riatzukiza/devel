@@ -1,14 +1,21 @@
+import {
+  createOpenPlannerClient,
+  defaultOpenPlannerConfig,
+  type OpenPlannerClient as CanonicalOpenPlannerClient,
+  type OpenPlannerEvent,
+} from "@promethean-os/openplanner-cljs-client";
 import type { Memory } from "../types/index.js";
 
 export interface OpenPlannerConfig {
   baseUrl: string;
   apiKey?: string;
+  fetch?: typeof fetch;
 }
 
 export type SourceRef = Partial<{
+  project: string;
   session: string;
-  memory: string;
-  event: string;
+  message: string;
 }>;
 
 export interface EventEnvelopeV1 {
@@ -39,32 +46,34 @@ export interface OpenPlannerSearchOptions {
   session?: string;
 }
 
-type EventIngestResponse = {
-  indexed?: number;
-};
+type SearchRow = Partial<{
+  id: string;
+  ts: string;
+  source: string;
+  kind: string;
+  project: string;
+  session: string;
+  message: string;
+  snippet: string;
+  text: string;
+  score: number;
+}>;
 
-type SearchResponse = {
+type SearchResponse = Partial<{
+  rows: SearchRow[];
   results: OpenPlannerSearchResult[];
-};
+}>;
 
 export function createDefaultOpenPlannerConfig(): OpenPlannerConfig {
+  const config = defaultOpenPlannerConfig();
   return {
-    baseUrl: process.env.OPENPLANNER_URL ?? "http://127.0.0.1:7777",
-    apiKey: process.env.OPENPLANNER_API_KEY,
+    baseUrl: config.endpoint,
+    apiKey: config.apiKey ?? undefined,
+    fetch: config.fetch,
   };
 }
 
-const buildHeaders = (apiKey?: string): Record<string, string> => {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
-  if (apiKey) {
-    headers.Authorization = `Bearer ${apiKey}`;
-  }
-  return headers;
-};
-
-const buildEvent = (memory: Memory): EventEnvelopeV1 => ({
+const buildEvent = (memory: Memory): OpenPlannerEvent => ({
   schema: "openplanner.event.v1",
   id: `memory-${memory.id}`,
   ts: new Date(memory.timestamp).toISOString(),
@@ -72,8 +81,7 @@ const buildEvent = (memory: Memory): EventEnvelopeV1 => ({
   kind: "memory.created",
   source_ref: {
     session: memory.sessionId,
-    memory: memory.id,
-    event: memory.eventId ?? undefined,
+    message: memory.id,
   },
   text: memory.content.text,
   meta: {
@@ -84,6 +92,7 @@ const buildEvent = (memory: Memory): EventEnvelopeV1 => ({
   },
   extra: {
     session_id: memory.sessionId,
+    memory_id: memory.id,
     event_id: memory.eventId,
     content_text: memory.content.text,
     normalized_text: memory.content.normalizedText,
@@ -99,64 +108,73 @@ const buildEvent = (memory: Memory): EventEnvelopeV1 => ({
   },
 });
 
+const toSearchResult = (row: SearchRow): OpenPlannerSearchResult => ({
+  id: row.id ?? "",
+  text: row.text ?? row.snippet,
+  score: typeof row.score === "number" ? row.score : 0,
+  source: row.source,
+  kind: row.kind,
+  ts: row.ts,
+  source_ref: {
+    project: row.project,
+    session: row.session,
+    message: row.message,
+  },
+});
+
 export class OpenPlannerClient {
   private readonly config: OpenPlannerConfig;
+  private readonly client: CanonicalOpenPlannerClient;
 
   constructor(config: Partial<OpenPlannerConfig> = {}) {
     this.config = {
       ...createDefaultOpenPlannerConfig(),
       ...config,
     };
-  }
-
-  private buildUrl(path: string): string {
-    const base = this.config.baseUrl.replace(/\/$/, "");
-    return `${base}${path}`;
-  }
-
-  private async post<T>(path: string, body: Record<string, unknown>): Promise<T> {
-    const response = await fetch(this.buildUrl(path), {
-      method: "POST",
-      headers: buildHeaders(this.config.apiKey),
-      body: JSON.stringify(body),
+    this.client = createOpenPlannerClient({
+      endpoint: this.config.baseUrl,
+      apiKey: this.config.apiKey,
+      fetch: this.config.fetch,
     });
-
-    if (!response.ok) {
-      const errorBody = await response.text();
-      throw new Error(`OpenPlanner request failed: ${response.status} ${errorBody}`);
-    }
-
-    return response.json() as Promise<T>;
   }
 
-  async search(query: string, options: OpenPlannerSearchOptions = {}): Promise<OpenPlannerSearchResult[]> {
-    const response = await this.post<SearchResponse>("/v1/search/fts", {
+  async search(
+    query: string,
+    options: OpenPlannerSearchOptions = {},
+  ): Promise<OpenPlannerSearchResult[]> {
+    const response = (await this.client.searchFts({
       q: query,
       limit: options.limit ?? 5,
       session: options.session,
-    });
-    return response.results;
+    })) as SearchResponse;
+
+    if (Array.isArray(response.results)) {
+      return response.results;
+    }
+
+    if (Array.isArray(response.rows)) {
+      return response.rows.map(toSearchResult);
+    }
+
+    return [];
   }
 
-  async searchFts(query: string, options: OpenPlannerSearchOptions = {}): Promise<OpenPlannerSearchResult[]> {
+  async searchFts(
+    query: string,
+    options: OpenPlannerSearchOptions = {},
+  ): Promise<OpenPlannerSearchResult[]> {
     return this.search(query, options);
   }
 
   async emitMemoryCreated(memory: Memory): Promise<void> {
     const event = buildEvent(memory);
-    await this.post<EventIngestResponse>("/v1/events", {
-      events: [event],
-    });
+    await this.client.indexEvents([event]);
   }
 
   async isAvailable(): Promise<boolean> {
     try {
-      const response = await fetch(this.buildUrl("/health"), {
-        method: "GET",
-        headers: buildHeaders(this.config.apiKey),
-        signal: AbortSignal.timeout(5000),
-      });
-      return response.ok;
+      await this.client.health();
+      return true;
     } catch {
       return false;
     }
