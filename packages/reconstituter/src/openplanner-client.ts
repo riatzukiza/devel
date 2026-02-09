@@ -8,11 +8,16 @@
  *   POST /v1/search/fts - Full-text search
  *
  * Environment:
- *   OPENPLANNER_URL    - OpenPlanner server URL (default: http://localhost:7777)
+ *   OPENPLANNER_API_BASE_URL / OPENPLANNER_URL - OpenPlanner server URL
+ *   (default: http://127.0.0.1:8788/api/openplanner)
  *   OPENPLANNER_API_KEY - Bearer token for authentication
  */
 
 import crypto from "node:crypto";
+import {
+  createOpenPlannerClient,
+  defaultOpenPlannerConfig,
+} from "@promethean-os/openplanner-cljs-client";
 
 // ============================================================================
 // Types (mirroring OpenPlanner schema)
@@ -79,9 +84,10 @@ export interface OpenPlannerEnv {
 }
 
 export function openPlannerEnv(): OpenPlannerEnv {
+  const config = defaultOpenPlannerConfig();
   return {
-    OPENPLANNER_URL: process.env.OPENPLANNER_URL ?? "http://localhost:7777",
-    OPENPLANNER_API_KEY: process.env.OPENPLANNER_API_KEY,
+    OPENPLANNER_URL: config.endpoint,
+    OPENPLANNER_API_KEY: config.apiKey ?? undefined,
   };
 }
 
@@ -93,31 +99,12 @@ function sha256(s: string): string {
   return crypto.createHash("sha256").update(s).digest("hex");
 }
 
-async function request<T>(
-  url: string,
-  options: RequestInit = {}
-): Promise<T> {
+function openPlannerClient() {
   const env = openPlannerEnv();
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    ...((options.headers as Record<string, string>) ?? {}),
-  };
-
-  if (env.OPENPLANNER_API_KEY) {
-    headers["Authorization"] = `Bearer ${env.OPENPLANNER_API_KEY}`;
-  }
-
-  const response = await fetch(url, {
-    ...options,
-    headers,
+  return createOpenPlannerClient({
+    endpoint: env.OPENPLANNER_URL,
+    apiKey: env.OPENPLANNER_API_KEY,
   });
-
-  if (!response.ok) {
-    const text = await response.text();
-    throw new Error(`OpenPlanner request failed: ${response.status} ${text}`);
-  }
-
-  return response.json() as Promise<T>;
 }
 
 // ============================================================================
@@ -131,14 +118,8 @@ async function request<T>(
  * @throws Error on non-2xx response from OpenPlanner
  */
 export async function indexEvents(events: EventEnvelopeV1[]): Promise<void> {
-  const env = openPlannerEnv();
-  const url = `${env.OPENPLANNER_URL}/v1/events`;
-
-  const body: EventIngestRequest = { events };
-  await request(url, {
-    method: "POST",
-    body: JSON.stringify(body),
-  });
+  const client = openPlannerClient();
+  await client.indexEvents(events);
 }
 
 /**
@@ -205,21 +186,52 @@ export async function searchFts(
     session?: string;
   } = {}
 ): Promise<FtsSearchResult[]> {
-  const env = openPlannerEnv();
-  const url = `${env.OPENPLANNER_URL}/v1/search/fts`;
-
+  const client = openPlannerClient();
   const body: FtsSearchRequest = {
     q: query,
     limit: options.limit ?? 10,
     session: options.session,
   };
+  const response = await client.searchFts(body);
+  if (typeof response !== "object" || response === null) {
+    return [];
+  }
 
-  const response = await request<FtsSearchResponse>(url, {
-    method: "POST",
-    body: JSON.stringify(body),
-  });
+  if ("results" in response) {
+    const results = (response as { results?: unknown }).results;
+    if (Array.isArray(results)) {
+      return results as FtsSearchResult[];
+    }
+  }
 
-  return response.results;
+  if ("rows" in response) {
+    const rows = (response as { rows?: unknown }).rows;
+    if (!Array.isArray(rows)) {
+      return [];
+    }
+    return rows.map((row) => {
+      const rowObj = typeof row === "object" && row !== null ? (row as Record<string, unknown>) : {};
+      return {
+      id: String(rowObj.id ?? ""),
+      score: typeof rowObj.score === "number" ? rowObj.score : 0,
+      text: typeof rowObj.snippet === "string" ? rowObj.snippet : undefined,
+      source: typeof rowObj.source === "string" ? rowObj.source : undefined,
+      kind: typeof rowObj.kind === "string" ? rowObj.kind : undefined,
+      ts: typeof rowObj.ts === "string" ? rowObj.ts : undefined,
+      source_ref: {
+        project: typeof rowObj.project === "string" ? rowObj.project : undefined,
+        session: typeof rowObj.session === "string" ? rowObj.session : undefined,
+        message: typeof rowObj.message === "string" ? rowObj.message : undefined,
+      },
+      meta: {
+        role: rowObj.role,
+        model: rowObj.model,
+      },
+    };
+    });
+  }
+
+  return [];
 }
 
 /**

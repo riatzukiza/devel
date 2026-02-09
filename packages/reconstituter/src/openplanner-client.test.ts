@@ -30,7 +30,7 @@ test("openPlannerEnv returns defaults when env vars not set", (t) => {
   delete process.env.OPENPLANNER_API_KEY;
 
   const env = openPlannerEnv();
-  t.is(env.OPENPLANNER_URL, "http://localhost:7777");
+  t.is(env.OPENPLANNER_URL, "http://127.0.0.1:8788/api/openplanner");
   t.is(env.OPENPLANNER_API_KEY, undefined);
 });
 
@@ -130,7 +130,7 @@ test("indexEvents posts events successfully (200)", async (t) => {
 
   await indexEvents(events);
 
-  t.is(capturedUrl, "http://localhost:7777/v1/events");
+  t.is(capturedUrl, "http://127.0.0.1:8788/api/openplanner/v1/events");
   t.deepEqual(capturedBody, { events });
   t.is(capturedHeaders["Content-Type"], "application/json");
   t.is(capturedHeaders["Authorization"], undefined as unknown as string); // No API key set
@@ -147,9 +147,14 @@ test("indexEvents includes Bearer token when API key set", async (t) => {
   let capturedHeaders: Record<string, string> = {};
 
   mockFetch = async (_url: URL | RequestInfo, init?: RequestInit): Promise<Response> => {
-    if (init?.headers) {
-      const headers = init.headers as Record<string, string>;
-      capturedHeaders = { ...headers };
+    if (init?.headers instanceof Headers) {
+      const out: Record<string, string> = {};
+      init.headers.forEach((value, key) => {
+        out[key] = value;
+      });
+      capturedHeaders = out;
+    } else if (init?.headers && typeof init.headers === "object") {
+      capturedHeaders = { ...(init.headers as Record<string, string>) };
     }
     return new Response("{}", { status: 200 }); // Return empty JSON object
   };
@@ -165,7 +170,7 @@ test("indexEvents includes Bearer token when API key set", async (t) => {
     kind: "message",
   }]);
 
-  t.is(capturedHeaders["Authorization"], "Bearer secret-token");
+  t.is(capturedHeaders["Authorization"] ?? capturedHeaders["authorization"], "Bearer secret-token");
 
   // Cleanup
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -243,7 +248,7 @@ test("searchFts returns results successfully", async (t) => {
 
   mockFetch = async (url: URL | RequestInfo): Promise<Response> => {
     const parsedUrl = new URL(url.toString());
-    t.is(parsedUrl.pathname, "/v1/search/fts");
+    t.is(parsedUrl.pathname, "/api/openplanner/v1/search/fts");
 
     return new Response(JSON.stringify({ results: mockResults }), {
       status: 200,
