@@ -50,23 +50,25 @@ test.after(() => {
 
 test("createDefaultOpenPlannerConfig returns correct defaults", (t) => {
   const config = createDefaultOpenPlannerConfig();
-  t.is(config.baseUrl, "http://127.0.0.1:7777");
+  t.is(config.baseUrl, "http://127.0.0.1:8788/api/openplanner");
   t.is(config.apiKey, undefined);
 });
 
 test("createDefaultOpenPlannerConfig reads environment variables", (t) => {
   const originalUrl = process.env.OPENPLANNER_URL;
+  const originalApiBase = process.env.OPENPLANNER_API_BASE_URL;
   const originalKey = process.env.OPENPLANNER_API_KEY;
 
   try {
-    process.env.OPENPLANNER_URL = "http://test:7777";
+    process.env.OPENPLANNER_API_BASE_URL = "http://test:8788/api/openplanner";
     process.env.OPENPLANNER_API_KEY = "test-key";
 
     const config = createDefaultOpenPlannerConfig();
-    t.is(config.baseUrl, "http://test:7777");
+    t.is(config.baseUrl, "http://test:8788/api/openplanner");
     t.is(config.apiKey, "test-key");
   } finally {
     process.env.OPENPLANNER_URL = originalUrl;
+    process.env.OPENPLANNER_API_BASE_URL = originalApiBase;
     process.env.OPENPLANNER_API_KEY = originalKey;
   }
 });
@@ -196,7 +198,7 @@ test("OpenPlannerClient.search throws on HTTP error", async (t) => {
   };
 
   const error = await t.throwsAsync(() => client.search("test"));
-  t.regex(error?.message ?? "", /OpenPlanner request failed: 500/);
+  t.regex(error?.message ?? "", /OpenPlanner request failed \(500\):/);
 });
 
 test("OpenPlannerClient.emitMemoryCreated calls correct endpoint", async (t) => {
@@ -239,8 +241,9 @@ test("OpenPlannerClient.emitMemoryCreated calls correct endpoint", async (t) => 
   t.is(event.kind, "memory.created");
   t.is(event.source, "cephalon-ts");
   t.is(event.source_ref.session, "conv-1");
-  t.is(event.source_ref.memory, "mem-123");
-  t.is(event.source_ref.event, "evt-456");
+  t.is(event.source_ref.message, "mem-123");
+  t.is(event.extra.memory_id, "mem-123");
+  t.is(event.extra.event_id, "evt-456");
   t.is(event.meta.cephalon_id, "duck");
   t.is(event.meta.memory_kind, "message");
   t.is(event.meta.schema_version, 1);
@@ -271,7 +274,7 @@ test("OpenPlannerClient.emitMemoryCreated throws on HTTP error", async (t) => {
   };
 
   const error = await t.throwsAsync(() => client.emitMemoryCreated(memory));
-  t.regex(error?.message ?? "", /OpenPlanner request failed: 500/);
+  t.regex(error?.message ?? "", /OpenPlanner request failed \(500\):/);
 });
 
 test("OpenPlannerClient.emitMemoryCreated throws on network error", async (t) => {

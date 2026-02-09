@@ -113,3 +113,6 @@
 	path = orgs/open-hax/museeks
 	url = https://github.com/open-hax/museeks.git
 	branch = device/stealth
+[submodule "orgs/anomalyco/opencode"]
+	path = orgs/anomalyco/opencode
+	url = git@github.com:anomalyco/opencode.git
