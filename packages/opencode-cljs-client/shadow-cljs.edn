@@ -1,0 +1,20 @@
+{:source-paths ["src" "test"]
+
+ :dependencies []
+
+ :builds
+ {:lib
+  {:target :esm
+   :output-dir "dist"
+   :modules {:index {:entries [promethean.opencode.client]
+                     :exports {:createOpencodeClient promethean.opencode.client/create-opencode-client
+                               :flattenForEmbedding promethean.opencode.client/flatten-for-embedding
+                               :extractPathsLoose promethean.opencode.client/extract-paths-loose
+                               :opencodeMessageToOllamaParts promethean.opencode.client/opencode-message-to-ollama-parts}}}
+   :compiler-options {:output-feature-set :es-next}}
+
+  :test
+  {:target :node-script
+   :output-to "target/test.cjs"
+   :main promethean.opencode.client-test/-main
+   :compiler-options {:output-feature-set :es-next}}}}
