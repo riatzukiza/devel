@@ -36,3 +36,8 @@ Create or update OpenCode plugins with correct packaging, runtime behavior, and 
 ## References
 - Plugin guidance: `.opencode/skills/opencode-plugins.md`
 - OpenCode plugin docs: https://opencode.ai/docs/plugins/
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[opencode-plugins](../opencode-plugins/SKILL.md)**
