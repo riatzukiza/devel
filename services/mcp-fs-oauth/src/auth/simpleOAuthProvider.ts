@@ -5,7 +5,7 @@ import type { AuthInfo } from "@modelcontextprotocol/sdk/server/auth/types.js";
 import { InvalidGrantError, InvalidScopeError, InvalidTokenError } from "@modelcontextprotocol/sdk/server/auth/errors.js";
 
 import { InMemoryClientsStore, type ClientInfo } from "./inMemoryClients.js";
-import { FilePersistence } from "./filePersistence.js";
+import type { Persistence, SerializableCode, SerializableRefreshTokenReuse, SerializableToken, SerializableTokenResponse } from "./types.js";
 
 type PendingAuth = {
   rid: string;
@@ -58,6 +58,7 @@ type AccessToken = {
 type ProviderConfig = {
   accessTtlSeconds: number;
   refreshTtlSeconds: number;
+  refreshReuseWindowSeconds: number;
 };
 
 export class SimpleOAuthProvider implements OAuthServerProvider {
@@ -68,7 +69,7 @@ export class SimpleOAuthProvider implements OAuthServerProvider {
   private readonly accessTokens = new Map<string, AccessToken>();
   private readonly refreshTokens = new Map<string, RefreshToken>();
   private readonly config: ProviderConfig;
-  private readonly persistence?: FilePersistence;
+  private readonly persistence?: Persistence;
 
   constructor(
     private readonly uiBaseUrl: URL,
@@ -76,95 +77,63 @@ export class SimpleOAuthProvider implements OAuthServerProvider {
     bootstrapClients: ClientInfo[] = [],
     accessTtlSeconds = 60 * 60,
     refreshTtlSeconds = 30 * 24 * 60 * 60,
-    persistencePath?: string
+    persistence?: Persistence
   ) {
-    this.clientsStore = new InMemoryClientsStore(bootstrapClients);
-    this.config = { accessTtlSeconds, refreshTtlSeconds };
-    
-    if (persistencePath) {
-      this.persistence = new FilePersistence(persistencePath);
-      console.log(`[oauth] File persistence enabled at: ${persistencePath}`);
-    }
+    this.clientsStore = new InMemoryClientsStore(bootstrapClients, persistence);
+    this.config = { accessTtlSeconds, refreshTtlSeconds, refreshReuseWindowSeconds: 60 };
+    this.persistence = persistence;
   }
 
-  stop(): void {
+  async stop(): Promise<void> {
     if (this.persistence) {
-      this.persistence.stop();
+      await this.persistence.stop();
     }
   }
 
   // ---- Persistence helper methods ----
 
-  private serializeCode(code: AuthCode): {
-    code: string;
-    clientId: string;
-    redirectUri: string;
-    codeChallenge: string;
-    scopes: string[];
-    resource?: string;
-    subject: string;
-    extra?: Record<string, unknown>;
-    expiresAt: number;
-  } {
+  private serializeCode(code: AuthCode): SerializableCode {
     return {
       ...code,
       resource: code.resource?.toString(),
     };
   }
 
-  private deserializeCode(data: {
-    code: string;
-    clientId: string;
-    redirectUri: string;
-    codeChallenge: string;
-    scopes: string[];
-    resource?: string;
-    subject: string;
-    extra?: Record<string, unknown>;
-    expiresAt: number;
-  }): AuthCode {
+  private deserializeCode(data: SerializableCode): AuthCode {
     return {
       ...data,
       resource: data.resource ? new URL(data.resource) : undefined,
     };
   }
 
-  private serializeToken(token: AccessToken | RefreshToken): {
-    token: string;
-    clientId: string;
-    scopes: string[];
-    resource?: string;
-    subject: string;
-    extra?: Record<string, unknown>;
-    expiresAt: number;
-  } {
+  private serializeToken(token: AccessToken | RefreshToken): SerializableToken {
     return {
       ...token,
       resource: token.resource?.toString(),
     };
   }
 
-  private getPersistedCode(code: string): AuthCode | undefined {
+  private async getPersistedCode(code: string): Promise<AuthCode | undefined> {
     if (!this.persistence) return undefined;
-    const data = this.persistence.getCode(code);
+    const data = await this.persistence.getCode(code);
     return data ? this.deserializeCode(data) : undefined;
   }
 
-  private setPersistedCode(code: string, value: AuthCode): void {
+  private async setPersistedCode(code: string, value: AuthCode): Promise<void> {
     if (this.persistence) {
-      this.persistence.setCode(code, this.serializeCode(value));
+      await this.persistence.setCode(code, this.serializeCode(value));
     }
   }
 
-  private deletePersistedCode(code: string): void {
+  private async deletePersistedCode(code: string): Promise<void> {
     if (this.persistence) {
-      this.persistence.deleteCode(code);
+      await this.persistence.deleteCode(code);
     }
   }
 
-  private getPersistedAccessToken(token: string): AccessToken | undefined {
+  private async getPersistedAccessToken(token: string): Promise<AccessToken | undefined> {
     if (!this.persistence) return undefined;
-    const data = this.persistence.getAccessToken(token);
+    const data = await this.persistence.getAccessToken(token);
     if (!data) return undefined;
     return {
       ...data,
@@ -172,21 +141,21 @@ export class SimpleOAuthProvider implements OAuthServerProvider {
     };
   }
 
-  private setPersistedAccessToken(token: string, value: AccessToken): void {
+  private async setPersistedAccessToken(token: string, value: AccessToken): Promise<void> {
     if (this.persistence) {
-      this.persistence.setAccessToken(token, this.serializeToken(value));
+      await this.persistence.setAccessToken(token, this.serializeToken(value));
     }
   }
 
-  private deletePersistedAccessToken(token: string): void {
+  private async deletePersistedAccessToken(token: string): Promise<void> {
     if (this.persistence) {
-      this.persistence.deleteAccessToken(token);
+      await this.persistence.deleteAccessToken(token);
     }
   }
 
-  private getPersistedRefreshToken(token: string): RefreshToken | undefined {
+  private async getPersistedRefreshToken(token: string): Promise<RefreshToken | undefined> {
     if (!this.persistence) return undefined;
-    const data = this.persistence.getRefreshToken(token);
+    const data = await this.persistence.getRefreshToken(token);
     if (!data) return undefined;
     return {
       ...data,
@@ -194,22 +163,93 @@ export class SimpleOAuthProvider implements OAuthServerProvider {
     };
   }
 
-  private setPersistedRefreshToken(token: string, value: RefreshToken): void {
+  private async setPersistedRefreshToken(token: string, value: RefreshToken): Promise<void> {
     if (this.persistence) {
-      this.persistence.setRefreshToken(token, this.serializeToken(value));
+      await this.persistence.setRefreshToken(token, this.serializeToken(value));
     }
   }
 
-  private deletePersistedRefreshToken(token: string): void {
+  private async deletePersistedRefreshToken(token: string): Promise<void> {
     if (this.persistence) {
-      this.persistence.deleteRefreshToken(token);
+      await this.persistence.deleteRefreshToken(token);
     }
+  }
+
+  private async consumePersistedRefreshToken(token: string): Promise<RefreshToken | undefined> {
+    if (!this.persistence) return undefined;
+    const data = await this.persistence.consumeRefreshToken(token);
+    if (!data) return undefined;
+    return {
+      ...data,
+      resource: data.resource ? new URL(data.resource) : undefined,
+    };
+  }
+
+  private async getPersistedRefreshTokenReuse(token: string): Promise<SerializableRefreshTokenReuse | undefined> {
+    if (!this.persistence) return undefined;
+    return this.persistence.getRefreshTokenReuse(token);
+  }
+
+  private async setPersistedRefreshTokenReuse(token: string, value: SerializableRefreshTokenReuse): Promise<void> {
+    if (this.persistence) {
+      await this.persistence.setRefreshTokenReuse(token, value);
+    }
+  }
+
+  private toScopeKey(scopes: string[]): string {
+    return [...scopes].sort().join(" ");
+  }
+
+  private toResourceString(resource: URL | undefined): string | undefined {
+    return resource ? resource.toString() : undefined;
+  }
+
+  private buildTokenResponse(tokens: OAuthTokens): SerializableTokenResponse {
+    return {
+      access_token: tokens.access_token,
+      token_type: tokens.token_type ?? "bearer",
+      expires_in: tokens.expires_in ?? this.config.accessTtlSeconds,
+      refresh_token: tokens.refresh_token,
+      scope: tokens.scope ?? "",
+    };
+  }
+
+  private async maybeGetRefreshReuse(
+    refreshToken: string,
+    clientId: string,
+    scopeKey: string | undefined,
+    resource?: URL,
+  ): Promise<OAuthTokens | undefined> {
+    const reuse = await this.getPersistedRefreshTokenReuse(refreshToken);
+    if (!reuse) {
+      return undefined;
+    }
+    const now = Math.floor(Date.now() / 1000);
+    if (reuse.expiresAt <= now) {
+      return undefined;
+    }
+    if (reuse.clientId !== clientId) {
+      return undefined;
+    }
+    if (scopeKey && reuse.scopeKey !== scopeKey) {
+      return undefined;
+    }
+    if ((reuse.resource ?? undefined) !== this.toResourceString(resource)) {
+      return undefined;
+    }
+    return {
+      access_token: reuse.tokens.access_token,
+      token_type: reuse.tokens.token_type,
+      expires_in: reuse.tokens.expires_in,
+      refresh_token: reuse.tokens.refresh_token,
+      scope: reuse.tokens.scope,
+    };
   }
 
   /** Cleanup expired entries */
-  cleanup(): void {
+  async cleanup(): Promise<void> {
     if (this.persistence) {
-      this.persistence.cleanup();
+      await this.persistence.cleanup();
     }
   }
 
@@ -241,7 +281,7 @@ export class SimpleOAuthProvider implements OAuthServerProvider {
   }
 
   async challengeForAuthorizationCode(_client: OAuthClientInformationFull, authorizationCode: string): Promise<string> {
-    const rec = this.codes.get(authorizationCode) || this.getPersistedCode(authorizationCode);
+    const rec = this.codes.get(authorizationCode) || await this.getPersistedCode(authorizationCode);
     if (!rec) {
       console.error("[challengeForAuthCode] Code not found:", authorizationCode.substring(0, 10) + "...");
       throw new InvalidGrantError("Authorization code not found");
@@ -262,7 +302,7 @@ export class SimpleOAuthProvider implements OAuthServerProvider {
     redirectUri?: string,
     resource?: URL
   ): Promise<OAuthTokens> {
-    const rec = this.codes.get(authorizationCode) || this.getPersistedCode(authorizationCode);
+    const rec = this.codes.get(authorizationCode) || await this.getPersistedCode(authorizationCode);
     if (!rec) {
       console.error("exchangeAuthorizationCode: code not found", { authorizationCode });
       throw new InvalidGrantError("Authorization code not found");
@@ -317,11 +357,11 @@ export class SimpleOAuthProvider implements OAuthServerProvider {
 
     // one-time use
     this.codes.delete(authorizationCode);
-    this.deletePersistedCode(authorizationCode);
+    await this.deletePersistedCode(authorizationCode);
 
     // Ensure 'mcp' scope is always included for MCP server access
     const finalScopes = rec.scopes.includes("mcp") ? rec.scopes : [...rec.scopes, "mcp"];
-    const tokens = this.issueTokens(rec.clientId, finalScopes, rec.resource, rec.subject, rec.extra);
+    const tokens = await this.issueTokens(rec.clientId, finalScopes, rec.resource, rec.subject, rec.extra);
     return tokens;
   }
 
@@ -338,21 +378,35 @@ export class SimpleOAuthProvider implements OAuthServerProvider {
     scopes?: string[],
     resource?: URL
   ): Promise<OAuthTokens> {
-    const rec = this.refreshTokens.get(refreshToken) || this.getPersistedRefreshToken(refreshToken);
-    if (!rec) throw new InvalidGrantError("Refresh token not found");
+    const requestedScopes = (scopes && scopes.length > 0) ? scopes : undefined;
+    const requestedScopeKey = requestedScopes ? this.toScopeKey(requestedScopes) : undefined;
+    const preConsumedReuse = await this.maybeGetRefreshReuse(refreshToken, client.client_id, requestedScopeKey, resource);
+    if (preConsumedReuse) {
+      return preConsumedReuse;
+    }
+
+    const rec = this.refreshTokens.get(refreshToken) || await this.getPersistedRefreshToken(refreshToken);
+    if (!rec) {
+      const replay = await this.maybeGetRefreshReuse(refreshToken, client.client_id, requestedScopeKey, resource);
+      if (replay) {
+        return replay;
+      }
+      throw new InvalidGrantError("Refresh token not found");
+    }
     if (rec.clientId !== client.client_id) throw new InvalidGrantError("Client ID mismatch");
     if (resource && rec.resource && resource.toString() !== rec.resource.toString()) throw new InvalidGrantError("Resource mismatch");
 
     const now = Math.floor(Date.now() / 1000);
     if (rec.expiresAt <= now) {
       this.refreshTokens.delete(refreshToken);
-      this.deletePersistedRefreshToken(refreshToken);
+      await this.deletePersistedRefreshToken(refreshToken);
       throw new InvalidGrantError("Refresh token expired");
     }
 
-    const finalScopes = (scopes && scopes.length > 0) ? scopes : rec.scopes;
+    const finalScopes = requestedScopes ?? rec.scopes;
     // Ensure 'mcp' scope is always included for MCP server access
     const scopesWithMcp = finalScopes.includes("mcp") ? finalScopes : [...finalScopes, "mcp"];
+    const finalScopeKey = this.toScopeKey(finalScopes);
     
     // No scope escalation (check against original scopes, not the one with mcp added)
     for (const s of finalScopes) {
@@ -361,20 +415,37 @@ export class SimpleOAuthProvider implements OAuthServerProvider {
 
     // rotate refresh token
     this.refreshTokens.delete(refreshToken);
-    this.deletePersistedRefreshToken(refreshToken);
+    const consumed = this.persistence
+      ? await this.consumePersistedRefreshToken(refreshToken)
+      : rec;
+    if (!consumed) {
+      const replay = await this.maybeGetRefreshReuse(refreshToken, client.client_id, finalScopeKey, resource);
+      if (replay) {
+        return replay;
+      }
+      throw new InvalidGrantError("Refresh token not found");
+    }
 
-    const tokens = this.issueTokens(rec.clientId, scopesWithMcp, rec.resource, rec.subject, rec.extra);
+    const tokens = await this.issueTokens(rec.clientId, scopesWithMcp, rec.resource, rec.subject, rec.extra);
+    await this.setPersistedRefreshTokenReuse(refreshToken, {
+      oldRefreshToken: refreshToken,
+      clientId: rec.clientId,
+      resource: this.toResourceString(resource ?? rec.resource),
+      scopeKey: finalScopeKey,
+      tokens: this.buildTokenResponse(tokens),
+      expiresAt: now + this.config.refreshReuseWindowSeconds,
+    });
     return tokens;
   }
 
   async verifyAccessToken(token: string): Promise<AuthInfo> {
-    const rec = this.accessTokens.get(token) || this.getPersistedAccessToken(token);
+    const rec = this.accessTokens.get(token) || await this.getPersistedAccessToken(token);
     if (!rec) throw new InvalidTokenError("Access token not found");
 
     const now = Math.floor(Date.now() / 1000);
     if (rec.expiresAt <= now) {
       this.accessTokens.delete(token);
-      this.deletePersistedAccessToken(token);
+      await this.deletePersistedAccessToken(token);
       throw new InvalidTokenError("Access token expired");
     }
 
@@ -396,17 +467,17 @@ export class SimpleOAuthProvider implements OAuthServerProvider {
     if (!token) return;
 
     if (!hint || hint === "access_token") {
-      const at = this.accessTokens.get(token);
+      const at = this.accessTokens.get(token) || await this.getPersistedAccessToken(token);
       if (at && at.clientId === client.client_id) {
         this.accessTokens.delete(token);
-        this.deletePersistedAccessToken(token);
+        await this.deletePersistedAccessToken(token);
       }
     }
     if (!hint || hint === "refresh_token") {
-      const rt = this.refreshTokens.get(token);
+      const rt = this.refreshTokens.get(token) || await this.getPersistedRefreshToken(token);
       if (rt && rt.clientId === client.client_id) {
         this.refreshTokens.delete(token);
-        this.deletePersistedRefreshToken(token);
+        await this.deletePersistedRefreshToken(token);
       }
     }
   }
@@ -425,7 +496,7 @@ export class SimpleOAuthProvider implements OAuthServerProvider {
   }
 
   /** Approve a pending request: generates auth code and returns redirect URL. */
-  approve(rid: string): string {
+  async approve(rid: string): Promise<string> {
     const rec = this.pending.get(rid);
     if (!rec) {
       console.error("[approve] rid not found:", rid);
@@ -482,7 +553,7 @@ export class SimpleOAuthProvider implements OAuthServerProvider {
     });
     
     // Also persist to disk if persistence is enabled
-    this.setPersistedCode(code, {
+    await this.setPersistedCode(code, {
       code,
       clientId: rec.clientId,
       redirectUri: rec.redirectUri,
@@ -494,11 +565,6 @@ export class SimpleOAuthProvider implements OAuthServerProvider {
       expiresAt: now + 5 * 60,
     });
     
-    // Force immediate flush to disk
-    if (this.persistence) {
-      this.persistence.flush();
-    }
-
     const redirect = new URL(rec.redirectUri);
     redirect.searchParams.set("code", code);
     if (rec.state) redirect.searchParams.set("state", rec.state);
@@ -524,13 +590,13 @@ export class SimpleOAuthProvider implements OAuthServerProvider {
     return this.autoApprove;
   }
 
-  private issueTokens(
+  private async issueTokens(
     clientId: string,
     scopes: string[],
     resource: URL | undefined,
     subject: string,
     extra?: Record<string, unknown>
-  ): OAuthTokens {
+  ): Promise<OAuthTokens> {
     const now = Math.floor(Date.now() / 1000);
 
     const access = randomToken();
@@ -560,14 +626,9 @@ export class SimpleOAuthProvider implements OAuthServerProvider {
     this.refreshTokens.set(refresh, refreshRec);
 
     // Also persist to disk if persistence is enabled
-    this.setPersistedAccessToken(access, accessRec);
-    this.setPersistedRefreshToken(refresh, refreshRec);
+    await this.setPersistedAccessToken(access, accessRec);
+    await this.setPersistedRefreshToken(refresh, refreshRec);
     
-    // Force immediate flush to disk
-    if (this.persistence) {
-      this.persistence.flush();
-    }
-
     const out: OAuthTokens = {
       access_token: access,
       token_type: "bearer",

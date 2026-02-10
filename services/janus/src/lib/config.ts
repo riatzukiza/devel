@@ -15,6 +15,17 @@ export type GatewayConfig = {
   oauthEnabled: boolean;
   oauthIssuer: string;
   oauthAudience: string;
+  oauthTokenStrategy?: "jwt" | "opaque";
+  oauthOpaqueVerifier?: "redis" | "introspection";
+  oauthOpaqueIntrospectionUrl?: string;
+  oauthOpaqueSharedSecret?: string | null;
+  oauthRequiredScopes?: string[];
+  oauthRedisUrl?: string;
+  oauthRedisHost?: string;
+  oauthRedisPort?: number;
+  oauthRedisPrefix?: string;
+  oauthOpaqueRedisGet?: (key: string) => Promise<string | null>;
+  oauthOpaqueRedisDel?: (key: string) => Promise<number>;
   allowedHosts: string[];
 };
 
@@ -61,6 +72,20 @@ export function loadConfig(): GatewayConfig {
   const oauthEnabled = mustGet("OAUTH_ENABLED", "false").toLowerCase() === "true";
   const oauthIssuer = mustGet("OAUTH_ISSUER", "http://localhost:3001");
   const oauthAudience = mustGet("OAUTH_AUDIENCE", "api-gateway");
+  const oauthTokenStrategyRaw = mustGet("OAUTH_TOKEN_STRATEGY", "opaque").toLowerCase();
+  const oauthTokenStrategy = oauthTokenStrategyRaw === "jwt" ? "jwt" : "opaque";
+  const oauthOpaqueVerifierRaw = mustGet("OAUTH_OPAQUE_VERIFIER", "redis").toLowerCase();
+  const oauthOpaqueVerifier = oauthOpaqueVerifierRaw === "introspection" ? "introspection" : "redis";
+  const oauthOpaqueIntrospectionUrl = mustGet("OAUTH_OPAQUE_INTROSPECTION_URL", `${mcpUrl}/internal/oauth/introspect`);
+  const oauthOpaqueSharedSecret = process.env.OAUTH_OPAQUE_SHARED_SECRET ?? mcpInternalSharedSecret;
+  const oauthRequiredScopes = (process.env.OAUTH_REQUIRED_SCOPES ?? "mcp")
+    .split(",")
+    .map((scope) => scope.trim())
+    .filter((scope) => scope.length > 0);
+  const oauthRedisUrl = process.env.OAUTH_REDIS_URL ?? process.env.REDIS_URL;
+  const oauthRedisHost = mustGet("OAUTH_REDIS_HOST", "127.0.0.1");
+  const oauthRedisPort = Number.parseInt(mustGet("OAUTH_REDIS_PORT", "6379"), 10);
+  const oauthRedisPrefix = mustGet("OAUTH_REDIS_PREFIX", "oauth");
   const allowedHostsEnv = process.env.ALLOWED_HOSTS ?? "";
   const allowedHosts = allowedHostsEnv
     ? allowedHostsEnv.split(",").map(h => h.trim())
@@ -81,6 +106,15 @@ export function loadConfig(): GatewayConfig {
     oauthEnabled,
     oauthIssuer,
     oauthAudience,
+    oauthTokenStrategy,
+    oauthOpaqueVerifier,
+    oauthOpaqueIntrospectionUrl,
+    oauthOpaqueSharedSecret,
+    oauthRequiredScopes,
+    oauthRedisUrl,
+    oauthRedisHost,
+    oauthRedisPort,
+    oauthRedisPrefix,
     allowedHosts
   };
 }
