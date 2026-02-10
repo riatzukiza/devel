@@ -61,7 +61,7 @@ export function installLoginUi(app: Express, oauth: SimpleOAuthProvider, cfg: Lo
     oauth.setSubject(rid, "local:owner", { provider: "password" });
 
     if (oauth.shouldAutoApprove()) {
-      return res.redirect(oauth.approve(rid));
+      return res.redirect(await oauth.approve(rid));
     }
     return res.redirect(`/consent?rid=${encodeURIComponent(rid)}`);
   });
@@ -137,7 +137,7 @@ function installGithubRoutes(app: Express, oauth: SimpleOAuthProvider, cfg: Logi
     oauth.setSubject(rid, `github:${user.id}`, { provider: "github", login: user.login });
 
     if (oauth.shouldAutoApprove()) {
-      const redirectUrl = oauth.approve(rid);
+      const redirectUrl = await oauth.approve(rid);
       console.log("[GitHub Callback] Approving and redirecting to:", redirectUrl.substring(0, 80) + "...");
       res.redirect(redirectUrl);
       return;
@@ -213,7 +213,7 @@ function installGoogleRoutes(app: Express, oauth: SimpleOAuthProvider, cfg: Logi
       oauth.setSubject(rid, `google:${user.sub}`, { provider: "google", email: user.email, name: user.name });
 
       if (oauth.shouldAutoApprove()) {
-        return res.redirect(oauth.approve(rid));
+        return res.redirect(await oauth.approve(rid));
       }
       return res.redirect(`/consent?rid=${encodeURIComponent(rid)}`);
     } catch (e) {
@@ -272,7 +272,7 @@ function installConsentRoutes(app: Express, oauth: SimpleOAuthProvider): void {
     if (!rid) return res.status(400).send("Missing rid");
 
     if (action === "approve") {
-      const redirectUrl = oauth.approve(rid);
+      const redirectUrl = await oauth.approve(rid);
       return res.redirect(redirectUrl);
     }
     const redirectUrl = oauth.deny(rid, "access_denied", "User denied request");

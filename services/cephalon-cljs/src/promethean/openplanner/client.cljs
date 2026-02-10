@@ -1,9 +1,7 @@
-(ns promethean.openplanner.client)
+(ns promethean.openplanner.client
+  (:require ["@promethean-os/openplanner-cljs-client" :as openplanner]))
 
-(def ^:private default-openplanner-url "http://127.0.0.1:7777")
-
-(defn- trim-trailing-slash [s]
-  (.replace s #"/+$" ""))
+(def ^:private default-openplanner-url "http://127.0.0.1:8788/api/openplanner")
 
 (defn- env [k]
   (let [proc (when (exists? js/process) js/process)
@@ -15,28 +13,10 @@
   {:url (or (env "OPENPLANNER_URL") default-openplanner-url)
    :api-key (env "OPENPLANNER_API_KEY")})
 
-(defn- build-headers [api-key]
-  (let [headers #js {"Content-Type" "application/json"}]
-    (when (and api-key (not= api-key ""))
-      (aset headers "Authorization" (str "Bearer " api-key)))
-    headers))
-
-(defn- ->error [status body]
-  (js/Error. (str "OpenPlanner request failed: " status " " body)))
-
 (defn post-events!
   [{:keys [url api-key]} events]
-  (let [base-url (trim-trailing-slash (or url default-openplanner-url))
-        req-url (str base-url "/v1/events")
-        payload (clj->js {:events events})]
-    (-> (js/fetch req-url
-                  #js {:method "POST"
-                       :headers (build-headers api-key)
-                       :body (js/JSON.stringify payload)})
-        (.then
-          (fn [response]
-            (if (.-ok response)
-              response
-              (-> (.text response)
-                  (.then (fn [body]
-                           (js/Promise.reject (->error (.-status response) body)))))))))))
+  (let [opts #js {}
+        _ (when (and url (not= url "")) (aset opts "endpoint" url))
+        _ (when (and api-key (not= api-key "")) (aset opts "apiKey" api-key))
+        client ((.-createOpenPlannerClient openplanner) opts)]
+    (.indexEvents client (clj->js events))))

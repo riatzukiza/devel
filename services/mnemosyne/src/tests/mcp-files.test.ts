@@ -12,7 +12,7 @@ function parseSseData(text: string): any {
   return JSON.parse(match[1]);
 }
 
-test("mcp-files health endpoint responds", async () => {
+test("mnemosyne health endpoint responds", async () => {
   const app = createApp();
   const server = app.listen(0, "127.0.0.1");
   await once(server, "listening");
@@ -24,7 +24,7 @@ test("mcp-files health endpoint responds", async () => {
   try {
     const res = await fetch(`http://127.0.0.1:${address.port}/health`);
     assert.equal(res.status, 200);
-    assert.deepEqual(await res.json(), { ok: true, service: "mcp-files" });
+    assert.deepEqual(await res.json(), { ok: true, service: "mnemosyne" });
   } finally {
     server.close();
     await once(server, "close");

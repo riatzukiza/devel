@@ -6,7 +6,7 @@ import express from "express";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { promises as fs } from "node:fs";
-import { createMcpHttpRouter, createMcpServer } from "@workspace/mcp-runtime";
+import { createMcpHttpRouter, createMcpServer } from "@workspace/aether";
 
 // Types
 interface FsEntry {
@@ -20,15 +20,6 @@ class LocalFsBackend {
   public readonly name = "local" as const;
 
   constructor(private readonly rootAbs: string) {}
-
-  private resolvePath(userPath: string): string {
-    const cleaned = userPath.replace(/^\/+/, "");
-    const resolved = path.resolve(this.rootAbs, cleaned);
-    if (!resolved.startsWith(this.rootAbs)) {
-      throw new Error("Path escapes root");
-    }
-    return resolved;
-  }
 
   async list(dirPath: string): Promise<FsEntry[]> {
     const absPath = this.resolvePath(dirPath);
@@ -64,17 +55,34 @@ class LocalFsBackend {
     }
     return { path: targetPath };
   }
+
+  private resolvePath(userPath: string): string {
+    const cleaned = userPath.replace(/^\/+/, "");
+    const resolved = path.resolve(this.rootAbs, cleaned);
+    if (!resolved.startsWith(this.rootAbs)) {
+      throw new Error("Path escapes root");
+    }
+    return resolved;
+  }
+}
+
+type FsBackendName = "local" | "auto" | "github";
+
+interface GlobResult {
+  matches: FsEntry[];
+  truncated: boolean;
+  maxResults: number;
 }
 
 // Virtual file system
 class VirtualFs {
   constructor(private readonly backend: LocalFsBackend) {}
 
-  async list(dirPath: string): Promise<FsEntry[]> {
+  async list(dirPath: string, backendName?: string): Promise<FsEntry[]> {
     return this.backend.list(dirPath);
   }
 
-  async readFile(filePath: string): Promise<{ path: string; content: string }> {
+  async readFile(filePath: string, backendName?: string): Promise<{ path: string; content: string }> {
     return this.backend.readFile(filePath);
   }
 
@@ -82,7 +90,7 @@ class VirtualFs {
     return this.backend.writeFile(filePath, content);
   }
 
-  async deletePath(targetPath: string): Promise<{ path: string }> {
+  async deletePath(targetPath: string, message?: string, backendName?: string): Promise<{ path: string }> {
     return this.backend.deletePath(targetPath);
   }
 
@@ -103,7 +111,7 @@ class VirtualFs {
     return buildTree(dirPath, 1);
   }
 
-  async search(query: string, options: { path?: string; maxResults?: number } = {}): Promise<any[]> {
+  async search(query: string, options: { path?: string; glob?: string; maxResults?: number; includeHidden?: boolean } = {}, backendName?: FsBackendName): Promise<any[]> {
     const { path: searchPath = "", maxResults = 50 } = options;
     const results: any[] = [];
     const regex = new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
@@ -137,6 +145,100 @@ class VirtualFs {
 
     await searchDir(searchPath);
     return results.slice(0, maxResults);
+  }
+
+  async glob(
+    pattern: string,
+    options: {
+      path?: string;
+      maxResults?: number;
+      includeHidden?: boolean;
+      includeDirectories?: boolean;
+    } = {},
+    backendName?: FsBackendName
+  ): Promise<GlobResult> {
+    const { path: searchPath = "", maxResults = 200, includeHidden = false, includeDirectories = true } = options;
+    const matches: FsEntry[] = [];
+    let truncated = false;
+
+    // Normalize pattern to include root slash if path is provided but pattern is relative
+    const effectivePattern = pattern;
+
+    const walk = async (currentPath: string): Promise<void> => {
+      if (matches.length >= maxResults) {
+        truncated = true;
+        return;
+      }
+
+      const entries = await this.list(currentPath, backendName);
+      for (const entry of entries) {
+        if (matches.length >= maxResults) {
+          truncated = true;
+          return;
+        }
+
+        if (!includeHidden && entry.name.startsWith(".")) {
+          continue;
+        }
+
+        // Calculate relative path for pattern matching if a search root was provided
+        let patternCandidate = entry.path;
+        if (searchPath && entry.path.startsWith(searchPath)) {
+          patternCandidate = entry.path.slice(searchPath.length).replace(new RegExp('^/'), '');
+        }
+
+        const isDir = entry.kind === "dir";
+        if ((isDir && includeDirectories) || !isDir) {
+          if (this.matchesGlobPattern(patternCandidate, effectivePattern)) {
+            matches.push(entry);
+          }
+        }
+
+        if (isDir) {
+          // Optimization: only descend if pattern contains wildcards or deep segments
+          await walk(entry.path);
+        }
+      }
+    };
+
+    await walk(searchPath);
+
+    return {
+      matches: matches.slice(0, maxResults),
+      truncated,
+      maxResults,
+    };
+  }
+
+  async grep(
+    pattern: string,
+    options: {
+      path?: string;
+      include?: string;
+      exclude?: string;
+      maxResults?: number;
+      caseSensitive?: boolean;
+      includeHidden?: boolean;
+    } = {},
+    backendName?: FsBackendName
+  ): Promise<any> {
+    const { path: searchPath = "", maxResults = 200 } = options;
+    const results: any[] = [];
+    return this.search(pattern, { path: searchPath, maxResults }, backendName).then(items => ({
+      matches: items,
+      truncated: items.length >= maxResults,
+      maxResults
+    }));
+  }
+
+  private matchesGlobPattern(path: string, pattern: string): boolean {
+    const regexStr = pattern
+      .replace(/\./g, "\\.")
+      .replace(/\*\*/g, ".*")
+      .replace(/\*(?!\*)/g, "[^/]*")
+      .replace(/\?/g, ".");
+    const regex = new RegExp(`^${regexStr}$`);
+    return regex.test(path);
   }
 }
 

@@ -76,9 +76,16 @@ export const eventRoutes: FastifyPluginAsync = async (app) => {
 
       if (ev.text) {
         try {
+          const embeddingScope = {
+            source: ev.source,
+            kind: ev.kind,
+            project: norm((sr as any).project) ?? undefined
+          };
+          const embeddingFunction = app.chroma.embeddingFunctionFor?.(embeddingScope) ?? app.chroma.embeddingFunction;
+          const embeddingModel = app.chroma.resolveEmbeddingModel?.(embeddingScope);
           const collection = await app.chroma.client.getCollection({ 
             name: app.chroma.collectionName, 
-            embeddingFunction: app.chroma.embeddingFunction as any
+            embeddingFunction: embeddingFunction as any
           });
           await collection.add({
             ids: [ev.id],
@@ -91,7 +98,8 @@ export const eventRoutes: FastifyPluginAsync = async (app) => {
               session: (sr as any).session,
               author: author ?? "",
               role: role ?? "",
-              model: model ?? ""
+              model: model ?? "",
+              embedding_model: embeddingModel ?? ""
             }] as any
           });
         } catch (err) {

@@ -16,10 +16,13 @@
     "test:all": "node scripts/run-integration-tests.mjs && bun test"
   },
   "dependencies": {
-    "@workspace/mcp-runtime": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.20.2",
+    "@promethean-os/opencode-cljs-client": "workspace:*",
+    "@promethean-os/openplanner-cljs-client": "workspace:*",
+    "@workspace/aether": "workspace:*",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "duckdb": "^1.4.4",
     "express": "^4.19.2",
     "express-http-proxy": "^2.1.2",
     "ioredis": "^5.9.2",

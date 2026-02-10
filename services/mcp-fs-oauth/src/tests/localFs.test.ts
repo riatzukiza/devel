@@ -1,3 +1,4 @@
+import { spawn } from "node:child_process";
 import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -10,6 +11,29 @@ const getSetup = async () => {
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "mcp-fs-test-"));
   const backend = new LocalFsBackend(tempDir);
   return { tempDir, backend };
+};
+
+const runGit = async (cwd: string, args: string[]): Promise<void> => {
+  await new Promise<void>((resolve, reject) => {
+    const child = spawn("git", args, { cwd });
+    let stderr = "";
+
+    child.stderr.on("data", (chunk: Buffer | string) => {
+      stderr += chunk.toString();
+    });
+
+    child.on("error", (error) => {
+      reject(error);
+    });
+
+    child.on("close", (code) => {
+      if (code === 0) {
+        resolve();
+        return;
+      }
+      reject(new Error(`git ${args.join(" ")} failed (${code ?? -1}): ${stderr.trim()}`));
+    });
+  });
 };
 
 describe("LocalFsBackend: list", () => {
@@ -40,6 +64,26 @@ describe("LocalFsBackend: list", () => {
       expect(entries).toHaveLength(1);
       expect(entries[0].name).toBe("file.txt");
       expect(entries[0].kind).toBe("file");
+    } finally {
+      await fs.rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it("should exclude gitignored entries", async () => {
+    const { tempDir, backend } = await getSetup();
+    try {
+      await runGit(tempDir, ["init", "-q"]);
+      await fs.writeFile(path.join(tempDir, ".gitignore"), "dist/\nnode_modules/\n", "utf8");
+      await fs.mkdir(path.join(tempDir, "dist"), { recursive: true });
+      await fs.mkdir(path.join(tempDir, "node_modules"), { recursive: true });
+      await fs.writeFile(path.join(tempDir, "src.ts"), "export const x = 1", "utf8");
+
+      const entries = await backend.list("");
+      const names = entries.map((entry) => entry.name).sort();
+
+      expect(names).toContain("src.ts");
+      expect(names).not.toContain("dist");
+      expect(names).not.toContain("node_modules");
     } finally {
       await fs.rm(tempDir, { recursive: true, force: true });
     }

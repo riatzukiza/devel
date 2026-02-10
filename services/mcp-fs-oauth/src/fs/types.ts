@@ -19,7 +19,7 @@ export interface FsBackend {
 
   list(dirPath: string): Promise<FsEntry[]>;
   readFile(filePath: string): Promise<{ path: string; content: string; etag?: string }>;
-  writeFile(filePath: string, content: string, message?: string): Promise<{ path: string; etag?: string }>;
-  deletePath(targetPath: string, message?: string): Promise<{ path: string }>;
+  writeFile(filePath: string, content: string, intent?: string): Promise<{ path: string; etag?: string }>;
+  deletePath(targetPath: string, intent?: string): Promise<{ path: string }>;
   stat(targetPath: string): Promise<FsStat>;
 }

@@ -1,0 +1,59 @@
+{
+  "defaultCwd": "/home/err/devel/services/mcp-fs-oauth",
+  "defaultTimeoutMs": 120000,
+  "denyPatterns": [
+    "*--force*",
+    "*reset --hard*"
+  ],
+  "commands": [
+    {
+      "id": "bun-build",
+      "description": "Build mcp-fs-oauth via bun run build",
+      "command": "bun",
+      "args": [
+        "run",
+        "build"
+      ],
+      "allowExtraArgs": false,
+      "allowPatterns": [
+        "bun run build"
+      ]
+    },
+    {
+      "id": "bun-test",
+      "description": "Run bun test for mcp-fs-oauth",
+      "command": "bun",
+      "args": [
+        "test"
+      ],
+      "allowExtraArgs": true,
+      "allowPatterns": [
+        "bun test*"
+      ]
+    },
+    {
+      "id": "node-integration-tests",
+      "description": "Run node integration test script",
+      "command": "node",
+      "args": [
+        "scripts/run-integration-tests.mjs"
+      ],
+      "allowExtraArgs": false,
+      "allowPatterns": [
+        "node scripts/run-integration-tests.mjs"
+      ]
+    },
+    {
+      "id": "git-status",
+      "description": "Run git status",
+      "command": "git",
+      "args": [
+        "status"
+      ],
+      "allowExtraArgs": false,
+      "allowPatterns": [
+        "git status"
+      ]
+    }
+  ]
+}

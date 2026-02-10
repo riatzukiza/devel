@@ -3,35 +3,55 @@ import { IEmbeddingFunction } from "chromadb";
 export class OllamaEmbeddingFunction implements IEmbeddingFunction {
   private model: string;
   private url: string;
+  private truncate: boolean;
+  private numCtx?: number;
 
-  constructor(model: string, url: string = "http://localhost:11434") {
+  constructor(
+    model: string,
+    url: string = "http://localhost:11434",
+    opts?: { truncate?: boolean; numCtx?: number }
+  ) {
     this.model = model;
     this.url = url;
+    this.truncate = opts?.truncate ?? true;
+    this.numCtx = typeof opts?.numCtx === "number" && Number.isFinite(opts.numCtx) ? opts.numCtx : undefined;
   }
 
   async generate(texts: string[]): Promise<number[][]> {
-    const embeddings: number[][] = [];
-    for (const text of texts) {
-      try {
-        const res = await fetch(`${this.url}/api/embeddings`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ model: this.model, prompt: text }),
-        });
-
-        if (!res.ok) {
-          console.error(`Ollama embedding failed: ${res.statusText}`);
-          embeddings.push(new Array(768).fill(0));
-          continue;
-        }
-
-        const data = await res.json() as { embedding: number[] };
-        embeddings.push(data.embedding);
-      } catch (err) {
-        console.error("Ollama embedding error:", err);
-        embeddings.push(new Array(768).fill(0));
+    // Prefer Ollama /api/embed which supports batching and explicit truncation control.
+    // Docs: https://docs.ollama.com/api/embed
+    try {
+      const body: any = {
+        model: this.model,
+        input: texts,
+        truncate: this.truncate,
+      };
+      if (this.numCtx) {
+        body.options = { num_ctx: this.numCtx };
       }
+
+      const res = await fetch(`${this.url}/api/embed`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) {
+        const msg = await res.text().catch(() => "");
+        throw new Error(`Ollama embed failed: ${res.status} ${res.statusText}${msg ? `\n${msg}` : ""}`);
+      }
+
+      const data = (await res.json()) as { embeddings?: number[][] };
+      const out = Array.isArray(data.embeddings) ? data.embeddings : [];
+      if (out.length !== texts.length) {
+        throw new Error(`Ollama embed returned ${out.length} embeddings for ${texts.length} inputs`);
+      }
+      return out;
+    } catch (err) {
+      // Fail loud by default; callers can decide how to handle upstream.
+      // Returning zero vectors here silently corrupts retrieval quality and makes truncation bugs invisible.
+      console.error("Ollama embedding error:", err);
+      throw err;
     }
-    return embeddings;
   }
 }

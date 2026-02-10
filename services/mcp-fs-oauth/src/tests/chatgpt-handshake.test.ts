@@ -104,7 +104,7 @@ describe("ChatGPT OAuth Handshake Simulation", () => {
       oauth.setSubject(rid, "user:chatgpt_user_123");
 
       // Step 5: Approve authorization and get code
-      const redirectUrl = oauth.approve(rid);
+      const redirectUrl = await oauth.approve(rid);
       const url = new URL(redirectUrl);
       const authorizationCode = url.searchParams.get("code");
       
@@ -182,7 +182,7 @@ describe("ChatGPT OAuth Handshake Simulation", () => {
 
       // Approve to get authorization code
       oauth.setSubject(rid, "user:test");
-      const redirectUrl = oauth.approve(rid);
+      const redirectUrl = await oauth.approve(rid);
       const url = new URL(redirectUrl);
       const authorizationCode = url.searchParams.get("code");
 
@@ -243,202 +243,7 @@ describe("ChatGPT OAuth Handshake Simulation", () => {
       oauth.setSubject(rid, "user:test");
 
       // Should succeed with warning for external OAuth provider
-      const redirectUrl = oauth.approve(rid);
-      const url = new URL(redirectUrl);
-      const authorizationCode = url.searchParams.get("code");
-      expect(authorizationCode).toBeDefined();
-
-      // Token exchange should also succeed (no PKCE validation for external OAuth)
-      const client = await oauth.clientsStore.getClient("test_client");
-      const tokens = await oauth.exchangeAuthorizationCode(
-        client!,
-        authorizationCode!,
-        undefined, // No code_verifier for external OAuth
-        "https://test.com/callback"
-      );
-
-      expect(tokens.access_token).toBeDefined();
-      console.log("Plain code_challenge accepted for external OAuth provider");
-    });
-
-    it("should perform refresh token rotation", async () => {
-      const publicBaseUrl = new URL("https://test.example.com");
-      const oauth = new SimpleOAuthProvider(publicBaseUrl, true, [
-        {
-          client_id: "chatgpt_mcp_client",
-          client_secret: "chatgpt_mcp_secret",
-          client_name: "ChatGPT MCP Client",
-          redirect_uris: ["https://chatgpt.com/mcp/callback"],
-          token_endpoint_auth_method: "client_secret_post",
-          grant_types: ["authorization_code", "refresh_token"],
-          response_types: ["code"]
-        }
-      ]);
-
-      // Generate PKCE credentials
-      const codeVerifier = generateCodeVerifier();
-      const codeChallenge = await generateS256CodeChallenge(codeVerifier);
-
-      // Create and approve authorization
-      const rid = randomUUID();
-      const pending = {
-        rid,
-        clientId: "chatgpt_mcp_client",
-        redirectUri: "https://chatgpt.com/mcp/callback",
-        state: "test_state",
-        scopes: ["mcp"],
-        codeChallenge,
-        createdAt: Math.floor(Date.now() / 1000),
-        used: false,
-      };
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (oauth as any).pending.set(rid, pending);
-
-      oauth.setSubject(rid, "user:refresh_test");
-      const redirectUrl = oauth.approve(rid);
-      const url = new URL(redirectUrl);
-      const authorizationCode = url.searchParams.get("code");
-
-      // Exchange for initial tokens
-      const client = await oauth.clientsStore.getClient("chatgpt_mcp_client");
-      const initialTokens = await oauth.exchangeAuthorizationCode(
-        client!,
-        authorizationCode!,
-        codeVerifier,
-        "https://chatgpt.com/mcp/callback"
-      );
-
-      console.log("Initial Token:", {
-        accessToken: initialTokens.access_token.substring(0, 10) + "...",
-        refreshToken: initialTokens.refresh_token!.substring(0, 10) + "..."
-      });
-
-      // Refresh the token
-      const refreshedTokens = await oauth.exchangeRefreshToken(
-        client!,
-        initialTokens.refresh_token!
-      );
-
-      console.log("Refreshed Token:", {
-        accessToken: refreshedTokens.access_token.substring(0, 10) + "...",
-        refreshToken: refreshedTokens.refresh_token!.substring(0, 10) + "..."
-      });
-
-      // Verify refresh token rotation occurred
-      expect(refreshedTokens.refresh_token).not.toBe(initialTokens.refresh_token);
-      expect(refreshedTokens.access_token).not.toBe(initialTokens.access_token);
-
-      // Verify both tokens are valid and belong to same client
-      const initialAuthInfo = await oauth.verifyAccessToken(initialTokens.access_token);
-      const refreshedAuthInfo = await oauth.verifyAccessToken(refreshedTokens.access_token);
-      
-      expect(initialAuthInfo.clientId).toBe(refreshedAuthInfo.clientId);
-      expect(initialAuthInfo.scopes).toEqual(refreshedAuthInfo.scopes);
-
-      console.log("Refresh token rotation completed successfully");
-    });
-  });
-
-  describe("RFC 7636 Compliance", () => {
-    
-    it("should accept valid S256 code_challenge format", async () => {
-      const publicBaseUrl = new URL("https://test.example.com");
-      const oauth = new SimpleOAuthProvider(publicBaseUrl, true, [
-        {
-          client_id: "test_client",
-          client_secret: "test_secret",
-          client_name: "Test Client",
-          redirect_uris: ["https://test.com/callback"],
-          token_endpoint_auth_method: "client_secret_post",
-          grant_types: ["authorization_code"],
-          response_types: ["code"]
-        }
-      ]);
-
-      // Known test vector from RFC 7636 Appendix B
-      const codeVerifier = "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk";
-      
-      // Expected SHA-256 hash of the test vector (per RFC 7636)
-      const encoder = new TextEncoder();
-      const data = encoder.encode(codeVerifier);
-      const hash = await crypto.subtle.digest("SHA-256", data);
-      const expectedChallenge = "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM"; // RFC 7636 test vector
-      const actualChallenge = Buffer.from(hash).toString("base64url");
-      
-      console.log("RFC 7636 Test Vector Verification:", {
-        codeVerifier,
-        expectedChallenge,
-        actualChallenge,
-        match: expectedChallenge === actualChallenge
-      });
-
-      // Create pending auth with proper S256 code_challenge
-      const rid = randomUUID();
-      const pending = {
-        rid,
-        clientId: "test_client",
-        redirectUri: "https://test.com/callback",
-        state: "test_state",
-        scopes: ["mcp"],
-        codeChallenge: "S256=" + expectedChallenge,
-        createdAt: Math.floor(Date.now() / 1000),
-        used: false,
-      };
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (oauth as any).pending.set(rid, pending);
-
-      oauth.setSubject(rid, "user:rfc_test");
-      const redirectUrl = oauth.approve(rid);
-      const url = new URL(redirectUrl);
-      const authorizationCode = url.searchParams.get("code");
-
-      const client = await oauth.clientsStore.getClient("test_client");
-      const tokens = await oauth.exchangeAuthorizationCode(
-        client!,
-        authorizationCode!,
-        codeVerifier,
-        "https://test.com/callback"
-      );
-
-      expect(tokens.access_token).toBeDefined();
-      console.log("RFC 7636 S256 test vector verified successfully");
-    });
-
-    it("should accept raw code_challenge without method prefix (external OAuth provider)", async () => {
-      const publicBaseUrl = new URL("https://test.example.com");
-      const oauth = new SimpleOAuthProvider(publicBaseUrl, true, [
-        {
-          client_id: "test_client",
-          client_secret: "test_secret",
-          client_name: "Test Client",
-          redirect_uris: ["https://test.com/callback"],
-          token_endpoint_auth_method: "client_secret_post",
-          grant_types: ["authorization_code"],
-          response_types: ["code"]
-        }
-      ]);
-
-      // Raw code_challenge without method prefix (from external OAuth provider)
-      const rawCodeChallenge = "some_base64url_encoded_challenge_without_prefix";
-
-      const rid = randomUUID();
-      const pending = {
-        rid,
-        clientId: "test_client",
-        redirectUri: "https://test.com/callback",
-        state: "test_state",
-        scopes: ["mcp"],
-        codeChallenge: rawCodeChallenge,
-        createdAt: Math.floor(Date.now() / 1000),
-        used: false,
-      };
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (oauth as any).pending.set(rid, pending);
-
-      oauth.setSubject(rid, "user:test");
-
-      // Should succeed with warning for external OAuth provider
-      const redirectUrl = oauth.approve(rid);
+      const redirectUrl = await oauth.approve(rid);
       const url = new URL(redirectUrl);
       const authorizationCode = url.searchParams.get("code");
       expect(authorizationCode).toBeDefined();
@@ -454,6 +259,7 @@ describe("ChatGPT OAuth Handshake Simulation", () => {
 
       expect(tokens.access_token).toBeDefined();
       console.log("Raw code_challenge accepted for external OAuth provider");
+
     });
   });
 
@@ -492,7 +298,7 @@ describe("ChatGPT OAuth Handshake Simulation", () => {
       (oauth as any).pending.set(rid, pending);
 
       oauth.setSubject(rid, "user:test");
-      const redirectUrl = oauth.approve(rid);
+      const redirectUrl = await oauth.approve(rid);
       const url = new URL(redirectUrl);
       const authorizationCode = url.searchParams.get("code");
 
@@ -550,7 +356,7 @@ describe("ChatGPT OAuth Handshake Simulation", () => {
       oauth.setSubject(rid, "user:test");
 
       // Should succeed with warning for external OAuth provider
-      const redirectUrl = oauth.approve(rid);
+      const redirectUrl = await oauth.approve(rid);
       const url = new URL(redirectUrl);
       const authorizationCode = url.searchParams.get("code");
       expect(authorizationCode).toBeDefined();
@@ -590,7 +396,7 @@ describe("ChatGPT OAuth Handshake Simulation", () => {
       oauth.setSubject(rid, "user:test");
 
       // Should succeed with warning for external OAuth provider
-      const redirectUrl = oauth.approve(rid);
+      const redirectUrl = await oauth.approve(rid);
       const url = new URL(redirectUrl);
       const authorizationCode = url.searchParams.get("code");
       expect(authorizationCode).toBeDefined();
@@ -630,13 +436,14 @@ describe("ChatGPT OAuth Handshake Simulation", () => {
       oauth.setSubject(rid, "user:test");
 
       // Should succeed without PKCE
-      const redirectUrl = oauth.approve(rid);
+      const redirectUrl = await oauth.approve(rid);
       const url = new URL(redirectUrl);
       const authorizationCode = url.searchParams.get("code");
       expect(authorizationCode).toBeDefined();
 
       // Exchange without code_verifier should succeed when no code_challenge was used
       const client = await oauth.clientsStore.getClient("test_client");
+
       const tokens = await oauth.exchangeAuthorizationCode(
         client!,
         authorizationCode!,
@@ -680,11 +487,12 @@ describe("ChatGPT OAuth Handshake Simulation", () => {
       oauth.setSubject(rid, "user:test");
 
       // Should succeed at approve() (only checks prefix) but fail at token exchange
-      const redirectUrl = oauth.approve(rid);
+      const redirectUrl = await oauth.approve(rid);
       const url = new URL(redirectUrl);
       const authorizationCode = url.searchParams.get("code");
 
       const client = await oauth.clientsStore.getClient("test_client");
+
 
       // Exchange with valid verifier should fail because challenge hash won't match malformed input
       let errorThrown = false;

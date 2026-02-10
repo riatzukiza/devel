@@ -70,6 +70,84 @@ void test("forwards openplanner request through facade route", async () => {
   }
 });
 
+void test("prefers configured openplanner API key over forwarded Authorization", async () => {
+  const upstream = Fastify();
+  upstream.get("/v1/sessions", async (req) => ({ ok: true, auth: req.headers.authorization ?? null }));
+  await upstream.listen({ host: "127.0.0.1", port: 0 });
+
+  const address = upstream.server.address();
+  if (!address || typeof address === "string") {
+    throw new Error("failed to determine upstream port");
+  }
+
+  const app = await createApp({
+    host: "127.0.0.1",
+    port: 0,
+    openplannerUrl: `http://127.0.0.1:${address.port}`,
+    openplannerApiKey: "svc-openplanner-key",
+    opencodeUrl: "http://127.0.0.1:4096",
+    opencodeApiKey: null,
+    workspaceRoot: "/tmp",
+    mcpUrl: "http://127.0.0.1:3001",
+    oauthEnabled: false,
+    oauthIssuer: "http://localhost:3001",
+    oauthAudience: "api-gateway",
+    allowedHosts: ["localhost", "127.0.0.1"]
+  });
+
+  try {
+    const res = await app.inject({
+      method: "GET",
+      url: "/api/openplanner/v1/sessions",
+      headers: { authorization: "Bearer oauth-user-token" },
+    });
+    assert.equal(res.statusCode, 200);
+    assert.equal(res.json().auth, "Bearer svc-openplanner-key");
+  } finally {
+    await app.close();
+    await upstream.close();
+  }
+});
+
+void test("forwards incoming Authorization to openplanner when no service key configured", async () => {
+  const upstream = Fastify();
+  upstream.get("/v1/sessions", async (req) => ({ ok: true, auth: req.headers.authorization ?? null }));
+  await upstream.listen({ host: "127.0.0.1", port: 0 });
+
+  const address = upstream.server.address();
+  if (!address || typeof address === "string") {
+    throw new Error("failed to determine upstream port");
+  }
+
+  const app = await createApp({
+    host: "127.0.0.1",
+    port: 0,
+    openplannerUrl: `http://127.0.0.1:${address.port}`,
+    openplannerApiKey: null,
+    opencodeUrl: "http://127.0.0.1:4096",
+    opencodeApiKey: null,
+    workspaceRoot: "/tmp",
+    mcpUrl: "http://127.0.0.1:3001",
+    oauthEnabled: false,
+    oauthIssuer: "http://localhost:3001",
+    oauthAudience: "api-gateway",
+    allowedHosts: ["localhost", "127.0.0.1"]
+  });
+
+  try {
+    const res = await app.inject({
+      method: "GET",
+      url: "/api/openplanner/v1/sessions",
+      headers: { authorization: "Bearer oauth-user-token" },
+    });
+    assert.equal(res.statusCode, 200);
+    assert.equal(res.json().auth, "Bearer oauth-user-token");
+  } finally {
+    await app.close();
+    await upstream.close();
+  }
+});
+
 void test("forwards opencode request through facade route", async () => {
   const upstream = Fastify();
   upstream.get("/config", async () => ({ ok: true, models: ["gpt-5"] }));
