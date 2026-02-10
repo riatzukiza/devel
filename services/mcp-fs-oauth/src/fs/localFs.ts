@@ -1,3 +1,4 @@
+import { spawn } from "node:child_process";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
@@ -80,6 +81,76 @@ export class LocalFsBackend implements FsBackend {
     }
   }
 
+  private async ignoredPaths(entries: FsEntry[]): Promise<Set<string>> {
+    if (entries.length === 0) {
+      return new Set<string>();
+    }
+
+    const candidateToPath = new Map<string, string>();
+    for (const entry of entries) {
+      candidateToPath.set(entry.path, entry.path);
+      if (entry.kind === "dir") {
+        candidateToPath.set(`${entry.path}/`, entry.path);
+      }
+    }
+
+    const candidates = Array.from(candidateToPath.keys());
+    const stdout = await new Promise<string>((resolve, reject) => {
+      const child = spawn("git", ["check-ignore", "--no-index", "--stdin"], {
+        cwd: this.rootAbs,
+      });
+
+      let out = "";
+      let err = "";
+
+      child.stdout.on("data", (chunk: Buffer | string) => {
+        out += chunk.toString();
+      });
+
+      child.stderr.on("data", (chunk: Buffer | string) => {
+        err += chunk.toString();
+      });
+
+      child.on("error", (error) => {
+        reject(error);
+      });
+
+      child.on("close", (code) => {
+        // check-ignore exits 1 when no candidate path matches ignore rules.
+        if (code !== 0 && code !== 1) {
+          if (err.includes("not a git repository") || err.includes("command not found")) {
+            resolve("");
+            return;
+          }
+
+          reject(new Error(`git check-ignore failed with code ${code ?? -1}: ${err.trim()}`));
+          return;
+        }
+
+        resolve(out);
+      });
+
+      child.stdin.write(candidates.join("\n"));
+      child.stdin.end();
+    });
+
+    const ignored = new Set<string>();
+    for (const line of stdout.split("\n")) {
+      const trimmed = line.trim();
+      if (!trimmed) {
+        continue;
+      }
+
+      const normalized = trimmed.replace(/^\.\//, "");
+      const mapped = candidateToPath.get(normalized);
+      if (mapped) {
+        ignored.add(mapped);
+      }
+    }
+
+    return ignored;
+  }
+
   async list(dirPath: string): Promise<FsEntry[]> {
     const { absPath, relPath } = this.toAbs(dirPath);
     await this.verifyPathWithinRoot(absPath);
@@ -87,7 +158,7 @@ export class LocalFsBackend implements FsBackend {
     if (!st.isDirectory()) throw new Error("Not a directory");
 
     const entries = await fs.readdir(absPath, { withFileTypes: true });
-    return entries.map((e) => {
+    const mapped: FsEntry[] = entries.map((e) => {
       const p = relPath ? `${relPath}/${e.name}` : e.name;
       return {
         name: e.name,
@@ -95,6 +166,13 @@ export class LocalFsBackend implements FsBackend {
         kind: e.isDirectory() ? "dir" : "file",
       };
     });
+
+    const ignored = await this.ignoredPaths(mapped);
+    if (ignored.size === 0) {
+      return mapped;
+    }
+
+    return mapped.filter((entry) => !ignored.has(entry.path));
   }
 
   async readFile(filePath: string): Promise<{ path: string; content: string; etag?: string }> {

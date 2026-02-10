@@ -113,7 +113,7 @@ export class GitHubRepoBackend implements FsBackend {
     return { path: this.stripPrefix(data.path), content: buf.toString("utf8"), etag: data.sha };
   }
 
-  async writeFile(filePath: string, content: string, message?: string): Promise<{ path: string; etag?: string }> {
+  async writeFile(filePath: string, content: string, intent?: string): Promise<{ path: string; etag?: string }> {
     const repoPath = this.toRepoPath(filePath);
     const url = `${this.apiBase}/repos/${encodeURIComponent(this.owner)}/${encodeURIComponent(this.repo)}/contents/${repoPath.split("/").map(encodeURIComponent).join("/")}`;
 
@@ -121,7 +121,7 @@ export class GitHubRepoBackend implements FsBackend {
     const sha = (!Array.isArray(current) && current?.type === "file") ? current.sha : undefined;
 
     const baseBody = {
-      message: message || `mcp write ${filePath}`,
+      message: intent || `mcp write ${filePath}`,
       content: Buffer.from(content, "utf8").toString("base64"),
       branch: this.branch,
     };
@@ -136,7 +136,7 @@ export class GitHubRepoBackend implements FsBackend {
     return { path: this.stripPrefix(repoPath), etag: newSha };
   }
 
-  async deletePath(targetPath: string, message?: string): Promise<{ path: string }> {
+  async deletePath(targetPath: string, intent?: string): Promise<{ path: string }> {
     const repoPath = this.toRepoPath(targetPath);
     const url = `${this.apiBase}/repos/${encodeURIComponent(this.owner)}/${encodeURIComponent(this.repo)}/contents/${repoPath.split("/").map(encodeURIComponent).join("/")}`;
 
@@ -149,7 +149,7 @@ export class GitHubRepoBackend implements FsBackend {
     await this.gh<unknown>(url, {
       method: "DELETE",
       body: JSON.stringify({
-        message: message || `mcp delete ${targetPath}`,
+        message: intent || `mcp delete ${targetPath}`,
         sha,
         branch: this.branch,
       }),

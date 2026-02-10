@@ -33,7 +33,14 @@ function testConfig(dataDir: string): OpenPlannerConfig {
     port: 0,
     apiKey: "test-token",
     chromaUrl: "disabled",
-    chromaCollection: "test_collection"
+    chromaCollection: "test_collection",
+    ollamaBaseUrl: "http://localhost:11434",
+    embeddingModels: {
+      defaultModel: "qwen3-embedding:0.6b",
+      bySource: {},
+      byKind: {},
+      byProject: {}
+    }
   };
 }
 
