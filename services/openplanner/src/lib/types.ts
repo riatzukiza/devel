@@ -39,5 +39,8 @@ export type FtsSearchRequest = {
 export type VectorSearchRequest = {
   q: string;
   k?: number;
+  source?: string;
+  kind?: string;
+  project?: string;
   where?: Record<string, unknown>;
 };

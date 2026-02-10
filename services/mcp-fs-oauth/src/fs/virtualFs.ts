@@ -89,6 +89,15 @@ type GlobOptions = {
   includeDirectories?: boolean;
 };
 
+type ListOptions = {
+  includeHidden?: boolean;
+};
+
+type NormalizedGlobSearchPath = {
+  original: string;
+  normalized: string;
+};
+
 export class VirtualFs {
   constructor(
     private readonly mode: FsBackendName,
@@ -313,9 +322,13 @@ export class VirtualFs {
     return result;
   }
 
-  async list(path: string, backend?: FsBackendName): Promise<FsEntry[]> {
+  async list(path: string, options: ListOptions = {}, backend?: FsBackendName): Promise<FsEntry[]> {
     const b = await this.pick(backend);
-    return b.list(path);
+    const entries = await b.list(path);
+    if (options.includeHidden) {
+      return entries;
+    }
+    return entries.filter((entry) => !entry.name.startsWith("."));
   }
 
   async readFile(path: string, backend?: FsBackendName): Promise<{ path: string; content: string; etag?: string }> {
@@ -333,34 +346,42 @@ export class VirtualFs {
     return b.readFile(path);
   }
 
-  async writeFile(path: string, content: string, message?: string, backend?: FsBackendName): Promise<{ path: string; etag?: string }> {
+  async writeFile(path: string, content: string, intent?: string, backend?: FsBackendName): Promise<{ path: string; etag?: string }> {
     const choice = backend ?? this.mode;
     if (choice === "auto") {
-      try {
-        const b = await this.pick("local");
-        return await b.writeFile(path, content, message);
-      } catch {
-        const b = await this.pick("github");
-        return await b.writeFile(path, content, message);
+      const localAvail = this.local && (await this.local.available());
+      if (localAvail) {
+        return this.local.writeFile(path, content, intent);
       }
+
+      const githubAvail = this.github && (await this.github.available());
+      if (githubAvail) {
+        return this.github.writeFile(path, content, intent);
+      }
+
+      throw new Error("No storage backend available");
     }
     const b = await this.pick(choice);
-    return b.writeFile(path, content, message);
+    return b.writeFile(path, content, intent);
   }
 
-  async deletePath(path: string, message?: string, backend?: FsBackendName): Promise<{ path: string }> {
+  async deletePath(path: string, intent?: string, backend?: FsBackendName): Promise<{ path: string }> {
     const choice = backend ?? this.mode;
     if (choice === "auto") {
-      try {
-        const b = await this.pick("local");
-        return await b.deletePath(path, message);
-      } catch {
-        const b = await this.pick("github");
-        return await b.deletePath(path, message);
+      const localAvail = this.local && (await this.local.available());
+      if (localAvail) {
+        return this.local.deletePath(path, intent);
       }
+
+      const githubAvail = this.github && (await this.github.available());
+      if (githubAvail) {
+        return this.github.deletePath(path, intent);
+      }
+
+      throw new Error("No storage backend available");
     }
     const b = await this.pick(choice);
-    return b.deletePath(path, message);
+    return b.deletePath(path, intent);
   }
 
   async stat(path: string, backend?: FsBackendName): Promise<FsStat> {
@@ -633,6 +654,11 @@ export class VirtualFs {
       includeDirectories = true,
     } = options;
 
+    const normalizedSearchPath = this.normalizeGlobSearchPath(searchPath, b.name);
+    const normalizedPrefix = normalizedSearchPath.normalized.length > 0
+      ? `${normalizedSearchPath.normalized}/`
+      : "";
+
     const matches: GlobMatch[] = [];
     let truncated = false;
 
@@ -655,7 +681,12 @@ export class VirtualFs {
 
         const entryPath = dirPath ? `${dirPath}/${entry.name}` : entry.name;
 
-        if (this.matchesGlobPattern(entryPath, pattern) && (entry.kind === "file" || includeDirectories)) {
+        let patternCandidate = entryPath;
+        if (normalizedPrefix.length > 0 && entryPath.startsWith(normalizedPrefix)) {
+          patternCandidate = entryPath.slice(normalizedPrefix.length);
+        }
+
+        if (this.matchesGlobPattern(patternCandidate, pattern) && (entry.kind === "file" || includeDirectories)) {
           matches.push({
             path: entryPath,
             kind: entry.kind,
@@ -668,14 +699,40 @@ export class VirtualFs {
       }
     };
 
-    await searchDir(searchPath);
+    await searchDir(normalizedSearchPath.normalized);
 
     return {
-      path: searchPath,
+      path: normalizedSearchPath.original,
       pattern,
       maxResults,
       truncated,
       matches,
+    };
+  }
+
+  private normalizeGlobSearchPath(searchPath: string, backendName: Exclude<FsBackendName, "auto">): NormalizedGlobSearchPath {
+    const original = searchPath;
+    const trimmed = (searchPath ?? "").trim();
+    if (trimmed.length === 0 || trimmed === "." || trimmed === "/") {
+      return {
+        original,
+        normalized: "",
+      };
+    }
+
+    if (backendName === "local" && this.localRootAbs) {
+      return {
+        original,
+        normalized: resolveWithinRoot(this.localRootAbs, trimmed).relPath,
+      };
+    }
+
+    return {
+      original,
+      normalized: trimmed
+        .replace(/\\/g, "/")
+        .replace(/^\/+/, "")
+        .replace(/\/+$/, ""),
     };
   }
 

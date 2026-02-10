@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeAll, beforeEach, afterAll, afterEach } from "bun:test";
 import { SimpleOAuthProvider } from "../auth/simpleOAuthProvider.js";
-import { FilePersistence } from "../auth/filePersistence.js";
+import { DuckDBPersistence } from "../auth/duckDbPersistence.js";
 import type { AuthInfo } from "@modelcontextprotocol/sdk/server/auth/types.js";
 import { randomUUID } from "node:crypto";
-import { writeFileSync, mkdirSync, rmSync, existsSync } from "node:fs";
+import { mkdirSync, rmSync, existsSync } from "node:fs";
 import { join } from "node:path";
 
 describe("OAuth Handshake", () => {
@@ -43,7 +43,7 @@ describe("OAuth Handshake", () => {
 
     oauth.setSubject(rid, "user:123");
 
-    const redirectUrl = oauth.approve(rid);
+    const redirectUrl = await oauth.approve(rid);
     const url = new URL(redirectUrl);
     const code = url.searchParams.get("code");
     expect(code).toBeDefined();
@@ -63,7 +63,7 @@ describe("OAuth Handshake", () => {
 
 describe("OAuth Persistence", () => {
   const testDir = join(import.meta.dirname, "test-persistence-" + randomUUID());
-  const persistencePath = join(testDir, "oauth.json");
+  const persistencePath = join(testDir, "oauth.db");
   
   beforeAll(() => {
     // Create test directory
@@ -88,6 +88,9 @@ describe("OAuth Persistence", () => {
   
   it("should persist and restore authorization codes", async () => {
     const publicBaseUrl = new URL("https://test.com");
+    const persistence = new DuckDBPersistence(persistencePath);
+    await persistence.init();
+
     const oauth = new SimpleOAuthProvider(publicBaseUrl, true, [
       {
         client_id: "test_client",
@@ -98,7 +101,7 @@ describe("OAuth Persistence", () => {
         grant_types: ["authorization_code"],
         response_types: ["code"]
       }
-    ], 60 * 60, 30 * 24 * 60 * 60, persistencePath);
+    ], 60 * 60, 30 * 24 * 60 * 60, persistence);
     
     // Create a pending auth request
     const rid = "persist_rid_" + randomUUID();
@@ -117,12 +120,16 @@ describe("OAuth Persistence", () => {
     
     // Set subject and approve
     oauth.setSubject(rid, "user:456");
-    const redirectUrl = oauth.approve(rid);
+    const redirectUrl = await oauth.approve(rid);
     const url = new URL(redirectUrl);
     const code = url.searchParams.get("code");
     expect(code).toBeDefined();
     
     // Create a new provider instance to simulate restart
+    await persistence.stop(); // Close old connection
+    const persistence2 = new DuckDBPersistence(persistencePath);
+    await persistence2.init();
+
     const oauth2 = new SimpleOAuthProvider(publicBaseUrl, true, [
       {
         client_id: "test_client",
@@ -133,7 +140,7 @@ describe("OAuth Persistence", () => {
         grant_types: ["authorization_code"],
         response_types: ["code"]
       }
-    ], 60 * 60, 30 * 24 * 60 * 60, persistencePath);
+    ], 60 * 60, 30 * 24 * 60 * 60, persistence2);
     
     // Verify the persisted code can be exchanged
     const client = await oauth2.clientsStore.getClient("test_client");
@@ -150,6 +157,9 @@ describe("OAuth Persistence", () => {
   
   it("should persist and restore refresh tokens", async () => {
     const publicBaseUrl = new URL("https://test.com");
+    const persistence = new DuckDBPersistence(persistencePath);
+    await persistence.init();
+
     const oauth = new SimpleOAuthProvider(publicBaseUrl, true, [
       {
         client_id: "test_client",
@@ -160,7 +170,7 @@ describe("OAuth Persistence", () => {
         grant_types: ["authorization_code", "refresh_token"],
         response_types: ["code"]
       }
-    ], 60 * 60, 30 * 24 * 60 * 60, persistencePath);
+    ], 60 * 60, 30 * 24 * 60 * 60, persistence);
     
     // Create a pending auth request
     const rid = "refresh_rid_" + randomUUID();
@@ -179,7 +189,7 @@ describe("OAuth Persistence", () => {
     
     // Set subject and approve
     oauth.setSubject(rid, "user:789");
-    const redirectUrl = oauth.approve(rid);
+    const redirectUrl = await oauth.approve(rid);
     const url = new URL(redirectUrl);
     const code = url.searchParams.get("code");
     expect(code).toBeDefined();
@@ -191,6 +201,10 @@ describe("OAuth Persistence", () => {
     const refreshToken = tokens.refresh_token!; // Assert it's defined
     
     // Create a new provider instance to simulate restart
+    await persistence.stop(); // Close old connection
+    const persistence2 = new DuckDBPersistence(persistencePath);
+    await persistence2.init();
+
     const oauth2 = new SimpleOAuthProvider(publicBaseUrl, true, [
       {
         client_id: "test_client",
@@ -201,7 +215,7 @@ describe("OAuth Persistence", () => {
         grant_types: ["authorization_code", "refresh_token"],
         response_types: ["code"]
       }
-    ], 60 * 60, 30 * 24 * 60 * 60, persistencePath);
+    ], 60 * 60, 30 * 24 * 60 * 60, persistence2);
     
     // Refresh the token
     const refreshedTokens = await oauth2.exchangeRefreshToken(client!, refreshToken);
@@ -214,6 +228,78 @@ describe("OAuth Persistence", () => {
     const authInfo = await oauth2.verifyAccessToken(refreshedTokens.access_token);
     expect(authInfo.clientId).toBe("test_client");
     expect(authInfo.scopes).toContain("mcp");
+  });
+
+  it("reuses refresh exchange result within short window", async () => {
+    const publicBaseUrl = new URL("https://test.com");
+    const persistence = new DuckDBPersistence(persistencePath);
+    await persistence.init();
+
+    const oauth = new SimpleOAuthProvider(publicBaseUrl, true, [
+      {
+        client_id: "test_client",
+        client_secret: "test_secret",
+        client_name: "Test Client",
+        redirect_uris: ["https://test.com/callback"],
+        token_endpoint_auth_method: "client_secret_post",
+        grant_types: ["authorization_code", "refresh_token"],
+        response_types: ["code"],
+      },
+    ], 60 * 60, 30 * 24 * 60 * 60, persistence);
+
+    const rid = "reuse_rid_" + randomUUID();
+    const pending = {
+      rid,
+      clientId: "test_client",
+      redirectUri: "https://test.com/callback",
+      state: "test_state",
+      scopes: ["mcp"],
+      codeChallenge: "test_challenge",
+      createdAt: Math.floor(Date.now() / 1000),
+      used: false,
+    };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (oauth as any).pending.set(rid, pending);
+
+    oauth.setSubject(rid, "user:reuse");
+    const redirectUrl = await oauth.approve(rid);
+    const code = new URL(redirectUrl).searchParams.get("code");
+    expect(code).toBeDefined();
+
+    const client = await oauth.clientsStore.getClient("test_client");
+    const initialTokens = await oauth.exchangeAuthorizationCode(client!, code!);
+    expect(initialTokens.refresh_token).toBeDefined();
+
+    const firstRefresh = await oauth.exchangeRefreshToken(client!, initialTokens.refresh_token!);
+    const secondRefresh = await oauth.exchangeRefreshToken(client!, initialTokens.refresh_token!);
+
+    expect(secondRefresh.access_token).toBe(firstRefresh.access_token);
+    expect(secondRefresh.refresh_token).toBe(firstRefresh.refresh_token);
+    expect(secondRefresh.scope).toBe(firstRefresh.scope);
+
+    await persistence.stop();
+
+    const persistence2 = new DuckDBPersistence(persistencePath);
+    await persistence2.init();
+    const oauth2 = new SimpleOAuthProvider(publicBaseUrl, true, [
+      {
+        client_id: "test_client",
+        client_secret: "test_secret",
+        client_name: "Test Client",
+        redirect_uris: ["https://test.com/callback"],
+        token_endpoint_auth_method: "client_secret_post",
+        grant_types: ["authorization_code", "refresh_token"],
+        response_types: ["code"],
+      },
+    ], 60 * 60, 30 * 24 * 60 * 60, persistence2);
+
+    const client2 = await oauth2.clientsStore.getClient("test_client");
+    const replayed = await oauth2.exchangeRefreshToken(client2!, initialTokens.refresh_token!);
+
+    expect(replayed.access_token).toBe(firstRefresh.access_token);
+    expect(replayed.refresh_token).toBe(firstRefresh.refresh_token);
+
+    await persistence2.stop();
   });
 
   it("should verify PKCE S256 code_challenge and code_verifier", async () => {
@@ -256,7 +342,7 @@ describe("OAuth Persistence", () => {
     
     // Set subject and approve
     oauth.setSubject(rid, "user:pkce");
-    const redirectUrl = oauth.approve(rid);
+    const redirectUrl = await oauth.approve(rid);
     const url = new URL(redirectUrl);
     const code = url.searchParams.get("code");
     expect(code).toBeDefined();
@@ -312,7 +398,7 @@ describe("OAuth Token Exchange Payload Capture", () => {
     
     // Set subject and approve
     oauth.setSubject(rid, "user:payload_test");
-    const redirectUrl = oauth.approve(rid);
+    const redirectUrl = await oauth.approve(rid);
     const url = new URL(redirectUrl);
     const code = url.searchParams.get("code");
     expect(code).toBeDefined();
@@ -403,5 +489,4 @@ describe("OAuth Token Exchange Payload Capture", () => {
     expect(oldRefreshTokenValid).toBe(false); // Old refresh token was consumed
   });
 });
-
 

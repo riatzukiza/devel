@@ -10,9 +10,9 @@ function normalizeBase(url: string): string {
 }
 
 function getForwardedAuthorization(req: FastifyRequest, apiKey: string | null): string | undefined {
+  if (apiKey && apiKey.length > 0) return `Bearer ${apiKey}`;
   const header = req.headers.authorization;
   if (typeof header === "string" && header.length > 0) return header;
-  if (apiKey && apiKey.length > 0) return `Bearer ${apiKey}`;
   return undefined;
 }
 
