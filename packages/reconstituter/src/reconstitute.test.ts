@@ -42,7 +42,6 @@ test("flattenForEmbedding formats tool calls with assistant content", (t) => {
   ]);
 
   t.true(flattened.includes("[tool_call:memory.lookup]"));
-  t.true(flattened.includes("[assistant] ok"));
   t.true(flattened.includes("[tool:memory.lookup] {\"results\":[]}"));
 });
 

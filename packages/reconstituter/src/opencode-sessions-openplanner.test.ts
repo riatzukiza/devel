@@ -44,7 +44,7 @@ test.serial("indexSessions posts events to OpenPlanner", async (t) => {
   };
 
   // Set env vars to avoid Chroma/Ollama errors during refactor
-  process.env.OPENPLANNER_URL = "http://localhost:7777";
+  process.env.OPENPLANNER_URL = "http://127.0.0.1:8788/api/openplanner";
   process.env.LEVEL_DIR = `./.reconstitute/test-${Date.now()}`;
 
   await indexSessions();
