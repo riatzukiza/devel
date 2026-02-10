@@ -60,3 +60,9 @@ pnpm -C packages/reconstituter reconstitute run orgs/octave-commons/cephalon-clj
 ## References
 - CLI implementation: `packages/reconstituter/src/reconstitute.ts`
 - Session index/search: `packages/reconstituter/src/opencode-sessions.ts`
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[opencode-extract-diffs](../opencode-extract-diffs/SKILL.md)**
+- **[opencode-session-search](../opencode-session-search/SKILL.md)**

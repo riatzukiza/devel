@@ -1,0 +1,796 @@
+{
+  "work-on-icebox-task": {
+    "category": "Kanban",
+    "description": "Execute the best next work for a task currently in `icebox`.",
+    "next_skills": [
+      "validate-icebox-to-incoming"
+    ],
+    "is_entry_point": true
+  },
+  "skill-optimizing": {
+    "category": "General",
+    "description": "Improve existing or new skills using the workspace optimization guide and template checks for clarity, scope, and reliability",
+    "next_skills": [
+      "skill-authoring"
+    ],
+    "is_entry_point": false
+  },
+  "create-pm2-clj-config": {
+    "category": "PM2",
+    "description": "Create new pm2-clj ecosystem configuration files from scratch or templates for PM2 process management",
+    "next_skills": [
+      "pm2-process-management",
+      "render-pm2-clj-config",
+      "workspace-navigation"
+    ],
+    "is_entry_point": false
+  },
+  "workspace-dependency-check": {
+    "category": "Workspace",
+    "description": "Protocol to diagnose pnpm workspace module resolution failures.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "validate-icebox-to-incoming": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `icebox \u2192 incoming` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "opencode-reconstituter": {
+    "category": "OpenCode",
+    "description": "Run the reconstitute CLI to index, search, and reconstruct project context from OpenCode sessions",
+    "next_skills": [
+      "opencode-extract-diffs",
+      "opencode-session-search"
+    ],
+    "is_entry_point": false
+  },
+  "opencode-model-variant-management": {
+    "category": "OpenCode",
+    "description": "Add new models, providers, or model variants with correct configuration, authentication, and validation",
+    "next_skills": [
+      "opencode-models-providers"
+    ],
+    "is_entry_point": false
+  },
+  "validate-in_progress-to-in_review": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `in_progress \u2192 in_review` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "break-edit-loop": {
+    "category": "General",
+    "description": "Protocol to break out of repetitive, failing edit loops by forcing analysis over action.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "kanban-state-in-progress": {
+    "category": "Kanban",
+    "description": "This skill guides agents through the **In Progress** state (Implementation).",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "validate-in_progress-to-todo": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `in_progress \u2192 todo` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "validate-in_review-to-breakdown": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `in_review \u2192 breakdown` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "validate-task-status": {
+    "category": "Kanban",
+    "description": "Reviews the task's current status for correctness using the FSM rules in `docs/reference/process.md`.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "testing-nx": {
+    "category": "Testing",
+    "description": "Configure and run tests across multiple projects using Nx affected detection for efficient workspace testing",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "opencode-semantic-find-session": {
+    "category": "OpenCode",
+    "description": "Find relevant OpenCode sessions using semantic search and filtering",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "work-on-in_review-task": {
+    "category": "Kanban",
+    "description": "Execute the best next work for a task currently in `in_review`.",
+    "next_skills": [
+      "validate-in_review-to-breakdown",
+      "validate-in_review-to-in_progress",
+      "validate-in_review-to-testing",
+      "validate-in_review-to-todo"
+    ],
+    "is_entry_point": true
+  },
+  "workspace-build": {
+    "category": "Workspace",
+    "description": "Build all affected submodules across the workspace, including running tests for changed files, using Nx for affected project detection",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "validate-ready-to-breakdown": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `ready \u2192 breakdown` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "opencode-review-past-sessions": {
+    "category": "OpenCode",
+    "description": "Review OpenCode session history to recover decisions, intent, and prior changes",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "pm2-server-control": {
+    "category": "PM2",
+    "description": "Start and stop a server with pm2 using `pm2 start ./my-server --name <name> --no-autorestart`, plus common supporting commands for status, logs, restart, and cleanup",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "emergency-confusion-reset": {
+    "category": "General",
+    "description": "Protocol for agents to recover when confused, hallucinating tools, or stuck in unproductive loops.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "work-on-in_progress-task": {
+    "category": "Kanban",
+    "description": "Execute the best next work for a task currently in `in_progress`.",
+    "next_skills": [
+      "validate-in_progress-to-breakdown",
+      "validate-in_progress-to-in_review",
+      "validate-in_progress-to-todo"
+    ],
+    "is_entry_point": true
+  },
+  "work-on-done-task": {
+    "category": "Kanban",
+    "description": "Execute the best next work for a task currently in `done`.",
+    "next_skills": [],
+    "is_entry_point": true
+  },
+  "validate-todo-to-in_progress": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `todo \u2192 in_progress` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "clojure-namespaces": {
+    "category": "Clojure",
+    "description": "Resolves Clojure namespace-path mismatches and classpath errors with definitive path conversion",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "validate-breakdown-to-icebox": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `breakdown \u2192 icebox` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "validate-in_review-to-in_progress": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `in_review \u2192 in_progress` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "kanban-state-todo": {
+    "category": "Kanban",
+    "description": "This skill guides agents through the **Todo** state (The Ready Queue).",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "testing-bun": {
+    "category": "Testing",
+    "description": "Set up and write tests using Bun's built-in test runner for maximum performance and TypeScript support",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "clojure-syntax-rescue": {
+    "category": "Clojure",
+    "description": "Protocol to recover from Clojure/Script syntax errors, specifically bracket mismatches and EOF errors.",
+    "next_skills": [
+      "shadow-cljs-debug"
+    ],
+    "is_entry_point": false
+  },
+  "validate-accepted-to-breakdown": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `accepted \u2192 breakdown` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "submodule-ops": {
+    "category": "General",
+    "description": "Make safe, consistent changes in a workspace with many git submodules under orgs/**",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "work-on-testing-task": {
+    "category": "Kanban",
+    "description": "Execute the best next work for a task currently in `testing`.",
+    "next_skills": [
+      "validate-testing-to-document",
+      "validate-testing-to-in_progress",
+      "validate-testing-to-in_review"
+    ],
+    "is_entry_point": true
+  },
+  "validate-rejected-to-icebox": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `rejected \u2192 icebox` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "shadow-cljs-debug": {
+    "category": "General",
+    "description": "Protocol to debug and fix shadow-cljs compilation errors.",
+    "next_skills": [
+      "clojure-syntax-rescue",
+      "workspace-dependency-check"
+    ],
+    "is_entry_point": false
+  },
+  "testing-clojure-cljs": {
+    "category": "Clojure",
+    "description": "Set up and write tests for Clojure and ClojureScript projects using cljs.test, cljs-init-tests, and shadow-cljs",
+    "next_skills": [
+      "testing-typescript-vitest"
+    ],
+    "is_entry_point": false
+  },
+  "opencode-session-search": {
+    "category": "OpenCode",
+    "description": "Search and index OpenCode sessions using ChromaDB vector embeddings for semantic similarity retrieval and conversation reconstitute workflows",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "opencode-models-providers": {
+    "category": "OpenCode",
+    "description": "Select, validate, or update model/provider configurations with authoritative provider documentation",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "workspace-code-standards": {
+    "category": "Workspace",
+    "description": "Apply workspace TypeScript and ESLint standards, including functional style and strict typing rules",
+    "next_skills": [
+      "workspace-lint",
+      "workspace-typecheck"
+    ],
+    "is_entry_point": false
+  },
+  "validate-testing-to-document": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `testing \u2192 document` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "workspace-lint": {
+    "category": "Workspace",
+    "description": "Lint all TypeScript and markdown files across the entire workspace, including all submodules under orgs/**",
+    "next_skills": [],
+    "is_entry_point": true
+  },
+  "verify-resource-existence": {
+    "category": "General",
+    "description": "Protocol to verify a resource exists before creating a new one.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "work-on-breakdown-task": {
+    "category": "Kanban",
+    "description": "Execute the best next work for a task currently in `breakdown`.",
+    "next_skills": [
+      "validate-breakdown-to-blocked",
+      "validate-breakdown-to-icebox",
+      "validate-breakdown-to-ready",
+      "validate-breakdown-to-rejected"
+    ],
+    "is_entry_point": true
+  },
+  "validate-ready-to-todo": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `ready \u2192 todo` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "create-pm2-ecosystem": {
+    "category": "PM2",
+    "description": "Create new PM2 ecosystem configuration files for the clobber-based system with proper defapp definitions",
+    "next_skills": [
+      "pm2-process-management",
+      "render-pm2-clj-config",
+      "workspace-navigation"
+    ],
+    "is_entry_point": false
+  },
+  "opencode-agents-skills": {
+    "category": "OpenCode",
+    "description": "Author or update agents and skills that align with OpenCode guidance and repository conventions",
+    "next_skills": [
+      "pm2-process-management",
+      "submodule-ops",
+      "workspace-build",
+      "workspace-lint",
+      "workspace-typecheck"
+    ],
+    "is_entry_point": true
+  },
+  "opencode-agent-authoring": {
+    "category": "OpenCode",
+    "description": "Create or update OpenCode agent guidance with clear triggers, behavior, and constraints",
+    "next_skills": [
+      "opencode-agents-skills"
+    ],
+    "is_entry_point": false
+  },
+  "spec-authoring": {
+    "category": "General",
+    "description": "This skill provides guidelines for creating and managing technical specification documents within the repository.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "kanban-state-backlog": {
+    "category": "Kanban",
+    "description": "This skill guides agents through the **Backlog** state, covering Refinement, Breakdown, and Sizing.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "skill-authoring": {
+    "category": "General",
+    "description": "Create or revise skills so they are reusable, scoped, and load correctly in OpenCode and Codex",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "work-on-document-task": {
+    "category": "Kanban",
+    "description": "Execute the best next work for a task currently in `document`.",
+    "next_skills": [
+      "validate-document-to-done",
+      "validate-document-to-in_review"
+    ],
+    "is_entry_point": true
+  },
+  "release-watcher": {
+    "category": "General",
+    "description": "Monitor upstream releases for OpenAI codex and SST opencode repositories, detect changes, and create GitHub issues for release impact analysis",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "testing-integration": {
+    "category": "Testing",
+    "description": "Write integration tests that verify multiple components work together correctly with real dependencies",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "validate-incoming-to-rejected": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `incoming \u2192 rejected` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "work-on-todo-task": {
+    "category": "Kanban",
+    "description": "Execute the best next work for a task currently in `todo`.",
+    "next_skills": [
+      "validate-todo-to-breakdown",
+      "validate-todo-to-in_progress"
+    ],
+    "is_entry_point": true
+  },
+  "work-on-incoming-task": {
+    "category": "Kanban",
+    "description": "Execute the best next work for a task currently in `incoming`.",
+    "next_skills": [
+      "validate-incoming-to-accepted",
+      "validate-incoming-to-icebox",
+      "validate-incoming-to-rejected"
+    ],
+    "is_entry_point": true
+  },
+  "validate-in_review-to-todo": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `in_review \u2192 todo` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "lint-gate": {
+    "category": "General",
+    "description": "Protocol to enforce zero lint/type errors before marking work done.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "validate-todo-to-breakdown": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `todo \u2192 breakdown` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "opencode-recover-project": {
+    "category": "OpenCode",
+    "description": "Recover project state using OpenCode sessions, snapshots, and reconstituter outputs",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "kanban-state-icebox": {
+    "category": "Kanban",
+    "description": "This skill guides agents through managing the **Icebox** state.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "work-on-rejected-task": {
+    "category": "Kanban",
+    "description": "Execute the best next work for a task currently in `rejected`.",
+    "next_skills": [
+      "validate-rejected-to-icebox"
+    ],
+    "is_entry_point": true
+  },
+  "opencode-tools-mcp": {
+    "category": "OpenCode",
+    "description": "Implement or adjust OpenCode tools, MCP servers, and ACP integrations with correct protocols",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "github-integration": {
+    "category": "Git",
+    "description": "Perform GitHub operations across all tracked repositories in orgs/**, including issue/PR management, repository synchronization, and automation workflows",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "workspace-commands": {
+    "category": "Workspace",
+    "description": "Run common workspace-level commands for linting, typechecking, building, and utilities",
+    "next_skills": [
+      "opencode-command-authoring",
+      "workspace-build",
+      "workspace-lint",
+      "workspace-typecheck"
+    ],
+    "is_entry_point": false
+  },
+  "apology-action-protocol": {
+    "category": "General",
+    "description": "Protocol to stop apology loops and focus on verified fixes.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "lsp-server-integration": {
+    "category": "General",
+    "description": "Add and configure Language Server Protocol (LSP) servers to provide language intelligence in OpenCode",
+    "next_skills": [
+      "opencode-configs"
+    ],
+    "is_entry_point": false
+  },
+  "work-on-accepted-task": {
+    "category": "Kanban",
+    "description": "Execute the best next work for a task currently in `accepted`.",
+    "next_skills": [
+      "validate-accepted-to-breakdown",
+      "validate-accepted-to-icebox"
+    ],
+    "is_entry_point": true
+  },
+  "kanban-state-document": {
+    "category": "Kanban",
+    "description": "This skill guides agents through the **Document** state.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "kanban-state-review": {
+    "category": "Kanban",
+    "description": "This skill guides agents through the **Review** state.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "clojure-quality": {
+    "category": "Clojure",
+    "description": "Auto-fix Clojure delimiters and validate syntax with OpenCode tools.",
+    "next_skills": [
+      "clojure-syntax-rescue"
+    ],
+    "is_entry_point": false
+  },
+  "task-atomicity-guard": {
+    "category": "General",
+    "description": "Protocol to keep work atomic and prevent scope creep.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "workspace-typecheck": {
+    "category": "Workspace",
+    "description": "Type check all TypeScript files across the entire workspace, including all submodules under orgs/**, using strict TypeScript settings",
+    "next_skills": [],
+    "is_entry_point": true
+  },
+  "validate-testing-to-in_review": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `testing \u2192 in_review` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "opencode-tool-authoring": {
+    "category": "OpenCode",
+    "description": "Design and implement OpenCode tools with correct schemas, execution behavior, and documentation",
+    "next_skills": [
+      "opencode-tools-mcp"
+    ],
+    "is_entry_point": false
+  },
+  "testing-typescript-vitest": {
+    "category": "Testing",
+    "description": "Set up and write tests using Vitest for TypeScript projects with proper configuration and TypeScript support",
+    "next_skills": [
+      "testing-clojure-cljs"
+    ],
+    "is_entry_point": false
+  },
+  "opencode-sdk": {
+    "category": "OpenCode",
+    "description": "Implement or regenerate OpenCode SDKs safely after server or API changes",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "opencode-agent-file-generator": {
+    "category": "OpenCode",
+    "description": "Recursively initialize and update AGENTS.md files across the workspace with context-aware skill advertisements.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "validate-incoming-to-accepted": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `incoming \u2192 accepted` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "validate-in_review-to-testing": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `in_review \u2192 testing` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "git-safety-check": {
+    "category": "Git",
+    "description": "Protocol to ensure safe git operations and avoid detached HEAD or dirty commits.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "validate-document-to-done": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `document \u2192 done` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "validate-in_progress-to-breakdown": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `in_progress \u2192 breakdown` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "agile-process": {
+    "category": "General",
+    "description": "This skill guides agents and developers through the Kanban workflow defined in `orgs/riatzukiza/promethean/docs/agile/process.md`.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "validate-breakdown-to-rejected": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `breakdown \u2192 rejected` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "work-on-ready-task": {
+    "category": "Kanban",
+    "description": "Execute the best next work for a task currently in `ready`.",
+    "next_skills": [
+      "validate-ready-to-breakdown",
+      "validate-ready-to-todo"
+    ],
+    "is_entry_point": true
+  },
+  "testing-typescript-ava": {
+    "category": "Testing",
+    "description": "Set up and write tests using Ava test runner for TypeScript with minimal configuration and fast execution",
+    "next_skills": [
+      "testing-clojure-cljs"
+    ],
+    "is_entry_point": false
+  },
+  "pm2-process-management": {
+    "category": "PM2",
+    "description": "Start, stop, restart, and manage PM2 processes using the ecosystem-based configuration system",
+    "next_skills": [
+      "create-pm2-clj-config",
+      "render-pm2-clj-config",
+      "workspace-navigation"
+    ],
+    "is_entry_point": true
+  },
+  "validate-incoming-to-icebox": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `incoming \u2192 icebox` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "opencode-command-authoring": {
+    "category": "OpenCode",
+    "description": "Create and manage OpenCode commands with valid frontmatter and predictable execution",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "testing-unit": {
+    "category": "Testing",
+    "description": "Write fast, focused unit tests for individual functions, classes, and modules with proper isolation and mocking",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "validate-accepted-to-icebox": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `accepted \u2192 icebox` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "testing-e2e": {
+    "category": "Testing",
+    "description": "Write end-to-end tests that verify complete user workflows and critical system paths across the full stack",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "testing-general": {
+    "category": "Testing",
+    "description": "Apply testing best practices, choose appropriate test types, and establish reliable test coverage across the codebase",
+    "next_skills": [
+      "workspace-build"
+    ],
+    "is_entry_point": true
+  },
+  "workspace-navigation": {
+    "category": "Workspace",
+    "description": "Locate the right repo, file, and pattern quickly in a multi-repo workspace with many submodules",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "opencode-configs": {
+    "category": "OpenCode",
+    "description": "Update OpenCode configuration, rules, commands, and permissions in line with official documentation",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "validate-document-to-in_review": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `document \u2192 in_review` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "work-on-blocked-task": {
+    "category": "Kanban",
+    "description": "Execute the best next work for a task currently in `blocked`.",
+    "next_skills": [
+      "validate-blocked-to-breakdown"
+    ],
+    "is_entry_point": true
+  },
+  "opencode-plugin-authoring": {
+    "category": "OpenCode",
+    "description": "Create or update OpenCode plugins with correct packaging, runtime behavior, and documentation",
+    "next_skills": [
+      "opencode-plugins"
+    ],
+    "is_entry_point": false
+  },
+  "nx-integration": {
+    "category": "General",
+    "description": "Use Nx to detect affected projects and run targets across multiple submodules in the workspace",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "validate-breakdown-to-blocked": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `breakdown \u2192 blocked` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "opencode-apply-reconstituted-diffs": {
+    "category": "OpenCode",
+    "description": "Apply reconstructed diff patches safely and validate results",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "opencode-extract-diffs": {
+    "category": "OpenCode",
+    "description": "Extract and normalize diff snapshots from OpenCode session artifacts",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "mcp-server-integration": {
+    "category": "General",
+    "description": "Add and configure Model Context Protocol (MCP) servers with correct protocol compliance and tool registration",
+    "next_skills": [
+      "opencode-tools-mcp"
+    ],
+    "is_entry_point": false
+  },
+  "validate-blocked-to-breakdown": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `blocked \u2192 breakdown` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "opencode-plugins": {
+    "category": "OpenCode",
+    "description": "Build or modify OpenCode plugins with correct packaging and runtime behavior",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "find-skills": {
+    "category": "General",
+    "description": "Helps users discover and install agent skills when they ask questions like 'how do I do X', 'find a skill for X', 'is there a skill that can...', or express interest in extending capabilities",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "test-preservation": {
+    "category": "General",
+    "description": "Protocol to forbid deleting or skipping tests to make builds pass.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "validate-testing-to-in_progress": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `testing \u2192 in_progress` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "update-task-status": {
+    "category": "General",
+    "description": "Prime the agent to evaluate a task's current FSM state and choose the correct next transition.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "render-pm2-clj-config": {
+    "category": "PM2",
+    "description": "Render pm2-clj ecosystem files to JSON for validation and debugging without starting processes",
+    "next_skills": [
+      "create-pm2-clj-config",
+      "pm2-process-management",
+      "workspace-navigation"
+    ],
+    "is_entry_point": false
+  },
+  "opencode-skill-creation": {
+    "category": "OpenCode",
+    "description": "Create new OpenCode skills that validate, load reliably, and follow repository conventions",
+    "next_skills": [
+      "skill-authoring"
+    ],
+    "is_entry_point": false
+  },
+  "validate-breakdown-to-ready": {
+    "category": "Kanban",
+    "description": "Validates the FSM transition `breakdown \u2192 ready` using `docs/reference/process.md` rules and WIP checks.",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "kanban-state-done": {
+    "category": "Kanban",
+    "description": "This skill guides agents through the **Done** state (Closure).",
+    "next_skills": [],
+    "is_entry_point": false
+  },
+  "giga-workflow": {
+    "category": "General",
+    "description": "Execute Giga system operations for workspace automation, including watching changes, running submodule tests, and propagating commits",
+    "next_skills": [],
+    "is_entry_point": false
+  }
+}

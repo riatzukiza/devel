@@ -387,3 +387,8 @@ expect(JSON.stringify(result)).toBe(JSON.stringify(expected));
 - Vitest API: https://vitest.dev/api/
 - Vite: https://vitejs.dev/
 - TypeScript: https://www.typescriptlang.org/
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[testing-clojure-cljs](../testing-clojure-cljs/SKILL.md)**

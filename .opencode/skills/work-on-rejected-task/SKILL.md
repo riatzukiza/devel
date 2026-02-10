@@ -13,3 +13,8 @@ Execute the best next work for a task currently in `rejected`.
 - Updated spec notes
 - Suggested next state
 - Evidence links (PRs/tests/docs) as applicable
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[validate-rejected-to-icebox](../validate-rejected-to-icebox/SKILL.md)**

@@ -13,3 +13,9 @@ Execute the best next work for a task currently in `todo`.
 - Updated spec notes
 - Suggested next state
 - Evidence links (PRs/tests/docs) as applicable
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[validate-todo-to-breakdown](../validate-todo-to-breakdown/SKILL.md)**
+- **[validate-todo-to-in_progress](../validate-todo-to-in_progress/SKILL.md)**

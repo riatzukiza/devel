@@ -44,3 +44,9 @@ Apply workspace TypeScript and ESLint standards consistently across the repo.
 ## Related Skills
 - `workspace-lint`
 - `workspace-typecheck`
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[workspace-lint](../workspace-lint/SKILL.md)**
+- **[workspace-typecheck](../workspace-typecheck/SKILL.md)**

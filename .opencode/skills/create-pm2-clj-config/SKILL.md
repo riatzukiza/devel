@@ -152,3 +152,10 @@ pm2 logs <process-name>
 - Use `pm2-process-management` skill to start/stop the new process
 - Use `render-pm2-clj-config` skill to validate before starting
 - Use `workspace-navigation` skill to find existing examples
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[pm2-process-management](../pm2-process-management/SKILL.md)**
+- **[render-pm2-clj-config](../render-pm2-clj-config/SKILL.md)**
+- **[workspace-navigation](../workspace-navigation/SKILL.md)**
