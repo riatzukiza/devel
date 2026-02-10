@@ -4,30 +4,38 @@
  * Unified CLI for managing OpenCode sessions with OpenPlanner events.
  *
  * Commands:
- *   index         Index all OpenCode sessions into OpenPlanner
+ *   index         Index OpenCode sessions into OpenPlanner
  *   search        Search indexed sessions using OpenPlanner FTS
  *   help          Show this help message
  *
  * Usage:
  *   pnpm -C packages/reconstituter opencode-sessions index
  *   pnpm -C packages/reconstituter opencode-sessions search "your query here" --k 10 --session <session_id>
- *   pnpm -C packages/reconstituter opencode-sessions help
  *
  * Environment:
- *   OPENCODE_BASE_URL     - OpenCode server URL (default: http://localhost:4096)
- *   OPENPLANNER_URL       - OpenPlanner server URL (default: http://localhost:7777)
- *   OPENPLANNER_API_KEY   - OpenPlanner API key (optional)
- *   OPENCODE_THROTTLE_MS  - Minimum delay between OpenCode API calls (default: 200)
- *   LEVEL_DIR             - LevelDB directory (default: .reconstitute/level)
- *   BATCH_SIZE            - Batch size for indexing (default: 32)
+ *   OPENCODE_BASE_URL                 - OpenCode server URL (default: http://localhost:4096)
+ *   OPENCODE_THROTTLE_MS              - Minimum delay between OpenCode API calls (default: 200)
+ *   LEVEL_DIR                         - LevelDB directory (default: .reconstitute/level)
+ *   BATCH_SIZE                        - Batch size for indexing (default: 32)
+ *   OPENCODE_CHUNK_INDEXING           - "1" (default) to index chunk events; "0" for legacy per-message
+ *   OPENCODE_INDEX_LARGEST_OF_LAST_N  - If set, index only the single largest session among the last N sessions
+ *   OPENCODE_CHUNK_TARGET_TOKENS      - Approx token target for chunks (default: 32000)
+ *   OPENCODE_CHUNK_OVERLAP_MESSAGES   - Message overlap between chunks (default: 4)
  */
+
 import "dotenv/config";
 
-import { createOpencodeClient } from "@opencode-ai/sdk";
+import {
+  createOpencodeClient,
+  extractPathsLoose as extractPathsLooseViaClient,
+  flattenForEmbedding as flattenForEmbeddingViaClient,
+  opencodeMessageToOllamaParts as opencodeMessageToOllamaPartsViaClient,
+} from "@promethean-os/opencode-cljs-client";
 import { Level } from "level";
 import crypto from "node:crypto";
 import { pathToFileURL } from "node:url";
 import {
+  chunkToEvent,
   formatSearchResults,
   indexEvents,
   messageToEvent,
@@ -36,7 +44,7 @@ import {
 } from "./openplanner-client.js";
 
 // ============================================================================
-// Types and Interfaces
+// Types
 // ============================================================================
 
 export type Json = null | boolean | number | string | Json[] | { [k: string]: Json };
@@ -56,10 +64,13 @@ export type OllamaMessage =
 export interface Env {
   OPENCODE_BASE_URL: string;
   OPENPLANNER_URL: string;
-  OPENPLANNER_API_KEY?: string;
   OPENCODE_THROTTLE_MS: number;
   LEVEL_DIR: string;
   BATCH_SIZE: number;
+  OPENCODE_CHUNK_INDEXING: boolean;
+  OPENCODE_INDEX_LARGEST_OF_LAST_N?: number;
+  OPENCODE_CHUNK_TARGET_TOKENS: number;
+  OPENCODE_CHUNK_OVERLAP_MESSAGES: number;
 }
 
 export interface SearchArgs {
@@ -74,24 +85,28 @@ export interface CliArgs {
 }
 
 // ============================================================================
-// Environment Configuration
+// Environment
 // ============================================================================
 
 export function env(): Env {
   const opEnv = openPlannerEnv();
-
   return {
     OPENCODE_BASE_URL: process.env.OPENCODE_BASE_URL ?? "http://localhost:4096",
     OPENPLANNER_URL: opEnv.OPENPLANNER_URL,
-    OPENPLANNER_API_KEY: opEnv.OPENPLANNER_API_KEY,
     OPENCODE_THROTTLE_MS: Number(process.env.OPENCODE_THROTTLE_MS ?? "200"),
     LEVEL_DIR: process.env.LEVEL_DIR ?? ".reconstitute/level",
     BATCH_SIZE: Number(process.env.BATCH_SIZE ?? "32"),
+    OPENCODE_CHUNK_INDEXING: (process.env.OPENCODE_CHUNK_INDEXING ?? "1") !== "0",
+    OPENCODE_INDEX_LARGEST_OF_LAST_N: process.env.OPENCODE_INDEX_LARGEST_OF_LAST_N
+      ? Number(process.env.OPENCODE_INDEX_LARGEST_OF_LAST_N)
+      : undefined,
+    OPENCODE_CHUNK_TARGET_TOKENS: Number(process.env.OPENCODE_CHUNK_TARGET_TOKENS ?? "32000"),
+    OPENCODE_CHUNK_OVERLAP_MESSAGES: Number(process.env.OPENCODE_CHUNK_OVERLAP_MESSAGES ?? "4"),
   };
 }
 
 // ============================================================================
-// Utility Functions
+// Utility
 // ============================================================================
 
 function sha256(s: string): string {
@@ -103,79 +118,34 @@ const sleep = (ms: number): Promise<void> =>
     setTimeout(resolve, ms);
   });
 
+function clampInt(v: number, min: number, max: number): number {
+  if (!Number.isFinite(v)) return min;
+  return Math.max(min, Math.min(max, Math.floor(v)));
+}
+
+// Conservative approximation: tokens ~= chars / 3.5.
+function approxTokens(text: string): number {
+  return Math.ceil((text?.length ?? 0) / 3.5);
+}
+
+function joinDocs(docs: Array<{ doc: string }>): string {
+  return docs.map((d) => d.doc).join("\n\n");
+}
+
 export function flattenForEmbedding(ollamaMsgs: OllamaMessage[]): string {
-  const lines: string[] = [];
-  for (const m of ollamaMsgs) {
-    if (m.role === "tool") {
-      lines.push(`[tool:${m.tool_name}] ${m.content}`);
-    } else if (m.role === "assistant" && "tool_calls" in m && m.tool_calls?.length) {
-      for (const tc of m.tool_calls) {
-        lines.push(`[tool_call:${tc.function.name}] ${JSON.stringify(tc.function.arguments)}`);
-      }
-    } else {
-      lines.push(`[${m.role}] ${("content" in m && m.content) ? m.content : ""}`);
-    }
-  }
-  return lines.join("\n");
+  return flattenForEmbeddingViaClient(ollamaMsgs) as string;
 }
 
 export function extractPathsLoose(text: string): string[] {
-  const paths = new Set<string>();
-  const re = /(^|[\s"'`(])((?:\.{0,2}\/)?(?:[A-Za-z0-9_.-]+\/)+[A-Za-z0-9_.-]+)(?=$|[\s"'`),.:;])/g;
-  for (const m of text.matchAll(re)) paths.add(m[2]);
-  return [...paths];
+  const result = extractPathsLooseViaClient(text);
+  if (Array.isArray(result)) return result.map((x) => String(x));
+  return [];
 }
 
 export function opencodeMessageToOllamaParts(entry: any): OllamaMessage[] {
-  const info = entry?.info ?? {};
-  const parts: any[] = entry?.parts ?? [];
-
-  const roleRaw = info.role ?? info.type ?? "assistant";
-  const role: "user" | "assistant" | "system" =
-    roleRaw === "user" ? "user" : roleRaw === "system" ? "system" : "assistant";
-
-  const textChunks: string[] = [];
-  const toolCalls: Array<{ name: string; args: Record<string, unknown> }> = [];
-  const toolResults: Array<{ name: string; output: string }> = [];
-
-  for (const p of parts) {
-    if (p?.type === "text" && typeof p.text === "string") {
-      textChunks.push(p.text);
-      continue;
-    }
-
-    const toolName = p?.tool_name ?? p?.name ?? p?.tool?.name ?? p?.function?.name;
-    const toolArgs = p?.arguments ?? p?.args ?? p?.input ?? p?.tool?.input ?? p?.function?.arguments;
-    const toolOut = p?.output ?? p?.result ?? p?.content ?? p?.tool?.output;
-
-    if (toolName && toolArgs && typeof toolArgs === "object" && !Array.isArray(toolArgs)) {
-      toolCalls.push({ name: String(toolName), args: toolArgs as Record<string, unknown> });
-      if (typeof toolOut === "string") toolResults.push({ name: String(toolName), output: toolOut });
-      else if (toolOut != null) toolResults.push({ name: String(toolName), output: JSON.stringify(toolOut) });
-      continue;
-    }
-
-    textChunks.push(`[opencode_part:${p?.type ?? "unknown"}] ${JSON.stringify(p)}`);
-  }
-
-  const msgs: OllamaMessage[] = [];
-  const content = textChunks.join("\n").trim();
-
-  if (toolCalls.length) {
-    msgs.push({
-      role: "assistant",
-      content: content || undefined,
-      tool_calls: toolCalls.map((tc, i) => ({
-        type: "function",
-        function: { index: i, name: tc.name, arguments: tc.args },
-      })),
-    });
-    for (const tr of toolResults) msgs.push({ role: "tool", tool_name: tr.name, content: tr.output });
-  } else {
-    msgs.push({ role, content: content });
-  }
-
-  return msgs;
+  const result = opencodeMessageToOllamaPartsViaClient(entry);
+  if (Array.isArray(result)) return result as OllamaMessage[];
+  return [];
 }
 
 function unwrap<T>(resp: any): T {
@@ -185,8 +155,20 @@ function unwrap<T>(resp: any): T {
   return resp as T;
 }
 
+function unwrapArray<T>(resp: any, objectKeys: string[] = []): T[] {
+  const value = unwrap<any>(resp);
+  if (Array.isArray(value)) return value as T[];
+  if (value && typeof value === "object") {
+    for (const key of objectKeys) {
+      const candidate = (value as Record<string, unknown>)[key];
+      if (Array.isArray(candidate)) return candidate as T[];
+    }
+  }
+  return [];
+}
+
 // ============================================================================
-// Index Command
+// Index
 // ============================================================================
 
 export async function indexSessions(): Promise<void> {
@@ -196,6 +178,10 @@ export async function indexSessions(): Promise<void> {
   console.log(`OpenPlanner URL: ${E.OPENPLANNER_URL}`);
   console.log(`OpenCode URL: ${E.OPENCODE_BASE_URL}`);
   console.log(`Batch size: ${E.BATCH_SIZE}`);
+  console.log(`Chunk indexing: ${E.OPENCODE_CHUNK_INDEXING ? "on" : "off"}`);
+  if (E.OPENCODE_INDEX_LARGEST_OF_LAST_N) {
+    console.log(`Index largest of last N: ${E.OPENCODE_INDEX_LARGEST_OF_LAST_N}`);
+  }
   console.log("");
 
   const client = createOpencodeClient({ baseUrl: E.OPENCODE_BASE_URL });
@@ -208,7 +194,6 @@ export async function indexSessions(): Promise<void> {
       lastOpencodeCall = Date.now();
       return;
     }
-
     const now = Date.now();
     const waitMs = lastOpencodeCall + delay - now;
     if (waitMs > 0) await sleep(waitMs);
@@ -216,25 +201,69 @@ export async function indexSessions(): Promise<void> {
   };
 
   await throttleOpencode();
-  const sessionsResp = await client.session.list();
-  const sessions = unwrap<any[]>(sessionsResp);
-  console.log(`sessionsResp: ${JSON.stringify(sessionsResp)}`);
-  console.log(`sessions: ${JSON.stringify(sessions)}`);
-  console.log(`Found ${sessions?.length} sessions`);
+  const sessionsResp = await client.listSessions();
+  const allSessions = unwrapArray<any>(sessionsResp, ["sessions", "rows"]);
+  console.log(`Found ${allSessions?.length} sessions`);
+
+  const lastN = E.OPENCODE_INDEX_LARGEST_OF_LAST_N;
+  const sessions = typeof lastN === "number" && Number.isFinite(lastN)
+    ? allSessions.slice(0, clampInt(lastN, 1, 500))
+    : allSessions;
+
+  // Optionally pick the single largest session among the last N (by total flattened text length).
+  let sessionsToIndex = sessions;
+  if (typeof lastN === "number" && Number.isFinite(lastN) && lastN > 0) {
+    let best: any | null = null;
+    let bestSize = -1;
+
+    for (const s of sessions) {
+      const sessionId = s.id;
+      if (!sessionId) continue;
+      await throttleOpencode();
+      const messages = unwrapArray<any>(await client.listMessages(sessionId), ["messages", "rows"]);
+      let totalLen = 0;
+      for (let i = 0; i < messages.length; i++) {
+        const entry = messages[i];
+        const ollamaMsgs = opencodeMessageToOllamaParts(entry);
+        const doc = flattenForEmbedding(ollamaMsgs);
+        totalLen += doc.length;
+      }
+      if (totalLen > bestSize) {
+        bestSize = totalLen;
+        best = s;
+      }
+    }
+
+    sessionsToIndex = best ? [best] : [];
+    if (best) {
+      console.log(`Indexing only largest session from last ${clampInt(lastN, 1, 500)}: ${best.id} (approx chars: ${bestSize})`);
+    }
+  }
 
   let totalRecords = 0;
 
-  for (const s of sessions) {
+  for (const s of sessionsToIndex) {
     const sessionId = s.id;
     if (!sessionId) continue;
 
     const sessionTitle = s.title ?? "";
     await throttleOpencode();
-    const messages = unwrap<any[]>(await client.session.messages({ path: { id: sessionId } }));
+    const messages = unwrapArray<any>(await client.listMessages(sessionId), ["messages", "rows"]);
 
     await db.put(`sess:${sessionId}:meta`, { id: sessionId, title: sessionTitle });
+
     const idsInOrder: string[] = [];
     const eventsToIndex: any[] = [];
+
+    const docs: Array<{
+      messageIndex: number;
+      messageId: string;
+      createdAt: number;
+      doc: string;
+      docHash: string;
+      paths: string[];
+      role: string;
+    }> = [];
 
     for (let i = 0; i < messages.length; i++) {
       const entry = messages[i];
@@ -249,24 +278,96 @@ export async function indexSessions(): Promise<void> {
       idsInOrder.push(rowId);
 
       const prevHash = await db.get(`msg:${rowId}:hash`).catch(() => null);
-      if (prevHash === docHash) continue;
-
       const paths = extractPathsLoose(doc);
-      
-      const event = messageToEvent({
-        sessionId,
-        messageId: msgId,
+
+      docs.push({
         messageIndex: i,
-        text: doc,
+        messageId: msgId,
         createdAt,
-        role: entry?.info?.role ?? entry?.info?.type ?? "assistant",
-        sessionTitle,
+        doc,
+        docHash,
         paths,
+        role: entry?.info?.role ?? entry?.info?.type ?? "assistant",
       });
 
-      eventsToIndex.push(event);
-      await db.put(`msg:${rowId}:hash`, docHash);
-      await db.put(`msg:${rowId}:ollama`, ollamaMsgs);
+      if (!E.OPENCODE_CHUNK_INDEXING && prevHash !== docHash) {
+        eventsToIndex.push(
+          messageToEvent({
+            sessionId,
+            messageId: msgId,
+            messageIndex: i,
+            text: doc,
+            createdAt,
+            role: entry?.info?.role ?? entry?.info?.type ?? "assistant",
+            sessionTitle,
+            paths,
+          })
+        );
+      }
+
+      if (prevHash !== docHash) {
+        await db.put(`msg:${rowId}:hash`, docHash);
+        await db.put(`msg:${rowId}:ollama`, ollamaMsgs);
+      }
+    }
+
+    if (E.OPENCODE_CHUNK_INDEXING) {
+      const targetTokens = clampInt(E.OPENCODE_CHUNK_TARGET_TOKENS, 512, 200_000);
+      const overlapMsgs = clampInt(E.OPENCODE_CHUNK_OVERLAP_MESSAGES, 0, 50);
+
+      let chunkIndex = 0;
+      let buf: Array<{ messageIndex: number; messageId: string; createdAt: number; doc: string; paths: string[]; role: string }> = [];
+      let bufTokens = 0;
+
+      const flush = () => {
+        if (buf.length === 0) return;
+        const text = joinDocs(buf);
+        const allPaths = Array.from(new Set(buf.flatMap((d) => d.paths ?? [])));
+        const first = buf[0];
+        const last = buf[buf.length - 1];
+
+        eventsToIndex.push(
+          chunkToEvent({
+            sessionId,
+            sessionTitle,
+            chunkIndex,
+            messageIdStart: first.messageId,
+            messageIdEnd: last.messageId,
+            messageIndexStart: first.messageIndex,
+            messageIndexEnd: last.messageIndex,
+            createdAt: last.createdAt,
+            text,
+            approxTokens: bufTokens,
+            paths: allPaths,
+          })
+        );
+        chunkIndex += 1;
+
+        if (overlapMsgs > 0) {
+          buf = buf.slice(Math.max(0, buf.length - overlapMsgs));
+          bufTokens = approxTokens(joinDocs(buf));
+        } else {
+          buf = [];
+          bufTokens = 0;
+        }
+      };
+
+      for (const d of docs) {
+        const nextTokens = approxTokens(d.doc);
+        if (buf.length > 0 && bufTokens + nextTokens > targetTokens) {
+          flush();
+        }
+        buf.push({
+          messageIndex: d.messageIndex,
+          messageId: d.messageId,
+          createdAt: d.createdAt,
+          doc: d.doc,
+          paths: d.paths,
+          role: d.role,
+        });
+        bufTokens += nextTokens;
+      }
+      flush();
     }
 
     await db.put(`sess:${sessionId}:order`, idsInOrder);
@@ -284,144 +385,88 @@ export async function indexSessions(): Promise<void> {
 }
 
 // ============================================================================
-// Search Command
+// Search
 // ============================================================================
 
 export async function searchSessions(args: SearchArgs): Promise<void> {
-  const E = env();
-
   console.log("Searching OpenCode sessions via OpenPlanner...");
   console.log(`Query: "${args.query}"`);
-  console.log(`Top-K: ${args.k}`);
-  if (args.session) console.log(`Session filter: ${args.session}`);
-  console.log("");
+  if (args.session) console.log(`Session: ${args.session}`);
 
-  const results = await searchFts(args.query, {
+  const resp = await searchFts({
+    q: args.query,
     limit: args.k,
+    source: "opencode-sessions",
     session: args.session,
   });
 
-  console.log(formatSearchResults(results));
+  // eslint-disable-next-line no-console
+  console.log(formatSearchResults(resp.results));
 }
 
 // ============================================================================
-// CLI Argument Parsing
+// CLI parsing
 // ============================================================================
 
 export function parseCliArgs(argv: string[]): CliArgs {
-  const command = argv[0]?.toLowerCase();
+  const [command, ...rest] = argv;
 
-  if (command === "help" || command === "--help" || command === "-h" || !command) {
+  if (!command || command === "help" || command === "--help" || command === "-h") {
     return { command: "help" };
   }
 
   if (command === "index") {
-    return { command: "index" };
+    return { command };
   }
 
   if (command === "search") {
-    const args: SearchArgs = { query: "", k: 10, session: undefined };
-    const positional: string[] = [];
-
-    for (let i = 1; i < argv.length; i++) {
-      const a = argv[i];
-      if (a === "--k") {
-        args.k = Number(argv[++i] ?? "10");
-      } else if (a === "--session" || a === "-s") {
-        args.session = argv[++i] ?? undefined;
-      } else {
-        positional.push(a);
+    const query = rest[0] ?? "";
+    let k = 10;
+    let session: string | undefined;
+    for (let i = 1; i < rest.length; i++) {
+      const tok = rest[i];
+      if (tok === "--k" && rest[i + 1]) {
+        k = Number(rest[i + 1]);
+        i += 1;
+      } else if (tok === "--session" && rest[i + 1]) {
+        session = rest[i + 1];
+        i += 1;
       }
     }
-
-    args.query = positional.join(" ").trim();
-    if (!args.query) {
-      throw new Error(
-        "Missing query string for search command.\nExample: pnpm -C packages/reconstituter opencode-sessions search \"my query\""
-      );
-    }
-
-    return { command: "search", searchArgs: args };
+    return { command, searchArgs: { query, k, session } };
   }
 
-  throw new Error(`Unknown command: ${command}\nUse 'index', 'search', or 'help'`);
+  return { command: "help" };
 }
 
-// ============================================================================
-// Main Entry Point
-// ============================================================================
-
-function showHelp(): void {
-  console.log(`
-OpenCode Sessions CLI
-
-A unified tool for indexing and searching OpenCode sessions using OpenPlanner events.
-
-USAGE
-  pnpm -C packages/reconstituter opencode-sessions <command> [options]
-
-COMMANDS
-  index                 Index all OpenCode sessions into OpenPlanner
-  search <query>        Search indexed sessions using OpenPlanner FTS
-  help                  Show this help message
-
-SEARCH OPTIONS
-  --k <number>          Number of results to return (default: 10)
-  --session, -s <id>    Filter results to specific session ID
-
-EXAMPLES
-  # Index all sessions
-  pnpm -C packages/reconstituter opencode-sessions index
-
-  # Search for relevant sessions
-  pnpm -C packages/reconstituter opencode-sessions search "how does authentication work"
-
-  # Get more results
-  pnpm -C packages/reconstituter opencode-sessions search "error handling patterns" --k 20
-
-  # Filter by specific session
-  pnpm -C packages/reconstituter opencode-sessions search "api design" --session ses_abc123
-
-ENVIRONMENT VARIABLES
-  OPENCODE_BASE_URL     OpenCode server URL (default: http://localhost:4096)
-  OPENPLANNER_URL       OpenPlanner server URL (default: http://localhost:7777)
-  OPENPLANNER_API_KEY   OpenPlanner API key (optional)
-  OPENCODE_THROTTLE_MS  Minimum delay between OpenCode API calls (default: 200)
-  LEVEL_DIR             LevelDB directory (default: .reconstitute/level)
-  BATCH_SIZE            Batch size for indexing (default: 32)
-`);
+function helpText(): string {
+  return `OpenCode Sessions CLI\n\nCommands:\n  index\n  search <query> [--k N] [--session <session>]\n  help\n`;
 }
 
-async function main(): Promise<void> {
-  try {
-    const args = parseCliArgs(process.argv.slice(2));
+export async function main(argv = process.argv.slice(2)): Promise<void> {
+  const args = parseCliArgs(argv);
 
-    switch (args.command) {
-      case "help":
-        showHelp();
-        break;
-
-      case "index":
-        await indexSessions();
-        break;
-
-      case "search":
-        if (!args.searchArgs) {
-          throw new Error("Search arguments missing");
-        }
-        await searchSessions(args.searchArgs);
-        break;
-
-      default:
-        throw new Error(`Unknown command: ${args.command}`);
-    }
-  } catch (error) {
-    console.error("Error:", error instanceof Error ? error.message : error);
-    process.exit(1);
+  if (args.command === "help") {
+    // eslint-disable-next-line no-console
+    console.log(helpText());
+    return;
   }
+
+  if (args.command === "index") {
+    await indexSessions();
+    return;
+  }
+
+  if (args.command === "search" && args.searchArgs) {
+    await searchSessions(args.searchArgs);
+    return;
+  }
+
+  // eslint-disable-next-line no-console
+  console.log(helpText());
 }
 
-const entryHref = pathToFileURL(process.argv[1] ?? "").href;
-if (entryHref === import.meta.url) {
-  main();
+// If invoked as a script
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  void main();
 }

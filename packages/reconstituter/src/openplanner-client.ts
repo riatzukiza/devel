@@ -13,10 +13,13 @@
  *   OPENPLANNER_API_KEY - Bearer token for authentication
  */
 
-import crypto from "node:crypto";
 import {
   createOpenPlannerClient,
+  createOpenPlannerEvent,
+  createOpenPlannerChunkEvent,
   defaultOpenPlannerConfig,
+  type OpenPlannerEvent,
+  type OpenPlannerSourceRef,
 } from "@promethean-os/openplanner-cljs-client";
 
 // ============================================================================
@@ -30,25 +33,8 @@ export type BlobRef = {
   size?: number;
 };
 
-export type SourceRef = Partial<{
-  project: string;
-  session: string;
-  message: string;
-  turn: string;
-}>;
-
-export type EventEnvelopeV1 = {
-  schema: "openplanner.event.v1";
-  id: string;
-  ts: string;
-  source: string;
-  kind: string;
-  source_ref?: SourceRef;
-  text?: string;
-  attachments?: BlobRef[];
-  meta?: Record<string, unknown>;
-  extra?: Record<string, unknown>;
-};
+export type SourceRef = OpenPlannerSourceRef;
+export type EventEnvelopeV1 = OpenPlannerEvent;
 
 export type EventIngestRequest = { events: EventEnvelopeV1[] };
 
@@ -95,10 +81,6 @@ export function openPlannerEnv(): OpenPlannerEnv {
 // HTTP Client
 // ============================================================================
 
-function sha256(s: string): string {
-  return crypto.createHash("sha256").update(s).digest("hex");
-}
-
 function openPlannerClient() {
   const env = openPlannerEnv();
   return createOpenPlannerClient({
@@ -136,35 +118,50 @@ export function messageToEvent(params: {
   sessionTitle?: string;
   paths?: string[];
 }): EventEnvelopeV1 {
-  const { sessionId, messageId, messageIndex, text, createdAt, role, sessionTitle, paths } = params;
+  // Single source of truth for event envelope creation.
+  return createOpenPlannerEvent({
+    sessionId: params.sessionId,
+    messageId: params.messageId,
+    messageIndex: params.messageIndex,
+    text: params.text,
+    createdAt: params.createdAt,
+    role: params.role,
+    sessionTitle: params.sessionTitle,
+    paths: params.paths,
+  }) as unknown as EventEnvelopeV1;
+}
 
-  const id = sha256(`${sessionId}:${messageId}:${messageIndex}`);
-  const ts = new Date(createdAt).toISOString();
-
-  const meta: Record<string, unknown> = {
-    message_id: messageId,
-    message_index: messageIndex,
-    role,
-    session_title: sessionTitle,
-  };
-
-  if (paths && paths.length > 0) {
-    meta.paths = paths.join("|");
-  }
-
-  return {
-    schema: "openplanner.event.v1",
-    id,
-    ts,
-    source: "opencode-sessions",
-    kind: "message",
-    source_ref: {
-      session: sessionId,
-      message: messageId,
-    },
-    text,
-    meta,
-  };
+/**
+ * Convert a multi-message chunk to an OpenPlanner event.
+ * This is the desired indexing unit for long coding sessions: a cohesive block
+ * containing multiple messages/events, rather than per-message events.
+ */
+export function chunkToEvent(params: {
+  sessionId: string;
+  sessionTitle?: string;
+  chunkIndex: number;
+  messageIdStart: string;
+  messageIdEnd: string;
+  messageIndexStart: number;
+  messageIndexEnd: number;
+  createdAt: number;
+  text: string;
+  approxTokens?: number;
+  paths?: string[];
+}): EventEnvelopeV1 {
+  return createOpenPlannerChunkEvent({
+    sessionId: params.sessionId,
+    sessionTitle: params.sessionTitle,
+    chunkIndex: params.chunkIndex,
+    messageIdStart: params.messageIdStart,
+    messageIdEnd: params.messageIdEnd,
+    messageIndexStart: params.messageIndexStart,
+    messageIndexEnd: params.messageIndexEnd,
+    approxTokens: params.approxTokens,
+    text: params.text,
+    createdAt: params.createdAt,
+    paths: params.paths,
+  }) as unknown as EventEnvelopeV1;
 }
 
 // ============================================================================
