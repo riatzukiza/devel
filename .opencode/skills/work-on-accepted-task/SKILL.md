@@ -13,3 +13,9 @@ Execute the best next work for a task currently in `accepted`.
 - Updated spec notes
 - Suggested next state
 - Evidence links (PRs/tests/docs) as applicable
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[validate-accepted-to-breakdown](../validate-accepted-to-breakdown/SKILL.md)**
+- **[validate-accepted-to-icebox](../validate-accepted-to-icebox/SKILL.md)**

@@ -37,3 +37,8 @@ Improve an existing or new skill using the workspace optimization guide and temp
 ## References
 - Skill optimization guide: `docs/skill-optimization-guide.md`
 - Skill authoring template: `.opencode/skills/skill-authoring.md`
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[skill-authoring](../skill-authoring/SKILL.md)**

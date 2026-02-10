@@ -82,3 +82,12 @@ Only these fields are recognized by OpenCode:
 ## References
 - OpenCode agents docs: https://opencode.ai/docs/agents/
 - OpenCode skills docs: https://opencode.ai/docs/skills/
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[pm2-process-management](../pm2-process-management/SKILL.md)**
+- **[submodule-ops](../submodule-ops/SKILL.md)**
+- **[workspace-build](../workspace-build/SKILL.md)**
+- **[workspace-lint](../workspace-lint/SKILL.md)**
+- **[workspace-typecheck](../workspace-typecheck/SKILL.md)**

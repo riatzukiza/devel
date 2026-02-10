@@ -132,3 +132,8 @@ pnpm test:watch
 - Vitest docs: https://vitest.dev/
 - Ava docs: https://github.com/avajs/ava
 - Nx testing: https://nx.dev/recipes/testing
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[workspace-build](../workspace-build/SKILL.md)**

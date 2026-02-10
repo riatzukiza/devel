@@ -13,3 +13,9 @@ Execute the best next work for a task currently in `ready`.
 - Updated spec notes
 - Suggested next state
 - Evidence links (PRs/tests/docs) as applicable
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[validate-ready-to-breakdown](../validate-ready-to-breakdown/SKILL.md)**
+- **[validate-ready-to-todo](../validate-ready-to-todo/SKILL.md)**
