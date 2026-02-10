@@ -88,3 +88,10 @@ clobber render ecosystem.clj > /tmp/current.json
 clobber render ecosystem.clj.new > /tmp/new.json
 diff /tmp/current.json /tmp/new.json
 ```
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[create-pm2-clj-config](../create-pm2-clj-config/SKILL.md)**
+- **[pm2-process-management](../pm2-process-management/SKILL.md)**
+- **[workspace-navigation](../workspace-navigation/SKILL.md)**

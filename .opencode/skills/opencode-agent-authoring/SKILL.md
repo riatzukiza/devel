@@ -75,3 +75,8 @@ description: Skill: My Skill Description
 ## References
 - Agent and skill guidance: `.opencode/skills/opencode-agents-skills.md`
 - Workspace rules: `AGENTS.md`
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[opencode-agents-skills](../opencode-agents-skills/SKILL.md)**

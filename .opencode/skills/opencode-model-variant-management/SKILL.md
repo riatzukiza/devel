@@ -38,3 +38,8 @@ Add new models, providers, or model variants with correct configuration, auth, a
 - Model/provider guidance: `.opencode/skills/opencode-models-providers.md`
 - OpenCode models docs: https://opencode.ai/docs/models/
 - OpenCode providers docs: https://opencode.ai/docs/providers/
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[opencode-models-providers](../opencode-models-providers/SKILL.md)**
