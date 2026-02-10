@@ -13,6 +13,7 @@ ClojureScript-defined PM2 ecosystem configurations.
 | `index.cljs` | Entry point, loads other ecosystem configs |
 | `opencode.cljs` | OpenCode development processes |
 | `openhax.cljs` | OpenHax application processes |
+| `gates_of_aker.cljs` | Gates of Aker backend + web dev processes |
 | `cephalon_stable.cljs` | Stable Cephalon services |
 | `cephalon_experimental.cljs` | Experimental Cephalon services |
 | `services_openplanner.cljs` | OpenPlanner services |
