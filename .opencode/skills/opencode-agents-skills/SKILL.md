@@ -19,6 +19,20 @@ Author or update agents and skills that align with OpenCode guidance and repo co
 - Agent requirements and expected behaviors.
 - Existing agent/skill docs in this repo.
 
+## Skill Loading Guidance
+When delegating, always include `load_skills` in `delegate_task` and avoid empty skill lists unless you can justify why no skills apply.
+
+### Must-Load Skills and Triggers
+| Topic | Required Skill | Trigger Words |
+| --- | --- | --- |
+| PM2 ecosystem/process management | `pm2-process-management` | "pm2", "ecosystem", "start all", "restart all", "shadow-cljs" |
+| Submodule operations | `submodule-ops` | "orgs/", ".gitmodules", "submodule update", "submodule sync" |
+| Git operations | `git-master` | "commit", "rebase", "squash", "blame", "git log", "push", "pull" |
+| Browser automation | `playwright` or `dev-browser` | "browser", "test website", "fill form", "screenshot", "navigate" |
+| Workspace linting | `workspace-lint` | "lint", "eslint" |
+| Workspace typecheck | `workspace-typecheck` | "typecheck", "typescript", "tsc" |
+| Workspace build | `workspace-build` | "build", "compile" |
+
 ## Required Frontmatter Syntax
 
 When authoring skills, always use valid YAML frontmatter:
@@ -68,3 +82,12 @@ Only these fields are recognized by OpenCode:
 ## References
 - OpenCode agents docs: https://opencode.ai/docs/agents/
 - OpenCode skills docs: https://opencode.ai/docs/skills/
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[pm2-process-management](../pm2-process-management/SKILL.md)**
+- **[submodule-ops](../submodule-ops/SKILL.md)**
+- **[workspace-build](../workspace-build/SKILL.md)**
+- **[workspace-lint](../workspace-lint/SKILL.md)**
+- **[workspace-typecheck](../workspace-typecheck/SKILL.md)**

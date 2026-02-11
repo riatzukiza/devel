@@ -1,0 +1,7 @@
+node_modules
+dist
+data/oauth.json
+data/*.db
+data/*.db.wal
+data/*.db.tmp
+.env

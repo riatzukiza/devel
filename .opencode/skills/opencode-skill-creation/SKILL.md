@@ -111,3 +111,8 @@ metadata:
 ## References
 - Skill authoring template: `.opencode/skill/skill-authoring/SKILL.md`
 - Skill index guidance: `AGENTS.md`
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[skill-authoring](../skill-authoring/SKILL.md)**

@@ -1,0 +1,717 @@
+import { spawn } from "node:child_process";
+import { existsSync } from "node:fs";
+
+import { resolveWithinRoot } from "../util/pathJail.js";
+
+import type { FsBackend, FsBackendName, FsEntry, FsStat } from "./types.js";
+
+export type TreeEntry = {
+  name: string;
+  path: string;
+  kind: "file" | "dir";
+  children?: TreeEntry[];
+};
+
+export type TreePageEntry = {
+  name: string;
+  path: string;
+  kind: "file" | "dir";
+  depth: number;
+  parentPath: string;
+};
+
+export type TreePageResult = {
+  path: string;
+  maxDepth: number;
+  pageSize: number;
+  offset: number;
+  returnedEntries: number;
+  hasMore: boolean;
+  nextCursor?: string;
+  entries: TreePageEntry[];
+};
+
+export type SearchResult = {
+  path: string;
+  line: number;
+  snippet: string;
+};
+
+export type GrepMatch = {
+  path: string;
+  line: number;
+  snippet: string;
+};
+
+export type GrepResult = {
+  path: string;
+  pattern: string;
+  include: string;
+  exclude?: string;
+  maxResults: number;
+  caseSensitive: boolean;
+  truncated: boolean;
+  matches: GrepMatch[];
+};
+
+export type GlobMatch = {
+  path: string;
+  kind: "file" | "dir";
+};
+
+export type GlobResult = {
+  path: string;
+  pattern: string;
+  maxResults: number;
+  truncated: boolean;
+  matches: GlobMatch[];
+};
+
+type TreePageOptions = {
+  cursor?: string;
+  pageSize?: number;
+  includeHidden?: boolean;
+};
+
+type GrepOptions = {
+  path?: string;
+  include?: string;
+  exclude?: string;
+  maxResults?: number;
+  caseSensitive?: boolean;
+  includeHidden?: boolean;
+};
+
+type GlobOptions = {
+  path?: string;
+  maxResults?: number;
+  includeHidden?: boolean;
+  includeDirectories?: boolean;
+};
+
+export class VirtualFs {
+  constructor(
+    private readonly mode: FsBackendName,
+    private readonly local: FsBackend | null,
+    private readonly github: FsBackend | null,
+    private readonly localRootAbs?: string,
+  ) {}
+
+  private async pick(backend?: FsBackendName): Promise<FsBackend> {
+    const choice = backend ?? this.mode;
+
+    const localAvail = this.local && (await this.local.available());
+    const ghAvail = this.github && (await this.github.available());
+
+    const want = (name: "local" | "github") => {
+      const b = name === "local" ? this.local : this.github;
+      if (!b) throw new Error(`${name} backend not configured`);
+      return b;
+    };
+
+    if (choice === "local") return want("local");
+    if (choice === "github") return want("github");
+
+    // auto
+    if (localAvail) return want("local");
+    if (ghAvail) return want("github");
+    throw new Error("No storage backend available");
+  }
+
+  private encodeCursor(offset: number): string {
+    return Buffer.from(String(offset), "utf8").toString("base64url");
+  }
+
+  private decodeCursor(cursor?: string): number {
+    if (!cursor) return 0;
+
+    try {
+      const decoded = Buffer.from(cursor, "base64url").toString("utf8");
+      const offset = Number.parseInt(decoded, 10);
+      if (!Number.isFinite(offset) || offset < 0) {
+        throw new Error("invalid cursor value");
+      }
+      return offset;
+    } catch {
+      throw new Error("Invalid cursor; expected base64url encoded offset");
+    }
+  }
+
+  private async grepWithRipgrep(pattern: string, options: GrepOptions): Promise<GrepResult> {
+    if (!this.localRootAbs) {
+      throw new Error("Local root is not configured for ripgrep-backed search");
+    }
+
+    const {
+      path: searchPath = "",
+      include = "**/*",
+      exclude,
+      maxResults = 100,
+      caseSensitive = false,
+      includeHidden = false,
+    } = options;
+
+    let resolvedRelPath = ".";
+    if (searchPath && searchPath !== ".") {
+      const resolved = resolveWithinRoot(this.localRootAbs, searchPath);
+      resolvedRelPath = resolved.relPath || ".";
+    }
+
+    const args: string[] = [
+      "--json",
+      "--line-number",
+      "--with-filename",
+      "--color",
+      "never",
+      "--no-heading",
+    ];
+
+    if (caseSensitive) {
+      args.push("--case-sensitive");
+    } else {
+      args.push("--ignore-case");
+    }
+
+    if (includeHidden) {
+      args.push("--hidden");
+    }
+
+    const rootGitignore = `${this.localRootAbs}/.gitignore`;
+    if (existsSync(rootGitignore)) {
+      args.push("--ignore-file", rootGitignore);
+    }
+
+    args.push(pattern, resolvedRelPath);
+
+    const matches: GrepMatch[] = [];
+    let truncated = false;
+    let stderr = "";
+
+    const result = await new Promise<GrepResult>((resolve, reject) => {
+      const child = spawn("rg", args, {
+        cwd: this.localRootAbs,
+      });
+
+      let buffer = "";
+      let forceStopped = false;
+
+      const handleMatchLine = (line: string): void => {
+        const trimmed = line.trim();
+        if (!trimmed) {
+          return;
+        }
+
+        let parsed: unknown;
+        try {
+          parsed = JSON.parse(trimmed);
+        } catch {
+          return;
+        }
+
+        const payload = parsed as {
+          type?: string;
+          data?: {
+            path?: { text?: string };
+            lines?: { text?: string };
+            line_number?: number;
+          };
+        };
+
+        if (payload.type !== "match") {
+          return;
+        }
+
+        const matchPath = payload.data?.path?.text;
+        const lineNumber = payload.data?.line_number;
+        const snippet = payload.data?.lines?.text;
+
+        if (!matchPath || !lineNumber || snippet === undefined) {
+          return;
+        }
+
+        const normalizedPath = matchPath.replace(/^\.\//, "");
+
+        if (
+          include &&
+          include !== "**/*" &&
+          include !== "*" &&
+          !this.matchesGlobPattern(normalizedPath, include)
+        ) {
+          return;
+        }
+
+        if (exclude && this.matchesGlobPattern(normalizedPath, exclude)) {
+          return;
+        }
+
+        matches.push({
+          path: normalizedPath,
+          line: lineNumber,
+          snippet: snippet.trim().slice(0, 200),
+        });
+
+        if (matches.length >= maxResults) {
+          truncated = true;
+          forceStopped = true;
+          child.kill("SIGTERM");
+        }
+      };
+
+      const drainBuffer = (flushRemainder = false): void => {
+        while (true) {
+          const idx = buffer.indexOf("\n");
+          if (idx === -1) {
+            break;
+          }
+          const line = buffer.slice(0, idx);
+          buffer = buffer.slice(idx + 1);
+          handleMatchLine(line);
+        }
+
+        if (flushRemainder && buffer.length > 0) {
+          handleMatchLine(buffer);
+          buffer = "";
+        }
+      };
+
+      child.stdout.on("data", (chunk: Buffer | string) => {
+        buffer += chunk.toString();
+        drainBuffer();
+      });
+
+      child.stderr.on("data", (chunk: Buffer | string) => {
+        stderr += chunk.toString();
+      });
+
+      child.on("error", (error) => {
+        reject(new Error(`ripgrep failed to start: ${error.message}`));
+      });
+
+      child.on("close", (code, signal) => {
+        drainBuffer(true);
+
+        const successWithMatches = code === 0 || code === 1;
+        const stoppedForLimit = truncated && (forceStopped || signal === "SIGTERM");
+        if (!successWithMatches && !stoppedForLimit) {
+          reject(new Error(`ripgrep failed (code ${code ?? -1}): ${stderr.trim()}`));
+          return;
+        }
+
+        resolve({
+          path: searchPath,
+          pattern,
+          include,
+          exclude,
+          maxResults,
+          caseSensitive,
+          truncated,
+          matches,
+        });
+      });
+    });
+
+    return result;
+  }
+
+  async list(path: string, backend?: FsBackendName): Promise<FsEntry[]> {
+    const b = await this.pick(backend);
+    return b.list(path);
+  }
+
+  async readFile(path: string, backend?: FsBackendName): Promise<{ path: string; content: string; etag?: string }> {
+    const choice = backend ?? this.mode;
+    if (choice === "auto") {
+      try {
+        const b = await this.pick("local");
+        return await b.readFile(path);
+      } catch {
+        const b = await this.pick("github");
+        return await b.readFile(path);
+      }
+    }
+    const b = await this.pick(choice);
+    return b.readFile(path);
+  }
+
+  async writeFile(path: string, content: string, message?: string, backend?: FsBackendName): Promise<{ path: string; etag?: string }> {
+    const choice = backend ?? this.mode;
+    if (choice === "auto") {
+      const localAvail = this.local && (await this.local.available());
+      if (localAvail) {
+        return this.local.writeFile(path, content, message);
+      }
+
+      const githubAvail = this.github && (await this.github.available());
+      if (githubAvail) {
+        return this.github.writeFile(path, content, message);
+      }
+
+      throw new Error("No storage backend available");
+    }
+    const b = await this.pick(choice);
+    return b.writeFile(path, content, message);
+  }
+
+  async deletePath(path: string, message?: string, backend?: FsBackendName): Promise<{ path: string }> {
+    const choice = backend ?? this.mode;
+    if (choice === "auto") {
+      const localAvail = this.local && (await this.local.available());
+      if (localAvail) {
+        return this.local.deletePath(path, message);
+      }
+
+      const githubAvail = this.github && (await this.github.available());
+      if (githubAvail) {
+        return this.github.deletePath(path, message);
+      }
+
+      throw new Error("No storage backend available");
+    }
+    const b = await this.pick(choice);
+    return b.deletePath(path, message);
+  }
+
+  async stat(path: string, backend?: FsBackendName): Promise<FsStat> {
+    const b = await this.pick(backend);
+    return b.stat(path);
+  }
+
+  async tree(path: string, maxDepth = 3, backend?: FsBackendName): Promise<TreeEntry[]> {
+    const b = await this.pick(backend);
+
+    const buildTree = async (dirPath: string, depth: number): Promise<TreeEntry[]> => {
+      if (depth > maxDepth) return [];
+
+      const entries = await b.list(dirPath);
+      const result: TreeEntry[] = [];
+
+      for (const entry of entries) {
+        const entryPath = dirPath ? `${dirPath}/${entry.name}` : entry.name;
+        const treeEntry: TreeEntry = {
+          name: entry.name,
+          path: entryPath,
+          kind: entry.kind,
+        };
+
+        if (entry.kind === "dir" && depth < maxDepth) {
+          treeEntry.children = await buildTree(entryPath, depth + 1);
+        }
+
+        result.push(treeEntry);
+      }
+
+      return result;
+    };
+
+    return buildTree(path, 1);
+  }
+
+  async treePage(
+    path: string,
+    maxDepth = 3,
+    options: TreePageOptions = {},
+    backend?: FsBackendName
+  ): Promise<TreePageResult> {
+    const b = await this.pick(backend);
+    const includeHidden = options.includeHidden ?? false;
+    const requestedPageSize = options.pageSize ?? 250;
+    const pageSize = Math.max(1, Math.min(2000, requestedPageSize));
+    const offset = this.decodeCursor(options.cursor);
+
+    const entries: TreePageEntry[] = [];
+    let visited = 0;
+    let hasMore = false;
+
+    const collectTree = async (dirPath: string, depth: number): Promise<void> => {
+      if (depth > maxDepth || hasMore) {
+        return;
+      }
+
+      const dirEntries = await b.list(dirPath);
+      for (const entry of dirEntries) {
+        if (hasMore) {
+          return;
+        }
+
+        if (!includeHidden && entry.name.startsWith(".")) {
+          continue;
+        }
+
+        const entryPath = dirPath ? `${dirPath}/${entry.name}` : entry.name;
+
+        if (visited >= offset + pageSize) {
+          hasMore = true;
+          return;
+        }
+
+        if (visited >= offset) {
+          entries.push({
+            name: entry.name,
+            path: entryPath,
+            kind: entry.kind,
+            depth,
+            parentPath: dirPath,
+          });
+        }
+
+        visited += 1;
+
+        if (entry.kind === "dir" && depth < maxDepth) {
+          await collectTree(entryPath, depth + 1);
+        }
+      }
+    };
+
+    await collectTree(path, 1);
+
+    return {
+      path,
+      maxDepth,
+      pageSize,
+      offset,
+      returnedEntries: entries.length,
+      hasMore,
+      nextCursor: hasMore ? this.encodeCursor(offset + entries.length) : undefined,
+      entries,
+    };
+  }
+
+  async search(
+    query: string,
+    options: {
+      path?: string;
+      glob?: string;
+      maxResults?: number;
+      includeHidden?: boolean;
+    } = {},
+    backend?: FsBackendName
+  ): Promise<SearchResult[]> {
+    const b = await this.pick(backend);
+    const { path: searchPath = "", glob = "*", maxResults = 50, includeHidden = false } = options;
+
+    const results: SearchResult[] = [];
+    const regex = new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
+
+    const searchDir = async (dirPath: string): Promise<void> => {
+      if (results.length >= maxResults) return;
+
+      const entries = await b.list(dirPath);
+
+      for (const entry of entries) {
+        if (results.length >= maxResults) return;
+
+        const entryPath = dirPath ? `${dirPath}/${entry.name}` : entry.name;
+
+        if (!includeHidden && entry.name.startsWith(".")) continue;
+
+        if (entry.kind === "dir") {
+          await searchDir(entryPath);
+        } else if (entry.kind === "file") {
+          if (glob !== "*" && !this.matchGlob(entry.name, glob)) continue;
+
+          try {
+            const { content } = await b.readFile(entryPath);
+            const lines = content.split("\n");
+
+            lines.forEach((line, idx) => {
+              if (regex.test(line)) {
+                results.push({
+                  path: entryPath,
+                  line: idx + 1,
+                  snippet: line.trim().slice(0, 200),
+                });
+              }
+            });
+          } catch {
+            // Skip files that can't be read as text
+          }
+        }
+      }
+    };
+
+    await searchDir(searchPath);
+    return results.slice(0, maxResults);
+  }
+
+  async grep(pattern: string, options: GrepOptions = {}, backend?: FsBackendName): Promise<GrepResult> {
+    const b = await this.pick(backend);
+
+    if (b.name === "local") {
+      return this.grepWithRipgrep(pattern, options);
+    }
+
+    const {
+      path: searchPath = "",
+      include = "**/*",
+      exclude,
+      maxResults = 100,
+      caseSensitive = false,
+      includeHidden = false,
+    } = options;
+
+    let compiled: RegExp;
+    try {
+      compiled = new RegExp(pattern, caseSensitive ? "" : "i");
+    } catch {
+      throw new Error("Invalid grep pattern; expected a valid regular expression");
+    }
+
+    const matches: GrepMatch[] = [];
+    let truncated = false;
+
+    const searchDir = async (dirPath: string): Promise<void> => {
+      if (matches.length >= maxResults) {
+        truncated = true;
+        return;
+      }
+
+      const entries = await b.list(dirPath);
+      for (const entry of entries) {
+        if (matches.length >= maxResults) {
+          truncated = true;
+          return;
+        }
+
+        if (!includeHidden && entry.name.startsWith(".")) {
+          continue;
+        }
+
+        const entryPath = dirPath ? `${dirPath}/${entry.name}` : entry.name;
+
+        if (entry.kind === "dir") {
+          await searchDir(entryPath);
+          continue;
+        }
+
+        if (!this.matchGlob(entryPath, include)) {
+          continue;
+        }
+
+        if (exclude && this.matchGlob(entryPath, exclude)) {
+          continue;
+        }
+
+        try {
+          const { content } = await b.readFile(entryPath);
+          const lines = content.split("\n");
+
+          for (let idx = 0; idx < lines.length; idx += 1) {
+            const line = lines[idx] ?? "";
+            if (!compiled.test(line)) {
+              continue;
+            }
+
+            matches.push({
+              path: entryPath,
+              line: idx + 1,
+              snippet: line.trim().slice(0, 200),
+            });
+
+            if (matches.length >= maxResults) {
+              truncated = true;
+              break;
+            }
+          }
+        } catch {
+          // Skip files that cannot be read as text
+        }
+      }
+    };
+
+    await searchDir(searchPath);
+
+    return {
+      path: searchPath,
+      pattern,
+      include,
+      exclude,
+      maxResults,
+      caseSensitive,
+      truncated,
+      matches,
+    };
+  }
+
+  async glob(pattern: string, options: GlobOptions = {}, backend?: FsBackendName): Promise<GlobResult> {
+    const b = await this.pick(backend);
+    const {
+      path: searchPath = "",
+      maxResults = 200,
+      includeHidden = false,
+      includeDirectories = true,
+    } = options;
+
+    const matches: GlobMatch[] = [];
+    let truncated = false;
+
+    const searchDir = async (dirPath: string): Promise<void> => {
+      if (matches.length >= maxResults) {
+        truncated = true;
+        return;
+      }
+
+      const entries = await b.list(dirPath);
+      for (const entry of entries) {
+        if (matches.length >= maxResults) {
+          truncated = true;
+          return;
+        }
+
+        if (!includeHidden && entry.name.startsWith(".")) {
+          continue;
+        }
+
+        const entryPath = dirPath ? `${dirPath}/${entry.name}` : entry.name;
+
+        if (this.matchesGlobPattern(entryPath, pattern) && (entry.kind === "file" || includeDirectories)) {
+          matches.push({
+            path: entryPath,
+            kind: entry.kind,
+          });
+        }
+
+        if (entry.kind === "dir") {
+          await searchDir(entryPath);
+        }
+      }
+    };
+
+    await searchDir(searchPath);
+
+    return {
+      path: searchPath,
+      pattern,
+      maxResults,
+      truncated,
+      matches,
+    };
+  }
+
+  private matchesGlobPattern(candidate: string, glob: string): boolean {
+    if (this.matchGlob(candidate, glob)) {
+      return true;
+    }
+
+    if (glob.startsWith("**/")) {
+      return this.matchGlob(candidate, glob.slice(3));
+    }
+
+    return false;
+  }
+
+  private matchGlob(candidate: string, glob: string): boolean {
+    const normalizedCandidate = candidate.replace(/\\/g, "/");
+    const normalizedGlob = glob.replace(/\\/g, "/");
+
+    const placeholder = "__GLOBSTAR__";
+    const escaped = normalizedGlob
+      .replace(/[.+^${}()|[\]\\]/g, "\\$&")
+      .replace(/\*\*/g, placeholder)
+      .replace(/\*/g, "[^/]*")
+      .replace(/\?/g, ".")
+      .replace(new RegExp(placeholder, "g"), ".*");
+
+    const regex = new RegExp(`^${escaped}$`);
+    return regex.test(normalizedCandidate);
+  }
+}

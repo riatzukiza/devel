@@ -376,3 +376,8 @@ test('handles leading/trailing spaces', (t) => {
 - Ava: https://github.com/avajs/ava
 - Ava docs: https://github.com/avajs/ava/blob/main/readme.md
 - Proxyquire: https://github.com/thloratan/proxyquire
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[testing-clojure-cljs](../testing-clojure-cljs/SKILL.md)**

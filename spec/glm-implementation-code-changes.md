@@ -1,3 +1,17 @@
+---
+uuid: ba71fd54-044b-4ca8-95c0-fa095e3ca375
+title: "GLM Model Variants Implementation - Code Changes"
+slug: glm-implementation-code-changes
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.408448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # GLM Model Variants Implementation - Code Changes
 
 ## Files Modified

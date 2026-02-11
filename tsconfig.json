@@ -8,6 +8,7 @@
     "skipLibCheck": true,                    /* skip type checking of declaration files */
     "forceConsistentCasingInFileNames": true,/* file name casing consistency */
     "moduleResolution": "node",              /* module resolution strategy */
+    "typeRoots": ["./types", "./node_modules/@types"],
     "resolveJsonModule": true,               /* allow importing .json files */
     "outDir": "./dist",                       /* output directory for compiled JS */
     "rootDir": "./src",                      /* root directory of TS source files */

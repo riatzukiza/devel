@@ -1,3 +1,17 @@
+---
+uuid: 3b5f5d83-3954-4244-9bce-6fce24d1b9c1
+title: "Spec: Promethean Effects Instrumentation Research"
+slug: promethean-effects-instrumentation
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.409448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Spec: Promethean Effects Instrumentation Research
 
 ## Context

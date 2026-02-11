@@ -18,14 +18,13 @@ Automatically fix malformed Clojure expressions, balance delimiters, and validat
 - The error is a runtime logic error (use the app-specific debugging flow).
 
 ## Tools
-- `fix_clojure_delimiters` (Parinfer indent/paren or cljstyle mode)
-- `validate_clojure_syntax` (clj-kondo lint)
+- (Deprecated/Removed) `fix_clojure_delimiters`
+- (Deprecated/Removed) `validate_clojure_syntax`
 
 ## Workflow
-1. Run `fix_clojure_delimiters` with `parinfer-indent`.
-2. Run `validate_clojure_syntax`.
-3. If validation fails, retry `fix_clojure_delimiters` with `parinfer-paren`.
-4. If validation still fails, switch to `clojure-syntax-rescue` for manual analysis.
+1. Use `clojure-syntax-rescue` to identify and fix syntax errors manually.
+2. If available, use `cljstyle` or `zprint` from the command line if configured.
+
 
 ## Output
 - Balanced delimiters in the target file.
@@ -34,3 +33,8 @@ Automatically fix malformed Clojure expressions, balance delimiters, and validat
 ## Strong Hints
 - **Constraint**: Only run `cljstyle` if the CLI is installed and available in PATH.
 - **Tip**: Start with Parinfer indent mode; only use paren mode when indent mode fails.
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[clojure-syntax-rescue](../clojure-syntax-rescue/SKILL.md)**

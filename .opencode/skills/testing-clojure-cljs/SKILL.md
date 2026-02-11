@@ -306,3 +306,8 @@ test/
 - shadow-cljs: https://shadow-cljs.github.io/docs/
 - cljs-init-tests: https://github.com/Olical/cljs-init-tests
 - test.check: https://github.com/clojure/test.check
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[testing-typescript-vitest](../testing-typescript-vitest/SKILL.md)**
