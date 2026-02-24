@@ -41,152 +41,243 @@ Multi-repository development workspace with git submodules organized under `orgs
 - Nx for affected detection and workspace automation.
 - Rust in `orgs/openai/codex`.
 
-## Skills and Trigger Words
-Skills live under `.opencode/skills/**/SKILL.md`. Use the skill name as a baseline trigger phrase and follow the trigger words below for common tasks.
+## SKILLS
 
-### Trigger Words Quick Reference
-| Skill | Trigger Words |
-| --- | --- |
-| `pm2-process-management` | "pm2", "ecosystem", "start all", "restart all", "shadow-cljs" |
-| `create-pm2-ecosystem` | "create ecosystem", "add service", "defapp" |
-| `submodule-ops` | "orgs/", ".gitmodules", "submodule update", "submodule sync" |
-| `git-master` | "commit", "rebase", "squash", "blame", "git log", "push", "pull" |
-| `playwright` | "browser", "test website", "fill form", "screenshot", "navigate" |
-| `workspace-commands` | "pnpm lint", "pnpm typecheck", "pnpm test", "pnpm build", "build:octavia", "src/hack.ts" |
-| `workspace-code-standards` | "code style", "lint rules", "TypeScript standards" |
-| `workspace-lint` | "lint", "eslint" |
-| `workspace-typecheck` | "typecheck", "typescript", "tsc" |
-| `workspace-build` | "build", "compile" |
-| `opencode-command-authoring` | "create-command", "opencode-command" |
-| `github-integration` | "GitHub", "issues", "PR mirroring", "gh" |
-| `release-watcher` | "release watch", "codex release", "opencode release" |
-| `testing-general` | "testing strategy", "test coverage" |
-| `testing-unit` | "unit test" |
-| `testing-integration` | "integration test" |
-| `testing-e2e` | "e2e test", "end-to-end" |
+The following skills are available in this workspace. They are organized by category.
 
-### Skills Index
+### Clojure
 
-#### Core Operations
-- `skill-authoring`
-- `skill-optimizing`
-- `find-skills`
-- `workspace-commands`
-- `workspace-code-standards`
-- `workspace-navigation`
-- `workspace-dependency-check`
-- `lint-gate`
-- `test-preservation`
-- `task-atomicity-guard`
-- `break-edit-loop`
-- `apology-action-protocol`
-- `emergency-confusion-reset`
-- `verify-resource-existence`
+#### clojure-namespace-architect
+Resolves Clojure namespace-path mismatches and classpath errors with definitive path conversion
 
-#### OpenCode Development
-- `opencode-skill-creation`
-- `opencode-agent-authoring`
-- `opencode-agents-skills`
-- `opencode-command-authoring`
-- `opencode-plugin-authoring`
-- `opencode-tool-authoring`
-- `opencode-sdk`
-- `opencode-plugins`
-- `opencode-configs`
-- `opencode-tools-mcp`
-- `opencode-models-providers`
-- `opencode-model-variant-management`
-- `opencode-reconstituter`
-- `opencode-session-search`
-- `opencode-semantic-find-session`
-- `opencode-review-past-sessions`
-- `opencode-recover-project`
-- `opencode-apply-reconstituted-diffs`
-- `opencode-extract-diffs`
+#### clojure-quality
+Auto-fix Clojure delimiters and validate syntax with OpenCode tools.
 
-#### Server Integration
-- `mcp-server-integration`
-- `lsp-server-integration`
+#### clojure-syntax-rescue
+Protocol to recover from Clojure/Script syntax errors, specifically bracket mismatches and EOF errors.
 
-#### Process Management
-- `pm2-process-management`
-- `create-pm2-ecosystem`
-- `create-pm2-clj-config`
-- `render-pm2-clj-config`
-- `pm2-server-control`
-- `shadow-cljs-debug`
+### General
 
-#### Submodules and Automation
-- `submodule-ops`
-- `giga-workflow`
-- `nx-integration`
-- `github-integration`
-- `release-watcher`
+#### apology-action-protocol
+Protocol to stop apology loops and focus on verified fixes.
 
-#### Code Quality and Testing
-- `workspace-lint`
-- `workspace-typecheck`
-- `workspace-build`
-- `testing-general`
-- `testing-unit`
-- `testing-integration`
-- `testing-e2e`
-- `testing-bun`
-- `testing-typescript-ava`
-- `testing-typescript-vitest`
-- `testing-clojure-cljs`
-- `clojure-namespaces`
-- `clojure-quality`
-- `clojure-syntax-rescue`
+#### break-edit-loop
+Protocol to break out of repetitive, failing edit loops by forcing analysis over action.
 
-#### Workflow and Kanban State
-- `agile-process`
-- `spec-authoring`
-- `update-task-status`
-- `kanban-state-backlog`
-- `kanban-state-icebox`
-- `kanban-state-in-progress`
-- `kanban-state-review`
-- `kanban-state-testing`
-- `kanban-state-document`
-- `kanban-state-done`
-- `kanban-state-todo`
-- `validate-task-status`
-- `validate-ready-to-todo`
-- `validate-ready-to-breakdown`
-- `validate-breakdown-to-ready`
-- `validate-breakdown-to-blocked`
-- `validate-breakdown-to-icebox`
-- `validate-breakdown-to-rejected`
-- `validate-incoming-to-accepted`
-- `validate-incoming-to-icebox`
-- `validate-incoming-to-rejected`
-- `validate-accepted-to-breakdown`
-- `validate-accepted-to-icebox`
-- `validate-in_progress-to-breakdown`
-- `validate-in_progress-to-in_review`
-- `validate-in_progress-to-todo`
-- `validate-in_review-to-in_progress`
-- `validate-in_review-to-testing`
-- `validate-in_review-to-breakdown`
-- `validate-in_review-to-todo`
-- `validate-testing-to-in_progress`
-- `validate-testing-to-in_review`
-- `validate-testing-to-document`
-- `validate-document-to-in_review`
-- `validate-document-to-done`
-- `work-on-icebox-task`
-- `work-on-incoming-task`
-- `work-on-todo-task`
-- `work-on-in_progress-task`
-- `work-on-in_review-task`
-- `work-on-testing-task`
-- `work-on-document-task`
-- `work-on-ready-task`
-- `work-on-accepted-task`
-- `work-on-rejected-task`
-- `work-on-blocked-task`
-- `work-on-breakdown-task`
-- `work-on-done-task`
+#### emergency-confusion-reset
+Protocol for agents to recover when confused, hallucinating tools, or stuck in unproductive loops.
 
-Trigger words for additional skills follow their skill names and the "Use This Skill When" sections in each `SKILL.md`.
+#### giga-workflow
+Execute Giga system operations for workspace automation, including watching changes, running submodule tests, and propagating commits
+
+#### lint-gate
+Protocol to enforce zero lint/type errors before marking work done.
+
+#### lsp-server-integration
+Add and configure Language Server Protocol (LSP) servers to provide language intelligence in OpenCode
+
+#### mcp-server-integration
+Add and configure Model Context Protocol (MCP) servers with correct protocol compliance and tool registration
+
+#### nx-integration
+Use Nx to detect affected projects and run targets across multiple submodules in the workspace
+
+#### release-watcher
+Monitor upstream releases for OpenAI codex and SST opencode repositories, detect changes, and create GitHub issues for release impact analysis
+
+#### shadow-cljs-debug
+Protocol to debug and fix shadow-cljs compilation errors.
+
+#### skill-authoring
+Create or revise skills so they are reusable, scoped, and load correctly in OpenCode and Codex
+
+#### skill-optimizing
+Improve existing or new skills using the workspace optimization guide and template checks for clarity, scope, and reliability
+
+#### task-atomicity-guard
+Protocol to keep work atomic and prevent scope creep.
+
+#### verify-resource-existence
+Protocol to verify a resource exists before creating a new one.
+
+### Git
+
+#### git-safety-check
+Protocol to ensure safe git operations and avoid detached HEAD or dirty commits.
+
+#### github-integration
+Perform GitHub operations across all tracked repositories in orgs/**, including issue/PR management, repository synchronization, and automation workflows
+
+#### submodule-ops
+Make safe, consistent changes in a workspace with many git submodules under orgs/**
+
+### Kanban
+
+#### work-on-accepted-task
+Execute the best next work for a task currently in `accepted`.
+
+#### work-on-blocked-task
+Execute the best next work for a task currently in `blocked`.
+
+#### work-on-breakdown-task
+Execute the best next work for a task currently in `breakdown`.
+
+#### work-on-document-task
+Execute the best next work for a task currently in `document`.
+
+#### work-on-done-task
+Execute the best next work for a task currently in `done`.
+
+#### work-on-icebox-task
+Execute the best next work for a task currently in `icebox`.
+
+#### work-on-in_progress-task
+Execute the best next work for a task currently in `in_progress`.
+
+#### work-on-in_review-task
+Execute the best next work for a task currently in `in_review`.
+
+#### work-on-incoming-task
+Execute the best next work for a task currently in `incoming`.
+
+#### work-on-ready-task
+Execute the best next work for a task currently in `ready`.
+
+#### work-on-rejected-task
+Execute the best next work for a task currently in `rejected`.
+
+#### work-on-testing-task
+Execute the best next work for a task currently in `testing`.
+
+#### work-on-todo-task
+Execute the best next work for a task currently in `todo`.
+
+### OpenCode
+
+#### opencode-agent-authoring
+Create or update OpenCode agent guidance with clear triggers, behavior, and constraints
+
+#### opencode-agents-skills
+Author or update agents and skills that align with OpenCode guidance and repository conventions
+
+#### opencode-apply-reconstituted-diffs
+Apply reconstructed diff patches safely and validate results
+
+#### opencode-command-authoring
+Create and manage OpenCode commands with valid frontmatter and predictable execution
+
+#### opencode-configs
+Update OpenCode configuration, rules, commands, and permissions in line with official documentation
+
+#### opencode-extract-diffs
+Extract and normalize diff snapshots from OpenCode session artifacts
+
+#### opencode-model-variant-management
+Add new models, providers, or model variants with correct configuration, authentication, and validation
+
+#### opencode-models-providers
+Select, validate, or update model/provider configurations with authoritative provider documentation
+
+#### opencode-plugin-authoring
+Create or update OpenCode plugins with correct packaging, runtime behavior, and documentation
+
+#### opencode-plugins
+Build or modify OpenCode plugins with correct packaging and runtime behavior
+
+#### opencode-reconstituter
+Run the reconstitute CLI to index, search, and reconstruct project context from OpenCode sessions
+
+#### opencode-recover-project
+Recover project state using OpenCode sessions, snapshots, and reconstituter outputs
+
+#### opencode-review-past-sessions
+Review OpenCode session history to recover decisions, intent, and prior changes
+
+#### opencode-sdk
+Implement or regenerate OpenCode SDKs safely after server or API changes
+
+#### opencode-semantic-find-session
+Find relevant OpenCode sessions using semantic search and filtering
+
+#### opencode-session-search
+Search and index OpenCode sessions using ChromaDB vector embeddings for semantic similarity retrieval and conversation reconstitute workflows
+
+#### opencode-skill-creation
+Create new OpenCode skills that validate, load reliably, and follow repository conventions
+
+#### opencode-tool-authoring
+Design and implement OpenCode tools with correct schemas, execution behavior, and documentation
+
+#### opencode-tools-mcp
+Implement or adjust OpenCode tools, MCP servers, and ACP integrations with correct protocols
+
+### PM2
+
+#### create-pm2-clj-config
+Create new pm2-clj ecosystem configuration files from scratch or templates for PM2 process management
+
+#### create-pm2-ecosystem
+Create new PM2 ecosystem configuration files for the clobber-based system with proper defapp definitions
+
+#### pm2-process-management
+Start, stop, restart, and manage PM2 processes using the ecosystem-based configuration system
+
+#### render-pm2-clj-config
+Render pm2-clj ecosystem files to JSON for validation and debugging without starting processes
+
+### Testing
+
+#### test-preservation
+Protocol to forbid deleting or skipping tests to make builds pass.
+
+#### testing-bun
+Set up and write tests using Bun's built-in test runner for maximum performance and TypeScript support
+
+#### testing-clojure-cljs
+Set up and write tests for Clojure and ClojureScript projects using cljs.test, cljs-init-tests, and shadow-cljs
+
+#### testing-e2e
+Write end-to-end tests that verify complete user workflows and critical system paths across the full stack
+
+#### testing-general
+Apply testing best practices, choose appropriate test types, and establish reliable test coverage across the codebase
+
+#### testing-integration
+Write integration tests that verify multiple components work together correctly with real dependencies
+
+#### testing-nx
+Configure and run tests across multiple projects using Nx affected detection for efficient workspace testing
+
+#### testing-typescript-ava
+Set up and write tests using Ava test runner for TypeScript with minimal configuration and fast execution
+
+#### testing-typescript-vitest
+Set up and write tests using Vitest for TypeScript projects with proper configuration and TypeScript support
+
+#### testing-unit
+Write fast, focused unit tests for individual functions, classes, and modules with proper isolation and mocking
+
+### Workspace
+
+#### workspace-build
+Build all affected submodules across the workspace, including running tests for changed files, using Nx for affected project detection
+
+#### workspace-code-standards
+Apply workspace TypeScript and ESLint standards, including functional style and strict typing rules
+
+#### workspace-commands
+Run common workspace-level commands for linting, typechecking, building, and utilities
+
+#### workspace-dependency-check
+Protocol to diagnose pnpm workspace module resolution failures.
+
+#### workspace-lint
+Lint all TypeScript and markdown files across the entire workspace, including all submodules under orgs/**
+
+#### workspace-navigation
+Locate the right repo, file, and pattern quickly in a multi-repo workspace with many submodules
+
+#### workspace-typecheck
+Type check all TypeScript files across the entire workspace, including all submodules under orgs/**, using strict TypeScript settings
+
+
