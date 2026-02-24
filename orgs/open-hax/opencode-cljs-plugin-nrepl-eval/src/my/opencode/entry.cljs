@@ -1,6 +1,6 @@
 (ns my.opencode.entry
-  (:require [my.opencode.dsl :refer-macros [init tools]]
-            [my.opencode.spec :as spec]
+  (:require-macros [my.opencode.dsl.macros :refer [init tools]])
+  (:require [my.opencode.spec :as spec]
             [my.opencode.runtime :as runtime]
             [my.opencode.tool :as t]
             [my.opencode.fragments.permission-store :as perm-store]

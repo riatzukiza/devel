@@ -10,12 +10,12 @@
         (let [id (or (.-id input) (str (random-uuid)))]
           (swap! starts assoc id (now-ms))
           (when-let [client (.-client ctx)]
-            (-> client .-app
-                (.log #js {:service "cljs-plugin"
-                           :level "debug"
-                           :message "tool.start"
-                           :extra #js {:tool (.-tool input)
-                                       :id id}})))))
+            (.log (.-app client)
+                  #js {:service "cljs-plugin"
+                       :level "debug"
+                       :message "tool.start"
+                       :extra #js {:tool (.-tool input)
+                                   :id id}}))))
 
       "tool.execute.after"
       (fn [ctx input _output]
@@ -24,10 +24,10 @@
               dt (when t0 (- (now-ms) t0))]
           (swap! starts dissoc id)
           (when-let [client (.-client ctx)]
-            (-> client .-app
-                (.log #js {:service "cljs-plugin"
-                           :level "debug"
-                           :message "tool.done"
-                           :extra #js {:tool (.-tool input)
-                                       :id id
-                                       :ms dt}}))))}}))
+            (.log (.-app client)
+                  #js {:service "cljs-plugin"
+                       :level "debug"
+                       :message "tool.done"
+                       :extra #js {:tool (.-tool input)
+                                   :id id
+                                   :ms dt}}))))}}))
