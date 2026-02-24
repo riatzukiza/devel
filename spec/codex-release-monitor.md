@@ -1,3 +1,17 @@
+---
+uuid: ecd9b981-2a1a-4a8f-9ac1-784238099ac8
+title: "Spec: Codex Release Monitor Workflow"
+slug: codex-release-monitor
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.407448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Spec: Codex Release Monitor Workflow
 
 ## References

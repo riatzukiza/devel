@@ -1,0 +1,1497 @@
+## Next step: turn this into the actual `reconstitute` CLI
+
+Below is a **single CLI** that supports:
+
+* `reconstitute index`
+  Index **all** OpenCode sessions → ChromaDB and store **Ollama-ready replay blobs** in LevelDB.
+* `reconstitute search "<query>"`
+  Returns an **Ollama chat-ready** `context_messages[]` array (plus minimal debug).
+* `reconstitute run <path>`
+  Runs the full reconstruction loop with:
+
+  * **run-isolated state** (paths + descriptions + notes)
+  * **adaptive multi-query search** (union + dedupe + windowing)
+  * **path extraction passes** (repeat until no new paths)
+  * exports a **markdown tree** of recovered descriptions
+
+It uses Ollama for:
+
+* embeddings (`qwen3-embedding:8b`, `num_ctx=32768`)
+* agent chat (`qwen3-vl:8b-instruct`) with tool-calling
+
+---
+
+# Files
+
+## `package.json`
+
+```json
+{
+  "name": "reconstitute",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "reconstitute": "dist/reconstitute.js"
+  },
+  "scripts": {
+    "dev": "tsx src/reconstitute.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/reconstitute.js",
+    "reconstitute": "tsx src/reconstitute.ts"
+  },
+  "dependencies": {
+    "@opencode-ai/sdk": "^0.0.0",
+    "chromadb": "^2.2.0",
+    "level": "^9.0.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.0"
+  }
+}
+```
+
+> If your `@opencode-ai/sdk` version differs, pin it to whatever you already use in your monorepo.
+
+---
+
+## `tsconfig.json`
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "dist",
+    "rootDir": "src",
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true
+  },
+  "include": ["src/**/*.ts"]
+}
+```
+
+---
+
+## `.env.example`
+
+```dotenv
+# OpenCode
+OPENCODE_BASE_URL=http://localhost:4096
+OPENCODE_API_KEY=
+
+# Chroma
+CHROMA_URL=http://localhost:8000
+CHROMA_TENANT=default_tenant
+CHROMA_DATABASE=default_database
+CHROMA_TOKEN=
+CHROMA_COLLECTION_SESSIONS=opencode_messages_v1
+CHROMA_COLLECTION_NOTES=reconstitute_notes_v1
+
+# Ollama
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_EMBED_MODEL=qwen3-embedding:8b
+OLLAMA_CHAT_MODEL=qwen3-vl:8b-instruct
+OLLAMA_NUM_CTX=32768
+
+# Local storage
+LEVEL_DIR=.reconstitute/level
+OUTPUT_DIR=.reconstitute/output
+
+# Workflow
+BATCH_SIZE=32
+WINDOW=2
+SEARCH_LIMIT=25
+SEARCH_THRESHOLD=
+MAX_TOOL_ITERS=10
+MAX_PATH_EXTRACTION_PASSES=6
+MAX_PATHS=2000
+
+# Caches
+TTL_EMBED_MS=2592000000
+TTL_SEARCH_MS=1800000
+TTL_CHAT_MS=600000
+```
+
+---
+
+## `src/reconstitute.ts`
+
+```ts
+#!/usr/bin/env node
+/* eslint-disable no-console */
+
+import "dotenv/config";
+
+import { createOpencodeClient } from "@opencode-ai/sdk";
+import { ChromaClient, IncludeEnum } from "chromadb";
+import { Level } from "level";
+import crypto from "node:crypto";
+import fs from "node:fs/promises";
+import path from "node:path";
+
+// -----------------------------
+// Types
+// -----------------------------
+
+type Json = null | boolean | number | string | Json[] | { [k: string]: Json };
+
+type OllamaMessage =
+  | { role: "system" | "user" | "assistant"; content: string }
+  | {
+      role: "assistant";
+      content?: string;
+      tool_calls?: Array<{
+        type: "function";
+        function: { index: number; name: string; arguments: Record<string, unknown> };
+      }>;
+    }
+  | { role: "tool"; tool_name: string; content: string };
+
+type ToolDef = {
+  type: "function";
+  function: {
+    name: string;
+    description: string;
+    parameters: {
+      type: "object";
+      properties: Record<string, any>;
+      required?: string[];
+      additionalProperties?: boolean;
+    };
+  };
+};
+
+type Env = {
+  // storage
+  LEVEL_DIR: string;
+  OUTPUT_DIR: string;
+
+  // opencode
+  OPENCODE_BASE_URL: string;
+  OPENCODE_API_KEY?: string;
+
+  // chroma
+  CHROMA_URL: string;
+  CHROMA_TENANT?: string;
+  CHROMA_DATABASE?: string;
+  CHROMA_TOKEN?: string;
+  CHROMA_COLLECTION_SESSIONS: string;
+  CHROMA_COLLECTION_NOTES: string;
+
+  // ollama
+  OLLAMA_BASE_URL: string;
+  OLLAMA_EMBED_MODEL: string; // qwen3-embedding:8b
+  OLLAMA_CHAT_MODEL: string; // qwen3-vl:8b-instruct
+  OLLAMA_NUM_CTX: number;
+
+  // caching
+  TTL_EMBED_MS: number;
+  TTL_SEARCH_MS: number;
+  TTL_CHAT_MS: number;
+
+  // workflow
+  BATCH_SIZE: number;
+  WINDOW: number;
+  SEARCH_LIMIT: number;
+  SEARCH_THRESHOLD: number | null;
+
+  MAX_TOOL_ITERS: number;
+  MAX_PATH_EXTRACTION_PASSES: number;
+  MAX_PATHS: number;
+};
+
+type Hit = { id: string; distance: number | null; meta: any };
+
+// -----------------------------
+// Env / utils
+// -----------------------------
+
+function env(): Env {
+  return {
+    LEVEL_DIR: process.env.LEVEL_DIR ?? ".reconstitute/level",
+    OUTPUT_DIR: process.env.OUTPUT_DIR ?? ".reconstitute/output",
+
+    OPENCODE_BASE_URL: process.env.OPENCODE_BASE_URL ?? "http://localhost:4096",
+    OPENCODE_API_KEY: process.env.OPENCODE_API_KEY || undefined,
+
+    CHROMA_URL: process.env.CHROMA_URL ?? "http://localhost:8000",
+    CHROMA_TENANT: process.env.CHROMA_TENANT || undefined,
+    CHROMA_DATABASE: process.env.CHROMA_DATABASE || undefined,
+    CHROMA_TOKEN: process.env.CHROMA_TOKEN || undefined,
+    CHROMA_COLLECTION_SESSIONS: process.env.CHROMA_COLLECTION_SESSIONS ?? "opencode_messages_v1",
+    CHROMA_COLLECTION_NOTES: process.env.CHROMA_COLLECTION_NOTES ?? "reconstitute_notes_v1",
+
+    OLLAMA_BASE_URL: process.env.OLLAMA_BASE_URL ?? "http://localhost:11434",
+    OLLAMA_EMBED_MODEL: process.env.OLLAMA_EMBED_MODEL ?? "qwen3-embedding:8b",
+    OLLAMA_CHAT_MODEL: process.env.OLLAMA_CHAT_MODEL ?? "qwen3-vl:8b-instruct",
+    OLLAMA_NUM_CTX: Number(process.env.OLLAMA_NUM_CTX ?? "32768"),
+
+    TTL_EMBED_MS: Number(process.env.TTL_EMBED_MS ?? `${1000 * 60 * 60 * 24 * 30}`),
+    TTL_SEARCH_MS: Number(process.env.TTL_SEARCH_MS ?? `${1000 * 60 * 30}`),
+    TTL_CHAT_MS: Number(process.env.TTL_CHAT_MS ?? `${1000 * 60 * 10}`),
+
+    BATCH_SIZE: Number(process.env.BATCH_SIZE ?? "32"),
+    WINDOW: Number(process.env.WINDOW ?? "2"),
+    SEARCH_LIMIT: Number(process.env.SEARCH_LIMIT ?? "25"),
+    SEARCH_THRESHOLD: process.env.SEARCH_THRESHOLD ? Number(process.env.SEARCH_THRESHOLD) : null,
+
+    MAX_TOOL_ITERS: Number(process.env.MAX_TOOL_ITERS ?? "10"),
+    MAX_PATH_EXTRACTION_PASSES: Number(process.env.MAX_PATH_EXTRACTION_PASSES ?? "6"),
+    MAX_PATHS: Number(process.env.MAX_PATHS ?? "2000"),
+  };
+}
+
+function sha256(s: string): string {
+  return crypto.createHash("sha256").update(s).digest("hex");
+}
+
+function nowIso(): string {
+  return new Date().toISOString();
+}
+
+function normalizePathKey(p: string): string {
+  return (p ?? "").replace(/\\/g, "/").replace(/\/+/g, "/").trim();
+}
+
+function isWithinRoot(candidate: string, root: string): boolean {
+  const c = normalizePathKey(candidate);
+  const r = normalizePathKey(root).replace(/\/+$/, "");
+  if (!r) return false;
+  return c === r || c.startsWith(r + "/");
+}
+
+function uniq<T>(xs: T[]): T[] {
+  return [...new Set(xs)];
+}
+
+async function ensureDir(dir: string) {
+  await fs.mkdir(dir, { recursive: true });
+}
+
+function unwrap<T>(resp: any): T {
+  return resp && typeof resp === "object" && "data" in resp ? (resp.data as T) : (resp as T);
+}
+
+// -----------------------------
+// LevelDB TTL cache
+// -----------------------------
+
+async function ttlGet<T>(db: Level<string, any>, key: string): Promise<T | null> {
+  try {
+    const v = await db.get(key);
+    if (!v) return null;
+    if (typeof v.expiresAt === "number" && Date.now() > v.expiresAt) return null;
+    return v.value as T;
+  } catch {
+    return null;
+  }
+}
+
+async function ttlSet<T>(db: Level<string, any>, key: string, value: T, ttlMs: number) {
+  await db.put(key, { value, expiresAt: Date.now() + ttlMs });
+}
+
+// -----------------------------
+// Ollama API
+// -----------------------------
+
+async function ollamaEmbedOne(E: Env, db: Level<string, any>, input: string): Promise<number[]> {
+  const text = input ?? "";
+  const ck = `cache:embed:${E.OLLAMA_EMBED_MODEL}:${sha256(text)}`;
+  const cached = await ttlGet<number[]>(db, ck);
+  if (cached) return cached;
+
+  const resp = await fetch(`${E.OLLAMA_BASE_URL}/api/embed`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: E.OLLAMA_EMBED_MODEL,
+      input: text,
+      truncate: true,
+      options: { num_ctx: E.OLLAMA_NUM_CTX },
+    }),
+  });
+
+  if (!resp.ok) throw new Error(`Ollama embed failed: ${resp.status} ${await resp.text()}`);
+  const json = await resp.json();
+  const emb = (json.embeddings?.[0] ?? []) as number[];
+  await ttlSet(db, ck, emb, E.TTL_EMBED_MS);
+  return emb;
+}
+
+async function ollamaEmbedMany(E: Env, db: Level<string, any>, inputs: string[]): Promise<number[][]> {
+  // cache individually; batch calls for misses
+  const cached: Array<number[] | null> = [];
+  const missDocs: string[] = [];
+  const missIdx: number[] = [];
+
+  for (let i = 0; i < inputs.length; i++) {
+    const text = inputs[i] ?? "";
+    const ck = `cache:embed:${E.OLLAMA_EMBED_MODEL}:${sha256(text)}`;
+    const hit = await ttlGet<number[]>(db, ck);
+    if (hit) cached.push(hit);
+    else {
+      cached.push(null);
+      missIdx.push(i);
+      missDocs.push(text);
+    }
+  }
+
+  if (missDocs.length) {
+    const resp = await fetch(`${E.OLLAMA_BASE_URL}/api/embed`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: E.OLLAMA_EMBED_MODEL,
+        input: missDocs,
+        truncate: true,
+        options: { num_ctx: E.OLLAMA_NUM_CTX },
+      }),
+    });
+
+    if (!resp.ok) throw new Error(`Ollama embed failed: ${resp.status} ${await resp.text()}`);
+    const json = await resp.json();
+    const got = (json.embeddings ?? []) as number[][];
+
+    for (let j = 0; j < missIdx.length; j++) {
+      const i = missIdx[j];
+      cached[i] = got[j];
+      const ck = `cache:embed:${E.OLLAMA_EMBED_MODEL}:${sha256(inputs[i] ?? "")}`;
+      await ttlSet(db, ck, got[j], E.TTL_EMBED_MS);
+    }
+  }
+
+  return cached.map((x) => x ?? []);
+}
+
+type OllamaChatResponse = {
+  model: string;
+  created_at?: string;
+  message: any;
+  done: boolean;
+};
+
+async function ollamaChat(
+  E: Env,
+  db: Level<string, any>,
+  args: { messages: OllamaMessage[]; tools?: ToolDef[]; temperature?: number }
+): Promise<OllamaChatResponse> {
+  const key = `cache:chat:${sha256(
+    JSON.stringify({ model: E.OLLAMA_CHAT_MODEL, messages: args.messages, tools: args.tools, t: args.temperature ?? 0 })
+  )}`;
+  const cached = await ttlGet<OllamaChatResponse>(db, key);
+  if (cached) return cached;
+
+  const resp = await fetch(`${E.OLLAMA_BASE_URL}/api/chat`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: E.OLLAMA_CHAT_MODEL,
+      messages: args.messages,
+      tools: args.tools,
+      stream: false,
+      options: { num_ctx: E.OLLAMA_NUM_CTX },
+      temperature: args.temperature ?? 0,
+    }),
+  });
+
+  if (!resp.ok) throw new Error(`Ollama chat failed: ${resp.status} ${await resp.text()}`);
+  const json = (await resp.json()) as OllamaChatResponse;
+  await ttlSet(db, key, json, E.TTL_CHAT_MS);
+  return json;
+}
+
+// -----------------------------
+// Chroma init
+// -----------------------------
+
+async function initChroma(E: Env) {
+  const chroma = new ChromaClient({
+    path: E.CHROMA_URL,
+    ...(E.CHROMA_TENANT ? { tenant: E.CHROMA_TENANT } : {}),
+    ...(E.CHROMA_DATABASE ? { database: E.CHROMA_DATABASE } : {}),
+    ...(E.CHROMA_TOKEN
+      ? {
+          auth: {
+            provider: "token",
+            credentials: E.CHROMA_TOKEN,
+            tokenHeaderType: "AUTHORIZATION",
+          },
+        }
+      : {}),
+  });
+
+  const sessions = await chroma.getOrCreateCollection({ name: E.CHROMA_COLLECTION_SESSIONS });
+  const notes = await chroma.getOrCreateCollection({ name: E.CHROMA_COLLECTION_NOTES });
+  return { chroma, sessions, notes };
+}
+
+// -----------------------------
+// OpenCode -> Ollama replay conversion
+// (best-effort, but lossless: unknown parts are JSON-embedded)
+// -----------------------------
+
+function flattenMessageParts(entry: any): { role: "user" | "assistant" | "system"; text: string; toolish: any[] } {
+  const info = entry?.info ?? {};
+  const parts: any[] = Array.isArray(entry?.parts) ? entry.parts : [];
+
+  const roleRaw = info.role ?? info.type ?? "assistant";
+  const role: "user" | "assistant" | "system" = roleRaw === "user" ? "user" : roleRaw === "system" ? "system" : "assistant";
+
+  const textChunks: string[] = [];
+  const toolish: any[] = [];
+
+  for (const p of parts) {
+    if (p?.type === "text" && typeof p.text === "string") {
+      textChunks.push(p.text);
+      continue;
+    }
+
+    // Heuristic: preserve tool call + result parts if they exist
+    const toolName = p?.tool_name ?? p?.name ?? p?.tool?.name ?? p?.function?.name;
+    const toolArgs = p?.arguments ?? p?.args ?? p?.input ?? p?.tool?.input ?? p?.function?.arguments;
+    const toolOut = p?.output ?? p?.result ?? p?.tool?.output ?? (p?.type === "tool_result" ? p?.content : undefined);
+
+    if (toolName) {
+      toolish.push({ toolName: String(toolName), toolArgs, toolOut, raw: p });
+      // still include a marker so embedding sees it
+      textChunks.push(`[tool:${String(toolName)}] ${toolArgs ? JSON.stringify(toolArgs) : ""}`.trim());
+      if (toolOut != null) textChunks.push(`[tool_result:${String(toolName)}] ${typeof toolOut === "string" ? toolOut : JSON.stringify(toolOut)}`);
+      continue;
+    }
+
+    // Unknown: embed raw JSON to keep lossless replay info
+    textChunks.push(`[opencode_part:${p?.type ?? "unknown"}] ${JSON.stringify(p)}`);
+  }
+
+  return { role, text: textChunks.join("\n").trim(), toolish };
+}
+
+function opencodeEntryToOllamaReplay(entry: any): OllamaMessage[] {
+  const { role, text, toolish } = flattenMessageParts(entry);
+
+  // If we can represent tool calls, do so in Ollama tool-call format.
+  // Otherwise, use plain role/content.
+  const toolCalls: Array<{ name: string; args: Record<string, unknown> }> = [];
+  const toolResults: Array<{ name: string; out: string }> = [];
+
+  for (const t of toolish) {
+    const name = String(t.toolName ?? "");
+    if (!name) continue;
+
+    const args =
+      t.toolArgs && typeof t.toolArgs === "object" && !Array.isArray(t.toolArgs) ? (t.toolArgs as Record<string, unknown>) : {};
+
+    // Only create a tool_call if there are args or if raw indicates a call
+    toolCalls.push({ name, args });
+
+    if (t.toolOut != null) {
+      const out = typeof t.toolOut === "string" ? t.toolOut : JSON.stringify(t.toolOut);
+      toolResults.push({ name, out });
+    }
+  }
+
+  const msgs: OllamaMessage[] = [];
+
+  if (toolCalls.length) {
+    msgs.push({
+      role: "assistant",
+      content: text || undefined,
+      tool_calls: toolCalls.map((tc, i) => ({
+        type: "function",
+        function: { index: i, name: tc.name, arguments: tc.args },
+      })),
+    });
+
+    for (const tr of toolResults) {
+      msgs.push({ role: "tool", tool_name: tr.name, content: tr.out });
+    }
+
+    return msgs;
+  }
+
+  msgs.push({ role, content: text });
+  return msgs;
+}
+
+function flattenForEmbedding(ollamaMsgs: OllamaMessage[]): string {
+  const lines: string[] = [];
+  for (const m of ollamaMsgs) {
+    if (m.role === "tool") {
+      lines.push(`[tool:${m.tool_name}] ${m.content}`);
+    } else if (m.role === "assistant" && "tool_calls" in m && m.tool_calls?.length) {
+      for (const tc of m.tool_calls) {
+        lines.push(`[tool_call:${tc.function.name}] ${JSON.stringify(tc.function.arguments)}`);
+      }
+      if (m.content) lines.push(`[assistant] ${m.content}`);
+    } else {
+      lines.push(`[${m.role}] ${("content" in m && m.content) ? m.content : ""}`);
+    }
+  }
+  return lines.join("\n");
+}
+
+function extractPathsLoose(text: string): string[] {
+  const paths = new Set<string>();
+  const re = /(^|[\s"'`(])((?:\.{0,2}\/)?(?:[A-Za-z0-9_.-]+\/)+[A-Za-z0-9_.-]+)(?=$|[\s"'`),.:;])/g;
+  for (const m of text.matchAll(re)) paths.add(normalizePathKey(m[2]));
+  return [...paths];
+}
+
+// -----------------------------
+// Run-scoped state helpers
+// -----------------------------
+
+function runKey(runId: string, k: string): string {
+  return `run:${runId}:${k}`;
+}
+
+async function runGetList(db: Level<string, any>, key: string): Promise<string[]> {
+  return ((await db.get(key).catch(() => [])) as string[]).map(normalizePathKey);
+}
+
+async function runPutList(db: Level<string, any>, key: string, xs: string[]) {
+  await db.put(key, uniq(xs.map(normalizePathKey)));
+}
+
+async function recordPath(db: Level<string, any>, runId: string, pathStr: string): Promise<boolean> {
+  const p = normalizePathKey(pathStr);
+  if (!p) return false;
+  const key = runKey(runId, "recorded_paths");
+  const current = await runGetList(db, key);
+  if (current.includes(p)) return false;
+  current.push(p);
+  await runPutList(db, key, current);
+  return true;
+}
+
+async function listRecordedPaths(db: Level<string, any>, runId: string): Promise<string[]> {
+  return await runGetList(db, runKey(runId, "recorded_paths"));
+}
+
+async function getFileDescription(db: Level<string, any>, runId: string, pathStr: string): Promise<string> {
+  const p = normalizePathKey(pathStr);
+  return (await db.get(runKey(runId, `desc:path:${p}`)).catch(() => "")) as string;
+}
+
+async function describeFile(db: Level<string, any>, runId: string, pathStr: string, append: string): Promise<void> {
+  const p = normalizePathKey(pathStr);
+  const prev = await getFileDescription(db, runId, p);
+  const next = prev ? `${prev}\n\n${append}` : append;
+  await db.put(runKey(runId, `desc:path:${p}`), next);
+}
+
+async function listAllDescriptions(db: Level<string, any>, runId: string): Promise<Array<{ path: string; body: string }>> {
+  const out: Array<{ path: string; body: string }> = [];
+  const prefix = runKey(runId, "desc:path:");
+  for await (const [k, v] of db.iterator()) {
+    if (typeof k === "string" && k.startsWith(prefix)) {
+      const p = k.slice(prefix.length);
+      out.push({ path: p, body: typeof v === "string" ? v : String(v) });
+    }
+  }
+  return out;
+}
+
+async function addNoteTitle(db: Level<string, any>, runId: string, title: string) {
+  const key = runKey(runId, "notes:index");
+  const current = ((await db.get(key).catch(() => [])) as string[]).slice();
+  const t = title.trim();
+  if (!t) return;
+  if (!current.includes(t)) {
+    current.push(t);
+    await db.put(key, current);
+  }
+}
+
+async function listNotesTitles(db: Level<string, any>, runId: string): Promise<string[]> {
+  const key = runKey(runId, "notes:index");
+  return ((await db.get(key).catch(() => [])) as string[]).slice().sort();
+}
+
+// -----------------------------
+// Index command: OpenCode -> Chroma + Level replay blobs
+// -----------------------------
+
+async function cmdIndex(E: Env) {
+  await ensureDir(path.dirname(E.LEVEL_DIR));
+  const db = new Level<string, any>(E.LEVEL_DIR, { valueEncoding: "json" });
+
+  const { sessions: sessionsCol } = await initChroma(E);
+
+  const oc = createOpencodeClient({ baseUrl: E.OPENCODE_BASE_URL, apiKey: E.OPENCODE_API_KEY });
+
+  const sessions = unwrap<any[]>(await oc.session.list());
+  console.log(`Sessions: ${sessions.length}`);
+
+  for (const s of sessions) {
+    const sessionId = String(s.id);
+    const sessionTitle = String(s.title ?? s.name ?? "");
+
+    const entries = unwrap<any[]>(await oc.session.messages({ path: { id: sessionId } }));
+    console.log(`- ${sessionId} msgs=${entries.length}`);
+
+    // record session meta
+    await db.put(`sess:${sessionId}:meta`, { id: sessionId, title: sessionTitle });
+
+    const rowIds: string[] = [];
+    const docs: string[] = [];
+    const metas: any[] = [];
+    const replays: Record<string, OllamaMessage[]> = {};
+
+    for (let i = 0; i < entries.length; i++) {
+      const entry = entries[i];
+      const rowId = `${sessionId}:${i}`;
+      rowIds.push(rowId);
+
+      const hash = sha256(JSON.stringify(entry));
+      const prevHash = await db.get(`msg:${rowId}:hash`).catch(() => null);
+      if (prevHash === hash) continue;
+
+      const replay = opencodeEntryToOllamaReplay(entry);
+      const doc = flattenForEmbedding(replay);
+      const paths = extractPathsLoose(doc).join("|");
+
+      replays[rowId] = replay;
+      docs.push(doc);
+      metas.push({
+        session_id: sessionId,
+        session_title: sessionTitle,
+        message_index: i,
+        role: entry?.info?.role ?? entry?.info?.type ?? "assistant",
+        created_at: entry?.info?.createdAt ? new Date(entry.info.createdAt).getTime() : Date.now(),
+        paths,
+      });
+
+      await db.put(`msg:${rowId}:hash`, hash);
+    }
+
+    // persist order
+    await db.put(`sess:${sessionId}:order`, rowIds);
+
+    // embed + upsert in batches (for only the changed docs)
+    for (let start = 0; start < docs.length; start += E.BATCH_SIZE) {
+      const bDocs = docs.slice(start, start + E.BATCH_SIZE);
+      const bMetas = metas.slice(start, start + E.BATCH_SIZE);
+
+      // ids for these docs are the corresponding subset of rowIds that changed;
+      // easiest: recompute ids in parallel
+      const base = start;
+      const bIds = bMetas.map((m) => `${m.session_id}:${m.message_index}`);
+
+      const bEmb = await ollamaEmbedMany(E, db, bDocs);
+
+      await sessionsCol.upsert({
+        ids: bIds,
+        embeddings: bEmb,
+        documents: bDocs,
+        metadatas: bMetas,
+      });
+
+      for (const id of bIds) {
+        if (replays[id]) await db.put(`msg:${id}:ollama`, replays[id]);
+      }
+
+      console.log(`  upserted ${bIds.length}`);
+    }
+  }
+
+  await db.close();
+  console.log("Index complete.");
+}
+
+// -----------------------------
+// Search: multi-query union -> context messages
+// -----------------------------
+
+async function chromaSearchOnce(
+  E: Env,
+  db: Level<string, any>,
+  sessionsCol: any,
+  query: string,
+  where?: any,
+  limitOverride?: number,
+  thresholdOverride?: number | null
+): Promise<{ hits: Hit[] }> {
+  const limit = limitOverride ?? E.SEARCH_LIMIT;
+  const threshold = thresholdOverride ?? E.SEARCH_THRESHOLD;
+
+  const ck = `cache:search:${sha256(JSON.stringify({ q: query, where, limit, threshold, win: E.WINDOW }))}`;
+  const cached = await ttlGet<{ hits: Hit[] }>(db, ck);
+  if (cached) return cached;
+
+  const qEmb = await ollamaEmbedOne(E, db, query);
+  const results = await sessionsCol.query({
+    queryEmbeddings: [qEmb],
+    nResults: limit,
+    where: where ?? undefined,
+    include: [IncludeEnum.Metadatas, IncludeEnum.Distances],
+  });
+
+  const ids = results.ids?.[0] ?? [];
+  const metadatas = results.metadatas?.[0] ?? [];
+  const distances = results.distances?.[0] ?? [];
+
+  const hits: Hit[] = ids
+    .map((id: string, i: number) => ({
+      id,
+      meta: metadatas[i] ?? null,
+      distance: distances[i] ?? null,
+    }))
+    .filter((h) => (threshold == null ? true : h.distance != null && h.distance <= threshold));
+
+  const out = { hits };
+  await ttlSet(db, ck, out, E.TTL_SEARCH_MS);
+  return out;
+}
+
+async function searchUnionAsContext(
+  E: Env,
+  db: Level<string, any>,
+  sessionsCol: any,
+  queries: string[],
+  where?: any,
+  limitOverride?: number,
+  thresholdOverride?: number | null
+): Promise<{ hits: Hit[]; context_messages: OllamaMessage[]; missing: string[] }> {
+  const clean = uniq(queries.map((q) => q.trim()).filter(Boolean));
+  const byId = new Map<string, Hit>();
+
+  for (const q of clean) {
+    const { hits } = await chromaSearchOnce(E, db, sessionsCol, q, where, limitOverride, thresholdOverride);
+    for (const h of hits) {
+      const prev = byId.get(h.id);
+      if (!prev) byId.set(h.id, h);
+      else {
+        const a = prev.distance ?? Number.POSITIVE_INFINITY;
+        const b = h.distance ?? Number.POSITIVE_INFINITY;
+        if (b < a) byId.set(h.id, h);
+      }
+    }
+  }
+
+  const hits = [...byId.values()].sort((a, b) => {
+    const da = a.distance ?? Number.POSITIVE_INFINITY;
+    const dbb = b.distance ?? Number.POSITIVE_INFINITY;
+    return da - dbb;
+  });
+
+  // expand window
+  const needed = new Set<string>();
+  for (const h of hits) {
+    const sid = String(h.meta?.session_id ?? "").trim();
+    const idx = Number(h.meta?.message_index ?? NaN);
+    if (!sid || Number.isNaN(idx)) continue;
+    for (let j = Math.max(0, idx - E.WINDOW); j <= idx + E.WINDOW; j++) {
+      needed.add(`${sid}:${j}`);
+    }
+  }
+
+  // stable order: session then msg index
+  const neededSorted = [...needed].sort((a, b) => {
+    const [sa, ia] = a.split(":");
+    const [sb, ib] = b.split(":");
+    if (sa < sb) return -1;
+    if (sa > sb) return 1;
+    return Number(ia) - Number(ib);
+  });
+
+  const context_messages: OllamaMessage[] = [];
+  const missing: string[] = [];
+  for (const id of neededSorted) {
+    const blob = await db.get(`msg:${id}:ollama`).catch(() => null);
+    if (!blob) {
+      missing.push(id);
+      continue;
+    }
+    for (const m of blob as OllamaMessage[]) context_messages.push(m);
+  }
+
+  return { hits, context_messages, missing };
+}
+
+// -----------------------------
+// Tools + tool loop
+// -----------------------------
+
+type ToolHandler = (args: Record<string, any>) => Promise<string>;
+
+function buildTools(
+  E: Env,
+  db: Level<string, any>,
+  runId: string,
+  runState: { root: string },
+  sessionsCol: any,
+  notesCol: any
+): { tools: ToolDef[]; handlers: Record<string, ToolHandler> } {
+  const tools: ToolDef[] = [
+    {
+      type: "function",
+      function: {
+        name: "take_note",
+        description: "Make an observation about the codebase and add it to a notes Chroma collection.",
+        parameters: {
+          type: "object",
+          properties: { title: { type: "string" }, body: { type: "string" } },
+          required: ["title", "body"],
+          additionalProperties: false,
+        },
+      },
+    },
+    {
+      type: "function",
+      function: {
+        name: "list_notes",
+        description: "List notes by title.",
+        parameters: { type: "object", properties: {}, additionalProperties: false },
+      },
+    },
+    {
+      type: "function",
+      function: {
+        name: "search_notes",
+        description: "Semantic search notes.",
+        parameters: {
+          type: "object",
+          properties: {
+            query: { type: "string" },
+            metadata_filter: { type: "object" },
+            result_limit: { type: "number" },
+            threshold: { type: "number" }
+          },
+          required: ["query"],
+          additionalProperties: false
+        }
+      }
+    },
+    {
+      type: "function",
+      function: {
+        name: "record_path",
+        description: "Add a path to the unique set. Returns is_new true/false.",
+        parameters: {
+          type: "object",
+          properties: { path: { type: "string" } },
+          required: ["path"],
+          additionalProperties: false,
+        },
+      },
+    },
+    {
+      type: "function",
+      function: {
+        name: "list_recorded_paths",
+        description: "List all recorded paths.",
+        parameters: { type: "object", properties: {}, additionalProperties: false },
+      },
+    },
+    {
+      type: "function",
+      function: {
+        name: "get_file_description",
+        description: "Get the accumulated description for a path.",
+        parameters: {
+          type: "object",
+          properties: { path: { type: "string" } },
+          required: ["path"],
+          additionalProperties: false,
+        },
+      },
+    },
+    {
+      type: "function",
+      function: {
+        name: "describe_file",
+        description: "Append text to the path's accumulated description.",
+        parameters: {
+          type: "object",
+          properties: { path: { type: "string" }, text: { type: "string" } },
+          required: ["path", "text"],
+          additionalProperties: false,
+        },
+      },
+    },
+    {
+      type: "function",
+      function: {
+        name: "search_sessions",
+        description: "Search indexed sessions and return an Ollama chat-ready context message array.",
+        parameters: {
+          type: "object",
+          properties: {
+            query: { type: "string" },
+            metadata_filter: { type: "object" },
+            result_limit: { type: "number" },
+            threshold: { type: "number" }
+          },
+          required: ["query"],
+          additionalProperties: false
+        }
+      }
+    }
+  ];
+
+  const handlers: Record<string, ToolHandler> = {
+    async take_note(args) {
+      const title = String(args.title ?? "").trim();
+      const body = String(args.body ?? "").trim();
+      if (!title || !body) return JSON.stringify({ ok: false, error: "title/body required" });
+
+      await addNoteTitle(db, runId, title);
+
+      const emb = await ollamaEmbedOne(E, db, body);
+      const id = `note:${sha256(title)}:${Date.now()}`;
+      await notesCol.upsert({
+        ids: [id],
+        embeddings: [emb],
+        documents: [body],
+        metadatas: [{ title, run_id: runId, created_at: Date.now() }],
+      });
+
+      return JSON.stringify({ ok: true, id, title });
+    },
+
+    async list_notes() {
+      const titles = await listNotesTitles(db, runId);
+      return JSON.stringify({ ok: true, titles });
+    },
+
+    async search_notes(args) {
+      const q = String(args.query ?? "").trim();
+      const limit = Number(args.result_limit ?? 10);
+      const threshold = args.threshold != null ? Number(args.threshold) : null;
+      const where = args.metadata_filter ?? undefined;
+
+      const qEmb = await ollamaEmbedOne(E, db, q);
+      const res = await notesCol.query({
+        queryEmbeddings: [qEmb],
+        nResults: Number.isFinite(limit) && limit > 0 ? limit : 10,
+        where,
+        include: [IncludeEnum.Metadatas, IncludeEnum.Documents, IncludeEnum.Distances, IncludeEnum.Ids],
+      });
+
+      const ids = res.ids?.[0] ?? [];
+      const docs = res.documents?.[0] ?? [];
+      const metas = res.metadatas?.[0] ?? [];
+      const dists = res.distances?.[0] ?? [];
+
+      const hits = ids
+        .map((id: string, i: number) => ({
+          id,
+          distance: dists[i] ?? null,
+          metadata: metas[i] ?? null,
+          document: docs[i] ?? null,
+        }))
+        .filter((h: any) => (threshold == null ? true : h.distance != null && h.distance <= threshold));
+
+      return JSON.stringify({ ok: true, hits });
+    },
+
+    async record_path(args) {
+      const p = normalizePathKey(String(args.path ?? ""));
+      const isNew = await recordPath(db, runId, p);
+      return JSON.stringify({ ok: true, path: p, is_new: isNew, within_root: isWithinRoot(p, runState.root) });
+    },
+
+    async list_recorded_paths() {
+      const paths = await listRecordedPaths(db, runId);
+      return JSON.stringify({ ok: true, paths });
+    },
+
+    async get_file_description(args) {
+      const p = normalizePathKey(String(args.path ?? ""));
+      const body = await getFileDescription(db, runId, p);
+      return JSON.stringify({ ok: true, path: p, description: body });
+    },
+
+    async describe_file(args) {
+      const p = normalizePathKey(String(args.path ?? ""));
+      const text = String(args.text ?? "").trim();
+      if (!p || !text) return JSON.stringify({ ok: false, error: "path/text required" });
+      await describeFile(db, runId, p, text);
+      return JSON.stringify({ ok: true, path: p, appended_chars: text.length });
+    },
+
+    async search_sessions(args) {
+      const q = String(args.query ?? "").trim();
+      const where = args.metadata_filter ?? undefined;
+      const limit = args.result_limit != null ? Number(args.result_limit) : E.SEARCH_LIMIT;
+      const threshold = args.threshold != null ? Number(args.threshold) : E.SEARCH_THRESHOLD;
+
+      const out = await searchUnionAsContext(E, db, sessionsCol, [q], where, limit, threshold);
+      return JSON.stringify({
+        ok: true,
+        query: q,
+        hits: out.hits.slice(0, 10),
+        context_messages: out.context_messages,
+        missing: out.missing
+      });
+    }
+  };
+
+  return { tools, handlers };
+}
+
+async function runToolLoop(
+  E: Env,
+  db: Level<string, any>,
+  baseMessages: OllamaMessage[],
+  tools: ToolDef[],
+  handlers: Record<string, ToolHandler>,
+  maxIters: number
+): Promise<{ messages: OllamaMessage[]; finalText: string; toolCallsSeen: number }> {
+  const messages: OllamaMessage[] = [...baseMessages];
+  let finalText = "";
+  let toolCallsSeen = 0;
+
+  for (let iter = 0; iter < maxIters; iter++) {
+    const res = await ollamaChat(E, db, { messages, tools, temperature: 0 });
+    const msg = res.message ?? {};
+
+    const assistantMsg: OllamaMessage = {
+      role: "assistant",
+      content: typeof msg.content === "string" ? msg.content : undefined,
+      tool_calls: Array.isArray(msg.tool_calls) ? msg.tool_calls : undefined,
+    };
+
+    messages.push(assistantMsg);
+
+    const toolCalls = (assistantMsg as any).tool_calls as any[] | undefined;
+    if (!toolCalls || toolCalls.length === 0) {
+      finalText = typeof msg.content === "string" ? msg.content : "";
+      return { messages, finalText, toolCallsSeen };
+    }
+
+    toolCallsSeen += toolCalls.length;
+
+    for (const tc of toolCalls) {
+      const name = tc?.function?.name ?? tc?.name;
+      const args = tc?.function?.arguments ?? tc?.arguments ?? {};
+      const handler = handlers[String(name)];
+
+      let out = "";
+      try {
+        out = handler ? await handler(args) : JSON.stringify({ ok: false, error: "unknown tool" });
+      } catch (e: any) {
+        out = JSON.stringify({ ok: false, error: String(e?.message ?? e) });
+      }
+
+      messages.push({ role: "tool", tool_name: String(name), content: out });
+    }
+  }
+
+  return { messages, finalText, toolCallsSeen };
+}
+
+// -----------------------------
+// Reconstruction prompts
+// -----------------------------
+
+const DEFAULT_QUESTIONS = [
+  "Explain what exists at {path}.",
+  "What is {path}?",
+  "What is the entry point for {path}?",
+  "What language is {path} written in?",
+  "What API does {path} provide?",
+  "List important modules/files under {path} and what each does."
+];
+
+function makeSystemPrompt(root: string) {
+  return [
+    `You are Reconstitute, a reconstruction agent.`,
+    ``,
+    `Root to reconstruct: ${normalizePathKey(root)}`,
+    ``,
+    `Rules:`,
+    `- Whenever you see a file/folder path, call record_path(path).`,
+    `- Answer using ONLY the provided conversation context + tool results.`,
+    `- Append a structured description using describe_file(path, text).`,
+    `- If you discover a durable insight, call take_note(title, body).`,
+    ``,
+    `If info is missing: say what is missing, and what evidence you do have.`
+  ].join("\n");
+}
+
+function qfmt(pathStr: string, tmpl: string) {
+  return tmpl.replaceAll("{path}", normalizePathKey(pathStr));
+}
+
+function buildAdaptiveQueries(root: string, targetPath: string, question: string): string[] {
+  const p = normalizePathKey(targetPath);
+  const base = `${p}\n${question}\n${root}`;
+
+  const qs = [base];
+
+  const lower = question.toLowerCase();
+  if (lower.includes("entry point")) {
+    qs.push(`${p} entry point main index cli server app start init bootstrap`);
+    qs.push(`${p} package.json shadow-cljs deps.edn project.clj build script`);
+  } else if (lower.includes("language")) {
+    qs.push(`${p} language clojure cljs typescript javascript python java go rust`);
+    qs.push(`${p} .clj .cljs .ts .js .py .java .edn .json .yaml`);
+  } else if (lower.includes("api")) {
+    qs.push(`${p} api public interface exported functions methods endpoints routes`);
+    qs.push(`${p} http ws websocket rpc handler client server`);
+  } else {
+    qs.push(`${p} file path folder directory src README docs usage`);
+  }
+
+  return uniq(qs);
+}
+
+// -----------------------------
+// Path extraction passes (repeat until no new paths)
+// -----------------------------
+
+async function extractPathsPass(
+  E: Env,
+  db: Level<string, any>,
+  runId: string,
+  root: string,
+  currentPath: string,
+  tools: ToolDef[],
+  handlers: Record<string, ToolHandler>,
+  sessionsCol: any
+): Promise<{ newCount: number }> {
+  const before = (await listRecordedPaths(db, runId)).length;
+
+  const queries = uniq([
+    `${currentPath}`,
+    `${root} ${currentPath} README docs overview`,
+    `${currentPath} src lib packages modules files`,
+  ]);
+
+  const search = await searchUnionAsContext(E, db, sessionsCol, queries);
+
+  const systemMsg: OllamaMessage = { role: "system", content: makeSystemPrompt(root) };
+  const userMsg: OllamaMessage = {
+    role: "user",
+    content: [
+      `Extract every file/folder path mentioned in the conversation context above.`,
+      `For each unique path, call record_path(path).`,
+      `Repeat until you believe you've recorded all paths that appear in the context.`,
+      `Then call list_recorded_paths once.`,
+      ``,
+      `Focus especially on paths under: ${root}`,
+      `Current focus path: ${currentPath}`
+    ].join("\n")
+  };
+
+  await runToolLoop(E, db, [systemMsg, ...search.context_messages, userMsg], tools, handlers, E.MAX_TOOL_ITERS);
+
+  const after = (await listRecordedPaths(db, runId)).length;
+  return { newCount: Math.max(0, after - before) };
+}
+
+// -----------------------------
+// Export markdown tree
+// -----------------------------
+
+async function exportMarkdownTree(E: Env, db: Level<string, any>, runId: string, root: string) {
+  const outRoot = path.resolve(E.OUTPUT_DIR, runId);
+  await ensureDir(outRoot);
+
+  const descriptions = await listAllDescriptions(db, runId);
+  const within = descriptions.filter((d) => isWithinRoot(d.path, root));
+
+  const recorded = (await listRecordedPaths(db, runId)).filter((p) => isWithinRoot(p, root));
+
+  const indexBody = [
+    `# Reconstitute output`,
+    ``,
+    `- run_id: \`${runId}\``,
+    `- root: \`${normalizePathKey(root)}\``,
+    `- generated_at: \`${nowIso()}\``,
+    ``,
+    `## Recorded paths`,
+    ...recorded.map((p) => `- ${p}`),
+    ``
+  ].join("\n");
+
+  await fs.writeFile(path.join(outRoot, "index.md"), indexBody, "utf8");
+
+  for (const d of within) {
+    const p = normalizePathKey(d.path);
+    const mdPath = path.join(outRoot, p + ".md");
+    await ensureDir(path.dirname(mdPath));
+
+    const body = [
+      `# ${p}`,
+      ``,
+      `## Description`,
+      ``,
+      d.body.trim() ? d.body.trim() : `_No description yet._`,
+      ``
+    ].join("\n");
+
+    await fs.writeFile(mdPath, body, "utf8");
+  }
+
+  console.log(`Exported ${within.length} markdown files to: ${outRoot}`);
+}
+
+// -----------------------------
+// Run command (main loop)
+// -----------------------------
+
+async function cmdRun(E: Env, targetRoot: string) {
+  const root = normalizePathKey(targetRoot);
+  const runId = `run_${sha256(root).slice(0, 12)}`;
+
+  await ensureDir(path.dirname(E.LEVEL_DIR));
+  await ensureDir(E.OUTPUT_DIR);
+
+  const db = new Level<string, any>(E.LEVEL_DIR, { valueEncoding: "json" });
+  const { sessions: sessionsCol, notes: notesCol } = await initChroma(E);
+
+  // init run state
+  await recordPath(db, runId, root);
+
+  const processedKey = runKey(runId, "processed");
+  const queueKey = runKey(runId, "queue");
+
+  const processed = new Set<string>(await runGetList(db, processedKey));
+  const queue = await runGetList(db, queueKey);
+
+  if (queue.length === 0) queue.push(root);
+
+  const runState = { root };
+  const { tools, handlers } = buildTools(E, db, runId, runState, sessionsCol, notesCol);
+
+  console.log(`run_id=${runId}`);
+  console.log(`root=${root}`);
+  console.log(`queue_size=${queue.length}`);
+
+  let safetyCounter = 0;
+
+  while (queue.length > 0) {
+    if (safetyCounter++ > E.MAX_PATHS) {
+      console.warn(`Reached MAX_PATHS=${E.MAX_PATHS}. Stopping.`);
+      break;
+    }
+
+    const currentPath = queue.shift()!;
+    if (!isWithinRoot(currentPath, root)) continue;
+    if (processed.has(currentPath)) continue;
+    processed.add(currentPath);
+
+    console.log(`\n=== PATH: ${currentPath} ===`);
+
+    // 1) Path extraction passes (repeat until stable)
+    for (let pass = 0; pass < E.MAX_PATH_EXTRACTION_PASSES; pass++) {
+      const { newCount } = await extractPathsPass(E, db, runId, root, currentPath, tools, handlers, sessionsCol);
+      console.log(`path_extraction_pass=${pass + 1} new_paths=${newCount}`);
+      if (newCount === 0) break;
+    }
+
+    // refresh queue with any new paths under root
+    {
+      const recorded = await listRecordedPaths(db, runId);
+      for (const p of recorded) {
+        if (isWithinRoot(p, root) && !processed.has(p) && !queue.includes(p)) queue.push(p);
+      }
+    }
+
+    // 2) Q/A loop
+    for (let qi = 0; qi < DEFAULT_QUESTIONS.length; qi++) {
+      const question = qfmt(currentPath, DEFAULT_QUESTIONS[qi]);
+      const queries = buildAdaptiveQueries(root, currentPath, question);
+
+      const search = await searchUnionAsContext(E, db, sessionsCol, queries);
+
+      const systemMsg: OllamaMessage = { role: "system", content: makeSystemPrompt(root) };
+      const userMsg: OllamaMessage = { role: "user", content: question };
+
+      console.log(`\n--- Q${qi + 1}/${DEFAULT_QUESTIONS.length} ---`);
+      console.log(`search_queries=${queries.length} hits=${search.hits.length} context_msgs=${search.context_messages.length}`);
+
+      const { finalText } = await runToolLoop(
+        E,
+        db,
+        [systemMsg, ...search.context_messages, userMsg],
+        tools,
+        handlers,
+        E.MAX_TOOL_ITERS
+      );
+
+      await describeFile(
+        db,
+        runId,
+        currentPath,
+        [
+          `## Q: ${question}`,
+          ``,
+          `### A`,
+          finalText && finalText.trim() ? finalText.trim() : `_No response content returned._`,
+          ``,
+          `---`
+        ].join("\n")
+      );
+
+      // backup path extraction from answer text (in case model forgot tool calls)
+      for (const p of extractPathsLoose(finalText || "")) {
+        await recordPath(db, runId, p);
+      }
+
+      // update queue
+      const recorded = await listRecordedPaths(db, runId);
+      for (const p of recorded) {
+        if (isWithinRoot(p, root) && !processed.has(p) && !queue.includes(p)) queue.push(p);
+      }
+
+      // persist run state after each question
+      await runPutList(db, processedKey, [...processed]);
+      await runPutList(db, queueKey, queue);
+    }
+  }
+
+  await exportMarkdownTree(E, db, runId, root);
+  await db.close();
+}
+
+// -----------------------------
+// Search command (prints context_messages)
+// -----------------------------
+
+async function cmdSearch(E: Env, query: string) {
+  await ensureDir(path.dirname(E.LEVEL_DIR));
+  const db = new Level<string, any>(E.LEVEL_DIR, { valueEncoding: "json" });
+  const { sessions: sessionsCol } = await initChroma(E);
+
+  const out = await searchUnionAsContext(E, db, sessionsCol, [query]);
+  console.log(
+    JSON.stringify(
+      {
+        query,
+        hits: out.hits.slice(0, 10),
+        missing: out.missing,
+        context_messages: out.context_messages
+      },
+      null,
+      2
+    )
+  );
+
+  await db.close();
+}
+
+// -----------------------------
+// CLI
+// -----------------------------
+
+function usage() {
+  console.log(`
+reconstitute <command> [...args]
+
+Commands:
+  index
+      Index ALL OpenCode sessions into Chroma and store Ollama-replay blobs in LevelDB.
+
+  search "<query>"
+      Semantic search sessions and print { context_messages[] } suitable for Ollama chat.
+
+  run <path>
+      Reconstruct a directory tree into markdown descriptions.
+
+Examples:
+  pnpm reconstitute index
+  pnpm reconstitute search "orgs/octave-commons/cephalon-clj websocket rpc"
+  pnpm reconstitute run orgs/octave-commons/cephalon-clj
+`);
+}
+
+async function main() {
+  const E = env();
+  const argv = process.argv.slice(2);
+  const cmd = argv[0];
+
+  if (!cmd || cmd === "-h" || cmd === "--help") {
+    usage();
+    process.exit(cmd ? 0 : 2);
+  }
+
+  if (cmd === "index") {
+    await cmdIndex(E);
+    return;
+  }
+
+  if (cmd === "search") {
+    const q = argv.slice(1).join(" ").trim();
+    if (!q) throw new Error(`Missing query. Example: reconstitute search "foo bar"`);
+    await cmdSearch(E, q);
+    return;
+  }
+
+  if (cmd === "run") {
+    const target = argv[1];
+    if (!target) throw new Error(`Missing path. Example: reconstitute run orgs/octave-commons/cephalon-clj`);
+    await cmdRun(E, target);
+    return;
+  }
+
+  throw new Error(`Unknown command: ${cmd}`);
+}
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
+```
+
+---
+
+# What changed vs the previous runner (the “continue” upgrades)
+
+## 1) Run isolation
+
+Everything that mutates state is now under `run:<runId>:` keys:
+
+* `run:<runId>:recorded_paths`
+* `run:<runId>:desc:path:<p>`
+* `run:<runId>:processed`
+* `run:<runId>:queue`
+* `run:<runId>:notes:index`
+
+This means you can reconstruct multiple repos without cross-contamination.
+
+## 2) Multi-query union search
+
+For each question we generate **several query variants** and union/dedupe hits before window-expanding.
+
+## 3) Path extraction passes
+
+Before the question loop for a path, we do:
+
+* semantic search (path + a couple “overview” variants)
+* prompt the agent: “extract every path from the context and call `record_path`”
+* repeat until a pass adds **0** new paths (or max passes)
+
+That matches your “repeat until stable” rule.
+
+---
+
+# How you run it
+
+```bash
+pnpm install
+cp .env.example .env
+
+# 1) Index ALL sessions (required)
+pnpm reconstitute index
+
+# 2) Reconstruct a target tree
+pnpm reconstitute run orgs/octave-commons/cephalon-clj
+
+# 3) Debug / inspect a context array
+pnpm reconstitute search "orgs/octave-commons/cephalon-clj entry point websocket rpc"
+```
+
+Outputs land in: `OUTPUT_DIR/<run_id>/...`
+
+---
+

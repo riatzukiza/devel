@@ -1,20 +1,8 @@
 {
-  "active_plan": "/home/err/devel/.sisyphus/plans/cljs-architecture-fix.md",
-  "started_at": "2026-01-31T18:22:09.209Z",
+  "active_plan": "/home/err/devel/.sisyphus/plans/gates-of-aker-design-spec-ecs-recovery.md",
+  "started_at": "2026-02-10T21:58:24.532Z",
   "session_ids": [
-    "ses_3eaf99d68ffeJOqA4aPt0mwoEm",
-    "ses_3ddc9bc1dffe4rvzRyBnDiW7ch"
+    "ses_3b9bcad57ffekF5yd0DsmGphgw"
   ],
-  "plan_name": "cljs-architecture-fix",
-  "status": "in_progress",
-  "summary": {
-    "phase": "Phase 2 complete",
-    "ecosystem_files_renamed": 10,
-    "files_remaining": [
-      "root ecosystem.cljs",
-      "clobber CLI updates",
-      "documentation updates",
-      "verification"
-    ]
-  }
+  "plan_name": "gates-of-aker-design-spec-ecs-recovery"
 }

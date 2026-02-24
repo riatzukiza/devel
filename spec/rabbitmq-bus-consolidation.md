@@ -1,3 +1,17 @@
+---
+uuid: 6a654dab-fea4-4856-8a08-df6b0daccdd5
+title: "RabbitMQ Messaging Consolidation"
+slug: rabbitmq-bus-consolidation
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.409448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # RabbitMQ Messaging Consolidation
 
 ## Problem Statement

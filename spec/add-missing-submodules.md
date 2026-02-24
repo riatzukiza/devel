@@ -1,3 +1,17 @@
+---
+uuid: 0884f18e-6c80-44da-8ee2-d53834425890
+title: "Add Missing Nested Git Repositories As Submodules"
+slug: add-missing-submodules
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.407448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Add Missing Nested Git Repositories As Submodules
 
 ## Context

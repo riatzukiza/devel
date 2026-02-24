@@ -227,3 +227,10 @@ Create a dev profile for development:
 - `pm2-process-management` - Start/stop/restart services
 - `render-pm2-clj-config` - Validate configs without starting
 - `workspace-navigation` - Locate existing ecosystem files
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[pm2-process-management](../pm2-process-management/SKILL.md)**
+- **[render-pm2-clj-config](../render-pm2-clj-config/SKILL.md)**
+- **[workspace-navigation](../workspace-navigation/SKILL.md)**

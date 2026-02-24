@@ -1,3 +1,17 @@
+---
+uuid: b62fe7e6-60db-4fdd-a6cd-2c00d1656879
+title: "cephalon-clj recovery (2026-02-03)"
+slug: 2026-02-03-cephalon-clj-recovery
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-04T20:15:32.027168Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # cephalon-clj recovery (2026-02-03)
 
 ## Goal

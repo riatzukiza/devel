@@ -24,15 +24,9 @@ import {
 } from "./llm/index.js";
 import { DiscordApiClient } from "./discord/api-client.js";
 import type { CephalonPolicy, CephalonEvent, CephalonEventType, EventPayload } from "./types/index.js";
-import {
-  ChromaMemoryStore,
-  createDefaultChromaConfig,
-} from "./chroma/client.js";
-import {
-  EmbeddingService,
-  createDefaultEmbeddingConfig,
-} from "./embeddings/service.js";
+import type { ChromaMemoryStore } from "./chroma/client.js";
 import { MemoryUIServer } from "./ui/server.js";
+import { OpenPlannerClient, createDefaultOpenPlannerConfig } from "./openplanner/client.js";
 
 function safeStringify(value: unknown): string {
   const seen = new WeakSet();
@@ -59,7 +53,7 @@ export interface CephalonApp {
   policy: CephalonPolicy;
   eventBus: EventBus;
   memoryStore: MemoryStore;
-  chromaStore: ChromaMemoryStore;
+  chromaStore?: ChromaMemoryStore;
   sessionManager: SessionManager;
   discord: DiscordIntegration;
   start(): Promise<void>;
@@ -90,13 +84,7 @@ export async function createCephalonApp(
   const ollamaConfig = createOllamaConfig(policy.models.actor.name);
   const llmProvider = new OllamaProvider(ollamaConfig);
 
-  // Initialize ChromaDB
-  const embeddingService = new EmbeddingService(createDefaultEmbeddingConfig());
-  const chromaStore = new ChromaMemoryStore(
-    createDefaultChromaConfig(),
-    embeddingService,
-  );
-  await chromaStore.initialize();
+  const openPlannerClient = new OpenPlannerClient(createDefaultOpenPlannerConfig());
 
   // Choose memory store (MongoDB if configured)
   const mongoUri =
@@ -106,13 +94,14 @@ export async function createCephalonApp(
 
   const memoryStore: MemoryStore & { initialize?: () => Promise<void>; close?: () => Promise<void> } =
     mongoUri
-      ? new MongoDBMemoryStore({
+        ? new MongoDBMemoryStore({
           cephalonId: "duck-cephalon",
           uri: mongoUri,
           databaseName: process.env.CEPHALON_MONGODB_DB || "promethean",
           collectionName: process.env.CEPHALON_MONGODB_COLLECTION || "cephalon_memories",
+          openPlannerClient,
         })
-      : new InMemoryMemoryStore(chromaStore);
+      : new InMemoryMemoryStore(undefined, openPlannerClient);
 
   if (memoryStore.initialize) {
     await memoryStore.initialize();
@@ -121,7 +110,7 @@ export async function createCephalonApp(
   const discordApiClient = new DiscordApiClient({ token: discordToken });
 
   const toolExecutor = new ToolExecutor(eventBus, {
-    chromaStore,
+    openPlannerClient,
     discordApiClient,
   });
 
@@ -170,7 +159,7 @@ export async function createCephalonApp(
     options.uiPort ?? parseInt(process.env.MEMORY_UI_PORT || "3000", 10);
   const memoryUI = new MemoryUIServer({
     port: uiPort,
-    chromaStore,
+    openPlannerClient,
     memoryStore,
   });
 
@@ -397,7 +386,6 @@ export async function createCephalonApp(
     policy,
     eventBus,
     memoryStore,
-    chromaStore,
     sessionManager,
     discord,
     start,

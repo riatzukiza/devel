@@ -1,3 +1,17 @@
+---
+uuid: 1a4078fd-a676-4069-b939-3605624ec7a4
+title: "Shared agent DSL examples (real-world scenarios)"
+slug: agent-dsl-real-world-examples
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.407448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Shared agent DSL examples (real-world scenarios)
 
 ## Scope
