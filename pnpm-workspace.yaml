@@ -1,9 +1,16 @@
 packages:
   - .
   - packages/cephalon-ts
-  - packages/mcp-runtime
+  - packages/openplanner-cljs-client
+  - packages/opencode-cljs-client
+  - packages/opencode-openplanner-plugin-cljs
+  - packages/aether
+  - packages/hermes
   - packages/reconstituter
+  - packages/mcp-oauth
+  - packages/npu-top
   - services/*
+  - orgs/open-hax/workbench
   - orgs/riatzukiza/promethean/packages/*
   - orgs/riatzukiza/promethean/packages/*/*
   - orgs/riatzukiza/promethean/cli/*
