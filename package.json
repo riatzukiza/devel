@@ -47,6 +47,7 @@
     "ecosystem:validate": "pnpm --dir orgs/riatzukiza/promethean --filter @promethean-os/ecosystem-dsl run validate -- --dir ../../../../../system/daemons",
     "index-opencode-sessions": "tsx index_opencode_sessions.ts",
     "search-opencode-sessions": "tsx search_opencode_sessions.ts",
+    "cleanup-empty-opencode-sessions": "node cleanup-empty-opencode-sessions.mjs",
     "reconstitute": "tsx reconstitute.ts",
     "generate-ecosystem": "npx shadow-cljs release clobber"
   },
@@ -72,8 +73,9 @@
     "@nx/devkit": "^20.0.0",
     "@nx/js": "^20.0.0",
     "@openai/agents": "^0.2.1",
-    "@promethean-os/ecosystem-dsl": "file:orgs/riatzukiza/promethean/cli/ecosystem-dsl",
+    "@promethean-os/ecosystem-dsl": "workspace:*",
     "@promethean-os/kanban": "workspace:*",
+    "@promethean-os/opencode-openplanner-plugin-cljs": "workspace:*",
     "@types/node": "^20.11.30",
     "c8": "^8.0.0",
     "dotenv": "^17.2.3",

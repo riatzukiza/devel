@@ -1,7 +1,11 @@
 node_modules
 dist
 data/oauth.json
+data/oauth-*.json
+data/token*.json
+data/credentials.json
 data/*.db
 data/*.db.wal
 data/*.db.tmp
+!data/oauth.example.json
 .env

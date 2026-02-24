@@ -1,4 +1,4 @@
-{:source-paths ["src"]
+{:source-paths ["src" "test"]
 
  :dependencies
  []
@@ -9,4 +9,13 @@
    :output-dir "dist"
    :modules {:plugin {:entries [my.opencode.entry]}}
    :compiler-options
-   {:output-feature-set :es2022}}}}
+   {:output-feature-set :es2022}}
+
+  :test
+  {:target :node-script
+   :output-to "target/test.cjs"
+   :main my.opencode.entry-test/-main
+   :js-options {:resolve {"@opencode-ai/plugin"
+                          {:target :file
+                           :file "test/my/opencode/plugin_shim.js"}}}
+   :compiler-options {:output-feature-set :es-next}}}}
