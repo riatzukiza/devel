@@ -3,7 +3,12 @@
 
 import "dotenv/config";
 
-import { createOpencodeClient } from "@opencode-ai/sdk";
+import {
+  createOpencodeClient,
+  extractPathsLoose as extractPathsLooseViaClient,
+  flattenForEmbedding as flattenForEmbeddingViaClient,
+  opencodeMessageToOllamaParts,
+} from "@promethean-os/opencode-cljs-client";
 import { ChromaClient, IncludeEnum } from "chromadb";
 import { OllamaEmbeddingFunction } from "@chroma-core/ollama";
 import { Level } from "level";
@@ -403,101 +408,18 @@ async function initChroma(E: Env) {
 // OpenCode -> Ollama replay conversion
 // -----------------------------
 
-function flattenMessageParts(entry: any): { role: "user" | "assistant" | "system"; text: string; toolish: any[] } {
-  const info = entry?.info ?? {};
-  const parts: any[] = Array.isArray(entry?.parts) ? entry.parts : [];
-
-  const roleRaw = info.role ?? info.type ?? "assistant";
-  const role: "user" | "assistant" | "system" = roleRaw === "user" ? "user" : roleRaw === "system" ? "system" : "assistant";
-
-  const textChunks: string[] = [];
-  const toolish: any[] = [];
-
-  for (const p of parts) {
-    if (p?.type === "text" && typeof p.text === "string") {
-      textChunks.push(p.text);
-      continue;
-    }
-
-    const toolName = p?.tool_name ?? p?.name ?? p?.tool?.name ?? p?.function?.name;
-    const toolArgs = p?.arguments ?? p?.args ?? p?.input ?? p?.tool?.input ?? p?.function?.arguments;
-    const toolOut = p?.output ?? p?.result ?? p?.tool?.output ?? (p?.type === "tool_result" ? p?.content : undefined);
-
-    if (toolName) {
-      toolish.push({ toolName: String(toolName), toolArgs, toolOut, raw: p });
-      textChunks.push(`[tool:${String(toolName)}] ${toolArgs ? JSON.stringify(toolArgs) : ""}`.trim());
-      if (toolOut != null) textChunks.push(`[tool_result:${String(toolName)}] ${typeof toolOut === "string" ? toolOut : JSON.stringify(toolOut)}`);
-      continue;
-    }
-
-    textChunks.push(`[opencode_part:${p?.type ?? "unknown"}] ${JSON.stringify(p)}`);
-  }
-
-  return { role, text: textChunks.join("\n").trim(), toolish };
-}
-
 export function opencodeEntryToOllamaReplay(entry: any): OllamaMessage[] {
-  const { role, text, toolish } = flattenMessageParts(entry);
-
-  const toolCalls: Array<{ name: string; args: Record<string, unknown> }> = [];
-  const toolResults: Array<{ name: string; out: string }> = [];
-
-  for (const t of toolish) {
-    const name = String(t.toolName ?? "");
-    if (!name) continue;
-    const args = t.toolArgs && typeof t.toolArgs === "object" && !Array.isArray(t.toolArgs) ? (t.toolArgs as Record<string, unknown>) : {};
-    toolCalls.push({ name, args });
-    if (t.toolOut != null) {
-      const out = typeof t.toolOut === "string" ? t.toolOut : JSON.stringify(t.toolOut);
-      toolResults.push({ name, out });
-    }
-  }
-
-  const msgs: OllamaMessage[] = [];
-
-  if (toolCalls.length) {
-    msgs.push({
-      role: "assistant",
-      content: text || undefined,
-      tool_calls: toolCalls.map((tc, i) => ({
-        type: "function",
-        function: { index: i, name: tc.name, arguments: tc.args },
-      })),
-    });
-
-    for (const tr of toolResults) {
-      msgs.push({ role: "tool", tool_name: tr.name, content: tr.out });
-    }
-
-    return msgs;
-  }
-
-  msgs.push({ role, content: text });
-  return msgs;
+  const parts = opencodeMessageToOllamaParts(entry as Record<string, unknown>);
+  return Array.isArray(parts) ? (parts as OllamaMessage[]) : [];
 }
 
 export function flattenForEmbedding(ollamaMsgs: OllamaMessage[]): string {
-  const lines: string[] = [];
-  for (const m of ollamaMsgs) {
-    if (m.role === "tool") {
-      lines.push(`[tool:${m.tool_name}] ${m.content}`);
-    } else if (m.role === "assistant" && "tool_calls" in m && m.tool_calls?.length) {
-      for (const tc of m.tool_calls) {
-        lines.push(`[tool_call:${tc.function.name}] ${JSON.stringify(tc.function.arguments)}`);
-      }
-      if (m.content) lines.push(`[assistant] ${m.content}`);
-    } else {
-      lines.push(`[${m.role}] ${("content" in m && m.content) ? m.content : ""}`);
-    }
-  }
-  return lines.join("\n");
+  return flattenForEmbeddingViaClient(ollamaMsgs);
 }
 
 export function extractPathsLoose(text: string): string[] {
-  const paths = new Set<string>();
-  const re = /(^|[\s"'`(])((?:\.{0,2}\/)?(?:[A-Za-z0-9_.-]+\/)+[A-Za-z0-9_.-]+)(?=$|[\s"'`),.:;])/g;
-  for (const m of text.matchAll(re)) paths.add(normalizePathKey(m[2]));
-  return [...paths];
+  const paths = extractPathsLooseViaClient(text) as string[];
+  return paths.map((pathItem: string) => normalizePathKey(pathItem));
 }
 
 // -----------------------------
@@ -583,16 +505,16 @@ async function cmdIndex(E: Env) {
 
   const { sessions: sessionsCol } = await initChroma(E);
 
-  const oc = createOpencodeClient({ baseUrl: E.OPENCODE_BASE_URL, auth: E.OPENCODE_API_KEY });
+  const oc = createOpencodeClient({ baseUrl: E.OPENCODE_BASE_URL, apiKey: E.OPENCODE_API_KEY });
 
-  const sessions = unwrap<any[]>(await oc.session.list());
+  const sessions = unwrap<any[]>(await oc.listSessions());
   console.log(`Sessions: ${sessions.length}`);
 
   for (const s of sessions) {
     const sessionId = String(s.id);
     const sessionTitle = String(s.title ?? s.name ?? "");
 
-    const entries = unwrap<any[]>(await oc.session.messages({ path: { id: sessionId } }));
+    const entries = unwrap<any[]>(await oc.listMessages(sessionId));
     console.log(`- ${sessionId} msgs=${entries.length} title="${sessionTitle}"`);
 
     await db.put(`sess:${sessionId}:meta`, { id: sessionId, title: sessionTitle });

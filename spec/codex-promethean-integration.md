@@ -1,3 +1,17 @@
+---
+uuid: 964ac523-331a-4143-8a0a-e0c36d950544
+title: "Codex ↔ Promethean Packages Integration Opportunities"
+slug: codex-promethean-integration
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.407448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Codex ↔ Promethean Packages Integration Opportunities
 
 ## Context & Pain Points

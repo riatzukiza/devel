@@ -184,3 +184,10 @@ The following formats are deprecated:
 - `create-pm2-clj-config` - Create new ecosystem configuration files
 - `render-pm2-clj-config` - Validate configs without starting
 - `workspace-navigation` - Locate ecosystem files
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[create-pm2-clj-config](../create-pm2-clj-config/SKILL.md)**
+- **[render-pm2-clj-config](../render-pm2-clj-config/SKILL.md)**
+- **[workspace-navigation](../workspace-navigation/SKILL.md)**

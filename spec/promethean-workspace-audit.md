@@ -1,3 +1,17 @@
+---
+uuid: 373aa7e8-054b-4a59-92d8-a46db0f8d84e
+title: "Promethean workspace audit"
+slug: promethean-workspace-audit
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.409448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Promethean workspace audit
 
 ## Scope

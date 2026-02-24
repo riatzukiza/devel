@@ -1,3 +1,17 @@
+---
+uuid: f55f9e1a-450b-4df7-ad6f-d4d7e59bb57a
+title: "Workspace Cleanup & Submodule Commit Plan"
+slug: submodule-cleanup
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.409448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Workspace Cleanup & Submodule Commit Plan
 
 ## Summary

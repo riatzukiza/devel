@@ -1,43 +1,50 @@
 /**
  * opencode-sessions.ts
  *
- * Unified CLI for managing OpenCode sessions with ChromaDB embeddings.
+ * Unified CLI for managing OpenCode sessions with OpenPlanner events.
  *
  * Commands:
- *   index         Index all OpenCode sessions into ChromaDB
- *   search        Search indexed sessions using semantic similarity
+ *   index         Index OpenCode sessions into OpenPlanner
+ *   search        Search indexed sessions using OpenPlanner FTS
  *   help          Show this help message
  *
  * Usage:
  *   pnpm -C packages/reconstituter opencode-sessions index
  *   pnpm -C packages/reconstituter opencode-sessions search "your query here" --k 10 --session <session_id>
- *   pnpm -C packages/reconstituter opencode-sessions help
  *
  * Environment:
- *   OPENCODE_BASE_URL     - OpenCode server URL (default: http://localhost:4096)
- *   CHROMA_URL           - Chroma server URL (default: http://localhost:8000)
- *   CHROMA_COLLECTION    - Chroma collection base name (default: opencode_messages_v1)
- *   CHROMA_TENANT        - Chroma tenant (optional)
- *   CHROMA_DATABASE      - Chroma database (optional)
- *   CHROMA_TOKEN         - Chroma auth token (optional)
- *   OPENCODE_THROTTLE_MS - Minimum delay between OpenCode API calls (default: 200)
- *   LEVEL_DIR            - LevelDB directory (default: .reconstitute/level)
- *   OLLAMA_URL           - Ollama server URL (default: http://localhost:11434)
- *   OLLAMA_EMBED_MODEL   - Embedding model (default: qwen3-embedding:0.6b)
- *   OLLAMA_NUM_CTX       - Context length (default: 32768)
- *   BATCH_SIZE           - Batch size for embedding (default: 32)
- *   EMBED_TTL_MS         - Embed cache TTL in ms (default: 30 days)
+ *   OPENCODE_BASE_URL                 - OpenCode server URL (default: http://localhost:4096)
+ *   OPENCODE_THROTTLE_MS              - Minimum delay between OpenCode API calls (default: 200)
+ *   LEVEL_DIR                         - LevelDB directory (default: .reconstitute/level)
+ *   BATCH_SIZE                        - Batch size for indexing (default: 32)
+ *   OPENCODE_CHUNK_INDEXING           - "1" (default) to index chunk events; "0" for legacy per-message
+ *   OPENCODE_INDEX_LARGEST_OF_LAST_N  - If set, index only the single largest session among the last N sessions
+ *   OPENCODE_CHUNK_TARGET_TOKENS      - Approx token target for chunks (default: 32000)
+ *   OPENCODE_CHUNK_OVERLAP_MESSAGES   - Message overlap between chunks (default: 4)
  */
+
 import "dotenv/config";
 
-import { ChromaClient } from "chromadb";
-import { createOpencodeClient } from "@opencode-ai/sdk";
+import {
+  createOpencodeClient,
+  extractPathsLoose as extractPathsLooseViaClient,
+  flattenForEmbedding as flattenForEmbeddingViaClient,
+  opencodeMessageToOllamaParts as opencodeMessageToOllamaPartsViaClient,
+} from "@promethean-os/opencode-cljs-client";
 import { Level } from "level";
 import crypto from "node:crypto";
 import { pathToFileURL } from "node:url";
+import {
+  chunkToEvent,
+  formatSearchResults,
+  indexEvents,
+  messageToEvent,
+  openPlannerEnv,
+  searchFts,
+} from "./openplanner-client.js";
 
 // ============================================================================
-// Types and Interfaces
+// Types
 // ============================================================================
 
 export type Json = null | boolean | number | string | Json[] | { [k: string]: Json };
@@ -56,19 +63,14 @@ export type OllamaMessage =
 
 export interface Env {
   OPENCODE_BASE_URL: string;
-  CHROMA_URL: string;
-  CHROMA_TENANT?: string;
-  CHROMA_DATABASE?: string;
-  CHROMA_TOKEN?: string;
+  OPENPLANNER_URL: string;
   OPENCODE_THROTTLE_MS: number;
-  CHROMA_COLLECTION_BASE: string;
-  CHROMA_COLLECTION: string;
   LEVEL_DIR: string;
-  OLLAMA_URL: string;
-  OLLAMA_EMBED_MODEL: string;
-  OLLAMA_NUM_CTX: number;
   BATCH_SIZE: number;
-  EMBED_TTL_MS: number;
+  OPENCODE_CHUNK_INDEXING: boolean;
+  OPENCODE_INDEX_LARGEST_OF_LAST_N?: number;
+  OPENCODE_CHUNK_TARGET_TOKENS: number;
+  OPENCODE_CHUNK_OVERLAP_MESSAGES: number;
 }
 
 export interface SearchArgs {
@@ -83,64 +85,32 @@ export interface CliArgs {
 }
 
 // ============================================================================
-// Environment Configuration
+// Environment
 // ============================================================================
 
 export function env(): Env {
-  const baseCollection = process.env.CHROMA_COLLECTION ?? "opencode_messages_v1";
-  const embedModel = process.env.OLLAMA_EMBED_MODEL ?? "qwen3-embedding:0.6b";
-
+  const opEnv = openPlannerEnv();
   return {
     OPENCODE_BASE_URL: process.env.OPENCODE_BASE_URL ?? "http://localhost:4096",
-    CHROMA_URL: process.env.CHROMA_URL ?? "http://localhost:8000",
-    CHROMA_TENANT: process.env.CHROMA_TENANT,
-    CHROMA_DATABASE: process.env.CHROMA_DATABASE,
-    CHROMA_TOKEN: process.env.CHROMA_TOKEN,
+    OPENPLANNER_URL: opEnv.OPENPLANNER_URL,
     OPENCODE_THROTTLE_MS: Number(process.env.OPENCODE_THROTTLE_MS ?? "200"),
-    CHROMA_COLLECTION_BASE: baseCollection,
-    CHROMA_COLLECTION: saltCollectionName(baseCollection, embedModel),
     LEVEL_DIR: process.env.LEVEL_DIR ?? ".reconstitute/level",
-    OLLAMA_URL: process.env.OLLAMA_URL ?? "http://localhost:11434",
-    OLLAMA_EMBED_MODEL: embedModel,
-    OLLAMA_NUM_CTX: Number(process.env.OLLAMA_NUM_CTX ?? "32768"),
     BATCH_SIZE: Number(process.env.BATCH_SIZE ?? "32"),
-    EMBED_TTL_MS: Number(process.env.EMBED_TTL_MS ?? `${1000 * 60 * 60 * 24 * 30}`),
+    OPENCODE_CHUNK_INDEXING: (process.env.OPENCODE_CHUNK_INDEXING ?? "1") !== "0",
+    OPENCODE_INDEX_LARGEST_OF_LAST_N: process.env.OPENCODE_INDEX_LARGEST_OF_LAST_N
+      ? Number(process.env.OPENCODE_INDEX_LARGEST_OF_LAST_N)
+      : undefined,
+    OPENCODE_CHUNK_TARGET_TOKENS: Number(process.env.OPENCODE_CHUNK_TARGET_TOKENS ?? "32000"),
+    OPENCODE_CHUNK_OVERLAP_MESSAGES: Number(process.env.OPENCODE_CHUNK_OVERLAP_MESSAGES ?? "4"),
   };
 }
 
 // ============================================================================
-// Utility Functions
+// Utility
 // ============================================================================
 
 function sha256(s: string): string {
   return crypto.createHash("sha256").update(s).digest("hex");
-}
-
-function sanitizeModelSuffix(model: string): string {
-  const normalized = model.toLowerCase().replace(/[^a-z0-9]+/g, "_");
-  const trimmed = normalized.replace(/^_+|_+$/g, "");
-  return trimmed || "model";
-}
-
-function saltCollectionName(base: string, model: string): string {
-  const suffix = sanitizeModelSuffix(model);
-  const token = `__${suffix}`;
-  return base.endsWith(token) ? base : `${base}${token}`;
-}
-
-async function ttlGet<T>(db: Level<string, any>, key: string): Promise<T | null> {
-  try {
-    const v = await db.get(key);
-    if (!v) return null;
-    if (typeof v.expiresAt === "number" && Date.now() > v.expiresAt) return null;
-    return v.value as T;
-  } catch {
-    return null;
-  }
-}
-
-async function ttlSet<T>(db: Level<string, any>, key: string, value: T, ttlMs: number) {
-  await db.put(key, { value, expiresAt: Date.now() + ttlMs });
 }
 
 const sleep = (ms: number): Promise<void> =>
@@ -148,199 +118,73 @@ const sleep = (ms: number): Promise<void> =>
     setTimeout(resolve, ms);
   });
 
-const createChromaClient = (E: Env): ChromaClient => {
-  const common = {
-    ...(E.CHROMA_TENANT ? { tenant: E.CHROMA_TENANT } : {}),
-    ...(E.CHROMA_DATABASE ? { database: E.CHROMA_DATABASE } : {}),
-    ...(E.CHROMA_TOKEN
-      ? {
-          auth: {
-            provider: "token",
-            credentials: E.CHROMA_TOKEN,
-            tokenHeaderType: "AUTHORIZATION",
-          },
-        }
-      : {}),
-  };
+function clampInt(v: number, min: number, max: number): number {
+  if (!Number.isFinite(v)) return min;
+  return Math.max(min, Math.min(max, Math.floor(v)));
+}
 
-  try {
-    const url = new URL(E.CHROMA_URL);
-    const port = url.port ? Number(url.port) : undefined;
+// Conservative approximation: tokens ~= chars / 3.5.
+function approxTokens(text: string): number {
+  return Math.ceil((text?.length ?? 0) / 3.5);
+}
 
-    return new ChromaClient({
-      host: url.hostname,
-      port,
-      ssl: url.protocol === "https:",
-      ...common,
-    });
-  } catch {
-    return new ChromaClient({ path: E.CHROMA_URL, ...common });
-  }
-};
+function joinDocs(docs: Array<{ doc: string }>): string {
+  return docs.map((d) => d.doc).join("\n\n");
+}
 
 export function flattenForEmbedding(ollamaMsgs: OllamaMessage[]): string {
-  const lines: string[] = [];
-  for (const m of ollamaMsgs) {
-    if (m.role === "tool") {
-      lines.push(`[tool:${m.tool_name}] ${m.content}`);
-    } else if (m.role === "assistant" && "tool_calls" in m && m.tool_calls?.length) {
-      for (const tc of m.tool_calls) {
-        lines.push(`[tool_call:${tc.function.name}] ${JSON.stringify(tc.function.arguments)}`);
-      }
-    } else {
-      lines.push(`[${m.role}] ${("content" in m && m.content) ? m.content : ""}`);
-    }
-  }
-  return lines.join("\n");
+  return flattenForEmbeddingViaClient(ollamaMsgs) as string;
 }
 
 export function extractPathsLoose(text: string): string[] {
-  const paths = new Set<string>();
-  const re = /(^|[\s"'`(])((?:\.{0,2}\/)?(?:[A-Za-z0-9_.-]+\/)+[A-Za-z0-9_.-]+)(?=$|[\s"'`),.:;])/g;
-  for (const m of text.matchAll(re)) paths.add(m[2]);
-  return [...paths];
+  const result = extractPathsLooseViaClient(text);
+  if (Array.isArray(result)) return result.map((x) => String(x));
+  return [];
 }
 
 export function opencodeMessageToOllamaParts(entry: any): OllamaMessage[] {
-  const info = entry?.info ?? {};
-  const parts: any[] = entry?.parts ?? [];
-
-  const roleRaw = info.role ?? info.type ?? "assistant";
-  const role: "user" | "assistant" | "system" =
-    roleRaw === "user" ? "user" : roleRaw === "system" ? "system" : "assistant";
-
-  const textChunks: string[] = [];
-  const toolCalls: Array<{ name: string; args: Record<string, unknown> }> = [];
-  const toolResults: Array<{ name: string; output: string }> = [];
-
-  for (const p of parts) {
-    if (p?.type === "text" && typeof p.text === "string") {
-      textChunks.push(p.text);
-      continue;
-    }
-
-    const toolName = p?.tool_name ?? p?.name ?? p?.tool?.name ?? p?.function?.name;
-    const toolArgs = p?.arguments ?? p?.args ?? p?.input ?? p?.tool?.input ?? p?.function?.arguments;
-    const toolOut = p?.output ?? p?.result ?? p?.content ?? p?.tool?.output;
-
-    if (toolName && toolArgs && typeof toolArgs === "object" && !Array.isArray(toolArgs)) {
-      toolCalls.push({ name: String(toolName), args: toolArgs as Record<string, unknown> });
-      if (typeof toolOut === "string") toolResults.push({ name: String(toolName), output: toolOut });
-      else if (toolOut != null) toolResults.push({ name: String(toolName), output: JSON.stringify(toolOut) });
-      continue;
-    }
-
-    textChunks.push(`[opencode_part:${p?.type ?? "unknown"}] ${JSON.stringify(p)}`);
-  }
-
-  const msgs: OllamaMessage[] = [];
-  const content = textChunks.join("\n").trim();
-
-  if (toolCalls.length) {
-    msgs.push({
-      role: "assistant",
-      content: content || undefined,
-      tool_calls: toolCalls.map((tc, i) => ({
-        type: "function",
-        function: { index: i, name: tc.name, arguments: tc.args },
-      })),
-    });
-    for (const tr of toolResults) msgs.push({ role: "tool", tool_name: tr.name, content: tr.output });
-  } else {
-    msgs.push({ role, content: content });
-  }
-
-  return msgs;
+  const result = opencodeMessageToOllamaPartsViaClient(entry);
+  if (Array.isArray(result)) return result as OllamaMessage[];
+  return [];
 }
 
 function unwrap<T>(resp: any): T {
-  return (resp && typeof resp === "object" && "data" in resp) ? (resp.data as T) : (resp as T);
-}
-
-// ============================================================================
-// Embedding Functions
-// ============================================================================
-
-async function ollamaEmbedMany(E: Env, db: Level<string, any>, inputs: string[]): Promise<number[][]> {
-  const embeddings: number[][] = [];
-
-  for (const input of inputs) {
-    const text = input ?? "";
-    const ck = `cache:embed:${E.OLLAMA_EMBED_MODEL}:${sha256(text)}`;
-    const cached = await ttlGet<number[]>(db, ck);
-    if (cached) {
-      embeddings.push(cached);
-      continue;
-    }
-
-    const resp = await fetch(`${E.OLLAMA_URL}/api/embed`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: E.OLLAMA_EMBED_MODEL,
-        input: text,
-        truncate: true,
-        options: { num_ctx: E.OLLAMA_NUM_CTX },
-      }),
-    });
-
-    if (!resp.ok) throw new Error(`Ollama embed failed: ${resp.status} ${await resp.text()}`);
-    const json = (await resp.json()) as { embeddings?: number[][] };
-    const emb = json.embeddings?.[0] as number[];
-    if (!emb || !Array.isArray(emb)) throw new Error(`Invalid embed response: ${JSON.stringify(json).slice(0, 200)}`);
-
-    await ttlSet(db, ck, emb, E.EMBED_TTL_MS);
-    embeddings.push(emb);
+  if (resp && typeof resp === "object" && "data" in resp) {
+    return unwrap(resp.data);
   }
-
-  return embeddings;
+  return resp as T;
 }
 
-async function ollamaEmbedOne(E: Env, input: string): Promise<number[]> {
-  const resp = await fetch(`${E.OLLAMA_URL}/api/embed`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: E.OLLAMA_EMBED_MODEL,
-      input,
-      truncate: true,
-      options: { num_ctx: E.OLLAMA_NUM_CTX },
-    }),
-  });
-
-  if (!resp.ok) throw new Error(`Ollama embed failed: ${resp.status} ${await resp.text()}`);
-  const json = (await resp.json()) as { embeddings?: number[][] };
-  const emb = json.embeddings?.[0] as number[];
-  if (!emb || !Array.isArray(emb)) throw new Error(`Invalid embed response: ${JSON.stringify(json).slice(0, 200)}`);
-
-  return emb;
+function unwrapArray<T>(resp: any, objectKeys: string[] = []): T[] {
+  const value = unwrap<any>(resp);
+  if (Array.isArray(value)) return value as T[];
+  if (value && typeof value === "object") {
+    for (const key of objectKeys) {
+      const candidate = (value as Record<string, unknown>)[key];
+      if (Array.isArray(candidate)) return candidate as T[];
+    }
+  }
+  return [];
 }
 
 // ============================================================================
-// Index Command
+// Index
 // ============================================================================
 
 export async function indexSessions(): Promise<void> {
   const E = env();
 
   console.log("Starting OpenCode session indexing...");
-  console.log(`Chroma URL: ${E.CHROMA_URL}`);
-  console.log(`Collection: ${E.CHROMA_COLLECTION}`);
-  console.log(`Collection base: ${E.CHROMA_COLLECTION_BASE}`);
-  console.log(`Ollama URL: ${E.OLLAMA_URL}`);
-  console.log(`Embedding model: ${E.OLLAMA_EMBED_MODEL}`);
+  console.log(`OpenPlanner URL: ${E.OPENPLANNER_URL}`);
+  console.log(`OpenCode URL: ${E.OPENCODE_BASE_URL}`);
   console.log(`Batch size: ${E.BATCH_SIZE}`);
+  console.log(`Chunk indexing: ${E.OPENCODE_CHUNK_INDEXING ? "on" : "off"}`);
+  if (E.OPENCODE_INDEX_LARGEST_OF_LAST_N) {
+    console.log(`Index largest of last N: ${E.OPENCODE_INDEX_LARGEST_OF_LAST_N}`);
+  }
   console.log("");
 
   const client = createOpencodeClient({ baseUrl: E.OPENCODE_BASE_URL });
-  const chroma = createChromaClient(E);
-
-  const collection = await chroma.getOrCreateCollection({
-    name: E.CHROMA_COLLECTION,
-    embeddingFunction: null,
-    metadata: { description: "OpenCode sessions indexed for reconstitute", source: "opencode" },
-  });
-
   const db = new Level<string, any>(E.LEVEL_DIR, { valueEncoding: "json" });
 
   let lastOpencodeCall = 0;
@@ -350,7 +194,6 @@ export async function indexSessions(): Promise<void> {
       lastOpencodeCall = Date.now();
       return;
     }
-
     const now = Date.now();
     const waitMs = lastOpencodeCall + delay - now;
     if (waitMs > 0) await sleep(waitMs);
@@ -358,26 +201,69 @@ export async function indexSessions(): Promise<void> {
   };
 
   await throttleOpencode();
-  const sessions = unwrap<any[]>(await client.session.list());
-  console.log(`Found ${sessions.length} sessions`);
+  const sessionsResp = await client.listSessions();
+  const allSessions = unwrapArray<any>(sessionsResp, ["sessions", "rows"]);
+  console.log(`Found ${allSessions?.length} sessions`);
+
+  const lastN = E.OPENCODE_INDEX_LARGEST_OF_LAST_N;
+  const sessions = typeof lastN === "number" && Number.isFinite(lastN)
+    ? allSessions.slice(0, clampInt(lastN, 1, 500))
+    : allSessions;
+
+  // Optionally pick the single largest session among the last N (by total flattened text length).
+  let sessionsToIndex = sessions;
+  if (typeof lastN === "number" && Number.isFinite(lastN) && lastN > 0) {
+    let best: any | null = null;
+    let bestSize = -1;
+
+    for (const s of sessions) {
+      const sessionId = s.id;
+      if (!sessionId) continue;
+      await throttleOpencode();
+      const messages = unwrapArray<any>(await client.listMessages(sessionId), ["messages", "rows"]);
+      let totalLen = 0;
+      for (let i = 0; i < messages.length; i++) {
+        const entry = messages[i];
+        const ollamaMsgs = opencodeMessageToOllamaParts(entry);
+        const doc = flattenForEmbedding(ollamaMsgs);
+        totalLen += doc.length;
+      }
+      if (totalLen > bestSize) {
+        bestSize = totalLen;
+        best = s;
+      }
+    }
+
+    sessionsToIndex = best ? [best] : [];
+    if (best) {
+      console.log(`Indexing only largest session from last ${clampInt(lastN, 1, 500)}: ${best.id} (approx chars: ${bestSize})`);
+    }
+  }
 
   let totalRecords = 0;
 
-  for (const s of sessions) {
+  for (const s of sessionsToIndex) {
     const sessionId = s.id;
     if (!sessionId) continue;
 
     const sessionTitle = s.title ?? "";
     await throttleOpencode();
-    const messages = unwrap<any[]>(await client.session.messages({ path: { id: sessionId } }));
+    const messages = unwrapArray<any>(await client.listMessages(sessionId), ["messages", "rows"]);
 
     await db.put(`sess:${sessionId}:meta`, { id: sessionId, title: sessionTitle });
-    const idsInOrder: string[] = [];
 
-    const docsToEmbed: string[] = [];
-    const metas: any[] = [];
-    const ids: string[] = [];
-    const ollamaBlobs: Record<string, OllamaMessage[]> = {};
+    const idsInOrder: string[] = [];
+    const eventsToIndex: any[] = [];
+
+    const docs: Array<{
+      messageIndex: number;
+      messageId: string;
+      createdAt: number;
+      doc: string;
+      docHash: string;
+      paths: string[];
+      role: string;
+    }> = [];
 
     for (let i = 0; i < messages.length; i++) {
       const entry = messages[i];
@@ -392,49 +278,105 @@ export async function indexSessions(): Promise<void> {
       idsInOrder.push(rowId);
 
       const prevHash = await db.get(`msg:${rowId}:hash`).catch(() => null);
-      if (prevHash === docHash) continue;
-
-      ollamaBlobs[rowId] = ollamaMsgs;
-
       const paths = extractPathsLoose(doc);
 
-      ids.push(rowId);
-      docsToEmbed.push(doc);
-      metas.push({
-        session_id: sessionId,
-        session_title: sessionTitle,
-        message_id: msgId,
-        message_index: i,
+      docs.push({
+        messageIndex: i,
+        messageId: msgId,
+        createdAt,
+        doc,
+        docHash,
+        paths,
         role: entry?.info?.role ?? entry?.info?.type ?? "assistant",
-        created_at: createdAt,
-        paths: paths.join("|"),
       });
 
-      await db.put(`msg:${rowId}:hash`, docHash);
+      if (!E.OPENCODE_CHUNK_INDEXING && prevHash !== docHash) {
+        eventsToIndex.push(
+          messageToEvent({
+            sessionId,
+            messageId: msgId,
+            messageIndex: i,
+            text: doc,
+            createdAt,
+            role: entry?.info?.role ?? entry?.info?.type ?? "assistant",
+            sessionTitle,
+            paths,
+          })
+        );
+      }
+
+      if (prevHash !== docHash) {
+        await db.put(`msg:${rowId}:hash`, docHash);
+        await db.put(`msg:${rowId}:ollama`, ollamaMsgs);
+      }
+    }
+
+    if (E.OPENCODE_CHUNK_INDEXING) {
+      const targetTokens = clampInt(E.OPENCODE_CHUNK_TARGET_TOKENS, 512, 200_000);
+      const overlapMsgs = clampInt(E.OPENCODE_CHUNK_OVERLAP_MESSAGES, 0, 50);
+
+      let chunkIndex = 0;
+      let buf: Array<{ messageIndex: number; messageId: string; createdAt: number; doc: string; paths: string[]; role: string }> = [];
+      let bufTokens = 0;
+
+      const flush = () => {
+        if (buf.length === 0) return;
+        const text = joinDocs(buf);
+        const allPaths = Array.from(new Set(buf.flatMap((d) => d.paths ?? [])));
+        const first = buf[0];
+        const last = buf[buf.length - 1];
+
+        eventsToIndex.push(
+          chunkToEvent({
+            sessionId,
+            sessionTitle,
+            chunkIndex,
+            messageIdStart: first.messageId,
+            messageIdEnd: last.messageId,
+            messageIndexStart: first.messageIndex,
+            messageIndexEnd: last.messageIndex,
+            createdAt: last.createdAt,
+            text,
+            approxTokens: bufTokens,
+            paths: allPaths,
+          })
+        );
+        chunkIndex += 1;
+
+        if (overlapMsgs > 0) {
+          buf = buf.slice(Math.max(0, buf.length - overlapMsgs));
+          bufTokens = approxTokens(joinDocs(buf));
+        } else {
+          buf = [];
+          bufTokens = 0;
+        }
+      };
+
+      for (const d of docs) {
+        const nextTokens = approxTokens(d.doc);
+        if (buf.length > 0 && bufTokens + nextTokens > targetTokens) {
+          flush();
+        }
+        buf.push({
+          messageIndex: d.messageIndex,
+          messageId: d.messageId,
+          createdAt: d.createdAt,
+          doc: d.doc,
+          paths: d.paths,
+          role: d.role,
+        });
+        bufTokens += nextTokens;
+      }
+      flush();
     }
 
     await db.put(`sess:${sessionId}:order`, idsInOrder);
 
-    for (let start = 0; start < docsToEmbed.length; start += E.BATCH_SIZE) {
-      const batchDocs = docsToEmbed.slice(start, start + E.BATCH_SIZE);
-      const batchIds = ids.slice(start, start + E.BATCH_SIZE);
-      const batchMetas = metas.slice(start, start + E.BATCH_SIZE);
-
-      const embeddings = await ollamaEmbedMany(E, db, batchDocs);
-
-      await collection.upsert({
-        ids: batchIds,
-        embeddings,
-        documents: batchDocs,
-        metadatas: batchMetas,
-      });
-
-      for (const id of batchIds) {
-        if (ollamaBlobs[id]) await db.put(`msg:${id}:ollama`, ollamaBlobs[id]);
-      }
-
-      totalRecords += batchIds.length;
-      console.log(`Upserted ${batchIds.length} rows to ${E.CHROMA_COLLECTION} (total: ${totalRecords})`);
+    for (let start = 0; start < eventsToIndex.length; start += E.BATCH_SIZE) {
+      const batch = eventsToIndex.slice(start, start + E.BATCH_SIZE);
+      await indexEvents(batch);
+      totalRecords += batch.length;
+      console.log(`Indexed ${batch.length} events to OpenPlanner (total: ${totalRecords})`);
     }
   }
 
@@ -443,205 +385,88 @@ export async function indexSessions(): Promise<void> {
 }
 
 // ============================================================================
-// Search Command
+// Search
 // ============================================================================
 
 export async function searchSessions(args: SearchArgs): Promise<void> {
-  const E = env();
-
-  console.log("Searching OpenCode sessions...");
+  console.log("Searching OpenCode sessions via OpenPlanner...");
   console.log(`Query: "${args.query}"`);
-  console.log(`Top-K: ${args.k}`);
-  if (args.session) console.log(`Session filter: ${args.session}`);
-  console.log(`Collection: ${E.CHROMA_COLLECTION}`);
-  console.log(`Collection base: ${E.CHROMA_COLLECTION_BASE}`);
-  console.log("");
+  if (args.session) console.log(`Session: ${args.session}`);
 
-  const chroma = createChromaClient(E);
-
-  const collection = await chroma.getOrCreateCollection({
-    name: E.CHROMA_COLLECTION,
-    embeddingFunction: null,
+  const resp = await searchFts({
+    q: args.query,
+    limit: args.k,
+    source: "opencode-sessions",
+    session: args.session,
   });
 
-  const qEmb = await ollamaEmbedOne(E, args.query);
-  const where = args.session ? { session_id: args.session } : undefined;
-
-  const res = await collection.query({
-    queryEmbeddings: [qEmb],
-    nResults: args.k,
-    where,
-    include: ["documents", "metadatas", "distances"] as any[],
-  });
-
-  const ids = (res?.ids?.[0] ?? []);
-  const docs = (res?.documents?.[0] ?? []);
-  const metas = (res?.metadatas?.[0] ?? []);
-  const dists = (res?.distances?.[0] ?? []);
-
-  if (!ids.length) {
-    console.log("No matches found.");
-    return;
-  }
-
-  console.log(`Found ${ids.length} results:\n`);
-
-  const grouped = new Map<string, Array<{ id: string; dist: number; doc: string; meta: any }>>();
-  for (let i = 0; i < ids.length; i++) {
-    const meta = metas[i] ?? {};
-    const sid = String(meta.session_id ?? "unknown");
-    const arr = grouped.get(sid) ?? [];
-    arr.push({ id: ids[i], dist: dists[i] ?? 0, doc: docs[i] ?? "", meta });
-    grouped.set(sid, arr);
-  }
-
-  for (const [sid, items] of grouped.entries()) {
-    console.log(`=== session_id: ${sid} (hits: ${items.length}) ===`);
-    for (const it of items) {
-      const mi = it.meta?.message_index ?? "?";
-      const role = it.meta?.role ?? "?";
-      const createdAt = it.meta?.created_at ?? "";
-      const title = it.meta?.session_title ?? "";
-      const paths = it.meta?.paths ?? "";
-
-      console.log(`\n--- Result ---`);
-      console.log(`ID: ${it.id}`);
-      console.log(`Distance: ${it.dist.toFixed(4)}`);
-      console.log(`Message Index: ${mi}`);
-      console.log(`Role: ${role}`);
-      console.log(`Session Title: ${title}`);
-      console.log(`Created: ${new Date(createdAt).toISOString()}`);
-      if (paths) console.log(`Paths: ${paths.replace(/\|/g, ", ")}`);
-      console.log(`\n${it.doc}\n`);
-    }
-  }
+  // eslint-disable-next-line no-console
+  console.log(formatSearchResults(resp.results));
 }
 
 // ============================================================================
-// CLI Argument Parsing
+// CLI parsing
 // ============================================================================
 
 export function parseCliArgs(argv: string[]): CliArgs {
-  const command = argv[0]?.toLowerCase();
+  const [command, ...rest] = argv;
 
-  if (command === "help" || command === "--help" || command === "-h" || !command) {
+  if (!command || command === "help" || command === "--help" || command === "-h") {
     return { command: "help" };
   }
 
   if (command === "index") {
-    return { command: "index" };
+    return { command };
   }
 
   if (command === "search") {
-    const args: SearchArgs = { query: "", k: 10, session: undefined };
-    const positional: string[] = [];
-
-    for (let i = 1; i < argv.length; i++) {
-      const a = argv[i];
-      if (a === "--k") {
-        args.k = Number(argv[++i] ?? "10");
-      } else if (a === "--session" || a === "-s") {
-        args.session = argv[++i] ?? undefined;
-      } else {
-        positional.push(a);
+    const query = rest[0] ?? "";
+    let k = 10;
+    let session: string | undefined;
+    for (let i = 1; i < rest.length; i++) {
+      const tok = rest[i];
+      if (tok === "--k" && rest[i + 1]) {
+        k = Number(rest[i + 1]);
+        i += 1;
+      } else if (tok === "--session" && rest[i + 1]) {
+        session = rest[i + 1];
+        i += 1;
       }
     }
-
-    args.query = positional.join(" ").trim();
-    if (!args.query) {
-      throw new Error(
-        "Missing query string for search command.\nExample: pnpm -C packages/reconstituter opencode-sessions search \"my query\""
-      );
-    }
-
-    return { command: "search", searchArgs: args };
+    return { command, searchArgs: { query, k, session } };
   }
 
-  throw new Error(`Unknown command: ${command}\nUse 'index', 'search', or 'help'`);
+  return { command: "help" };
 }
 
-// ============================================================================
-// Main Entry Point
-// ============================================================================
-
-function showHelp(): void {
-  console.log(`
-OpenCode Sessions CLI
-
-A unified tool for indexing and searching OpenCode sessions using ChromaDB embeddings.
-
-USAGE
-  pnpm -C packages/reconstituter opencode-sessions <command> [options]
-
-COMMANDS
-  index                 Index all OpenCode sessions into ChromaDB
-  search <query>        Search indexed sessions using semantic similarity
-  help                  Show this help message
-
-SEARCH OPTIONS
-  --k <number>          Number of results to return (default: 10)
-  --session, -s <id>    Filter results to specific session ID
-
-EXAMPLES
-  # Index all sessions
-  pnpm -C packages/reconstituter opencode-sessions index
-
-  # Search for relevant sessions
-  pnpm -C packages/reconstituter opencode-sessions search "how does authentication work"
-
-  # Get more results
-  pnpm -C packages/reconstituter opencode-sessions search "error handling patterns" --k 20
-
-  # Filter by specific session
-  pnpm -C packages/reconstituter opencode-sessions search "api design" --session ses_abc123
-
-ENVIRONMENT VARIABLES
-  OPENCODE_BASE_URL     OpenCode server URL (default: http://localhost:4096)
-  CHROMA_URL            ChromaDB server URL (default: http://localhost:8000)
-  CHROMA_COLLECTION     Chroma collection base name (default: opencode_messages_v1)
-  CHROMA_TENANT         Chroma tenant (optional)
-  CHROMA_DATABASE       Chroma database (optional)
-  CHROMA_TOKEN          Chroma auth token (optional)
-  OPENCODE_THROTTLE_MS  Minimum delay between OpenCode API calls (default: 200)
-  LEVEL_DIR             LevelDB directory (default: .reconstitute/level)
-  OLLAMA_URL            Ollama server URL (default: http://localhost:11434)
-  OLLAMA_EMBED_MODEL    Embedding model (default: qwen3-embedding:0.6b)
-  OLLAMA_NUM_CTX        Context length (default: 32768)
-  BATCH_SIZE            Batch size for embedding (default: 32)
-  EMBED_TTL_MS          Embed cache TTL in ms (default: 30 days)
-`);
+function helpText(): string {
+  return `OpenCode Sessions CLI\n\nCommands:\n  index\n  search <query> [--k N] [--session <session>]\n  help\n`;
 }
 
-async function main(): Promise<void> {
-  try {
-    const args = parseCliArgs(process.argv.slice(2));
+export async function main(argv = process.argv.slice(2)): Promise<void> {
+  const args = parseCliArgs(argv);
 
-    switch (args.command) {
-      case "help":
-        showHelp();
-        break;
-
-      case "index":
-        await indexSessions();
-        break;
-
-      case "search":
-        if (!args.searchArgs) {
-          throw new Error("Search arguments missing");
-        }
-        await searchSessions(args.searchArgs);
-        break;
-
-      default:
-        throw new Error(`Unknown command: ${args.command}`);
-    }
-  } catch (error) {
-    console.error("Error:", error instanceof Error ? error.message : error);
-    process.exit(1);
+  if (args.command === "help") {
+    // eslint-disable-next-line no-console
+    console.log(helpText());
+    return;
   }
+
+  if (args.command === "index") {
+    await indexSessions();
+    return;
+  }
+
+  if (args.command === "search" && args.searchArgs) {
+    await searchSessions(args.searchArgs);
+    return;
+  }
+
+  // eslint-disable-next-line no-console
+  console.log(helpText());
 }
 
-const entryHref = pathToFileURL(process.argv[1] ?? "").href;
-if (entryHref === import.meta.url) {
-  main();
+// If invoked as a script
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  void main();
 }

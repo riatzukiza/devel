@@ -1,3 +1,17 @@
+---
+uuid: eb07c998-5b1f-4760-8afa-a85d10e136af
+title: "Submodules Update Recovery Plan"
+slug: submodules-update
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.409448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Submodules Update Recovery Plan
 
 ## Context

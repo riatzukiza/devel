@@ -1,12 +1,17 @@
 ---
-title: Dependency Anti-Patterns & Version Skew
+uuid: 516302aa-50a7-4d82-8646-f36f2e2505cc
+title: "Dependency Anti-Patterns & Version Skew"
+slug: dependency_skew_analysis
 status: todo
-owner: assistant
-created_at: 2026-02-03
-updated_at: 2026-02-03
+priority: P2
 tags: [dependencies, version-skew]
+created_at: 2026-02-03
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
 ---
-
 # Dependency Anti-Patterns & Version Skew
 
 ## Overview

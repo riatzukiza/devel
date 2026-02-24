@@ -71,6 +71,14 @@ function main(): void {
           build: {
             executor: "nx:run-commands",
             options: { command: `bun run src/giga/run-submodule.ts "${subPath}" build` }
+          },
+          lint: {
+            executor: "nx:run-commands",
+            options: { command: `bun run src/giga/run-submodule.ts "${subPath}" lint` }
+          },
+          typecheck: {
+            executor: "nx:run-commands",
+            options: { command: `bun run src/giga/run-submodule.ts "${subPath}" typecheck` }
           }
         }
       }
@@ -84,6 +92,4 @@ function main(): void {
   writeFile(OUT, JSON.stringify(graph, null, 2));
 }
 
-if (import.meta.main) {
-  main();
-}
+main();

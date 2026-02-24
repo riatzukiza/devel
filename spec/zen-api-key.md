@@ -1,3 +1,17 @@
+---
+uuid: e653010e-1504-461d-908f-e331ee1132b9
+title: "Zen API Key Requirement"
+slug: zen-api-key
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.409448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Zen API Key Requirement
 
 ## Prompt

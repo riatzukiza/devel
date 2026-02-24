@@ -1,3 +1,17 @@
+---
+uuid: 801f5068-3cd9-4da5-911f-32238b36ffda
+title: "Retire Promethean Discord package (2026-01-27)"
+slug: 2026-01-27-retire-promethean-discord-package
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.407448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Retire Promethean Discord package (2026-01-27)
 
 ## Summary

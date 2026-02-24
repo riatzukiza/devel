@@ -76,3 +76,8 @@ description: Tool: Execute commands with validation
 - Tools and MCP guidance: `.opencode/skills/opencode-tools-mcp.md`
 - OpenCode tools docs: https://opencode.ai/docs/tools/
 - OpenCode custom tools docs: https://opencode.ai/docs/custom-tools/
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[opencode-tools-mcp](../opencode-tools-mcp/SKILL.md)**

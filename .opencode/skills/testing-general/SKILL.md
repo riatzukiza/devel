@@ -71,6 +71,12 @@ src/
     └── e2e/               # E2E tests (optional)
 ```
 
+## Workspace Testing Standards
+- Use `sleep` from the test utils instead of `setTimeout`.
+- Mock at module boundaries with `esmock`.
+- Place tests in `src/tests/` when following workspace conventions.
+- Keep tests deterministic and parallel-friendly.
+
 ## Mocking Strategy
 
 | Layer | Tool | Use For |
@@ -126,3 +132,8 @@ pnpm test:watch
 - Vitest docs: https://vitest.dev/
 - Ava docs: https://github.com/avajs/ava
 - Nx testing: https://nx.dev/recipes/testing
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[workspace-build](../workspace-build/SKILL.md)**

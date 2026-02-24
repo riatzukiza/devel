@@ -1,12 +1,17 @@
 ---
-title: Code Duplication Analysis & Refactoring Plan
+uuid: b0a03f45-10e1-42f0-a965-f7e2856366e5
+title: "Code Duplication Analysis & Refactoring Plan"
+slug: code_duplication_analysis
 status: todo
-owner: assistant
-created_at: 2026-02-03
-updated_at: 2026-02-03
+priority: P2
 tags: [duplication, refactoring]
+created_at: 2026-02-03
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
 ---
-
 # Code Duplication Analysis & Refactoring Plan
 
 ## Executive Summary

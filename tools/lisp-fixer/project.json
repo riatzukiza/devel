@@ -5,32 +5,21 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nx/esbuild:esbuild",
-      "outputs": ["{options.outputPath}"],
+      "executor": "nx:run-commands",
       "options": {
-        "outputPath": "dist",
-        "main": "src/index.ts",
-        "tsConfig": "./tsconfig.json",
-        "assets": [],
-        "generatePackageJson": false,
-        "format": ["esm"],
-        "platform": "node",
-        "sourcemap": true,
-        "minify": false
+        "command": "pnpm --filter @promethean-os/lisp-fixer build"
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
+      "executor": "nx:run-commands",
       "options": {
-        "lintFilePatterns": ["src/**/*.ts"]
+        "command": "pnpm --filter @promethean-os/lisp-fixer lint"
       }
     },
     "typecheck": {
-      "executor": "@nx/js:tsc",
+      "executor": "nx:run-commands",
       "options": {
-        "tsConfig": "./tsconfig.json",
-        "noEmit": true
+        "command": "pnpm --filter @promethean-os/lisp-fixer typecheck"
       }
     },
     "test": {

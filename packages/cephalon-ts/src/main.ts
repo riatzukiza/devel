@@ -8,7 +8,6 @@ import "dotenv/config";
 import { InMemoryEventBus } from "@promethean-os/event";
 import { loadDefaultPolicy } from "./config/policy.js";
 import { InMemoryMemoryStore } from "./core/memory-store.js";
-import { MongoDBMemoryStore } from "./core/mongodb-memory-store.js";
 import { DiscordIntegration } from "./discord/integration.js";
 import {
   SessionManager,
@@ -27,15 +26,11 @@ import type {
   CephalonEventType,
   EventPayload,
 } from "./types/index.js";
-import {
-  ChromaMemoryStore,
-  createDefaultChromaConfig,
-} from "./chroma/client.js";
-import {
-  EmbeddingService,
-  createDefaultEmbeddingConfig,
-} from "./embeddings/service.js";
 import { MemoryUIServer } from "./ui/server.js";
+import {
+  OpenPlannerClient,
+  createDefaultOpenPlannerConfig,
+} from "./openplanner/client.js";
 
 function safeStringify(value: unknown): string {
   const seen = new WeakSet();
@@ -80,9 +75,11 @@ async function main(): Promise<void> {
   const eventBus = new InMemoryEventBus();
   console.log("[EventBus] Initialized");
 
+  const openPlannerClient = new OpenPlannerClient(createDefaultOpenPlannerConfig());
+
   // Initialize memory store (use InMemory for development)
-  const memoryStore = new InMemoryMemoryStore();
-await memoryStore.initialize();
+  const memoryStore = new InMemoryMemoryStore(undefined, openPlannerClient);
+  await memoryStore.initialize();
   console.log("[MemoryStore] Initialized");
 
   // Initialize LLM provider (Ollama)
@@ -90,20 +87,11 @@ await memoryStore.initialize();
   const llmProvider = new OllamaProvider(ollamaConfig);
   console.log(`[LLM] Ollama configured: ${ollamaConfig.model}`);
 
-  // Initialize ChromaDB
-  const embeddingService = new EmbeddingService(createDefaultEmbeddingConfig());
-  const chromaStore = new ChromaMemoryStore(
-    createDefaultChromaConfig(),
-    embeddingService,
-  );
-  await chromaStore.initialize();
-  console.log("[MemoryStore] Chroma initialized");
-
   const discordApiClient = new DiscordApiClient({ token: discordToken });
   console.log("[Discord] API client initialized");
 
   const toolExecutor = new ToolExecutor(eventBus, {
-    chromaStore,
+    openPlannerClient,
     discordApiClient,
   });
   console.log("[Tools] Executor initialized");
@@ -309,7 +297,7 @@ await memoryStore.initialize();
   const uiPort = parseInt(process.env.MEMORY_UI_PORT || "3000", 10);
   const memoryUI = new MemoryUIServer({
     port: uiPort,
-    chromaStore,
+    openPlannerClient,
     memoryStore,
   });
   await memoryUI.start();

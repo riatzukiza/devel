@@ -37,3 +37,8 @@ Add and configure Language Server Protocol (LSP) servers to provide language int
 ## References
 - LSP protocol: https://microsoft.github.io/language-server-protocol/
 - OpenCode configuration guidance: `.opencode/skills/opencode-configs.md`
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[opencode-configs](../opencode-configs/SKILL.md)**

@@ -1,3 +1,17 @@
+---
+uuid: d9a410c9-f152-4514-af28-b1542ab437a1
+title: "Spec: Throttle OpenCode API Calls in Session Indexing"
+slug: opencode-indexer-throttle
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T21:21:09.717385Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Spec: Throttle OpenCode API Calls in Session Indexing
 
 ## Summary

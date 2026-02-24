@@ -38,3 +38,8 @@ To efficiently fix "Unmatched delimiter", "Unexpected EOF", and "Invalid token" 
 - **Constraint**: Never try to fix a LISP bracket error by eye-balling it if it's nested more than 2 levels deep. Use a tool/linter.
 - **Tip**: Unexpected EOF almost always means a missing closing parenthesis `)` or brace `}` somewhere above, rarely at the actual end.
 - **Tip**: Vectors `[]` and Maps `{}` are common culprits. Check them first.
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[shadow-cljs-debug](../shadow-cljs-debug/SKILL.md)**

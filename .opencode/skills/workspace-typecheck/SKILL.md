@@ -6,7 +6,7 @@ description: "Type check all TypeScript files across the entire workspace, inclu
 # Skill: Workspace Typecheck
 
 ## Goal
-Type check all TypeScript files across the entire workspace, including all submodules under `orgs/**`, using strict TypeScript settings.
+Type check affected TypeScript projects across the workspace using Nx affected detection, with a full-run fallback available.
 
 ## Use This Skill When
 - You need to verify type safety across multiple repositories
@@ -18,14 +18,14 @@ Type check all TypeScript files across the entire workspace, including all submo
 - The change is unrelated to TypeScript files
 
 ## Inputs
-- File paths to typecheck (default: all `.ts` files in workspace and submodules)
-- TypeScript config to use (default: `tsconfig.json`)
+- File paths to typecheck (default: affected files from git working tree + staged + untracked)
+- Nx target (default: `typecheck`)
 
 ## Steps
-1. Run `pnpm typecheck` to typecheck all TypeScript files across the workspace
-2. Script uses `tsconfig.json` from workspace root
-3. Checks all `src/` files and recursively `orgs/**` directories
-4. Reports all type errors
+1. Run `pnpm typecheck` to execute Nx affected typecheck
+2. Script uses `scripts/nx-affected.mjs` to collect uncommitted changes
+3. Runs `nx affected --target=typecheck` with the computed file list
+4. Use `pnpm typecheck:all` to force a full run
 
 ## Output
 - Type error summary
@@ -42,16 +42,13 @@ Type check all TypeScript files across the entire workspace, including all submo
 
 ## Common Commands
 
-### Typecheck All Workspace Files
+### Typecheck Affected Workspace Files
 ```bash
-# Typecheck all TypeScript files
+# Typecheck affected projects
 pnpm typecheck
 
-# Run Octavia typecheck (workspace-specific)
-pnpm test:octavia
-
-# Typecheck Octavia with coverage
-pnpm test:octavia:coverage
+# Full run across all projects
+pnpm typecheck:all
 ```
 
 ### Typecheck Specific Submodule
@@ -65,9 +62,8 @@ cd orgs/riatzukiza/promethean && pnpm typecheck
 ```
 
 ## References
-- TypeScript config: `tsconfig.json`
-- Typecheck script: `package.json` → `test:octavia`
-- Octavia runner: `src/octavia/runner.ts`
+- Typecheck runner: `scripts/nx-affected.mjs`
+- Nx config: `nx.json`
 
 ## Important Constraints
 - **TypeScript Strict**: Uses strict mode with all type-checking options enabled

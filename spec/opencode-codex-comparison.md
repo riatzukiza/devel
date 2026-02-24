@@ -1,3 +1,17 @@
+---
+uuid: af7f7f98-a158-42f8-9342-f8815cc70ad6
+title: "Spec: Compare @orgs/open-hax/codex and @orgs/numman-ali/opencode-openai-codex-auth"
+slug: opencode-codex-comparison
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.409448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Spec: Compare @orgs/open-hax/codex and @orgs/numman-ali/opencode-openai-codex-auth
 
 ## References

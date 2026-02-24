@@ -1,3 +1,17 @@
+---
+uuid: f6ab0488-a1ae-4d20-acc4-5307bd08e58b
+title: "Move Legacy Codex Submodule to `open-hax/codex`"
+slug: move-opencode-openai-codex-auth-to-open-hax-codex
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.408448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Move Legacy Codex Submodule to `open-hax/codex`
 
 ## Background & References

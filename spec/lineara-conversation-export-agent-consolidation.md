@@ -1,3 +1,17 @@
+---
+uuid: 48420128-ee98-404a-8ad3-d419593e056f
+title: "Lineara conversation export → agent-system consolidation"
+slug: lineara-conversation-export-agent-consolidation
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.408448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Lineara conversation export → agent-system consolidation
 
 ## Scope

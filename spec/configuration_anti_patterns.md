@@ -1,12 +1,17 @@
 ---
-title: Configuration Anti-Patterns & Cleanup Plan
+uuid: 6b3444b5-6b8f-4a90-b726-d7c065015f82
+title: "Configuration Anti-Patterns & Cleanup Plan"
+slug: configuration_anti_patterns
 status: todo
-owner: assistant
-created_at: 2026-02-03
-updated_at: 2026-02-03
+priority: P2
 tags: [configuration, environment, cleanup]
+created_at: 2026-02-03
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
 ---
-
 # Configuration Anti-Patterns & Cleanup Plan
 
 ## Executive Summary

@@ -1,3 +1,17 @@
+---
+uuid: dd654b43-e16c-45fc-b9ce-8b5ff5e90616
+title: "Cephalon TS Merge (services -> packages)"
+slug: 2026-02-03-cephalon-ts-merge-services-into-packages
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T19:13:57.375241Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Cephalon TS Merge (services -> packages)
 
 ## Context

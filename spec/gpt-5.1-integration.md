@@ -1,3 +1,17 @@
+---
+uuid: 54a3c7e2-3a46-4640-938b-29829fa7af0c
+title: "GPT-5.1 + Codex Mini Integration Plan"
+slug: gpt-5.1-integration
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.408448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # GPT-5.1 + Codex Mini Integration Plan
 
 **Date:** 2025-11-13  

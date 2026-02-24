@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import styles from './styles.module.css'
 import Header from './Header'
 import MemoryList from './MemoryList'
 import MemoryTable from './MemoryTable'
 import MemoryDetail from './MemoryDetail'
 import ContextPanel from './ContextPanel'
+import SessionList from './SessionList'
 import SearchBar from './SearchBar'
 import ViewToggle from './ViewToggle'
 import Pagination from './Pagination'
@@ -38,6 +39,8 @@ const App: React.FC = () => {
   const [selected, setSelected] = useState<Memory | null>(null)
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null)
+  const [filter, setFilter] = useState<'all' | 'error' | 'warning'>('all')
 
   const refreshAll = useCallback(async () => {
     setLoading(true)
@@ -108,6 +111,29 @@ const App: React.FC = () => {
     setPage(newPage)
   }
 
+  const processedMemories = useMemo(() => {
+    let result = [...memories]
+    
+    if (selectedSessionId) {
+      result = result.filter(m => m.sessionId === selectedSessionId)
+    }
+
+    if (filter !== 'all') {
+      result = result.filter(m => m.kind === filter)
+    }
+
+    return result.sort((a, b) => {
+      // Errors first
+      const aIsError = a.kind === 'error'
+      const bIsError = b.kind === 'error'
+      if (aIsError && !bIsError) return -1
+      if (!aIsError && bIsError) return 1
+      
+      // Then reverse chronological
+      return b.timestamp - a.timestamp
+    })
+  }, [memories, selectedSessionId, filter])
+
   return (
     <div className={styles.root}>
       <Header 
@@ -118,6 +144,26 @@ const App: React.FC = () => {
       <div className={styles.toolbar}>
         <SearchBar onSearch={handleSearch} />
         <ViewToggle view={view} onChange={setView} />
+        <div style={{ display: 'flex', gap: '8px', marginLeft: '16px' }}>
+          <button 
+            className={`${styles.filterBtn} ${filter === 'all' ? styles.filterBtnActive : ''}`}
+            onClick={() => setFilter('all')}
+          >
+            All
+          </button>
+          <button 
+            className={`${styles.filterBtn} ${filter === 'error' ? styles.filterBtnActive : ''}`}
+            onClick={() => setFilter('error')}
+          >
+            Errors
+          </button>
+          <button 
+            className={`${styles.filterBtn} ${filter === 'warning' ? styles.filterBtnActive : ''}`}
+            onClick={() => setFilter('warning')}
+          >
+            Warnings
+          </button>
+        </div>
       </div>
       <div className={styles.content}>
         <main className={styles.mainPanel}>
@@ -125,7 +171,7 @@ const App: React.FC = () => {
             <div className={styles.loading}>Loading memories...</div>
           ) : view === 'cards' ? (
             <MemoryList 
-              memories={memories} 
+              memories={processedMemories} 
               selectedId={selected?.id ?? null}
               onSelect={setSelected}
               onPin={handlePin}
@@ -148,6 +194,10 @@ const App: React.FC = () => {
           />
         </main>
         <aside className={styles.sidePanel}>
+          <SessionList 
+            onSelectSession={setSelectedSessionId}
+            selectedSessionId={selectedSessionId}
+          />
           <MemoryDetail 
             memory={selected} 
             onPin={selected ? () => handlePin(selected.id) : undefined}

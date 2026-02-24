@@ -1,3 +1,17 @@
+---
+uuid: "7244504b-5965-4e96-b50b-f7a4a851912c"
+title: "OpenCode Clojure Delimiter Auto-Fix Integration"
+slug: "2026-02-03-opencode-clojure-delimiter-integration"
+status: "accepted"
+priority: "P2"
+labels: ["opencode", "clojure", "delimiter", "fix"]
+created_at: "2026-02-03T23:21:38.856405Z"
+estimates:
+  complexity: ""
+  scale: ""
+  time_to_completion: ""
+---
+
 # OpenCode Clojure Delimiter Auto-Fix Integration
 
 ## Context

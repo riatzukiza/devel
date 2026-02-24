@@ -1,3 +1,17 @@
+---
+uuid: "342a2b42-58f4-4881-80ce-2c96bd460a41"
+title: "OpenHax file browser safety fixes (2026-01-27)"
+slug: "2026-01-27-openhax-file-browser-safety"
+status: "done"
+priority: "P2"
+labels: ["file", "openhax", "browser", "safety"]
+created_at: "2026-02-03T06:36:00.407448Z"
+estimates:
+  complexity: ""
+  scale: ""
+  time_to_completion: ""
+---
+
 # OpenHax file browser safety fixes (2026-01-27)
 
 ## Summary

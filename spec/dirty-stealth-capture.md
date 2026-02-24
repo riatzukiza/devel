@@ -1,3 +1,17 @@
+---
+uuid: 8add66ac-dea2-46df-8bab-b13dea4b2d56
+title: "Capture dirty workspace state on dirty/stealth"
+slug: dirty-stealth-capture
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.408448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Capture dirty workspace state on dirty/stealth
 
 ## Code files and references

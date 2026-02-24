@@ -9,6 +9,7 @@
 
 import type { Memory, UUID, MemoryKind, InclusionLog } from "../types/index.js";
 import type { ChromaMemoryStore } from "../chroma/client.js";
+import type { OpenPlannerClient } from "../openplanner/client.js";
 
 // ============================================================================
 // Port (Interface)
@@ -75,9 +76,14 @@ export class InMemoryMemoryStore implements MemoryStore {
   private channelIndex = new Map<string, UUID[]>();
   private inclusionLogs: InclusionLog[] = [];
   private chromaStore?: ChromaMemoryStore;
+  private openPlannerClient?: OpenPlannerClient;
 
-  constructor(chromaStore?: ChromaMemoryStore) {
+  constructor(
+    chromaStore?: ChromaMemoryStore,
+    openPlannerClient?: OpenPlannerClient,
+  ) {
     this.chromaStore = chromaStore;
+    this.openPlannerClient = openPlannerClient;
   }
 
   async insert(memory: Memory): Promise<void> {
@@ -123,6 +129,17 @@ export class InMemoryMemoryStore implements MemoryStore {
         });
       } catch (error) {
         console.error("[MemoryStore] Error storing in Chroma:", error);
+      }
+    }
+
+    if (this.openPlannerClient) {
+      try {
+        await this.openPlannerClient.emitMemoryCreated(memory);
+      } catch (error) {
+        console.error(
+          `[MemoryStore] Error emitting memory ${memory.id} to OpenPlanner:`,
+          error,
+        );
       }
     }
   }

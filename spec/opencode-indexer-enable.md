@@ -1,3 +1,17 @@
+---
+uuid: d42acf5a-7d4b-470b-93a1-cfd76e6bcb1a
+title: "Spec: Enable Opencode Indexer Ecosystem + E2E Coverage"
+slug: opencode-indexer-enable
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T20:47:25.368472Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Spec: Enable Opencode Indexer Ecosystem + E2E Coverage
 
 ## Summary

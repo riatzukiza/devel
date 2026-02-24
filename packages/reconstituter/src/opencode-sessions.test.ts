@@ -4,7 +4,7 @@ import {
   flattenForEmbedding,
   opencodeMessageToOllamaParts,
   parseCliArgs,
-} from "./opencode-sessions.ts";
+} from "./opencode-sessions.js";
 
 test("extractPathsLoose finds repo-style paths", (t) => {
   const text = "See services/cephalon-cljs/src/promethean/main.cljs and ./services/opencode-indexer/src/index.ts.";

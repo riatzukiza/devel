@@ -1,3 +1,17 @@
+---
+uuid: 4170eded-1525-4c78-8605-3942eca908d0
+title: "Retire Legacy BuildFix Fixture Drops"
+slug: buildfix-fixture-cleanup
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.407448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Retire Legacy BuildFix Fixture Drops
 
 ## Context

@@ -69,6 +69,12 @@ async function main(): Promise<void> {
               command: `bun run src/giga/run-submodule.ts "${p}" build`
             }
           },
+          lint: {
+            executor: "nx:run-commands",
+            options: {
+              command: `bun run src/giga/run-submodule.ts "${p}" lint`
+            }
+          },
           typecheck: {
             executor: "nx:run-commands",
             options: {
@@ -127,9 +133,7 @@ function safeName(p: string): string {
   return p.replace(/[^A-Za-z0-9]+/g, "-").replace(/(^-|-$)/g, "").toLowerCase();
 }
 
-if (import.meta.main) {
-  main().catch((e) => {
-    console.error(e);
-    process.exit(1);
-  });
-}
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});

@@ -1,3 +1,17 @@
+---
+uuid: "d12fbd5d-8615-45fa-89fa-c8f752884deb"
+title: "Pre-push Hook: Nx Affected-Only Typecheck (2025-11-12)"
+slug: "pre-push-affected-typecheck-20251112"
+status: "icebox"
+priority: "P2"
+labels: ["typecheck", "pre", "push", "affected"]
+created_at: "2026-02-03T06:36:00.409448Z"
+estimates:
+  complexity: ""
+  scale: ""
+  time_to_completion: ""
+---
+
 # Pre-push Hook: Nx Affected-Only Typecheck (2025-11-12)
 
 ## Code References

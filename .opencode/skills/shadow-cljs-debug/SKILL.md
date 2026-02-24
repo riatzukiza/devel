@@ -43,3 +43,9 @@ To systematically identify and fix compilation errors, dependency issues, and co
 - **Constraint**: Never edit the output files (for example `public/js/main.js`). Only edit `.cljs` source.
 - **Tip**: Shadow-CLJS relies heavily on `package.json` for JS deps. If an npm import fails, check `node_modules` first (`workspace-dependency-check`).
 - **Tip**: `(:require [foo.bar :as bar])` requires a file at `src/foo/bar.cljs`. Check file paths match namespaces exactly.
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[clojure-syntax-rescue](../clojure-syntax-rescue/SKILL.md)**
+- **[workspace-dependency-check](../workspace-dependency-check/SKILL.md)**
