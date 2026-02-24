@@ -1,3 +1,17 @@
+---
+uuid: 91afff56-0ce8-4644-b6ff-f2be9cf289fc
+title: "Onboard repos via device/stealth ↔ remote main"
+slug: agents-device-stealth
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.407448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Onboard repos via device/stealth ↔ remote main
 
 ## Code files and references

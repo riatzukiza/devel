@@ -5,11 +5,34 @@ export type IndexerDeps = {
   indexSessions: () => Promise<void>;
 };
 
+export type IndexerMode = "historical-backfill" | "disabled";
+
 export async function runIndexer(deps: IndexerDeps): Promise<void> {
   await deps.indexSessions();
 }
 
+function resolveMode(): IndexerMode {
+  const rawMode = process.env.OPENCODE_INDEXER_MODE;
+  if (!rawMode || rawMode.length === 0) {
+    return "historical-backfill";
+  }
+
+  if (rawMode === "historical-backfill" || rawMode === "disabled") {
+    return rawMode;
+  }
+
+  throw new Error(
+    `Unsupported OPENCODE_INDEXER_MODE=${rawMode}. Expected "historical-backfill" or "disabled".`
+  );
+}
+
 export function resolveDeps(): IndexerDeps {
+  const mode = resolveMode();
+
+  if (mode === "disabled") {
+    return { indexSessions: async () => {} };
+  }
+
   if (process.env.OPENCODE_INDEXER_NOOP === "1") {
     return { indexSessions: async () => {} };
   }

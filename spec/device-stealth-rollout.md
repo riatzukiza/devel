@@ -1,3 +1,17 @@
+---
+uuid: 8f9b2d54-d667-44cb-a26e-64b5fbfc8f17
+title: "Roll out device/stealth branches for all submodules"
+slug: device-stealth-rollout
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.408448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Roll out device/stealth branches for all submodules
 
 ## Code files and references

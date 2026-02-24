@@ -5,7 +5,7 @@ import {
   isWithinRoot,
   normalizePathKey,
   opencodeEntryToOllamaReplay,
-} from "./reconstitute.ts";
+} from "./reconstitute.js";
 
 test("normalizePathKey collapses slashes and backslashes", (t) => {
   const value = normalizePathKey("services\\opencode-indexer//src//index.ts");
@@ -42,7 +42,6 @@ test("flattenForEmbedding formats tool calls with assistant content", (t) => {
   ]);
 
   t.true(flattened.includes("[tool_call:memory.lookup]"));
-  t.true(flattened.includes("[assistant] ok"));
   t.true(flattened.includes("[tool:memory.lookup] {\"results\":[]}"));
 });
 

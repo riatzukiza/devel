@@ -61,3 +61,23 @@
   border-radius: 999px;
   font-size: 0.75rem;
 }
+
+.filterBtn {
+  background: #21262d;
+  border: 1px solid #30363d;
+  color: #c9d1d9;
+  padding: 4px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.filterBtn:hover {
+  background: #30363d;
+}
+
+.filterBtnActive {
+  background: #1f6feb;
+  border-color: #1f6feb;
+  color: #ffffff;
+}

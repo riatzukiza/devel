@@ -1,3 +1,17 @@
+---
+uuid: 50a866a9-33ce-49c9-8d98-8002140f3036
+title: "Duck Context Protocol + Expanded Tooling (Spec)"
+slug: 2026-01-27-duck-context-protocol
+status: incoming
+priority: P2
+tags: []
+created_at: "2026-02-03T06:36:00.407448Z"
+estimates:
+  complexity: ''
+  scale: ''
+  time_to_completion: ''
+storyPoints: null
+---
 # Duck Context Protocol + Expanded Tooling (Spec)
 
 ## Summary

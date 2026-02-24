@@ -38,3 +38,8 @@ Add and configure Model Context Protocol (MCP) servers with correct protocol com
 - MCP guidance: `.opencode/skills/opencode-tools-mcp.md`
 - MCP docs: https://modelcontextprotocol.io/docs
 - OpenCode MCP docs: https://opencode.ai/docs/mcp-servers/
+
+## Suggested Next Skills
+Check the [Skill Graph](../skill_graph.json) for the full workflow.
+
+- **[opencode-tools-mcp](../opencode-tools-mcp/SKILL.md)**
