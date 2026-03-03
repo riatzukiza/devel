@@ -9,7 +9,8 @@
              [gates-of-aker]
              [cephalon-stable]
              [services-openplanner]
-             [services-mcp]))
+             [services-mcp]
+             [services-vivgrid-proxy]))
 
 ;; The ecosystem and cephalon namespaces load and register all apps via defapp
 ;; when they're required. No need to call anything - the side effects happen
