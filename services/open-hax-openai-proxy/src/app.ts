@@ -190,6 +190,50 @@ function extractErrorMessage(payload: unknown): string | undefined {
     ?? asString(errorValue["code"]);
 }
 
+function truncateForLog(value: string, maxLength = 240): string {
+  const compact = value.replace(/\s+/g, " ").trim();
+  if (compact.length <= maxLength) {
+    return compact;
+  }
+
+  return `${compact.slice(0, Math.max(0, maxLength - 1))}…`;
+}
+
+interface UpstreamErrorSummary {
+  readonly upstreamErrorCode?: string;
+  readonly upstreamErrorType?: string;
+  readonly upstreamErrorMessage?: string;
+}
+
+async function summarizeUpstreamError(response: Response): Promise<UpstreamErrorSummary> {
+  let payload: unknown;
+  try {
+    payload = await response.clone().json();
+  } catch {
+    try {
+      const text = await response.clone().text();
+      return text.length > 0 ? { upstreamErrorMessage: truncateForLog(text) } : {};
+    } catch {
+      return {};
+    }
+  }
+
+  if (!isRecord(payload)) {
+    return {};
+  }
+
+  const errorValue = isRecord(payload.error) ? payload.error : null;
+  const code = asString(errorValue?.code) ?? asString(payload.code);
+  const type = asString(errorValue?.type) ?? asString(payload.type);
+  const message = extractErrorMessage(payload);
+
+  return {
+    upstreamErrorCode: code ? truncateForLog(code, 80) : undefined,
+    upstreamErrorType: type ? truncateForLog(type, 80) : undefined,
+    upstreamErrorMessage: message ? truncateForLog(message) : undefined,
+  };
+}
+
 async function responseIndicatesMissingModel(response: Response, requestedModel: string): Promise<boolean> {
   if (![400, 404, 422].includes(response.status)) {
     return false;
@@ -323,12 +367,17 @@ async function responseIndicatesQuotaError(response: Response): Promise<boolean>
     }
   }
 
+  const payloadIsErrorLike = payloadLooksLikeError(payload);
+  if (response.status >= 200 && response.status < 300 && !payloadIsErrorLike) {
+    return false;
+  }
+
   const message = extractErrorMessage(payload);
   if (message) {
     return messageIndicatesQuotaError(message);
   }
 
-  if (!payloadLooksLikeError(payload)) {
+  if (!payloadIsErrorLike) {
     return false;
   }
 
@@ -1137,6 +1186,7 @@ export async function createApp(config: ProxyConfig): Promise<FastifyInstance> {
     let sawRateLimit = false;
     let sawRequestError = false;
     let sawUpstreamServerError = false;
+    let sawUpstreamInvalidRequest = false;
     let sawModelNotFound = false;
     let attempts = 0;
 
@@ -1450,9 +1500,14 @@ export async function createApp(config: ProxyConfig): Promise<FastifyInstance> {
 
       if (!upstreamResponse.ok && hasMoreCandidates) {
         sawRequestError = true;
+        if (upstreamResponse.status === 400 || upstreamResponse.status === 422) {
+          sawUpstreamInvalidRequest = true;
+        }
         if (upstreamResponse.status === 401 || upstreamResponse.status === 403) {
           keyPool.markRateLimited(account, Math.min(config.keyCooldownMs, 10_000));
         }
+
+        const upstreamError = await summarizeUpstreamError(upstreamResponse);
 
         request.log.warn(
           {
@@ -1461,7 +1516,8 @@ export async function createApp(config: ProxyConfig): Promise<FastifyInstance> {
             accountId: account.accountId,
             attempt: attempts,
             upstreamMode,
-            reason: "upstream_rejected"
+            reason: "upstream_rejected",
+            ...upstreamError
           },
           "upstream rejected request; trying next account/provider"
         );
@@ -1497,6 +1553,18 @@ export async function createApp(config: ProxyConfig): Promise<FastifyInstance> {
 
       const bytes = Buffer.from(await upstreamResponse.arrayBuffer());
       reply.send(bytes);
+      return;
+    }
+
+    if (sawUpstreamInvalidRequest) {
+      request.log.warn({ providerRoutes, attempts, upstreamMode }, "all attempts exhausted due to upstream invalid-request responses");
+      sendOpenAiError(
+        reply,
+        400,
+        "No upstream account accepted the request payload. Check model availability and request parameters.",
+        "invalid_request_error",
+        "upstream_rejected_request"
+      );
       return;
     }
 
