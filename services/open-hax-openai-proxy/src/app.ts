@@ -634,6 +634,16 @@ function providerIdLooksLikeOllama(providerId: string): boolean {
   return providerId.toLowerCase().includes("ollama");
 }
 
+function shouldUseLocalOllama(model: string, patterns: readonly string[]): boolean {
+  const lowered = model.toLowerCase();
+  for (const pattern of patterns) {
+    if (lowered.includes(pattern.toLowerCase())) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function resolveProviderRoutesForModel(
   routes: readonly ProviderRoute[],
   routedModel: string,
@@ -934,6 +944,10 @@ export async function createApp(config: ProxyConfig): Promise<FastifyInstance> {
 
     const useOllamaUpstream = shouldUseOllamaUpstream(requestedModel, config.ollamaModelPrefixes);
     const useOpenAiUpstream = hasModelPrefix(requestedModel, config.openaiModelPrefixes);
+    const useLocalOllama = !useOllamaUpstream
+      && !useOpenAiUpstream
+      && config.localOllamaEnabled
+      && shouldUseLocalOllama(requestedModel, config.localOllamaModelPatterns);
 
     const routedModel = useOllamaUpstream
       ? stripModelPrefix(requestedModel, config.ollamaModelPrefixes)
@@ -941,38 +955,38 @@ export async function createApp(config: ProxyConfig): Promise<FastifyInstance> {
         ? stripModelPrefix(requestedModel, config.openaiModelPrefixes)
         : requestedModel;
 
-    const useMessagesUpstream = !useOpenAiUpstream && shouldUseMessagesUpstream(routedModel, config.messagesModelPrefixes);
-    const useResponsesUpstream = !useOllamaUpstream && shouldUseResponsesUpstream(routedModel, config.responsesModelPrefixes);
+    const useMessagesUpstream = !useOpenAiUpstream && !useLocalOllama && shouldUseMessagesUpstream(routedModel, config.messagesModelPrefixes);
+    const useResponsesUpstream = !useOllamaUpstream && !useLocalOllama && shouldUseResponsesUpstream(routedModel, config.responsesModelPrefixes);
 
-    const upstreamMode = useOllamaUpstream
-      ? "ollama_chat"
-      : useOpenAiUpstream
-        ? useResponsesUpstream
-          ? "openai_responses"
-          : "openai_chat_completions"
-        : useMessagesUpstream
-          ? "messages"
-          : useResponsesUpstream
-            ? "responses"
-            : "chat_completions";
+    const upstreamMode = useLocalOllama
+      ? "local_ollama_chat"
+      : useOllamaUpstream
+        ? "ollama_chat"
+        : useOpenAiUpstream
+          ? useResponsesUpstream
+            ? "openai_responses"
+            : "openai_chat_completions"
+          : useMessagesUpstream
+            ? "messages"
+            : useResponsesUpstream
+              ? "responses"
+              : "chat_completions";
 
-    const upstreamPath = useOllamaUpstream
-      ? config.ollamaChatPath
-      : useOpenAiUpstream
-        ? useResponsesUpstream
-          ? config.openaiResponsesPath
-          : config.openaiChatCompletionsPath
-        : useMessagesUpstream
-          ? config.messagesPath
-          : useResponsesUpstream
-            ? config.responsesPath
-            : config.chatCompletionsPath;
+    const upstreamPath = useLocalOllama
+      ? config.ollamaV1ChatPath
+      : useOllamaUpstream
+        ? config.ollamaChatPath
+        : useOpenAiUpstream
+          ? useResponsesUpstream
+            ? config.openaiResponsesPath
+            : config.openaiChatCompletionsPath
+          : useMessagesUpstream
+            ? config.messagesPath
+            : useResponsesUpstream
+              ? config.responsesPath
+              : config.chatCompletionsPath;
 
     reply.header("x-open-hax-upstream-mode", upstreamMode);
-    let providerRoutes = buildProviderRoutes(config, useOpenAiUpstream);
-    if (!useOpenAiUpstream && resolvedModelCatalog) {
-      providerRoutes = resolveProviderRoutesForModel(providerRoutes, routedModel, resolvedModelCatalog);
-    }
 
     const requestBodyForUpstream = routedModel !== requestedModelInput
       ? {
@@ -983,8 +997,8 @@ export async function createApp(config: ProxyConfig): Promise<FastifyInstance> {
 
     let upstreamPayload: Record<string, unknown>;
     try {
-      upstreamPayload = useOllamaUpstream
-        ? chatRequestToOllamaRequest(request.body, config.ollamaModelPrefixes)
+      upstreamPayload = useLocalOllama || useOllamaUpstream
+        ? requestBodyForUpstream
         : useMessagesUpstream
           ? chatRequestToMessagesRequest(requestBodyForUpstream)
           : useResponsesUpstream
@@ -1002,8 +1016,8 @@ export async function createApp(config: ProxyConfig): Promise<FastifyInstance> {
       ? Math.min(config.requestTimeoutMs, config.streamBootstrapTimeoutMs)
       : config.requestTimeoutMs;
 
-    if (useOllamaUpstream) {
-      reply.header("x-open-hax-upstream-provider", "ollama");
+    if (useLocalOllama) {
+      reply.header("x-open-hax-upstream-provider", "local-ollama");
       const upstreamUrl = new URL(upstreamPath, `${config.ollamaBaseUrl}/`).toString();
       const upstreamHeaders = buildForwardHeaders(request.headers);
       const attemptStartedAt = Date.now();
@@ -1117,6 +1131,11 @@ export async function createApp(config: ProxyConfig): Promise<FastifyInstance> {
       reply.header("content-type", "application/json");
       reply.send(chatCompletion);
       return;
+    }
+
+    let providerRoutes = buildProviderRoutes(config, useOpenAiUpstream);
+    if (!useOpenAiUpstream && resolvedModelCatalog) {
+      providerRoutes = resolveProviderRoutesForModel(providerRoutes, routedModel, resolvedModelCatalog);
     }
 
     const candidatesByProvider: Record<string, ProviderAccountCandidate[]> = {};
