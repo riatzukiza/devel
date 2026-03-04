@@ -10,6 +10,8 @@ export interface ProxyConfig {
   readonly openaiProviderId: string;
   readonly openaiBaseUrl: string;
   readonly ollamaBaseUrl: string;
+  readonly localOllamaEnabled: boolean;
+  readonly localOllamaModelPatterns: readonly string[];
   readonly chatCompletionsPath: string;
   readonly openaiChatCompletionsPath: string;
   readonly messagesPath: string;
@@ -19,6 +21,7 @@ export interface ProxyConfig {
   readonly openaiResponsesPath: string;
   readonly responsesModelPrefixes: readonly string[];
   readonly ollamaChatPath: string;
+  readonly ollamaV1ChatPath: string;
   readonly openaiModelPrefixes: readonly string[];
   readonly ollamaModelPrefixes: readonly string[];
   readonly keysFilePath: string;
@@ -195,6 +198,22 @@ export function loadConfig(cwd: string = process.cwd()): ProxyConfig {
     throw new Error("OPENAI_PROVIDER_ID must not be empty");
   }
 
+  const localOllamaEnabled = booleanFromEnvAliases(["LOCAL_OLLAMA_ENABLED"], true);
+  const localOllamaModelPatterns = csvFromEnv("LOCAL_OLLAMA_MODEL_PATTERNS", [
+    ":2b",
+    ":2b-",
+    ":3b",
+    ":3b-",
+    ":4b",
+    ":4b-",
+    ":7b",
+    ":7b-",
+    ":8b",
+    ":8b-",
+    "mini",
+    "small"
+  ]);
+
   return {
     host: process.env.PROXY_HOST ?? "127.0.0.1",
     port: numberFromEnvAliases(["PROXY_PORT"], 8789),
@@ -205,6 +224,8 @@ export function loadConfig(cwd: string = process.cwd()): ProxyConfig {
     openaiProviderId,
     openaiBaseUrl,
     ollamaBaseUrl,
+    localOllamaEnabled,
+    localOllamaModelPatterns,
     chatCompletionsPath: process.env.UPSTREAM_CHAT_COMPLETIONS_PATH ?? "/v1/chat/completions",
     openaiChatCompletionsPath: process.env.OPENAI_CHAT_COMPLETIONS_PATH ?? "/v1/chat/completions",
     messagesPath: process.env.UPSTREAM_MESSAGES_PATH ?? "/v1/messages",
@@ -216,12 +237,13 @@ export function loadConfig(cwd: string = process.cwd()): ProxyConfig {
     openaiResponsesPath: process.env.OPENAI_RESPONSES_PATH ?? "/v1/responses",
     responsesModelPrefixes: csvFromEnv("UPSTREAM_RESPONSES_MODEL_PREFIXES", ["gpt-"]),
     ollamaChatPath: process.env.OLLAMA_CHAT_PATH ?? "/api/chat",
+    ollamaV1ChatPath: process.env.OLLAMA_V1_CHAT_PATH ?? "/v1/chat/completions",
     openaiModelPrefixes: csvFromEnv("OPENAI_MODEL_PREFIXES", ["openai/", "openai:"]),
     ollamaModelPrefixes: csvFromEnv("OLLAMA_MODEL_PREFIXES", ["ollama/", "ollama:"]),
     keysFilePath: filePathFromEnvAliases(["PROXY_KEYS_FILE", "VIVGRID_KEYS_FILE"], "./keys.json", cwd),
     modelsFilePath: filePathFromEnvAliases(["PROXY_MODELS_FILE", "VIVGRID_MODELS_FILE"], "./models.json", cwd),
     keyReloadMs: numberFromEnvAliases(["PROXY_KEY_RELOAD_MS", "VIVGRID_KEY_RELOAD_MS"], 5000),
-    keyCooldownMs: numberFromEnvAliases(["PROXY_KEY_COOLDOWN_MS", "VIVGRID_KEY_COOLDOWN_MS"], 30000),
+    keyCooldownMs: numberFromEnvAliases(["PROXY_KEY_COOLDOWN_MS", "VIVGRID_KEY_RELOAD_MS"], 30000),
     requestTimeoutMs: numberFromEnvAliases(["UPSTREAM_REQUEST_TIMEOUT_MS"], 180000),
     streamBootstrapTimeoutMs: numberFromEnvAliases(["UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS"], 8000),
     proxyAuthToken,
