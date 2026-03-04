@@ -88,15 +88,7 @@ export function parseRetryAfterMs(value: string | null): number | undefined {
 }
 
 export function isRateLimitResponse(response: Response): boolean {
-  if (response.status === 429) {
-    return true;
-  }
-
-  if (!response.headers.has("retry-after")) {
-    return false;
-  }
-
-  return response.status === 403 || response.status === 503;
+  return response.status === 429;
 }
 
 export function openAiError(

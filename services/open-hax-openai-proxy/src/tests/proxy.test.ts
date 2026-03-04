@@ -825,6 +825,185 @@ test("returns 429 when every key is rate-limited", async () => {
   );
 });
 
+test("does not classify successful payload text as quota exhaustion", async () => {
+  const observedKeys: string[] = [];
+
+  await withProxyApp(
+    {
+      keys: ["key-a", "key-b"],
+      upstreamHandler: async (request) => {
+        const auth = request.headers.authorization;
+        if (typeof auth === "string") {
+          observedKeys.push(auth.replace(/^Bearer\s+/i, ""));
+        }
+
+        if (auth === "Bearer key-a") {
+          return {
+            status: 200,
+            headers: {
+              "content-type": "application/json"
+            },
+            body: JSON.stringify({
+              id: "chatcmpl-first-key-success",
+              object: "chat.completion",
+              message: "An outstanding balance sheet can still be healthy.",
+              choices: [
+                {
+                  index: 0,
+                  message: {
+                    role: "assistant",
+                    content: "ok-from-first-key"
+                  },
+                  finish_reason: "stop"
+                }
+              ]
+            })
+          };
+        }
+
+        return {
+          status: 200,
+          headers: {
+            "content-type": "application/json"
+          },
+          body: JSON.stringify({
+            id: "chatcmpl-second-key-should-not-run",
+            object: "chat.completion",
+            choices: [
+              {
+                index: 0,
+                message: {
+                  role: "assistant",
+                  content: "unexpected-second-key"
+                },
+                finish_reason: "stop"
+              }
+            ]
+          })
+        };
+      }
+    },
+    async ({ app }) => {
+      const response = await app.inject({
+        method: "POST",
+        url: "/v1/chat/completions",
+        headers: {
+          "content-type": "application/json"
+        },
+        payload: {
+          model: "glm-5",
+          messages: [{ role: "user", content: "hello" }],
+          stream: false
+        }
+      });
+
+      assert.equal(response.statusCode, 200);
+      assert.deepEqual(observedKeys, ["key-a"]);
+
+      const payload: unknown = response.json();
+      assert.ok(isRecord(payload));
+      assert.equal(payload.id, "chatcmpl-first-key-success");
+    }
+  );
+});
+
+test("treats 503 + retry-after as upstream server error, not account rate limit", async () => {
+  await withProxyApp(
+    {
+      keys: ["key-a", "key-b"],
+      upstreamHandler: async () => ({
+        status: 503,
+        headers: {
+          "content-type": "application/json",
+          "retry-after": "1"
+        },
+        body: JSON.stringify({ error: { message: "temporary upstream outage" } })
+      })
+    },
+    async ({ app }) => {
+      const response = await app.inject({
+        method: "POST",
+        url: "/v1/chat/completions",
+        headers: {
+          "content-type": "application/json"
+        },
+        payload: {
+          model: "glm-5",
+          messages: [{ role: "user", content: "hello" }],
+          stream: false
+        }
+      });
+
+      assert.equal(response.statusCode, 502);
+      const payload: unknown = response.json();
+      assert.ok(isRecord(payload));
+      assert.ok(isRecord(payload.error));
+      assert.equal(payload.error.code, "upstream_server_error");
+    }
+  );
+});
+
+test("returns 400 when invalid-request and rate-limit responses are mixed", async () => {
+  await withProxyApp(
+    {
+      keys: ["key-a", "key-b"],
+      upstreamHandler: async (request) => {
+        const auth = request.headers.authorization;
+        if (auth === "Bearer key-a") {
+          const headers: Record<string, string> = {
+            "content-type": "application/json"
+          };
+
+          return {
+            status: 400,
+            headers,
+            body: JSON.stringify({
+              error: {
+                type: "invalid_request_error",
+                code: "bad_request",
+                message: "unsupported request parameter: stream_options"
+              }
+            })
+          };
+        }
+
+        const headers: Record<string, string> = {
+          "content-type": "application/json",
+          "retry-after": "1"
+        };
+
+        return {
+          status: 429,
+          headers,
+          body: JSON.stringify({ error: { message: "rate limit" } })
+        };
+      }
+    },
+    async ({ app }) => {
+      const response = await app.inject({
+        method: "POST",
+        url: "/v1/chat/completions",
+        headers: {
+          "content-type": "application/json"
+        },
+        payload: {
+          model: "glm-5",
+          messages: [{ role: "user", content: "hello" }],
+          stream: false,
+          stream_options: { include_usage: true }
+        }
+      });
+
+      assert.equal(response.statusCode, 400);
+      const payload: unknown = response.json();
+      assert.ok(isRecord(payload));
+      assert.ok(isRecord(payload.error));
+      assert.equal(payload.error.type, "invalid_request_error");
+      assert.equal(payload.error.code, "upstream_rejected_request");
+    }
+  );
+});
+
 test("treats outstanding_balance responses as rate-limit-like and rotates keys", async () => {
   const observedKeys: string[] = [];
 
