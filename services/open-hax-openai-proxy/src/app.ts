@@ -997,8 +997,10 @@ export async function createApp(config: ProxyConfig): Promise<FastifyInstance> {
 
     let upstreamPayload: Record<string, unknown>;
     try {
-      upstreamPayload = useLocalOllama || useOllamaUpstream
+      upstreamPayload = useLocalOllama
         ? requestBodyForUpstream
+        : useOllamaUpstream
+          ? chatRequestToOllamaRequest(request.body, config.ollamaModelPrefixes)
         : useMessagesUpstream
           ? chatRequestToMessagesRequest(requestBodyForUpstream)
           : useResponsesUpstream
@@ -1088,48 +1090,27 @@ export async function createApp(config: ProxyConfig): Promise<FastifyInstance> {
         return;
       }
 
-      let upstreamJson: unknown;
-      try {
-        upstreamJson = await upstreamResponse.json();
-      } catch (error) {
-        request.log.error({ error: toErrorMessage(error), upstreamMode }, "failed to parse ollama JSON payload");
-        sendOpenAiError(
-          reply,
-          502,
-          "Ollama upstream returned a non-JSON response for /api/chat.",
-          "server_error",
-          "ollama_invalid_payload"
-        );
+      reply.code(upstreamResponse.status);
+      copyUpstreamHeaders(reply, upstreamResponse.headers);
+
+      const contentType = upstreamResponse.headers.get("content-type") ?? "";
+      const isEventStream = contentType.toLowerCase().includes("text/event-stream");
+
+      if (!upstreamResponse.body) {
+        const responseText = await upstreamResponse.text();
+        reply.send(responseText);
         return;
       }
 
-      let chatCompletion: Record<string, unknown>;
-      try {
-        chatCompletion = ollamaToChatCompletion(upstreamJson, routedModel);
-      } catch (error) {
-        request.log.error({ error: toErrorMessage(error), upstreamMode }, "failed to map ollama payload to chat completion");
-        sendOpenAiError(
-          reply,
-          502,
-          "Ollama upstream payload could not be converted into OpenAI chat-completions format.",
-          "server_error",
-          "ollama_transform_error"
-        );
+      if (isEventStream) {
+        const stream = Readable.fromWeb(upstreamResponse.body as any);
+        reply.removeHeader("content-length");
+        reply.send(stream);
         return;
       }
 
-      if (clientWantsStream) {
-        reply.code(200);
-        reply.header("content-type", "text/event-stream; charset=utf-8");
-        reply.header("cache-control", "no-cache");
-        reply.header("x-accel-buffering", "no");
-        reply.send(chatCompletionToSse(chatCompletion));
-        return;
-      }
-
-      reply.code(200);
-      reply.header("content-type", "application/json");
-      reply.send(chatCompletion);
+      const bytes = Buffer.from(await upstreamResponse.arrayBuffer());
+      reply.send(bytes);
       return;
     }
 
