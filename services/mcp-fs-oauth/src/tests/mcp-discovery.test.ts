@@ -813,6 +813,111 @@ describe("MCP Server Discovery", () => {
       expect(message.trim().startsWith("{")).toBe(false);
       expect(message.trim().startsWith("[")).toBe(false);
     });
+
+    it("should block broad root fs_glob scans with overview guidance", async () => {
+      const response = await fetch(MCP_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json, text/event-stream",
+          "mcp-session-id": sessionId,
+        },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "tools/call",
+          id: 92,
+          params: {
+            name: "fs_glob",
+            arguments: {
+              path: "",
+              pattern: "**/*",
+              maxResults: 500,
+              includeDirectories: false,
+            },
+          },
+        }),
+      });
+
+      expect(response.status).toBe(200);
+      const text = await response.text();
+      const dataMatch = text.match(/data: (.+)/);
+      expect(dataMatch).toBeTruthy();
+
+      const data = JSON.parse(dataMatch![1]);
+      const message = data.result.content[0]?.text as string;
+      expect(message).toContain("[blocked] fs_glob request is too broad");
+      expect(message).toContain("workspace://overview");
+      expect(message).toContain("workspace://submodules");
+    });
+
+    it("should block broad root fs_grep scans with overview guidance", async () => {
+      const response = await fetch(MCP_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json, text/event-stream",
+          "mcp-session-id": sessionId,
+        },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "tools/call",
+          id: 93,
+          params: {
+            name: "fs_grep",
+            arguments: {
+              path: "",
+              pattern: "TODO",
+              include: "**/*",
+              maxResults: 200,
+            },
+          },
+        }),
+      });
+
+      expect(response.status).toBe(200);
+      const text = await response.text();
+      const dataMatch = text.match(/data: (.+)/);
+      expect(dataMatch).toBeTruthy();
+
+      const data = JSON.parse(dataMatch![1]);
+      const message = data.result.content[0]?.text as string;
+      expect(message).toContain("[blocked] fs_grep request is too broad");
+      expect(message).toContain("workspace://overview");
+    });
+
+    it("should block broad root fs_search scans with overview guidance", async () => {
+      const response = await fetch(MCP_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json, text/event-stream",
+          "mcp-session-id": sessionId,
+        },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "tools/call",
+          id: 94,
+          params: {
+            name: "fs_search",
+            arguments: {
+              path: "",
+              query: "hi",
+              maxResults: 50,
+            },
+          },
+        }),
+      });
+
+      expect(response.status).toBe(200);
+      const text = await response.text();
+      const dataMatch = text.match(/data: (.+)/);
+      expect(dataMatch).toBeTruthy();
+
+      const data = JSON.parse(dataMatch![1]);
+      const message = data.result.content[0]?.text as string;
+      expect(message).toContain("[blocked] fs_search request is too broad");
+      expect(message).toContain("workspace://overview");
+    });
   });
 
   describe("Resources Discovery", () => {
@@ -872,6 +977,30 @@ describe("MCP Server Discovery", () => {
       const skillGuide = data.result.resources.find((r: any) => r.uri === "skills://guide");
       expect(skillGuide).toBeDefined();
       expect(skillGuide.name).toBe("skill-guide");
+
+      const workspaceAgents = data.result.resources.find((r: any) => r.uri === "agents://workspace");
+      expect(workspaceAgents).toBeDefined();
+      expect(workspaceAgents.name).toBe("workspace-agents");
+
+      const agentsIndex = data.result.resources.find((r: any) => r.uri === "agents://index");
+      expect(agentsIndex).toBeDefined();
+      expect(agentsIndex.name).toBe("agents-index");
+
+      const chatgptSystem = data.result.resources.find((r: any) => r.uri === "agents://chatgpt-system");
+      expect(chatgptSystem).toBeDefined();
+      expect(chatgptSystem.name).toBe("chatgpt-system-guide");
+
+      const workspaceOverview = data.result.resources.find((r: any) => r.uri === "workspace://overview");
+      expect(workspaceOverview).toBeDefined();
+      expect(workspaceOverview.name).toBe("workspace-overview");
+
+      const workspaceTopLevel = data.result.resources.find((r: any) => r.uri === "workspace://top-level");
+      expect(workspaceTopLevel).toBeDefined();
+      expect(workspaceTopLevel.name).toBe("workspace-top-level");
+
+      const workspaceSubmodules = data.result.resources.find((r: any) => r.uri === "workspace://submodules");
+      expect(workspaceSubmodules).toBeDefined();
+      expect(workspaceSubmodules.name).toBe("workspace-submodules");
     });
 
     it("should read workspace-root resource", async () => {
@@ -926,6 +1055,114 @@ describe("MCP Server Discovery", () => {
       const data = JSON.parse(dataMatch![1]);
       expect(data.result.contents[0].uri).toBe("skills://guide");
       expect(data.result.contents[0].text).toContain("Skills are reusable instruction bundles");
+    });
+
+    it("should read workspace-agents resource", async () => {
+      const response = await fetch(MCP_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json, text/event-stream",
+          "mcp-session-id": sessionId,
+        },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "resources/read",
+          id: 6,
+          params: { uri: "agents://workspace" },
+        }),
+      });
+
+      expect(response.status).toBe(200);
+      const text = await response.text();
+      const dataMatch = text.match(/data: (.+)/);
+      expect(dataMatch).toBeTruthy();
+
+      const data = JSON.parse(dataMatch![1]);
+      expect(data.result.contents[0].uri).toBe("agents://workspace");
+      expect(data.result.contents[0].text).toContain("# Devel Workspace");
+    });
+
+    it("should read chatgpt-system resource", async () => {
+      const response = await fetch(MCP_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json, text/event-stream",
+          "mcp-session-id": sessionId,
+        },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "resources/read",
+          id: 7,
+          params: { uri: "agents://chatgpt-system" },
+        }),
+      });
+
+      expect(response.status).toBe(200);
+      const text = await response.text();
+      const dataMatch = text.match(/data: (.+)/);
+      expect(dataMatch).toBeTruthy();
+
+      const data = JSON.parse(dataMatch![1]);
+      expect(data.result.contents[0].uri).toBe("agents://chatgpt-system");
+      expect(data.result.contents[0].text).toContain("# ChatGPT MCP System Guide");
+      expect(data.result.contents[0].text).toContain("Act mainly as a reviewer, orchestrator, and dispatcher.");
+      expect(data.result.contents[0].text).toContain("workspace://overview");
+    });
+
+    it("should read workspace-overview resource", async () => {
+      const response = await fetch(MCP_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json, text/event-stream",
+          "mcp-session-id": sessionId,
+        },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "resources/read",
+          id: 8,
+          params: { uri: "workspace://overview" },
+        }),
+      });
+
+      expect(response.status).toBe(200);
+      const text = await response.text();
+      const dataMatch = text.match(/data: (.+)/);
+      expect(dataMatch).toBeTruthy();
+
+      const data = JSON.parse(dataMatch![1]);
+      expect(data.result.contents[0].uri).toBe("workspace://overview");
+      expect(data.result.contents[0].text).toContain("# Workspace Overview");
+      expect(data.result.contents[0].text).toContain("workspace://submodules");
+    });
+
+    it("should read workspace-submodules resource", async () => {
+      const response = await fetch(MCP_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json, text/event-stream",
+          "mcp-session-id": sessionId,
+        },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "resources/read",
+          id: 9,
+          params: { uri: "workspace://submodules" },
+        }),
+      });
+
+      expect(response.status).toBe(200);
+      const text = await response.text();
+      const dataMatch = text.match(/data: (.+)/);
+      expect(dataMatch).toBeTruthy();
+
+      const data = JSON.parse(dataMatch![1]);
+      expect(data.result.contents[0].uri).toBe("workspace://submodules");
+      expect(data.result.contents[0].text).toContain("# Workspace Submodules");
+      expect(data.result.contents[0].text).toContain("orgs/riatzukiza/promethean");
     });
   });
 });

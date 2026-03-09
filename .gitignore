@@ -147,6 +147,8 @@ orgs/private/
 orgs/snorkel-ai/
 .shadow-cljs
 .shadow-cljs/
+.ημ/
+.Π/
 
 .reconstitute/
 *.duckdb
