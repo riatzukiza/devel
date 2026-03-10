@@ -6,7 +6,8 @@ const SERVICE = process.env.BLUESKY_SERVICE || 'https://bsky.social';
 const IDENTIFIER = process.env.BLUESKY_IDENTIFIER;
 const PASSWORD = process.env.BLUESKY_APP_PASSWORD;
 const DRY_RUN = process.argv.includes('--dry-run') || !IDENTIFIER || !PASSWORD;
-const payloadPath = process.argv[2] || 'data/social_payloads.latest.json';
+const args = process.argv.slice(2).filter(a => !a.startsWith('--'));
+const payloadPath = args[0] || 'data/social_payloads.latest.json';
 const payloads = JSON.parse(fs.readFileSync(payloadPath, 'utf8'));
 const post = payloads.bluesky;
 
@@ -28,7 +29,10 @@ const loginResp = await fetch(`${SERVICE}/xrpc/com.atproto.server.createSession`
   headers: {'content-type': 'application/json'},
   body: JSON.stringify({identifier: IDENTIFIER, password: PASSWORD}),
 });
-if (!loginResp.ok) throw new Error(`Bluesky login failed: ${loginResp.status}`);
+if (!loginResp.ok) {
+  const errBody = await loginResp.text().catch(() => '');
+  throw new Error(`Bluesky login failed: ${loginResp.status} ${errBody}`);
+}
 const session = await loginResp.json();
 
 let embed;
@@ -42,7 +46,10 @@ if (post.image) {
     },
     body: bytes,
   });
-  if (!uploadResp.ok) throw new Error(`Bluesky image upload failed: ${uploadResp.status}`);
+  if (!uploadResp.ok) {
+    const errBody = await uploadResp.text().catch(() => '');
+    throw new Error(`Bluesky image upload failed: ${uploadResp.status} ${errBody}`);
+  }
   const blob = await uploadResp.json();
   embed = {
     $type: 'app.bsky.embed.images',
@@ -72,5 +79,8 @@ const createResp = await fetch(`${SERVICE}/xrpc/com.atproto.repo.createRecord`, 
   },
   body: JSON.stringify(record),
 });
-if (!createResp.ok) throw new Error(`Bluesky post failed: ${createResp.status}`);
+if (!createResp.ok) {
+  const errBody = await createResp.text().catch(() => '');
+  throw new Error(`Bluesky post failed: ${createResp.status} ${errBody}`);
+}
 console.log(await createResp.text());
