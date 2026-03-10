@@ -156,3 +156,6 @@ services/open-hax-openai-proxy/data/
 *.duckdb
 *.duckdb.wal
 *.jsonl
+
+# Sisyphus session artifacts - plugin no longer used
+.sisyphus/
