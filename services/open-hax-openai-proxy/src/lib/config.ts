@@ -26,6 +26,7 @@ export interface ProxyConfig {
   readonly ollamaModelPrefixes: readonly string[];
   readonly keysFilePath: string;
   readonly modelsFilePath: string;
+  readonly requestLogsFilePath: string;
   readonly keyReloadMs: number;
   readonly keyCooldownMs: number;
   readonly requestTimeoutMs: number;
@@ -51,7 +52,9 @@ export const DEFAULT_MODELS: readonly string[] = [
   "gemini-2.5-pro",
   "glm-5",
   "Kimi-K2.5",
-  "gemini-3.1-pro-preview"
+  "gemini-3.1-pro-preview",
+  "qwen3.5:4b-q8_0",
+  "qwen3.5:2b-bf16"
 ];
 
 function numberFromEnvAliases(names: readonly string[], fallback: number): number {
@@ -171,8 +174,8 @@ export function loadConfig(cwd: string = process.cwd()): ProxyConfig {
   });
   upstreamProviderBaseUrls[upstreamProviderId] = upstreamBaseUrl;
   const openaiProviderId = (process.env.OPENAI_PROVIDER_ID ?? "openai").trim();
-  const openaiBaseUrl = (process.env.OPENAI_BASE_URL ?? "https://api.openai.com").replace(/\/+$/, "");
-  const ollamaBaseUrl = (process.env.OLLAMA_BASE_URL ?? "http://127.0.0.1:11434").replace(/\/+$/, "");
+  const openaiBaseUrl = (process.env.OPENAI_BASE_URL ?? "https://chatgpt.com/backend-api").replace(/\/+$/, "");
+  const ollamaBaseUrl = (process.env.OLLAMA_BASE_URL ?? "http://ollama:11434").replace(/\/+$/, "");
   const rawMessagesInterleavedThinkingBeta = process.env.UPSTREAM_MESSAGES_INTERLEAVED_THINKING_BETA;
   const messagesInterleavedThinkingBeta = rawMessagesInterleavedThinkingBeta === undefined
     ? "interleaved-thinking-2025-05-14"
@@ -227,14 +230,14 @@ export function loadConfig(cwd: string = process.cwd()): ProxyConfig {
     localOllamaEnabled,
     localOllamaModelPatterns,
     chatCompletionsPath: process.env.UPSTREAM_CHAT_COMPLETIONS_PATH ?? "/v1/chat/completions",
-    openaiChatCompletionsPath: process.env.OPENAI_CHAT_COMPLETIONS_PATH ?? "/v1/chat/completions",
+    openaiChatCompletionsPath: process.env.OPENAI_CHAT_COMPLETIONS_PATH ?? "/codex/responses/compact",
     messagesPath: process.env.UPSTREAM_MESSAGES_PATH ?? "/v1/messages",
     messagesModelPrefixes: csvFromEnv("UPSTREAM_MESSAGES_MODEL_PREFIXES", ["claude-"]),
     messagesInterleavedThinkingBeta: messagesInterleavedThinkingBeta.length > 0
       ? messagesInterleavedThinkingBeta
       : undefined,
     responsesPath: process.env.UPSTREAM_RESPONSES_PATH ?? "/v1/responses",
-    openaiResponsesPath: process.env.OPENAI_RESPONSES_PATH ?? "/v1/responses",
+    openaiResponsesPath: process.env.OPENAI_RESPONSES_PATH ?? "/codex/responses/compact",
     responsesModelPrefixes: csvFromEnv("UPSTREAM_RESPONSES_MODEL_PREFIXES", ["gpt-"]),
     ollamaChatPath: process.env.OLLAMA_CHAT_PATH ?? "/api/chat",
     ollamaV1ChatPath: process.env.OLLAMA_V1_CHAT_PATH ?? "/v1/chat/completions",
@@ -242,6 +245,7 @@ export function loadConfig(cwd: string = process.cwd()): ProxyConfig {
     ollamaModelPrefixes: csvFromEnv("OLLAMA_MODEL_PREFIXES", ["ollama/", "ollama:"]),
     keysFilePath: filePathFromEnvAliases(["PROXY_KEYS_FILE", "VIVGRID_KEYS_FILE"], "./keys.json", cwd),
     modelsFilePath: filePathFromEnvAliases(["PROXY_MODELS_FILE", "VIVGRID_MODELS_FILE"], "./models.json", cwd),
+    requestLogsFilePath: filePathFromEnvAliases(["PROXY_REQUEST_LOGS_FILE"], "./data/request-logs.json", cwd),
     keyReloadMs: numberFromEnvAliases(["PROXY_KEY_RELOAD_MS", "VIVGRID_KEY_RELOAD_MS"], 5000),
     keyCooldownMs: numberFromEnvAliases(["PROXY_KEY_COOLDOWN_MS", "VIVGRID_KEY_RELOAD_MS"], 30000),
     requestTimeoutMs: numberFromEnvAliases(["UPSTREAM_REQUEST_TIMEOUT_MS"], 180000),

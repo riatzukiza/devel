@@ -249,7 +249,7 @@ export async function loadPolicy(path: string): Promise<CephalonPolicy> {
   return {
     models: {
       actor: {
-        name: 'qwen3-vl:4b-instruct',
+        name: 'qwen3.5:4b-q8_0',
         maxContextTokens: 131072
       },
       fallbacks: []
@@ -275,7 +275,7 @@ export function loadDefaultPolicy(): CephalonPolicy {
   return {
     models: {
       actor: {
-        name: 'qwen3-vl:4b-instruct',
+        name: 'qwen3.5:4b-q8_0',
         maxContextTokens: 131072,
         toolCallStrict: true
       },

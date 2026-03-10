@@ -351,7 +351,10 @@ export function CredentialsPage(): JSX.Element {
                 <strong>{entry.providerId}/{entry.accountId}</strong>
                 <span>{entry.status} · {entry.latencyMs}ms</span>
               </header>
-              <p>{entry.model} · {entry.upstreamMode} · {new Date(entry.timestamp).toLocaleString()}</p>
+              <p>
+                {entry.model} · {entry.upstreamMode} · {new Date(entry.timestamp).toLocaleString()}
+                {typeof entry.totalTokens === "number" ? ` · ${entry.totalTokens} tok` : ""}
+              </p>
               {entry.error && <small>{entry.error}</small>}
             </article>
           ))}

@@ -9,6 +9,7 @@ interface NormalizedAccount {
   authType: ProviderAuthType;
   refreshToken?: string;
   expiresAt?: number;
+  chatgptAccountId?: string;
 }
 
 interface NormalizedProvider {
@@ -29,6 +30,7 @@ export interface CredentialAccountView {
   readonly refreshTokenPreview?: string;
   readonly refreshToken?: string;
   readonly expiresAt?: number;
+  readonly chatgptAccountId?: string;
 }
 
 export interface CredentialProviderView {
@@ -144,6 +146,9 @@ function normalizeAccounts(
     const expiresAt = isRecord(rawAccount)
       ? asNumber(rawAccount.expires_at) ?? asNumber(rawAccount.expiresAt)
       : undefined;
+    const chatgptAccountId = isRecord(rawAccount)
+      ? asString(rawAccount.chatgpt_account_id) ?? asString(rawAccount.chatgptAccountId)
+      : undefined;
 
     accounts.push({
       id: accountIdFromRaw(providerId, index, rawAccount),
@@ -151,6 +156,7 @@ function normalizeAccounts(
       authType,
       refreshToken,
       expiresAt,
+      chatgptAccountId,
     });
   }
 
@@ -229,6 +235,9 @@ function toPersistedJson(normalized: NormalizedCredentials): Record<string, unkn
         if (typeof account.expiresAt === "number") {
           payload.expires_at = account.expiresAt;
         }
+        if (account.chatgptAccountId) {
+          payload.chatgpt_account_id = account.chatgptAccountId;
+        }
         return payload;
       }
 
@@ -270,6 +279,7 @@ export class CredentialStore {
               ? account.refreshToken
               : undefined,
             expiresAt: account.expiresAt,
+            chatgptAccountId: account.chatgptAccountId,
           };
         });
 
@@ -319,6 +329,7 @@ export class CredentialStore {
     accessToken: string,
     refreshToken?: string,
     expiresAt?: number,
+    chatgptAccountId?: string,
   ): Promise<void> {
     const normalized = await this.readNormalized();
     const id = normalizeProviderId(providerId, this.defaultProviderId);
@@ -339,6 +350,7 @@ export class CredentialStore {
       authType: "oauth_bearer",
       refreshToken,
       expiresAt,
+      chatgptAccountId,
     });
 
     normalized.providers[id] = provider;

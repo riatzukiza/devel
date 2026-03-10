@@ -23,7 +23,8 @@ export const chromaPlugin = fp<OpenPlannerConfig>(async (app, cfg) => {
 
     const created = new OllamaEmbeddingFunction(model, cfg.ollamaBaseUrl, {
       truncate: cfg.ollamaEmbedTruncate,
-      numCtx: cfg.ollamaEmbedNumCtx
+      numCtx: cfg.ollamaEmbedNumCtx,
+      apiKey: cfg.ollamaApiKey,
     });
     embeddingCache.set(model, created);
     return created;

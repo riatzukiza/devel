@@ -24,6 +24,7 @@ This directory contains the skill definitions for the OpenCode agent system.
 - skill-optimizing
 - task-atomicity-guard
 - verify-resource-existence
+- webring-site
 
 ### Git
 - git-safety-check
@@ -92,4 +93,3 @@ This directory contains the skill definitions for the OpenCode agent system.
 - workspace-lint
 - workspace-navigation
 - workspace-typecheck
-

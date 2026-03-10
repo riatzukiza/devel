@@ -1,0 +1,35 @@
+module.exports = {
+  apps: [
+    {
+      name: "duck-cephalon",
+      script: "node",
+      args: ["dist/cephalon.js"],
+      cwd: "/workspace/services/cephalon-cljs",
+      env: {
+        NODE_ENV: "production",
+        NODE_OPTIONS: "--enable-source-maps",
+        DUCK_DISCORD_TOKEN: process.env.DUCK_DISCORD_TOKEN || process.env.DISCORD_TOKEN || "",
+        DISCORD_TOKEN: process.env.DISCORD_TOKEN || process.env.DUCK_DISCORD_TOKEN || "",
+        CEPHALON_TS_BRIDGE: process.env.CEPHALON_TS_BRIDGE || "true",
+        MEMORY_UI_PORT: process.env.MEMORY_UI_PORT || "3000",
+        OPENPLANNER_URL: process.env.OPENPLANNER_URL || "http://host.docker.internal:7777",
+        OPENPLANNER_API_BASE_URL:
+          process.env.OPENPLANNER_API_BASE_URL || process.env.OPENPLANNER_URL || "http://host.docker.internal:7777",
+        OPENPLANNER_API_KEY: process.env.OPENPLANNER_API_KEY || "change-me",
+        CHROMA_URL: process.env.CHROMA_URL || "http://host.docker.internal:8000",
+        OLLAMA_BASE_URL: process.env.OLLAMA_BASE_URL || "http://open-hax-openai-proxy:8789",
+        CEPHALON_MONGODB_URI: process.env.CEPHALON_MONGODB_URI || "mongodb://mongodb:27017",
+        MONGODB_URI: process.env.MONGODB_URI || process.env.CEPHALON_MONGODB_URI || "mongodb://mongodb:27017",
+        CEPHALON_MONGODB_DB: process.env.CEPHALON_MONGODB_DB || "promethean",
+        CEPHALON_MONGODB_COLLECTION: process.env.CEPHALON_MONGODB_COLLECTION || "cephalon_memories",
+      },
+      autorestart: true,
+      watch: false,
+      time: true,
+      kill_timeout: 5000,
+      restart_delay: 5000,
+      max_restarts: 10,
+      min_uptime: "10s",
+    },
+  ],
+};

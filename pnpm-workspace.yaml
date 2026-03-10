@@ -9,6 +9,7 @@ packages:
   - packages/reconstituter
   - packages/mcp-oauth
   - packages/npu-top
+  - packages/omni-top
   - services/*
   - orgs/open-hax/workbench
   - orgs/riatzukiza/promethean/packages/*

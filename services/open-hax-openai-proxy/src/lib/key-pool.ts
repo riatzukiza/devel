@@ -15,6 +15,7 @@ export interface ProviderCredential {
   readonly accountId: string;
   readonly token: string;
   readonly authType: ProviderAuthType;
+  readonly chatgptAccountId?: string;
 }
 
 export interface KeyPoolStatus {
@@ -23,6 +24,17 @@ export interface KeyPoolStatus {
   readonly totalAccounts: number;
   readonly availableAccounts: number;
   readonly cooldownAccounts: number;
+  readonly inFlightAccounts: number;
+  readonly nextReadyInMs: number;
+}
+
+export interface KeyPoolAccountStatus {
+  readonly providerId: string;
+  readonly accountId: string;
+  readonly authType: ProviderAuthType;
+  readonly available: boolean;
+  readonly inFlight: boolean;
+  readonly cooldownUntil?: number;
   readonly nextReadyInMs: number;
 }
 
@@ -117,6 +129,19 @@ function readAccountId(providerId: string, index: number, account: unknown, toke
   return token ? deterministicAccountId(providerId, token) : `${providerId}-${index + 1}`;
 }
 
+function readChatgptAccountId(account: unknown): string | undefined {
+  if (!isRecord(account)) {
+    return undefined;
+  }
+
+  const rawAccountId = asString(account["chatgpt_account_id"])
+    ?? asString(account["chatgptAccountId"])
+    ?? asString(account["upstream_account_id"])
+    ?? asString(account["upstreamAccountId"]);
+  const normalized = rawAccountId?.trim();
+  return normalized && normalized.length > 0 ? normalized : undefined;
+}
+
 function normalizeProviderAccounts(
   providerId: string,
   authType: ProviderAuthType,
@@ -140,7 +165,8 @@ function normalizeProviderAccounts(
       providerId,
       accountId: readAccountId(providerId, index, rawAccount, token),
       token,
-      authType
+      authType,
+      chatgptAccountId: readChatgptAccountId(rawAccount),
     });
   }
 
@@ -228,6 +254,7 @@ function accountCooldownKey(credential: ProviderCredential): string {
 
 export class KeyPool {
   private readonly cooldownByAccountKey = new Map<string, number>();
+  private readonly inFlightByAccountKey = new Map<string, number>();
   private providers = new Map<string, ProviderState>();
   private lastReloadAt = 0;
   private reloadInFlight: Promise<void> | null = null;
@@ -252,7 +279,8 @@ export class KeyPool {
     const startOffset = providerState.nextOffset % accountCount;
     providerState.nextOffset = (providerState.nextOffset + 1) % accountCount;
 
-    const available: ProviderCredential[] = [];
+    const idle: ProviderCredential[] = [];
+    const busy: ProviderCredential[] = [];
     for (let index = 0; index < accountCount; index += 1) {
       const credential = providerState.accounts[(startOffset + index) % accountCount];
       if (!credential) {
@@ -261,11 +289,34 @@ export class KeyPool {
 
       const cooldownUntil = this.cooldownByAccountKey.get(accountCooldownKey(credential)) ?? 0;
       if (cooldownUntil <= now) {
-        available.push(credential);
+        if ((this.inFlightByAccountKey.get(accountCooldownKey(credential)) ?? 0) > 0) {
+          busy.push(credential);
+        } else {
+          idle.push(credential);
+        }
       }
     }
 
-    return available;
+    return [...idle, ...busy];
+  }
+
+  public markInFlight(credential: ProviderCredential): () => void {
+    const key = accountCooldownKey(credential);
+    const current = this.inFlightByAccountKey.get(key) ?? 0;
+    this.inFlightByAccountKey.set(key, current + 1);
+    let released = false;
+    return () => {
+      if (released) {
+        return;
+      }
+      released = true;
+      const next = (this.inFlightByAccountKey.get(key) ?? 1) - 1;
+      if (next <= 0) {
+        this.inFlightByAccountKey.delete(key);
+      } else {
+        this.inFlightByAccountKey.set(key, next);
+      }
+    };
   }
 
   public markRateLimited(credential: ProviderCredential, retryAfterMs?: number): void {
@@ -290,16 +341,21 @@ export class KeyPool {
         totalAccounts: 0,
         availableAccounts: 0,
         cooldownAccounts: 0,
+        inFlightAccounts: 0,
         nextReadyInMs: 0
       };
     }
 
     const now = Date.now();
     let availableAccounts = 0;
+    let inFlightAccounts = 0;
     let minDelay = Number.POSITIVE_INFINITY;
 
     for (const credential of providerState.accounts) {
       const cooldownUntil = this.cooldownByAccountKey.get(accountCooldownKey(credential)) ?? 0;
+      if ((this.inFlightByAccountKey.get(accountCooldownKey(credential)) ?? 0) > 0) {
+        inFlightAccounts += 1;
+      }
       if (cooldownUntil <= now) {
         availableAccounts += 1;
         continue;
@@ -317,12 +373,13 @@ export class KeyPool {
 
     return {
       providerId: normalizedProviderId,
-      authType: providerState.authType,
-      totalAccounts,
-      availableAccounts,
-      cooldownAccounts: Math.max(totalAccounts - availableAccounts, 0),
-      nextReadyInMs
-    };
+        authType: providerState.authType,
+        totalAccounts,
+        availableAccounts,
+        cooldownAccounts: Math.max(totalAccounts - availableAccounts, 0),
+        inFlightAccounts,
+        nextReadyInMs
+      };
   }
 
   public async getAllStatuses(): Promise<Record<string, KeyPoolStatus>> {
@@ -331,6 +388,33 @@ export class KeyPool {
     const statuses: Record<string, KeyPoolStatus> = {};
     for (const providerId of this.providers.keys()) {
       statuses[providerId] = await this.getStatus(providerId);
+    }
+
+    return statuses;
+  }
+
+  public async getAllAccountStatuses(): Promise<Record<string, readonly KeyPoolAccountStatus[]>> {
+    await this.ensureFreshProviders(false);
+
+    const now = Date.now();
+    const statuses: Record<string, readonly KeyPoolAccountStatus[]> = {};
+
+    for (const [providerId, providerState] of this.providers.entries()) {
+      statuses[providerId] = providerState.accounts.map((credential) => {
+        const key = accountCooldownKey(credential);
+        const cooldownUntil = this.cooldownByAccountKey.get(key);
+        const inFlight = (this.inFlightByAccountKey.get(key) ?? 0) > 0;
+        const available = (cooldownUntil ?? 0) <= now;
+        return {
+          providerId,
+          accountId: credential.accountId,
+          authType: credential.authType,
+          available,
+          inFlight,
+          cooldownUntil,
+          nextReadyInMs: available || cooldownUntil === undefined ? 0 : Math.max(cooldownUntil - now, 0),
+        };
+      });
     }
 
     return statuses;
@@ -395,6 +479,12 @@ export class KeyPool {
     for (const key of this.cooldownByAccountKey.keys()) {
       if (!activeKeys.has(key)) {
         this.cooldownByAccountKey.delete(key);
+      }
+    }
+
+    for (const key of this.inFlightByAccountKey.keys()) {
+      if (!activeKeys.has(key)) {
+        this.inFlightByAccountKey.delete(key);
       }
     }
   }

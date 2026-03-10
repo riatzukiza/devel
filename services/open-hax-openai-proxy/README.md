@@ -12,7 +12,7 @@ OpenAI-compatible proxy server with provider-scoped account rotation.
 - Maps OpenAI-style reasoning controls (`reasoning_effort` / `reasoning.effort`) into Claude `thinking` payloads and adds the interleaved-thinking beta header when enabled.
 - Model-aware routing to OpenAI provider: models prefixed with `openai/` or `openai:` route to configured OpenAI endpoints.
 - Model-aware routing to Ollama base API: models prefixed with `ollama/` or `ollama:` are sent to Ollama `POST /api/chat`.
-- Built-in React/Vite console with separate Chat, Credentials, and Tools/MCP pages.
+- Built-in React/Vite console with a codex-lb-inspired usage dashboard plus Chat, Credentials, and Tools/MCP pages.
 - OpenAI OAuth browser + device flows based on OpenCode Codex plugin behavior (PKCE, state, callback exchange, account extraction).
 - Chroma-backed semantic history search with lexical fallback for chat session recall.
 - `GET /v1/models` and `GET /v1/models/:id` model listing.
@@ -52,6 +52,41 @@ Build the web console:
 pnpm --filter @workspace/open-hax-openai-proxy web:build
 ```
 
+## Docker Compose
+
+The container stack now mirrors the host-side shared-context pattern: one container, `pm2-runtime` as PID 1, and two managed processes inside it:
+
+- `open-hax-openai-proxy` for the API on `8789`
+- `open-hax-openai-proxy-web` for the bundled web companion on `5174`
+
+From the workspace root, manage the proxy through the root stack registry:
+
+```bash
+pnpm docker:stack status open-hax-openai-proxy
+pnpm docker:stack use-container open-hax-openai-proxy -- --build
+pnpm docker:stack use-host open-hax-openai-proxy
+pnpm docker:stack ps open-hax-openai-proxy
+pnpm docker:stack logs open-hax-openai-proxy -- -f
+```
+
+From `services/open-hax-openai-proxy`, the local compose workflow is still available:
+
+```bash
+docker compose up --build -d
+docker compose ps
+docker compose logs -f
+```
+
+Notes:
+
+- `keys.json` is still required for startup.
+- `data/` stays bind-mounted for request logs and session history.
+- The compose stack now defaults `OLLAMA_BASE_URL` to `http://ollama:11434` when attached to the shared `ai-infra` network; `CHROMA_URL` still defaults to `host.docker.internal` unless you also containerize Chroma on a shared network.
+- The web companion is exposed on `${PROXY_WEB_PORT:-5174}`.
+- The checked-in host PM2 source now includes both the API and web companion in `ecosystems/services_open_hax_proxy.cljs`.
+- The root stack registry now knows the related host PM2 apps, so plain container `up` is blocked while the host PM2 side is online.
+- Use `use-container` and `use-host` to switch ownership cleanly between the host PM2 pair and the containerized pair.
+
 ## Environment Variables
 
 - `PROXY_HOST` (default: `127.0.0.1`)
@@ -61,7 +96,7 @@ pnpm --filter @workspace/open-hax-openai-proxy web:build
 - `UPSTREAM_BASE_URL` (default: `https://api.vivgrid.com`)
 - `UPSTREAM_PROVIDER_BASE_URLS` (optional mapping: `provider=url,provider=url`; defaults include `vivgrid=https://api.vivgrid.com` and `ollama-cloud=https://ollama.com`)
 - `OPENAI_PROVIDER_ID` (default: `openai`; provider key in `keys.json`)
-- `OPENAI_BASE_URL` (default: `https://api.openai.com`)
+- `OPENAI_BASE_URL` (default: `https://chatgpt.com/backend-api`)
 - `OLLAMA_BASE_URL` (default: `http://127.0.0.1:11434`)
 - `UPSTREAM_CHAT_COMPLETIONS_PATH` (default: `/v1/chat/completions`)
 - `OPENAI_CHAT_COMPLETIONS_PATH` (default: `/v1/chat/completions`)
@@ -76,11 +111,29 @@ pnpm --filter @workspace/open-hax-openai-proxy web:build
 - `OLLAMA_MODEL_PREFIXES` (default: `ollama/,ollama:`; comma-separated prefixes)
 - `PROXY_KEYS_FILE` (default: `./keys.json`, fallback: `VIVGRID_KEYS_FILE`)
 - `PROXY_MODELS_FILE` (default: `./models.json`, fallback: `VIVGRID_MODELS_FILE`)
+- `PROXY_REQUEST_LOGS_FILE` (default: `./data/request-logs.json`)
 - `PROXY_KEY_RELOAD_MS` (default: `5000`, fallback: `VIVGRID_KEY_RELOAD_MS`)
 - `PROXY_KEY_COOLDOWN_MS` (default: `30000`, fallback: `VIVGRID_KEY_COOLDOWN_MS`)
 - `UPSTREAM_REQUEST_TIMEOUT_MS` (default: `180000`)
 - `PROXY_AUTH_TOKEN` (required unless `PROXY_ALLOW_UNAUTHENTICATED=true`)
 - `PROXY_ALLOW_UNAUTHENTICATED` (default: `false`; use `true` only for local debugging)
+- `CHROMA_URL` (optional; default: `http://127.0.0.1:8000`)
+- `CHROMA_COLLECTION` (optional; default: `open_hax_proxy_sessions`)
+- `CHROMA_EMBED_MODEL` (optional; default: `nomic-embed-text:latest`; served from Ollama)
+
+## Chroma + Ollama
+
+Semantic session search now registers an Ollama embedding function with the Chroma JS client instead of relying on Chroma's default embedder.
+
+- Start Chroma separately at `CHROMA_URL`.
+- Ensure Ollama is running at `OLLAMA_BASE_URL`.
+- Pull an embedding model such as `nomic-embed-text:latest`.
+
+```bash
+ollama pull nomic-embed-text:latest
+```
+
+The proxy will use Ollama's `/api/embed` endpoint when available, and fall back to `/api/embeddings` for older Ollama builds.
 
 ## `keys.json` Format
 
@@ -123,6 +176,8 @@ Route requests to OpenAI by prefixing model names:
 - `"model": "openai:gpt-5"`
 
 The prefix is stripped before upstream dispatch, and accounts are selected from `keys.json.providers[OPENAI_PROVIDER_ID]`.
+
+For migrated `codex-lb` OAuth accounts, the `openai` provider is treated as a ChatGPT Codex upstream, not the OpenAI Platform API. Those accounts require `chatgpt_account_id` metadata and are sent to `/codex/responses/compact` by default.
 
 ## Ollama `num_ctx` Control Through OpenAI API
 

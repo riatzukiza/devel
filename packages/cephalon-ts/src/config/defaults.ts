@@ -105,23 +105,25 @@ export function createDefaultChromaConfig(): ChromaConfig {
 
 export function createDefaultEmbeddingConfig(): EmbeddingConfig {
   return {
-    baseUrl: process.env.OLLAMA_BASE_URL || "http://localhost:11434",
+    baseUrl: process.env.OLLAMA_BASE_URL || "http://127.0.0.1:8789",
     model: "qwen3-embedding:0.6b",
-    contextSize: 16384,
+    contextSize: 0,
+    apiKey: process.env.OLLAMA_API_KEY || process.env.OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN || undefined,
   };
 }
 
 export function createOllamaConfig(modelName: string): OllamaConfig {
   return {
-    baseUrl: process.env.OLLAMA_BASE_URL || "http://localhost:11434",
+    baseUrl: process.env.OLLAMA_BASE_URL || "http://127.0.0.1:8789",
     model: modelName,
     temperature: 0.7,
     maxTokens: 4096,
+    apiKey: process.env.OLLAMA_API_KEY || process.env.OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN || undefined,
   };
 }
 
 export function createDefaultCephalonConfig(
-  modelName = "qwen3-vl:4b-instruct",
+  modelName = "qwen3.5:4b-q8_0",
 ): CephalonConfig {
   return {
     sessionManager: createDefaultSessionManagerConfig(),

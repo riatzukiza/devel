@@ -124,3 +124,41 @@ test("preserves explicit account IDs while auto-generating for string entries", 
     }
   );
 });
+
+test("prefers non-busy accounts before reusing in-flight accounts", async () => {
+  await withKeysFile(
+    {
+      providers: {
+        "ollama-cloud": {
+          auth: "api_key",
+          accounts: [
+            { id: "oc-a", api_key: "oc-key-a" },
+            { id: "oc-b", api_key: "oc-key-b" }
+          ]
+        }
+      }
+    },
+    async (keysFilePath) => {
+      const keyPool = new KeyPool({
+        keysFilePath,
+        reloadIntervalMs: 10,
+        defaultCooldownMs: 1000,
+        defaultProviderId: "ollama-cloud"
+      });
+
+      await keyPool.warmup();
+      const initial = await keyPool.getRequestOrder("ollama-cloud");
+      assert.equal(initial.length, 2);
+
+      const release = keyPool.markInFlight(initial[0]!);
+      const reordered = await keyPool.getRequestOrder("ollama-cloud");
+      assert.equal(reordered.length, 2);
+      assert.equal(reordered[0]?.accountId, initial[1]?.accountId);
+      assert.equal(reordered[1]?.accountId, initial[0]?.accountId);
+
+      release();
+      const status = await keyPool.getStatus("ollama-cloud");
+      assert.equal(status.inFlightAccounts, 0);
+    }
+  );
+});

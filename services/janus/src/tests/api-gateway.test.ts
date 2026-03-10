@@ -15,6 +15,8 @@ void test("health endpoint responds", async () => {
     openplannerUrl: "http://127.0.0.1:7777",
     openplannerApiKey: null,
     opencodeUrl: "http://127.0.0.1:4096",
+    opencodeUsername: null,
+    opencodePassword: null,
     opencodeApiKey: null,
     workspaceRoot: "/tmp",
     mcpUrl: "http://127.0.0.1:3001",
@@ -49,6 +51,8 @@ void test("forwards openplanner request through facade route", async () => {
     openplannerUrl: `http://127.0.0.1:${address.port}`,
     openplannerApiKey: null,
     opencodeUrl: "http://127.0.0.1:4096",
+    opencodeUsername: null,
+    opencodePassword: null,
     opencodeApiKey: null,
     workspaceRoot: "/tmp",
     mcpUrl: "http://127.0.0.1:3001",
@@ -86,6 +90,8 @@ void test("prefers configured openplanner API key over forwarded Authorization",
     openplannerUrl: `http://127.0.0.1:${address.port}`,
     openplannerApiKey: "svc-openplanner-key",
     opencodeUrl: "http://127.0.0.1:4096",
+    opencodeUsername: null,
+    opencodePassword: null,
     opencodeApiKey: null,
     workspaceRoot: "/tmp",
     mcpUrl: "http://127.0.0.1:3001",
@@ -125,6 +131,8 @@ void test("forwards incoming Authorization to openplanner when no service key co
     openplannerUrl: `http://127.0.0.1:${address.port}`,
     openplannerApiKey: null,
     opencodeUrl: "http://127.0.0.1:4096",
+    opencodeUsername: null,
+    opencodePassword: null,
     opencodeApiKey: null,
     workspaceRoot: "/tmp",
     mcpUrl: "http://127.0.0.1:3001",
@@ -164,6 +172,8 @@ void test("forwards opencode request through facade route", async () => {
     openplannerUrl: "http://127.0.0.1:7777",
     openplannerApiKey: null,
     opencodeUrl: `http://127.0.0.1:${address.port}`,
+    opencodeUsername: null,
+    opencodePassword: null,
     opencodeApiKey: null,
     workspaceRoot: "/tmp",
     mcpUrl: "http://127.0.0.1:3001",
@@ -205,6 +215,8 @@ void test("forwards opencode message stream responses", async () => {
     openplannerUrl: "http://127.0.0.1:7777",
     openplannerApiKey: null,
     opencodeUrl: `http://127.0.0.1:${address.port}`,
+    opencodeUsername: null,
+    opencodePassword: null,
     opencodeApiKey: null,
     workspaceRoot: "/tmp",
     mcpUrl: "http://127.0.0.1:3001",
@@ -235,6 +247,8 @@ void test("returns cors headers and handles preflight", async () => {
     openplannerUrl: "http://127.0.0.1:7777",
     openplannerApiKey: null,
     opencodeUrl: "http://127.0.0.1:4096",
+    opencodeUsername: null,
+    opencodePassword: null,
     opencodeApiKey: null,
     workspaceRoot: "/tmp",
     mcpUrl: "http://127.0.0.1:3001",
@@ -275,6 +289,8 @@ void test("lists workspace entries and supports read/write", async () => {
     openplannerUrl: "http://127.0.0.1:7777",
     openplannerApiKey: null,
     opencodeUrl: "http://127.0.0.1:4096",
+    opencodeUsername: null,
+    opencodePassword: null,
     opencodeApiKey: null,
     workspaceRoot,
     mcpUrl: "http://127.0.0.1:3001",
@@ -330,6 +346,8 @@ void test("rejects workspace path traversal", async () => {
     openplannerUrl: "http://127.0.0.1:7777",
     openplannerApiKey: null,
     opencodeUrl: "http://127.0.0.1:4096",
+    opencodeUsername: null,
+    opencodePassword: null,
     opencodeApiKey: null,
     workspaceRoot,
     mcpUrl: "http://127.0.0.1:3001",
@@ -374,6 +392,8 @@ void test("proxies /mcp/dev to development MCP backend", async () => {
     openplannerUrl: "http://127.0.0.1:7777",
     openplannerApiKey: null,
     opencodeUrl: "http://127.0.0.1:4096",
+    opencodeUsername: null,
+    opencodePassword: null,
     opencodeApiKey: null,
     workspaceRoot: "/tmp",
     mcpUrl: "http://127.0.0.1:3001",
@@ -443,6 +463,8 @@ void test("proxies /mcp/ trailing slash to stable MCP backend", async () => {
     openplannerUrl: "http://127.0.0.1:7777",
     openplannerApiKey: null,
     opencodeUrl: "http://127.0.0.1:4096",
+    opencodeUsername: null,
+    opencodePassword: null,
     opencodeApiKey: null,
     workspaceRoot: "/tmp",
     mcpUrl: `http://127.0.0.1:${address.port}`,
@@ -496,6 +518,8 @@ void test("routes /api/mcp/:service/* through mcp mux and preserves mcp-session-
     openplannerUrl: "http://127.0.0.1:7777",
     openplannerApiKey: null,
     opencodeUrl: "http://127.0.0.1:4096",
+    opencodeUsername: null,
+    opencodePassword: null,
     opencodeApiKey: null,
     workspaceRoot: "/tmp",
     mcpUrl: "http://127.0.0.1:3001",
@@ -530,6 +554,51 @@ void test("routes /api/mcp/:service/* through mcp mux and preserves mcp-session-
   }
 });
 
+void test("loads lith mcp service from MCP_SERVICE_URLS config", async () => {
+  const app = await createApp({
+    host: "127.0.0.1",
+    port: 0,
+    openplannerUrl: "http://127.0.0.1:7777",
+    openplannerApiKey: null,
+    opencodeUrl: "http://127.0.0.1:4096",
+    opencodeUsername: null,
+    opencodePassword: null,
+    opencodeApiKey: null,
+    workspaceRoot: "/tmp",
+    mcpUrl: "http://127.0.0.1:3001",
+    mcpServiceUrls: { lith: "http://127.0.0.1:8794" },
+    oauthEnabled: false,
+    oauthIssuer: "http://localhost:3001",
+    oauthAudience: "api-gateway",
+    allowedHosts: ["localhost", "127.0.0.1"],
+  });
+
+  try {
+    const res = await app.inject({
+      method: "POST",
+      url: "/api/mcp/does-not-exist/mcp",
+      headers: {
+        "content-type": "application/json",
+      },
+      payload: {
+        jsonrpc: "2.0",
+        method: "initialize",
+        id: 99,
+        params: {},
+      },
+    });
+
+    assert.equal(res.statusCode, 404);
+    assert.deepEqual(res.json(), {
+      ok: false,
+      error: "unknown_mcp_service",
+      service: "does-not-exist",
+    });
+  } finally {
+    await app.close();
+  }
+});
+
 void test("returns unknown_mcp_service for unconfigured mcp mux routes", async () => {
   const app = await createApp({
     host: "127.0.0.1",
@@ -537,6 +606,8 @@ void test("returns unknown_mcp_service for unconfigured mcp mux routes", async (
     openplannerUrl: "http://127.0.0.1:7777",
     openplannerApiKey: null,
     opencodeUrl: "http://127.0.0.1:4096",
+    opencodeUsername: null,
+    opencodePassword: null,
     opencodeApiKey: null,
     workspaceRoot: "/tmp",
     mcpUrl: "http://127.0.0.1:3001",

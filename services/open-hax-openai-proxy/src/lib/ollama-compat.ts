@@ -153,6 +153,10 @@ function extractNumCtx(requestBody: Record<string, unknown>): number | undefined
   return normalizePositiveNumber(requestBody["ollama_num_ctx"], "ollama_num_ctx");
 }
 
+export function requestHasExplicitNumCtx(requestBody: Record<string, unknown>): boolean {
+  return extractNumCtx(requestBody) !== undefined;
+}
+
 function normalizeStopSequences(stop: unknown): string[] | undefined {
   if (typeof stop === "string") {
     return stop.length > 0 ? [stop] : undefined;

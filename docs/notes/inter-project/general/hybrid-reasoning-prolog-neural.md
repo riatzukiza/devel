@@ -1,0 +1,3 @@
+I'm also seeing some resurgence in the old ways of doing things. As always, it seems we already have the tools to do it all, but when they were made we didn't have the hardware to put them together in ways that did the work we wanted. Like that Prolog example I linked—people are realizing that though these models are powerful at everything, anything you can do to avoid using the model to solve part of the problem will make the model work better.
+
+So why do all your reasoning with the model's soft rules, when we have systems that can assert the truthfulness of facts given a world of known rules?

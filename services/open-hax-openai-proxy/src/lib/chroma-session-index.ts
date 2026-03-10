@@ -1,5 +1,7 @@
 import { ChromaClient, IncludeEnum, type Collection } from "chromadb";
 
+import { OllamaEmbeddingFunction, registerOllamaEmbeddingFunction } from "./chroma-ollama-embedding.js";
+
 import type { ChatRole } from "./session-store.js";
 
 export interface ChromaSessionIndexConfig {
@@ -50,11 +52,17 @@ function asRole(value: unknown): ChatRole {
 
 export class ChromaSessionIndex {
   private readonly client: ChromaClient;
+  private readonly embeddingFunction: OllamaEmbeddingFunction;
   private collectionPromise: Promise<Collection> | null = null;
   private disabled = false;
 
   public constructor(private readonly config: ChromaSessionIndexConfig) {
+    registerOllamaEmbeddingFunction();
     this.client = new ChromaClient({ path: config.url });
+    this.embeddingFunction = new OllamaEmbeddingFunction({
+      url: this.config.ollamaBaseUrl,
+      model: this.config.embeddingModel,
+    });
   }
 
   public async indexMessage(message: ChromaIndexedMessage): Promise<void> {
@@ -144,6 +152,7 @@ export class ChromaSessionIndex {
     if (!this.collectionPromise) {
       this.collectionPromise = this.client.getOrCreateCollection({
         name: this.config.collectionName,
+        embeddingFunction: this.embeddingFunction,
         metadata: {
           source: "open-hax-openai-proxy",
         },
@@ -159,33 +168,11 @@ export class ChromaSessionIndex {
   }
 
   private async embedText(text: string): Promise<number[]> {
-    const response = await fetch(new URL("/api/embeddings", `${this.config.ollamaBaseUrl}/`).toString(), {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        model: this.config.embeddingModel,
-        prompt: text,
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Embedding request failed: ${response.status}`);
-    }
-
-    const payload: unknown = await response.json();
-    if (!isRecord(payload) || !Array.isArray(payload.embedding)) {
-      throw new Error("Embedding response missing vector");
-    }
-
-    const vector = payload.embedding
-      .filter((value): value is number => typeof value === "number" && Number.isFinite(value));
-
-    if (vector.length === 0) {
+    const [embedding] = await this.embeddingFunction.generate([text]);
+    if (!embedding || embedding.length === 0) {
       throw new Error("Embedding response had empty vector");
     }
 
-    return vector;
+    return embedding;
   }
 }

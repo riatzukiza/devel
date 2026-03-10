@@ -2,7 +2,7 @@ import "dotenv/config";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import { AsyncLocalStorage } from "node:async_hooks";
-import { watch, type Dirent, type FSWatcher } from "node:fs";
+import { existsSync, readFileSync, watch, type Dirent, type FSWatcher } from "node:fs";
 import { readdir, readFile, stat } from "node:fs/promises";
 
 import express from "express";
@@ -114,6 +114,8 @@ const ENV = z.object({
 
   OPENCODE_API_BASE_URL: z.string().url().default("http://127.0.0.1:8788/api/opencode"),
   OPENCODE_API_KEY: z.string().optional(),
+  OPENCODE_USERNAME: z.string().optional(),
+  OPENCODE_PASSWORD: z.string().optional(),
   OPENPLANNER_API_BASE_URL: z.string().url().default("http://127.0.0.1:8788/api/openplanner"),
   OPENPLANNER_API_KEY: z.string().optional(),
   WORKSPACE_API_BASE_URL: z.string().url().default("http://127.0.0.1:8788/api/workspace"),
@@ -538,6 +540,11 @@ async function touchOrAdoptSessionRecord(sessionId: string): Promise<void> {
 const FS_TREE_HARD_MAX_DEPTH = 4;
 const FS_TREE_HARD_MAX_PAGE_SIZE = 120;
 const FS_TREE_ROOT_DEPTH_LIMIT = 2;
+const FS_DISCOVERY_ROOT_MAX_RESULTS = 200;
+const FS_GREP_ROOT_MAX_RESULTS = 80;
+const FS_SEARCH_ROOT_MAX_RESULTS = 40;
+const WORKSPACE_TOP_LEVEL_LIMIT = 80;
+const WORKSPACE_SUBMODULE_PREVIEW_LIMIT = 120;
 
 function buildFsTreeBlockedMessage(reason: string): string {
   return [
@@ -547,6 +554,81 @@ function buildFsTreeBlockedMessage(reason: string): string {
     "2) fs_grep pattern=\"TODO|FIXME\" include=\"src/**/*.ts\" maxResults=40",
     "3) fs_tree path=\"src/specific-dir\" maxDepth=2 pageSize=40",
   ].join("\n");
+}
+
+function normalizeFsPath(pathValue: string | undefined): string {
+  return (pathValue ?? "").trim();
+}
+
+function isRootFsPath(pathValue: string | undefined): boolean {
+  const normalized = normalizeFsPath(pathValue);
+  return normalized === "" || normalized === "." || normalized === "/";
+}
+
+function isBroadRootGlobPattern(pattern: string): boolean {
+  const normalized = pattern.trim();
+  return normalized === "*" || normalized === "**/*" || normalized === "**" || normalized === "*.*";
+}
+
+function buildFsDiscoveryBlockedMessage(tool: string, reason: string): string {
+  return [
+    `[blocked] ${tool} request is too broad: ${reason}`,
+    "Use overview resources first:",
+    "1) Read `workspace://overview` for top-level structure and navigation hints.",
+    "2) Read `workspace://top-level` for the immediate root directories.",
+    "3) Read `workspace://submodules` to find the relevant repo under orgs/ or services/.",
+    "Then use precise filesystem calls:",
+    "4) fs_glob pattern=\"services/janus/**/*.ts\" maxResults=80 includeDirectories=false",
+    "5) fs_grep pattern=\"oauth\" path=\"services/janus\" include=\"**/*.ts\" maxResults=40",
+    "6) fs_read path=\"services/janus/src/app.ts\"",
+  ].join("\n");
+}
+
+function enforceFsDiscoveryGuard(args: {
+  tool: "fs_glob" | "fs_grep" | "fs_search";
+  path?: string;
+  maxResults?: number;
+  pattern?: string;
+  include?: string;
+  query?: string;
+}): string | undefined {
+  const rootPath = isRootFsPath(args.path);
+  if (!rootPath) {
+    return undefined;
+  }
+
+  if (args.tool === "fs_glob") {
+    const maxResults = args.maxResults ?? 200;
+    if (isBroadRootGlobPattern(args.pattern ?? "")) {
+      return buildFsDiscoveryBlockedMessage("fs_glob", `root pattern ${JSON.stringify(args.pattern ?? "")} is too broad`);
+    }
+    if (maxResults > FS_DISCOVERY_ROOT_MAX_RESULTS) {
+      return buildFsDiscoveryBlockedMessage("fs_glob", `root maxResults ${maxResults} exceeds safe limit ${FS_DISCOVERY_ROOT_MAX_RESULTS}`);
+    }
+    return undefined;
+  }
+
+  if (args.tool === "fs_grep") {
+    const maxResults = args.maxResults ?? 200;
+    const include = (args.include ?? "**/*").trim();
+    if (include === "**/*" || include === "*" || include === "") {
+      return buildFsDiscoveryBlockedMessage("fs_grep", `root include ${JSON.stringify(include || "**/*")} is too broad`);
+    }
+    if (maxResults > FS_GREP_ROOT_MAX_RESULTS) {
+      return buildFsDiscoveryBlockedMessage("fs_grep", `root maxResults ${maxResults} exceeds safe limit ${FS_GREP_ROOT_MAX_RESULTS}`);
+    }
+    return undefined;
+  }
+
+  const maxResults = args.maxResults ?? 50;
+  const query = (args.query ?? "").trim();
+  if (query.length < 3) {
+    return buildFsDiscoveryBlockedMessage("fs_search", `root query ${JSON.stringify(query)} is too short; use a narrower path or a longer query`);
+  }
+  if (maxResults > FS_SEARCH_ROOT_MAX_RESULTS) {
+    return buildFsDiscoveryBlockedMessage("fs_search", `root maxResults ${maxResults} exceeds safe limit ${FS_SEARCH_ROOT_MAX_RESULTS}`);
+  }
+  return undefined;
 }
 
 function formatTreePageText(page: TreePageResult): string {
@@ -945,6 +1027,62 @@ function getOpencodeClient() {
   });
 }
 
+async function listOpencodeSessionsViaApi(): Promise<unknown> {
+  const result = await callApi(ENV.OPENCODE_API_BASE_URL, "GET", "/session", undefined, ENV.OPENCODE_API_KEY);
+  if (!result.ok) {
+    throw new Error(formatApiResult("list_sessions", result));
+  }
+  return result.json ?? result.bodyText;
+}
+
+async function listOpencodeMessagesViaApi(sessionId: string): Promise<unknown> {
+  const result = await callApi(ENV.OPENCODE_API_BASE_URL, "GET", `/session/${sessionId}/message`, undefined, ENV.OPENCODE_API_KEY);
+  if (!result.ok) {
+    throw new Error(formatApiResult("session_messages", result));
+  }
+  return result.json ?? result.bodyText;
+}
+
+async function listOpencodeSessionStatusViaApi(): Promise<unknown> {
+  const result = await callApi(ENV.OPENCODE_API_BASE_URL, "GET", "/session/status", undefined, ENV.OPENCODE_API_KEY);
+  if (!result.ok) {
+    throw new Error(formatApiResult("session_state", result));
+  }
+  return result.json ?? result.bodyText;
+}
+
+async function promptOpencodeSessionViaApi(sessionId: string, payload: unknown): Promise<unknown> {
+  const result = await callApi(ENV.OPENCODE_API_BASE_URL, "POST", `/session/${sessionId}/prompt_async`, payload, ENV.OPENCODE_API_KEY);
+  if (!result.ok) {
+    throw new Error(formatApiResult("session_send", result));
+  }
+  return result.json ?? result.bodyText;
+}
+
+async function sendOpencodeMessageViaApi(sessionId: string, payload: unknown): Promise<unknown> {
+  const result = await callApi(ENV.OPENCODE_API_BASE_URL, "POST", `/session/${sessionId}/message`, payload, ENV.OPENCODE_API_KEY);
+  if (!result.ok) {
+    throw new Error(formatApiResult("session_send", result));
+  }
+  return result.json ?? result.bodyText;
+}
+
+function resolveOpencodeBasicAuthHeader(): string | undefined {
+  const passwordFromEnv = ENV.OPENCODE_PASSWORD?.trim();
+  let password = passwordFromEnv;
+  if (!password || isPlaceholderToken(password)) {
+    const fallbackFile = path.join(ENV.LOCAL_ROOT, "services/opencode-stack/data/secrets/opencode-server-password.txt");
+    if (existsSync(fallbackFile)) {
+      password = readFileSync(fallbackFile, "utf8").trim();
+    }
+  }
+  if (!password || isPlaceholderToken(password)) {
+    return undefined;
+  }
+  const username = ENV.OPENCODE_USERNAME?.trim() || "opencode";
+  return `Basic ${Buffer.from(`${username}:${password}`, "utf8").toString("base64")}`;
+}
+
 function getOpenPlannerClient() {
   return createOpenPlannerClient({
     endpoint: ENV.OPENPLANNER_API_BASE_URL,
@@ -994,6 +1132,246 @@ async function safeClientCall<T>(tag: string, op: () => Promise<T>): Promise<{ o
   }
 }
 
+async function readWorkspaceAgentsMd(): Promise<string> {
+  const candidates = [
+    path.join(ENV.LOCAL_ROOT, "AGENTS.md"),
+    path.join(process.cwd(), "AGENTS.md"),
+  ];
+
+  for (const candidate of candidates) {
+    try {
+      return await readFile(candidate, "utf8");
+    } catch {
+      // try next candidate
+    }
+  }
+
+  return "AGENTS.md not found in the workspace root.";
+}
+
+async function listWorkspaceAgentFiles(): Promise<string[]> {
+  const root = path.resolve(ENV.LOCAL_ROOT);
+  const results: string[] = [];
+  const ignored = new Set(["node_modules", ".git", ".next", "dist", "build", ".turbo", ".stryker-tmp"]);
+
+  const walk = async (current: string): Promise<void> => {
+    let entries: Dirent[];
+    try {
+      entries = await readdir(current, { withFileTypes: true });
+    } catch {
+      return;
+    }
+
+    for (const entry of entries) {
+      const fullPath = path.join(current, entry.name);
+      if (entry.isDirectory()) {
+        if (ignored.has(entry.name)) continue;
+        await walk(fullPath);
+        continue;
+      }
+      if (!entry.isFile() || entry.name !== "AGENTS.md") continue;
+      const rel = path.relative(root, fullPath) || "AGENTS.md";
+      results.push(rel.replace(/\\/g, "/"));
+    }
+  };
+
+  await walk(root);
+  return results.sort((a, b) => a.localeCompare(b));
+}
+
+async function listWorkspaceTopLevelEntries(): Promise<Array<{ name: string; kind: "file" | "dir" }>> {
+  const root = path.resolve(ENV.LOCAL_ROOT);
+  let entries: Dirent[];
+  try {
+    entries = await readdir(root, { withFileTypes: true });
+  } catch {
+    return [];
+  }
+
+  const toKind = (entry: Dirent): "file" | "dir" => entry.isDirectory() ? "dir" : "file";
+
+  return entries
+    .filter((entry) => !entry.name.startsWith("."))
+    .map((entry) => ({
+      name: entry.name,
+      kind: toKind(entry),
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+async function listWorkspaceSubmodules(): Promise<Array<{ path: string; url: string; branch?: string }>> {
+  const gitmodulesPath = path.join(path.resolve(ENV.LOCAL_ROOT), ".gitmodules");
+  let content: string;
+  try {
+    content = await readFile(gitmodulesPath, "utf8");
+  } catch {
+    return [];
+  }
+
+  const submodules: Array<{ path: string; url: string; branch?: string }> = [];
+  let current: { path?: string; url?: string; branch?: string } = {};
+
+  for (const rawLine of content.split("\n")) {
+    const line = rawLine.trim();
+    if (line.startsWith("[submodule ")) {
+      if (current.path && current.url) {
+        submodules.push({ path: current.path, url: current.url, branch: current.branch });
+      }
+      current = {};
+      continue;
+    }
+
+    const match = line.match(/^(path|url|branch)\s*=\s*(.+)$/);
+    if (!match) {
+      continue;
+    }
+
+    const key = match[1];
+    const value = match[2]?.trim() ?? "";
+    if (key === "path") current.path = value;
+    if (key === "url") current.url = value;
+    if (key === "branch") current.branch = value;
+  }
+
+  if (current.path && current.url) {
+    submodules.push({ path: current.path, url: current.url, branch: current.branch });
+  }
+
+  return submodules.sort((a, b) => a.path.localeCompare(b.path));
+}
+
+async function buildWorkspaceTopLevelGuide(): Promise<string> {
+  const entries = await listWorkspaceTopLevelEntries();
+  if (entries.length === 0) {
+    return "Workspace root is unavailable.";
+  }
+
+  return [
+    "# Workspace Top Level",
+    "",
+    ...entries.slice(0, WORKSPACE_TOP_LEVEL_LIMIT).map((entry) => `- ${entry.name}${entry.kind === "dir" ? "/" : ""}`),
+  ].join("\n");
+}
+
+async function buildWorkspaceSubmoduleGuide(): Promise<string> {
+  const submodules = await listWorkspaceSubmodules();
+  if (submodules.length === 0) {
+    return "No git submodules found.";
+  }
+
+  const preview = submodules.slice(0, WORKSPACE_SUBMODULE_PREVIEW_LIMIT);
+  return [
+    "# Workspace Submodules",
+    "",
+    "Tracked git submodules from `.gitmodules`.",
+    "",
+    ...preview.map((item) => `- ${item.path}${item.branch ? ` [${item.branch}]` : ""} <- ${item.url}`),
+    ...(submodules.length > preview.length ? [`#truncated ${WORKSPACE_SUBMODULE_PREVIEW_LIMIT}`] : []),
+  ].join("\n");
+}
+
+async function buildWorkspaceOverview(): Promise<string> {
+  const [topLevel, submodules] = await Promise.all([
+    listWorkspaceTopLevelEntries(),
+    listWorkspaceSubmodules(),
+  ]);
+
+  const topLevelPreview = topLevel.slice(0, 20).map((entry) => `- ${entry.name}${entry.kind === "dir" ? "/" : ""}`);
+  const submodulePreview = submodules.slice(0, 24).map((item) => `- ${item.path}`);
+
+  return [
+    "# Workspace Overview",
+    "",
+    "Use this before broad filesystem calls.",
+    "",
+    "## How to navigate safely",
+    "1. Start with `workspace://overview`.",
+    "2. Read `workspace://top-level` to choose a top-level area such as `services/`, `packages/`, `orgs/`, `tools/`, or `docs/`.",
+    "3. Read `workspace://submodules` when you need a repo under `orgs/` or another git submodule.",
+    "4. Only then use targeted filesystem calls against a narrowed path.",
+    "",
+    "## Filesystem guidance",
+    "- Prefer `fs_glob` with a scoped path like `services/janus` or `orgs/anomalyco/opencode`.",
+    "- Prefer `fs_grep` with a specific `include` such as `**/*.ts` or `src/**/*.tsx`.",
+    "- Prefer `fs_read` only after locating exact candidate files.",
+    "- Avoid root-wide discovery calls unless a resource directs you to a much smaller subtree.",
+    "",
+    `## Top-level entries (${topLevel.length})`,
+    ...topLevelPreview,
+    "",
+    `## Submodule preview (${submodules.length})`,
+    ...submodulePreview,
+  ].join("\n");
+}
+
+async function buildChatgptSystemGuide(): Promise<string> {
+  const rootAgents = await readWorkspaceAgentsMd();
+  const agentFiles = await listWorkspaceAgentFiles();
+  const topFiles = agentFiles.slice(0, 80);
+
+  return [
+    "# ChatGPT MCP System Guide",
+    "",
+    "You are connecting remotely through the shared MCP/OAuth gateway, not running locally inside the workspace.",
+    "",
+    "## Primary Role",
+    "- Act mainly as a reviewer, orchestrator, and dispatcher.",
+    "- Prefer gathering evidence and coordinating specialized agents over doing large direct edits yourself.",
+    "- Use MCP tools to inspect, delegate, and verify.",
+    "",
+    "## Strong Preferences",
+    "- Start with resource discovery and targeted reads.",
+    "- Prefer `list_agents`, `delegate_task`, and skill-related tools for complex tasks.",
+    "- Use advertised skills aggressively when they match the task.",
+    "- Read `workspace://overview`, `workspace://top-level`, and `workspace://submodules` before broad filesystem exploration.",
+    "- Keep filesystem calls small and explicit; avoid root-wide glob/grep/search requests.",
+    "- Treat local AGENTS.md files as operating instructions for the corresponding subtree or service.",
+    "- If multiple agent/skill files are relevant, read the most local one plus the workspace root one.",
+    "",
+    "## How To Navigate Agent Guidance",
+    "- `agents://workspace` -> root workspace instructions.",
+    "- `agents://index` -> index of all AGENTS.md files currently visible in the workspace.",
+    "- `agents://chatgpt-system` -> this ChatGPT-specific orchestration guide.",
+    "- `workspace://overview` -> top-level workspace map and safe navigation workflow.",
+    "- `workspace://top-level` -> immediate root entries.",
+    "- `workspace://submodules` -> git submodule inventory.",
+    "",
+    "## Recommended Workflow",
+    "1. Read `agents://chatgpt-system` and `agents://workspace` first.",
+    "2. Read `workspace://overview` and, if needed, `workspace://top-level` or `workspace://submodules`.",
+    "3. Read the most relevant AGENTS.md file(s) from `agents://index`.",
+    "4. Use targeted `fs_glob`, `fs_grep`, and `fs_read` calls within the narrowed subtree.",
+    "5. Delegate exploration or implementation to the best matching agent/skill.",
+    "6. Review the returned evidence before suggesting or applying changes.",
+    "",
+    "## Notes About This Workspace",
+    "- The workspace is large and multi-repo.",
+    "- Many AGENTS.md files assume a local coding agent context; adapt them to your remote MCP role.",
+    "- Your main job is to improve judgment and routing, not just produce code inline.",
+    "",
+    "## Root Workspace AGENTS.md",
+    rootAgents.trim(),
+    "",
+    "## Known AGENTS.md Files (first 80)",
+    ...topFiles.map((file) => `- ${file}`),
+  ].join("\n");
+}
+
+async function buildAgentsIndex(): Promise<string> {
+  const files = await listWorkspaceAgentFiles();
+  if (files.length === 0) {
+    return "No AGENTS.md files found in the workspace.";
+  }
+
+  return [
+    "# AGENTS.md Index",
+    "",
+    "Read the workspace root AGENTS first, then the most local AGENTS relevant to the file or service you are operating on.",
+    "",
+    ...files.map((file) => `- ${file}`),
+  ].join("\n");
+}
+
 function pickSessionRef(session?: string, sessionId?: string): string | undefined {
   const direct = (session ?? "").trim();
   if (direct.length > 0) {
@@ -1022,7 +1400,7 @@ async function resolveSessionRef(tag: string, sessionRef: string): Promise<{ ok:
     return { ok: true, sessionId: ref };
   }
 
-  const sessions = await safeClientCall(`${tag} session-lookup`, () => getOpencodeClient().listSessions());
+  const sessions = await safeClientCall(`${tag} session-lookup`, () => listOpencodeSessionsViaApi());
   if (!sessions.ok) {
     return { ok: false, text: sessions.text };
   }
@@ -1054,9 +1432,21 @@ async function callApi(baseUrl: string, method: RestMethod, apiPath: string, bod
     Accept: "application/json",
   };
 
-  const token = resolveBearerToken(apiKey);
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
+  if (baseUrl === ENV.OPENCODE_API_BASE_URL) {
+    const basicAuth = resolveOpencodeBasicAuthHeader();
+    if (basicAuth) {
+      headers.Authorization = basicAuth;
+    } else {
+      const token = resolveBearerToken(apiKey);
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
+    }
+  } else {
+    const token = resolveBearerToken(apiKey);
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
   }
 
   let requestBody: string | undefined;
@@ -2161,12 +2551,14 @@ function createServer(): McpServer {
           type: "text",
           text: [
             "Precision workflow:",
-            "1) Use fs_glob to narrow candidate paths (target 20-80 matches).",
-            "2) Use fs_grep on that subset (target <=40 matches).",
-            "3) Use fs_read for exact files.",
-            `4) Use fs_tree only for small directories (maxDepth<=${FS_TREE_HARD_MAX_DEPTH}, pageSize<=${FS_TREE_HARD_MAX_PAGE_SIZE}).`,
-            "5) If fs_tree returns `next <cursor>`, continue with that cursor instead of increasing depth.",
-            "6) For conversation history use session_* tools instead of searching by session-like ids in files.",
+            "1) Read workspace://overview first for top-level structure.",
+            "2) Read workspace://submodules if you need a repo under orgs/ or another submodule.",
+            "3) Use fs_glob to narrow candidate paths inside a specific subtree (target 20-80 matches).",
+            "4) Use fs_grep on that subset (target <=40 matches).",
+            "5) Use fs_read for exact files.",
+            `6) Use fs_tree only for small directories (maxDepth<=${FS_TREE_HARD_MAX_DEPTH}, pageSize<=${FS_TREE_HARD_MAX_PAGE_SIZE}).`,
+            "7) If fs_tree returns `next <cursor>`, continue with that cursor instead of increasing depth.",
+            "8) For conversation history use session_* tools instead of searching by session-like ids in files.",
           ].join("\n"),
         }],
       };
@@ -2192,6 +2584,16 @@ function createServer(): McpServer {
       }
     },
     async ({ pattern, path, maxResults, includeHidden, includeDirectories, backend }) => {
+      const blocked = enforceFsDiscoveryGuard({
+        tool: "fs_glob",
+        path,
+        maxResults,
+        pattern,
+      });
+      if (blocked) {
+        return { content: [{ type: "text", text: blocked }] };
+      }
+
       const result = await vfs.glob(
         pattern,
         {
@@ -2228,6 +2630,16 @@ function createServer(): McpServer {
       }
     },
     async ({ query, path, glob, maxResults, includeHidden, backend }) => {
+      const blocked = enforceFsDiscoveryGuard({
+        tool: "fs_search",
+        path,
+        maxResults,
+        query,
+      });
+      if (blocked) {
+        return { content: [{ type: "text", text: blocked }] };
+      }
+
       const results = await vfs.search(query, { path, glob, maxResults, includeHidden }, backend);
       return {
         content: [{ type: "text", text: sanitizeSensitiveText(JSON.stringify(results, null, 2)) }],
@@ -2256,6 +2668,16 @@ function createServer(): McpServer {
       }
     },
     async ({ pattern, path, include, exclude, maxResults, caseSensitive, includeHidden, backend }) => {
+      const blocked = enforceFsDiscoveryGuard({
+        tool: "fs_grep",
+        path,
+        maxResults,
+        include,
+      });
+      if (blocked) {
+        return { content: [{ type: "text", text: blocked }] };
+      }
+
       const result = await vfs.grep(
         pattern,
         {
@@ -2673,7 +3095,7 @@ function createServer(): McpServer {
       },
     },
     async ({ maxResults }) => {
-      const result = await safeClientCall("list_sessions", () => getOpencodeClient().listSessions());
+      const result = await safeClientCall("list_sessions", () => listOpencodeSessionsViaApi());
       if (!result.ok) {
         return {
           content: [{ type: "text", text: result.text }],
@@ -2799,7 +3221,7 @@ function createServer(): McpServer {
           content: [{ type: "text", text: resolved.text }],
         };
       }
-      const result = await safeClientCall("session_messages", () => getOpencodeClient().listMessages(resolved.sessionId));
+      const result = await safeClientCall("session_messages", () => listOpencodeMessagesViaApi(resolved.sessionId));
       if (!result.ok) {
         return {
           content: [{ type: "text", text: result.text }],
@@ -2848,7 +3270,7 @@ function createServer(): McpServer {
       const resolvedSessionId = resolved.sessionId;
       const outSession = resolvedSessionId.startsWith("ses_") ? aliasFor("session", resolvedSessionId) : resolvedSessionId;
       if (async) {
-        const queued = await safeClientCall("session_send", () => getOpencodeClient().promptAsync(resolvedSessionId, {
+        const queued = await safeClientCall("session_send", () => promptOpencodeSessionViaApi(resolvedSessionId, {
           parts: [{ type: "text", text: prompt }],
         }));
         if (!queued.ok) {
@@ -2860,7 +3282,7 @@ function createServer(): McpServer {
           content: [{ type: "text", text: `session ${outSession}\nqueued` }],
         };
       }
-      const result = await safeClientCall("session_send", () => getOpencodeClient().sendMessage(resolvedSessionId, {
+      const result = await safeClientCall("session_send", () => sendOpencodeMessageViaApi(resolvedSessionId, {
         parts: [{ type: "text", text: prompt }],
       }));
       if (!result.ok) {
@@ -2907,7 +3329,7 @@ function createServer(): McpServer {
       }
       const resolvedSessionId = resolved.sessionId;
       const outSession = resolvedSessionId.startsWith("ses_") ? aliasFor("session", resolvedSessionId) : resolvedSessionId;
-      const statuses = await safeClientCall("session_state", () => getOpencodeClient().listSessionStatus());
+      const statuses = await safeClientCall("session_state", () => listOpencodeSessionStatusViaApi());
       if (!statuses.ok) {
         return {
           content: [{ type: "text", text: statuses.text }],
@@ -2956,7 +3378,7 @@ function createServer(): McpServer {
       }
       const resolvedSessionId = resolved.sessionId;
       const outSession = resolvedSessionId.startsWith("ses_") ? aliasFor("session", resolvedSessionId) : resolvedSessionId;
-      const statuses = await safeClientCall("session_final_output", () => getOpencodeClient().listSessionStatus());
+      const statuses = await safeClientCall("session_final_output", () => listOpencodeSessionStatusViaApi());
       if (!statuses.ok) {
         return {
           content: [{ type: "text", text: statuses.text }],
@@ -2970,7 +3392,7 @@ function createServer(): McpServer {
         };
       }
 
-      const messagesResult = await safeClientCall("session_final_output", () => getOpencodeClient().listMessages(resolvedSessionId));
+      const messagesResult = await safeClientCall("session_final_output", () => listOpencodeMessagesViaApi(resolvedSessionId));
       if (!messagesResult.ok) {
         return {
           content: [{ type: "text", text: messagesResult.text }],
@@ -3392,9 +3814,74 @@ function createServer(): McpServer {
     return {
       contents: [{
         uri: uri.href,
-        text: "Workspace root resource. Use fs_list tool to browse files.",
+        text: [
+          "Workspace root resource.",
+          "Start with agents://workspace and workspace://overview to understand the system instructions and structure.",
+          "Use workspace://top-level and workspace://submodules before broad filesystem exploration.",
+          "Use fs_glob/fs_grep only after narrowing to a specific subtree.",
+        ].join("\n"),
         mimeType: "text/plain"
       }]
+    };
+  });
+
+  server.resource("workspace-overview", "workspace://overview", async (uri) => {
+    return {
+      contents: [{
+        uri: uri.href,
+        mimeType: "text/markdown",
+        text: await buildWorkspaceOverview(),
+      }],
+    };
+  });
+
+  server.resource("workspace-top-level", "workspace://top-level", async (uri) => {
+    return {
+      contents: [{
+        uri: uri.href,
+        mimeType: "text/markdown",
+        text: await buildWorkspaceTopLevelGuide(),
+      }],
+    };
+  });
+
+  server.resource("workspace-submodules", "workspace://submodules", async (uri) => {
+    return {
+      contents: [{
+        uri: uri.href,
+        mimeType: "text/markdown",
+        text: await buildWorkspaceSubmoduleGuide(),
+      }],
+    };
+  });
+
+  server.resource("workspace-agents", "agents://workspace", async (uri) => {
+    return {
+      contents: [{
+        uri: uri.href,
+        mimeType: "text/markdown",
+        text: await readWorkspaceAgentsMd(),
+      }],
+    };
+  });
+
+  server.resource("agents-index", "agents://index", async (uri) => {
+    return {
+      contents: [{
+        uri: uri.href,
+        mimeType: "text/markdown",
+        text: await buildAgentsIndex(),
+      }],
+    };
+  });
+
+  server.resource("chatgpt-system-guide", "agents://chatgpt-system", async (uri) => {
+    return {
+      contents: [{
+        uri: uri.href,
+        mimeType: "text/markdown",
+        text: await buildChatgptSystemGuide(),
+      }],
     };
   });
 

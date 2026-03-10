@@ -485,6 +485,7 @@ export interface EmbeddingConfig {
   baseUrl: string;
   model: string;
   contextSize: number;
+  apiKey?: string;
 }
 
 export interface OllamaConfig {
@@ -492,6 +493,7 @@ export interface OllamaConfig {
   model: string;
   temperature?: number;
   maxTokens?: number;
+  apiKey?: string;
 }
 
 // ============================================================================

@@ -2,6 +2,8 @@ import type { FastifyReply, FastifyRequest } from "fastify";
 
 type ProxyConfig = {
   baseUrl: string;
+  username: string | null;
+  password: string | null;
   apiKey: string | null;
 };
 
@@ -9,9 +11,18 @@ function normalizeBase(url: string): string {
   return url.endsWith("/") ? url.slice(0, -1) : url;
 }
 
-function getForwardedAuthorization(req: FastifyRequest, apiKey: string | null): string | undefined {
+function getForwardedAuthorization(
+  req: FastifyRequest,
+  apiKey: string | null,
+  username: string | null,
+  password: string | null,
+): string | undefined {
   const header = req.headers.authorization;
   if (typeof header === "string" && header.length > 0) return header;
+  if (password && password.length > 0) {
+    const user = username && username.length > 0 ? username : "opencode";
+    return `Basic ${Buffer.from(`${user}:${password}`, "utf8").toString("base64")}`;
+  }
   if (apiKey && apiKey.length > 0) return `Bearer ${apiKey}`;
   return undefined;
 }
@@ -23,7 +34,13 @@ function buildBody(req: FastifyRequest): string | undefined {
   return JSON.stringify(req.body);
 }
 
-function buildHeaders(req: FastifyRequest, apiKey: string | null, hasBody: boolean): Record<string, string> {
+function buildHeaders(
+  req: FastifyRequest,
+  apiKey: string | null,
+  username: string | null,
+  password: string | null,
+  hasBody: boolean,
+): Record<string, string> {
   const headers: Record<string, string> = {};
   const requestContentType = req.headers["content-type"];
   const requestAccept = req.headers.accept;
@@ -39,8 +56,16 @@ function buildHeaders(req: FastifyRequest, apiKey: string | null, hasBody: boole
         : "application/json";
   }
 
-  const auth = getForwardedAuthorization(req, apiKey);
+  const auth = getForwardedAuthorization(req, apiKey, username, password);
   if (auth) headers.authorization = auth;
+  if (req.url.includes('/session')) {
+    req.log.info({
+      opencodeAuthMode: auth?.startsWith('Basic ') ? 'basic' : auth?.startsWith('Bearer ') ? 'bearer' : 'none',
+      opencodeUsername: username,
+      hasPassword: Boolean(password),
+      requestUrl: req.url,
+    }, 'opencode session proxy auth');
+  }
 
   return headers;
 }
@@ -54,7 +79,7 @@ export async function proxyToOpencode(
   const query = req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : "";
   const targetUrl = `${normalizeBase(cfg.baseUrl)}/${path}${query}`;
   const body = buildBody(req);
-  const headers = buildHeaders(req, cfg.apiKey, body !== undefined);
+  const headers = buildHeaders(req, cfg.apiKey, cfg.username, cfg.password, body !== undefined);
 
   try {
     const response = await fetch(targetUrl, {

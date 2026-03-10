@@ -1,0 +1,53 @@
+{
+  "as_of_utc": "2026-03-08T00:00:00Z",
+  "clock": {
+    "t0_utc": "2026-02-28T00:00:00Z",
+    "second_hand_days": 8,
+    "minute_hand_days": 90,
+    "hour_hand_days": 30,
+    "structural_bar_days": 450
+  },
+  "states": {
+    "transit_flow": {
+      "score": 4,
+      "trend": "worsening",
+      "confidence": 0.9,
+      "notes": "2 tanker transits on 6 Mar vs 50 baseline on 28 Feb"
+    },
+    "attack_tempo": {
+      "score": 4,
+      "trend": "flat-high",
+      "confidence": 0.85,
+      "notes": "JMIC threat critical; attacks likely"
+    },
+    "insurance_availability": {
+      "score": 4,
+      "trend": "flat-high",
+      "confidence": 0.8,
+      "notes": "cover scarce, repriced, or withdrawn"
+    },
+    "navigation_integrity": {
+      "score": 3,
+      "trend": "flat-high",
+      "confidence": 0.8,
+      "notes": "persistent GNSS/GPS and AIS disruption"
+    },
+    "bypass_capacity": {
+      "score": 3,
+      "trend": "flat",
+      "confidence": 0.9,
+      "notes": "3.5\u20135.5 mb/d alt capacity vs ~20 mb/d Hormuz"
+    },
+    "asia_buffer_stress": {
+      "score": 1,
+      "trend": "rising",
+      "confidence": 0.6,
+      "notes": "stress emerging, not yet acute everywhere"
+    }
+  },
+  "branches": {
+    "reopening": 0.25,
+    "effective_closure": 0.55,
+    "wider_escalation": 0.2
+  }
+}

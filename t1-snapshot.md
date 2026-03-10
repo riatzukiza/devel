@@ -1,0 +1,287 @@
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - generic "Simulation map canvas" [ref=e6]
+      - status [ref=e7]: No tile selected.
+    - generic [ref=e8]:
+      - heading "Facet Configuration" [level=3] [ref=e9]
+      - generic [ref=e10]:
+        - generic [ref=e11]: "Facet Limit (per query): 16"
+        - 'slider "Facet Limit (per query): 16" [ref=e12]': "16"
+        - generic [ref=e13]: Maximum facets considered per facet query
+      - generic [ref=e14]:
+        - generic [ref=e15]: "Vision Radius (tiles): 10"
+        - 'slider "Vision Radius (tiles): 10" [ref=e16]': "10"
+        - generic [ref=e17]: Radius for facet gathering from world
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - strong [ref=e20]: "Facet Types:"
+          - text: 13 entity types registered
+        - generic [ref=e21]:
+          - strong [ref=e22]: "Memory Types:"
+          - text: danger, social-bond, social-conflict
+        - generic [ref=e23]:
+          - strong [ref=e24]: "Memory Decay:"
+          - text: 0.001 per tick
+  - generic [ref=e25]:
+    - generic [ref=e26]:
+      - strong [ref=e27]: Fantasia — Myth Debugger
+      - generic [ref=e28]: "WS: open"
+      - generic [ref=e290]:
+        - text: "Health: ✓"
+        - generic [ref=e291]: (10.0ms / 66.0ms)
+    - generic [ref=e29]:
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - generic [ref=e32]: Night
+          - generic [ref=e33]: 04:04
+        - generic [ref=e34]:
+          - generic [ref=e35]: Day 13
+          - generic [ref=e36]: Autumn • Year 2
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - generic [ref=e39]: Temperature
+          - generic [ref=e40]: "0.47"
+        - generic [ref=e41]:
+          - generic [ref=e42]: Daylight
+          - generic [ref=e43]: 91%
+        - generic [ref=e44]:
+          - generic [ref=e45]: Cold Snap
+          - generic [ref=e46]: 40%
+    - generic [ref=e47]:
+      - generic [ref=e48]: Stockpile Totals
+      - generic [ref=e49]: No stockpile resources yet.
+    - generic [ref=e50]:
+      - generic [ref=e51]:
+        - heading "Tick Controls" [level=3] [ref=e52]
+        - generic [ref=e53]: "Tick: 2434"
+      - generic [ref=e54]:
+        - button "⏸ Pause" [ref=e292]
+        - button "Tick" [ref=e56]
+        - button "Tick×10" [ref=e57]
+        - button "Reset" [ref=e58]
+        - button "🔇" [ref=e59]
+      - generic [ref=e60]:
+        - generic [ref=e61]: "15 FPS:"
+        - slider [ref=e62]: "15"
+    - generic [ref=e64]:
+      - button "Selected ▼" [ref=e65] [cursor=pointer]:
+        - heading "Selected" [level=2] [ref=e66]
+        - generic [ref=e67]: ▼
+      - generic [ref=e68]:
+        - generic [ref=e69]:
+          - generic [ref=e70]: Tile
+          - generic [ref=e71]:
+            - generic [ref=e72]:
+              - generic [ref=e73]: Coordinates
+              - generic [ref=e74]: None
+            - generic [ref=e75]:
+              - generic [ref=e76]: Biome
+              - generic [ref=e77]: None
+            - generic [ref=e78]:
+              - generic [ref=e79]: Terrain
+              - generic [ref=e80]: None
+            - generic [ref=e81]:
+              - generic [ref=e82]: Structure
+              - generic [ref=e83]: None
+            - generic [ref=e84]:
+              - generic [ref=e85]: Elevation
+              - generic [ref=e86]: None
+            - generic [ref=e87]:
+              - generic [ref=e88]: Moisture
+              - generic [ref=e89]: None
+            - generic [ref=e90]:
+              - generic [ref=e91]: Temperature
+              - generic [ref=e92]: None
+            - generic [ref=e93]:
+              - generic [ref=e94]: Fertility
+              - generic [ref=e95]: None
+            - generic [ref=e96]:
+              - generic [ref=e97]: Vegetation
+              - generic [ref=e98]: None
+            - generic [ref=e99]:
+              - generic [ref=e100]: Light
+              - generic [ref=e101]: None
+            - generic [ref=e102]:
+              - generic [ref=e103]: Wind
+              - generic [ref=e104]: None
+            - generic [ref=e105]:
+              - generic [ref=e106]: Humidity
+              - generic [ref=e107]: None
+            - generic [ref=e108]:
+              - generic [ref=e109]: Pressure
+              - generic [ref=e110]: None
+            - generic [ref=e111]:
+              - generic [ref=e112]: Visibility
+              - generic [ref=e113]: unknown
+            - generic [ref=e114]:
+              - generic [ref=e115]: Time
+              - generic [ref=e116]: None
+            - generic [ref=e117]:
+              - generic [ref=e118]: Season
+              - generic [ref=e119]: None
+            - generic [ref=e120]:
+              - generic [ref=e121]: Day/Night
+              - generic [ref=e122]: None
+            - generic [ref=e123]:
+              - generic [ref=e124]: Weather
+              - generic [ref=e125]: None
+            - generic [ref=e126]:
+              - generic [ref=e127]: Resource
+              - generic [ref=e128]: None
+            - generic [ref=e129]:
+              - generic [ref=e130]: Resource Amount
+              - generic [ref=e131]: None
+            - generic [ref=e132]:
+              - generic [ref=e133]: Resource Type
+              - generic [ref=e134]: None
+            - generic [ref=e135]:
+              - generic [ref=e136]: Special
+              - generic [ref=e137]: None
+            - generic [ref=e138]:
+              - generic [ref=e139]: Special Value
+              - generic [ref=e140]: None
+            - generic [ref=e141]:
+              - generic [ref=e142]: Special Type
+              - generic [ref=e143]: None
+        - generic [ref=e144]:
+          - generic [ref=e145]: Items
+          - generic [ref=e147]:
+            - generic [ref=e148]: Items
+            - generic [ref=e149]: None
+        - generic [ref=e150]:
+          - generic [ref=e151]: Agents
+          - generic [ref=e153]:
+            - generic [ref=e154]: Agents
+            - generic [ref=e155]: None
+        - generic [ref=e156]:
+          - generic [ref=e157]: Focus
+          - generic [ref=e159]:
+            - generic [ref=e160]: Selected Agent
+            - generic [ref=e161]: None
+    - generic [ref=e163]:
+      - button "Factions (0) 🏰 0 | 🐺 0" [ref=e164] [cursor=pointer]:
+        - strong [ref=e165]: Factions (0)
+        - generic [ref=e166]: 🏰 0 | 🐺 0
+      - generic [ref=e167]:
+        - button "🏰 Colonists (0) ▼" [ref=e168] [cursor=pointer]:
+          - generic [ref=e169]:
+            - generic [ref=e170]: 🏰
+            - strong [ref=e171]: Colonists
+            - generic [ref=e172]: (0)
+          - generic [ref=e173]: ▼
+        - generic [ref=e175]: No colonists found
+      - generic [ref=e176]:
+        - button "🐺 Wildlife (0) ▼" [ref=e177] [cursor=pointer]:
+          - generic [ref=e178]:
+            - generic [ref=e179]: 🐺
+            - strong [ref=e180]: Wildlife
+            - generic [ref=e181]: (0)
+          - generic [ref=e182]: ▼
+        - generic [ref=e184]: No wildlife found
+    - button "Job Queue (0) ▼" [ref=e185] [cursor=pointer]:
+      - strong [ref=e186]: Job Queue
+      - generic [ref=e187]: (0)
+      - generic [ref=e188]: ▼
+  - generic [ref=e189]:
+    - button "Pantheon (0) ▼" [ref=e191] [cursor=pointer]:
+      - strong [ref=e192]: Pantheon (0)
+      - generic [ref=e193]: ▼
+    - generic [ref=e194]:
+      - generic [ref=e195]: Building Palette
+      - generic [ref=e196]:
+        - 'generic "Shrine: Sacred site that anchors the mythic focus of the colony." [ref=e197] [cursor=pointer]':
+          - generic "Shrine" [ref=e198]: ⛩️
+          - generic [ref=e199]: Shrine
+        - 'generic "Campfire: Community gathering place providing warmth and light." [ref=e200] [cursor=pointer]':
+          - generic "Campfire" [ref=e201]: 🔥
+          - generic [ref=e202]: Campfire
+        - 'generic "House: Shelter for a family with warmth and rest." [ref=e203] [cursor=pointer]':
+          - generic "House" [ref=e204]: 🏠
+          - generic [ref=e205]: House
+        - 'generic "Wall: Defensive structure that requires wood and labor to complete." [ref=e206] [cursor=pointer]':
+          - generic "Wall" [ref=e207]: 🧱
+          - generic [ref=e208]: Wall
+        - 'generic "Road: Packed path that lets agents move faster across the map." [ref=e209] [cursor=pointer]':
+          - generic "Road" [ref=e210]: 🛣️
+          - generic [ref=e211]: Road
+        - 'generic "Stockpile: Storage area for resources and provisions." [ref=e212] [cursor=pointer]':
+          - generic "Stockpile" [ref=e213]: 📦
+          - generic [ref=e214]: Stockpile
+        - 'generic "Warehouse: Large storage facility with a configurable stockpile." [ref=e215] [cursor=pointer]':
+          - generic "Warehouse" [ref=e216]: 🏭
+          - generic [ref=e217]: Warehouse
+        - 'generic "Lumberyard: Processes nearby trees into logs for building." [ref=e218] [cursor=pointer]':
+          - generic "Lumberyard" [ref=e219]: 🪓
+          - generic [ref=e220]: Lumberyard
+        - 'generic "Orchard: Tended grove for fruit harvesting." [ref=e221] [cursor=pointer]':
+          - generic "Orchard" [ref=e222]: 🍎
+          - generic [ref=e223]: Orchard
+        - 'generic "Granary: Stores harvested grain for the colony." [ref=e224] [cursor=pointer]':
+          - generic "Granary" [ref=e225]: 🌾
+          - generic [ref=e226]: Granary
+        - 'generic "Farm: Cultivated field that grows grain from fertile soil." [ref=e227] [cursor=pointer]':
+          - generic "Farm" [ref=e228]: 🚜
+          - generic [ref=e229]: Farm
+        - 'generic "Quarry: Extracts stone and ore from rocky ground." [ref=e230] [cursor=pointer]':
+          - generic "Quarry" [ref=e231]: ⛏️
+          - generic [ref=e232]: Quarry
+        - 'generic "Workshop: Coordinates builders and basic crafting." [ref=e233] [cursor=pointer]':
+          - generic "Workshop" [ref=e234]: 🛠️
+          - generic [ref=e235]: Workshop
+        - 'generic "Smelter: Refines ore into ingots." [ref=e236] [cursor=pointer]':
+          - generic "Smelter" [ref=e237]: 🔥
+          - generic [ref=e238]: Smelter
+        - 'generic "Improvement Hall: Upgrades existing structures with skilled labor." [ref=e239] [cursor=pointer]':
+          - generic "Improvement Hall" [ref=e240]: 🏛️
+          - generic [ref=e241]: Improvement Hall
+        - 'generic "Dog Statue: Guardian statue that protects the settlement." [ref=e242] [cursor=pointer]':
+          - generic "Dog Statue" [ref=e243]: 🗿
+          - generic [ref=e244]: Dog Statue
+    - generic [ref=e245]:
+      - heading "Overlays" [level=3] [ref=e246]
+      - generic [ref=e247]:
+        - generic [ref=e248]:
+          - checkbox "Relationship links" [checked] [ref=e249]
+          - text: Relationship links
+        - generic [ref=e250]:
+          - checkbox "Name labels" [checked] [ref=e251]
+          - text: Name labels
+        - generic [ref=e252]:
+          - checkbox "Stat pips" [checked] [ref=e253]
+          - text: Stat pips
+        - generic [ref=e254]:
+          - checkbox "Memory overlay" [ref=e255]
+          - text: Memory overlay
+    - generic [ref=e256]:
+      - heading "Visibility (LoS)" [level=3] [ref=e257]
+      - generic [ref=e258]:
+        - generic [ref=e259] [cursor=pointer]:
+          - radio "All visible (no filter)" [checked] [ref=e260]
+          - generic [ref=e261]: All visible (no filter)
+        - generic [ref=e262]: No player agents available
+    - generic [ref=e263]:
+      - heading "World Size" [level=3] [ref=e264]
+      - generic [ref=e265]:
+        - generic [ref=e266]: "Width:"
+        - spinbutton "Width:" [ref=e267]: "128"
+        - generic [ref=e268]: "Height:"
+        - spinbutton "Height:" [ref=e269]: "128"
+        - button "Apply" [ref=e270]
+    - generic [ref=e271]:
+      - heading "Tree Density" [level=3] [ref=e272]
+      - generic [ref=e273]:
+        - generic [ref=e274]: "5.0%:"
+        - slider "5.0%:" [ref=e275]: "0.05"
+      - generic [ref=e276]: ~819 trees expected
+    - generic [ref=e277]:
+      - button "Traces (0) ▼" [ref=e278] [cursor=pointer]:
+        - strong [ref=e279]: Traces
+        - generic [ref=e280]: (0)
+        - generic [ref=e281]: ▼
+      - generic [ref=e282]:
+        - strong [ref=e284]: Library Books (0)
+        - generic [ref=e285]: No books yet. Build a library to let scribes write the colony's lore.
+    - button "Agent Thoughts ▼" [ref=e287] [cursor=pointer]:
+      - strong [ref=e288]: Agent Thoughts
+      - generic [ref=e289]: ▼

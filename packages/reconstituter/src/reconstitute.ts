@@ -112,11 +112,11 @@ function env(): Env {
     CHROMA_COLLECTION_NOTES_BASE: baseNotes,
     CHROMA_COLLECTION_NOTES: saltCollectionName(baseNotes, embedModel),
 
-    OLLAMA_BASE_URL: process.env.OLLAMA_BASE_URL ?? "http://localhost:11434",
+    OLLAMA_BASE_URL: process.env.OLLAMA_BASE_URL ?? "http://127.0.0.1:8789",
     OLLAMA_EMBED_MODEL: embedModel,
-    OLLAMA_EMBED_NUM_CTX: Number(process.env.OLLAMA_EMBED_NUM_CTX ?? "32768"),
-    OLLAMA_CHAT_MODEL: process.env.OLLAMA_CHAT_MODEL ?? "qwen3-vl:8b-instruct",
-    OLLAMA_CHAT_NUM_CTX: Number(process.env.OLLAMA_CHAT_NUM_CTX ?? "131072"),
+    OLLAMA_EMBED_NUM_CTX: Number(process.env.OLLAMA_EMBED_NUM_CTX ?? "0"),
+    OLLAMA_CHAT_MODEL: process.env.OLLAMA_CHAT_MODEL ?? "qwen3.5:4b-q8_0",
+    OLLAMA_CHAT_NUM_CTX: Number(process.env.OLLAMA_CHAT_NUM_CTX ?? "0"),
 
     TTL_EMBED_MS: Number(process.env.TTL_EMBED_MS ?? `${1000 * 60 * 60 * 24 * 30}`),
     TTL_SEARCH_MS: Number(process.env.TTL_SEARCH_MS ?? `${1000 * 60 * 30}`),
@@ -217,7 +217,7 @@ async function ollamaEmbedOne(E: Env, db: Level<string, any>, input: string, ret
           model: E.OLLAMA_EMBED_MODEL,
           input: text,
           truncate: true,
-          options: { num_ctx: E.OLLAMA_EMBED_NUM_CTX },
+          options: E.OLLAMA_EMBED_NUM_CTX > 0 ? { num_ctx: E.OLLAMA_EMBED_NUM_CTX } : undefined,
         }),
         signal: controller.signal,
       });
@@ -282,7 +282,7 @@ async function ollamaEmbedMany(E: Env, db: Level<string, any>, inputs: string[],
             model: E.OLLAMA_EMBED_MODEL,
             input: missDocs,
             truncate: true,
-            options: { num_ctx: E.OLLAMA_EMBED_NUM_CTX },
+            options: E.OLLAMA_EMBED_NUM_CTX > 0 ? { num_ctx: E.OLLAMA_EMBED_NUM_CTX } : undefined,
           }),
           signal: controller.signal,
         });
@@ -351,7 +351,7 @@ async function ollamaChat(
       messages: args.messages,
       tools: args.tools,
       stream: false,
-      options: { num_ctx: E.OLLAMA_CHAT_NUM_CTX },
+      options: E.OLLAMA_CHAT_NUM_CTX > 0 ? { num_ctx: E.OLLAMA_CHAT_NUM_CTX } : undefined,
       temperature: args.temperature ?? 0,
     }),
   });

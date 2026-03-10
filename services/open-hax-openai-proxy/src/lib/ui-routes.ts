@@ -1,11 +1,11 @@
 import { resolve } from "node:path";
-import { access } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 
 import type { FastifyInstance } from "fastify";
 
 import type { ProxyConfig } from "./config.js";
 import { CredentialStore } from "./credential-store.js";
-import type { KeyPool } from "./key-pool.js";
+import type { KeyPool, KeyPoolAccountStatus } from "./key-pool.js";
 import { OpenAiOAuthManager } from "./openai-oauth.js";
 import { RequestLogStore } from "./request-log-store.js";
 import { ChromaSessionIndex } from "./chroma-session-index.js";
@@ -16,6 +16,44 @@ interface UiRouteDependencies {
   readonly config: ProxyConfig;
   readonly keyPool: KeyPool;
   readonly requestLogStore: RequestLogStore;
+}
+
+interface UsageAccountSummary {
+  readonly accountId: string;
+  readonly displayName: string;
+  readonly providerId: string;
+  readonly authType: "api_key" | "oauth_bearer" | "local" | "none";
+  readonly status: "healthy" | "cooldown" | "idle";
+  readonly requestCount: number;
+  readonly totalTokens: number;
+  readonly promptTokens: number;
+  readonly completionTokens: number;
+  readonly lastUsedAt: string | null;
+}
+
+interface TrendPoint {
+  readonly t: string;
+  readonly v: number;
+}
+
+interface UsageOverviewResponse {
+  readonly generatedAt: string;
+  readonly summary: {
+    readonly requests24h: number;
+    readonly tokens24h: number;
+    readonly promptTokens24h: number;
+    readonly completionTokens24h: number;
+    readonly errorRate24h: number;
+    readonly topModel: string | null;
+    readonly topProvider: string | null;
+    readonly activeAccounts: number;
+  };
+  readonly trends: {
+    readonly requests: readonly TrendPoint[];
+    readonly tokens: readonly TrendPoint[];
+    readonly errors: readonly TrendPoint[];
+  };
+  readonly accounts: readonly UsageAccountSummary[];
 }
 
 async function firstExistingPath(paths: readonly string[]): Promise<string | undefined> {
@@ -29,6 +67,31 @@ async function firstExistingPath(paths: readonly string[]): Promise<string | und
   }
 
   return undefined;
+}
+
+async function loadUiIndexHtml(): Promise<string | undefined> {
+  const indexPath = await firstExistingPath([
+    resolve(process.cwd(), "web/dist/index.html"),
+    resolve(process.cwd(), "dist/web/index.html"),
+    resolve(process.cwd(), "../web/dist/index.html"),
+  ]);
+
+  if (!indexPath) {
+    return undefined;
+  }
+
+  return readFile(indexPath, "utf8");
+}
+
+async function resolveUiAssetPath(assetPath: string): Promise<string | undefined> {
+  const normalized = assetPath.replace(/^\/+/, "");
+  const candidates = [
+    resolve(process.cwd(), "web/dist", normalized),
+    resolve(process.cwd(), "dist/web", normalized),
+    resolve(process.cwd(), "../web/dist", normalized),
+  ];
+
+  return firstExistingPath(candidates);
 }
 
 function parseBoolean(value: unknown): boolean {
@@ -65,6 +128,160 @@ function toSafeLimit(value: unknown, fallback: number, max: number): number {
   }
 
   return fallback;
+}
+
+function isoFromTimestamp(value: number | undefined): string | null {
+  return typeof value === "number" && Number.isFinite(value)
+    ? new Date(value).toISOString()
+    : null;
+}
+
+function usageCount(value: number | undefined): number {
+  return typeof value === "number" && Number.isFinite(value) ? value : 0;
+}
+
+function percentage(part: number, total: number): number {
+  if (total <= 0) {
+    return 0;
+  }
+
+  return Number(((part / total) * 100).toFixed(2));
+}
+
+function bucketStart(timestamp: number, bucketMs: number): number {
+  return Math.floor(timestamp / bucketMs) * bucketMs;
+}
+
+async function buildUsageOverview(
+  requestLogStore: RequestLogStore,
+  keyPool: KeyPool,
+  credentialStore: CredentialStore,
+): Promise<UsageOverviewResponse> {
+  const allLogs = requestLogStore.snapshot();
+  const allStatuses: Record<string, Awaited<ReturnType<KeyPool["getStatus"]>>> = await keyPool.getAllStatuses().catch(() => ({}));
+  const allAccountStatuses: Record<string, readonly KeyPoolAccountStatus[]> = await keyPool.getAllAccountStatuses().catch(() => ({}));
+  const credentialProviders = await credentialStore.listProviders(false).catch(() => []);
+  const providerById = new Map(credentialProviders.map((provider) => [provider.id, provider]));
+
+  const now = Date.now();
+  const dayAgo = now - 24 * 60 * 60 * 1000;
+  const recentLogs = allLogs.filter((entry) => entry.timestamp >= dayAgo);
+
+  const modelTotals = new Map<string, number>();
+  const providerTotals = new Map<string, number>();
+  const accountStats = new Map<string, UsageAccountSummary>();
+
+  for (const entry of recentLogs) {
+    modelTotals.set(entry.model, (modelTotals.get(entry.model) ?? 0) + usageCount(entry.totalTokens));
+    providerTotals.set(entry.providerId, (providerTotals.get(entry.providerId) ?? 0) + usageCount(entry.totalTokens));
+
+    const mapKey = `${entry.providerId}\0${entry.accountId}`;
+    const current = accountStats.get(mapKey);
+    const displayName = `${entry.providerId}/${entry.accountId}`;
+    const next: UsageAccountSummary = {
+      accountId: entry.accountId,
+      displayName,
+      providerId: entry.providerId,
+      authType: entry.authType,
+      status: current?.status ?? "healthy",
+      requestCount: (current?.requestCount ?? 0) + 1,
+      totalTokens: (current?.totalTokens ?? 0) + usageCount(entry.totalTokens),
+      promptTokens: (current?.promptTokens ?? 0) + usageCount(entry.promptTokens),
+      completionTokens: (current?.completionTokens ?? 0) + usageCount(entry.completionTokens),
+      lastUsedAt: isoFromTimestamp(Math.max(entry.timestamp, current?.lastUsedAt ? Date.parse(current.lastUsedAt) : 0)),
+    };
+    accountStats.set(mapKey, next);
+  }
+
+  for (const [providerId, provider] of providerById.entries()) {
+    const keyPoolStatus = allStatuses[providerId];
+    const accountStatusById = new Map((allAccountStatuses[providerId] ?? []).map((entry) => [entry.accountId, entry]));
+
+    for (const account of provider.accounts) {
+      const mapKey = `${providerId}\0${account.id}`;
+      const current = accountStats.get(mapKey);
+      const accountStatus = accountStatusById.get(account.id);
+      const status = accountStatus && !accountStatus.available
+        ? "cooldown"
+        : current || keyPoolStatus
+          ? "healthy"
+          : "idle";
+      accountStats.set(mapKey, {
+        accountId: account.id,
+        displayName: `${providerId}/${account.id}`,
+        providerId,
+        authType: account.authType,
+        status,
+        requestCount: current?.requestCount ?? 0,
+        totalTokens: current?.totalTokens ?? 0,
+        promptTokens: current?.promptTokens ?? 0,
+        completionTokens: current?.completionTokens ?? 0,
+        lastUsedAt: current?.lastUsedAt ?? null,
+      });
+    }
+  }
+
+  const bucketMs = 60 * 60 * 1000;
+  const bucketCount = 24;
+  const requestBuckets = new Map<number, number>();
+  const tokenBuckets = new Map<number, number>();
+  const errorBuckets = new Map<number, number>();
+
+  for (const entry of recentLogs) {
+    const bucket = bucketStart(entry.timestamp, bucketMs);
+    requestBuckets.set(bucket, (requestBuckets.get(bucket) ?? 0) + 1);
+    tokenBuckets.set(bucket, (tokenBuckets.get(bucket) ?? 0) + usageCount(entry.totalTokens));
+    if (entry.status >= 400 || typeof entry.error === "string") {
+      errorBuckets.set(bucket, (errorBuckets.get(bucket) ?? 0) + 1);
+    }
+  }
+
+  const bucketSeries = Array.from({ length: bucketCount }, (_, index) => {
+    const timestamp = bucketStart(now - (bucketCount - index - 1) * bucketMs, bucketMs);
+    return {
+      t: new Date(timestamp).toISOString(),
+      requests: requestBuckets.get(timestamp) ?? 0,
+      tokens: tokenBuckets.get(timestamp) ?? 0,
+      errors: errorBuckets.get(timestamp) ?? 0,
+    };
+  });
+
+  const totalRequests = recentLogs.length;
+  const totalTokens = recentLogs.reduce((sum, entry) => sum + usageCount(entry.totalTokens), 0);
+  const promptTokens = recentLogs.reduce((sum, entry) => sum + usageCount(entry.promptTokens), 0);
+  const completionTokens = recentLogs.reduce((sum, entry) => sum + usageCount(entry.completionTokens), 0);
+  const totalErrors = recentLogs.filter((entry) => entry.status >= 400 || typeof entry.error === "string").length;
+  const topModel = [...modelTotals.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+  const topProvider = [...providerTotals.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+  const activeAccounts = [...accountStats.values()].filter((account) => account.requestCount > 0).length;
+
+  return {
+    generatedAt: new Date(now).toISOString(),
+    summary: {
+      requests24h: totalRequests,
+      tokens24h: totalTokens,
+      promptTokens24h: promptTokens,
+      completionTokens24h: completionTokens,
+      errorRate24h: percentage(totalErrors, totalRequests),
+      topModel,
+      topProvider,
+      activeAccounts,
+    },
+    trends: {
+      requests: bucketSeries.map((point) => ({ t: point.t, v: point.requests })),
+      tokens: bucketSeries.map((point) => ({ t: point.t, v: point.tokens })),
+      errors: bucketSeries.map((point) => ({ t: point.t, v: point.errors })),
+    },
+    accounts: [...accountStats.values()].sort((a, b) => {
+      if (b.totalTokens !== a.totalTokens) {
+        return b.totalTokens - a.totalTokens;
+      }
+      if (b.requestCount !== a.requestCount) {
+        return b.requestCount - a.requestCount;
+      }
+      return a.displayName.localeCompare(b.displayName);
+    }),
+  };
 }
 
 function htmlSuccess(message: string): string {
@@ -199,6 +416,16 @@ export async function registerUiRoutes(app: FastifyInstance, deps: UiRouteDepend
     reply.send({ session });
   });
 
+  app.get<{ Params: { readonly sessionId: string } }>("/api/ui/sessions/:sessionId/cache-key", async (request, reply) => {
+    const session = await sessionStore.getSession(request.params.sessionId);
+    if (!session) {
+      reply.code(404).send({ error: "session_not_found" });
+      return;
+    }
+
+    reply.send({ sessionId: session.id, promptCacheKey: session.promptCacheKey });
+  });
+
   app.post<{
     Params: { readonly sessionId: string };
     Body: { readonly role?: ChatRole; readonly content?: string; readonly reasoningContent?: string; readonly model?: string };
@@ -297,6 +524,11 @@ export async function registerUiRoutes(app: FastifyInstance, deps: UiRouteDepend
     });
   });
 
+  app.get("/api/ui/dashboard/overview", async (_request, reply) => {
+    const overview = await buildUsageOverview(deps.requestLogStore, deps.keyPool, credentialStore);
+    reply.send(overview);
+  });
+
   app.post<{
     Body: { readonly providerId?: string; readonly accountId?: string; readonly apiKey?: string };
   }>("/api/ui/credentials/api-key", async (request, reply) => {
@@ -364,6 +596,7 @@ export async function registerUiRoutes(app: FastifyInstance, deps: UiRouteDepend
         tokens.accessToken,
         tokens.refreshToken,
         tokens.expiresAt,
+        tokens.accountId,
       );
       await deps.keyPool.warmup().catch(() => undefined);
 
@@ -403,6 +636,7 @@ export async function registerUiRoutes(app: FastifyInstance, deps: UiRouteDepend
         result.tokens.accessToken,
         result.tokens.refreshToken,
         result.tokens.expiresAt,
+        result.tokens.accountId,
       );
       await deps.keyPool.warmup().catch(() => undefined);
     }
@@ -442,4 +676,38 @@ export async function registerUiRoutes(app: FastifyInstance, deps: UiRouteDepend
       servers: seeds,
     });
   });
+
+  app.get<{ Params: { readonly assetPath: string } }>("/assets/:assetPath", async (request, reply) => {
+    const filePath = await resolveUiAssetPath(`assets/${request.params.assetPath}`);
+    if (!filePath) {
+      reply.code(404).send({ error: "asset_not_found" });
+      return;
+    }
+
+    const ext = filePath.split(".").pop()?.toLowerCase();
+    if (ext === "js") {
+      reply.type("application/javascript; charset=utf-8");
+    } else if (ext === "css") {
+      reply.type("text/css; charset=utf-8");
+    }
+
+    reply.send(await readFile(filePath));
+  });
+
+  const sendUiIndex = async (reply: { type: (value: string) => void; send: (value: unknown) => void }) => {
+    const html = await loadUiIndexHtml();
+    if (!html) {
+      reply.send({ ok: true, name: "open-hax-openai-proxy", version: "0.1.0" });
+      return;
+    }
+
+    reply.type("text/html; charset=utf-8");
+    reply.send(html);
+  };
+
+  for (const path of ["/", "/chat", "/credentials", "/tools"] as const) {
+    app.get(path, async (_request, reply) => {
+      await sendUiIndex(reply);
+    });
+  }
 }

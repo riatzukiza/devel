@@ -226,11 +226,13 @@ export async function proxyToMcp(
     const cacheControl = response.headers.get("cache-control");
     const location = response.headers.get("location");
     const mcpSessionId = response.headers.get("mcp-session-id");
+    const wwwAuthenticate = response.headers.get("www-authenticate");
+    const exposedHeaders = ["mcp-session-id", "x-mcp-session-id", "www-authenticate"].join(", ");
 
     const replyWithHeaders = reply.code(response.status)
       .header("content-type", contentType)
       .header("Access-Control-Allow-Origin", "*")
-      .header("Access-Control-Expose-Headers", "mcp-session-id, x-mcp-session-id");
+      .header("Access-Control-Expose-Headers", exposedHeaders);
     
     const replyWithCache = cacheControl 
       ? replyWithHeaders.header("cache-control", cacheControl) 
@@ -244,9 +246,13 @@ export async function proxyToMcp(
       ? replyWithLocation.header("mcp-session-id", mcpSessionId) 
       : replyWithLocation;
 
+    const responseReply = wwwAuthenticate
+      ? finalReply.header("www-authenticate", wwwAuthenticate)
+      : finalReply;
+
     if (contentType.includes("text/event-stream") && response.body) {
-      finalReply.hijack();
-      const raw = finalReply.raw;
+      responseReply.hijack();
+      const raw = responseReply.raw;
       const reader = response.body.getReader();
       let clientClosed = false;
 
@@ -260,7 +266,8 @@ export async function proxyToMcp(
         "content-type": contentType,
         "cache-control": cacheControl ?? "no-cache",
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Expose-Headers": "mcp-session-id",
+        "Access-Control-Expose-Headers": exposedHeaders,
+        ...(wwwAuthenticate ? { "www-authenticate": wwwAuthenticate } : {}),
         ...(mcpSessionId ? { "mcp-session-id": mcpSessionId } : {}),
       });
 
@@ -327,14 +334,14 @@ export async function proxyToMcp(
     }
 
     if (!payloadText) {
-      return finalReply.send("");
+      return responseReply.send("");
     }
 
     if (contentType.includes("application/json")) {
-      return finalReply.send(JSON.parse(payloadText));
+      return responseReply.send(JSON.parse(payloadText));
     }
 
-    return finalReply.send(payloadText);
+    return responseReply.send(payloadText);
    } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     

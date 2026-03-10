@@ -23,6 +23,7 @@ export interface SessionRecord {
   readonly title: string;
   readonly createdAt: number;
   readonly updatedAt: number;
+  readonly promptCacheKey: string;
   readonly forkedFromSessionId?: string;
   readonly forkedFromMessageId?: string;
   readonly messages: SessionMessage[];
@@ -56,6 +57,9 @@ export interface RequestLogEntry {
   readonly upstreamPath: string;
   readonly status: number;
   readonly latencyMs: number;
+  readonly promptTokens?: number;
+  readonly completionTokens?: number;
+  readonly totalTokens?: number;
   readonly error?: string;
 }
 
@@ -97,6 +101,44 @@ export interface SearchResult {
   readonly content: string;
   readonly createdAt: number;
   readonly distance: number;
+}
+
+export interface UsageTrendPoint {
+  readonly t: string;
+  readonly v: number;
+}
+
+export interface UsageAccountSummary {
+  readonly accountId: string;
+  readonly displayName: string;
+  readonly providerId: string;
+  readonly authType: "api_key" | "oauth_bearer" | "local" | "none";
+  readonly status: "healthy" | "cooldown" | "idle";
+  readonly requestCount: number;
+  readonly totalTokens: number;
+  readonly promptTokens: number;
+  readonly completionTokens: number;
+  readonly lastUsedAt: string | null;
+}
+
+export interface UsageOverview {
+  readonly generatedAt: string;
+  readonly summary: {
+    readonly requests24h: number;
+    readonly tokens24h: number;
+    readonly promptTokens24h: number;
+    readonly completionTokens24h: number;
+    readonly errorRate24h: number;
+    readonly topModel: string | null;
+    readonly topProvider: string | null;
+    readonly activeAccounts: number;
+  };
+  readonly trends: {
+    readonly requests: readonly UsageTrendPoint[];
+    readonly tokens: readonly UsageTrendPoint[];
+    readonly errors: readonly UsageTrendPoint[];
+  };
+  readonly accounts: readonly UsageAccountSummary[];
 }
 
 const AUTH_TOKEN_KEY = "open-hax-proxy.auth-token";
@@ -169,6 +211,11 @@ export async function getSession(sessionId: string): Promise<SessionRecord> {
   return payload.session;
 }
 
+export async function getSessionPromptCacheKey(sessionId: string): Promise<string> {
+  const payload = await requestJson<{ readonly promptCacheKey: string }>(`/api/ui/sessions/${sessionId}/cache-key`);
+  return payload.promptCacheKey;
+}
+
 export async function addSessionMessage(
   sessionId: string,
   message: {
@@ -232,6 +279,10 @@ export async function listModels(): Promise<string[]> {
     .map((model) => (typeof model.id === "string" ? model.id.trim() : ""))
     .filter((modelId, index, all) => modelId.length > 0 && all.indexOf(modelId) === index)
     .sort((a, b) => a.localeCompare(b));
+}
+
+export async function getUsageOverview(): Promise<UsageOverview> {
+  return requestJson<UsageOverview>("/api/ui/dashboard/overview");
 }
 
 export async function listCredentials(reveal: boolean): Promise<{

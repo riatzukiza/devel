@@ -55,6 +55,31 @@ function contentToText(content: unknown): string {
   return stringifyUnknown(content);
 }
 
+function instructionTextFromMessages(messages: unknown): string {
+  if (!Array.isArray(messages)) {
+    return "";
+  }
+
+  const parts: string[] = [];
+  for (const entry of messages) {
+    if (!isRecord(entry)) {
+      continue;
+    }
+
+    const role = asString(entry["role"]);
+    if (role !== "system" && role !== "developer") {
+      continue;
+    }
+
+    const text = contentToText(entry["content"]);
+    if (text.length > 0) {
+      parts.push(text);
+    }
+  }
+
+  return parts.join("\n");
+}
+
 function appendStringPart(parts: string[], value: unknown): void {
   const text = asString(value);
   if (text && text.length > 0) {
@@ -407,8 +432,8 @@ function normalizeToolChoiceForResponses(toolChoice: unknown): unknown {
 export function chatRequestToResponsesRequest(requestBody: Record<string, unknown>): Record<string, unknown> {
   const payload: Record<string, unknown> = {
     model: requestBody["model"],
+    instructions: instructionTextFromMessages(requestBody["messages"]),
     input: chatMessagesToResponsesInput(requestBody["messages"]),
-    stream: false
   };
 
   const maxTokens = asNumber(requestBody["max_tokens"]);
@@ -432,7 +457,8 @@ export function chatRequestToResponsesRequest(requestBody: Record<string, unknow
     "metadata",
     "user",
     "service_tier",
-    "truncation"
+    "truncation",
+    "prompt_cache_key"
   ];
 
   for (const key of passthroughKeys) {
@@ -645,6 +671,107 @@ export function responsesToChatCompletion(responseBody: unknown, fallbackModel: 
   }
 
   return completion;
+}
+
+function parseResponsesSsePayloads(streamText: string): Array<Record<string, unknown>> {
+  const blocks = streamText.split(/\r?\n\r?\n/);
+  const payloads: Array<Record<string, unknown>> = [];
+
+  for (const block of blocks) {
+    const dataLines = block
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter((line) => line.startsWith("data:"))
+      .map((line) => line.slice(5).trim());
+
+    if (dataLines.length === 0) {
+      continue;
+    }
+
+    const data = dataLines.join("\n").trim();
+    if (data.length === 0 || data === "[DONE]") {
+      continue;
+    }
+
+    try {
+      const parsed: unknown = JSON.parse(data);
+      if (isRecord(parsed)) {
+        payloads.push(parsed);
+      }
+    } catch {
+      // Ignore malformed SSE payloads and keep parsing the stream.
+    }
+  }
+
+  return payloads;
+}
+
+export function responsesEventStreamToErrorPayload(streamText: string): Record<string, unknown> | undefined {
+  for (const payload of parseResponsesSsePayloads(streamText)) {
+    const type = asString(payload["type"]);
+    if (type === "error" && isRecord(payload["error"])) {
+      return payload["error"];
+    }
+
+    if (type === "response.failed") {
+      const response = isRecord(payload["response"]) ? payload["response"] : null;
+      if (response && isRecord(response["error"])) {
+        return response["error"];
+      }
+    }
+  }
+
+  return undefined;
+}
+
+export function responsesEventStreamToChatCompletion(streamText: string, fallbackModel: string): Record<string, unknown> {
+  const payloads = parseResponsesSsePayloads(streamText);
+  let terminalResponse: Record<string, unknown> | undefined;
+  let latestResponse: Record<string, unknown> | undefined;
+  const textDeltas: string[] = [];
+
+  for (const payload of payloads) {
+    const type = asString(payload["type"]);
+    const response = isRecord(payload["response"]) ? payload["response"] : null;
+    if (response) {
+      latestResponse = response;
+    }
+
+    if (type === "response.output_text.delta") {
+      const delta = asString(payload["delta"]);
+      if (delta) {
+        textDeltas.push(delta);
+      }
+    }
+
+    if ((type === "response.completed" || type === "response.incomplete") && response) {
+      terminalResponse = response;
+    }
+  }
+
+  if (terminalResponse) {
+    return responsesToChatCompletion(terminalResponse, fallbackModel);
+  }
+
+  if (textDeltas.length > 0) {
+    return responsesToChatCompletion({
+      ...(latestResponse ?? {}),
+      output: [
+        {
+          type: "message",
+          role: "assistant",
+          content: [
+            {
+              type: "output_text",
+              text: textDeltas.join("")
+            }
+          ]
+        }
+      ]
+    }, fallbackModel);
+  }
+
+  throw new Error("Invalid upstream responses event-stream payload");
 }
 
 interface StreamToolCall {

@@ -5,6 +5,7 @@ import {
   createSession,
   forkSession,
   getSession,
+  getSessionPromptCacheKey,
   listModels,
   listSessions,
   runChatCompletion,
@@ -208,6 +209,7 @@ export function ChatPage(): JSX.Element {
       const response = await runChatCompletion({
         model,
         stream: false,
+        prompt_cache_key: await getSessionPromptCacheKey(latest.id),
         messages: toOpenAiMessages(latest.messages),
       });
 

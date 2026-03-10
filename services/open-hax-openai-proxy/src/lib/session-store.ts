@@ -17,6 +17,7 @@ export interface SessionRecord {
   title: string;
   createdAt: number;
   updatedAt: number;
+  promptCacheKey: string;
   forkedFromSessionId?: string;
   forkedFromMessageId?: string;
   messages: SessionMessageRecord[];
@@ -31,6 +32,7 @@ export interface SessionListItem {
   readonly title: string;
   readonly createdAt: number;
   readonly updatedAt: number;
+  readonly promptCacheKey: string;
   readonly messageCount: number;
   readonly lastMessagePreview: string;
   readonly forkedFromSessionId?: string;
@@ -49,6 +51,11 @@ export interface SessionSearchDocument {
 function normalizeTitle(input: string | undefined): string {
   const trimmed = input?.trim() ?? "";
   return trimmed.length > 0 ? trimmed : "New chat";
+}
+
+function derivePromptCacheKey(seed?: string): string {
+  const normalized = seed?.trim();
+  return normalized && normalized.length > 0 ? normalized : crypto.randomUUID();
 }
 
 function summarizeMessage(content: string): string {
@@ -99,6 +106,13 @@ function hydrateDb(raw: unknown): SessionDb {
       const createdAt = toNumber(entry.createdAt, Date.now());
       const updatedAt = toNumber(entry.updatedAt, createdAt);
       const title = normalizeTitle(typeof entry.title === "string" ? entry.title : undefined);
+      const promptCacheKey = derivePromptCacheKey(
+        typeof entry.promptCacheKey === "string"
+          ? entry.promptCacheKey
+          : typeof entry.prompt_cache_key === "string"
+            ? entry.prompt_cache_key
+            : undefined,
+      );
 
       const messages = Array.isArray(entry.messages)
         ? entry.messages
@@ -128,6 +142,7 @@ function hydrateDb(raw: unknown): SessionDb {
         title,
         createdAt,
         updatedAt,
+        promptCacheKey,
         forkedFromSessionId:
           typeof entry.forkedFromSessionId === "string" ? entry.forkedFromSessionId : undefined,
         forkedFromMessageId:
@@ -156,6 +171,7 @@ export class SessionStore {
           title: session.title,
           createdAt: session.createdAt,
           updatedAt: session.updatedAt,
+          promptCacheKey: session.promptCacheKey,
           messageCount: session.messages.length,
           lastMessagePreview: summarizeMessage(lastMessage?.content ?? lastMessage?.reasoningContent ?? ""),
           forkedFromSessionId: session.forkedFromSessionId,
@@ -178,6 +194,7 @@ export class SessionStore {
         title: normalizeTitle(title),
         createdAt: now,
         updatedAt: now,
+        promptCacheKey: crypto.randomUUID(),
         messages: [],
       };
 
@@ -261,6 +278,7 @@ export class SessionStore {
         title: `Fork of ${source.title}`,
         createdAt: now,
         updatedAt: now,
+        promptCacheKey: crypto.randomUUID(),
         forkedFromSessionId: source.id,
         forkedFromMessageId: sourceMessageId,
         messages: copiedMessages,

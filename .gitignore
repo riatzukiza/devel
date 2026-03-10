@@ -26,6 +26,7 @@ target/
 *.swp
 *.swo
 *~
+.#*
 .DS_Store
 Thumbs.db
 
@@ -147,6 +148,9 @@ orgs/private/
 orgs/snorkel-ai/
 .shadow-cljs
 .shadow-cljs/
+.ημ/
+.Π/
+services/open-hax-openai-proxy/data/
 
 .reconstitute/
 *.duckdb

@@ -1,0 +1,4 @@
+# Ignore submodule project configs to prevent duplicate Nx project names.
+orgs/**/project.json
+projects/**/project.json
+!projects/orgs-open-hax-workbench/project.json

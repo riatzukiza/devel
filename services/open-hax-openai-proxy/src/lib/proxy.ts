@@ -1,6 +1,8 @@
 import type { IncomingHttpHeaders } from "node:http";
 import type { FastifyReply } from "fastify";
 
+import type { ProviderCredential } from "./key-pool.js";
+
 const HOP_BY_HOP_HEADERS = new Set([
   "connection",
   "content-length",
@@ -56,6 +58,17 @@ export function buildForwardHeaders(clientHeaders: IncomingHttpHeaders): Headers
 export function buildUpstreamHeaders(clientHeaders: IncomingHttpHeaders, apiKey: string): Headers {
   const headers = buildForwardHeaders(clientHeaders);
   headers.set("authorization", `Bearer ${apiKey}`);
+  return headers;
+}
+
+export function buildUpstreamHeadersForCredential(
+  clientHeaders: IncomingHttpHeaders,
+  credential: ProviderCredential,
+): Headers {
+  const headers = buildUpstreamHeaders(clientHeaders, credential.token);
+  if (credential.chatgptAccountId) {
+    headers.set("chatgpt-account-id", credential.chatgptAccountId);
+  }
   return headers;
 }
 
