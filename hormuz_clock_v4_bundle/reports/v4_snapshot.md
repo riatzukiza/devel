@@ -1,10 +1,10 @@
 # Hormuz Risk Clock Snapshot
 
-As of: 2026-03-08T00:00:00Z
+As of: 2026-03-10T00:00:00Z
 
 ## States
-- **transit_flow**: 4/4 (worsening) — 2 tanker transits on 6 Mar vs 50 baseline on 28 Feb
-- **attack_tempo**: 4/4 (flat-high) — JMIC threat critical; attacks likely
+- **transit_flow**: 4/4 (worsening) — IEA says export volumes remain below 10% of pre-conflict levels
+- **attack_tempo**: 4/4 (flat-high) — MARAD 2026-001A says vessels should keep clear if possible
 - **insurance_availability**: 4/4 (flat-high) — cover scarce, repriced, or withdrawn
 - **navigation_integrity**: 3/4 (flat-high) — persistent GNSS/GPS and AIS disruption
 - **bypass_capacity**: 3/4 (flat) — 3.5–5.5 mb/d alt capacity vs ~20 mb/d Hormuz

@@ -1,8 +1,8 @@
 {
-  "as_of_utc": "2026-03-08T00:00:00Z",
+  "as_of_utc": "2026-03-10T00:00:00Z",
   "clock": {
     "t0_utc": "2026-02-28T00:00:00Z",
-    "second_hand_days": 8,
+    "second_hand_days": 10,
     "minute_hand_days": 90,
     "hour_hand_days": 30,
     "structural_bar_days": 450
@@ -12,13 +12,13 @@
       "score": 4,
       "trend": "worsening",
       "confidence": 0.9,
-      "notes": "2 tanker transits on 6 Mar vs 50 baseline on 28 Feb"
+      "notes": "IEA says export volumes remain below 10% of pre-conflict levels"
     },
     "attack_tempo": {
       "score": 4,
       "trend": "flat-high",
       "confidence": 0.85,
-      "notes": "JMIC threat critical; attacks likely"
+      "notes": "MARAD 2026-001A says vessels should keep clear if possible"
     },
     "insurance_availability": {
       "score": 4,

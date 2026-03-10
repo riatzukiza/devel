@@ -8,14 +8,13 @@ function readText(p) {
 
 function trim(text, max) {
   if (text.length <= max) return text;
-  return text.slice(0, Math.max(0, max - 1)).trimEnd() + '…';
+  return text.slice(0, Math.max(0, max - 1)).trimEnd() + '...';
 }
 
 function extractSummary(markdown) {
-  const lines = markdown.split(/?
-/).filter(Boolean);
-  const bullets = lines.filter(l => /^[-*]\s/.test(l)).map(l => l.replace(/^[-*]\s/, '').trim());
-  const paragraphs = lines.filter(l => !/^#/.test(l) && !/^[-*]\s/.test(l));
+  const lines = markdown.split(/\r?\n/).filter(Boolean);
+  const bullets = lines.filter((l) => /^[-*]\s/.test(l)).map((l) => l.replace(/^[-*]\s/, '').trim());
+  const paragraphs = lines.filter((l) => !/^#/.test(l) && !/^[-*]\s/.test(l));
   return {
     headline: paragraphs[0] || 'Hormuz clock update',
     bullets: bullets.slice(0, 5),
@@ -25,9 +24,8 @@ function extractSummary(markdown) {
 function buildPayloads(reportPath) {
   const md = readText(reportPath);
   const summary = extractSummary(md);
-  const base = `${summary.headline}
-${summary.bullets.slice(0, 3).map(b => `• ${b}`).join('
-')}`.trim();
+  const bulletText = summary.bullets.slice(0, 3).map((b) => `- ${b}`).join('\n');
+  const base = [summary.headline, bulletText].filter(Boolean).join('\n').trim();
   return {
     bluesky: {
       text: trim(base, 280),
@@ -37,14 +35,12 @@ ${summary.bullets.slice(0, 3).map(b => `• ${b}`).join('
       content: trim(base, 1900),
       embed: {
         title: trim(summary.headline, 200),
-        description: trim(summary.bullets.map(b => `• ${b}`).join('
-'), 3800),
+        description: trim(summary.bullets.map((b) => `- ${b}`).join('\n'), 3800),
       },
     },
     x: {
-      text: trim(base.replace(/
-• /g, ' • '), 280),
-      thread: summary.bullets.slice(3).map(b => trim(b, 280)),
+      text: trim(base.replace(/\n- /g, ' - '), 280),
+      thread: summary.bullets.slice(3).map((b) => trim(b, 280)),
     },
     reddit: {
       title: trim(summary.headline, 300),
