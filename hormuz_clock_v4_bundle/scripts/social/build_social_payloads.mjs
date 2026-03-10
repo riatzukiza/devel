@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const bundleRoot = path.resolve(__dirname, '../..');
 
 function readText(p) {
   return fs.readFileSync(p, 'utf8');
@@ -8,7 +11,7 @@ function readText(p) {
 
 function trim(text, max) {
   if (text.length <= max) return text;
-  return text.slice(0, Math.max(0, max - 1)).trimEnd() + '...';
+  return text.slice(0, Math.max(0, max - 3)).trimEnd() + '...';
 }
 
 function extractSummary(markdown) {
@@ -50,8 +53,8 @@ function buildPayloads(reportPath) {
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const reportPath = process.argv[2] || path.resolve('reports/v4_snapshot.md');
-  const outPath = process.argv[3] || path.resolve('data/social_payloads.latest.json');
+  const reportPath = process.argv[2] || path.resolve(bundleRoot, 'reports/v4_snapshot.md');
+  const outPath = process.argv[3] || path.resolve(bundleRoot, 'data/social_payloads.latest.json');
   const payloads = buildPayloads(reportPath);
   fs.writeFileSync(outPath, JSON.stringify(payloads, null, 2));
   console.log(`wrote ${outPath}`);
