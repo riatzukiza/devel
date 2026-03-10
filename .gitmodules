@@ -125,3 +125,7 @@
 	path = services/vivgrid-openai-proxy
 	url = https://github.com/open-hax/vivgrid-openai-proxy.git
 	branch = device/stealth
+[submodule "services/open-hax-openai-proxy"]
+	path = services/open-hax-openai-proxy
+	url = https://github.com/open-hax/proxx.git
+	branch = main
