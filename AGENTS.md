@@ -64,11 +64,17 @@ Protocol to stop apology loops and focus on verified fixes.
 #### break-edit-loop
 Protocol to break out of repetitive, failing edit loops by forcing analysis over action.
 
+#### clock-model-evolver
+Improve the Hormuz clock model through new signal classes, schema changes, and better rendering or branch logic.
+
 #### emergency-confusion-reset
 Protocol for agents to recover when confused, hallucinating tools, or stuck in unproductive loops.
 
 #### giga-workflow
 Execute Giga system operations for workspace automation, including watching changes, running submodule tests, and propagating commits
+
+#### hormuz-risk-clock
+Maintain and evolve the Hormuz public-signal risk clock by ingesting signals, updating state, and rendering reports.
 
 #### lint-gate
 Protocol to enforce zero lint/type errors before marking work done.
@@ -93,6 +99,18 @@ Create or revise skills so they are reusable, scoped, and load correctly in Open
 
 #### skill-optimizing
 Improve existing or new skills using the workspace optimization guide and template checks for clarity, scope, and reliability
+
+#### social-publish-bluesky
+Turn the latest Hormuz clock snapshot into a concise Bluesky post or thread with dry-run-first behavior.
+
+#### social-publish-discord
+Publish Hormuz clock updates into Discord channels with sanitized mentions, optional images, and dry-run-first behavior.
+
+#### social-publish-reddit
+Publish longer-form Hormuz clock updates to Reddit while preserving nuance, methodology, and subreddit-specific constraints.
+
+#### social-publish-x
+Publish Hormuz clock updates to X as a short post or thread with explicit uncertainty and dry-run-first behavior.
 
 #### task-atomicity-guard
 Protocol to keep work atomic and prevent scope creep.
@@ -279,5 +297,3 @@ Locate the right repo, file, and pattern quickly in a multi-repo workspace with 
 
 #### workspace-typecheck
 Type check all TypeScript files across the entire workspace, including all submodules under orgs/**, using strict TypeScript settings
-
-
