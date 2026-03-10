@@ -12,7 +12,7 @@ OpenAI-compatible proxy server with provider-scoped account rotation.
 - Maps OpenAI-style reasoning controls (`reasoning_effort` / `reasoning.effort`) into Claude `thinking` payloads and adds the interleaved-thinking beta header when enabled.
 - Model-aware routing to OpenAI provider: models prefixed with `openai/` or `openai:` route to configured OpenAI endpoints.
 - Model-aware routing to Ollama base API: models prefixed with `ollama/` or `ollama:` are sent to Ollama `POST /api/chat`.
-- Built-in React/Vite console with a codex-lb-inspired usage dashboard plus Chat, Credentials, and Tools/MCP pages.
+- Built-in React/Vite console with a usage dashboard plus Chat, Credentials, and Tools/MCP pages.
 - OpenAI OAuth browser + device flows based on OpenCode Codex plugin behavior (PKCE, state, callback exchange, account extraction).
 - Chroma-backed semantic history search with lexical fallback for chat session recall.
 - `GET /v1/models` and `GET /v1/models/:id` model listing.
@@ -177,7 +177,7 @@ Route requests to OpenAI by prefixing model names:
 
 The prefix is stripped before upstream dispatch, and accounts are selected from `keys.json.providers[OPENAI_PROVIDER_ID]`.
 
-For migrated `codex-lb` OAuth accounts, the `openai` provider is treated as a ChatGPT Codex upstream, not the OpenAI Platform API. Those accounts require `chatgpt_account_id` metadata and are sent to `/codex/responses` by default.
+For migrated legacy OAuth accounts, the `openai` provider is treated as a ChatGPT Codex upstream, not the OpenAI Platform API. Those accounts require `chatgpt_account_id` metadata and are sent to `/codex/responses` by default.
 
 ## Ollama `num_ctx` Control Through OpenAI API
 

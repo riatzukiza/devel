@@ -11,8 +11,7 @@
              [services-openplanner]
              [services-mcp]
              [services-vivgrid-proxy]
-             [services-open-hax-proxy]
-             [services-codex-lb]))
+             [services-open-hax-proxy]))
 
 ;; The ecosystem and cephalon namespaces load and register all apps via defapp
 ;; when they're required. No need to call anything - the side effects happen
