@@ -177,7 +177,7 @@ Route requests to OpenAI by prefixing model names:
 
 The prefix is stripped before upstream dispatch, and accounts are selected from `keys.json.providers[OPENAI_PROVIDER_ID]`.
 
-For migrated `codex-lb` OAuth accounts, the `openai` provider is treated as a ChatGPT Codex upstream, not the OpenAI Platform API. Those accounts require `chatgpt_account_id` metadata and are sent to `/codex/responses/compact` by default.
+For migrated `codex-lb` OAuth accounts, the `openai` provider is treated as a ChatGPT Codex upstream, not the OpenAI Platform API. Those accounts require `chatgpt_account_id` metadata and are sent to `/codex/responses` by default.
 
 ## Ollama `num_ctx` Control Through OpenAI API
 

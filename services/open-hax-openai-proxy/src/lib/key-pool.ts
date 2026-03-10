@@ -16,6 +16,7 @@ export interface ProviderCredential {
   readonly token: string;
   readonly authType: ProviderAuthType;
   readonly chatgptAccountId?: string;
+  readonly planType?: string;
 }
 
 export interface KeyPoolStatus {
@@ -142,6 +143,17 @@ function readChatgptAccountId(account: unknown): string | undefined {
   return normalized && normalized.length > 0 ? normalized : undefined;
 }
 
+function readPlanType(account: unknown): string | undefined {
+  if (!isRecord(account)) {
+    return undefined;
+  }
+
+  const rawPlanType = asString(account["plan_type"])
+    ?? asString(account["planType"]);
+  const normalized = rawPlanType?.trim().toLowerCase();
+  return normalized && normalized.length > 0 ? normalized : undefined;
+}
+
 function normalizeProviderAccounts(
   providerId: string,
   authType: ProviderAuthType,
@@ -167,6 +179,7 @@ function normalizeProviderAccounts(
       token,
       authType,
       chatgptAccountId: readChatgptAccountId(rawAccount),
+      planType: readPlanType(rawAccount),
     });
   }
 

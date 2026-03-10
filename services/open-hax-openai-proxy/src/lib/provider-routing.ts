@@ -218,29 +218,48 @@ export function buildLargestModelAliases(modelIds: readonly string[]): Record<st
   return aliasTargets;
 }
 
-export function buildProviderRoutes(config: ProxyConfig, useOpenAiUpstream: boolean): ProviderRoute[] {
-  if (useOpenAiUpstream) {
-    const routes: ProviderRoute[] = [{
-      providerId: config.openaiProviderId,
-      baseUrl: config.openaiBaseUrl
-    }];
-    const seen = new Set<string>([config.openaiProviderId]);
+function routeForProvider(config: ProxyConfig, providerId: string): ProviderRoute | null {
+  const normalizedProviderId = providerId.trim();
+  if (normalizedProviderId.length === 0) {
+    return null;
+  }
 
-    for (const providerId of [config.upstreamProviderId, ...config.upstreamFallbackProviderIds]) {
+  const baseUrl = (normalizedProviderId === config.openaiProviderId
+    ? config.openaiBaseUrl
+    : config.upstreamProviderBaseUrls[normalizedProviderId] ?? "")
+    .trim()
+    .replace(/\/+$/, "");
+  if (baseUrl.length === 0) {
+    return null;
+  }
+
+  return {
+    providerId: normalizedProviderId,
+    baseUrl,
+  };
+}
+
+export function buildProviderRoutes(
+  config: ProxyConfig,
+  useOpenAiUpstream: boolean,
+  includeOpenAiFallback: boolean = false
+): ProviderRoute[] {
+  if (useOpenAiUpstream) {
+    const routes: ProviderRoute[] = [];
+    const seen = new Set<string>();
+
+    for (const providerId of [config.openaiProviderId, config.upstreamProviderId, ...config.upstreamFallbackProviderIds]) {
       if (seen.has(providerId)) {
         continue;
       }
       seen.add(providerId);
 
-      const baseUrl = (config.upstreamProviderBaseUrls[providerId] ?? "").trim().replace(/\/+$/, "");
-      if (baseUrl.length === 0) {
+      const route = routeForProvider(config, providerId);
+      if (!route) {
         continue;
       }
 
-      routes.push({
-        providerId,
-        baseUrl,
-      });
+      routes.push(route);
     }
 
     return routes;
@@ -248,7 +267,9 @@ export function buildProviderRoutes(config: ProxyConfig, useOpenAiUpstream: bool
 
   const routes: ProviderRoute[] = [];
   const seen = new Set<string>();
-  const providerIds = [config.upstreamProviderId, ...config.upstreamFallbackProviderIds];
+  const providerIds = includeOpenAiFallback
+    ? [config.upstreamProviderId, config.openaiProviderId, ...config.upstreamFallbackProviderIds]
+    : [config.upstreamProviderId, ...config.upstreamFallbackProviderIds];
 
   for (const providerId of providerIds) {
     if (seen.has(providerId)) {
@@ -256,15 +277,12 @@ export function buildProviderRoutes(config: ProxyConfig, useOpenAiUpstream: bool
     }
     seen.add(providerId);
 
-    const baseUrl = (config.upstreamProviderBaseUrls[providerId] ?? "").trim().replace(/\/+$/, "");
-    if (baseUrl.length === 0) {
+    const route = routeForProvider(config, providerId);
+    if (!route) {
       continue;
     }
 
-    routes.push({
-      providerId,
-      baseUrl
-    });
+    routes.push(route);
   }
 
   return routes;

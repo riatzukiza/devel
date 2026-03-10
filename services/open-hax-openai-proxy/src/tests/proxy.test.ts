@@ -45,6 +45,7 @@ async function withProxyApp(
   const keysPath = path.join(tempDir, "keys.json");
   const modelsPath = path.join(tempDir, "models.json");
   const requestLogsPath = path.join(tempDir, "request-logs.json");
+  const promptAffinityPath = path.join(tempDir, "prompt-affinity.json");
 
   const keysPayload = options.keysPayload ?? { keys: options.keys };
   await writeFile(keysPath, JSON.stringify(keysPayload, null, 2), "utf8");
@@ -104,10 +105,13 @@ async function withProxyApp(
     keysFilePath: keysPath,
     modelsFilePath: modelsPath,
     requestLogsFilePath: requestLogsPath,
+    promptAffinityFilePath: promptAffinityPath,
     keyReloadMs: 50,
     keyCooldownMs: 10000,
     requestTimeoutMs: 2000,
     streamBootstrapTimeoutMs: 2000,
+    upstreamTransientRetryCount: 2,
+    upstreamTransientRetryBackoffMs: 1,
     proxyAuthToken: options.proxyAuthToken,
     allowUnauthenticated: options.allowUnauthenticated ?? true,
     ...options.configOverrides
@@ -188,6 +192,107 @@ test("rotates API key when first key is rate-limited", async () => {
       assert.ok(isRecord(payload));
       assert.equal(payload.id, "chatcmpl-123");
       assert.deepEqual(observedKeys, ["key-a", "key-b"]);
+    }
+  );
+});
+
+test("reuses the same upstream account for repeated prompt_cache_key requests", async () => {
+  const observedKeys: string[] = [];
+
+  await withProxyApp(
+    {
+      keys: ["key-a", "key-b"],
+      upstreamHandler: async (request) => {
+        const auth = request.headers.authorization;
+        if (typeof auth === "string") {
+          observedKeys.push(auth.replace(/^Bearer\s+/i, ""));
+        }
+
+        return {
+          status: 200,
+          headers: {
+            "content-type": "application/json"
+          },
+          body: JSON.stringify({ id: crypto.randomUUID(), object: "chat.completion", choices: [] })
+        };
+      }
+    },
+    async ({ app }) => {
+      for (let index = 0; index < 3; index += 1) {
+        const response = await app.inject({
+          method: "POST",
+          url: "/v1/chat/completions",
+          headers: {
+            "content-type": "application/json"
+          },
+          payload: {
+            model: "gemini-3.1-pro-preview",
+            messages: [{ role: "user", content: "hello" }],
+            prompt_cache_key: "sticky-key-1",
+            stream: false
+          }
+        });
+
+        assert.equal(response.statusCode, 200);
+      }
+
+      assert.deepEqual(observedKeys, ["key-a", "key-a", "key-a"]);
+    }
+  );
+});
+
+test("reassigns prompt_cache_key affinity when the pinned account becomes rate-limited", async () => {
+  const observedKeys: string[] = [];
+  let keyAAttempts = 0;
+
+  await withProxyApp(
+    {
+      keys: ["key-a", "key-b"],
+      upstreamHandler: async (request) => {
+        const auth = request.headers.authorization;
+        if (typeof auth === "string") {
+          observedKeys.push(auth.replace(/^Bearer\s+/i, ""));
+        }
+
+        if (auth === "Bearer key-a") {
+          keyAAttempts += 1;
+          if (keyAAttempts >= 2) {
+            const headers: Record<string, string> = {
+              "content-type": "application/json",
+              "retry-after": "1"
+            };
+            return {
+              status: 429,
+              headers,
+              body: JSON.stringify({ error: { message: "rate limit" } })
+            };
+          }
+        }
+
+        const headers: Record<string, string> = {
+          "content-type": "application/json"
+        };
+
+        return {
+          status: 200,
+          headers,
+          body: JSON.stringify({ id: crypto.randomUUID(), object: "chat.completion", choices: [] })
+        };
+      }
+    },
+    async ({ app }) => {
+      const basePayload = {
+        model: "gemini-3.1-pro-preview",
+        messages: [{ role: "user", content: "hello" }],
+        prompt_cache_key: "sticky-key-2",
+        stream: false
+      };
+
+      assert.equal((await app.inject({ method: "POST", url: "/v1/chat/completions", headers: { "content-type": "application/json" }, payload: basePayload })).statusCode, 200);
+      assert.equal((await app.inject({ method: "POST", url: "/v1/chat/completions", headers: { "content-type": "application/json" }, payload: basePayload })).statusCode, 200);
+      assert.equal((await app.inject({ method: "POST", url: "/v1/chat/completions", headers: { "content-type": "application/json" }, payload: basePayload })).statusCode, 200);
+
+      assert.deepEqual(observedKeys, ["key-a", "key-a", "key-b", "key-b"]);
     }
   );
 });
@@ -640,6 +745,16 @@ test("falls back from openai-prefixed codex route to standard fallback providers
         upstreamFallbackProviderIds: [],
       },
       upstreamHandler: async (request, body) => {
+        if (request.url === "/api/embed" || request.url === "/api/embeddings") {
+          return {
+            status: 200,
+            headers: {
+              "content-type": "application/json"
+            },
+            body: JSON.stringify({ embeddings: [[0.1, 0.2, 0.3]] })
+          };
+        }
+
         const auth = request.headers.authorization;
         if (typeof auth === "string") {
           observedAuth.push(auth.replace(/^Bearer\s+/i, ""));
@@ -714,6 +829,255 @@ test("falls back from openai-prefixed codex route to standard fallback providers
       assert.ok(isRecord(payload.choices[0]));
       assert.ok(isRecord(payload.choices[0].message));
       assert.equal(payload.choices[0].message.content, "standard-provider-fallback-ok");
+    }
+  );
+});
+
+test("falls back from vivgrid gpt routing to codex oauth accounts", async () => {
+  const observedPaths: string[] = [];
+  const observedAuth: string[] = [];
+
+  await withProxyApp(
+    {
+      keys: [],
+      keysPayload: {
+        providers: {
+          vivgrid: ["vivgrid-rate-limited"],
+          openai: [
+            { id: "oa-fallback", access_token: "openai-codex-working", chatgpt_account_id: "cgpt-fallback" }
+          ]
+        }
+      },
+      configOverrides: {
+        upstreamProviderId: "vivgrid",
+        upstreamFallbackProviderIds: []
+      },
+      upstreamHandler: async (request, body) => {
+        if (request.url === "/api/embed" || request.url === "/api/embeddings") {
+          return {
+            status: 200,
+            headers: {
+              "content-type": "application/json"
+            },
+            body: JSON.stringify({ embeddings: [[0.1, 0.2, 0.3]] })
+          };
+        }
+
+        const auth = request.headers.authorization;
+        if (typeof auth === "string") {
+          observedAuth.push(auth.replace(/^Bearer\s+/i, ""));
+        }
+        observedPaths.push(request.url ?? "");
+
+        if (auth === "Bearer vivgrid-rate-limited") {
+          return {
+            status: 401,
+            headers: {
+              "content-type": "application/json"
+            },
+            body: JSON.stringify({ error: { message: "invalid key" } })
+          };
+        }
+
+        const parsedBody = JSON.parse(body);
+        assert.ok(isRecord(parsedBody));
+        if (parsedBody.model === "nomic-embed-text:latest") {
+          return {
+            status: 200,
+            headers: {
+              "content-type": "application/json"
+            },
+            body: JSON.stringify({ embeddings: [[0.1, 0.2, 0.3]] })
+          };
+        }
+
+        assert.equal(parsedBody.model, "gpt-5.4");
+        assert.equal(request.headers["chatgpt-account-id"], "cgpt-fallback");
+
+        return {
+          status: 200,
+          headers: {
+            "content-type": "application/json"
+          },
+          body: JSON.stringify({
+            id: "resp-standard-openai-fallback",
+            object: "response",
+            created_at: 1772916801,
+            model: "gpt-5.4",
+            output: [
+              {
+                id: "msg-standard-openai-fallback",
+                type: "message",
+                role: "assistant",
+                content: [
+                  {
+                    type: "output_text",
+                    text: "codex-oauth-fallback-ok"
+                  }
+                ]
+              }
+            ]
+          })
+        };
+      }
+    },
+    async ({ app }) => {
+      const response = await app.inject({
+        method: "POST",
+        url: "/v1/chat/completions",
+        headers: {
+          "content-type": "application/json"
+        },
+        payload: {
+          model: "gpt-5.4",
+          messages: [{ role: "user", content: "hello" }],
+          stream: false
+        }
+      });
+
+      assert.equal(response.statusCode, 200);
+      assert.equal(response.headers["x-open-hax-upstream-provider"], "openai");
+      assert.equal(response.headers["x-open-hax-upstream-mode"], "openai_responses");
+      assert.deepEqual(observedPaths, ["/v1/responses", "/v1/responses"]);
+      assert.deepEqual(observedAuth, ["vivgrid-rate-limited", "openai-codex-working"]);
+
+      const payload: unknown = response.json();
+      assert.ok(isRecord(payload));
+      assert.equal(payload.object, "chat.completion");
+      assert.ok(Array.isArray(payload.choices));
+      assert.ok(isRecord(payload.choices[0]));
+      assert.ok(isRecord(payload.choices[0].message));
+      assert.equal(payload.choices[0].message.content, "codex-oauth-fallback-ok");
+    }
+  );
+});
+
+test("prefers paid codex oauth accounts for gpt-5.4 over free accounts", async () => {
+  const observedAuth: string[] = [];
+
+  await withProxyApp(
+    {
+      keys: [],
+      keysPayload: {
+        providers: {
+          vivgrid: ["vivgrid-failing-key"],
+          openai: {
+            auth: "oauth_bearer",
+            accounts: [
+              {
+                id: "oa-free",
+                access_token: "openai-free-unsupported",
+                chatgpt_account_id: "cgpt-free",
+                plan_type: "free"
+              },
+              {
+                id: "oa-plus",
+                access_token: "openai-plus-working",
+                chatgpt_account_id: "cgpt-plus",
+                plan_type: "plus"
+              }
+            ]
+          }
+        }
+      },
+      configOverrides: {
+        upstreamProviderId: "vivgrid",
+        upstreamFallbackProviderIds: []
+      },
+      upstreamHandler: async (request, body) => {
+        if (request.url === "/api/embed" || request.url === "/api/embeddings") {
+          return {
+            status: 200,
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ embeddings: [[0.1, 0.2, 0.3]] })
+          };
+        }
+
+        const auth = request.headers.authorization;
+        if (typeof auth === "string") {
+          observedAuth.push(auth.replace(/^Bearer\s+/i, ""));
+        }
+
+        if (auth === "Bearer vivgrid-failing-key") {
+          return {
+            status: 401,
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ error: { message: "invalid key" } })
+          };
+        }
+
+        if (auth === "Bearer openai-free-unsupported") {
+          return {
+            status: 400,
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ detail: "The 'gpt-5.4' model is not supported when using Codex with a ChatGPT account." })
+          };
+        }
+
+        const parsedBody = JSON.parse(body);
+        assert.ok(isRecord(parsedBody));
+        if (parsedBody.model !== "gpt-5.4") {
+          return {
+            status: 200,
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ embeddings: [[0.1, 0.2, 0.3]] })
+          };
+        }
+
+        assert.equal(request.headers["chatgpt-account-id"], "cgpt-plus");
+
+        return {
+          status: 200,
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            id: "resp-paid-openai-fallback",
+            object: "response",
+            created_at: 1772916802,
+            model: "gpt-5.4",
+            output: [
+              {
+                id: "msg-paid-openai-fallback",
+                type: "message",
+                role: "assistant",
+                content: [
+                  {
+                    type: "output_text",
+                    text: "paid-codex-account-ok"
+                  }
+                ]
+              }
+            ]
+          })
+        };
+      }
+    },
+    async ({ app }) => {
+      const response = await app.inject({
+        method: "POST",
+        url: "/v1/chat/completions",
+        headers: {
+          "content-type": "application/json"
+        },
+        payload: {
+          model: "gpt-5.4",
+          messages: [{ role: "user", content: "hello" }],
+          max_completion_tokens: 8,
+          stream: false
+        }
+      });
+
+      assert.equal(response.statusCode, 200);
+      assert.equal(response.headers["x-open-hax-upstream-provider"], "openai");
+      assert.equal(response.headers["x-open-hax-upstream-mode"], "openai_responses");
+      assert.deepEqual(observedAuth, ["vivgrid-failing-key", "openai-plus-working"]);
+
+      const payload: unknown = response.json();
+      assert.ok(isRecord(payload));
+      assert.equal(payload.object, "chat.completion");
+      assert.ok(Array.isArray(payload.choices));
+      assert.ok(isRecord(payload.choices[0]));
+      assert.ok(isRecord(payload.choices[0].message));
+      assert.equal(payload.choices[0].message.content, "paid-codex-account-ok");
     }
   );
 });
@@ -939,6 +1303,41 @@ test("requires bearer token when proxy auth token is configured", async () => {
         url: "/v1/chat/completions",
         headers: {
           authorization: "Bearer proxy-secret",
+          "content-type": "application/json"
+        },
+        payload: {
+          model: "gemini-3.1-pro-preview",
+          messages: [{ role: "user", content: "hello" }],
+          stream: false
+        }
+      });
+
+      assert.equal(authorized.statusCode, 200);
+      assert.equal(authorized.headers["x-open-hax-upstream-mode"], "chat_completions");
+    }
+  );
+});
+
+test("accepts proxy auth token from cookie for browser-served UI and API requests", async () => {
+  await withProxyApp(
+    {
+      keys: ["key-a"],
+      proxyAuthToken: "proxy-secret",
+      allowUnauthenticated: false,
+      upstreamHandler: async () => ({
+        status: 200,
+        headers: {
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({ id: "chatcmpl-cookie-auth", object: "chat.completion", choices: [] })
+      })
+    },
+    async ({ app }) => {
+      const authorized = await app.inject({
+        method: "POST",
+        url: "/v1/chat/completions",
+        headers: {
+          cookie: "open_hax_proxy_auth_token=proxy-secret",
           "content-type": "application/json"
         },
         payload: {
@@ -1232,6 +1631,96 @@ test("returns 400 when invalid-request and rate-limit responses are mixed", asyn
   );
 });
 
+test("returns graceful aggregated error when all upstream accounts fail with auth errors", async () => {
+  await withProxyApp(
+    {
+      keys: ["key-a", "key-b"],
+      upstreamHandler: async (request) => {
+        const auth = request.headers.authorization;
+        if (auth === "Bearer key-a") {
+          return {
+            status: 401,
+            headers: {
+              "content-type": "application/json"
+            },
+            body: JSON.stringify({ error: { message: "token invalidated" } })
+          };
+        }
+
+        return {
+          status: 403,
+          headers: {
+            "content-type": "application/octet-stream"
+          },
+          body: ""
+        };
+      }
+    },
+    async ({ app }) => {
+      const response = await app.inject({
+        method: "POST",
+        url: "/v1/chat/completions",
+        headers: {
+          "content-type": "application/json"
+        },
+        payload: {
+          model: "glm-5",
+          messages: [{ role: "user", content: "hello" }],
+          stream: false
+        }
+      });
+
+      assert.equal(response.statusCode, 502);
+      const payload: unknown = response.json();
+      assert.ok(isRecord(payload));
+      assert.ok(isRecord(payload.error));
+      assert.equal(payload.error.code, "upstream_unavailable");
+    }
+  );
+});
+
+test("returns graceful invalid-request error when the final upstream candidate rejects the payload", async () => {
+  await withProxyApp(
+    {
+      keys: ["key-a"],
+      upstreamHandler: async () => ({
+        status: 400,
+        headers: {
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({
+          error: {
+            type: "invalid_request_error",
+            code: "bad_request",
+            message: "unsupported request parameter: stream_options"
+          }
+        })
+      })
+    },
+    async ({ app }) => {
+      const response = await app.inject({
+        method: "POST",
+        url: "/v1/chat/completions",
+        headers: {
+          "content-type": "application/json"
+        },
+        payload: {
+          model: "glm-5",
+          messages: [{ role: "user", content: "hello" }],
+          stream: false,
+          stream_options: { include_usage: true }
+        }
+      });
+
+      assert.equal(response.statusCode, 400);
+      const payload: unknown = response.json();
+      assert.ok(isRecord(payload));
+      assert.ok(isRecord(payload.error));
+      assert.equal(payload.error.code, "upstream_rejected_request");
+    }
+  );
+});
+
 test("treats outstanding_balance responses as rate-limit-like and rotates keys", async () => {
   const observedKeys: string[] = [];
 
@@ -1380,6 +1869,64 @@ test("retries with next key when upstream returns 500", async () => {
       assert.ok(isRecord(payload));
       assert.equal(payload.id, "chatcmpl-500-fallback");
       assert.deepEqual(observedKeys, ["key-a", "key-b"]);
+    }
+  );
+});
+
+test("retries transient upstream server errors on the same key before rotating", async () => {
+  const observedKeys: string[] = [];
+  let keyAAttempts = 0;
+
+  await withProxyApp(
+    {
+      keys: ["key-a", "key-b"],
+      upstreamHandler: async (request) => {
+        const auth = request.headers.authorization;
+        if (typeof auth === "string") {
+          observedKeys.push(auth.replace(/^Bearer\s+/i, ""));
+        }
+
+        if (auth === "Bearer key-a") {
+          keyAAttempts += 1;
+          if (keyAAttempts < 3) {
+            return {
+              status: 503,
+              headers: {
+                "content-type": "application/json"
+              },
+              body: JSON.stringify({ error: { message: "temporary upstream outage" } })
+            };
+          }
+        }
+
+        return {
+          status: 200,
+          headers: {
+            "content-type": "application/json"
+          },
+          body: JSON.stringify({ id: "chatcmpl-retry-same-key", object: "chat.completion", choices: [] })
+        };
+      }
+    },
+    async ({ app }) => {
+      const response = await app.inject({
+        method: "POST",
+        url: "/v1/chat/completions",
+        headers: {
+          "content-type": "application/json"
+        },
+        payload: {
+          model: "gemini-3.1-pro-preview",
+          messages: [{ role: "user", content: "hello" }],
+          stream: false
+        }
+      });
+
+      assert.equal(response.statusCode, 200);
+      const payload: unknown = response.json();
+      assert.ok(isRecord(payload));
+      assert.equal(payload.id, "chatcmpl-retry-same-key");
+      assert.deepEqual(observedKeys, ["key-a", "key-a", "key-a"]);
     }
   );
 });
@@ -2430,6 +2977,127 @@ test("normalizes chat content part type text to responses input_text/output_text
       assert.ok(Array.isArray(observedBody.input[2].content));
       assert.ok(isRecord(observedBody.input[2].content[0]));
       assert.equal(observedBody.input[2].content[0].type, "input_text");
+    }
+  );
+});
+
+test("sanitizes interleaved reasoning fields from chat history before responses forwarding", async () => {
+  let observedBody: unknown;
+
+  await withProxyApp(
+    {
+      keys: ["key-a"],
+      upstreamHandler: async (_request, body) => {
+        observedBody = JSON.parse(body);
+
+        return {
+          status: 200,
+          headers: {
+            "content-type": "application/json"
+          },
+          body: JSON.stringify({
+            id: "resp_sanitized",
+            object: "response",
+            created_at: 1772516804,
+            model: "gpt-5.3-codex",
+            output: [{ id: "msg_sanitized", type: "message", role: "assistant", content: [{ type: "output_text", text: "ok" }] }]
+          })
+        };
+      }
+    },
+    async ({ app }) => {
+      const response = await app.inject({
+        method: "POST",
+        url: "/v1/chat/completions",
+        headers: {
+          "content-type": "application/json"
+        },
+        payload: {
+          model: "gpt-5.3-codex",
+          messages: [
+            {
+              role: "assistant",
+              reasoning_content: "should-strip",
+              reasoning_details: [{ text: "strip-me" }],
+              function_call: { name: "old_call" },
+              content: [
+                { type: "reasoning", text: "drop this" },
+                { type: "text", text: "keep this" },
+              ],
+              tool_calls: [
+                {
+                  id: "call_1",
+                  type: "function",
+                  function: { name: "bash", arguments: "{}" }
+                }
+              ]
+            },
+            {
+              role: "tool",
+              tool_call_id: "call_1",
+              content: [{ type: "reasoning_details", text: "drop tool reasoning" }, { type: "text", text: "tool output" }]
+            }
+          ],
+          reasoning: { effort: "high", summary: "auto" },
+          stream: false
+        }
+      });
+
+      assert.equal(response.statusCode, 200);
+      assert.ok(isRecord(observedBody));
+      assert.deepEqual(observedBody.reasoning, { effort: "high", summary: "auto" });
+      assert.ok(Array.isArray(observedBody.input));
+      assert.equal(observedBody.input.length, 3);
+      assert.ok(isRecord(observedBody.input[0]));
+      assert.ok(Array.isArray(observedBody.input[0].content));
+      assert.equal(observedBody.input[0].content.length, 1);
+      assert.ok(isRecord(observedBody.input[0].content[0]));
+      assert.equal(observedBody.input[0].content[0].type, "output_text");
+      assert.equal(observedBody.input[0].content[0].text, "keep this");
+      assert.equal(observedBody.input[0].reasoning_content, undefined);
+      assert.equal(observedBody.input[0].reasoning_details, undefined);
+      assert.equal(observedBody.input[0].function_call, undefined);
+      assert.ok(isRecord(observedBody.input[1]));
+      assert.equal(observedBody.input[1].type, "function_call");
+      assert.ok(isRecord(observedBody.input[2]));
+      assert.equal(observedBody.input[2].type, "function_call_output");
+      assert.equal(observedBody.input[2].output, "tool output");
+    }
+  );
+});
+
+test("rejects unsupported chat message roles for responses compatibility", async () => {
+  await withProxyApp(
+    {
+      keys: ["key-a"],
+      upstreamHandler: async () => ({
+        status: 200,
+        headers: {
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({})
+      })
+    },
+    async ({ app }) => {
+      const response = await app.inject({
+        method: "POST",
+        url: "/v1/chat/completions",
+        headers: {
+          "content-type": "application/json"
+        },
+        payload: {
+          model: "gpt-5.3-codex",
+          messages: [{ role: "critic", content: "nope" }],
+          stream: false
+        }
+      });
+
+      assert.equal(response.statusCode, 400);
+      const payload: unknown = response.json();
+      assert.ok(isRecord(payload));
+      assert.ok(isRecord(payload.error));
+      assert.equal(payload.error.code, "invalid_provider_options");
+      assert.match(String(payload.error.message), /unsupported messages role/i);
     }
   );
 });

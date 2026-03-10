@@ -50,13 +50,13 @@ export function App(): JSX.Element {
             </button>
           </div>
           <small>
-            {showSaved
-              ? "Token saved to local storage."
-              : hasStoredToken
-                ? hasUnsavedChanges
-                  ? "Unsaved changes."
-                  : "Token is set in local storage."
-                : "No token set (works only if proxy allows unauthenticated access)."}
+              {showSaved
+                ? "Token saved in browser storage."
+                : hasStoredToken
+                  ? hasUnsavedChanges
+                    ? "Unsaved changes."
+                    : "Token is stored for this browser."
+                  : "No token set (works only if proxy allows unauthenticated access)."}
           </small>
         </div>
       </header>

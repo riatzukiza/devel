@@ -142,10 +142,58 @@ export interface UsageOverview {
 }
 
 const AUTH_TOKEN_KEY = "open-hax-proxy.auth-token";
+const AUTH_TOKEN_COOKIE = "open_hax_proxy_auth_token";
+
+function readCookie(name: string): string {
+  if (typeof document === "undefined") {
+    return "";
+  }
+
+  const prefix = `${name}=`;
+  const match = document.cookie
+    .split(";")
+    .map((part) => part.trim())
+    .find((part) => part.startsWith(prefix));
+  if (!match) {
+    return "";
+  }
+
+  try {
+    return decodeURIComponent(match.slice(prefix.length));
+  } catch {
+    return match.slice(prefix.length);
+  }
+}
+
+function writeCookie(name: string, value: string): void {
+  if (typeof document === "undefined") {
+    return;
+  }
+
+  if (value.length === 0) {
+    document.cookie = `${name}=; Max-Age=0; Path=/; SameSite=Lax`;
+    return;
+  }
+
+  document.cookie = `${name}=${encodeURIComponent(value)}; Max-Age=${60 * 60 * 24 * 30}; Path=/; SameSite=Lax`;
+}
+
+function readStoredAuthToken(): string {
+  const fromLocalStorage = typeof localStorage !== "undefined" ? localStorage.getItem(AUTH_TOKEN_KEY)?.trim() ?? "" : "";
+  if (fromLocalStorage.length > 0) {
+    return fromLocalStorage;
+  }
+
+  const fromCookie = readCookie(AUTH_TOKEN_COOKIE).trim();
+  if (fromCookie.length > 0 && typeof localStorage !== "undefined") {
+    localStorage.setItem(AUTH_TOKEN_KEY, fromCookie);
+  }
+  return fromCookie;
+}
 
 function authHeaders(): Headers {
   const headers = new Headers();
-  const token = localStorage.getItem(AUTH_TOKEN_KEY)?.trim();
+  const token = readStoredAuthToken();
   if (token && token.length > 0) {
     headers.set("authorization", `Bearer ${token}`);
   }
@@ -183,11 +231,18 @@ async function requestJson<T>(path: string, init: RequestInit = {}): Promise<T> 
 }
 
 export function getSavedAuthToken(): string {
-  return localStorage.getItem(AUTH_TOKEN_KEY) ?? "";
+  return readStoredAuthToken();
 }
 
 export function saveAuthToken(token: string): void {
-  localStorage.setItem(AUTH_TOKEN_KEY, token);
+  if (typeof localStorage !== "undefined") {
+    if (token.length > 0) {
+      localStorage.setItem(AUTH_TOKEN_KEY, token);
+    } else {
+      localStorage.removeItem(AUTH_TOKEN_KEY);
+    }
+  }
+  writeCookie(AUTH_TOKEN_COOKIE, token);
 }
 
 export async function listSessions(): Promise<SessionListItem[]> {

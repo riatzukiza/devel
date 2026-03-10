@@ -12,6 +12,21 @@ interface BrowserPendingState {
   readonly pkce: PkceCodes;
 }
 
+interface CachedBrowserCompletion {
+  readonly tokens: OAuthTokens;
+  readonly expiresAt: number;
+}
+
+interface DeviceFlowState {
+  readonly createdAt: number;
+  readonly intervalMs: number;
+  readonly userCode: string;
+  nextPollAt: number;
+  cachedResult?: DevicePollResult;
+  cachedResultExpiresAt?: number;
+  inFlight?: Promise<DevicePollResult>;
+}
+
 interface TokenResponse {
   readonly id_token?: string;
   readonly access_token: string;
@@ -62,6 +77,19 @@ interface JwtClaims {
     readonly chatgpt_account_id?: string;
   };
 }
+
+interface OpenAiOAuthManagerOptions {
+  readonly fetchFn?: typeof fetch;
+  readonly now?: () => number;
+  readonly browserStateTtlMs?: number;
+  readonly browserCompletionTtlMs?: number;
+  readonly deviceStateTtlMs?: number;
+}
+
+const DEFAULT_BROWSER_STATE_TTL_MS = 5 * 60 * 1000;
+const DEFAULT_BROWSER_COMPLETION_TTL_MS = 5 * 60 * 1000;
+const DEFAULT_DEVICE_STATE_TTL_MS = 15 * 60 * 1000;
+const DEFAULT_DEVICE_POLL_INTERVAL_MS = 5000;
 
 function generateRandomString(length: number): string {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
@@ -153,8 +181,9 @@ async function exchangeAuthorizationCode(
   code: string,
   redirectUri: string,
   codeVerifier: string,
+  fetchFn: typeof fetch,
 ): Promise<TokenResponse> {
-  const response = await fetch(`${OPENAI_ISSUER}/oauth/token`, {
+  const response = await fetchFn(`${OPENAI_ISSUER}/oauth/token`, {
     method: "POST",
     headers: {
       "content-type": "application/x-www-form-urlencoded",
@@ -186,6 +215,22 @@ function toOAuthTokens(tokens: TokenResponse): OAuthTokens {
 
 export class OpenAiOAuthManager {
   private readonly browserPending = new Map<string, BrowserPendingState>();
+  private readonly browserCompletions = new Map<string, CachedBrowserCompletion>();
+  private readonly browserInFlight = new Map<string, Promise<OAuthTokens>>();
+  private readonly deviceFlows = new Map<string, DeviceFlowState>();
+  private readonly fetchFn: typeof fetch;
+  private readonly now: () => number;
+  private readonly browserStateTtlMs: number;
+  private readonly browserCompletionTtlMs: number;
+  private readonly deviceStateTtlMs: number;
+
+  public constructor(options: OpenAiOAuthManagerOptions = {}) {
+    this.fetchFn = options.fetchFn ?? fetch;
+    this.now = options.now ?? (() => Date.now());
+    this.browserStateTtlMs = options.browserStateTtlMs ?? DEFAULT_BROWSER_STATE_TTL_MS;
+    this.browserCompletionTtlMs = options.browserCompletionTtlMs ?? DEFAULT_BROWSER_COMPLETION_TTL_MS;
+    this.deviceStateTtlMs = options.deviceStateTtlMs ?? DEFAULT_DEVICE_STATE_TTL_MS;
+  }
 
   public async startBrowserFlow(redirectBaseUrl: string): Promise<BrowserAuthStartResponse> {
     const pkce = await generatePkce();
@@ -193,12 +238,12 @@ export class OpenAiOAuthManager {
     const redirectUri = new URL("/api/ui/credentials/openai/oauth/browser/callback", redirectBaseUrl).toString();
 
     this.browserPending.set(state, {
-      createdAt: Date.now(),
+      createdAt: this.now(),
       redirectUri,
       pkce,
     });
 
-    this.pruneBrowserState();
+    this.pruneState();
 
     return {
       state,
@@ -208,18 +253,45 @@ export class OpenAiOAuthManager {
   }
 
   public async completeBrowserFlow(state: string, code: string): Promise<OAuthTokens> {
+    this.pruneState();
+
+    const cachedCompletion = this.browserCompletions.get(state);
+    if (cachedCompletion && cachedCompletion.expiresAt > this.now()) {
+      return cachedCompletion.tokens;
+    }
+
+    const inFlightCompletion = this.browserInFlight.get(state);
+    if (inFlightCompletion) {
+      return inFlightCompletion;
+    }
+
     const pending = this.browserPending.get(state);
     if (!pending) {
       throw new Error("Unknown or expired OAuth state");
     }
 
     this.browserPending.delete(state);
-    const tokens = await exchangeAuthorizationCode(code, pending.redirectUri, pending.pkce.verifier);
-    return toOAuthTokens(tokens);
+    const completion = exchangeAuthorizationCode(code, pending.redirectUri, pending.pkce.verifier, this.fetchFn)
+      .then((tokens) => {
+        const oauthTokens = toOAuthTokens(tokens);
+        this.browserCompletions.set(state, {
+          tokens: oauthTokens,
+          expiresAt: this.now() + this.browserCompletionTtlMs,
+        });
+        return oauthTokens;
+      })
+      .finally(() => {
+        this.browserInFlight.delete(state);
+      });
+
+    this.browserInFlight.set(state, completion);
+    return completion;
   }
 
   public async startDeviceFlow(): Promise<DeviceAuthStartResponse> {
-    const response = await fetch(`${OPENAI_ISSUER}/api/accounts/deviceauth/usercode`, {
+    this.pruneState();
+
+    const response = await this.fetchFn(`${OPENAI_ISSUER}/api/accounts/deviceauth/usercode`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -235,7 +307,16 @@ export class OpenAiOAuthManager {
 
     const payload = (await response.json()) as DeviceAuthorizationResponse;
     const intervalSeconds = Number.parseInt(payload.interval, 10);
-    const intervalMs = Number.isFinite(intervalSeconds) && intervalSeconds > 0 ? intervalSeconds * 1000 : 5000;
+    const intervalMs = Number.isFinite(intervalSeconds) && intervalSeconds > 0
+      ? intervalSeconds * 1000
+      : DEFAULT_DEVICE_POLL_INTERVAL_MS;
+
+    this.deviceFlows.set(payload.device_auth_id, {
+      createdAt: this.now(),
+      intervalMs,
+      userCode: payload.user_code,
+      nextPollAt: 0,
+    });
 
     return {
       verificationUrl: `${OPENAI_ISSUER}/codex/device`,
@@ -246,7 +327,47 @@ export class OpenAiOAuthManager {
   }
 
   public async pollDeviceFlow(deviceAuthId: string, userCode: string): Promise<DevicePollResult> {
-    const response = await fetch(`${OPENAI_ISSUER}/api/accounts/deviceauth/token`, {
+    this.pruneState();
+
+    const deviceFlow = this.deviceFlows.get(deviceAuthId) ?? {
+      createdAt: this.now(),
+      intervalMs: DEFAULT_DEVICE_POLL_INTERVAL_MS,
+      userCode,
+      nextPollAt: 0,
+    };
+    this.deviceFlows.set(deviceAuthId, deviceFlow);
+
+    const now = this.now();
+    if (deviceFlow.cachedResult && typeof deviceFlow.cachedResultExpiresAt === "number" && deviceFlow.cachedResultExpiresAt > now) {
+      return deviceFlow.cachedResult;
+    }
+
+    if (deviceFlow.inFlight) {
+      return deviceFlow.inFlight;
+    }
+
+    if (now < deviceFlow.nextPollAt) {
+      return { state: "pending" };
+    }
+
+    const pollPromise = this.pollDeviceFlowUncached(deviceAuthId, userCode, deviceFlow)
+      .finally(() => {
+        const latest = this.deviceFlows.get(deviceAuthId);
+        if (latest) {
+          latest.inFlight = undefined;
+        }
+      });
+
+    deviceFlow.inFlight = pollPromise;
+    return pollPromise;
+  }
+
+  private async pollDeviceFlowUncached(
+    deviceAuthId: string,
+    userCode: string,
+    deviceFlow: DeviceFlowState,
+  ): Promise<DevicePollResult> {
+    const response = await this.fetchFn(`${OPENAI_ISSUER}/api/accounts/deviceauth/token`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -263,15 +384,19 @@ export class OpenAiOAuthManager {
         payload.authorization_code,
         `${OPENAI_ISSUER}/deviceauth/callback`,
         payload.code_verifier,
+        this.fetchFn,
       );
-
-      return {
+      const result: DevicePollResult = {
         state: "authorized",
         tokens: toOAuthTokens(tokens),
       };
+      deviceFlow.cachedResult = result;
+      deviceFlow.cachedResultExpiresAt = this.now() + this.deviceStateTtlMs;
+      return result;
     }
 
     if (response.status === 403 || response.status === 404) {
+      deviceFlow.nextPollAt = this.now() + deviceFlow.intervalMs;
       return { state: "pending" };
     }
 
@@ -281,11 +406,25 @@ export class OpenAiOAuthManager {
     };
   }
 
-  private pruneBrowserState(): void {
-    const cutoff = Date.now() - 5 * 60 * 1000;
+  private pruneState(): void {
+    const browserCutoff = this.now() - this.browserStateTtlMs;
     for (const [state, pending] of this.browserPending.entries()) {
-      if (pending.createdAt < cutoff) {
+      if (pending.createdAt < browserCutoff) {
         this.browserPending.delete(state);
+      }
+    }
+
+    const browserCompletionNow = this.now();
+    for (const [state, completion] of this.browserCompletions.entries()) {
+      if (completion.expiresAt <= browserCompletionNow) {
+        this.browserCompletions.delete(state);
+      }
+    }
+
+    const deviceCutoff = this.now() - this.deviceStateTtlMs;
+    for (const [deviceAuthId, deviceFlow] of this.deviceFlows.entries()) {
+      if (deviceFlow.createdAt < deviceCutoff && !deviceFlow.inFlight) {
+        this.deviceFlows.delete(deviceAuthId);
       }
     }
   }

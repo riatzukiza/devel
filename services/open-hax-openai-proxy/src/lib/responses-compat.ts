@@ -22,6 +22,11 @@ function stringifyUnknown(value: unknown): string {
   }
 }
 
+const INTERLEAVED_REASONING_KEYS = new Set(["reasoning_content", "reasoning_details", "tool_calls", "function_call"]);
+const INTERLEAVED_REASONING_PART_TYPES = new Set(["reasoning", "reasoning_content", "reasoning_details"]);
+const SUPPORTED_CHAT_MESSAGE_ROLES = new Set(["system", "developer", "user", "assistant", "tool"]);
+const TEXT_PART_TYPES = new Set(["text", "input_text", "output_text", "refusal"]);
+
 function contentToText(content: unknown): string {
   if (typeof content === "string") {
     return content;
@@ -39,7 +44,15 @@ function contentToText(content: unknown): string {
         continue;
       }
 
-      const text = asString(part["text"]);
+      const partType = asString(part["type"]);
+      if (partType && INTERLEAVED_REASONING_PART_TYPES.has(partType)) {
+        continue;
+      }
+      if (partType && !TEXT_PART_TYPES.has(partType)) {
+        continue;
+      }
+
+      const text = asString(part["text"]) ?? asString(part["refusal"]);
       if (text) {
         chunks.push(text);
       }
@@ -206,6 +219,9 @@ function normalizeChatContentPartForResponses(role: string, part: unknown): unkn
   }
 
   const type = asString(part["type"]);
+  if (type && INTERLEAVED_REASONING_PART_TYPES.has(type)) {
+    return null;
+  }
   if (type === "text" || type === "input_text" || type === "output_text") {
     return {
       type: role === "assistant" ? "output_text" : "input_text",
@@ -222,7 +238,12 @@ function normalizeChatContentPartForResponses(role: string, part: unknown): unkn
     return part;
   }
 
-  return part;
+  const sanitized = { ...part };
+  for (const key of INTERLEAVED_REASONING_KEYS) {
+    delete sanitized[key];
+  }
+
+  return sanitized;
 }
 
 function normalizeChatMessageContentForResponses(role: string, content: unknown): unknown {
@@ -234,7 +255,9 @@ function normalizeChatMessageContentForResponses(role: string, content: unknown)
     return content;
   }
 
-  return content.map((part) => normalizeChatContentPartForResponses(role, part));
+  return content
+    .map((part) => normalizeChatContentPartForResponses(role, part))
+    .filter((part) => part !== null);
 }
 
 function normalizeToolCallArguments(value: unknown): string {
@@ -262,7 +285,11 @@ function chatMessagesToResponsesInput(messages: unknown): unknown[] {
 
     const role = asString(entry["role"]);
     if (!role) {
-      continue;
+      throw new Error("messages entries must include a string role");
+    }
+
+    if (!SUPPORTED_CHAT_MESSAGE_ROLES.has(role)) {
+      throw new Error(`unsupported messages role: ${role}`);
     }
 
     if (role === "tool") {

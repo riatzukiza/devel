@@ -3,7 +3,7 @@ module.exports = {
     {
       name: "opencode-server",
       script: "bunx",
-      args: ["opencode-ai@latest", "web", "--port", "4096", "--hostname", "0.0.0.0"],
+      args: ["opencode-ai@1.2.20", "web", "--port", "4096", "--hostname", "0.0.0.0"],
       cwd: "/workspace",
       env: {
         HOME: process.env.HOME || "/home/err",

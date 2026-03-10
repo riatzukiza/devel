@@ -6,6 +6,7 @@ import type { FastifyReply } from "fastify";
 import type { ProxyConfig } from "./config.js";
 import type { ProviderCredential } from "./key-pool.js";
 import type { RequestLogStore } from "./request-log-store.js";
+import type { PromptAffinityStore } from "./prompt-affinity-store.js";
 import {
   buildForwardHeaders,
   buildUpstreamHeadersForCredential,
@@ -53,6 +54,37 @@ function joinUrl(baseUrl: string, path: string): string {
   const normalizedBase = baseUrl.replace(/\/+$/, "");
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   return `${normalizedBase}${normalizedPath}`;
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+function transientRetryDelayMs(context: StrategyRequestContext, retryIndex: number): number {
+  return context.config.upstreamTransientRetryBackoffMs * (retryIndex + 1);
+}
+
+function reorderCandidatesForAffinity<T extends { readonly providerId: string; readonly account: ProviderCredential }>(
+  candidates: readonly T[],
+  preferred: PreferredAffinity | undefined,
+): T[] {
+  if (!preferred) {
+    return [...candidates];
+  }
+
+  const preferredCandidates = candidates.filter(
+    (candidate) => candidate.providerId === preferred.providerId && candidate.account.accountId === preferred.accountId,
+  );
+  if (preferredCandidates.length === 0) {
+    return [...candidates];
+  }
+
+  const remaining = candidates.filter(
+    (candidate) => candidate.providerId !== preferred.providerId || candidate.account.accountId !== preferred.accountId,
+  );
+  return [...preferredCandidates, ...remaining];
 }
 
 type UpstreamMode =
@@ -121,6 +153,11 @@ export interface ProviderFallbackExecutionResult {
   readonly summary: FallbackAccumulator;
 }
 
+interface PreferredAffinity {
+  readonly providerId: string;
+  readonly accountId: string;
+}
+
 export interface ProviderAvailabilitySummary {
   readonly sawConfiguredProvider: boolean;
 }
@@ -128,6 +165,43 @@ export interface ProviderAvailabilitySummary {
 interface BuildPayloadResult {
   readonly upstreamPayload: Record<string, unknown>;
   readonly bodyText: string;
+}
+
+function providerAccountsForRequest(
+  accounts: readonly ProviderCredential[],
+  providerId: string,
+  routedModel: string,
+): ProviderCredential[] {
+  if (providerId !== "openai" || routedModel !== "gpt-5.4") {
+    return [...accounts];
+  }
+
+  const stronglySupportedPlans = new Set(["plus", "pro", "business", "enterprise"]);
+  const stronglySupportedAccounts = accounts.filter((account) => stronglySupportedPlans.has(account.planType ?? ""));
+  const paidAccounts = accounts.filter((account) => account.planType !== "free");
+  const prioritized = stronglySupportedAccounts.length > 0
+    ? stronglySupportedAccounts
+    : paidAccounts.length > 0
+      ? paidAccounts
+      : [...accounts];
+  const planWeight = (planType: string | undefined): number => {
+    switch (planType) {
+      case "plus":
+        return 5;
+      case "pro":
+      case "business":
+      case "enterprise":
+        return 4;
+      case "team":
+        return 2;
+      case "free":
+        return 0;
+      default:
+        return 1;
+    }
+  };
+
+  return [...prioritized].sort((left, right) => planWeight(right.planType) - planWeight(left.planType));
 }
 
 interface UsageCounts {
@@ -339,35 +413,8 @@ abstract class BaseProviderStrategy implements ProviderStrategy {
       return this.handleSuccessfulProviderAttempt(reply, upstreamResponse, context);
     }
 
-    if (context.hasMoreCandidates) {
-      const isMissingModel = await responseIndicatesMissingModel(upstreamResponse, context.routedModel);
-      if (isMissingModel) {
-        try {
-          await upstreamResponse.arrayBuffer();
-        } catch {
-          // Ignore body read failures while failing over.
-        }
-
-        return {
-          kind: "continue",
-          modelNotFound: true
-        };
-      }
-
-      if (upstreamResponse.status === 400 || upstreamResponse.status === 422) {
-        try {
-          await upstreamResponse.arrayBuffer();
-        } catch {
-          // Ignore body read failures while failing over.
-        }
-
-        return {
-          kind: "continue",
-          requestError: true,
-          upstreamInvalidRequest: true
-        };
-      }
-
+    const isMissingModel = await responseIndicatesMissingModel(upstreamResponse, context.routedModel);
+    if (isMissingModel) {
       try {
         await upstreamResponse.arrayBuffer();
       } catch {
@@ -376,33 +423,34 @@ abstract class BaseProviderStrategy implements ProviderStrategy {
 
       return {
         kind: "continue",
-        requestError: true
+        modelNotFound: true
       };
     }
 
-    reply.header("x-open-hax-upstream-provider", context.providerId);
-    reply.code(upstreamResponse.status);
-    copyUpstreamHeaders(reply, upstreamResponse.headers);
+    if (upstreamResponse.status === 400 || upstreamResponse.status === 422) {
+      try {
+        await upstreamResponse.arrayBuffer();
+      } catch {
+        // Ignore body read failures while failing over.
+      }
 
-    const contentType = upstreamResponse.headers.get("content-type") ?? "";
-    const isEventStream = contentType.toLowerCase().includes("text/event-stream");
-
-    if (!upstreamResponse.body) {
-      const responseText = await upstreamResponse.text();
-      reply.send(responseText);
-      return { kind: "handled" };
+      return {
+        kind: "continue",
+        requestError: true,
+        upstreamInvalidRequest: true
+      };
     }
 
-    if (isEventStream) {
-      const stream = Readable.fromWeb(upstreamResponse.body as never);
-      reply.removeHeader("content-length");
-      reply.send(stream);
-      return { kind: "handled" };
+    try {
+      await upstreamResponse.arrayBuffer();
+    } catch {
+      // Ignore body read failures while failing over.
     }
 
-    const bytes = Buffer.from(await upstreamResponse.arrayBuffer());
-    reply.send(bytes);
-    return { kind: "handled" };
+    return {
+      kind: "continue",
+      requestError: true
+    };
   }
 
   protected async handleStandardLocalAttempt(
@@ -795,7 +843,11 @@ class OpenAiResponsesProviderStrategy extends TransformedJsonProviderStrategy {
   }
 
   public buildPayload(context: StrategyRequestContext): BuildPayloadResult {
-    return buildPayloadResult(chatRequestToResponsesRequest(buildRequestBodyForUpstream(context)));
+    const upstreamPayload = chatRequestToResponsesRequest(buildRequestBodyForUpstream(context));
+    delete upstreamPayload["max_output_tokens"];
+    upstreamPayload["store"] = false;
+    upstreamPayload["stream"] = true;
+    return buildPayloadResult(upstreamPayload);
   }
 
   public override async handleProviderAttempt(
@@ -1017,6 +1069,7 @@ export async function executeProviderFallback(
   strategy: ProviderStrategy,
   reply: FastifyReply,
   requestLogStore: RequestLogStore,
+  promptAffinityStore: PromptAffinityStore,
   keyPool: {
     getRequestOrder(providerId: string): Promise<ProviderCredential[]>;
     markInFlight(credential: ProviderCredential): () => void;
@@ -1024,7 +1077,8 @@ export async function executeProviderFallback(
   },
   providerRoutes: readonly ProviderRoute[],
   context: StrategyRequestContext,
-  payload: BuildPayloadResult
+  payload: BuildPayloadResult,
+  promptCacheKey?: string,
 ): Promise<ProviderFallbackExecutionResult> {
   const accumulator: FallbackAccumulator = {
     sawRateLimit: false,
@@ -1040,7 +1094,11 @@ export async function executeProviderFallback(
   for (const route of providerRoutes) {
     let routeAccounts: ProviderCredential[];
     try {
-      routeAccounts = await keyPool.getRequestOrder(route.providerId);
+      routeAccounts = providerAccountsForRequest(
+        await keyPool.getRequestOrder(route.providerId),
+        route.providerId,
+        context.routedModel,
+      );
     } catch {
       continue;
     }
@@ -1056,7 +1114,16 @@ export async function executeProviderFallback(
     }
   }
 
-  const candidates = providerRoutes.flatMap((route) => candidatesByProvider[route.providerId] ?? []);
+  const preferredAffinity = promptCacheKey
+    ? await promptAffinityStore.get(promptCacheKey).then((record) => record
+      ? { providerId: record.providerId, accountId: record.accountId }
+      : undefined)
+    : undefined;
+
+  const candidates = reorderCandidatesForAffinity(
+    providerRoutes.flatMap((route) => candidatesByProvider[route.providerId] ?? []),
+    preferredAffinity,
+  );
   if (candidates.length === 0) {
     return {
       handled: false,
@@ -1065,49 +1132,59 @@ export async function executeProviderFallback(
     };
   }
 
+  let preferredReassignmentAllowed = preferredAffinity === undefined || candidates.every(
+    (candidate) => candidate.providerId !== preferredAffinity.providerId || candidate.account.accountId !== preferredAffinity.accountId,
+  );
+
   for (const [candidateIndex, candidate] of candidates.entries()) {
-    accumulator.attempts += 1;
     const candidateStrategy = selectRemoteProviderStrategyForRoute(context, candidate.providerId);
     const candidatePayload = candidateStrategy.mode === strategy.mode
       ? payload
       : candidateStrategy.buildPayload(context);
-    const providerContext: ProviderAttemptContext = {
-      ...context,
-      providerId: candidate.providerId,
-      baseUrl: candidate.baseUrl,
-      account: candidate.account,
-      hasMoreCandidates: candidateIndex < candidates.length - 1,
-      attempt: accumulator.attempts,
-    };
-
+    const hasMoreCandidates = candidateIndex < candidates.length - 1;
     const releaseInFlight = keyPool.markInFlight(candidate.account);
-    const upstreamPath = candidateStrategy.getUpstreamPath(providerContext);
-    const upstreamUrl = joinUrl(candidate.baseUrl, upstreamPath);
-    const upstreamHeaders = buildUpstreamHeadersForCredential(context.clientHeaders, candidate.account);
-    candidateStrategy.applyRequestHeaders(upstreamHeaders, providerContext, candidatePayload.upstreamPayload);
-    const attemptStartedAt = Date.now();
 
-    let upstreamResponse: Response;
-    try {
-      upstreamResponse = await fetchWithResponseTimeout(upstreamUrl, {
-        method: "POST",
-        headers: upstreamHeaders,
-        body: candidatePayload.bodyText
-      }, context.upstreamAttemptTimeoutMs);
-    } catch (error) {
-      releaseInFlight();
-      accumulator.sawRequestError = true;
-      recordAttempt(requestLogStore, providerContext, {
+    for (let retryIndex = 0; retryIndex <= context.config.upstreamTransientRetryCount; retryIndex += 1) {
+      accumulator.attempts += 1;
+      const providerContext: ProviderAttemptContext = {
+        ...context,
         providerId: candidate.providerId,
-        accountId: candidate.account.accountId,
-        authType: candidate.account.authType,
-        upstreamPath,
-        status: 0,
-        latencyMs: Date.now() - attemptStartedAt,
-        error: toErrorMessage(error)
-      }, candidateStrategy.mode);
-      continue;
-    }
+        baseUrl: candidate.baseUrl,
+        account: candidate.account,
+        hasMoreCandidates,
+        attempt: accumulator.attempts,
+      };
+      const upstreamPath = candidateStrategy.getUpstreamPath(providerContext);
+      const upstreamUrl = joinUrl(candidate.baseUrl, upstreamPath);
+      const upstreamHeaders = buildUpstreamHeadersForCredential(context.clientHeaders, candidate.account);
+      candidateStrategy.applyRequestHeaders(upstreamHeaders, providerContext, candidatePayload.upstreamPayload);
+      const attemptStartedAt = Date.now();
+      const hasRetryRemaining = retryIndex < context.config.upstreamTransientRetryCount;
+
+      let upstreamResponse: Response;
+      try {
+        upstreamResponse = await fetchWithResponseTimeout(upstreamUrl, {
+          method: "POST",
+          headers: upstreamHeaders,
+          body: candidatePayload.bodyText
+        }, context.upstreamAttemptTimeoutMs);
+      } catch (error) {
+        accumulator.sawRequestError = true;
+        recordAttempt(requestLogStore, providerContext, {
+          providerId: candidate.providerId,
+          accountId: candidate.account.accountId,
+          authType: candidate.account.authType,
+          upstreamPath,
+          status: 0,
+          latencyMs: Date.now() - attemptStartedAt,
+          error: toErrorMessage(error)
+        }, candidateStrategy.mode);
+        if (hasRetryRemaining) {
+          await sleep(transientRetryDelayMs(context, retryIndex));
+          continue;
+        }
+        break;
+      }
 
       const requestLogEntryId = recordAttempt(requestLogStore, providerContext, {
         providerId: candidate.providerId,
@@ -1121,61 +1198,102 @@ export async function executeProviderFallback(
       await updateUsageCountsFromResponse(requestLogStore, requestLogEntryId, upstreamResponse, candidateStrategy.mode, context.routedModel);
 
       if (isRateLimitResponse(upstreamResponse)) {
+        accumulator.sawRateLimit = true;
+        keyPool.markRateLimited(candidate.account, parseRetryAfterMs(upstreamResponse.headers.get("retry-after")));
+        if (
+          preferredAffinity
+          && candidate.providerId === preferredAffinity.providerId
+          && candidate.account.accountId === preferredAffinity.accountId
+        ) {
+          preferredReassignmentAllowed = true;
+        }
+        break;
+      }
+
+      if (await responseIndicatesQuotaError(upstreamResponse)) {
+        accumulator.sawRateLimit = true;
+        keyPool.markRateLimited(candidate.account, Math.min(context.config.keyCooldownMs, 60_000));
+        if (
+          preferredAffinity
+          && candidate.providerId === preferredAffinity.providerId
+          && candidate.account.accountId === preferredAffinity.accountId
+        ) {
+          preferredReassignmentAllowed = true;
+        }
+        try {
+          await upstreamResponse.arrayBuffer();
+        } catch {
+          // Ignore body read failures while failing over.
+        }
+        break;
+      }
+
+      if (upstreamResponse.status >= 500 && upstreamResponse.status <= 599) {
+        accumulator.sawUpstreamServerError = true;
+        if (hasRetryRemaining) {
+          try {
+            await upstreamResponse.arrayBuffer();
+          } catch {
+            // Ignore body read failures while retrying.
+          }
+          await sleep(transientRetryDelayMs(context, retryIndex));
+          continue;
+        }
+        keyPool.markRateLimited(candidate.account, Math.min(context.config.keyCooldownMs, 5000));
+        try {
+          await upstreamResponse.arrayBuffer();
+        } catch {
+          // Ignore body read failures while failing over.
+        }
+        break;
+      }
+
+      reply.header("x-open-hax-upstream-mode", candidateStrategy.mode);
+      const outcome = await candidateStrategy.handleProviderAttempt(reply, upstreamResponse, providerContext);
+      if (outcome.kind === "handled") {
+        if (
+          promptCacheKey
+          && (
+            preferredAffinity === undefined
+            || preferredReassignmentAllowed
+            || (candidate.providerId === preferredAffinity.providerId && candidate.account.accountId === preferredAffinity.accountId)
+          )
+        ) {
+          await promptAffinityStore.upsert(promptCacheKey, candidate.providerId, candidate.account.accountId);
+        }
         releaseInFlight();
-      accumulator.sawRateLimit = true;
-      keyPool.markRateLimited(candidate.account, parseRetryAfterMs(upstreamResponse.headers.get("retry-after")));
-      continue;
-    }
-
-    if (await responseIndicatesQuotaError(upstreamResponse)) {
-      releaseInFlight();
-      accumulator.sawRateLimit = true;
-      keyPool.markRateLimited(candidate.account, Math.min(context.config.keyCooldownMs, 60_000));
-      try {
-        await upstreamResponse.arrayBuffer();
-      } catch {
-        // Ignore body read failures while failing over.
+        return {
+          handled: true,
+          candidateCount: candidates.length,
+          summary: accumulator
+        };
       }
-      continue;
-    }
 
-    if (upstreamResponse.status >= 500 && upstreamResponse.status <= 599) {
-      releaseInFlight();
-      accumulator.sawUpstreamServerError = true;
-      keyPool.markRateLimited(candidate.account, Math.min(context.config.keyCooldownMs, 5000));
-      try {
-        await upstreamResponse.arrayBuffer();
-      } catch {
-        // Ignore body read failures while failing over.
+      accumulator.sawRateLimit ||= outcome.rateLimit === true;
+      accumulator.sawRequestError ||= outcome.requestError === true;
+      accumulator.sawUpstreamServerError ||= outcome.upstreamServerError === true;
+      accumulator.sawUpstreamInvalidRequest ||= outcome.upstreamInvalidRequest === true;
+      accumulator.sawModelNotFound ||= outcome.modelNotFound === true;
+
+      if (!upstreamResponse.ok && outcome.requestError === true && (upstreamResponse.status === 401 || upstreamResponse.status === 403)) {
+        keyPool.markRateLimited(candidate.account, Math.min(context.config.keyCooldownMs, 10_000));
+        if (
+          preferredAffinity
+          && candidate.providerId === preferredAffinity.providerId
+          && candidate.account.accountId === preferredAffinity.accountId
+        ) {
+          preferredReassignmentAllowed = true;
+        }
       }
-      continue;
-    }
 
-    reply.header("x-open-hax-upstream-mode", candidateStrategy.mode);
-    const outcome = await candidateStrategy.handleProviderAttempt(reply, upstreamResponse, providerContext);
-    if (outcome.kind === "handled") {
-      releaseInFlight();
-      return {
-        handled: true,
-        candidateCount: candidates.length,
-        summary: accumulator
-      };
+      if (!upstreamResponse.ok && outcome.requestError === true && !outcome.modelNotFound) {
+        await summarizeUpstreamError(upstreamResponse);
+      }
+
+      break;
     }
 
     releaseInFlight();
-    accumulator.sawRateLimit ||= outcome.rateLimit === true;
-    accumulator.sawRequestError ||= outcome.requestError === true;
-    accumulator.sawUpstreamServerError ||= outcome.upstreamServerError === true;
-    accumulator.sawUpstreamInvalidRequest ||= outcome.upstreamInvalidRequest === true;
-    accumulator.sawModelNotFound ||= outcome.modelNotFound === true;
-
-    if (!upstreamResponse.ok && outcome.requestError === true && (upstreamResponse.status === 401 || upstreamResponse.status === 403)) {
-      keyPool.markRateLimited(candidate.account, Math.min(context.config.keyCooldownMs, 10_000));
-    }
-
-    if (!upstreamResponse.ok && outcome.requestError === true && !outcome.modelNotFound) {
-      await summarizeUpstreamError(upstreamResponse);
-    }
   }
 
   return {

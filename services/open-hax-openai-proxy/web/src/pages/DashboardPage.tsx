@@ -1,6 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 
-import { getUsageOverview, type UsageAccountSummary, type UsageOverview } from "../lib/api";
+import {
+  getUsageOverview,
+  listCredentials,
+  listRequestLogs,
+  type KeyPoolStatus,
+  type RequestLogEntry,
+  type UsageAccountSummary,
+  type UsageOverview,
+} from "../lib/api";
 
 function formatCompactNumber(value: number): string {
   return new Intl.NumberFormat("en-US", {
@@ -74,6 +82,8 @@ function donutSegments(accounts: readonly UsageAccountSummary[]): JSX.Element {
 
 export function DashboardPage(): JSX.Element {
   const [overview, setOverview] = useState<UsageOverview | null>(null);
+  const [keyPoolStatuses, setKeyPoolStatuses] = useState<Record<string, KeyPoolStatus>>({});
+  const [requestLogs, setRequestLogs] = useState<RequestLogEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -84,9 +94,15 @@ export function DashboardPage(): JSX.Element {
       setLoading(true);
       setError(null);
       try {
-        const nextOverview = await getUsageOverview();
+        const [nextOverview, credentials, nextLogs] = await Promise.all([
+          getUsageOverview(),
+          listCredentials(false),
+          listRequestLogs({ limit: 12 }),
+        ]);
         if (!cancelled) {
           setOverview(nextOverview);
+          setKeyPoolStatuses(credentials.keyPoolStatuses);
+          setRequestLogs(nextLogs);
         }
       } catch (loadError) {
         if (!cancelled) {
@@ -112,6 +128,7 @@ export function DashboardPage(): JSX.Element {
 
   const topAccounts = useMemo(() => overview?.accounts.slice(0, 6) ?? [], [overview]);
   const recentAccounts = useMemo(() => (overview?.accounts ?? []).slice(0, 10), [overview]);
+  const providerStatuses = useMemo(() => Object.values(keyPoolStatuses).sort((a, b) => a.providerId.localeCompare(b.providerId)), [keyPoolStatuses]);
 
   return (
     <div className="dashboard-layout">
@@ -198,6 +215,66 @@ export function DashboardPage(): JSX.Element {
               <span className="dashboard-chart-label">Tokens</span>
               {overview ? miniBars(overview.trends.tokens) : <div className="dashboard-sparkbars dashboard-sparkbars-placeholder" />}
             </div>
+          </div>
+        </article>
+      </section>
+
+      <section className="dashboard-detail-grid dashboard-detail-grid-wide">
+        <article className="dashboard-panel panel-sheen">
+          <header className="dashboard-panel-header">
+            <div>
+              <h3>Provider Pool Status</h3>
+              <p>Availability, cooldown pressure, and account counts per upstream provider.</p>
+            </div>
+          </header>
+          <div className="dashboard-provider-grid">
+            {providerStatuses.length === 0 ? (
+              <div className="dashboard-account-empty">No provider status available yet.</div>
+            ) : providerStatuses.map((status) => (
+              <article key={status.providerId} className="dashboard-provider-card">
+                <div className="dashboard-provider-card-header">
+                  <strong>{status.providerId}</strong>
+                  <span className={`dashboard-status-pill dashboard-status-${status.cooldownAccounts > 0 ? "cooldown" : "healthy"}`}>
+                    {status.authType}
+                  </span>
+                </div>
+                <dl>
+                  <div><dt>Total</dt><dd>{formatCompactNumber(status.totalAccounts)}</dd></div>
+                  <div><dt>Available</dt><dd>{formatCompactNumber(status.availableAccounts)}</dd></div>
+                  <div><dt>Cooling Down</dt><dd>{formatCompactNumber(status.cooldownAccounts)}</dd></div>
+                  <div><dt>Ready In</dt><dd>{status.nextReadyInMs > 0 ? `${Math.ceil(status.nextReadyInMs / 1000)}s` : "now"}</dd></div>
+                </dl>
+              </article>
+            ))}
+          </div>
+        </article>
+
+        <article className="dashboard-panel panel-sheen">
+          <header className="dashboard-panel-header">
+            <div>
+              <h3>Recent Request Log</h3>
+              <p>The last few upstream attempts, useful for spotting fallback churn and model failures.</p>
+            </div>
+          </header>
+          <div className="dashboard-log-table">
+            <div className="dashboard-log-header">
+              <span>When</span>
+              <span>Provider</span>
+              <span>Model</span>
+              <span>Status</span>
+              <span>Latency</span>
+            </div>
+            {requestLogs.length === 0 ? (
+              <div className="dashboard-account-empty">No request log entries yet.</div>
+            ) : requestLogs.map((entry) => (
+              <div key={entry.id} className="dashboard-log-row">
+                <span>{new Date(entry.timestamp).toLocaleTimeString()}</span>
+                <span>{entry.providerId}/{entry.accountId}</span>
+                <span>{entry.model}</span>
+                <span className={`dashboard-status-pill dashboard-status-${entry.status >= 400 ? "cooldown" : "healthy"}`}>{entry.status}</span>
+                <span>{Math.round(entry.latencyMs)} ms</span>
+              </div>
+            ))}
           </div>
         </article>
       </section>

@@ -29,6 +29,7 @@ import {
   toErrorMessage,
 } from "./lib/provider-utils.js";
 import { RequestLogStore } from "./lib/request-log-store.js";
+import { PromptAffinityStore } from "./lib/prompt-affinity-store.js";
 import { registerUiRoutes } from "./lib/ui-routes.js";
 import {
   ensureNativeOllamaChatContextFits,
@@ -54,6 +55,40 @@ interface ChatCompletionRequest {
   readonly messages?: unknown;
   readonly stream?: boolean;
   readonly [key: string]: unknown;
+}
+
+const PROXY_AUTH_COOKIE_NAME = "open_hax_proxy_auth_token";
+
+function readCookieToken(cookieHeader: string | undefined, name: string): string | undefined {
+  if (!cookieHeader) {
+    return undefined;
+  }
+
+  for (const part of cookieHeader.split(";")) {
+    const trimmed = part.trim();
+    if (!trimmed.startsWith(`${name}=`)) {
+      continue;
+    }
+
+    const rawValue = trimmed.slice(name.length + 1);
+    try {
+      return decodeURIComponent(rawValue);
+    } catch {
+      return rawValue;
+    }
+  }
+
+  return undefined;
+}
+
+function extractPromptCacheKey(body: Record<string, unknown>): string | undefined {
+  const raw = typeof body.prompt_cache_key === "string"
+    ? body.prompt_cache_key
+    : typeof body.promptCacheKey === "string"
+      ? body.promptCacheKey
+      : undefined;
+  const normalized = raw?.trim();
+  return normalized && normalized.length > 0 ? normalized : undefined;
 }
 
 function joinUrl(baseUrl: string, path: string): string {
@@ -96,6 +131,8 @@ export async function createApp(config: ProxyConfig): Promise<FastifyInstance> {
   }
   const requestLogStore = new RequestLogStore(config.requestLogsFilePath, 5000);
   await requestLogStore.warmup();
+  const promptAffinityStore = new PromptAffinityStore(config.promptAffinityFilePath);
+  await promptAffinityStore.warmup();
 
   const ollamaCatalogRoutes = buildOllamaCatalogRoutes(config);
   const modelCatalogTtlMs = 30_000;
@@ -202,7 +239,7 @@ export async function createApp(config: ProxyConfig): Promise<FastifyInstance> {
     const origin = request.headers.origin;
     reply.header("Access-Control-Allow-Origin", origin ?? "*");
     reply.header("Vary", "Origin");
-    reply.header("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept, X-Requested-With");
+    reply.header("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept, X-Requested-With, Cookie");
     reply.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
 
     if (config.proxyAuthToken) {
@@ -214,7 +251,8 @@ export async function createApp(config: ProxyConfig): Promise<FastifyInstance> {
       }
 
       const authorization = request.headers.authorization;
-      const ok = hasBearerToken(authorization, config.proxyAuthToken);
+      const cookieToken = readCookieToken(request.headers.cookie, PROXY_AUTH_COOKIE_NAME);
+      const ok = hasBearerToken(authorization, config.proxyAuthToken) || cookieToken === config.proxyAuthToken;
       if (!ok) {
         sendOpenAiError(reply, 401, "Unauthorized", "invalid_request_error", "unauthorized");
       }
@@ -394,20 +432,27 @@ export async function createApp(config: ProxyConfig): Promise<FastifyInstance> {
       return;
     }
 
-    let providerRoutes = buildProviderRoutes(config, context.openAiPrefixed);
+    let providerRoutes = buildProviderRoutes(
+      config,
+      context.openAiPrefixed,
+      !context.openAiPrefixed && strategy.mode === "responses"
+    );
     if (!context.openAiPrefixed && resolvedModelCatalog) {
       providerRoutes = resolveProviderRoutesForModel(providerRoutes, context.routedModel, resolvedModelCatalog);
     }
 
     const availability = await inspectProviderAvailability(keyPool, providerRoutes);
+    const promptCacheKey = extractPromptCacheKey(request.body);
     const execution = await executeProviderFallback(
       strategy,
       reply,
       requestLogStore,
+      promptAffinityStore,
       keyPool,
       providerRoutes,
       context,
-      payload
+      payload,
+      promptCacheKey,
     );
 
     if (execution.handled) {

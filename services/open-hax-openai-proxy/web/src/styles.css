@@ -294,6 +294,10 @@ button:disabled {
   gap: 14px;
 }
 
+.dashboard-detail-grid-wide {
+  grid-template-columns: 1fr 1fr;
+}
+
 .dashboard-panel {
   padding: 16px;
   display: grid;
@@ -406,6 +410,77 @@ button:disabled {
 .dashboard-account-empty {
   padding: 24px 0;
   color: var(--text-dim);
+}
+
+.dashboard-provider-grid,
+.dashboard-log-table {
+  display: grid;
+  gap: 12px;
+}
+
+.dashboard-provider-grid {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.dashboard-provider-card {
+  border: 1px solid rgba(147, 198, 218, 0.16);
+  border-radius: 14px;
+  padding: 14px;
+  background: rgba(9, 19, 27, 0.62);
+  display: grid;
+  gap: 12px;
+}
+
+.dashboard-provider-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.dashboard-provider-card dl {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.dashboard-provider-card dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dashboard-provider-card dt,
+.dashboard-provider-card dd {
+  margin: 0;
+}
+
+.dashboard-provider-card dt,
+.dashboard-log-header {
+  color: var(--text-dim);
+}
+
+.dashboard-provider-card dd {
+  font-weight: 600;
+}
+
+.dashboard-log-header,
+.dashboard-log-row {
+  display: grid;
+  grid-template-columns: 110px minmax(140px, 1.4fr) minmax(120px, 1.2fr) 90px 90px;
+  gap: 12px;
+  align-items: center;
+}
+
+.dashboard-log-header {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.dashboard-log-row {
+  border-top: 1px solid rgba(147, 198, 218, 0.12);
+  padding-top: 12px;
 }
 
 .dashboard-status-pill {
@@ -765,10 +840,11 @@ a {
 
    .dashboard-hero,
    .dashboard-detail-grid,
+   .dashboard-detail-grid-wide,
    .dashboard-donut-wrap,
    .dashboard-metrics-grid {
      grid-template-columns: 1fr;
-   }
+    }
 
    .dashboard-hero-meta {
      justify-items: start;
@@ -778,10 +854,19 @@ a {
      display: none;
    }
 
-   .dashboard-account-row {
-     grid-template-columns: 1fr;
-     gap: 6px;
-   }
+    .dashboard-account-row {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+
+    .dashboard-log-header {
+      display: none;
+    }
+
+    .dashboard-log-row {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
 
   .chat-layout {
     grid-template-columns: 1fr;

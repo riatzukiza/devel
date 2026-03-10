@@ -1,0 +1,1 @@
+/home/err/.agents/skills/social-publish-reddit/SKILL.md

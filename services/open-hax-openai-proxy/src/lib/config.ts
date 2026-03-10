@@ -27,10 +27,13 @@ export interface ProxyConfig {
   readonly keysFilePath: string;
   readonly modelsFilePath: string;
   readonly requestLogsFilePath: string;
+  readonly promptAffinityFilePath: string;
   readonly keyReloadMs: number;
   readonly keyCooldownMs: number;
   readonly requestTimeoutMs: number;
   readonly streamBootstrapTimeoutMs: number;
+  readonly upstreamTransientRetryCount: number;
+  readonly upstreamTransientRetryBackoffMs: number;
   readonly proxyAuthToken?: string;
   readonly allowUnauthenticated: boolean;
 }
@@ -66,6 +69,24 @@ function numberFromEnvAliases(names: readonly string[], fallback: number): numbe
 
     const parsed = Number(raw);
     if (!Number.isFinite(parsed) || parsed <= 0) {
+      throw new Error(`Invalid numeric environment variable ${name}: ${raw}`);
+    }
+
+    return parsed;
+  }
+
+  return fallback;
+}
+
+function nonNegativeNumberFromEnvAliases(names: readonly string[], fallback: number): number {
+  for (const name of names) {
+    const raw = process.env[name];
+    if (!raw) {
+      continue;
+    }
+
+    const parsed = Number(raw);
+    if (!Number.isFinite(parsed) || parsed < 0) {
       throw new Error(`Invalid numeric environment variable ${name}: ${raw}`);
     }
 
@@ -237,7 +258,7 @@ export function loadConfig(cwd: string = process.cwd()): ProxyConfig {
       ? messagesInterleavedThinkingBeta
       : undefined,
     responsesPath: process.env.UPSTREAM_RESPONSES_PATH ?? "/v1/responses",
-    openaiResponsesPath: process.env.OPENAI_RESPONSES_PATH ?? "/codex/responses/compact",
+    openaiResponsesPath: process.env.OPENAI_RESPONSES_PATH ?? "/codex/responses",
     responsesModelPrefixes: csvFromEnv("UPSTREAM_RESPONSES_MODEL_PREFIXES", ["gpt-"]),
     ollamaChatPath: process.env.OLLAMA_CHAT_PATH ?? "/api/chat",
     ollamaV1ChatPath: process.env.OLLAMA_V1_CHAT_PATH ?? "/v1/chat/completions",
@@ -246,10 +267,13 @@ export function loadConfig(cwd: string = process.cwd()): ProxyConfig {
     keysFilePath: filePathFromEnvAliases(["PROXY_KEYS_FILE", "VIVGRID_KEYS_FILE"], "./keys.json", cwd),
     modelsFilePath: filePathFromEnvAliases(["PROXY_MODELS_FILE", "VIVGRID_MODELS_FILE"], "./models.json", cwd),
     requestLogsFilePath: filePathFromEnvAliases(["PROXY_REQUEST_LOGS_FILE"], "./data/request-logs.json", cwd),
+    promptAffinityFilePath: filePathFromEnvAliases(["PROXY_PROMPT_AFFINITY_FILE"], "./data/prompt-affinity.json", cwd),
     keyReloadMs: numberFromEnvAliases(["PROXY_KEY_RELOAD_MS", "VIVGRID_KEY_RELOAD_MS"], 5000),
     keyCooldownMs: numberFromEnvAliases(["PROXY_KEY_COOLDOWN_MS", "VIVGRID_KEY_RELOAD_MS"], 30000),
     requestTimeoutMs: numberFromEnvAliases(["UPSTREAM_REQUEST_TIMEOUT_MS"], 180000),
     streamBootstrapTimeoutMs: numberFromEnvAliases(["UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS"], 8000),
+    upstreamTransientRetryCount: nonNegativeNumberFromEnvAliases(["UPSTREAM_TRANSIENT_RETRY_COUNT"], 2),
+    upstreamTransientRetryBackoffMs: numberFromEnvAliases(["UPSTREAM_TRANSIENT_RETRY_BACKOFF_MS"], 350),
     proxyAuthToken,
     allowUnauthenticated
   };
