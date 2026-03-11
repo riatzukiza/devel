@@ -29,6 +29,11 @@ if [[ ${#staged_paths[@]} -eq 0 ]]; then
 fi
 
 for path in "${staged_paths[@]}"; do
+  case "$path" in
+    */pnpm-lock.yaml|pnpm-lock.yaml|*/package-lock.json|package-lock.json|*/yarn.lock|yarn.lock|*/bun.lock|bun.lock|*/bun.lockb|bun.lockb)
+      continue
+      ;;
+  esac
   object_type=$(git -C "$repo_root" cat-file -t ":$path" 2>/dev/null || true)
   if [[ "$object_type" == "blob" ]]; then
     scan_paths+=("$path")
@@ -56,7 +61,9 @@ elif [[ -f "$repo_root/.detect-secrets.baseline" ]]; then
 fi
 
 log "Scanning ${#scan_paths[@]} staged file(s) for secrets"
-if detect-secrets-hook -C "$tmp_dir" "${baseline_args[@]}" -- "${scan_paths[@]}"; then
+scan_output=$(detect-secrets -C "$tmp_dir" scan "${baseline_args[@]}" "${scan_paths[@]}")
+if python -c 'import json, sys; payload = json.load(sys.stdin); sys.exit(0 if not payload.get("results") else 1)' <<<"$scan_output"
+then
   log "No secrets detected"
   exit 0
 fi
