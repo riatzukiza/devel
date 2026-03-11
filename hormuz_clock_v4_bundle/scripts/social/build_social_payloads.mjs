@@ -11,7 +11,9 @@ function readText(p) {
 
 function trim(text, max) {
   if (text.length <= max) return text;
-  return text.slice(0, Math.max(0, max - 3)).trimEnd() + '...';
+  if (max <= 3) return text.slice(0, Math.max(0, max));
+  const allowed = Math.max(0, max - 3);
+  return text.slice(0, allowed).trimEnd() + '...';
 }
 
 function extractSummary(markdown) {
@@ -25,14 +27,21 @@ function extractSummary(markdown) {
 }
 
 function buildPayloads(reportPath) {
-  const md = readText(reportPath);
+  const resolvedReportPath = path.resolve(reportPath);
+  const bundleDir = path.resolve(path.dirname(resolvedReportPath), '..');
+  const md = readText(resolvedReportPath);
   const summary = extractSummary(md);
   const bulletText = summary.bullets.slice(0, 3).map((b) => `- ${b}`).join('\n');
   const base = [summary.headline, bulletText].filter(Boolean).join('\n').trim();
   return {
     bluesky: {
       text: trim(base, 280),
-      thread: summary.bullets.slice(3),
+      thread: summary.bullets.slice(3).map((b) => trim(b, 280)),
+      image: {
+        path: path.resolve(bundleDir, 'assets/hormuz_risk_clock_v4.png'),
+        mimeType: 'image/png',
+        alt: trim(`${summary.headline} chart`, 1000),
+      },
     },
     discord: {
       content: trim(base, 1900),
