@@ -136,3 +136,6 @@
 	path = services/open-hax-openai-proxy
 	url = https://github.com/open-hax/proxx.git
 	branch = main
+[submodule "orgs/ussyverse/kanban"]
+	path = orgs/ussyverse/kanban
+	url = https://github.com/open-hax/ussyverse-kanban.git
