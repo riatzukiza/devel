@@ -21,6 +21,41 @@ function extractSummary(markdown) {
   };
 }
 
+function extractBranch(markdown, name) {
+  const match = markdown.match(new RegExp(`- \\*\\*${name}\\*\\*: ([^\\n]+)`, 'i'));
+  return match ? match[1].trim() : '';
+}
+
+function formatAsOf(markdown) {
+  const match = markdown.match(/As of:\s*(.+)/);
+  if (!match) return 'latest';
+  const date = new Date(match[1].trim());
+  if (Number.isNaN(date.getTime())) return match[1].trim();
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `${String(date.getUTCDate()).padStart(2, '0')} ${months[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
+}
+
+function buildBlueskyText(markdown) {
+  const asOf = formatAsOf(markdown);
+  const reopening = extractBranch(markdown, 'reopening') || '?';
+  const closure = extractBranch(markdown, 'effective_closure') || '?';
+  const escalation = extractBranch(markdown, 'wider_escalation') || '?';
+  return [
+    `Hormuz Risk Clock, ${asOf}: transit flow remains below 10% of pre-conflict levels; bypass capacity stays at 3.5-5.5 mb/d vs ~20 mb/d normal flow.`,
+    'IEA approved a 400m-barrel emergency release.',
+    `Priors: reopening ${reopening}, effective closure ${closure}, wider escalation ${escalation}.`,
+  ].join(' ');
+}
+
+function buildBlueskyImage(markdown) {
+  const asOfMatch = markdown.match(/As of:\s*(.+)/);
+  const asOf = asOfMatch ? asOfMatch[1].trim() : 'latest snapshot';
+  return {
+    path: 'assets/hormuz_risk_clock_v4.png',
+    alt: `Hormuz Risk Clock v4 snapshot for ${asOf}`,
+  };
+}
+
 function buildPayloads(reportPath) {
   const md = readText(reportPath);
   const summary = extractSummary(md);
@@ -28,7 +63,8 @@ function buildPayloads(reportPath) {
   const base = [summary.headline, bulletText].filter(Boolean).join('\n').trim();
   return {
     bluesky: {
-      text: trim(base, 280),
+      text: trim(buildBlueskyText(md), 280),
+      image: buildBlueskyImage(md),
       thread: summary.bullets.slice(3),
     },
     discord: {

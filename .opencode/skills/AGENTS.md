@@ -91,6 +91,16 @@ This directory contains the skill definitions for the OpenCode agent system.
 - testing-typescript-vitest
 - testing-unit
 
+### DevSecOps
+- devsecops-free-auth
+- devsecops-free-cicd
+- devsecops-free-cloud
+- devsecops-free-discovery
+- devsecops-free-dns
+- devsecops-free-monitoring
+- devsecops-free-security
+- devsecops-free-storage
+
 ### Workspace
 - workspace-build
 - workspace-code-standards

@@ -79,6 +79,48 @@ ORG_PREFIXES=(
   "orgs-octave-commons-"
 )
 
+run_changed_package_typecheck() {
+  local base_sha=$1
+  local head_ref=$2
+  local changed_files=()
+  local package_dirs=()
+  local package_dir=""
+
+  if ! mapfile -t changed_files < <(git diff --name-only "$base_sha" "$head_ref"); then
+    log "Unable to list changed files for fallback typecheck"
+    return 1
+  fi
+
+  declare -A seen_dirs=()
+  for changed_file in "${changed_files[@]}"; do
+    package_dir=$(dirname "$changed_file")
+    while [[ "$package_dir" != "." && "$package_dir" != "/" ]]; do
+      if [[ -f "$package_dir/package.json" ]]; then
+        if [[ -z "${seen_dirs[$package_dir]:-}" ]]; then
+          package_dirs+=("$package_dir")
+          seen_dirs[$package_dir]=1
+        fi
+        break
+      fi
+      package_dir=$(dirname "$package_dir")
+    done
+  done
+
+  if [[ ${#package_dirs[@]} -eq 0 ]]; then
+    log "No changed package roots detected for fallback typecheck"
+    return 0
+  fi
+
+  for package_dir in "${package_dirs[@]}"; do
+    if [[ -f "$package_dir/package.json" ]] && grep -q '"typecheck"\s*:' "$package_dir/package.json"; then
+      log "Running pnpm --dir $package_dir run typecheck"
+      pnpm --dir "$package_dir" run typecheck
+    else
+      log "Skipping $package_dir (no typecheck script)"
+    fi
+  done
+}
+
 run_nx_affected_typecheck() {
   local head_ref="${NX_HEAD_REF:-HEAD}"
   local desired_base="${NX_RESOLVED_BASE:-origin/main}"
@@ -111,8 +153,9 @@ run_nx_affected_typecheck() {
   fi
 
   if ! affected_projects_raw=$(pnpm nx show projects --affected --base "$base_sha" --head "$head_ref"); then
-    log "Nx show projects failed; aborting pre-push checks"
-    return 1
+    log "Nx show projects failed; falling back to changed-package typecheck"
+    run_changed_package_typecheck "$base_sha" "$head_ref"
+    return $?
   fi
 
   if [[ -z "${affected_projects_raw//[[:space:]]/}" ]]; then

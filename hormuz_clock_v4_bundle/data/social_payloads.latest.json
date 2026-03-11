@@ -1,31 +1,31 @@
 {
   "bluesky": {
-    "text": "Hormuz Risk Clock, 10 Mar 2026. Transit flow remains below 10% of pre-conflict levels, and MARAD still says vessels should keep clear if possible. Working priors: reopening 25%, effective closure 55%, wider escalation 20%.",
+    "text": "Hormuz Risk Clock, 11 Mar 2026: transit flow remains below 10% of pre-conflict levels; bypass capacity stays at 3.5-5.5 mb/d vs ~20 mb/d normal flow. IEA approved a 400m-barrel emergency release. Priors: reopening 25%, effective closure 55%, wider escalation 20%.",
     "image": {
       "path": "assets/hormuz_risk_clock_v4.png",
-      "alt": "Strait of Hormuz Risk Clock v4 for 10 March 2026 showing severe transit disruption, high attack tempo, and limited bypass capacity"
+      "alt": "Hormuz Risk Clock v4 snapshot for 2026-03-11T18:35:57Z"
     },
     "thread": [
-      "Navigation integrity stays impaired by persistent GNSS/GPS and AIS disruption.",
-      "Bypass capacity remains limited at roughly 3.5-5.5 mb/d versus about 20 mb/d normal Hormuz flow."
+      "**navigation_integrity**: 3/4 (flat-high) — persistent GNSS/GPS and AIS disruption",
+      "**bypass_capacity**: 3/4 (flat-high) — IEA cites 3.5-5.5 mb/d of bypass capacity versus about 20 mb/d normal Hormuz flow"
     ]
   },
   "discord": {
-    "content": "As of: 2026-03-10T00:00:00Z\n- **transit_flow**: 4/4 (worsening) — IEA says export volumes remain below 10% of pre-conflict levels\n- **attack_tempo**: 4/4 (flat-high) — MARAD 2026-001A says vessels should keep clear if possible\n- **insurance_availability**: 4/4 (flat-high) — cover scarce, repriced, or withdrawn",
+    "content": "As of: 2026-03-11T18:35:57Z\n- **transit_flow**: 4/4 (flat-high) — IEA says export volumes of crude oil and refined products are currently at less than 10% of pre-conflict levels\n- **attack_tempo**: 4/4 (flat-high) — MARAD 2026-001A says vessels should keep clear if possible\n- **insurance_availability**: 4/4 (flat-high) — cover scarce, repriced, or withdrawn",
     "embed": {
-      "title": "As of: 2026-03-10T00:00:00Z",
-      "description": "- **transit_flow**: 4/4 (worsening) — IEA says export volumes remain below 10% of pre-conflict levels\n- **attack_tempo**: 4/4 (flat-high) — MARAD 2026-001A says vessels should keep clear if possible\n- **insurance_availability**: 4/4 (flat-high) — cover scarce, repriced, or withdrawn\n- **navigation_integrity**: 3/4 (flat-high) — persistent GNSS/GPS and AIS disruption\n- **bypass_capacity**: 3/4 (flat) — 3.5–5.5 mb/d alt capacity vs ~20 mb/d Hormuz"
+      "title": "As of: 2026-03-11T18:35:57Z",
+      "description": "- **transit_flow**: 4/4 (flat-high) — IEA says export volumes of crude oil and refined products are currently at less than 10% of pre-conflict levels\n- **attack_tempo**: 4/4 (flat-high) — MARAD 2026-001A says vessels should keep clear if possible\n- **insurance_availability**: 4/4 (flat-high) — cover scarce, repriced, or withdrawn\n- **navigation_integrity**: 3/4 (flat-high) — persistent GNSS/GPS and AIS disruption\n- **bypass_capacity**: 3/4 (flat-high) — IEA cites 3.5-5.5 mb/d of bypass capacity versus about 20 mb/d normal Hormuz flow"
     }
   },
   "x": {
-    "text": "As of: 2026-03-10T00:00:00Z - **transit_flow**: 4/4 (worsening) — IEA says export volumes remain below 10% of pre-conflict levels - **attack_tempo**: 4/4 (flat-high) — MARAD 2026-001A says vessels should keep clear if possible - **insurance_availability**: 4/4 (flat-high) — cove...",
+    "text": "As of: 2026-03-11T18:35:57Z - **transit_flow**: 4/4 (flat-high) — IEA says export volumes of crude oil and refined products are currently at less than 10% of pre-conflict levels - **attack_tempo**: 4/4 (flat-high) — MARAD 2026-001A says vessels should keep clear if possible - **...",
     "thread": [
       "**navigation_integrity**: 3/4 (flat-high) — persistent GNSS/GPS and AIS disruption",
-      "**bypass_capacity**: 3/4 (flat) — 3.5–5.5 mb/d alt capacity vs ~20 mb/d Hormuz"
+      "**bypass_capacity**: 3/4 (flat-high) — IEA cites 3.5-5.5 mb/d of bypass capacity versus about 20 mb/d normal Hormuz flow"
     ]
   },
   "reddit": {
-    "title": "As of: 2026-03-10T00:00:00Z",
-    "body": "# Hormuz Risk Clock Snapshot\n\nAs of: 2026-03-10T00:00:00Z\n\n## States\n- **transit_flow**: 4/4 (worsening) — IEA says export volumes remain below 10% of pre-conflict levels\n- **attack_tempo**: 4/4 (flat-high) — MARAD 2026-001A says vessels should keep clear if possible\n- **insurance_availability**: 4/4 (flat-high) — cover scarce, repriced, or withdrawn\n- **navigation_integrity**: 3/4 (flat-high) — persistent GNSS/GPS and AIS disruption\n- **bypass_capacity**: 3/4 (flat) — 3.5–5.5 mb/d alt capacity vs ~20 mb/d Hormuz\n- **asia_buffer_stress**: 1/4 (rising) — stress emerging, not yet acute everywhere\n\n## Branch priors\n- **reopening**: 25%\n- **effective_closure**: 55%\n- **wider_escalation**: 20%\n"
+    "title": "As of: 2026-03-11T18:35:57Z",
+    "body": "# Hormuz Risk Clock Snapshot\n\nAs of: 2026-03-11T18:35:57Z\n\n## States\n- **transit_flow**: 4/4 (flat-high) — IEA says export volumes of crude oil and refined products are currently at less than 10% of pre-conflict levels\n- **attack_tempo**: 4/4 (flat-high) — MARAD 2026-001A says vessels should keep clear if possible\n- **insurance_availability**: 4/4 (flat-high) — cover scarce, repriced, or withdrawn\n- **navigation_integrity**: 3/4 (flat-high) — persistent GNSS/GPS and AIS disruption\n- **bypass_capacity**: 3/4 (flat-high) — IEA cites 3.5-5.5 mb/d of bypass capacity versus about 20 mb/d normal Hormuz flow\n- **asia_buffer_stress**: 1/4 (flat) — IEA members approved a 400 million barrel emergency stock release to cushion market disruptions\n\n## Branch priors\n- **reopening**: 25%\n- **effective_closure**: 55%\n- **wider_escalation**: 20%\n"
   }
 }

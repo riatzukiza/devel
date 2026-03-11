@@ -17,6 +17,11 @@ type CpuCounterSample = {
   idle: number;
 };
 
+type CpuCounterSnapshot = {
+  total: CpuCounterSample | null;
+  cores: CpuCounterSample[];
+};
+
 type CommandResult = {
   ok: boolean;
   code: number | null;
@@ -35,6 +40,7 @@ export type OmniCollector = () => Promise<OmniSnapshot>;
 export type CpuStats = {
   usagePct: number | null;
   coreCount: number;
+  coreUsagePct: Array<number | null>;
   frequencyMHz: number | null;
   load1: number;
   load5: number;
@@ -79,7 +85,7 @@ export type OmniSnapshot = {
 export function createOmniCollector(options: OmniCollectorOptions = {}): OmniCollector {
   const collectNpu = createNpuCollector();
   const processLimit = clampInt(options.processLimit ?? 8, 3, 24);
-  let previousCpuCounter: CpuCounterSample | null = null;
+  let previousCpuCounter: CpuCounterSnapshot | null = null;
 
   return async () => {
     const capturedAt = Date.now();
@@ -122,15 +128,16 @@ async function collectNpuSafe(collectNpu: () => Promise<NpuSnapshot>): Promise<{
   }
 }
 
-async function collectCpuStats(previous: CpuCounterSample | null): Promise<{ stats: CpuStats; counter: CpuCounterSample | null }> {
+async function collectCpuStats(previous: CpuCounterSnapshot | null): Promise<{ stats: CpuStats; counter: CpuCounterSnapshot | null }> {
   const [counter, meminfo, frequencyMHz, temperatureC] = await Promise.all([
-    readCpuCounter(),
+    readCpuCounters(),
     readMeminfo(),
     readAverageCpuFrequencyMHz(),
     readCpuTemperatureC(),
   ]);
 
-  const usagePct = computeCpuUsagePct(previous, counter);
+  const usagePct = computeCpuUsagePct(previous?.total ?? null, counter?.total ?? null);
+  const coreUsagePct = counter?.cores.map((core, index) => computeCpuUsagePct(previous?.cores[index] ?? null, core)) ?? [];
   const memoryTotalMB = meminfo?.totalKB ? meminfo.totalKB / 1024 : null;
   const memoryUsedMB = meminfo?.totalKB && meminfo.availableKB !== null
     ? (meminfo.totalKB - meminfo.availableKB) / 1024
@@ -140,7 +147,8 @@ async function collectCpuStats(previous: CpuCounterSample | null): Promise<{ sta
   return {
     stats: {
       usagePct,
-      coreCount: os.cpus().length,
+      coreCount: counter?.cores.length ?? os.cpus().length,
+      coreUsagePct,
       frequencyMHz,
       load1,
       load5,
@@ -296,17 +304,42 @@ async function collectTopProcesses(limit: number): Promise<{ processes: ProcessS
   return { processes, warnings: [] };
 }
 
-async function readCpuCounter(): Promise<CpuCounterSample | null> {
+async function readCpuCounters(): Promise<CpuCounterSnapshot | null> {
   const raw = await readText("/proc/stat");
   if (!raw) {
     return null;
   }
 
-  const line = raw.split("\n").find((value) => value.startsWith("cpu "));
-  if (!line) {
+  let total: CpuCounterSample | null = null;
+  const cores = raw
+    .split("\n")
+    .filter((value) => /^cpu(\s|\d+)/.test(value))
+    .reduce<CpuCounterSample[]>((items, line) => {
+      const parsed = parseCpuCounter(line);
+      if (!parsed) {
+        return items;
+      }
+
+      if (line.startsWith("cpu ")) {
+        total = parsed;
+        return items;
+      }
+
+      items.push(parsed);
+      return items;
+    }, []);
+
+  if (!total && cores.length === 0) {
     return null;
   }
 
+  return {
+    total,
+    cores,
+  };
+}
+
+function parseCpuCounter(line: string): CpuCounterSample | null {
   const fields = line.trim().split(/\s+/).slice(1).map((value) => Number.parseFloat(value));
   if (fields.length < 4 || fields.some((value) => !Number.isFinite(value))) {
     return null;

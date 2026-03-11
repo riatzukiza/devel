@@ -1,8 +1,8 @@
 {
-  "as_of_utc": "2026-03-10T00:00:00Z",
+  "as_of_utc": "2026-03-11T18:35:57Z",
   "clock": {
     "t0_utc": "2026-02-28T00:00:00Z",
-    "second_hand_days": 10,
+    "second_hand_days": 11.77,
     "minute_hand_days": 90,
     "hour_hand_days": 30,
     "structural_bar_days": 450
@@ -10,9 +10,9 @@
   "states": {
     "transit_flow": {
       "score": 4,
-      "trend": "worsening",
-      "confidence": 0.9,
-      "notes": "IEA says export volumes remain below 10% of pre-conflict levels"
+      "trend": "flat-high",
+      "confidence": 0.95,
+      "notes": "IEA says export volumes of crude oil and refined products are currently at less than 10% of pre-conflict levels"
     },
     "attack_tempo": {
       "score": 4,
@@ -34,15 +34,15 @@
     },
     "bypass_capacity": {
       "score": 3,
-      "trend": "flat",
-      "confidence": 0.9,
-      "notes": "3.5\u20135.5 mb/d alt capacity vs ~20 mb/d Hormuz"
+      "trend": "flat-high",
+      "confidence": 0.95,
+      "notes": "IEA cites 3.5-5.5 mb/d of bypass capacity versus about 20 mb/d normal Hormuz flow"
     },
     "asia_buffer_stress": {
       "score": 1,
-      "trend": "rising",
-      "confidence": 0.6,
-      "notes": "stress emerging, not yet acute everywhere"
+      "trend": "flat",
+      "confidence": 0.95,
+      "notes": "IEA members approved a 400 million barrel emergency stock release to cushion market disruptions"
     }
   },
   "branches": {
