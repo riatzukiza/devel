@@ -1,8 +1,0 @@
-node_modules/
-dist/
-logs/
-coverage/
-
-.env
-keys.json
-models.json
