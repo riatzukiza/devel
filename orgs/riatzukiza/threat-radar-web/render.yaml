@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: threat-radar-web
+    runtime: static
+    rootDir: orgs/riatzukiza/threat-radar-web
+    buildCommand: pnpm install && pnpm --filter @workspace/radar-core build && pnpm --filter @riatzukiza/threat-radar-web build
+    staticPublishPath: ./dist
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: VITE_API_URL
+        value: "https://threat-radar-mcp.onrender.com"
