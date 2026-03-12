@@ -1,0 +1,160 @@
+:root {
+  --bg: #0f1115;
+  --panel: #171b22;
+  --panel-2: #1f2630;
+  --ink: #f5efe2;
+  --muted: #9ba7b4;
+  --accent: #ff6f3c;
+  --accent-2: #ffd166;
+  --line: rgba(255, 255, 255, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "IBM Plex Sans", "Avenir Next", sans-serif;
+  background:
+    radial-gradient(circle at top, rgba(255, 111, 60, 0.14), transparent 30%),
+    linear-gradient(180deg, #0b0d11, var(--bg));
+  color: var(--ink);
+}
+
+.app-shell {
+  min-height: 100vh;
+  padding: 32px 20px 64px;
+}
+
+.hero {
+  max-width: 900px;
+  margin: 0 auto 28px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  font-size: 12px;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(32px, 8vw, 72px);
+  line-height: 0.92;
+}
+
+.lede {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.wall {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.tile {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 16px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.28);
+  animation: rise 0.5s ease;
+}
+
+.tile-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.tile-header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.tile-header p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.status {
+  border: 1px solid rgba(255, 209, 102, 0.35);
+  color: var(--accent-2);
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.clock {
+  display: block;
+  width: 100%;
+  max-width: 170px;
+  margin: 10px auto 6px;
+}
+
+.clock-face {
+  fill: rgba(255,255,255,0.03);
+  stroke: rgba(255,255,255,0.08);
+}
+
+.clock-ring {
+  fill: none;
+  stroke: rgba(255, 209, 102, 0.24);
+  stroke-width: 2;
+}
+
+.uncertainty-arc {
+  fill: none;
+  stroke: rgba(255, 111, 60, 0.58);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.clock-hand {
+  stroke: var(--ink);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  transform-origin: 76px 76px;
+  animation: pulse 4s ease-in-out infinite;
+}
+
+.clock-center {
+  fill: var(--accent-2);
+}
+
+.tile-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.92; }
+  50% { opacity: 1; }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
