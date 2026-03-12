@@ -4,7 +4,7 @@ services:
     name: threat-radar-mcp
     runtime: node
     region: oregon
-    plan: starter
+    plan: free
     buildCommand: pnpm install && pnpm --filter @workspace/radar-core build && pnpm --filter @workspace/mcp-foundation build && pnpm --filter @riatzukiza/threat-radar-mcp build
     startCommand: pnpm --filter @riatzukiza/threat-radar-mcp start
     healthCheckPath: /health
@@ -32,7 +32,3 @@ services:
         value: "22"
       - key: VITE_API_URL
         value: "https://threat-radar-mcp.onrender.com"
-databases:
-  - name: threat-radar-db
-    databaseName: threat_radar
-    plan: starter
