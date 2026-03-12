@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const bundleRoot = path.resolve(__dirname, '../..');
 
@@ -61,7 +61,7 @@ function buildPayloads(reportPath) {
   };
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const reportPath = process.argv[2] || path.resolve(bundleRoot, 'reports/v4_snapshot.md');
   const outPath = process.argv[3] || path.resolve(bundleRoot, 'data/social_payloads.latest.json');
   const payloads = buildPayloads(reportPath);
