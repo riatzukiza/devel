@@ -26,9 +26,8 @@ function extractSummary(markdown) {
   };
 }
 
-function buildPayloads(reportPath) {
+function buildPayloads(reportPath, root = bundleRoot) {
   const resolvedReportPath = path.resolve(reportPath);
-  const bundleDir = path.resolve(path.dirname(resolvedReportPath), '..');
   const md = readText(resolvedReportPath);
   const summary = extractSummary(md);
   const bulletText = summary.bullets.slice(0, 3).map((b) => `- ${b}`).join('\n');
@@ -38,7 +37,7 @@ function buildPayloads(reportPath) {
       text: trim(base, 280),
       thread: summary.bullets.slice(3).map((b) => trim(b, 280)),
       image: {
-        path: path.resolve(bundleDir, 'assets/hormuz_risk_clock_v4.png'),
+        path: path.resolve(root, 'assets/hormuz_risk_clock_v4.png'),
         mimeType: 'image/png',
         alt: trim(`${summary.headline} chart`, 1000),
       },
@@ -61,7 +60,7 @@ function buildPayloads(reportPath) {
   };
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const reportPath = process.argv[2] || path.resolve(bundleRoot, 'reports/v4_snapshot.md');
   const outPath = process.argv[3] || path.resolve(bundleRoot, 'data/social_payloads.latest.json');
   const payloads = buildPayloads(reportPath);
