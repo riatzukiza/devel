@@ -23,6 +23,39 @@ Architectural decisions, patterns, and system design.
 - `@open-hax/signal-source-utils` — URL normalization, feed parsing, semantic extraction
 - `@open-hax/signal-radar-core` — Scoring helpers (clamp, proximity strategy)
 
+## Package Naming Conventions
+
+Most shared packages use the `@workspace/*` scope (e.g., `@workspace/radar-core`, `@workspace/mcp-foundation`). Exception: `packages/embedding` uses `@promethean-os/embedding` — the legacy Promethean namespace. Workers should check actual `package.json` name fields rather than assuming the `@workspace/` prefix.
+
+## TypeScript Configuration Template
+
+The workspace has no shared `tsconfig.base.json`. New packages should use this standard template:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
+```
+
+Note: 11 packages in `orgs/riatzukiza/promethean/packages/` had broken tsconfigs extending a missing `../../config/tsconfig.base.json`. These were fixed in the foundation milestone using the above template.
+
 ## Key Architectural Decisions
 
 1. **Models emit packets, not clocks** — assessment packets are structured forms; the reducer is deterministic
