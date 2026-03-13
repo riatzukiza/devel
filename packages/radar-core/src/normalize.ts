@@ -258,10 +258,15 @@ export interface RawCollectorOutput {
  *  5. Fills in default values for optional fields
  */
 export function normalize(raw: RawCollectorOutput): SignalEvent {
+  // Validate that text is non-empty after trimming whitespace
+  if (!raw.text || raw.text.trim().length === 0) {
+    throw new Error("Cannot normalize signal with empty text input");
+  }
+
   const now = new Date().toISOString();
 
   const id = raw.id ?? randomUUID();
-  const text = raw.text || "";
+  const text = raw.text;
   const normalizedContent = cleanText(text);
   const links = raw.links ? [...raw.links] : [];
   const domainTags = raw.domain_tags ? [...raw.domain_tags] : [];

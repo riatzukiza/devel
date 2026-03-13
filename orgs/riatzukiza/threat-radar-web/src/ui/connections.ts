@@ -28,9 +28,9 @@ export interface BridgeCardData {
   readonly summary: string;
   readonly realism: number;
   readonly fear: number;
-  readonly publicBenefit: number;
-  readonly polarizationRisk: number;
-  readonly compressionLoss: number;
+  readonly public_benefit: number;
+  readonly polarization_risk: number;
+  readonly compression_loss: number;
   readonly suggestedActions: readonly string[];
   readonly coordinationPath: string;
   readonly rationale: readonly string[];
@@ -386,9 +386,9 @@ export function detectClientConnections(
         summary: generateDescription(g.thread, l.thread, ct, strength),
         realism: scoreRealism(g.thread, l.thread, strength),
         fear: scoreFear(g.thread),
-        publicBenefit: scorePublicBenefit(l.thread, strength),
-        polarizationRisk: scorePolarizationRisk(g.thread, l.thread),
-        compressionLoss: scoreCompressionLoss(g.thread, l.thread),
+        public_benefit: scorePublicBenefit(l.thread, strength),
+        polarization_risk: scorePolarizationRisk(g.thread, l.thread),
+        compression_loss: scoreCompressionLoss(g.thread, l.thread),
         suggestedActions: actions.slice(0, 3),
         coordinationPath: `Coordinate ${l.thread.kind === "local_opportunity" ? "community response" : "information sharing"} through federated assessment exchange`,
         rationale: [

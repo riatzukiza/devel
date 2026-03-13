@@ -50,10 +50,10 @@ function toBranchMapBranches(det: DeterministicSnapshotData): BranchMapBranch[] 
     evidence: b.evidence,
     realism: b.realism,
     fear: b.fear,
-    publicBenefit: b.publicBenefit,
+    public_benefit: b.public_benefit,
     actionability: b.actionability,
-    polarizationRisk: b.polarizationRisk,
-    compressionLoss: b.compressionLoss,
+    polarization_risk: b.polarization_risk,
+    compression_loss: b.compression_loss,
   }));
 }
 

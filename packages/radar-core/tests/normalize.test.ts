@@ -112,15 +112,14 @@ describe("normalize", () => {
     expect(result.id).toBe("custom-id-999");
   });
 
-  it("handles empty text content gracefully", () => {
+  it("throws for empty text input", () => {
     const raw = makeRaw({ text: "" });
-    // The text field is empty, but normalize should not throw
-    const result = normalize(raw);
-    expect(result.normalized_content).toBe("");
-    expect(result.quality_score).toBeDefined();
-    expect(result.quality_score!).toBeGreaterThanOrEqual(0);
-    expect(result.quality_score!).toBeLessThanOrEqual(1);
-    expect(result.category).toBe("general");
+    expect(() => normalize(raw)).toThrow("Cannot normalize signal with empty text input");
+  });
+
+  it("throws for whitespace-only text input", () => {
+    const raw = makeRaw({ text: "   \n\t  " });
+    expect(() => normalize(raw)).toThrow("Cannot normalize signal with empty text input");
   });
 
   it("handles missing optional fields with defaults", () => {
@@ -204,9 +203,8 @@ describe("normalize", () => {
   });
 
   it("quality_score is bounded between 0 and 1", () => {
-    // Test extreme cases
+    // Test extreme cases (empty text is now rejected, so start with minimal non-empty)
     const cases: RawCollectorOutput[] = [
-      makeRaw({ text: "", links: [], metadata: {}, title: undefined }),
       makeRaw({ text: "x", links: [], metadata: {}, title: undefined }),
       makeRaw({
         text: "A very long text ".repeat(100),

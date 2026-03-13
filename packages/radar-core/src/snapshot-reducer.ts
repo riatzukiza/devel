@@ -18,10 +18,10 @@ export const narrativeBranchSchema = z.object({
   evidence: z.array(z.string()),
   realism: z.number().min(0).max(100),
   fear: z.number().min(0).max(100),
-  publicBenefit: z.number().min(0).max(100),
+  public_benefit: z.number().min(0).max(100),
   actionability: z.number().min(0).max(100),
-  polarizationRisk: z.number().min(0).max(100),
-  compressionLoss: z.number().min(0).max(100),
+  polarization_risk: z.number().min(0).max(100),
+  compression_loss: z.number().min(0).max(100),
 });
 
 export const radarSnapshotSchema = z.object({
@@ -404,10 +404,10 @@ export function reduce(threads: ReadonlyArray<Thread>): RadarSnapshot {
       evidence,
       realism: scoreBranchRealism(group),
       fear: scoreBranchFear(group),
-      publicBenefit: scoreBranchPublicBenefit(group),
+      public_benefit: scoreBranchPublicBenefit(group),
       actionability: scoreBranchActionability(group),
-      polarizationRisk: scoreBranchPolarizationRisk(group),
-      compressionLoss: scoreBranchCompressionLoss(group, sorted.length),
+      polarization_risk: scoreBranchPolarizationRisk(group),
+      compression_loss: scoreBranchCompressionLoss(group, sorted.length),
     };
   });
 

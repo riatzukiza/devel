@@ -249,7 +249,7 @@ describe("detectClientConnections", () => {
     expect(bridge.realism).toBeGreaterThanOrEqual(0);
     expect(bridge.realism).toBeLessThanOrEqual(100);
     expect(bridge.fear).toBeGreaterThanOrEqual(0);
-    expect(bridge.publicBenefit).toBeGreaterThanOrEqual(0);
+    expect(bridge.public_benefit).toBeGreaterThanOrEqual(0);
   });
 
   it("includes semantic similarity from lookup", () => {
