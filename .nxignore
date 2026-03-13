@@ -1,0 +1,5 @@
+# Ignore all static project.json files - we use giga plugin for dynamic project generation
+projects/**/*.json
+projects.bak/**/*.json
+orgs/**/*.json
+!orgs/open-hax/workbench/project.json

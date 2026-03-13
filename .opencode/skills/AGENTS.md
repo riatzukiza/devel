@@ -12,8 +12,10 @@ This directory contains the skill definitions for the OpenCode agent system.
 ### General
 - apology-action-protocol
 - break-edit-loop
+- clock-model-evolver
 - emergency-confusion-reset
 - giga-workflow
+- hormuz-risk-clock
 - lint-gate
 - lsp-server-integration
 - mcp-server-integration
@@ -22,6 +24,10 @@ This directory contains the skill definitions for the OpenCode agent system.
 - shadow-cljs-debug
 - skill-authoring
 - skill-optimizing
+- social-publish-bluesky
+- social-publish-discord
+- social-publish-reddit
+- social-publish-x
 - task-atomicity-guard
 - verify-resource-existence
 
