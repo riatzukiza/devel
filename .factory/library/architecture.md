@@ -121,6 +121,39 @@ Both are wired into `threat-radar-mcp`: the thread-based reducer triggers when t
 - **memberRefs**: Thread records store local `signal_event_id` strings in `memberRefs` instead of AT URIs. These should be resolved to actual AT URIs when the full publishing pipeline is wired end-to-end.
 - **Client config**: `signal-atproto` client accepts a config object (`identifier`/`password`), not env vars directly. Env var reading belongs at the integration layer.
 
+## Federation Architecture (Enso Protocol)
+
+The federation module (`threat-radar-mcp/src/lib/federation.ts`) implements Enso-style envelope messaging adapted from `promethean/experimental/enso-protocol/`.
+
+### API Endpoints
+- `GET /api/federation/status` — Returns federation status, peers, trust circle (no auth)
+- `POST /api/federation/receive` — Receives envelopes from peers (**no auth** — intentional for inter-peer communication)
+- `POST /api/federation/peers` — Add peer to federation (admin auth required)
+- `DELETE /api/federation/peers/:id` — Remove peer (admin auth required)
+- `POST /api/federation/trust/:peerId` — Add peer to trust circle (admin auth required)
+- `DELETE /api/federation/trust/:peerId` — Remove peer from trust circle (admin auth required)
+- `POST /api/federation/broadcast` — Broadcast local snapshot to all peers (admin auth required)
+- `POST /api/federation/discover` — Discover peers via AT Protocol profiles (admin auth required)
+
+### Privacy Model
+- Only aggregate snapshots (no raw signals) are shared via federation
+- `createAggregatePayload()` strips all non-aggregate data before sending
+- Trust circle filtering: only trusted peers' data appears in aggregated views
+
+### Design Choices
+- Envelope hash uses deterministic canonical JSON serialization
+- No Ed25519 signature verification yet (field exists on envelope but unused)
+- Sequential AT Protocol discovery (could be parallelized with Promise.allSettled)
+- Unknown senders are auto-registered as 'untrusted' peers
+
+## Browser Embedding: Trigram Fallback
+
+The `signal-embed-browser` package uses a lightweight trigram-based text similarity as fallback when ONNX models are unavailable:
+- **Hash space**: 256 buckets (character-level trigrams hashed to 0-255)
+- **Method**: Character trigrams → hash vector → cosine similarity
+- **Limitation**: Hash collisions at 256 buckets reduce precision for large vocabularies; only character trigrams, not word n-grams
+- **Full ONNX path**: WebGPU → WebNN → WASM → trigram-cpu fallback chain; currently only trigram-cpu verified in tests
+
 ## Testing Notes
 
 - **vitest version**: Workspace uses vitest 0.34.6 which does NOT support `--grep` flag. Use file path targeting instead: `npx vitest run tests/specific.test.ts`
