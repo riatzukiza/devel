@@ -15,6 +15,7 @@ import {
   radarModuleVersionSchema,
   radarSchema,
   reduceRadarPackets,
+  reduce as deterministicReduce,
   sourceDefinitionSchema,
   type Radar,
   type RadarAssessmentPacket,
@@ -363,6 +364,17 @@ async function reduceLive(radarId: string): Promise<ReducedSnapshot> {
     snapshotKind: "live",
     snapshotId: `${radarId}:live:${Date.now()}`,
   });
+
+  // Also run the deterministic thread-based reducer if threads exist
+  const threads = await store.listThreads(radarId);
+  if (threads.length > 0) {
+    const deterministicSnapshot = deterministicReduce(threads);
+    snapshot.render_state = {
+      ...snapshot.render_state,
+      deterministicSnapshot,
+    };
+  }
+
   await store.createSnapshot(snapshot);
   await store.createAuditEvent(radarId, "live_reduction", { snapshot_id: snapshot.id });
   return snapshot;
@@ -388,6 +400,17 @@ async function sealDailySnapshot(radarId: string): Promise<ReducedSnapshot> {
     snapshotKind: "daily",
     snapshotId: `${radarId}:daily:${new Date().toISOString().slice(0, 10)}`,
   });
+
+  // Also run the deterministic thread-based reducer if threads exist
+  const threads = await store.listThreads(radarId);
+  if (threads.length > 0) {
+    const deterministicSnapshot = deterministicReduce(threads);
+    snapshot.render_state = {
+      ...snapshot.render_state,
+      deterministicSnapshot,
+    };
+  }
+
   await store.createSnapshot(snapshot);
   await store.createAuditEvent(radarId, "daily_sealed", { snapshot_id: snapshot.id });
   return snapshot;
@@ -436,8 +459,9 @@ app.post("/api/submit-packet", requireAdminKey, async (req, res) => {
     const packet = radarAssessmentPacketSchema.parse(req.body);
     const result = await submitPacket(packet);
     res.json({ ok: true, ...result });
-  } catch (err: any) {
-    res.status(400).json({ error: err.message ?? "Invalid packet" });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Invalid packet";
+    res.status(400).json({ error: message });
   }
 });
 
@@ -447,8 +471,9 @@ app.post("/api/reduce-live/:radarId", requireAdminKey, async (req, res) => {
     const radarId = Array.isArray(rawRadarId) ? rawRadarId[0] ?? "" : rawRadarId;
     const snapshot = await reduceLive(radarId);
     res.json({ ok: true, snapshot });
-  } catch (err: any) {
-    res.status(400).json({ error: err.message ?? "Reduction failed" });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Reduction failed";
+    res.status(400).json({ error: message });
   }
 });
 
@@ -467,8 +492,13 @@ server.registerTool(
     },
   },
   async ({ slug, name, category, templateId, createdBy }): Promise<CallToolResult> => {
-    const radar = await createRadar({ slug, name, category, templateId, createdBy });
-    return { content: [{ type: "text", text: JSON.stringify({ ok: true, radar }, null, 2) }] };
+    try {
+      const radar = await createRadar({ slug, name, category, templateId, createdBy });
+      return { content: [{ type: "text", text: JSON.stringify({ ok: true, radar }, null, 2) }] };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to create radar";
+      return { content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }], isError: true };
+    }
   },
 );
 
@@ -480,21 +510,26 @@ server.registerTool(
     annotations: { readOnlyHint: true, destructiveHint: false, openWorldHint: false },
   },
   async (): Promise<CallToolResult> => {
-    const radars = await store.listRadars();
-    const list = await Promise.all(radars.map(async (radar) => {
-      const sources = await store.listSources(radar.id);
-      const submissions = await store.listSubmissions(radar.id);
-      const liveSnapshot = await store.getLatestLiveSnapshot(radar.id);
-      const dailySnapshots = await store.listDailySnapshots(radar.id);
-      return {
-        radar,
-        sourceCount: sources.length,
-        submissionCount: submissions.length,
-        hasLiveSnapshot: Boolean(liveSnapshot),
-        dailySnapshotCount: dailySnapshots.length,
-      };
-    }));
-    return { content: [{ type: "text", text: JSON.stringify(list, null, 2) }] };
+    try {
+      const radars = await store.listRadars();
+      const list = await Promise.all(radars.map(async (radar) => {
+        const sources = await store.listSources(radar.id);
+        const submissions = await store.listSubmissions(radar.id);
+        const liveSnapshot = await store.getLatestLiveSnapshot(radar.id);
+        const dailySnapshots = await store.listDailySnapshots(radar.id);
+        return {
+          radar,
+          sourceCount: sources.length,
+          submissionCount: submissions.length,
+          hasLiveSnapshot: Boolean(liveSnapshot),
+          dailySnapshotCount: dailySnapshots.length,
+        };
+      }));
+      return { content: [{ type: "text", text: JSON.stringify(list, null, 2) }] };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to list radars";
+      return { content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }], isError: true };
+    }
   },
 );
 
@@ -505,8 +540,13 @@ server.registerTool(
     inputSchema: { source: sourceDefinitionSchema },
   },
   async ({ source }): Promise<CallToolResult> => {
-    const created = await addSource(source);
-    return { content: [{ type: "text", text: JSON.stringify({ ok: true, source: created }, null, 2) }] };
+    try {
+      const created = await addSource(source);
+      return { content: [{ type: "text", text: JSON.stringify({ ok: true, source: created }, null, 2) }] };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to add source";
+      return { content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }], isError: true };
+    }
   },
 );
 
@@ -517,8 +557,13 @@ server.registerTool(
     inputSchema: { packet: radarAssessmentPacketSchema },
   },
   async ({ packet }): Promise<CallToolResult> => {
-    const result = await submitPacket(packet);
-    return { content: [{ type: "text", text: JSON.stringify({ ok: true, ...result }, null, 2) }] };
+    try {
+      const result = await submitPacket(packet);
+      return { content: [{ type: "text", text: JSON.stringify({ ok: true, ...result }, null, 2) }] };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to submit packet";
+      return { content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }], isError: true };
+    }
   },
 );
 
@@ -529,8 +574,13 @@ server.registerTool(
     inputSchema: { radarId: z.string().min(1) },
   },
   async ({ radarId }): Promise<CallToolResult> => {
-    const snapshot = await reduceLive(radarId);
-    return { content: [{ type: "text", text: JSON.stringify({ ok: true, snapshot }, null, 2) }] };
+    try {
+      const snapshot = await reduceLive(radarId);
+      return { content: [{ type: "text", text: JSON.stringify({ ok: true, snapshot }, null, 2) }] };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Reduction failed";
+      return { content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }], isError: true };
+    }
   },
 );
 
@@ -541,8 +591,13 @@ server.registerTool(
     inputSchema: { radarId: z.string().min(1) },
   },
   async ({ radarId }): Promise<CallToolResult> => {
-    const snapshot = await sealDailySnapshot(radarId);
-    return { content: [{ type: "text", text: JSON.stringify({ ok: true, snapshot }, null, 2) }] };
+    try {
+      const snapshot = await sealDailySnapshot(radarId);
+      return { content: [{ type: "text", text: JSON.stringify({ ok: true, snapshot }, null, 2) }] };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Snapshot sealing failed";
+      return { content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }], isError: true };
+    }
   },
 );
 
@@ -554,8 +609,13 @@ server.registerTool(
     annotations: { readOnlyHint: true, destructiveHint: false, openWorldHint: false },
   },
   async ({ radarId }): Promise<CallToolResult> => {
-    const events = await store.listAuditEvents(radarId);
-    return { content: [{ type: "text", text: JSON.stringify(events, null, 2) }] };
+    try {
+      const events = await store.listAuditEvents(radarId);
+      return { content: [{ type: "text", text: JSON.stringify(events, null, 2) }] };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to get audit log";
+      return { content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }], isError: true };
+    }
   },
 );
 
