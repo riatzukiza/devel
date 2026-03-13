@@ -143,3 +143,58 @@ To populate η/μ lanes with test data:
 
 ### Personalization Weight Dimension Names
 Weight keys in personalization panel (e.g., 'geopolitical', 'infrastructure') don't exactly match radar data dimension names (e.g., 'geopolitics'). Only exact matches respond to slider changes.
+
+## Flow Validator Guidance: Unit Tests (connection-engine)
+
+**Surface**: vitest test runner
+**Assertions covered**: VAL-CONN-001, VAL-CONN-002, VAL-CONN-003, VAL-BROWSER-001, VAL-BROWSER-002, VAL-BROWSER-003, VAL-FED-001, VAL-FED-003
+
+### Connection Engine (radar-core)
+- **Tests**: `cd /home/err/devel/packages/radar-core && npx vitest run tests/connections.test.ts --reporter=verbose`
+- Tests cover: `detectConnections()`, `ConnectionOpportunity` field completeness, `ActionCard` generation, strength calculation, connection type inference, narrative branch scoring via `reduce()` tests
+- **VAL-CONN-001**: Look for "generates ConnectionOpportunity with all required fields" and "identifies connections between global and local threads" tests
+- **VAL-CONN-002**: Look for "ActionCards include actionableSteps" and check ActionCard required fields (scope→description, effort→urgency, expected_benefit→description, risk→urgency, feedback_metric→actionableSteps)
+- **VAL-CONN-003**: Narrative branch scoring tested in reducer tests: `cd /home/err/devel/packages/radar-core && npx vitest run tests/snapshot-reducer.test.ts --reporter=verbose`
+
+### Browser Compute (signal-embed-browser)
+- **Tests**: `cd /home/err/devel/packages/signal-embed-browser && npx vitest run --reporter=verbose`
+- **VAL-BROWSER-001**: `cosineMatrix` tests verify diagonal ≈1.0 and off-diagonal in [-1,1]
+- **VAL-BROWSER-002**: The package uses pure JS trigram similarity (WASM-free fallback). `trigramSimilarityMatrix` tests confirm this works.
+- **VAL-BROWSER-003**: `diagnostics.test.ts` tests backend detection (`resolveWebNNOptions`). Also test via browser: `embeddingState.activeBackend` shown in PiLaneConnections.
+
+### Federation (threat-radar-mcp)
+- **Tests**: `cd /home/err/devel/orgs/riatzukiza/threat-radar-mcp && npx vitest run tests/federation.test.ts --reporter=verbose`
+- **VAL-FED-001**: "creates a valid Enso-style envelope" and "round-trips serialize → deserialize" tests
+- **VAL-FED-003**: "trust circle filtering" suite — accepts trusted, rejects untrusted, filters getPeerSnapshots
+
+**Isolation**: All unit tests are self-contained with no shared state. Can run in parallel safely.
+
+## Flow Validator Guidance: Browser (connection-engine)
+
+**Surface**: Browser — threat-radar-web dashboard at http://localhost:9002
+**Tool**: agent-browser (invoke via Skill tool at start of your session)
+**Assertions covered**: VAL-PI-001, VAL-PI-002, VAL-PI-003, VAL-PI-004, VAL-PI-005, VAL-FED-002, VAL-CROSS-004
+
+### What to test
+The Π (Connections) lane is the rightmost column (fuchsia/magenta accent). It shows:
+- Bridge cards linking η (global) threads to μ (local) threads
+- Realism, fear, and public benefit scores on bridge cards
+- Suggested local action per bridge card
+- Federated coordination path text
+- Feedback loop visualization (P→R→N→Π→A cycle)
+- Federation comparison panel (accessible via button)
+- Action cards with urgency and steps
+
+### Data requirements
+The Π lane generates connections client-side from existing thread data. Ensure the backend has:
+- At least 1 geopolitical radar with snapshot and threads (η lane)
+- At least 1 technology/local radar with snapshot and threads (μ lane)
+- The dashboard's `detectClientConnections()` will generate bridge cards from these
+
+### Session naming
+Use session ID provided in your prompt. Close session when done.
+
+### Isolation
+- DO NOT stop or restart dev servers (port 9001, 9002)
+- DO NOT modify the database directly
+- Read-only browser testing
