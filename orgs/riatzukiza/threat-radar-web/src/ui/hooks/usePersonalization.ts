@@ -155,6 +155,63 @@ export function usePersonalization(): UsePersonalizationReturn {
 }
 
 // ---------------------------------------------------------------------------
+// Dimension name normalization — maps variant dimension names from radar
+// data (e.g. subreddit names, alternative spellings) to canonical
+// personalization dimension names.
+// ---------------------------------------------------------------------------
+
+/** Mapping of variant dimension names to canonical Dimension values */
+const DIMENSION_ALIASES: Readonly<Record<string, Dimension>> = {
+  // Geopolitical variants
+  geopolitics: "geopolitical",
+  geopolitic: "geopolitical",
+  "geo-political": "geopolitical",
+  political: "geopolitical",
+  diplomacy: "geopolitical",
+  // Infrastructure variants
+  infra: "infrastructure",
+  energy: "infrastructure",
+  "supply chain": "infrastructure",
+  logistics: "infrastructure",
+  // Economic variants
+  economy: "economic",
+  economics: "economic",
+  financial: "economic",
+  finance: "economic",
+  market: "economic",
+  // Security variants
+  cybersecurity: "security",
+  "cyber-security": "security",
+  "cyber security": "security",
+  infosec: "security",
+  // Climate variants
+  environmental: "climate",
+  environment: "climate",
+  weather: "climate",
+  // Technology variants
+  tech: "technology",
+  ai: "technology",
+  "artificial intelligence": "technology",
+  "machine learning": "technology",
+  computing: "technology",
+};
+
+/**
+ * Normalize a dimension name to its canonical Dimension value.
+ * Returns the matching Dimension if found (exact match or alias),
+ * otherwise returns undefined.
+ */
+export function normalizeDimension(name: string): Dimension | undefined {
+  const lower = name.toLowerCase();
+  // Exact match
+  if (DIMENSIONS.includes(lower as Dimension)) {
+    return lower as Dimension;
+  }
+  // Alias match
+  return DIMENSION_ALIASES[lower];
+}
+
+// ---------------------------------------------------------------------------
 // Utility: apply weights to score ranges
 // ---------------------------------------------------------------------------
 
@@ -167,8 +224,8 @@ export function applyWeights(
   weights: DimensionWeights,
 ): { dimension: string; weighted: number; original: number }[] {
   return scoreRanges.map((sr) => {
-    const dim = sr.dimension as Dimension;
-    const weight = weights[dim] ?? DEFAULT_WEIGHT;
+    const dim = normalizeDimension(sr.dimension);
+    const weight = dim !== undefined ? weights[dim] : DEFAULT_WEIGHT;
     // Scale factor: 0 at weight=0, 1 at weight=50, 2 at weight=100
     const factor = weight / 50;
     const original = sr.median * 100;
@@ -185,13 +242,13 @@ export function computeCompositeScore(
   if (scoreRanges.length === 0) return 0;
   const applied = applyWeights(scoreRanges, weights);
   const totalWeight = applied.reduce((sum, a) => {
-    const dim = a.dimension as Dimension;
-    return sum + (weights[dim] ?? DEFAULT_WEIGHT);
+    const dim = normalizeDimension(a.dimension);
+    return sum + (dim !== undefined ? weights[dim] : DEFAULT_WEIGHT);
   }, 0);
   if (totalWeight === 0) return 0;
   const weightedSum = applied.reduce((sum, a) => {
-    const dim = a.dimension as Dimension;
-    return sum + a.weighted * (weights[dim] ?? DEFAULT_WEIGHT);
+    const dim = normalizeDimension(a.dimension);
+    return sum + a.weighted * (dim !== undefined ? weights[dim] : DEFAULT_WEIGHT);
   }, 0);
   return weightedSum / totalWeight;
 }

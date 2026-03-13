@@ -15,6 +15,7 @@ import { FirehosePanel } from "./components/FirehosePanel";
 import { HeroPanel } from "./components/HeroPanel";
 import { useRadarPolling } from "../api/useRadarPolling";
 import { usePersonalization, applyWeights, computeCompositeScore } from "./hooks/usePersonalization";
+import { isGlobalCategory, isLocalCategory } from "./lane-routing";
 import type { RadarTile, SignalData, BranchData } from "../api/types";
 
 function averageSignal(snapshot: RadarTile["liveSnapshot"]): number {
@@ -183,8 +184,8 @@ export function App(): JSX.Element {
   const { tiles, loading, error, isStale, lastUpdated, refetch } = useRadarPolling(apiUrl);
   const { weights, toggles, setWeight, setToggle, resetToDefaults } = usePersonalization();
 
-  const globalTiles = useMemo(() => tiles.filter((t) => t.radar.category === "geopolitical" || t.radar.category === "infrastructure" || t.radar.category === "global"), [tiles]);
-  const localTiles = useMemo(() => tiles.filter((t) => t.radar.category === "local" || t.radar.category === "community" || t.radar.category === "oss"), [tiles]);
+  const globalTiles = useMemo(() => tiles.filter((t) => isGlobalCategory(t.radar.category)), [tiles]);
+  const localTiles = useMemo(() => tiles.filter((t) => isLocalCategory(t.radar.category)), [tiles]);
   const connectionTiles = useMemo(() => tiles.filter((t) => !globalTiles.includes(t) && !localTiles.includes(t)), [tiles, globalTiles, localTiles]);
 
   // Compute weighted composite score from all tiles with deterministic snapshots

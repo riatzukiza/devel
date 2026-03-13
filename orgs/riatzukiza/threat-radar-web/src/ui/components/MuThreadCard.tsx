@@ -108,6 +108,94 @@ function formatRelativeTime(isoString: string): string {
   return `${diffDay}d ago`;
 }
 
+// ---------------------------------------------------------------------------
+// Action suggestion derivation — derive 1-3 actionable suggestions from
+// the thread's domain_tags, category (via kind), and status.
+// ---------------------------------------------------------------------------
+
+/** A mapping from domain tag keywords to potential action suggestions */
+const TAG_ACTION_MAP: ReadonlyArray<{
+  readonly tags: readonly string[];
+  readonly actions: readonly string[];
+}> = [
+  {
+    tags: ["ai", "artificial intelligence", "machine learning", "llm", "neural"],
+    actions: ["Monitor AI model releases", "Review compute resource impact", "Assess local AI adoption opportunities"],
+  },
+  {
+    tags: ["community", "grassroots", "local action", "cooperative"],
+    actions: ["Engage with community discussions", "Review community impact", "Identify collaboration opportunities"],
+  },
+  {
+    tags: ["oss", "open-source", "open source", "contributor", "maintainer"],
+    actions: ["Contribute to open-source initiatives", "Evaluate adoption opportunities", "Review license and governance changes"],
+  },
+  {
+    tags: ["security", "cyber", "vulnerability", "exploit"],
+    actions: ["Review security advisories", "Update security protocols", "Assess vulnerability exposure"],
+  },
+  {
+    tags: ["technology", "compute", "chip", "semiconductor", "gpu"],
+    actions: ["Track technology developments", "Assess integration opportunities", "Review hardware supply chain"],
+  },
+  {
+    tags: ["developer", "hackathon"],
+    actions: ["Share findings with developer community", "Organize local developer response"],
+  },
+  {
+    tags: ["economic", "market", "trade", "tariff"],
+    actions: ["Monitor economic indicators", "Review budget and resource allocation"],
+  },
+  {
+    tags: ["climate", "emissions", "renewable", "sustainability"],
+    actions: ["Track environmental policy changes", "Assess infrastructure resilience"],
+  },
+  {
+    tags: ["local"],
+    actions: ["Coordinate local response", "Connect with affected stakeholders"],
+  },
+];
+
+/**
+ * Derive 1-3 suggested actions from the thread's domain_tags and kind.
+ * Actions are chosen based on tag overlap, with deduplication.
+ * Falls back to generic actions if no tags match.
+ */
+export function deriveActionSuggestions(thread: ThreadData): string[] {
+  const lowerTags = thread.domain_tags.map((t) => t.toLowerCase());
+  const suggestions = new Set<string>();
+
+  // Match tags against the action map
+  for (const mapping of TAG_ACTION_MAP) {
+    const hasMatch = mapping.tags.some((tag) =>
+      lowerTags.some((lt) => lt.includes(tag) || tag.includes(lt)),
+    );
+    if (hasMatch) {
+      for (const action of mapping.actions) {
+        suggestions.add(action);
+        if (suggestions.size >= 3) break;
+      }
+    }
+    if (suggestions.size >= 3) break;
+  }
+
+  // Fallback based on thread kind if no tag matches
+  if (suggestions.size === 0) {
+    if (thread.kind === "local_opportunity") {
+      suggestions.add("Evaluate this opportunity for local impact");
+      suggestions.add("Connect with relevant stakeholders");
+    } else if (thread.kind === "event") {
+      suggestions.add("Monitor this event for developments");
+      suggestions.add("Assess potential local impact");
+    } else {
+      suggestions.add("Follow this narrative for emerging patterns");
+    }
+  }
+
+  // Ensure at least 1, at most 3
+  return [...suggestions].slice(0, 3);
+}
+
 function timeToActClass(tta: TimeToAct): string {
   switch (tta) {
     case "act now": return "tta-now";
@@ -167,6 +255,7 @@ export function MuThreadCard({ thread, className }: MuThreadCardProps): JSX.Elem
   const proxLevel = proximityLevel(proximityScore);
   const tta = timeToAct(thread);
   const signalCount = thread.members.length;
+  const actionSuggestions = deriveActionSuggestions(thread);
 
   const sources = Object.entries(thread.source_distribution)
     .sort(([, a], [, b]) => b - a);
@@ -220,6 +309,21 @@ export function MuThreadCard({ thread, className }: MuThreadCardProps): JSX.Elem
 
       {/* Leverage bar */}
       <LeverageBar score={leverageScore} />
+
+      {/* Per-card action suggestions */}
+      {actionSuggestions.length > 0 && (
+        <div className="mu-action-suggestions" data-testid="mu-action-suggestions">
+          <span className="mu-action-suggestions-label">Suggested Actions</span>
+          <ul className="mu-action-suggestions-list">
+            {actionSuggestions.map((action) => (
+              <li key={action} className="mu-action-suggestion-item" data-testid="mu-action-suggestion">
+                <span className="mu-action-bullet">→</span>
+                <span className="mu-action-text">{action}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* Source badges */}
       <div className="mu-thread-sources" data-testid="mu-thread-sources">
