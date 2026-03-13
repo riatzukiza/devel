@@ -359,6 +359,27 @@ app.post("/api/radars", requireAdminKey, async (req, res) => {
   res.status(201).json(radar);
 });
 
+app.post("/api/submit-packet", requireAdminKey, async (req, res) => {
+  try {
+    const packet = radarAssessmentPacketSchema.parse(req.body);
+    const result = await submitPacket(packet);
+    res.json({ ok: true, ...result });
+  } catch (err: any) {
+    res.status(400).json({ error: err.message ?? "Invalid packet" });
+  }
+});
+
+app.post("/api/reduce-live/:radarId", requireAdminKey, async (req, res) => {
+  try {
+    const rawRadarId = req.params.radarId;
+    const radarId = Array.isArray(rawRadarId) ? rawRadarId[0] ?? "" : rawRadarId;
+    const snapshot = await reduceLive(radarId);
+    res.json({ ok: true, snapshot });
+  } catch (err: any) {
+    res.status(400).json({ error: err.message ?? "Reduction failed" });
+  }
+});
+
 const server = new McpServer({ name: "threat-radar-mcp", version: "0.1.0" });
 
 server.registerTool(
