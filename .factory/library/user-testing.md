@@ -39,3 +39,30 @@ Testing surface, tools, resource cost classification, and validation approach.
 
 - threat-radar-mcp has 1 pre-existing TS error at `src/main.ts:374` (string | string[] type mismatch)
 - Packages not in pnpm-workspace.yaml — must run typecheck directly in submodule dirs until fixed
+
+## Flow Validator Guidance: API (signal-pipeline)
+
+**Surface**: MCP HTTP API at http://localhost:9001
+**Tool**: curl
+**Auth**: For MCP endpoint (POST /mcp), local requests are auto-authenticated (ALLOW_UNAUTH_LOCAL=true). For REST endpoints (/api/*), use header `x-admin-auth-key: dev-admin-key-12345`.
+**MCP call format**: POST to http://localhost:9001/mcp with JSON body:
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "<tool-name>",
+    "arguments": { ... }
+  }
+}
+```
+**DB queries**: Use `docker exec open-hax-openai-proxy-open-hax-openai-proxy-db-1 psql -U openai_proxy -d threat_radar -c "<SQL>"` to query Postgres directly.
+**Isolation**: Each flow validator should use unique radar IDs (UUIDs) and unique identifiers to avoid collisions. Do NOT delete or modify data created by other validators.
+
+## Flow Validator Guidance: Unit Tests (signal-pipeline)
+
+**Surface**: vitest test runner
+**radar-core tests**: `cd /home/err/devel/packages/radar-core && npx vitest run`
+**signal-atproto tests**: `cd /home/err/devel/packages/signal-atproto && npx vitest run`
+**Isolation**: Unit tests are self-contained with no shared state concerns.
