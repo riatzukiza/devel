@@ -124,4 +124,22 @@ curl -s -X POST http://localhost:9001/mcp -H "Content-Type: application/json" -d
 }'
 ```
 
-**Admin auth for REST**: `curl -H "x-admin-key: $ADMIN_AUTH_KEY" http://localhost:9001/api/...`
+**Admin auth for REST**: Use the `x-admin-auth-key` header with the value from the ADMIN_AUTH_KEY env var when calling `/api/*` endpoints.
+
+## Known Issues (dashboard-mvp round 2)
+
+### μ Lane Category Filter Mismatch
+**App.tsx localTiles filter** only accepts categories `'local'|'community'|'oss'` for routing to the μ lane. Radars with category `'technology'` (e.g., "Open Source AI Community") route to connectionTiles (Π lane) instead. Fix: add `'technology'` to localTiles category list.
+
+### MuThreadCard Missing Per-Card Action Suggestions
+MuThreadCard shows title, signal count, proximity/leverage/time-to-act indicators, leverage bar, source badges, and expandable signal details. It does NOT include per-card action suggestions. The Action Feed component (lane-level) shows action suggestions derived from branches, but they are not embedded within individual thread cards.
+
+### Data Seeding for Dashboard Testing
+To populate η/μ lanes with test data:
+1. Create radars via REST: `POST /api/radars` with `x-admin-auth-key` header
+2. Insert signals into DB with `radar_id` set (not NULL)
+3. Submit assessment packets via `POST /api/submit-packet` (needs `thread_id`, `radar_id`, `module_version_id`, `timestamp_utc`, `model_id`, `signal_scores` with `{value, range, confidence, reason}`, `branch_assessment`)
+4. Trigger `POST /api/reduce-live/:radarId` — this auto-clusters signals into threads and generates snapshots with deterministicSnapshot render_state
+
+### Personalization Weight Dimension Names
+Weight keys in personalization panel (e.g., 'geopolitical', 'infrastructure') don't exactly match radar data dimension names (e.g., 'geopolitics'). Only exact matches respond to slider changes.
