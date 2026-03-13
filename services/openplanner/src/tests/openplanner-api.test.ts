@@ -40,7 +40,8 @@ function testConfig(dataDir: string): OpenPlannerConfig {
       bySource: {},
       byKind: {},
       byProject: {}
-    }
+    },
+    ollamaEmbedTruncate: true
   };
 }
 
