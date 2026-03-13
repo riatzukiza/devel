@@ -112,6 +112,23 @@ body {
   padding: 24px 20px;
 }
 
+/* ── Hero Panel (above 3-lane grid) ── */
+.hero-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 100%);
+  border-bottom: 1px solid var(--line);
+}
+.hero-panel-gauges {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  justify-content: center;
+}
+
 /* ── Hero Gauges (in η lane) ── */
 .hero-gauges {
   display: flex;
@@ -298,12 +315,15 @@ body {
 
   .signal-row { grid-template-columns: 1fr 70px 36px; }
   .signal-agreement { display: none; }
+  .hero-panel-gauges { gap: 16px; }
 }
 
 @media (max-width: 480px) {
   .lane-header { padding: 12px 12px 10px; }
   .lane-content { padding: 12px; }
   .hero-gauges { gap: 10px; }
+  .hero-panel { padding: 8px 12px; }
+  .hero-panel-gauges { gap: 10px; }
 }
 
 /* ── Signal Gauges (per-signal RiskGauge grid in RadarCard) ── */

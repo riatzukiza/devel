@@ -12,6 +12,7 @@ import { PersonalizationPanel } from "./components/PersonalizationPanel";
 import { CriticalThinkingSection } from "./components/CriticalThinkingSection";
 import { ActionFeed } from "./components/ActionFeed";
 import { FirehosePanel } from "./components/FirehosePanel";
+import { HeroPanel } from "./components/HeroPanel";
 import { useRadarPolling } from "../api/useRadarPolling";
 import { usePersonalization, applyWeights, computeCompositeScore } from "./hooks/usePersonalization";
 import type { RadarTile, SignalData, BranchData } from "../api/types";
@@ -215,6 +216,15 @@ export function App(): JSX.Element {
         onToggleChange={setToggle}
         onReset={resetToDefaults}
       />
+
+      {/* Hero Panel — aggregate ring gauges above the grid */}
+      {!loading && tiles.length > 0 && (
+        <HeroPanel tiles={tiles} />
+      )}
+      {/* Placeholder hero panel when loading or no data */}
+      {!loading && tiles.length === 0 && !error ? null : loading ? (
+        <HeroPanel tiles={[]} />
+      ) : null}
 
       {/* Main layout — show empty state or 3-lane grid */}
       {!loading && tiles.length === 0 && !error ? (

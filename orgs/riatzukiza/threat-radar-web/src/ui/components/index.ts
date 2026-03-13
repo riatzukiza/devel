@@ -39,3 +39,6 @@ export type { ActionFeedProps } from "./ActionFeed";
 
 export { FirehosePanel, tilesToFirehoseEntries, freshnessClass, relativeTime } from "./FirehosePanel";
 export type { FirehosePanelProps, FirehoseEntry } from "./FirehosePanel";
+
+export { HeroPanel, computeAgency, computeNuance, computeCritical } from "./HeroPanel";
+export type { HeroPanelProps } from "./HeroPanel";
