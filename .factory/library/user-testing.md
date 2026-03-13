@@ -66,3 +66,62 @@ Testing surface, tools, resource cost classification, and validation approach.
 **radar-core tests**: `cd /home/err/devel/packages/radar-core && npx vitest run`
 **signal-atproto tests**: `cd /home/err/devel/packages/signal-atproto && npx vitest run`
 **Isolation**: Unit tests are self-contained with no shared state concerns.
+
+## Flow Validator Guidance: Browser (dashboard-mvp)
+
+**Surface**: Browser — threat-radar-web dashboard at http://localhost:9002
+**Tool**: agent-browser (invoke via Skill tool at start of your session for full documentation)
+**URL**: http://localhost:9002
+**Backend API**: http://localhost:9001 (already running, seeded with test data — 14 radars, 12 signals, 22 snapshots)
+
+### Session naming
+Each flow validator MUST use its own agent-browser session to avoid conflicts. Use the session ID provided in your prompt.
+
+### How to use agent-browser
+1. Invoke the `agent-browser` skill via the Skill tool to get full documentation
+2. Open the dashboard: `agent-browser --session "<your-session>" open "http://localhost:9002"`
+3. Take screenshots for evidence: `agent-browser --session "<your-session>" screenshot "/path/to/evidence/screenshot.png"`
+4. Get DOM snapshot: `agent-browser --session "<your-session>" snapshot`
+5. Click elements: `agent-browser --session "<your-session>" click "<selector>"`
+6. Close session when done: `agent-browser --session "<your-session>" close`
+
+### What the dashboard shows
+The dashboard is a single-page React app with:
+- Hero panel with ring gauges (Agency, Nuance, Critical)
+- Composite stress clock with sweep hand
+- Three lanes: η (Global/cyan), μ (Local/emerald), Π (Connections/fuchsia)
+- Thread cards with gauges, narrative branches, source badges
+- Personalization controls (sliders, toggles)
+- Source firehose panel
+- Action feed with time-bounded suggestions
+- Critical thinking section
+- Dark theme throughout
+
+### Data seeding
+The backend already has 14 test radars with live/daily snapshots and 12 signals. The dashboard fetches data via polling from http://localhost:9001/api/radars. No additional seeding should be needed for visual testing.
+
+### Isolation rules
+- DO NOT stop or restart the dev servers (port 9001, 9002)
+- DO NOT modify the database directly
+- Personalization tests that modify localStorage should not affect other validators since each agent-browser instance has its own browser context
+- All validators are read-only against the backend API (except for personalization slider persistence which uses localStorage)
+
+### API operations (for cross-area flow tests)
+For tests that need to create radars or submit packets via MCP:
+```bash
+# Create radar via MCP
+curl -s -X POST http://localhost:9001/mcp -H "Content-Type: application/json" -d '{
+  "jsonrpc": "2.0", "id": 1,
+  "method": "tools/call",
+  "params": { "name": "radar_create", "arguments": { "name": "Test Radar", "slug": "test-unique-slug", "category": "test" }}
+}'
+
+# Submit assessment packet
+curl -s -X POST http://localhost:9001/mcp -H "Content-Type: application/json" -d '{
+  "jsonrpc": "2.0", "id": 1,
+  "method": "tools/call",
+  "params": { "name": "radar_submit_packet", "arguments": { "radar_id": "<id>", "model_id": "test-model", "signals": {"transit_flow": 5, "attack_tempo": 3, "insurance_availability": 2}, "branches": [{"name": "test", "support": "moderate", "triggers": ["test"]}] }}
+}'
+```
+
+**Admin auth for REST**: `curl -H "x-admin-key: $ADMIN_AUTH_KEY" http://localhost:9001/api/...`
