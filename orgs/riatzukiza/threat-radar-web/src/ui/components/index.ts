@@ -45,3 +45,6 @@ export type { HeroPanelProps } from "./HeroPanel";
 
 export { CommunityReadiness, computeAwareness, computeEngagement, computeCoordination, computeResilience, computeReadinessDimensions } from "./CommunityReadiness";
 export type { CommunityReadinessProps, ReadinessDimension } from "./CommunityReadiness";
+
+export { PiLaneConnections } from "./PiLaneConnections";
+export type { PiLaneConnectionsProps } from "./PiLaneConnections";

@@ -1859,3 +1859,635 @@ body {
   opacity: 0.5;
   padding: 0 20px;
 }
+
+/* ── Π Lane Bridge Cards (pi-bridge-*) ── */
+
+.pi-bridge-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  transition: border-color 0.2s;
+}
+
+.pi-bridge-card:hover {
+  border-color: rgba(217,70,239,0.3);
+}
+
+.pi-bridge-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.pi-type-badge {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.pi-type-causal {
+  background: rgba(217,70,239,0.18);
+  color: var(--fuchsia);
+}
+
+.pi-type-correlative {
+  background: rgba(34,211,238,0.15);
+  color: var(--cyan);
+}
+
+.pi-type-predictive {
+  background: rgba(251,191,36,0.15);
+  color: #fbbf24;
+}
+
+.pi-bridge-strength {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pi-sim-badge {
+  font-size: 10px;
+  background: rgba(217,70,239,0.1);
+  padding: 1px 6px;
+  border-radius: 6px;
+  color: var(--fuchsia);
+  margin-left: auto;
+}
+
+/* Score trio row */
+.pi-scores-row {
+  display: flex;
+  gap: 12px;
+  margin: 10px 0;
+  padding: 8px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 6px;
+}
+
+.pi-score-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.pi-score-label {
+  font-size: 9px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pi-score-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* Suggested action */
+.pi-suggested-action {
+  margin: 8px 0;
+  padding: 8px;
+  background: rgba(217,70,239,0.06);
+  border-left: 2px solid var(--fuchsia);
+  border-radius: 0 6px 6px 0;
+}
+
+.pi-action-label, .pi-coord-label {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fuchsia);
+  display: block;
+  margin-bottom: 3px;
+}
+
+.pi-action-text, .pi-coord-text {
+  font-size: 11px;
+  color: var(--ink);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Coordination path */
+.pi-coord-path {
+  margin: 6px 0;
+  padding: 6px 8px;
+  font-size: 11px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 4px;
+}
+
+/* Bridge action buttons */
+.pi-bridge-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.pi-bridge-btn {
+  flex: 1;
+  padding: 5px 10px;
+  font-size: 10px;
+  font-weight: 600;
+  border: 1px solid rgba(217,70,239,0.3);
+  border-radius: 6px;
+  background: rgba(217,70,239,0.08);
+  color: var(--fuchsia);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.pi-bridge-btn:hover {
+  background: rgba(217,70,239,0.18);
+  border-color: var(--fuchsia);
+}
+
+.pi-bridge-btn-secondary {
+  background: rgba(255,255,255,0.03);
+  border-color: var(--line);
+  color: var(--muted);
+}
+
+.pi-bridge-btn-secondary:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: var(--muted);
+  color: var(--ink);
+}
+
+/* ── Π Tabs ── */
+
+.pi-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 6px;
+}
+
+.pi-tab {
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  border: none;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 6px 6px 0 0;
+  transition: color 0.2s, background 0.2s;
+}
+
+.pi-tab:hover {
+  color: var(--ink);
+  background: rgba(255,255,255,0.04);
+}
+
+.pi-tab-active {
+  color: var(--fuchsia);
+  background: rgba(217,70,239,0.1);
+  border-bottom: 2px solid var(--fuchsia);
+}
+
+/* ── Π Action Cards (pi-action-*) ── */
+
+.pi-action-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pi-action-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.pi-action-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.pi-urgency-indicator {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.pi-urg-critical {
+  background: rgba(239,68,68,0.2);
+  color: #ef4444;
+}
+
+.pi-urg-high {
+  background: rgba(251,146,60,0.2);
+  color: #fb923c;
+}
+
+.pi-urg-moderate {
+  background: rgba(251,191,36,0.15);
+  color: #fbbf24;
+}
+
+.pi-urg-low {
+  background: rgba(52,211,153,0.15);
+  color: var(--emerald);
+}
+
+.pi-action-time-window {
+  font-size: 10px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.pi-action-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 6px 0;
+  line-height: 1.3;
+}
+
+.pi-action-description {
+  font-size: 11px;
+  color: var(--muted);
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
+.pi-action-meta {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.pi-action-meta-item {
+  font-size: 10px;
+  color: var(--muted);
+  background: rgba(255,255,255,0.04);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* Checklist */
+.pi-checklist {
+  margin: 8px 0;
+  padding: 8px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 6px;
+}
+
+.pi-checklist-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--fuchsia);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.pi-checklist-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pi-checklist-item {
+  font-size: 11px;
+  color: var(--ink);
+  line-height: 1.4;
+  transition: opacity 0.2s;
+}
+
+.pi-checklist-checked {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+.pi-checklist-label-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.pi-checklist-checkbox {
+  margin-top: 2px;
+  accent-color: var(--fuchsia);
+}
+
+.pi-checklist-text {
+  flex: 1;
+}
+
+/* Expected benefit */
+.pi-action-benefit {
+  margin-top: 8px;
+  padding: 6px 8px;
+  background: rgba(52,211,153,0.06);
+  border-left: 2px solid var(--emerald);
+  border-radius: 0 6px 6px 0;
+}
+
+.pi-benefit-label {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--emerald);
+  display: block;
+  margin-bottom: 3px;
+}
+
+.pi-benefit-text {
+  font-size: 11px;
+  color: var(--ink);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* ── Π Comparison Panel (pi-comparison-*) ── */
+
+.pi-comparison-panel {
+  margin-top: 10px;
+  padding: 12px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.pi-comparison-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--fuchsia);
+  margin: 0 0 10px 0;
+}
+
+.pi-comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 8px;
+}
+
+.pi-comparison-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.pi-comparison-col-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pi-comparison-col-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.pi-comparison-thread-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+  line-height: 1.3;
+  word-break: break-word;
+}
+
+.pi-comparison-summary {
+  font-size: 10px;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.pi-comparison-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.pi-comparison-stat {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+}
+
+.pi-comparison-stat-label {
+  color: var(--muted);
+}
+
+.pi-comparison-stat-value {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.pi-comparison-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.pi-comparison-tag {
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.06);
+  color: var(--muted);
+}
+
+.pi-comparison-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+.pi-comparison-vs {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--fuchsia);
+  opacity: 0.6;
+}
+
+/* ── Π Federation Panel (pi-federation-*) ── */
+
+.pi-federation-panel {
+  margin-top: 10px;
+  padding: 12px;
+  background: rgba(217,70,239,0.03);
+  border: 1px dashed rgba(217,70,239,0.2);
+  border-radius: 8px;
+}
+
+.pi-federation-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--fuchsia);
+  margin: 0 0 2px 0;
+}
+
+.pi-federation-subtitle {
+  font-size: 10px;
+  color: var(--muted);
+  margin: 0 0 10px 0;
+}
+
+.pi-federation-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pi-federation-peer {
+  padding: 8px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 6px;
+  border: 1px solid var(--line);
+}
+
+.pi-federation-peer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.pi-federation-peer-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.pi-federation-peer-status {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.pi-fed-online {
+  background: rgba(52,211,153,0.15);
+  color: var(--emerald);
+}
+
+.pi-fed-stale {
+  background: rgba(251,191,36,0.15);
+  color: #fbbf24;
+}
+
+.pi-fed-offline {
+  background: rgba(239,68,68,0.15);
+  color: #ef4444;
+}
+
+.pi-federation-scores {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pi-federation-score {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pi-federation-score-label {
+  font-size: 9px;
+  color: var(--muted);
+  width: 70px;
+  flex-shrink: 0;
+}
+
+.pi-federation-score-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.pi-federation-score-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.pi-fed-fill-realism {
+  background: var(--cyan);
+}
+
+.pi-fed-fill-fear {
+  background: #ef4444;
+}
+
+.pi-fed-fill-benefit {
+  background: var(--emerald);
+}
+
+.pi-federation-score-value {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ink);
+  width: 24px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.pi-federation-synced {
+  font-size: 9px;
+  color: var(--muted);
+  opacity: 0.7;
+  display: block;
+  margin-top: 4px;
+}
+
+/* ── Π Feedback Loop Diagram ── */
+
+.pi-feedback-loop {
+  margin-bottom: 10px;
+  padding: 8px;
+  background: rgba(217,70,239,0.04);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.pi-feedback-title {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fuchsia);
+  margin: 0 0 4px 0;
+}
+
+.pi-feedback-svg {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+}
