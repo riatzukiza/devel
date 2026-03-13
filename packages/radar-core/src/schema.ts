@@ -195,6 +195,17 @@ export const signalEventProvenanceSchema = z.object({
   retrieved_at: z.string().datetime(),
 });
 
+export const signalCategorySchema = z.enum([
+  "geopolitical",
+  "infrastructure",
+  "economic",
+  "technology",
+  "community",
+  "climate",
+  "security",
+  "general",
+]);
+
 export const signalEventSchema = z.object({
   id: z.string().min(1),
   radar_id: z.string().optional(),
@@ -208,6 +219,9 @@ export const signalEventSchema = z.object({
   ingested_at: z.string().datetime(),
   content_hash: z.string().optional(),
   metadata: z.record(z.unknown()).default({}),
+  normalized_content: z.string().optional(),
+  category: signalCategorySchema.optional(),
+  quality_score: z.number().min(0).max(1).optional(),
 });
 
 export const threadMembershipSchema = z.object({
@@ -288,6 +302,7 @@ export const actionCardSchema = z.object({
   updated_at: z.string().datetime(),
 });
 
+export type SignalCategory = z.infer<typeof signalCategorySchema>;
 export type SignalEventProvenance = z.infer<typeof signalEventProvenanceSchema>;
 export type SignalEvent = z.infer<typeof signalEventSchema>;
 export type ThreadMembership = z.infer<typeof threadMembershipSchema>;
