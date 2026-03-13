@@ -12,7 +12,7 @@ Environment variables, external dependencies, and setup notes.
 ### threat-radar-mcp
 - `PORT` — API server port (default: 10002, dev: 9001)
 - `ADMIN_AUTH_KEY` — Admin auth key, min 12 chars
-- `DATABASE_URL` — Postgres connection string (local: `postgres://localhost:5432/threat_radar`, cloud: Neon)
+- `DATABASE_URL` — Postgres connection string (local: `postgres://openai_proxy:@localhost:5432/threat_radar`, cloud: Neon). Note: the Docker Postgres uses user `openai_proxy`, not `postgres`.
 - `ALLOW_UNAUTH_LOCAL` — Allow unauthenticated local requests (dev only)
 - `PUBLIC_BASE_URL` — Public URL for MCP endpoint discovery
 
