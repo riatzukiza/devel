@@ -17,6 +17,8 @@ import {
   reduceRadarPackets,
   reduce as deterministicReduce,
   sourceDefinitionSchema,
+  normalize,
+  cluster,
   type Radar,
   type RadarAssessmentPacket,
   type RadarModuleVersion,
@@ -24,6 +26,7 @@ import {
   type SignalEvent,
   type SourceDefinition,
   type Thread,
+  type RawCollectorOutput,
 } from "@workspace/radar-core";
 import { getSql, initSchema, closeSql } from "./lib/postgres.js";
 import { PostgresRadarStore } from "./store.js";
@@ -365,8 +368,21 @@ async function reduceLive(radarId: string): Promise<ReducedSnapshot> {
     snapshotId: `${radarId}:live:${Date.now()}`,
   });
 
-  // Also run the deterministic thread-based reducer if threads exist
-  const threads = await store.listThreads(radarId);
+  // Auto-cluster signals into threads if none exist yet for this radar
+  let threads = await store.listThreads(radarId);
+  if (threads.length === 0) {
+    const signals = await store.listSignals(radarId);
+    if (signals.length > 0) {
+      const clustered = cluster(signals);
+      for (const thread of clustered) {
+        thread.radar_id = radarId;
+        await store.createThread(thread);
+      }
+      threads = clustered;
+    }
+  }
+
+  // Run the deterministic thread-based reducer if threads exist
   if (threads.length > 0) {
     const deterministicSnapshot = deterministicReduce(threads);
     snapshot.render_state = {
@@ -401,8 +417,21 @@ async function sealDailySnapshot(radarId: string): Promise<ReducedSnapshot> {
     snapshotId: `${radarId}:daily:${new Date().toISOString().slice(0, 10)}`,
   });
 
-  // Also run the deterministic thread-based reducer if threads exist
-  const threads = await store.listThreads(radarId);
+  // Auto-cluster signals into threads if none exist yet for this radar
+  let threads = await store.listThreads(radarId);
+  if (threads.length === 0) {
+    const signals = await store.listSignals(radarId);
+    if (signals.length > 0) {
+      const clustered = cluster(signals);
+      for (const thread of clustered) {
+        thread.radar_id = radarId;
+        await store.createThread(thread);
+      }
+      threads = clustered;
+    }
+  }
+
+  // Run the deterministic thread-based reducer if threads exist
   if (threads.length > 0) {
     const deterministicSnapshot = deterministicReduce(threads);
     snapshot.render_state = {
@@ -631,9 +660,10 @@ server.registerTool(
       actor: z.string().optional().describe("A Bluesky actor handle or DID to fetch posts from"),
       searchQuery: z.string().optional().describe("A search query to find posts"),
       limit: z.number().int().min(1).max(100).optional().describe("Maximum number of posts to fetch (default: 25)"),
+      radarId: z.string().optional().describe("Optional radar ID to associate collected signals with"),
     },
   },
-  async ({ feedUri, listUri, actor, searchQuery, limit }): Promise<CallToolResult> => {
+  async ({ feedUri, listUri, actor, searchQuery, limit, radarId }): Promise<CallToolResult> => {
     try {
       // Validate that at least one query parameter is provided
       if (!feedUri && !listUri && !actor && !searchQuery) {
@@ -672,12 +702,27 @@ server.registerTool(
         query.searchQuery = searchQuery;
       }
 
-      const signals = await collector.collectFromFeed(query);
+      const rawSignals = await collector.collectFromFeed(query);
 
-      // Deduplicate and store signals
+      // Normalize and deduplicate before storing
       let collected = 0;
       let duplicates = 0;
-      for (const signal of signals) {
+      for (const raw of rawSignals) {
+        // Normalize the signal to populate normalized_content, category, quality_score
+        const signal = normalize({
+          id: raw.id,
+          radar_id: radarId,
+          provenance: raw.provenance,
+          text: raw.text,
+          title: raw.title,
+          links: raw.links,
+          domain_tags: raw.domain_tags,
+          observed_at: raw.observed_at,
+          ingested_at: raw.ingested_at,
+          content_hash: raw.content_hash,
+          metadata: raw.metadata,
+        });
+
         if (signal.content_hash) {
           const existing = await store.findSignalByContentHash(signal.content_hash);
           if (existing) {
@@ -690,7 +735,7 @@ server.registerTool(
       }
 
       return {
-        content: [{ type: "text", text: JSON.stringify({ ok: true, collected, duplicates, total_fetched: signals.length }) }],
+        content: [{ type: "text", text: JSON.stringify({ ok: true, collected, duplicates, total_fetched: rawSignals.length }) }],
       };
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Collection failed";
@@ -711,9 +756,10 @@ server.registerTool(
       sort: z.enum(["hot", "new", "top", "rising"]).optional().describe("Sort order for posts (default: 'hot')"),
       limit: z.number().int().min(1).max(100).optional().describe("Maximum number of posts per subreddit (default: 25)"),
       timeframe: z.enum(["hour", "day", "week", "month", "year", "all"]).optional().describe("Time filter for 'top' sort (default: 'day')"),
+      radarId: z.string().optional().describe("Optional radar ID to associate collected signals with"),
     },
   },
-  async ({ subreddits, sort, limit, timeframe }): Promise<CallToolResult> => {
+  async ({ subreddits, sort, limit, timeframe, radarId }): Promise<CallToolResult> => {
     try {
       const collector = new RedditCollector();
       let totalCollected = 0;
@@ -721,16 +767,31 @@ server.registerTool(
       let totalFetched = 0;
 
       for (const subreddit of subreddits) {
-        const signals = await collector.collectFromSubreddit({
+        const rawSignals = await collector.collectFromSubreddit({
           subreddit,
           sort: sort ?? "hot",
           limit: limit ?? 25,
           timeframe: timeframe ?? "day",
         });
 
-        totalFetched += signals.length;
+        totalFetched += rawSignals.length;
 
-        for (const signal of signals) {
+        for (const raw of rawSignals) {
+          // Normalize the signal to populate normalized_content, category, quality_score
+          const signal = normalize({
+            id: raw.id,
+            radar_id: radarId,
+            provenance: raw.provenance,
+            text: raw.text,
+            title: raw.title,
+            links: raw.links,
+            domain_tags: raw.domain_tags,
+            observed_at: raw.observed_at,
+            ingested_at: raw.ingested_at,
+            content_hash: raw.content_hash,
+            metadata: raw.metadata,
+          });
+
           if (signal.content_hash) {
             const existing = await store.findSignalByContentHash(signal.content_hash);
             if (existing) {
@@ -748,6 +809,52 @@ server.registerTool(
       };
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Collection failed";
+      return {
+        content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }],
+        isError: true,
+      };
+    }
+  },
+);
+
+server.registerTool(
+  "radar_cluster_signals",
+  {
+    description: "Explicitly cluster signals for a given radar into threads using TF-IDF cosine similarity. Runs normalize() on any un-normalized signals, then clusters all signals for the radar into Thread objects. Existing threads for the radar are preserved; new threads are added.",
+    inputSchema: {
+      radarId: z.string().min(1).describe("The radar ID whose signals should be clustered"),
+    },
+  },
+  async ({ radarId }): Promise<CallToolResult> => {
+    try {
+      const radar = await store.getRadar(radarId);
+      if (!radar) {
+        return {
+          content: [{ type: "text", text: JSON.stringify({ ok: false, error: `Unknown radar: ${radarId}` }) }],
+          isError: true,
+        };
+      }
+
+      const signals = await store.listSignals(radarId);
+      if (signals.length === 0) {
+        return {
+          content: [{ type: "text", text: JSON.stringify({ ok: true, threads_created: 0, message: "No signals to cluster" }) }],
+        };
+      }
+
+      const threads = cluster(signals);
+      let created = 0;
+      for (const thread of threads) {
+        thread.radar_id = radarId;
+        await store.createThread(thread);
+        created++;
+      }
+
+      return {
+        content: [{ type: "text", text: JSON.stringify({ ok: true, threads_created: created, signal_count: signals.length }) }],
+      };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Clustering failed";
       return {
         content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }],
         isError: true,
