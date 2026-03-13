@@ -27,6 +27,7 @@ import {
 import { getSql, initSchema, closeSql } from "./lib/postgres.js";
 import { PostgresRadarStore } from "./store.js";
 import { BlueskyCollector, type BlueskyFeedQuery } from "./collectors/bluesky.js";
+import { RedditCollector } from "./collectors/reddit.js";
 
 const ENV = z.object({
   PORT: z.coerce.number().int().min(1).max(65535).default(10002),
@@ -628,6 +629,60 @@ server.registerTool(
 
       return {
         content: [{ type: "text", text: JSON.stringify({ ok: true, collected, duplicates, total_fetched: signals.length }) }],
+      };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Collection failed";
+      return {
+        content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }],
+        isError: true,
+      };
+    }
+  },
+);
+
+server.registerTool(
+  "radar_collect_reddit",
+  {
+    description: "Collect signals from Reddit subreddits. Accepts a list of subreddit names, fetches recent posts via the Reddit JSON API (no auth needed), normalizes each post into a SignalEvent with source='reddit', and stores them in Postgres.",
+    inputSchema: {
+      subreddits: z.array(z.string().min(1)).min(1).describe("List of subreddit names to collect from (e.g., ['machinelearning', 'LocalLLaMA'])"),
+      sort: z.enum(["hot", "new", "top", "rising"]).optional().describe("Sort order for posts (default: 'hot')"),
+      limit: z.number().int().min(1).max(100).optional().describe("Maximum number of posts per subreddit (default: 25)"),
+      timeframe: z.enum(["hour", "day", "week", "month", "year", "all"]).optional().describe("Time filter for 'top' sort (default: 'day')"),
+    },
+  },
+  async ({ subreddits, sort, limit, timeframe }): Promise<CallToolResult> => {
+    try {
+      const collector = new RedditCollector();
+      let totalCollected = 0;
+      let totalDuplicates = 0;
+      let totalFetched = 0;
+
+      for (const subreddit of subreddits) {
+        const signals = await collector.collectFromSubreddit({
+          subreddit,
+          sort: sort ?? "hot",
+          limit: limit ?? 25,
+          timeframe: timeframe ?? "day",
+        });
+
+        totalFetched += signals.length;
+
+        for (const signal of signals) {
+          if (signal.content_hash) {
+            const existing = await store.findSignalByContentHash(signal.content_hash);
+            if (existing) {
+              totalDuplicates++;
+              continue;
+            }
+          }
+          await store.createSignal(signal);
+          totalCollected++;
+        }
+      }
+
+      return {
+        content: [{ type: "text", text: JSON.stringify({ ok: true, collected: totalCollected, duplicates: totalDuplicates, total_fetched: totalFetched }) }],
       };
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Collection failed";
