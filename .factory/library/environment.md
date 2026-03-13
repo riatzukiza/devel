@@ -16,6 +16,12 @@ Environment variables, external dependencies, and setup notes.
 - `ALLOW_UNAUTH_LOCAL` — Allow unauthenticated local requests (dev only)
 - `PUBLIC_BASE_URL` — Public URL for MCP endpoint discovery
 
+### Federation (Enso Protocol)
+- `FEDERATION_INSTANCE_NAME` — Display name for this instance in federation envelopes (default: `threat-radar-instance`)
+- `FEDERATION_TIMEOUT_MS` — Timeout for federation peer requests in milliseconds (default: `5000`)
+- `FEDERATION_STALE_MS` — Milliseconds after last contact before a peer is marked stale (default: `300000` / 5 min)
+- `FEDERATION_MAX_RETRIES` — Max consecutive failures before peer is marked offline (default: `3`)
+
 ### Bluesky / AT Protocol
 - No credentials required for public search
 - For authenticated list access: `BSKY_IDENTIFIER` + `BSKY_PASSWORD` (optional)
