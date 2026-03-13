@@ -225,3 +225,48 @@ body {
   .lane-content { padding: 12px; }
   .hero-gauges { gap: 10px; }
 }
+
+/* ── Signal Gauges (per-signal RiskGauge grid in RadarCard) ── */
+.signal-gauges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin: 10px 0;
+  padding: 8px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+/* ── ThreatClock ── */
+[data-testid="threat-clock"] {
+  display: block;
+  margin: 0 auto;
+  max-width: 220px;
+}
+
+/* ── RiskGauge ── */
+.risk-gauge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.risk-gauge svg { max-width: 180px; }
+.gauge-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ── BranchMap ── */
+.branch-map {
+  margin: 8px 0;
+}
+.branch-map svg {
+  width: 100%;
+  height: auto;
+  max-height: 220px;
+}

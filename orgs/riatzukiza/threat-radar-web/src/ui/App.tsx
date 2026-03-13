@@ -1,4 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
+import { ThreatClock } from "./components/ThreatClock";
+import type { ThreatClockSignal } from "./components/ThreatClock";
+import { RiskGauge } from "./components/RiskGauge";
+import { BranchMap } from "./components/BranchMap";
+import type { BranchMapBranch } from "./components/BranchMap";
 
 type SignalData = { median: number; range: [number, number]; agreement: number; sample_size: number };
 type BranchData = { name: string; support: string; agreement: number; triggers: string[] };
@@ -25,77 +30,39 @@ function averageSignal(snapshot: RadarTile["liveSnapshot"]): number {
   return values.reduce((sum, s) => sum + s.median, 0) / values.length;
 }
 
-function SweepClock({ tile }: { tile: RadarTile }) {
-  const mean = averageSignal(tile.liveSnapshot);
-  const disagreement = tile.liveSnapshot?.disagreement_index ?? 0;
-  const handAngle = -135 + (mean / 4) * 270;
-  const signals = tile.liveSnapshot ? Object.entries(tile.liveSnapshot.signals) : [];
-  const [tick, setTick] = useState(0);
-
-  useEffect(() => {
-    const id = window.setInterval(() => setTick((t) => t + 1), 2800);
-    return () => window.clearInterval(id);
-  }, []);
-
-  const jitter = Math.sin(tick * 0.7) * disagreement * 3;
-  const haloRadius = 62 + disagreement * 12;
-  const haloOpacity = 0.08 + disagreement * 0.35;
-
-  return (
-    <svg viewBox="0 0 180 180" className="sweep-clock">
-      <circle cx="90" cy="90" r={haloRadius} fill="none"
-        stroke={`rgba(255,111,60,${haloOpacity.toFixed(2)})`} strokeWidth="6"
-        style={{ filter: "blur(4px)" }} />
-      <circle cx="90" cy="90" r="58" className="clock-face" />
-      <circle cx="90" cy="90" r="50" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
-      {signals.map(([key, sig], i) => {
-        const startA = -135 + (sig.range[0] / 4) * 270;
-        const endA = -135 + (sig.range[1] / 4) * 270;
-        const r = 53 - i * 4;
-        return <path key={key} d={describeArc(90, 90, r, startA, endA)}
-          fill="none" stroke={`hsla(${20 + i * 40},80%,60%,0.55)`} strokeWidth="2.5" strokeLinecap="round" />;
-      })}
-      {signals.map(([key, sig]) => {
-        const a = (-135 + (sig.median / 4) * 270) * Math.PI / 180;
-        return <circle key={`m-${key}`} cx={90 + Math.cos(a) * 42} cy={90 + Math.sin(a) * 42}
-          r="2.5" fill="rgba(255,209,102,0.6)" />;
-      })}
-      <line x1="90" y1="90"
-        x2={90 + Math.cos((handAngle + jitter) * Math.PI / 180) * 48}
-        y2={90 + Math.sin((handAngle + jitter) * Math.PI / 180) * 48}
-        stroke="var(--ink)" strokeWidth="3" strokeLinecap="round"
-        style={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.25))", transition: "all 0.6s ease" }} />
-      <circle cx="90" cy="90" r="4" fill="var(--accent-2)" />
-      <text x="90" y="135" textAnchor="middle" fill="var(--ink)" fontSize="18" fontWeight="600">
-        {mean.toFixed(1)}
-      </text>
-      <text x="90" y="148" textAnchor="middle" fill="var(--muted)" fontSize="9" letterSpacing="0.12em">
-        SIGNAL
-      </text>
-    </svg>
-  );
+/** Convert API signal data to ThreatClockSignal props */
+function toClockSignals(signals: Record<string, SignalData>): ThreatClockSignal[] {
+  return Object.entries(signals).map(([key, sig]) => ({
+    median: sig.median,
+    range: sig.range,
+    agreement: sig.agreement,
+    label: key,
+  }));
 }
 
-function BranchBar({ branches }: { branches: BranchData[] }) {
-  const bandValue: Record<string, number> = { very_low: 10, low: 25, moderate: 50, high: 75, very_high: 95 };
-  return (
-    <div className="branch-bar">
-      {branches.map((b) => (
-        <div key={b.name} className="branch-item">
-          <div className="branch-label">{b.name.replace(/_/g, " ")}</div>
-          <div className="branch-track">
-            <div className="branch-fill" style={{ width: `${bandValue[b.support] ?? 50}%`, opacity: 0.5 + b.agreement * 0.5 }} />
-          </div>
-          <div className="branch-support">{b.support.replace(/_/g, " ")}</div>
-        </div>
-      ))}
-    </div>
-  );
+/** Map API branch data to BranchMapBranch props */
+const bandProbability: Record<string, number> = {
+  very_low: 0.1,
+  low: 0.25,
+  moderate: 0.5,
+  high: 0.75,
+  very_high: 0.95,
+};
+
+function toBranchMapBranches(branches: BranchData[]): BranchMapBranch[] {
+  return branches.map((b) => ({
+    label: b.name,
+    probability: bandProbability[b.support] ?? 0.5,
+    evidence: b.triggers,
+  }));
 }
 
 function RadarCard({ tile }: { tile: RadarTile }) {
   const signals = tile.liveSnapshot ? Object.entries(tile.liveSnapshot.signals) : [];
   const branches = tile.liveSnapshot?.branches ?? [];
+  const mean = averageSignal(tile.liveSnapshot);
+  const clockSignals = tile.liveSnapshot ? toClockSignals(tile.liveSnapshot.signals) : [];
+  const branchMapData = toBranchMapBranches(branches);
 
   return (
     <article className="radar-card">
@@ -106,26 +73,42 @@ function RadarCard({ tile }: { tile: RadarTile }) {
         </div>
         <span className={`status-badge status-${tile.radar.status}`}>{tile.radar.status}</span>
       </div>
-      <SweepClock tile={tile} />
-      <div className="signal-grid">
+
+      {/* ThreatClock — animated composite clock */}
+      <ThreatClock
+        value={mean}
+        max={4}
+        signals={clockSignals}
+        disagreementIndex={tile.liveSnapshot?.disagreement_index ?? 0}
+        size={180}
+        className="sweep-clock"
+      />
+
+      {/* RiskGauge per signal dimension */}
+      <div className="signal-gauges">
         {signals.map(([key, sig]) => (
-          <div key={key} className="signal-row">
-            <div className="signal-label">{key.replace(/_/g, " ")}</div>
-            <div className="signal-track">
-              <div className="signal-range" style={{
-                left: `${(sig.range[0] / 4) * 100}%`,
-                width: `${((sig.range[1] - sig.range[0]) / 4) * 100}%`,
-              }} />
-              <div className="signal-dot" style={{ left: `${(sig.median / 4) * 100}%` }} />
-            </div>
-            <div className="signal-value">{sig.median} / 4</div>
-            <div className="signal-agreement" style={{ opacity: 0.4 + sig.agreement * 0.6 }}>
-              {(sig.agreement * 100).toFixed(0)}% agree
-            </div>
-          </div>
+          <RiskGauge
+            key={key}
+            value={sig.median}
+            min={0}
+            max={4}
+            label={key.replace(/_/g, " ")}
+            color={`hsla(${Math.abs(key.charCodeAt(0) * 7) % 360}, 70%, 60%, 0.9)`}
+            size={120}
+          />
         ))}
       </div>
-      {branches.length > 0 && <BranchBar branches={branches} />}
+
+      {/* BranchMap — narrative branches with probabilities */}
+      {branchMapData.length >= 2 && (
+        <BranchMap
+          branches={branchMapData}
+          rootLabel={tile.radar.name}
+          width={280}
+          height={Math.max(120, branchMapData.length * 50)}
+        />
+      )}
+
       <div className="card-footer">
         <span>{tile.submissionCount} packets</span>
         <span>{tile.sourceCount} sources</span>
@@ -284,14 +267,4 @@ function RingGauge({ value, max, label, color }: { value: number; max: number; l
   );
 }
 
-function polarToCartesian(cx: number, cy: number, r: number, deg: number) {
-  const rad = ((deg - 90) * Math.PI) / 180;
-  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
-}
 
-function describeArc(x: number, y: number, r: number, startDeg: number, endDeg: number): string {
-  const s = polarToCartesian(x, y, r, endDeg);
-  const e = polarToCartesian(x, y, r, startDeg);
-  const large = endDeg - startDeg <= 180 ? "0" : "1";
-  return `M ${s.x} ${s.y} A ${r} ${r} 0 ${large} 0 ${e.x} ${e.y}`;
-}
