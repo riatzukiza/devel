@@ -22,7 +22,7 @@ Use for features involving:
 
 1. **Read the feature description thoroughly.** Identify all preconditions, expected behaviors, and verification steps. Check `.factory/library/architecture.md` for package relationships.
 
-2. **Write failing tests first (TDD).** Create vitest test files in a `__tests__/` or `tests/` directory adjacent to the source. Write tests that cover the expected behaviors listed in the feature. Run `npx vitest run <test-file>` and confirm they fail.
+2. **Write failing tests first (TDD).** Create vitest test files in a `__tests__/` or `tests/` directory adjacent to the source. Write tests that cover the expected behaviors listed in the feature. Run `npx vitest run <test-file>` and confirm they fail. **Exception**: For configuration-only, type-restoration, or wiring-only tasks with no new runtime logic, skip TDD and add validation tests after implementation instead.
 
 3. **Implement the feature.** Write the minimum code to make tests pass. Follow existing patterns in the codebase. Use Zod for runtime validation. Never use `any` types.
 
