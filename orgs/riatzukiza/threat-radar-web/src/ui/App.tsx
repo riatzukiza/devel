@@ -1,27 +1,13 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { ThreatClock } from "./components/ThreatClock";
 import type { ThreatClockSignal } from "./components/ThreatClock";
 import { RiskGauge } from "./components/RiskGauge";
 import { BranchMap } from "./components/BranchMap";
 import type { BranchMapBranch } from "./components/BranchMap";
-
-type SignalData = { median: number; range: [number, number]; agreement: number; sample_size: number };
-type BranchData = { name: string; support: string; agreement: number; triggers: string[] };
-
-type RadarTile = {
-  radar: { id: string; slug: string; name: string; category: string; status: string };
-  sourceCount: number;
-  submissionCount: number;
-  liveSnapshot?: {
-    as_of_utc: string;
-    disagreement_index: number;
-    quality_score: number;
-    signals: Record<string, SignalData>;
-    branches: BranchData[];
-    model_count: number;
-  };
-  latestDailySnapshot?: { as_of_utc: string };
-};
+import { ErrorBanner } from "./components/ErrorBanner";
+import { LoadingSkeleton } from "./components/LoadingSkeleton";
+import { useRadarPolling } from "../api/useRadarPolling";
+import type { RadarTile, SignalData, BranchData } from "../api/types";
 
 function averageSignal(snapshot: RadarTile["liveSnapshot"]): number {
   if (!snapshot) return 0;
@@ -157,29 +143,8 @@ function LanePlaceholder({ message }: { message: string }) {
 }
 
 export function App(): JSX.Element {
-  const [tiles, setTiles] = useState<RadarTile[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const apiUrl = import.meta.env.VITE_API_URL ?? "";
-
-  useEffect(() => {
-    let active = true;
-    const load = async () => {
-      try {
-        const res = await fetch(`${apiUrl}/api/radars`);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json() as RadarTile[];
-        if (active) { setTiles(data); setError(null); }
-      } catch (err: unknown) {
-        if (active) setError(err instanceof Error ? err.message : String(err));
-      } finally {
-        if (active) setLoading(false);
-      }
-    };
-    void load();
-    const interval = window.setInterval(() => void load(), 12_000);
-    return () => { active = false; window.clearInterval(interval); };
-  }, [apiUrl]);
+  const { tiles, loading, error, isStale, lastUpdated, refetch } = useRadarPolling(apiUrl);
 
   const globalTiles = useMemo(() => tiles.filter((t) => t.radar.category === "geopolitical" || t.radar.category === "infrastructure" || t.radar.category === "global"), [tiles]);
   const localTiles = useMemo(() => tiles.filter((t) => t.radar.category === "local" || t.radar.category === "community" || t.radar.category === "oss"), [tiles]);
@@ -192,21 +157,32 @@ export function App(): JSX.Element {
 
   return (
     <div className="dashboard-shell">
+      {/* Error banner — shown when API is unreachable */}
+      {error && (
+        <ErrorBanner
+          message={error}
+          isStale={isStale}
+          lastUpdated={lastUpdated}
+          onRetry={refetch}
+        />
+      )}
+
       <div className="dashboard-layout">
         {/* η (Global) Lane — Cyan */}
         <section className="lane lane-eta" style={{ "--lane-accent": "var(--cyan)", "--lane-accent-rgb": "34,211,238" } as React.CSSProperties}>
           <LaneHeader symbol={"\u03B7"} name="Global Forces" description="Things that affect you, outside your direct control" />
           <div className="lane-content">
             {/* Hero gauges in the η lane */}
-            <div className="hero-gauges">
-              <RingGauge value={compositeStress} max={4} label="Composite Stress" color="var(--accent)" />
-              <RingGauge value={tiles.reduce((s, t) => s + (t.liveSnapshot?.disagreement_index ?? 0), 0) / (tiles.length || 1)} max={1} label="Disagreement" color="var(--accent-2)" />
-              <RingGauge value={tiles.reduce((s, t) => s + (t.liveSnapshot?.quality_score ?? 0), 0) / (tiles.length || 1)} max={100} label="Quality" color="var(--cyan)" />
-            </div>
+            {!loading && tiles.length > 0 && (
+              <div className="hero-gauges">
+                <RingGauge value={compositeStress} max={4} label="Composite Stress" color="var(--accent)" />
+                <RingGauge value={tiles.reduce((s, t) => s + (t.liveSnapshot?.disagreement_index ?? 0), 0) / (tiles.length || 1)} max={1} label="Disagreement" color="var(--accent-2)" />
+                <RingGauge value={tiles.reduce((s, t) => s + (t.liveSnapshot?.quality_score ?? 0), 0) / (tiles.length || 1)} max={100} label="Quality" color="var(--cyan)" />
+              </div>
+            )}
 
-            {loading && <p className="loading">Loading radars...</p>}
-            {error && <p className="error-msg">Connection issue: {error}</p>}
-            {!loading && tiles.length === 0 && <EmptyState />}
+            {loading && <LoadingSkeleton count={2} />}
+            {!loading && tiles.length === 0 && !error && <EmptyState />}
 
             <div className="lane-grid">
               {globalTiles.map((t) => <RadarCard key={t.radar.id} tile={t} />)}
@@ -218,13 +194,14 @@ export function App(): JSX.Element {
         <section className="lane lane-mu" style={{ "--lane-accent": "var(--emerald)", "--lane-accent-rgb": "52,211,153" } as React.CSSProperties}>
           <LaneHeader symbol={"\u03BC"} name="Local Reach" description="Signals inside your expertise where intervention might matter" />
           <div className="lane-content">
-            {localTiles.length > 0 ? (
+            {loading && <LoadingSkeleton count={1} />}
+            {!loading && localTiles.length > 0 ? (
               <div className="lane-grid">
                 {localTiles.map((t) => <RadarCard key={t.radar.id} tile={t} />)}
               </div>
-            ) : (
+            ) : !loading ? (
               <LanePlaceholder message="Local signals will appear here when community or open-source radars are configured." />
-            )}
+            ) : null}
           </div>
         </section>
 
@@ -232,13 +209,14 @@ export function App(): JSX.Element {
         <section className="lane lane-pi" style={{ "--lane-accent": "var(--fuchsia)", "--lane-accent-rgb": "217,70,239" } as React.CSSProperties}>
           <LaneHeader symbol={"\u03A0"} name="Connections" description="Bridges between global forces and local actions" />
           <div className="lane-content">
-            {connectionTiles.length > 0 ? (
+            {loading && <LoadingSkeleton count={1} />}
+            {!loading && connectionTiles.length > 0 ? (
               <div className="lane-grid">
                 {connectionTiles.map((t) => <RadarCard key={t.radar.id} tile={t} />)}
               </div>
-            ) : (
+            ) : !loading ? (
               <LanePlaceholder message="Connection opportunities will appear here as the system links global signals to local actions." />
-            )}
+            ) : null}
           </div>
         </section>
       </div>
@@ -266,5 +244,3 @@ function RingGauge({ value, max, label, color }: { value: number; max: number; l
     </div>
   );
 }
-
-
