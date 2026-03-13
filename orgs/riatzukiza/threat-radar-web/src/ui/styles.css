@@ -916,6 +916,50 @@ body {
   color: var(--ink);
 }
 
+/* ── μ Action Suggestions ── */
+.mu-action-suggestions {
+  margin: 8px 0;
+  padding: 8px 10px;
+  background: rgba(52, 211, 153, 0.06);
+  border-left: 2px solid var(--emerald);
+  border-radius: 4px;
+}
+.mu-action-suggestions-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--emerald);
+  margin-bottom: 6px;
+  opacity: 0.8;
+}
+.mu-action-suggestions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.mu-action-suggestion-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink);
+  line-height: 1.4;
+}
+.mu-action-bullet {
+  color: var(--emerald);
+  flex-shrink: 0;
+  font-weight: 600;
+  opacity: 0.7;
+}
+.mu-action-text {
+  opacity: 0.85;
+}
+
 /* ── μ Source Badges ── */
 .mu-thread-sources {
   display: flex;

@@ -11,6 +11,7 @@ import { BranchMap } from "./BranchMap";
 import type { BranchMapBranch } from "./BranchMap";
 import { EtaThreadCard } from "./EtaThreadCard";
 import type { RadarTile, ThreadData, DeterministicSnapshotData, SignalData } from "../../api/types";
+import { normalizeDimension } from "../hooks/usePersonalization";
 import type { DimensionWeights } from "../hooks/usePersonalization";
 
 export interface EtaLaneContentProps {
@@ -119,8 +120,8 @@ function EtaRadarSection({ tile, weights }: { tile: RadarTile; weights?: Dimensi
           <h4 className="eta-section-title">Dimensions</h4>
           <div className="eta-range-gauges">
             {scoreRanges.map((sr) => {
-              const dimKey = sr.dimension as keyof DimensionWeights;
-              const weight = weights?.[dimKey] ?? 50;
+              const normalizedDim = normalizeDimension(sr.dimension);
+              const weight = normalizedDim !== undefined && weights !== undefined ? weights[normalizedDim] : 50;
               const factor = weight / 50;
               const weightedMedian = Math.max(0, Math.min(100, sr.median * 100 * factor));
               return (
