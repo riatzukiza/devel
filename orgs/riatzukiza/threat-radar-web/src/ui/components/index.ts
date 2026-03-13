@@ -27,3 +27,12 @@ export type { MuThreadCardProps, LeverageLevel, ProximityLevel, TimeToAct } from
 
 export { MuLaneContent } from "./MuLane";
 export type { MuLaneContentProps } from "./MuLane";
+
+export { PersonalizationPanel } from "./PersonalizationPanel";
+export type { PersonalizationPanelProps } from "./PersonalizationPanel";
+
+export { CriticalThinkingSection } from "./CriticalThinkingSection";
+export type { CriticalThinkingSectionProps } from "./CriticalThinkingSection";
+
+export { ActionFeed } from "./ActionFeed";
+export type { ActionFeedProps } from "./ActionFeed";

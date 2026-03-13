@@ -8,7 +8,11 @@ import { ErrorBanner } from "./components/ErrorBanner";
 import { LoadingSkeleton } from "./components/LoadingSkeleton";
 import { EtaLaneContent } from "./components/EtaLane";
 import { MuLaneContent } from "./components/MuLane";
+import { PersonalizationPanel } from "./components/PersonalizationPanel";
+import { CriticalThinkingSection } from "./components/CriticalThinkingSection";
+import { ActionFeed } from "./components/ActionFeed";
 import { useRadarPolling } from "../api/useRadarPolling";
+import { usePersonalization, applyWeights, computeCompositeScore } from "./hooks/usePersonalization";
 import type { RadarTile, SignalData, BranchData } from "../api/types";
 
 function averageSignal(snapshot: RadarTile["liveSnapshot"]): number {
@@ -147,10 +151,20 @@ function LanePlaceholder({ message }: { message: string }) {
 export function App(): JSX.Element {
   const apiUrl = import.meta.env.VITE_API_URL ?? "";
   const { tiles, loading, error, isStale, lastUpdated, refetch } = useRadarPolling(apiUrl);
+  const { weights, toggles, setWeight, setToggle, resetToDefaults } = usePersonalization();
 
   const globalTiles = useMemo(() => tiles.filter((t) => t.radar.category === "geopolitical" || t.radar.category === "infrastructure" || t.radar.category === "global"), [tiles]);
   const localTiles = useMemo(() => tiles.filter((t) => t.radar.category === "local" || t.radar.category === "community" || t.radar.category === "oss"), [tiles]);
   const connectionTiles = useMemo(() => tiles.filter((t) => !globalTiles.includes(t) && !localTiles.includes(t)), [tiles, globalTiles, localTiles]);
+
+  // Compute weighted composite score from all tiles with deterministic snapshots
+  const globalDisagreement = useMemo(() => {
+    const snaps = globalTiles
+      .map((t) => t.liveSnapshot?.disagreement_index)
+      .filter((d): d is number => d !== undefined);
+    if (snaps.length === 0) return 0;
+    return snaps.reduce((a, b) => a + b, 0) / snaps.length;
+  }, [globalTiles]);
 
   return (
     <div className="dashboard-shell">
@@ -164,6 +178,15 @@ export function App(): JSX.Element {
         />
       )}
 
+      {/* Personalization Panel */}
+      <PersonalizationPanel
+        weights={weights}
+        toggles={toggles}
+        onWeightChange={setWeight}
+        onToggleChange={setToggle}
+        onReset={resetToDefaults}
+      />
+
       <div className="dashboard-layout">
         {/* η (Global) Lane — Cyan */}
         <section className="lane lane-eta" style={{ "--lane-accent": "var(--cyan)", "--lane-accent-rgb": "34,211,238" } as React.CSSProperties}>
@@ -174,12 +197,20 @@ export function App(): JSX.Element {
 
             {/* η lane with real signal data: ThreatClock, RiskGauges with ranges, BranchMap, thread cards */}
             {!loading && globalTiles.length > 0 && (
-              <EtaLaneContent tiles={globalTiles} />
+              <EtaLaneContent tiles={globalTiles} weights={weights} />
             )}
 
             {/* Show any remaining tiles that don't have threads yet as legacy cards */}
             {!loading && globalTiles.length === 0 && tiles.length > 0 && !error && (
               <LanePlaceholder message="No global radars configured yet. Create a radar with category 'geopolitical', 'infrastructure', or 'global'." />
+            )}
+
+            {/* Critical Thinking Section */}
+            {!loading && (
+              <CriticalThinkingSection
+                enabled={toggles.criticalThinking}
+                disagreementIndex={globalDisagreement}
+              />
             )}
           </div>
         </section>
@@ -190,6 +221,14 @@ export function App(): JSX.Element {
           <div className="lane-content">
             {loading && <LoadingSkeleton count={1} />}
             {!loading && <MuLaneContent tiles={localTiles} />}
+
+            {/* Action Feed — time-bounded suggestions */}
+            {!loading && (
+              <ActionFeed
+                tiles={tiles}
+                agencyBiasEnabled={toggles.agencyBias}
+              />
+            )}
           </div>
         </section>
 
@@ -203,7 +242,10 @@ export function App(): JSX.Element {
                 {connectionTiles.map((t) => <RadarCard key={t.radar.id} tile={t} />)}
               </div>
             ) : !loading ? (
-              <LanePlaceholder message="Connection opportunities will appear here as the system links global signals to local actions." />
+              <LanePlaceholder message={toggles.federation
+                ? "Connection opportunities will appear here as the system links global signals to local actions."
+                : "Federation is disabled. Enable it in personalization to see connection opportunities from peers."
+              } />
             ) : null}
           </div>
         </section>

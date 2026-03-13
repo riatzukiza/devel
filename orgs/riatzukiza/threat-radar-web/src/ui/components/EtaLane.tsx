@@ -11,10 +11,13 @@ import { BranchMap } from "./BranchMap";
 import type { BranchMapBranch } from "./BranchMap";
 import { EtaThreadCard } from "./EtaThreadCard";
 import type { RadarTile, ThreadData, DeterministicSnapshotData, SignalData } from "../../api/types";
+import type { DimensionWeights } from "../hooks/usePersonalization";
 
 export interface EtaLaneContentProps {
   /** All tiles categorized as global */
   readonly tiles: readonly RadarTile[];
+  /** Optional dimension weights for personalized scoring */
+  readonly weights?: DimensionWeights;
   /** Optional className */
   readonly className?: string;
 }
@@ -68,7 +71,7 @@ function aggregateSourceCounts(threads: ThreadData[]): Record<string, number> {
 // Per-radar card (with thread-enriched data)
 // ---------------------------------------------------------------------------
 
-function EtaRadarSection({ tile }: { tile: RadarTile }): JSX.Element {
+function EtaRadarSection({ tile, weights }: { tile: RadarTile; weights?: DimensionWeights }): JSX.Element {
   const snapshot = tile.liveSnapshot;
   const det = snapshot?.render_state?.deterministicSnapshot;
   const threads = tile.threads ?? [];
@@ -110,15 +113,20 @@ function EtaRadarSection({ tile }: { tile: RadarTile }): JSX.Element {
         className="sweep-clock"
       />
 
-      {/* RiskGauges — one per dimension, showing score RANGES */}
+      {/* RiskGauges — one per dimension, showing score RANGES (weighted) */}
       {scoreRanges.length > 0 && (
         <div className="eta-score-ranges" data-testid="eta-score-ranges">
           <h4 className="eta-section-title">Dimensions</h4>
           <div className="eta-range-gauges">
-            {scoreRanges.map((sr) => (
+            {scoreRanges.map((sr) => {
+              const dimKey = sr.dimension as keyof DimensionWeights;
+              const weight = weights?.[dimKey] ?? 50;
+              const factor = weight / 50;
+              const weightedMedian = Math.max(0, Math.min(100, sr.median * 100 * factor));
+              return (
               <div key={sr.dimension} className="eta-range-gauge-wrapper" data-testid="eta-range-gauge">
                 <RiskGauge
-                  value={sr.median * 100}
+                  value={weightedMedian}
                   min={0}
                   max={100}
                   label={sr.dimension.replace(/_/g, " ")}
@@ -139,7 +147,8 @@ function EtaRadarSection({ tile }: { tile: RadarTile }): JSX.Element {
                   <span className="eta-range-max">{(sr.max * 100).toFixed(0)}</span>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
@@ -232,7 +241,7 @@ function dimensionColor(dimension: string): string {
 // Main EtaLane content
 // ---------------------------------------------------------------------------
 
-export function EtaLaneContent({ tiles, className }: EtaLaneContentProps): JSX.Element {
+export function EtaLaneContent({ tiles, weights, className }: EtaLaneContentProps): JSX.Element {
   if (tiles.length === 0) {
     return (
       <div className={`eta-lane-empty ${className ?? ""}`.trim()}>
@@ -244,7 +253,7 @@ export function EtaLaneContent({ tiles, className }: EtaLaneContentProps): JSX.E
   return (
     <div className={`eta-lane-content ${className ?? ""}`.trim()} data-testid="eta-lane-content">
       {tiles.map((tile) => (
-        <EtaRadarSection key={tile.radar.id} tile={tile} />
+        <EtaRadarSection key={tile.radar.id} tile={tile} weights={weights} />
       ))}
     </div>
   );
