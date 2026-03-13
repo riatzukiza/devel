@@ -21,3 +21,9 @@ export type { EtaThreadCardProps } from "./EtaThreadCard";
 
 export { EtaLaneContent } from "./EtaLane";
 export type { EtaLaneContentProps } from "./EtaLane";
+
+export { MuThreadCard, computeLeverage, computeProximity, leverageLevel, proximityLevel, timeToAct } from "./MuThreadCard";
+export type { MuThreadCardProps, LeverageLevel, ProximityLevel, TimeToAct } from "./MuThreadCard";
+
+export { MuLaneContent } from "./MuLane";
+export type { MuLaneContentProps } from "./MuLane";

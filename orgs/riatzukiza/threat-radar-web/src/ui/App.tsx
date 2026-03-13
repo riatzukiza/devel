@@ -7,6 +7,7 @@ import type { BranchMapBranch } from "./components/BranchMap";
 import { ErrorBanner } from "./components/ErrorBanner";
 import { LoadingSkeleton } from "./components/LoadingSkeleton";
 import { EtaLaneContent } from "./components/EtaLane";
+import { MuLaneContent } from "./components/MuLane";
 import { useRadarPolling } from "../api/useRadarPolling";
 import type { RadarTile, SignalData, BranchData } from "../api/types";
 
@@ -188,13 +189,7 @@ export function App(): JSX.Element {
           <LaneHeader symbol={"\u03BC"} name="Local Reach" description="Signals inside your expertise where intervention might matter" />
           <div className="lane-content">
             {loading && <LoadingSkeleton count={1} />}
-            {!loading && localTiles.length > 0 ? (
-              <div className="lane-grid">
-                {localTiles.map((t) => <RadarCard key={t.radar.id} tile={t} />)}
-              </div>
-            ) : !loading ? (
-              <LanePlaceholder message="Local signals will appear here when community or open-source radars are configured." />
-            ) : null}
+            {!loading && <MuLaneContent tiles={localTiles} />}
           </div>
         </section>
 
