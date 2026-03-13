@@ -36,3 +36,6 @@ export type { CriticalThinkingSectionProps } from "./CriticalThinkingSection";
 
 export { ActionFeed } from "./ActionFeed";
 export type { ActionFeedProps } from "./ActionFeed";
+
+export { FirehosePanel, tilesToFirehoseEntries, freshnessClass, relativeTime } from "./FirehosePanel";
+export type { FirehosePanelProps, FirehoseEntry } from "./FirehosePanel";
