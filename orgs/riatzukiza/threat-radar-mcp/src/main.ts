@@ -32,6 +32,13 @@ import { getSql, initSchema, closeSql } from "./lib/postgres.js";
 import { PostgresRadarStore } from "./store.js";
 import { BlueskyCollector, type BlueskyFeedQuery } from "./collectors/bluesky.js";
 import { RedditCollector } from "./collectors/reddit.js";
+import {
+  FederationManager,
+  createAggregatePayload,
+  deserializeEnvelope,
+  type AggregateSnapshotPayload,
+  type EnsoEnvelope,
+} from "./lib/federation.js";
 
 const ENV = z.object({
   PORT: z.coerce.number().int().min(1).max(65535).default(10002),
@@ -450,13 +457,167 @@ app.set("trust proxy", true);
 app.use(cors({ origin: "*", exposedHeaders: ["mcp-session-id"] }));
 app.use(express.json({ limit: "1mb" }));
 
+// ---------------------------------------------------------------------------
+// Federation manager — Enso-style peer coordination
+// ---------------------------------------------------------------------------
+const federationManager = new FederationManager({
+  instanceId: randomUUID(),
+  instanceName: process.env.FEDERATION_INSTANCE_NAME ?? "threat-radar-local",
+  endpoint: publicBaseUrl.toString().replace(/\/$/, ""),
+  timeoutMs: Number(process.env.FEDERATION_TIMEOUT_MS ?? "10000"),
+  staleAfterMs: Number(process.env.FEDERATION_STALE_MS ?? "300000"),
+  maxRetries: Number(process.env.FEDERATION_MAX_RETRIES ?? "3"),
+});
+
 app.get("/health", async (_req, res) => {
   res.json({
     ok: true,
     service: "threat-radar-mcp",
     storage: usePostgres ? "postgres" : "memory",
     publicBaseUrl: publicBaseUrl.toString(),
+    federation: {
+      instanceId: federationManager.getInstanceId(),
+      peers: federationManager.listPeers().length,
+    },
   });
+});
+
+// ---------------------------------------------------------------------------
+// Federation API endpoints
+// ---------------------------------------------------------------------------
+
+/** GET /api/federation/status — federation state for Π lane */
+app.get("/api/federation/status", async (_req, res) => {
+  federationManager.markStalePeers();
+  res.json(federationManager.getFederationStatus());
+});
+
+/** GET /api/federation/peers — list known peers */
+app.get("/api/federation/peers", async (_req, res) => {
+  federationManager.markStalePeers();
+  res.json(federationManager.listPeers().map((p) => ({
+    id: p.id,
+    displayName: p.displayName,
+    endpoint: p.endpoint,
+    trustLevel: p.trustLevel,
+    status: p.status,
+    lastSeen: p.lastSeen,
+    snapshotCount: p.snapshots.length,
+  })));
+});
+
+/** POST /api/federation/receive — receive Enso envelope from a peer */
+app.post("/api/federation/receive", async (req, res) => {
+  try {
+    const body = req.body as Record<string, unknown>;
+    // Accept either a raw envelope or a JSON string
+    let envelope: EnsoEnvelope<AggregateSnapshotPayload>;
+    if (typeof body === "string") {
+      envelope = deserializeEnvelope(body) as EnsoEnvelope<AggregateSnapshotPayload>;
+    } else {
+      envelope = body as unknown as EnsoEnvelope<AggregateSnapshotPayload>;
+    }
+
+    const result = federationManager.receiveEnvelope(envelope);
+    if (result.accepted) {
+      res.json({ ok: true, accepted: true });
+    } else {
+      res.status(403).json({ ok: false, accepted: false, reason: result.reason });
+    }
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Invalid envelope";
+    res.status(400).json({ ok: false, error: message });
+  }
+});
+
+/** POST /api/federation/peers — add a peer */
+app.post("/api/federation/peers", requireAdminKey, async (req, res) => {
+  try {
+    const body = z.object({
+      id: z.string().min(1).default(randomUUID()),
+      displayName: z.string().min(1),
+      endpoint: z.string().url(),
+      atProtocolDid: z.string().optional(),
+      trustLevel: z.enum(["trusted", "known", "untrusted"]).default("known"),
+    }).parse(req.body);
+
+    federationManager.addPeer(body);
+    res.status(201).json({ ok: true, peer: federationManager.getPeer(body.id) });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Invalid peer configuration";
+    res.status(400).json({ ok: false, error: message });
+  }
+});
+
+/** DELETE /api/federation/peers/:peerId — remove a peer */
+app.delete("/api/federation/peers/:peerId", requireAdminKey, async (req, res) => {
+  const rawPeerId = req.params.peerId;
+  const peerId = Array.isArray(rawPeerId) ? rawPeerId[0] ?? "" : rawPeerId;
+  federationManager.removePeer(peerId);
+  res.json({ ok: true });
+});
+
+/** POST /api/federation/trust/:peerId — add peer to trust circle */
+app.post("/api/federation/trust/:peerId", requireAdminKey, async (req, res) => {
+  const rawPeerId = req.params.peerId;
+  const peerId = Array.isArray(rawPeerId) ? rawPeerId[0] ?? "" : rawPeerId;
+  federationManager.addToTrustCircle(peerId);
+  res.json({ ok: true, peerId, trusted: true });
+});
+
+/** DELETE /api/federation/trust/:peerId — exclude peer from trust circle */
+app.delete("/api/federation/trust/:peerId", requireAdminKey, async (req, res) => {
+  const rawPeerId = req.params.peerId;
+  const peerId = Array.isArray(rawPeerId) ? rawPeerId[0] ?? "" : rawPeerId;
+  federationManager.excludeFromTrustCircle(peerId);
+  res.json({ ok: true, peerId, trusted: false });
+});
+
+/** POST /api/federation/broadcast — broadcast snapshot to all trusted peers */
+app.post("/api/federation/broadcast", requireAdminKey, async (req, res) => {
+  try {
+    const body = z.object({
+      radarId: z.string().min(1),
+    }).parse(req.body);
+
+    const radar = await store.getRadar(body.radarId);
+    if (!radar) {
+      res.status(404).json({ ok: false, error: `Unknown radar: ${body.radarId}` });
+      return;
+    }
+
+    const liveSnapshot = await store.getLatestLiveSnapshot(body.radarId);
+    const threads = await store.listThreads(body.radarId);
+    const signals = await store.listSignals(body.radarId);
+
+    const renderState = liveSnapshot?.render_state as Record<string, unknown> | undefined;
+    const deterministicSnapshot = renderState?.deterministicSnapshot as {
+      scoreRanges?: Record<string, { lower: number; upper: number; median: number }>;
+      disagreementIndex?: number;
+      narrativeBranches?: unknown[];
+      compressionLoss?: number;
+    } | undefined;
+
+    const payload = createAggregatePayload(
+      {
+        radarId: radar.id,
+        radarName: radar.name,
+        radarCategory: radar.category,
+        snapshotKind: "live",
+        asOfUtc: liveSnapshot?.as_of_utc ?? new Date().toISOString(),
+        threadCount: threads.length,
+        signalCount: signals.length,
+      },
+      deterministicSnapshot,
+    );
+
+    const results = await federationManager.broadcastSnapshot(payload);
+    const summary = Object.fromEntries(results);
+    res.json({ ok: true, results: summary });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Broadcast failed";
+    res.status(400).json({ ok: false, error: message });
+  }
 });
 
 app.get("/api/radars", async (_req, res) => {
