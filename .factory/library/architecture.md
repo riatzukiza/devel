@@ -1,5 +1,9 @@
 # Architecture
 
+## Bluesky Collection
+
+- **searchQuery unreliable**: Bluesky search API returns 0 results for common terms. Use `actor`-based collection as primary path. searchQuery is a fallback only.
+
 ## Postgres Patterns
 
 - **JSONB round-trip**: postgres.js returns JSONB columns as strings. Use `parseJsonb()` helper in all row mappers. When adding new JSONB columns, always apply parseJsonb in the row mapper.
@@ -121,3 +125,5 @@ Both are wired into `threat-radar-mcp`: the thread-based reducer triggers when t
 
 - **vitest version**: Workspace uses vitest 0.34.6 which does NOT support `--grep` flag. Use file path targeting instead: `npx vitest run tests/specific.test.ts`
 - **Postgres tests**: Tests that touch Postgres create tables with `IF NOT EXISTS` — safe to run repeatedly
+- **Polling hook tests**: vitest fake timers conflict with `@testing-library/react`'s `waitFor` (causes timeouts). Use a `flushPromises()` helper with `act()` + `queueMicrotask` instead of `waitFor`. Working pattern in `threat-radar-web/src/api/__tests__/useRadarPolling.test.tsx`.
+- **threat-radar-web vitest**: Uses vitest 1.6.x (not workspace 0.34.6). Use `-t` for pattern matching, not `--grep`.
