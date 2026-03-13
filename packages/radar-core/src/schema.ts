@@ -182,3 +182,115 @@ export type ReducedSnapshot = z.infer<typeof reducedSnapshotSchema>;
 export type SignalDefinition = z.infer<typeof signalDefinitionSchema>;
 export type BranchDefinition = z.infer<typeof branchDefinitionSchema>;
 export type SourceCitation = z.infer<typeof sourceCitationSchema>;
+
+// --- Stable types for mission-control pipeline ---
+
+export const signalEventProvenanceSchema = z.object({
+  source_type: z.enum(["bluesky", "reddit", "rss", "api", "manual", "ais"]),
+  author: z.string().optional(),
+  account_uri: z.string().optional(),
+  post_uri: z.string().optional(),
+  parent_uri: z.string().optional(),
+  confidence_class: z.enum(["firsthand", "commentary", "rumor", "synthesis", "unknown"]).default("unknown"),
+  retrieved_at: z.string().datetime(),
+});
+
+export const signalEventSchema = z.object({
+  id: z.string().min(1),
+  radar_id: z.string().optional(),
+  provenance: signalEventProvenanceSchema,
+  text: z.string().min(1),
+  title: z.string().optional(),
+  links: z.array(z.string()).default([]),
+  embedding: z.array(z.number()).optional(),
+  domain_tags: z.array(z.string()).default([]),
+  observed_at: z.string().datetime(),
+  ingested_at: z.string().datetime(),
+  content_hash: z.string().optional(),
+  metadata: z.record(z.unknown()).default({}),
+});
+
+export const threadMembershipSchema = z.object({
+  signal_event_id: z.string().min(1),
+  relevance: z.number().min(0).max(1).default(1),
+  added_at: z.string().datetime(),
+});
+
+export const threadSchema = z.object({
+  id: z.string().min(1),
+  radar_id: z.string().optional(),
+  kind: z.enum(["event", "narrative", "local_opportunity"]),
+  title: z.string().min(1),
+  summary: z.string().optional(),
+  members: z.array(threadMembershipSchema).default([]),
+  source_distribution: z.record(z.number()).default({}),
+  confidence: z.number().min(0).max(1).default(0.5),
+  timeline: z.object({
+    first_seen: z.string().datetime(),
+    last_updated: z.string().datetime(),
+    peak_activity: z.string().datetime().optional(),
+  }),
+  domain_tags: z.array(z.string()).default([]),
+  status: z.enum(["emerging", "active", "cooling", "archived"]).default("emerging"),
+});
+
+export const connectionOpportunitySchema = z.object({
+  id: z.string().min(1),
+  global_thread_id: z.string().min(1),
+  local_thread_ids: z.array(z.string().min(1)).min(1),
+  bridge_type: z.enum(["global_to_local", "local_to_global_hypothesis", "shared_campaign", "shared_indicator"]),
+  title: z.string().min(1),
+  summary: z.string().min(1),
+  score: z.number().min(0).max(1),
+  confidence: z.number().min(0).max(1),
+  rationale: z.array(z.string()).default([]),
+  user_expertise_tags: z.array(z.string()).default([]),
+  community_refs: z.array(z.string()).default([]),
+  public_benefit: z.number().min(0).max(100).default(50),
+  fear_factor: z.number().min(0).max(100).default(50),
+  realism: z.number().min(0).max(100).default(50),
+  polarization_risk: z.number().min(0).max(100).default(50),
+  compression_loss: z.number().min(0).max(100).default(50),
+  suggested_actions: z.array(z.string()).default([]),
+  coordination_path: z.string().optional(),
+  created_at: z.string().datetime(),
+  updated_at: z.string().datetime(),
+});
+
+export const actionCardSchema = z.object({
+  id: z.string().min(1),
+  connection_opportunity_id: z.string().min(1),
+  title: z.string().min(1),
+  description: z.string().min(1),
+  scope: z.enum(["individual", "team", "community", "network"]),
+  effort: z.enum(["minutes", "hours", "days", "weeks"]),
+  expected_benefit: z.string().min(1),
+  risk: z.enum(["none", "low", "medium", "high"]),
+  risk_description: z.string().optional(),
+  feedback_metric: z.object({
+    name: z.string().min(1),
+    measurement: z.string().min(1),
+    baseline: z.number().optional(),
+    target: z.number().optional(),
+  }),
+  time_window: z.object({
+    label: z.string().min(1),
+    start: z.string().datetime().optional(),
+    end: z.string().datetime().optional(),
+  }),
+  status: z.enum(["proposed", "accepted", "in_progress", "completed", "abandoned"]).default("proposed"),
+  outcome: z.object({
+    completed_at: z.string().datetime().optional(),
+    feedback_value: z.number().optional(),
+    notes: z.string().optional(),
+  }).optional(),
+  created_at: z.string().datetime(),
+  updated_at: z.string().datetime(),
+});
+
+export type SignalEventProvenance = z.infer<typeof signalEventProvenanceSchema>;
+export type SignalEvent = z.infer<typeof signalEventSchema>;
+export type ThreadMembership = z.infer<typeof threadMembershipSchema>;
+export type Thread = z.infer<typeof threadSchema>;
+export type ConnectionOpportunity = z.infer<typeof connectionOpportunitySchema>;
+export type ActionCard = z.infer<typeof actionCardSchema>;
