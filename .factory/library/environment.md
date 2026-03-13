@@ -24,6 +24,17 @@ Environment variables, external dependencies, and setup notes.
 - No API keys needed — uses public JSON API (`reddit.com/r/*/hot.json`)
 - User agent: `threat-radar-mcp/0.1.0`
 
+## TypeScript Quirks
+
+### Express 5 ParamsDictionary (string | string[])
+Express 5 types (`@types/express-serve-static-core@5.x`) define `ParamsDictionary` values as `string | string[]`. At runtime, route params are always strings, but TypeScript requires narrowing before passing to functions expecting `string`.
+
+**Fix pattern:**
+```typescript
+const raw = req.params.radarId;
+const val = Array.isArray(raw) ? raw[0] ?? '' : raw;
+```
+
 ## External Dependencies
 
 - **Postgres**: Existing Docker instance on port 5432 (shared with open-hax-openai-proxy)
