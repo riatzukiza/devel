@@ -11,6 +11,7 @@ import { MuLaneContent } from "./components/MuLane";
 import { PersonalizationPanel } from "./components/PersonalizationPanel";
 import { CriticalThinkingSection } from "./components/CriticalThinkingSection";
 import { ActionFeed } from "./components/ActionFeed";
+import { FirehosePanel } from "./components/FirehosePanel";
 import { useRadarPolling } from "../api/useRadarPolling";
 import { usePersonalization, applyWeights, computeCompositeScore } from "./hooks/usePersonalization";
 import type { RadarTile, SignalData, BranchData } from "../api/types";
@@ -113,17 +114,45 @@ function RadarCard({ tile }: { tile: RadarTile }) {
 
 function EmptyState() {
   return (
-    <div className="empty-state">
-      <div className="empty-icon">
-        <svg viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="var(--muted)" strokeWidth="1.5">
-          <circle cx="24" cy="24" r="20" />
-          <line x1="24" y1="24" x2="24" y2="10" />
-          <line x1="24" y1="24" x2="34" y2="28" />
+    <div className="dashboard-empty-state" data-testid="dashboard-empty-state">
+      <div className="dashboard-empty-icon">
+        <svg viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="var(--cyan)" strokeWidth="1.5">
+          <circle cx="32" cy="32" r="28" opacity="0.3" />
+          <circle cx="32" cy="32" r="18" opacity="0.5" />
+          <circle cx="32" cy="32" r="8" />
+          <line x1="32" y1="32" x2="32" y2="12" strokeWidth="2" />
+          <line x1="32" y1="32" x2="46" y2="38" strokeWidth="2" />
+          <circle cx="32" cy="32" r="2" fill="var(--cyan)" />
         </svg>
       </div>
-      <h2>No radars yet</h2>
-      <p>Connect an agent to the MCP control plane and create the first radar.<br />
-        Agents can use <code>radar_create</code>, then <code>radar_collect_bluesky</code> or <code>radar_collect_reddit</code> to start ingesting signals.</p>
+      <h2>Welcome to Mission Control</h2>
+      <p>
+        Your intelligence dashboard is ready. Connect an MCP agent to the control
+        plane and start monitoring signals from Bluesky, Reddit, and more.
+      </p>
+      <div className="dashboard-empty-steps">
+        <div className="dashboard-empty-step">
+          <span className="dashboard-empty-step-number">1</span>
+          <span className="dashboard-empty-step-text">
+            Create a radar: <code>radar_create</code> with a name, slug, and category
+            (<code>geopolitical</code>, <code>local</code>, etc.)
+          </span>
+        </div>
+        <div className="dashboard-empty-step">
+          <span className="dashboard-empty-step-number">2</span>
+          <span className="dashboard-empty-step-text">
+            Collect signals: <code>radar_collect_bluesky</code> or <code>radar_collect_reddit</code> to
+            ingest from public feeds
+          </span>
+        </div>
+        <div className="dashboard-empty-step">
+          <span className="dashboard-empty-step-number">3</span>
+          <span className="dashboard-empty-step-text">
+            Reduce and view: <code>radar_reduce_live</code> to process signals — the dashboard
+            auto-updates every 12 seconds
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
@@ -187,69 +216,80 @@ export function App(): JSX.Element {
         onReset={resetToDefaults}
       />
 
-      <div className="dashboard-layout">
-        {/* η (Global) Lane — Cyan */}
-        <section className="lane lane-eta" style={{ "--lane-accent": "var(--cyan)", "--lane-accent-rgb": "34,211,238" } as React.CSSProperties}>
-          <LaneHeader symbol={"\u03B7"} name="Global Forces" description="Things that affect you, outside your direct control" />
-          <div className="lane-content">
-            {loading && <LoadingSkeleton count={2} />}
-            {!loading && tiles.length === 0 && !error && <EmptyState />}
+      {/* Main layout — show empty state or 3-lane grid */}
+      {!loading && tiles.length === 0 && !error ? (
+        <div className="dashboard-layout">
+          <EmptyState />
+        </div>
+      ) : (
+        <div className="dashboard-layout">
+          {/* η (Global) Lane — Cyan */}
+          <section className="lane lane-eta" style={{ "--lane-accent": "var(--cyan)", "--lane-accent-rgb": "34,211,238" } as React.CSSProperties}>
+            <LaneHeader symbol={"\u03B7"} name="Global Forces" description="Things that affect you, outside your direct control" />
+            <div className="lane-content">
+              {loading && <LoadingSkeleton count={2} />}
 
-            {/* η lane with real signal data: ThreatClock, RiskGauges with ranges, BranchMap, thread cards */}
-            {!loading && globalTiles.length > 0 && (
-              <EtaLaneContent tiles={globalTiles} weights={weights} />
-            )}
+              {/* η lane with real signal data: ThreatClock, RiskGauges with ranges, BranchMap, thread cards */}
+              {!loading && globalTiles.length > 0 && (
+                <EtaLaneContent tiles={globalTiles} weights={weights} />
+              )}
 
-            {/* Show any remaining tiles that don't have threads yet as legacy cards */}
-            {!loading && globalTiles.length === 0 && tiles.length > 0 && !error && (
-              <LanePlaceholder message="No global radars configured yet. Create a radar with category 'geopolitical', 'infrastructure', or 'global'." />
-            )}
+              {/* Show placeholder when no global radars but other radars exist */}
+              {!loading && globalTiles.length === 0 && tiles.length > 0 && !error && (
+                <LanePlaceholder message="No global radars configured yet. Create a radar with category 'geopolitical', 'infrastructure', or 'global'." />
+              )}
 
-            {/* Critical Thinking Section */}
-            {!loading && (
-              <CriticalThinkingSection
-                enabled={toggles.criticalThinking}
-                disagreementIndex={globalDisagreement}
-              />
-            )}
-          </div>
-        </section>
+              {/* Critical Thinking Section */}
+              {!loading && (
+                <CriticalThinkingSection
+                  enabled={toggles.criticalThinking}
+                  disagreementIndex={globalDisagreement}
+                />
+              )}
+            </div>
+          </section>
 
-        {/* μ (Local) Lane — Emerald */}
-        <section className="lane lane-mu" style={{ "--lane-accent": "var(--emerald)", "--lane-accent-rgb": "52,211,153" } as React.CSSProperties}>
-          <LaneHeader symbol={"\u03BC"} name="Local Reach" description="Signals inside your expertise where intervention might matter" />
-          <div className="lane-content">
-            {loading && <LoadingSkeleton count={1} />}
-            {!loading && <MuLaneContent tiles={localTiles} />}
+          {/* μ (Local) Lane — Emerald */}
+          <section className="lane lane-mu" style={{ "--lane-accent": "var(--emerald)", "--lane-accent-rgb": "52,211,153" } as React.CSSProperties}>
+            <LaneHeader symbol={"\u03BC"} name="Local Reach" description="Signals inside your expertise where intervention might matter" />
+            <div className="lane-content">
+              {loading && <LoadingSkeleton count={1} />}
+              {!loading && <MuLaneContent tiles={localTiles} />}
 
-            {/* Action Feed — time-bounded suggestions */}
-            {!loading && (
-              <ActionFeed
-                tiles={tiles}
-                agencyBiasEnabled={toggles.agencyBias}
-              />
-            )}
-          </div>
-        </section>
+              {/* Action Feed — time-bounded suggestions */}
+              {!loading && (
+                <ActionFeed
+                  tiles={tiles}
+                  agencyBiasEnabled={toggles.agencyBias}
+                />
+              )}
+            </div>
+          </section>
 
-        {/* Π (Connections) Lane — Fuchsia */}
-        <section className="lane lane-pi" style={{ "--lane-accent": "var(--fuchsia)", "--lane-accent-rgb": "217,70,239" } as React.CSSProperties}>
-          <LaneHeader symbol={"\u03A0"} name="Connections" description="Bridges between global forces and local actions" />
-          <div className="lane-content">
-            {loading && <LoadingSkeleton count={1} />}
-            {!loading && connectionTiles.length > 0 ? (
-              <div className="lane-grid">
-                {connectionTiles.map((t) => <RadarCard key={t.radar.id} tile={t} />)}
-              </div>
-            ) : !loading ? (
-              <LanePlaceholder message={toggles.federation
-                ? "Connection opportunities will appear here as the system links global signals to local actions."
-                : "Federation is disabled. Enable it in personalization to see connection opportunities from peers."
-              } />
-            ) : null}
-          </div>
-        </section>
-      </div>
+          {/* Π (Connections) Lane — Fuchsia */}
+          <section className="lane lane-pi" style={{ "--lane-accent": "var(--fuchsia)", "--lane-accent-rgb": "217,70,239" } as React.CSSProperties}>
+            <LaneHeader symbol={"\u03A0"} name="Connections" description="Bridges between global forces and local actions" />
+            <div className="lane-content">
+              {loading && <LoadingSkeleton count={1} />}
+              {!loading && connectionTiles.length > 0 ? (
+                <div className="lane-grid">
+                  {connectionTiles.map((t) => <RadarCard key={t.radar.id} tile={t} />)}
+                </div>
+              ) : !loading ? (
+                <LanePlaceholder message={toggles.federation
+                  ? "Connection opportunities will appear here as the system links global signals to local actions."
+                  : "Federation is disabled. Enable it in personalization to see connection opportunities from peers."
+                } />
+              ) : null}
+            </div>
+          </section>
+        </div>
+      )}
+
+      {/* Firehose Panel — collapsible bottom panel with signal feed */}
+      {!loading && (
+        <FirehosePanel tiles={tiles} />
+      )}
     </div>
   );
 }
