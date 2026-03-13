@@ -1,0 +1,34 @@
+previewsEnabled: true
+services:
+  - type: web
+    name: threat-radar-mcp
+    runtime: node
+    region: oregon
+    plan: free
+    buildCommand: pnpm install && pnpm --filter @workspace/radar-core build && pnpm --filter @workspace/mcp-foundation build && pnpm --filter @riatzukiza/threat-radar-mcp build
+    startCommand: pnpm --filter @riatzukiza/threat-radar-mcp start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: PORT
+        value: "10002"
+      - key: ADMIN_AUTH_KEY
+        generateValue: true
+      - key: PUBLIC_BASE_URL
+        sync: false
+      - key: ALLOW_UNAUTH_LOCAL
+        value: "false"
+      - key: DATABASE_URL
+        sync: false
+  - type: web
+    name: threat-radar-web
+    runtime: static
+    rootDir: orgs/riatzukiza/threat-radar-web
+    buildCommand: pnpm install && pnpm --filter @workspace/radar-core build && pnpm --filter @riatzukiza/threat-radar-web build
+    staticPublishPath: ./dist
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: VITE_API_URL
+        value: "https://threat-radar-mcp.onrender.com"
