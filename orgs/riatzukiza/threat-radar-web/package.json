@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@workspace/radar-core": "workspace:*",
+    "@workspace/signal-embed-browser": "workspace:*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
