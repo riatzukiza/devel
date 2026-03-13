@@ -20,7 +20,9 @@ import {
   type RadarAssessmentPacket,
   type RadarModuleVersion,
   type ReducedSnapshot,
+  type SignalEvent,
   type SourceDefinition,
+  type Thread,
 } from "@workspace/radar-core";
 import { getSql, initSchema, closeSql } from "./lib/postgres.js";
 import { PostgresRadarStore } from "./store.js";
@@ -82,6 +84,8 @@ type InMemoryRadarRecord = {
 
 class InMemoryRadarStore {
   private radars = new Map<string, InMemoryRadarRecord>();
+  private signals = new Map<string, SignalEvent>();
+  private threads = new Map<string, Thread>();
 
   async getRadar(radarId: string): Promise<Radar | null> {
     const record = this.radars.get(radarId);
@@ -180,6 +184,72 @@ class InMemoryRadarStore {
 
   async listAuditEvents(radarId: string): Promise<Array<{ event_type: string; payload: object; created_at: string }>> {
     return [];
+  }
+
+  // --- Signal CRUD ---
+
+  async createSignal(signal: SignalEvent): Promise<void> {
+    this.signals.set(signal.id, signal);
+  }
+
+  async getSignal(signalId: string): Promise<SignalEvent | null> {
+    return this.signals.get(signalId) ?? null;
+  }
+
+  async listSignals(radarId?: string, limit = 100): Promise<SignalEvent[]> {
+    const all = [...this.signals.values()];
+    const filtered = radarId ? all.filter((s) => s.radar_id === radarId) : all;
+    return filtered.sort((a, b) => b.ingested_at.localeCompare(a.ingested_at)).slice(0, limit);
+  }
+
+  async updateSignal(signalId: string, updates: Partial<Pick<SignalEvent, "radar_id" | "domain_tags" | "metadata">>): Promise<void> {
+    const existing = this.signals.get(signalId);
+    if (existing) {
+      this.signals.set(signalId, { ...existing, ...updates });
+    }
+  }
+
+  async findSignalByContentHash(contentHash: string): Promise<SignalEvent | null> {
+    for (const signal of this.signals.values()) {
+      if (signal.content_hash === contentHash) return signal;
+    }
+    return null;
+  }
+
+  // --- Thread CRUD ---
+
+  async createThread(thread: Thread): Promise<void> {
+    this.threads.set(thread.id, thread);
+  }
+
+  async getThread(threadId: string): Promise<Thread | null> {
+    return this.threads.get(threadId) ?? null;
+  }
+
+  async listThreads(radarId?: string, limit = 100): Promise<Thread[]> {
+    const all = [...this.threads.values()];
+    const filtered = radarId ? all.filter((t) => t.radar_id === radarId) : all;
+    return filtered.sort((a, b) => b.timeline.last_updated.localeCompare(a.timeline.last_updated)).slice(0, limit);
+  }
+
+  async updateThread(threadId: string, updates: Partial<Pick<Thread, "title" | "summary" | "members" | "source_distribution" | "confidence" | "domain_tags" | "status">> & { last_updated?: string }): Promise<void> {
+    const existing = this.threads.get(threadId);
+    if (!existing) return;
+    const merged: Thread = {
+      ...existing,
+      ...(updates.title !== undefined ? { title: updates.title } : {}),
+      ...(updates.summary !== undefined ? { summary: updates.summary } : {}),
+      ...(updates.members !== undefined ? { members: updates.members } : {}),
+      ...(updates.source_distribution !== undefined ? { source_distribution: updates.source_distribution } : {}),
+      ...(updates.confidence !== undefined ? { confidence: updates.confidence } : {}),
+      ...(updates.domain_tags !== undefined ? { domain_tags: updates.domain_tags } : {}),
+      ...(updates.status !== undefined ? { status: updates.status } : {}),
+      timeline: {
+        ...existing.timeline,
+        ...(updates.last_updated !== undefined ? { last_updated: updates.last_updated } : {}),
+      },
+    };
+    this.threads.set(threadId, merged);
   }
 }
 
