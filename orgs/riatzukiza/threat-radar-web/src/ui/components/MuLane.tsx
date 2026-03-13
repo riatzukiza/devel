@@ -7,6 +7,7 @@
 
 import { useMemo } from "react";
 import { MuThreadCard, computeLeverage } from "./MuThreadCard";
+import { CommunityReadiness } from "./CommunityReadiness";
 import type { RadarTile, ThreadData } from "../../api/types";
 
 export interface MuLaneContentProps {
@@ -78,11 +79,17 @@ export function MuLaneContent({ tiles, className }: MuLaneContentProps): JSX.Ele
   }, [tiles]);
 
   if (sortedThreads.length === 0) {
-    return <MuEmptyState />;
+    return (
+      <div className={`mu-lane-content ${className ?? ""}`.trim()}>
+        <CommunityReadiness threads={[]} />
+        <MuEmptyState />
+      </div>
+    );
   }
 
   return (
     <div className={`mu-lane-content ${className ?? ""}`.trim()} data-testid="mu-lane-content">
+      <CommunityReadiness threads={sortedThreads} />
       <div className="mu-thread-count" data-testid="mu-thread-count">
         <span>{sortedThreads.length} local thread{sortedThreads.length !== 1 ? "s" : ""}</span>
         <span className="mu-sort-label">sorted by leverage</span>

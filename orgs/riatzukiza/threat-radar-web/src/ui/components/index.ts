@@ -42,3 +42,6 @@ export type { FirehosePanelProps, FirehoseEntry } from "./FirehosePanel";
 
 export { HeroPanel, computeAgency, computeNuance, computeCritical } from "./HeroPanel";
 export type { HeroPanelProps } from "./HeroPanel";
+
+export { CommunityReadiness, computeAwareness, computeEngagement, computeCoordination, computeResilience, computeReadinessDimensions } from "./CommunityReadiness";
+export type { CommunityReadinessProps, ReadinessDimension } from "./CommunityReadiness";
