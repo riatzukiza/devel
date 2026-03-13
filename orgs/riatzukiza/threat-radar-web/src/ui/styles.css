@@ -598,3 +598,348 @@ body {
 .uncertainty-low { border-color: rgba(52,211,153,0.3); color: var(--emerald); }
 .uncertainty-moderate { border-color: rgba(255,209,102,0.3); color: var(--accent-2); }
 .uncertainty-high { border-color: rgba(255,111,60,0.3); color: var(--accent); }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/* μ (Local) Lane                                                           */
+/* ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── μ Lane Content ── */
+.mu-lane-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mu-thread-count {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: var(--muted);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+.mu-sort-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+}
+
+.mu-thread-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ── μ Empty State ── */
+.mu-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  min-height: 200px;
+}
+.mu-empty-icon {
+  margin-bottom: 12px;
+}
+.mu-empty-text {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  max-width: 280px;
+  border: 1px dashed rgba(52,211,153,0.2);
+  border-radius: 16px;
+  padding: 24px 20px;
+}
+
+/* ── μ Thread Card ── */
+.mu-thread-card {
+  background: rgba(255,255,255,0.015);
+  border: 1px solid rgba(52,211,153,0.08);
+  border-radius: 14px;
+  padding: 14px;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background 0.3s ease;
+  animation: rise 0.4s ease;
+  user-select: none;
+}
+.mu-thread-card:hover {
+  border-color: rgba(52,211,153,0.25);
+  background: rgba(52,211,153,0.02);
+}
+.mu-thread-card:focus-visible {
+  outline: 2px solid var(--emerald);
+  outline-offset: 2px;
+}
+.mu-thread-card--expanded {
+  border-color: rgba(52,211,153,0.2);
+  background: rgba(52,211,153,0.015);
+}
+
+/* ── μ Thread Header ── */
+.mu-thread-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.mu-thread-title-block { flex: 1; min-width: 0; }
+.mu-thread-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.35;
+  margin-bottom: 2px;
+}
+.mu-thread-summary {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.mu-thread-signal-count {
+  font-size: 11px;
+  color: var(--emerald);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  padding: 2px 8px;
+  background: rgba(52,211,153,0.1);
+  border-radius: 999px;
+}
+
+/* ── μ Indicators (proximity, leverage, time-to-act) ── */
+.mu-indicators {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.mu-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid;
+  font-size: 10px;
+  line-height: 1;
+  white-space: nowrap;
+}
+.mu-indicator-label {
+  opacity: 0.6;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 9px;
+}
+.mu-indicator-value {
+  font-weight: 500;
+}
+
+/* Proximity variants */
+.mu-proximity-close {
+  border-color: rgba(52,211,153,0.4);
+  color: var(--emerald);
+}
+.mu-proximity-moderate {
+  border-color: rgba(255,209,102,0.3);
+  color: var(--accent-2);
+}
+.mu-proximity-distant {
+  border-color: rgba(138,149,164,0.3);
+  color: var(--muted);
+}
+
+/* Leverage variants */
+.mu-leverage-high {
+  border-color: rgba(52,211,153,0.4);
+  color: var(--emerald);
+}
+.mu-leverage-medium {
+  border-color: rgba(255,209,102,0.3);
+  color: var(--accent-2);
+}
+.mu-leverage-low {
+  border-color: rgba(138,149,164,0.3);
+  color: var(--muted);
+}
+
+/* Time-to-act variants */
+.tta-now {
+  border-color: rgba(255,111,60,0.4);
+  color: var(--accent);
+  animation: pulse 2s ease-in-out infinite;
+}
+.tta-days {
+  border-color: rgba(255,209,102,0.3);
+  color: var(--accent-2);
+}
+.tta-weeks {
+  border-color: rgba(138,149,164,0.3);
+  color: var(--muted);
+}
+.tta-closing {
+  border-color: rgba(138,149,164,0.2);
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+/* ── μ Leverage Bar ── */
+.mu-leverage-bar {
+  display: grid;
+  grid-template-columns: 64px 1fr 36px;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.mu-leverage-bar-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.mu-leverage-bar-track {
+  position: relative;
+  height: 5px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.mu-leverage-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, rgba(52,211,153,0.35), rgba(52,211,153,0.8));
+  transition: width 0.6s ease;
+}
+.mu-leverage-bar-value {
+  font-size: 11px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+/* ── μ Source Badges ── */
+.mu-thread-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+/* ── μ Thread Footer ── */
+.mu-thread-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding-top: 6px;
+  border-top: 1px solid var(--line);
+  font-size: 10px;
+  color: var(--muted);
+}
+.mu-thread-updated { opacity: 0.8; }
+.mu-expand-hint {
+  opacity: 0.5;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: opacity 0.2s;
+}
+.mu-thread-card:hover .mu-expand-hint { opacity: 0.9; }
+
+/* ── μ Expanded Details ── */
+.mu-expanded-details {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(52,211,153,0.1);
+  animation: expandIn 0.3s ease;
+}
+@keyframes expandIn {
+  from { opacity: 0; max-height: 0; }
+  to { opacity: 1; max-height: 600px; }
+}
+.mu-detail-section {
+  margin-bottom: 10px;
+}
+.mu-detail-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--emerald);
+  margin-bottom: 6px;
+  opacity: 0.8;
+}
+.mu-detail-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.mu-detail-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.mu-detail-stat-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.mu-detail-stat-value {
+  font-size: 12px;
+  color: var(--ink);
+}
+
+/* Tags */
+.mu-detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.mu-detail-tag {
+  font-size: 10px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgba(52,211,153,0.08);
+  border: 1px solid rgba(52,211,153,0.15);
+  color: var(--emerald);
+}
+
+/* Members */
+.mu-detail-members {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.mu-detail-member {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  font-size: 10px;
+  color: var(--muted);
+  padding: 2px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.mu-detail-member-id {
+  font-family: monospace;
+  opacity: 0.7;
+}
+.mu-detail-member-relevance {
+  font-variant-numeric: tabular-nums;
+}
+.mu-detail-member-added {
+  opacity: 0.6;
+}
+.mu-detail-more {
+  font-size: 10px;
+  color: var(--muted);
+  opacity: 0.6;
+  text-align: center;
+  padding: 4px 0;
+}
