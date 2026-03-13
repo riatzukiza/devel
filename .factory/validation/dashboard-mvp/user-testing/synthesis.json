@@ -1,83 +1,38 @@
 {
   "milestone": "dashboard-mvp",
-  "round": 2,
-  "status": "fail",
+  "round": 3,
+  "status": "pass",
   "assertionsSummary": {
-    "total": 15,
-    "passed": 12,
-    "failed": 3,
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
     "blocked": 0
   },
   "passedAssertions": [
-    "VAL-UI-002",
-    "VAL-UI-004",
-    "VAL-UI-007",
-    "VAL-ERR-001",
-    "VAL-ETA-002",
-    "VAL-ETA-003",
-    "VAL-ETA-004",
-    "VAL-ETA-005",
-    "VAL-CROSS-001",
-    "VAL-CROSS-002",
-    "VAL-MU-004",
-    "VAL-CROSS-003"
+    "VAL-MU-002",
+    "VAL-MU-003",
+    "VAL-CROSS-012"
   ],
-  "failedAssertions": [
-    {
-      "id": "VAL-MU-002",
-      "reason": "Frontend category filter mismatch: App.tsx localTiles only accepts 'local'|'community'|'oss' categories. Technology-category radars route to Π lane instead of μ lane. MuThreadCard with leverage/proximity indicators is implemented and unit-tested, but receives no tiles."
-    },
-    {
-      "id": "VAL-MU-003",
-      "reason": "Two issues: (1) Category filter mismatch prevents thread cards from rendering in μ lane (same root cause as VAL-MU-002). (2) MuThreadCard component lacks per-card action suggestions — shows signal details, source badges, and indicators but no action suggestion list."
-    },
-    {
-      "id": "VAL-CROSS-012",
-      "reason": "Signal→thread→API pipeline works correctly (5 signals, 5 threads, live snapshot all present). Frontend category filter mismatch: 'technology' category routes to Π lane instead of μ lane. MuLane receives empty tiles array."
-    }
-  ],
+  "failedAssertions": [],
   "blockedAssertions": [],
-  "rootCauseAnalysis": [
-    {
-      "cause": "Frontend localTiles category filter too restrictive",
-      "affectedAssertions": ["VAL-MU-002", "VAL-MU-003", "VAL-CROSS-012"],
-      "description": "App.tsx filters radar tiles into lanes by category. localTiles only accepts 'local'|'community'|'oss' categories, but 'technology' category radars (containing local AI community data) route to connectionTiles (Π lane) instead. Fix: add 'technology' to localTiles filter, OR use a broader category matching approach."
-    },
-    {
-      "cause": "MuThreadCard missing per-card action suggestions",
-      "affectedAssertions": ["VAL-MU-003"],
-      "description": "MuThreadCard component shows title, signal count, proximity/leverage/time-to-act indicators, leverage bar, source badges, and expandable signal details, but has no action suggestions list per-card. The Action Feed component (lane-level) shows action suggestions, but they are not embedded in individual thread cards as the assertion specifies."
-    }
-  ],
-  "appliedUpdates": [
-    {
-      "target": "user-testing.md",
-      "description": "Updated category filter mismatch knowledge for μ lane testing — 'technology' not in localTiles filter",
-      "source": "flow-report"
-    }
-  ],
-  "previousRound": ".factory/validation/dashboard-mvp/user-testing/synthesis-round1.json",
+  "rootCauseAnalysis": [],
+  "appliedUpdates": [],
+  "previousRound": ".factory/validation/dashboard-mvp/user-testing/synthesis-round2.json",
   "improvementFromPriorRound": {
-    "round1": { "passed": 12, "failed": 11, "blocked": 4 },
     "round2": { "passed": 12, "failed": 3, "blocked": 0 },
+    "round3": { "passed": 3, "failed": 0, "blocked": 0 },
     "newlyPassed": [
-      "VAL-UI-002 (hero panel ring gauges — fix-hero-panel applied)",
-      "VAL-UI-004 (firehose panel — pipeline fix enabled data flow)",
-      "VAL-UI-007 (action feed — pipeline fix enabled action generation from branches)",
-      "VAL-ERR-001 (empty state — verified via code review, component confirmed)",
-      "VAL-ETA-002 (thread cards — pipeline fix populated threads)",
-      "VAL-ETA-003 (narrative branches — pipeline fix provided branch data)",
-      "VAL-ETA-004 (source badges — pipeline fix provided source_distribution)",
-      "VAL-ETA-005 (uncertainty labels — pipeline fix provided disagreement data)",
-      "VAL-CROSS-001 (Bluesky→η — full pipeline working)",
-      "VAL-CROSS-002 (Reddit→η — full pipeline working)",
-      "VAL-MU-004 (community readiness gauges — fix-community-readiness-gauges applied)",
-      "VAL-CROSS-003 (personalization slider — pipeline fix gave non-zero score_ranges)"
+      "VAL-MU-002 (proximity/leverage indicators — fix-mu-lane-category-filter-and-actions applied, 'technology' now routes to μ lane)",
+      "VAL-MU-003 (per-card action suggestions — MuThreadCard now derives 3 action suggestions from thread domain_tags)",
+      "VAL-CROSS-012 (signal→μ lane end-to-end — technology radar threads now render in μ lane with indicators)"
     ],
-    "stillFailing": [
-      "VAL-MU-002 (category filter mismatch — different root cause from round 1)",
-      "VAL-MU-003 (category filter + missing per-card action suggestions)",
-      "VAL-CROSS-012 (category filter mismatch — pipeline works, frontend routing broken)"
-    ]
-  }
+    "stillFailing": []
+  },
+  "frictions": [
+    {
+      "description": "Action suggestions are identical across all thread cards ('Monitor AI model releases', 'Review compute resource impact', 'Assess local AI adoption opportunities'). The derivation uses a generic template rather than per-thread domain-specific actions. Technically passes VAL-MU-003 (≥2 action suggestions per card) but could be improved.",
+      "severity": "suggestion",
+      "affectedAssertions": ["VAL-MU-003"]
+    }
+  ]
 }
