@@ -26,6 +26,7 @@ import {
 } from "@workspace/radar-core";
 import { getSql, initSchema, closeSql } from "./lib/postgres.js";
 import { PostgresRadarStore } from "./store.js";
+import { BlueskyCollector, type BlueskyFeedQuery } from "./collectors/bluesky.js";
 
 const ENV = z.object({
   PORT: z.coerce.number().int().min(1).max(65535).default(10002),
@@ -554,6 +555,87 @@ server.registerTool(
   async ({ radarId }): Promise<CallToolResult> => {
     const events = await store.listAuditEvents(radarId);
     return { content: [{ type: "text", text: JSON.stringify(events, null, 2) }] };
+  },
+);
+
+server.registerTool(
+  "radar_collect_bluesky",
+  {
+    description: "Collect signals from Bluesky public feeds. Accepts a feed URI, actor handle, or search query. Fetches posts via the AT Protocol, normalizes each post into a SignalEvent with source='bluesky', and stores them in Postgres. No authentication needed for public feeds.",
+    inputSchema: {
+      feedUri: z.string().optional().describe("A Bluesky feed generator URI (at:// URI)"),
+      listUri: z.string().optional().describe("A Bluesky list URI (at:// URI)"),
+      actor: z.string().optional().describe("A Bluesky actor handle or DID to fetch posts from"),
+      searchQuery: z.string().optional().describe("A search query to find posts"),
+      limit: z.number().int().min(1).max(100).optional().describe("Maximum number of posts to fetch (default: 25)"),
+    },
+  },
+  async ({ feedUri, listUri, actor, searchQuery, limit }): Promise<CallToolResult> => {
+    try {
+      // Validate that at least one query parameter is provided
+      if (!feedUri && !listUri && !actor && !searchQuery) {
+        return {
+          content: [{ type: "text", text: JSON.stringify({ ok: false, error: "At least one of feedUri, listUri, actor, or searchQuery must be provided" }) }],
+          isError: true,
+        };
+      }
+
+      // Validate URI format for feedUri and listUri if provided
+      if (feedUri && !feedUri.startsWith("at://")) {
+        return {
+          content: [{ type: "text", text: JSON.stringify({ ok: false, error: "feedUri must be a valid AT Protocol URI (at://...)" }) }],
+          isError: true,
+        };
+      }
+      if (listUri && !listUri.startsWith("at://")) {
+        return {
+          content: [{ type: "text", text: JSON.stringify({ ok: false, error: "listUri must be a valid AT Protocol URI (at://...)" }) }],
+          isError: true,
+        };
+      }
+
+      const collector = new BlueskyCollector();
+      const query: BlueskyFeedQuery = {
+        limit: limit ?? 25,
+      };
+
+      if (feedUri) {
+        query.feed = feedUri;
+      } else if (listUri) {
+        query.list = listUri;
+      } else if (actor) {
+        query.actor = actor;
+      } else if (searchQuery) {
+        query.searchQuery = searchQuery;
+      }
+
+      const signals = await collector.collectFromFeed(query);
+
+      // Deduplicate and store signals
+      let collected = 0;
+      let duplicates = 0;
+      for (const signal of signals) {
+        if (signal.content_hash) {
+          const existing = await store.findSignalByContentHash(signal.content_hash);
+          if (existing) {
+            duplicates++;
+            continue;
+          }
+        }
+        await store.createSignal(signal);
+        collected++;
+      }
+
+      return {
+        content: [{ type: "text", text: JSON.stringify({ ok: true, collected, duplicates, total_fetched: signals.length }) }],
+      };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Collection failed";
+      return {
+        content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }],
+        isError: true,
+      };
+    }
   },
 );
 
