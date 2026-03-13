@@ -6,6 +6,7 @@ import { BranchMap } from "./components/BranchMap";
 import type { BranchMapBranch } from "./components/BranchMap";
 import { ErrorBanner } from "./components/ErrorBanner";
 import { LoadingSkeleton } from "./components/LoadingSkeleton";
+import { EtaLaneContent } from "./components/EtaLane";
 import { useRadarPolling } from "../api/useRadarPolling";
 import type { RadarTile, SignalData, BranchData } from "../api/types";
 
@@ -150,11 +151,6 @@ export function App(): JSX.Element {
   const localTiles = useMemo(() => tiles.filter((t) => t.radar.category === "local" || t.radar.category === "community" || t.radar.category === "oss"), [tiles]);
   const connectionTiles = useMemo(() => tiles.filter((t) => !globalTiles.includes(t) && !localTiles.includes(t)), [tiles, globalTiles, localTiles]);
 
-  const compositeStress = useMemo(() => {
-    if (tiles.length === 0) return 0;
-    return tiles.reduce((sum, t) => sum + averageSignal(t.liveSnapshot), 0) / tiles.length;
-  }, [tiles]);
-
   return (
     <div className="dashboard-shell">
       {/* Error banner — shown when API is unreachable */}
@@ -172,21 +168,18 @@ export function App(): JSX.Element {
         <section className="lane lane-eta" style={{ "--lane-accent": "var(--cyan)", "--lane-accent-rgb": "34,211,238" } as React.CSSProperties}>
           <LaneHeader symbol={"\u03B7"} name="Global Forces" description="Things that affect you, outside your direct control" />
           <div className="lane-content">
-            {/* Hero gauges in the η lane */}
-            {!loading && tiles.length > 0 && (
-              <div className="hero-gauges">
-                <RingGauge value={compositeStress} max={4} label="Composite Stress" color="var(--accent)" />
-                <RingGauge value={tiles.reduce((s, t) => s + (t.liveSnapshot?.disagreement_index ?? 0), 0) / (tiles.length || 1)} max={1} label="Disagreement" color="var(--accent-2)" />
-                <RingGauge value={tiles.reduce((s, t) => s + (t.liveSnapshot?.quality_score ?? 0), 0) / (tiles.length || 1)} max={100} label="Quality" color="var(--cyan)" />
-              </div>
-            )}
-
             {loading && <LoadingSkeleton count={2} />}
             {!loading && tiles.length === 0 && !error && <EmptyState />}
 
-            <div className="lane-grid">
-              {globalTiles.map((t) => <RadarCard key={t.radar.id} tile={t} />)}
-            </div>
+            {/* η lane with real signal data: ThreatClock, RiskGauges with ranges, BranchMap, thread cards */}
+            {!loading && globalTiles.length > 0 && (
+              <EtaLaneContent tiles={globalTiles} />
+            )}
+
+            {/* Show any remaining tiles that don't have threads yet as legacy cards */}
+            {!loading && globalTiles.length === 0 && tiles.length > 0 && !error && (
+              <LanePlaceholder message="No global radars configured yet. Create a radar with category 'geopolitical', 'infrastructure', or 'global'." />
+            )}
           </div>
         </section>
 

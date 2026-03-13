@@ -437,12 +437,14 @@ app.get("/api/radars", async (_req, res) => {
     const submissions = await store.listSubmissions(radar.id);
     const liveSnapshot = await store.getLatestLiveSnapshot(radar.id);
     const latestDailySnapshot = await store.getLatestDailySnapshot(radar.id);
+    const threads = await store.listThreads(radar.id);
     return {
       radar,
       sourceCount: sources.length,
       submissionCount: submissions.length,
       liveSnapshot,
       latestDailySnapshot,
+      threads,
     };
   }));
   res.json(result);

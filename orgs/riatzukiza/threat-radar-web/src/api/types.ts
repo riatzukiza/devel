@@ -17,6 +17,61 @@ export type BranchData = {
   triggers: string[];
 };
 
+/** Score range from the deterministic reducer (per dimension) */
+export type ScoreRangeData = {
+  dimension: string;
+  min: number;
+  max: number;
+  median: number;
+};
+
+/** Narrative branch from the deterministic reducer */
+export type NarrativeBranchData = {
+  label: string;
+  probability: number;
+  evidence: string[];
+  realism: number;
+  fear: number;
+  publicBenefit: number;
+  actionability: number;
+  polarizationRisk: number;
+  compressionLoss: number;
+};
+
+/** Output of the deterministic thread-based reducer stored in render_state */
+export type DeterministicSnapshotData = {
+  scoreRanges: ScoreRangeData[];
+  disagreementIndex: number;
+  narrativeBranches: NarrativeBranchData[];
+  compressionLoss: number;
+};
+
+/** Thread member reference */
+export type ThreadMemberData = {
+  signal_event_id: string;
+  relevance: number;
+  added_at: string;
+};
+
+/** Thread object from the API */
+export type ThreadData = {
+  id: string;
+  radar_id?: string;
+  kind: "event" | "narrative" | "local_opportunity";
+  title: string;
+  summary?: string;
+  members: ThreadMemberData[];
+  source_distribution: Record<string, number>;
+  confidence: number;
+  timeline: {
+    first_seen: string;
+    last_updated: string;
+    peak_activity?: string;
+  };
+  domain_tags: string[];
+  status: "emerging" | "active" | "cooling" | "archived";
+};
+
 export type RadarTile = {
   radar: {
     id: string;
@@ -34,6 +89,10 @@ export type RadarTile = {
     signals: Record<string, SignalData>;
     branches: BranchData[];
     model_count: number;
+    render_state?: {
+      deterministicSnapshot?: DeterministicSnapshotData;
+    };
   };
   latestDailySnapshot?: { as_of_utc: string };
+  threads?: ThreadData[];
 };
