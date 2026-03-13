@@ -8,6 +8,7 @@ import { ErrorBanner } from "./components/ErrorBanner";
 import { LoadingSkeleton } from "./components/LoadingSkeleton";
 import { EtaLaneContent } from "./components/EtaLane";
 import { MuLaneContent } from "./components/MuLane";
+import { PiLaneConnections } from "./components/PiLaneConnections";
 import { PersonalizationPanel } from "./components/PersonalizationPanel";
 import { CriticalThinkingSection } from "./components/CriticalThinkingSection";
 import { ActionFeed } from "./components/ActionFeed";
@@ -15,6 +16,7 @@ import { FirehosePanel } from "./components/FirehosePanel";
 import { HeroPanel } from "./components/HeroPanel";
 import { useRadarPolling } from "../api/useRadarPolling";
 import { usePersonalization, applyWeights, computeCompositeScore } from "./hooks/usePersonalization";
+import { useEmbedding } from "../embed/useEmbedding";
 import { isGlobalCategory, isLocalCategory } from "./lane-routing";
 import type { RadarTile, SignalData, BranchData } from "../api/types";
 
@@ -183,6 +185,7 @@ export function App(): JSX.Element {
   const apiUrl = import.meta.env.VITE_API_URL ?? "";
   const { tiles, loading, error, isStale, lastUpdated, refetch } = useRadarPolling(apiUrl);
   const { weights, toggles, setWeight, setToggle, resetToDefaults } = usePersonalization();
+  const { state: embeddingState, computeSimilarity } = useEmbedding();
 
   const globalTiles = useMemo(() => tiles.filter((t) => isGlobalCategory(t.radar.category)), [tiles]);
   const localTiles = useMemo(() => tiles.filter((t) => isLocalCategory(t.radar.category)), [tiles]);
@@ -282,16 +285,31 @@ export function App(): JSX.Element {
             <LaneHeader symbol={"\u03A0"} name="Connections" description="Bridges between global forces and local actions" />
             <div className="lane-content">
               {loading && <LoadingSkeleton count={1} />}
-              {!loading && connectionTiles.length > 0 ? (
-                <div className="lane-grid">
+
+              {/* Semantic similarity connections between η and μ threads */}
+              {!loading && (globalTiles.length > 0 || localTiles.length > 0) && (
+                <PiLaneConnections
+                  globalTiles={globalTiles}
+                  localTiles={localTiles}
+                  embeddingState={embeddingState}
+                  computeSimilarity={computeSimilarity}
+                />
+              )}
+
+              {/* Fallback radar cards for tiles that didn't route to η or μ */}
+              {!loading && connectionTiles.length > 0 && (
+                <div className="lane-grid" style={{ marginTop: 12 }}>
                   {connectionTiles.map((t) => <RadarCard key={t.radar.id} tile={t} />)}
                 </div>
-              ) : !loading ? (
+              )}
+
+              {/* Placeholder when nothing to show */}
+              {!loading && globalTiles.length === 0 && localTiles.length === 0 && connectionTiles.length === 0 && (
                 <LanePlaceholder message={toggles.federation
                   ? "Connection opportunities will appear here as the system links global signals to local actions."
                   : "Federation is disabled. Enable it in personalization to see connection opportunities from peers."
                 } />
-              ) : null}
+              )}
             </div>
           </section>
         </div>
