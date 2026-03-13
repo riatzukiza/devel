@@ -13,6 +13,7 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
 import type { ThreadData, RadarTile } from "../../api/types";
 import type { SimilarityScore, EmbeddingState } from "../../embed/useEmbedding";
+import { formatRelativeTime } from "../utils/formatRelativeTime";
 import {
   detectClientConnections,
   type BridgeCardData,
@@ -109,16 +110,6 @@ function urgencyClass(level: string): string {
   }
 }
 
-function formatRelativeTime(iso: string): string {
-  const diff = Date.now() - new Date(iso).getTime();
-  const mins = Math.floor(diff / 60_000);
-  if (mins < 1) return "just now";
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  return `${Math.floor(hrs / 24)}d ago`;
-}
-
 // ── Placeholder federation data ──
 
 interface PeerAssessment {
@@ -127,7 +118,7 @@ interface PeerAssessment {
   readonly scores: {
     readonly realism: number;
     readonly fear: number;
-    readonly publicBenefit: number;
+    readonly public_benefit: number;
   };
   readonly lastSynced: string;
   readonly status: "online" | "stale" | "offline";
@@ -142,7 +133,7 @@ function generatePlaceholderPeers(bridge: BridgeCardData): PeerAssessment[] {
       scores: {
         realism: bridge.realism,
         fear: bridge.fear,
-        publicBenefit: bridge.publicBenefit,
+        public_benefit: bridge.public_benefit,
       },
       lastSynced: new Date().toISOString(),
       status: "online",
@@ -153,7 +144,7 @@ function generatePlaceholderPeers(bridge: BridgeCardData): PeerAssessment[] {
       scores: {
         realism: Math.min(100, bridge.realism + 8),
         fear: Math.max(0, bridge.fear - 5),
-        publicBenefit: Math.min(100, bridge.publicBenefit + 12),
+        public_benefit: Math.min(100, bridge.public_benefit + 12),
       },
       lastSynced: new Date(Date.now() - 300_000).toISOString(),
       status: "online",
@@ -164,7 +155,7 @@ function generatePlaceholderPeers(bridge: BridgeCardData): PeerAssessment[] {
       scores: {
         realism: Math.max(0, bridge.realism - 10),
         fear: Math.min(100, bridge.fear + 15),
-        publicBenefit: Math.max(0, bridge.publicBenefit - 7),
+        public_benefit: Math.max(0, bridge.public_benefit - 7),
       },
       lastSynced: new Date(Date.now() - 7_200_000).toISOString(),
       status: "stale",
@@ -245,7 +236,7 @@ function BridgeCard({
         </div>
         <div className="pi-score-item">
           <span className="pi-score-label">Public Benefit</span>
-          <span className="pi-score-value" data-testid="pi-score-public-benefit">{formatPct(bridge.publicBenefit)}</span>
+          <span className="pi-score-value" data-testid="pi-score-public-benefit">{formatPct(bridge.public_benefit)}</span>
         </div>
       </div>
 
@@ -513,10 +504,10 @@ function FederationPanel({ peers }: { peers: PeerAssessment[] }): JSX.Element {
                 <div className="pi-federation-score-bar">
                   <div
                     className="pi-federation-score-fill pi-fed-fill-benefit"
-                    style={{ width: `${peer.scores.publicBenefit}%` }}
+                    style={{ width: `${peer.scores.public_benefit}%` }}
                   />
                 </div>
-                <span className="pi-federation-score-value">{formatPct(peer.scores.publicBenefit)}</span>
+                <span className="pi-federation-score-value">{formatPct(peer.scores.public_benefit)}</span>
               </div>
             </div>
             <span className="pi-federation-synced">

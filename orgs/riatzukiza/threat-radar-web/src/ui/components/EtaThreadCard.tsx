@@ -5,6 +5,7 @@
 // ---------------------------------------------------------------------------
 
 import { SourceBadge } from "./SourceBadge";
+import { formatRelativeTime } from "../utils/formatRelativeTime";
 import type { ThreadData } from "../../api/types";
 
 export interface EtaThreadCardProps {
@@ -15,19 +16,6 @@ export interface EtaThreadCardProps {
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-
-function formatRelativeTime(isoString: string): string {
-  const now = Date.now();
-  const then = new Date(isoString).getTime();
-  const diffMs = now - then;
-  const diffMin = Math.floor(diffMs / 60_000);
-  if (diffMin < 1) return "just now";
-  if (diffMin < 60) return `${diffMin}m ago`;
-  const diffHr = Math.floor(diffMin / 60);
-  if (diffHr < 24) return `${diffHr}h ago`;
-  const diffDay = Math.floor(diffHr / 24);
-  return `${diffDay}d ago`;
-}
 
 function uncertaintyLabel(confidence: number): { text: string; className: string } {
   if (confidence >= 0.7) return { text: "low uncertainty", className: "uncertainty-low" };

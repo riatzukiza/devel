@@ -179,6 +179,9 @@ function FirehoseEntryRow({ entry }: { entry: FirehoseEntry }): JSX.Element {
   );
 }
 
+/** Maximum number of entries displayed in the firehose panel */
+export const MAX_FIREHOSE_ENTRIES = 200;
+
 export interface FirehosePanelProps {
   /** All radar tiles to extract signals from */
   readonly tiles: readonly RadarTile[];
@@ -186,7 +189,11 @@ export interface FirehosePanelProps {
 
 export function FirehosePanel({ tiles }: FirehosePanelProps): JSX.Element {
   const [collapsed, setCollapsed] = useState(true);
-  const entries = useMemo(() => tilesToFirehoseEntries(tiles), [tiles]);
+  const allEntries = useMemo(() => tilesToFirehoseEntries(tiles), [tiles]);
+  const entries = useMemo(
+    () => allEntries.slice(0, MAX_FIREHOSE_ENTRIES),
+    [allEntries],
+  );
 
   return (
     <div
@@ -204,7 +211,9 @@ export function FirehosePanel({ tiles }: FirehosePanelProps): JSX.Element {
         </svg>
         <span className="fh-panel-title">Signal Firehose</span>
         <span className="fh-panel-count" data-testid="firehose-count">
-          {entries.length} signal{entries.length !== 1 ? "s" : ""}
+          {allEntries.length > MAX_FIREHOSE_ENTRIES
+            ? `${MAX_FIREHOSE_ENTRIES} of ${allEntries.length} signals`
+            : `${entries.length} signal${entries.length !== 1 ? "s" : ""}`}
         </span>
         <span className="fh-panel-chevron">{collapsed ? "▲" : "▼"}</span>
       </button>

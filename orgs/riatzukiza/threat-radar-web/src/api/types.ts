@@ -32,10 +32,10 @@ export type NarrativeBranchData = {
   evidence: string[];
   realism: number;
   fear: number;
-  publicBenefit: number;
+  public_benefit: number;
   actionability: number;
-  polarizationRisk: number;
-  compressionLoss: number;
+  polarization_risk: number;
+  compression_loss: number;
 };
 
 /** Output of the deterministic thread-based reducer stored in render_state */

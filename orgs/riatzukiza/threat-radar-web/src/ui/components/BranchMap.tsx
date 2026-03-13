@@ -12,10 +12,10 @@ export interface BranchMapBranch {
   /** Optional: branch scoring dimensions */
   readonly realism?: number;
   readonly fear?: number;
-  readonly publicBenefit?: number;
+  readonly public_benefit?: number;
   readonly actionability?: number;
-  readonly polarizationRisk?: number;
-  readonly compressionLoss?: number;
+  readonly polarization_risk?: number;
+  readonly compression_loss?: number;
 }
 
 export interface BranchMapProps {

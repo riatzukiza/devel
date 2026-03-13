@@ -264,10 +264,10 @@ describe("reduce", () => {
       const dimensions = [
         branch.realism,
         branch.fear,
-        branch.publicBenefit,
+        branch.public_benefit,
         branch.actionability,
-        branch.polarizationRisk,
-        branch.compressionLoss,
+        branch.polarization_risk,
+        branch.compression_loss,
       ];
       const validDimensions = dimensions.filter(
         (d) => typeof d === "number" && isFinite(d),
