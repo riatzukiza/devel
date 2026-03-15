@@ -127,4 +127,57 @@ export async function initSchema(): Promise<void> {
   await s`
     CREATE INDEX IF NOT EXISTS idx_radar_audit_radar ON radar_audit_events(radar_id)
   `;
+  await s`
+    CREATE TABLE IF NOT EXISTS signals (
+      id TEXT PRIMARY KEY,
+      radar_id TEXT,
+      source TEXT NOT NULL,
+      text TEXT NOT NULL,
+      title TEXT,
+      links JSONB NOT NULL DEFAULT '[]',
+      provenance JSONB NOT NULL,
+      domain_tags JSONB NOT NULL DEFAULT '[]',
+      content_hash TEXT,
+      observed_at TIMESTAMPTZ NOT NULL,
+      ingested_at TIMESTAMPTZ NOT NULL,
+      metadata JSONB NOT NULL DEFAULT '{}',
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `;
+  await s`
+    CREATE TABLE IF NOT EXISTS threads (
+      id TEXT PRIMARY KEY,
+      radar_id TEXT,
+      kind TEXT NOT NULL,
+      title TEXT NOT NULL,
+      summary TEXT,
+      members JSONB NOT NULL DEFAULT '[]',
+      source_distribution JSONB NOT NULL DEFAULT '{}',
+      confidence REAL NOT NULL DEFAULT 0.5,
+      first_seen TIMESTAMPTZ NOT NULL,
+      last_updated TIMESTAMPTZ NOT NULL,
+      peak_activity TIMESTAMPTZ,
+      domain_tags JSONB NOT NULL DEFAULT '[]',
+      status TEXT NOT NULL DEFAULT 'emerging',
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `;
+  await s`
+    CREATE INDEX IF NOT EXISTS idx_signals_radar ON signals(radar_id)
+  `;
+  await s`
+    CREATE INDEX IF NOT EXISTS idx_signals_source ON signals(source)
+  `;
+  await s`
+    CREATE INDEX IF NOT EXISTS idx_signals_content_hash ON signals(content_hash)
+  `;
+  await s`
+    CREATE INDEX IF NOT EXISTS idx_threads_radar ON threads(radar_id)
+  `;
+  await s`
+    CREATE INDEX IF NOT EXISTS idx_threads_kind ON threads(kind)
+  `;
+  await s`
+    CREATE INDEX IF NOT EXISTS idx_threads_status ON threads(status)
+  `;
 }

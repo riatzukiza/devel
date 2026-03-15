@@ -44,6 +44,9 @@ Thumbs.db
 *.sqlite
 *.sqlite3
 
+# OAuth token stores (local runtime state; do not commit)
+services/mcp-fs-oauth/data/oauth.json
+
 # OS generated files
 .DS_Store?
 ehthumbs.db

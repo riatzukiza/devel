@@ -1,34 +1,223 @@
-previewsEnabled: true
 services:
+  # --- Hermes-based MCP services (native node runtime) ---
+
   - type: web
-    name: threat-radar-mcp
+    name: mcp-devtools
     runtime: node
-    region: oregon
     plan: free
-    buildCommand: pnpm install && pnpm --filter @workspace/radar-core build && pnpm --filter @workspace/mcp-foundation build && pnpm --filter @riatzukiza/threat-radar-mcp build
-    startCommand: pnpm --filter @riatzukiza/threat-radar-mcp start
+    buildCommand: pnpm install && pnpm --filter @workspace/hermes build && pnpm --filter @workspace/mcp-devtools build
+    startCommand: node services/mcp-devtools/dist/main.js
     healthCheckPath: /health
+    buildFilter:
+      paths:
+        - packages/hermes/**
+        - services/mcp-devtools/**
     envVars:
       - key: NODE_VERSION
         value: "22"
+      - fromGroup: mcp-shared
+
+  - type: web
+    name: mcp-exec
+    runtime: node
+    plan: free
+    buildCommand: pnpm install && pnpm --filter @workspace/hermes build && pnpm --filter @workspace/mcp-exec build
+    startCommand: node services/mcp-exec/dist/main.js
+    healthCheckPath: /health
+    buildFilter:
+      paths:
+        - packages/hermes/**
+        - services/mcp-exec/**
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - fromGroup: mcp-shared
+
+  - type: web
+    name: mcp-github
+    runtime: node
+    plan: free
+    buildCommand: pnpm install && pnpm --filter @workspace/hermes build && pnpm --filter @workspace/mcp-github build
+    startCommand: node services/mcp-github/dist/main.js
+    healthCheckPath: /health
+    buildFilter:
+      paths:
+        - packages/hermes/**
+        - services/mcp-github/**
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: GITHUB_TOKEN
+        sync: false
+      - fromGroup: mcp-shared
+
+  - type: web
+    name: mcp-ollama
+    runtime: node
+    plan: free
+    buildCommand: pnpm install && pnpm --filter @workspace/hermes build && pnpm --filter @workspace/mcp-ollama build
+    startCommand: node services/mcp-ollama/dist/main.js
+    healthCheckPath: /health
+    buildFilter:
+      paths:
+        - packages/hermes/**
+        - services/mcp-ollama/**
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: OLLAMA_HOST
+        sync: false
+      - fromGroup: mcp-shared
+
+  - type: web
+    name: mcp-process
+    runtime: node
+    plan: free
+    buildCommand: pnpm install && pnpm --filter @workspace/hermes build && pnpm --filter @workspace/mcp-process build
+    startCommand: node services/mcp-process/dist/main.js
+    healthCheckPath: /health
+    buildFilter:
+      paths:
+        - packages/hermes/**
+        - services/mcp-process/**
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - fromGroup: mcp-shared
+
+  - type: web
+    name: mcp-sandboxes
+    runtime: node
+    plan: free
+    buildCommand: pnpm install && pnpm --filter @workspace/hermes build && pnpm --filter @workspace/mcp-sandboxes build
+    startCommand: node services/mcp-sandboxes/dist/main.js
+    healthCheckPath: /health
+    buildFilter:
+      paths:
+        - packages/hermes/**
+        - services/mcp-sandboxes/**
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - fromGroup: mcp-shared
+
+  - type: web
+    name: mcp-tdd
+    runtime: node
+    plan: free
+    buildCommand: pnpm install && pnpm --filter @workspace/hermes build && pnpm --filter @workspace/mcp-tdd build
+    startCommand: node services/mcp-tdd/dist/main.js
+    healthCheckPath: /health
+    buildFilter:
+      paths:
+        - packages/hermes/**
+        - services/mcp-tdd/**
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - fromGroup: mcp-shared
+
+  # --- MCP-FS-OAuth (Docker: needs duckdb native, Redis) ---
+
+  - type: web
+    name: mcp-fs-oauth
+    runtime: docker
+    plan: free
+    dockerfilePath: services/mcp-fs-oauth/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    buildFilter:
+      paths:
+        - packages/aether/**
+        - packages/opencode-cljs-client/**
+        - packages/openplanner-cljs-client/**
+        - services/mcp-fs-oauth/**
+    envVars:
+      - key: REDIS_HOST
+        fromService:
+          type: keyvalue
+          name: mcp-redis
+          property: host
+      - key: REDIS_PORT
+        fromService:
+          type: keyvalue
+          name: mcp-redis
+          property: port
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: OAUTH_GITHUB_CLIENT_ID
+        sync: false
+      - key: OAUTH_GITHUB_CLIENT_SECRET
+        sync: false
+      - fromGroup: mcp-shared
+
+  # --- Threat Radar MCP ---
+
+  - type: web
+    name: threat-radar-mcp
+    runtime: docker
+    plan: free
+    dockerfilePath: orgs/riatzukiza/threat-radar-mcp/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    buildFilter:
+      paths:
+        - packages/mcp-foundation/**
+        - packages/radar-core/**
+        - packages/signal-atproto/**
+        - orgs/riatzukiza/threat-radar-mcp/**
+    envVars:
       - key: PORT
         value: "10002"
       - key: ADMIN_AUTH_KEY
         generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: threat-radar-db
+          property: connectionString
       - key: PUBLIC_BASE_URL
         sync: false
       - key: ALLOW_UNAUTH_LOCAL
         value: "false"
-      - key: DATABASE_URL
-        sync: false
+      - fromGroup: mcp-shared
+
+  # --- Threat Radar Web (static frontend) ---
+
   - type: web
     name: threat-radar-web
     runtime: static
-    rootDir: orgs/riatzukiza/threat-radar-web
     buildCommand: pnpm install && pnpm --filter @workspace/radar-core build && pnpm --filter @riatzukiza/threat-radar-web build
-    staticPublishPath: ./dist
+    staticPublishPath: orgs/riatzukiza/threat-radar-web/dist
+    buildFilter:
+      paths:
+        - packages/radar-core/**
+        - orgs/riatzukiza/threat-radar-web/**
     envVars:
       - key: NODE_VERSION
         value: "22"
       - key: VITE_API_URL
-        value: "https://threat-radar-mcp.onrender.com"
+        fromService:
+          type: web
+          name: threat-radar-mcp
+          property: host
+
+  # --- Managed Redis ---
+
+  - type: keyvalue
+    name: mcp-redis
+    plan: free
+    maxmemoryPolicy: noeviction
+    ipAllowList: []
+
+# --- Managed PostgreSQL ---
+databases:
+  - name: threat-radar-db
+    databaseName: threat_radar
+    plan: free
+
+# --- Shared environment group ---
+envVarGroups:
+  - name: mcp-shared
+    envVars:
+      - key: NODE_ENV
+        value: production
