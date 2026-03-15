@@ -9,6 +9,14 @@ packages:
   - packages/reconstituter
   - packages/mcp-oauth
   - packages/npu-top
+  - packages/radar-core
+  - packages/mcp-foundation
+  - packages/signal-atproto
+  - packages/signal-embed-browser
+  - packages/thread-assessment
+  - packages/embedding
+  - orgs/riatzukiza/threat-radar-mcp
+  - orgs/riatzukiza/threat-radar-web
   - services/*
   - orgs/open-hax/workbench
   - orgs/riatzukiza/promethean/packages/*

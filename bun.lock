@@ -1,5 +1,6 @@
 {
   "lockfileVersion": 1,
+  "configVersion": 1,
   "workspaces": {
     "": {
       "name": "devel",
@@ -30,6 +31,8 @@
     },
   },
   "trustedDependencies": [
+    "esbuild",
+    "nx",
     "clj-kondo",
   ],
   "packages": {

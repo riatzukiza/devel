@@ -3,3 +3,12 @@ services:
     image: 'redislabs/redismod'
     ports:
       - '6379:6379'
+
+  kanban_ui:
+    build:
+      context: ./orgs/open-hax/openhax/packages/kanban
+    ports:
+      - '8791:8787'
+    volumes:
+      - ./orgs/ussyverse/kanban/tasks:/tasks
+    restart: unless-stopped

@@ -15,15 +15,30 @@ import {
   radarModuleVersionSchema,
   radarSchema,
   reduceRadarPackets,
+  reduce as deterministicReduce,
   sourceDefinitionSchema,
+  normalize,
+  cluster,
   type Radar,
   type RadarAssessmentPacket,
   type RadarModuleVersion,
   type ReducedSnapshot,
+  type SignalEvent,
   type SourceDefinition,
+  type Thread,
+  type RawCollectorOutput,
 } from "@workspace/radar-core";
 import { getSql, initSchema, closeSql } from "./lib/postgres.js";
 import { PostgresRadarStore } from "./store.js";
+import { BlueskyCollector, type BlueskyFeedQuery } from "./collectors/bluesky.js";
+import { RedditCollector } from "./collectors/reddit.js";
+import {
+  FederationManager,
+  createAggregatePayload,
+  deserializeEnvelope,
+  type AggregateSnapshotPayload,
+  type EnsoEnvelope,
+} from "./lib/federation.js";
 
 const ENV = z.object({
   PORT: z.coerce.number().int().min(1).max(65535).default(10002),
@@ -82,6 +97,8 @@ type InMemoryRadarRecord = {
 
 class InMemoryRadarStore {
   private radars = new Map<string, InMemoryRadarRecord>();
+  private signals = new Map<string, SignalEvent>();
+  private threads = new Map<string, Thread>();
 
   async getRadar(radarId: string): Promise<Radar | null> {
     const record = this.radars.get(radarId);
@@ -180,6 +197,72 @@ class InMemoryRadarStore {
 
   async listAuditEvents(radarId: string): Promise<Array<{ event_type: string; payload: object; created_at: string }>> {
     return [];
+  }
+
+  // --- Signal CRUD ---
+
+  async createSignal(signal: SignalEvent): Promise<void> {
+    this.signals.set(signal.id, signal);
+  }
+
+  async getSignal(signalId: string): Promise<SignalEvent | null> {
+    return this.signals.get(signalId) ?? null;
+  }
+
+  async listSignals(radarId?: string, limit = 100): Promise<SignalEvent[]> {
+    const all = [...this.signals.values()];
+    const filtered = radarId ? all.filter((s) => s.radar_id === radarId) : all;
+    return filtered.sort((a, b) => b.ingested_at.localeCompare(a.ingested_at)).slice(0, limit);
+  }
+
+  async updateSignal(signalId: string, updates: Partial<Pick<SignalEvent, "radar_id" | "domain_tags" | "metadata">>): Promise<void> {
+    const existing = this.signals.get(signalId);
+    if (existing) {
+      this.signals.set(signalId, { ...existing, ...updates });
+    }
+  }
+
+  async findSignalByContentHash(contentHash: string): Promise<SignalEvent | null> {
+    for (const signal of this.signals.values()) {
+      if (signal.content_hash === contentHash) return signal;
+    }
+    return null;
+  }
+
+  // --- Thread CRUD ---
+
+  async createThread(thread: Thread): Promise<void> {
+    this.threads.set(thread.id, thread);
+  }
+
+  async getThread(threadId: string): Promise<Thread | null> {
+    return this.threads.get(threadId) ?? null;
+  }
+
+  async listThreads(radarId?: string, limit = 100): Promise<Thread[]> {
+    const all = [...this.threads.values()];
+    const filtered = radarId ? all.filter((t) => t.radar_id === radarId) : all;
+    return filtered.sort((a, b) => b.timeline.last_updated.localeCompare(a.timeline.last_updated)).slice(0, limit);
+  }
+
+  async updateThread(threadId: string, updates: Partial<Pick<Thread, "title" | "summary" | "members" | "source_distribution" | "confidence" | "domain_tags" | "status">> & { last_updated?: string }): Promise<void> {
+    const existing = this.threads.get(threadId);
+    if (!existing) return;
+    const merged: Thread = {
+      ...existing,
+      ...(updates.title !== undefined ? { title: updates.title } : {}),
+      ...(updates.summary !== undefined ? { summary: updates.summary } : {}),
+      ...(updates.members !== undefined ? { members: updates.members } : {}),
+      ...(updates.source_distribution !== undefined ? { source_distribution: updates.source_distribution } : {}),
+      ...(updates.confidence !== undefined ? { confidence: updates.confidence } : {}),
+      ...(updates.domain_tags !== undefined ? { domain_tags: updates.domain_tags } : {}),
+      ...(updates.status !== undefined ? { status: updates.status } : {}),
+      timeline: {
+        ...existing.timeline,
+        ...(updates.last_updated !== undefined ? { last_updated: updates.last_updated } : {}),
+      },
+    };
+    this.threads.set(threadId, merged);
   }
 }
 
@@ -291,6 +374,30 @@ async function reduceLive(radarId: string): Promise<ReducedSnapshot> {
     snapshotKind: "live",
     snapshotId: `${radarId}:live:${Date.now()}`,
   });
+
+  // Auto-cluster signals into threads if none exist yet for this radar
+  let threads = await store.listThreads(radarId);
+  if (threads.length === 0) {
+    const signals = await store.listSignals(radarId);
+    if (signals.length > 0) {
+      const clustered = cluster(signals);
+      for (const thread of clustered) {
+        thread.radar_id = radarId;
+        await store.createThread(thread);
+      }
+      threads = clustered;
+    }
+  }
+
+  // Run the deterministic thread-based reducer if threads exist
+  if (threads.length > 0) {
+    const deterministicSnapshot = deterministicReduce(threads);
+    snapshot.render_state = {
+      ...snapshot.render_state,
+      deterministicSnapshot,
+    };
+  }
+
   await store.createSnapshot(snapshot);
   await store.createAuditEvent(radarId, "live_reduction", { snapshot_id: snapshot.id });
   return snapshot;
@@ -316,6 +423,30 @@ async function sealDailySnapshot(radarId: string): Promise<ReducedSnapshot> {
     snapshotKind: "daily",
     snapshotId: `${radarId}:daily:${new Date().toISOString().slice(0, 10)}`,
   });
+
+  // Auto-cluster signals into threads if none exist yet for this radar
+  let threads = await store.listThreads(radarId);
+  if (threads.length === 0) {
+    const signals = await store.listSignals(radarId);
+    if (signals.length > 0) {
+      const clustered = cluster(signals);
+      for (const thread of clustered) {
+        thread.radar_id = radarId;
+        await store.createThread(thread);
+      }
+      threads = clustered;
+    }
+  }
+
+  // Run the deterministic thread-based reducer if threads exist
+  if (threads.length > 0) {
+    const deterministicSnapshot = deterministicReduce(threads);
+    snapshot.render_state = {
+      ...snapshot.render_state,
+      deterministicSnapshot,
+    };
+  }
+
   await store.createSnapshot(snapshot);
   await store.createAuditEvent(radarId, "daily_sealed", { snapshot_id: snapshot.id });
   return snapshot;
@@ -326,13 +457,167 @@ app.set("trust proxy", true);
 app.use(cors({ origin: "*", exposedHeaders: ["mcp-session-id"] }));
 app.use(express.json({ limit: "1mb" }));
 
+// ---------------------------------------------------------------------------
+// Federation manager — Enso-style peer coordination
+// ---------------------------------------------------------------------------
+const federationManager = new FederationManager({
+  instanceId: randomUUID(),
+  instanceName: process.env.FEDERATION_INSTANCE_NAME ?? "threat-radar-local",
+  endpoint: publicBaseUrl.toString().replace(/\/$/, ""),
+  timeoutMs: Number(process.env.FEDERATION_TIMEOUT_MS ?? "10000"),
+  staleAfterMs: Number(process.env.FEDERATION_STALE_MS ?? "300000"),
+  maxRetries: Number(process.env.FEDERATION_MAX_RETRIES ?? "3"),
+});
+
 app.get("/health", async (_req, res) => {
   res.json({
     ok: true,
     service: "threat-radar-mcp",
     storage: usePostgres ? "postgres" : "memory",
     publicBaseUrl: publicBaseUrl.toString(),
+    federation: {
+      instanceId: federationManager.getInstanceId(),
+      peers: federationManager.listPeers().length,
+    },
   });
+});
+
+// ---------------------------------------------------------------------------
+// Federation API endpoints
+// ---------------------------------------------------------------------------
+
+/** GET /api/federation/status — federation state for Π lane */
+app.get("/api/federation/status", async (_req, res) => {
+  federationManager.markStalePeers();
+  res.json(federationManager.getFederationStatus());
+});
+
+/** GET /api/federation/peers — list known peers */
+app.get("/api/federation/peers", async (_req, res) => {
+  federationManager.markStalePeers();
+  res.json(federationManager.listPeers().map((p) => ({
+    id: p.id,
+    displayName: p.displayName,
+    endpoint: p.endpoint,
+    trustLevel: p.trustLevel,
+    status: p.status,
+    lastSeen: p.lastSeen,
+    snapshotCount: p.snapshots.length,
+  })));
+});
+
+/** POST /api/federation/receive — receive Enso envelope from a peer */
+app.post("/api/federation/receive", async (req, res) => {
+  try {
+    const body = req.body as Record<string, unknown>;
+    // Accept either a raw envelope or a JSON string
+    let envelope: EnsoEnvelope<AggregateSnapshotPayload>;
+    if (typeof body === "string") {
+      envelope = deserializeEnvelope(body) as EnsoEnvelope<AggregateSnapshotPayload>;
+    } else {
+      envelope = body as unknown as EnsoEnvelope<AggregateSnapshotPayload>;
+    }
+
+    const result = federationManager.receiveEnvelope(envelope);
+    if (result.accepted) {
+      res.json({ ok: true, accepted: true });
+    } else {
+      res.status(403).json({ ok: false, accepted: false, reason: result.reason });
+    }
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Invalid envelope";
+    res.status(400).json({ ok: false, error: message });
+  }
+});
+
+/** POST /api/federation/peers — add a peer */
+app.post("/api/federation/peers", requireAdminKey, async (req, res) => {
+  try {
+    const body = z.object({
+      id: z.string().min(1).default(randomUUID()),
+      displayName: z.string().min(1),
+      endpoint: z.string().url(),
+      atProtocolDid: z.string().optional(),
+      trustLevel: z.enum(["trusted", "known", "untrusted"]).default("known"),
+    }).parse(req.body);
+
+    federationManager.addPeer(body);
+    res.status(201).json({ ok: true, peer: federationManager.getPeer(body.id) });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Invalid peer configuration";
+    res.status(400).json({ ok: false, error: message });
+  }
+});
+
+/** DELETE /api/federation/peers/:peerId — remove a peer */
+app.delete("/api/federation/peers/:peerId", requireAdminKey, async (req, res) => {
+  const rawPeerId = req.params.peerId;
+  const peerId = Array.isArray(rawPeerId) ? rawPeerId[0] ?? "" : rawPeerId;
+  federationManager.removePeer(peerId);
+  res.json({ ok: true });
+});
+
+/** POST /api/federation/trust/:peerId — add peer to trust circle */
+app.post("/api/federation/trust/:peerId", requireAdminKey, async (req, res) => {
+  const rawPeerId = req.params.peerId;
+  const peerId = Array.isArray(rawPeerId) ? rawPeerId[0] ?? "" : rawPeerId;
+  federationManager.addToTrustCircle(peerId);
+  res.json({ ok: true, peerId, trusted: true });
+});
+
+/** DELETE /api/federation/trust/:peerId — exclude peer from trust circle */
+app.delete("/api/federation/trust/:peerId", requireAdminKey, async (req, res) => {
+  const rawPeerId = req.params.peerId;
+  const peerId = Array.isArray(rawPeerId) ? rawPeerId[0] ?? "" : rawPeerId;
+  federationManager.excludeFromTrustCircle(peerId);
+  res.json({ ok: true, peerId, trusted: false });
+});
+
+/** POST /api/federation/broadcast — broadcast snapshot to all trusted peers */
+app.post("/api/federation/broadcast", requireAdminKey, async (req, res) => {
+  try {
+    const body = z.object({
+      radarId: z.string().min(1),
+    }).parse(req.body);
+
+    const radar = await store.getRadar(body.radarId);
+    if (!radar) {
+      res.status(404).json({ ok: false, error: `Unknown radar: ${body.radarId}` });
+      return;
+    }
+
+    const liveSnapshot = await store.getLatestLiveSnapshot(body.radarId);
+    const threads = await store.listThreads(body.radarId);
+    const signals = await store.listSignals(body.radarId);
+
+    const renderState = liveSnapshot?.render_state as Record<string, unknown> | undefined;
+    const deterministicSnapshot = renderState?.deterministicSnapshot as {
+      scoreRanges?: Record<string, { lower: number; upper: number; median: number }>;
+      disagreementIndex?: number;
+      narrativeBranches?: unknown[];
+      compressionLoss?: number;
+    } | undefined;
+
+    const payload = createAggregatePayload(
+      {
+        radarId: radar.id,
+        radarName: radar.name,
+        radarCategory: radar.category,
+        snapshotKind: "live",
+        asOfUtc: liveSnapshot?.as_of_utc ?? new Date().toISOString(),
+        threadCount: threads.length,
+        signalCount: signals.length,
+      },
+      deterministicSnapshot,
+    );
+
+    const results = await federationManager.broadcastSnapshot(payload);
+    const summary = Object.fromEntries(results);
+    res.json({ ok: true, results: summary });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Broadcast failed";
+    res.status(400).json({ ok: false, error: message });
+  }
 });
 
 app.get("/api/radars", async (_req, res) => {
@@ -342,12 +627,14 @@ app.get("/api/radars", async (_req, res) => {
     const submissions = await store.listSubmissions(radar.id);
     const liveSnapshot = await store.getLatestLiveSnapshot(radar.id);
     const latestDailySnapshot = await store.getLatestDailySnapshot(radar.id);
+    const threads = await store.listThreads(radar.id);
     return {
       radar,
       sourceCount: sources.length,
       submissionCount: submissions.length,
       liveSnapshot,
       latestDailySnapshot,
+      threads,
     };
   }));
   res.json(result);
@@ -357,6 +644,29 @@ app.post("/api/radars", requireAdminKey, async (req, res) => {
   const body = z.object({ slug: z.string().min(1), name: z.string().min(1), category: z.string().min(1), templateId: z.string().optional(), createdBy: z.string().min(1).default("admin") }).parse(req.body);
   const radar = await createRadar(body);
   res.status(201).json(radar);
+});
+
+app.post("/api/submit-packet", requireAdminKey, async (req, res) => {
+  try {
+    const packet = radarAssessmentPacketSchema.parse(req.body);
+    const result = await submitPacket(packet);
+    res.json({ ok: true, ...result });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Invalid packet";
+    res.status(400).json({ error: message });
+  }
+});
+
+app.post("/api/reduce-live/:radarId", requireAdminKey, async (req, res) => {
+  try {
+    const rawRadarId = req.params.radarId;
+    const radarId = Array.isArray(rawRadarId) ? rawRadarId[0] ?? "" : rawRadarId;
+    const snapshot = await reduceLive(radarId);
+    res.json({ ok: true, snapshot });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Reduction failed";
+    res.status(400).json({ error: message });
+  }
 });
 
 const server = new McpServer({ name: "threat-radar-mcp", version: "0.1.0" });
@@ -374,8 +684,13 @@ server.registerTool(
     },
   },
   async ({ slug, name, category, templateId, createdBy }): Promise<CallToolResult> => {
-    const radar = await createRadar({ slug, name, category, templateId, createdBy });
-    return { content: [{ type: "text", text: JSON.stringify({ ok: true, radar }, null, 2) }] };
+    try {
+      const radar = await createRadar({ slug, name, category, templateId, createdBy });
+      return { content: [{ type: "text", text: JSON.stringify({ ok: true, radar }, null, 2) }] };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to create radar";
+      return { content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }], isError: true };
+    }
   },
 );
 
@@ -387,21 +702,26 @@ server.registerTool(
     annotations: { readOnlyHint: true, destructiveHint: false, openWorldHint: false },
   },
   async (): Promise<CallToolResult> => {
-    const radars = await store.listRadars();
-    const list = await Promise.all(radars.map(async (radar) => {
-      const sources = await store.listSources(radar.id);
-      const submissions = await store.listSubmissions(radar.id);
-      const liveSnapshot = await store.getLatestLiveSnapshot(radar.id);
-      const dailySnapshots = await store.listDailySnapshots(radar.id);
-      return {
-        radar,
-        sourceCount: sources.length,
-        submissionCount: submissions.length,
-        hasLiveSnapshot: Boolean(liveSnapshot),
-        dailySnapshotCount: dailySnapshots.length,
-      };
-    }));
-    return { content: [{ type: "text", text: JSON.stringify(list, null, 2) }] };
+    try {
+      const radars = await store.listRadars();
+      const list = await Promise.all(radars.map(async (radar) => {
+        const sources = await store.listSources(radar.id);
+        const submissions = await store.listSubmissions(radar.id);
+        const liveSnapshot = await store.getLatestLiveSnapshot(radar.id);
+        const dailySnapshots = await store.listDailySnapshots(radar.id);
+        return {
+          radar,
+          sourceCount: sources.length,
+          submissionCount: submissions.length,
+          hasLiveSnapshot: Boolean(liveSnapshot),
+          dailySnapshotCount: dailySnapshots.length,
+        };
+      }));
+      return { content: [{ type: "text", text: JSON.stringify(list, null, 2) }] };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to list radars";
+      return { content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }], isError: true };
+    }
   },
 );
 
@@ -412,8 +732,13 @@ server.registerTool(
     inputSchema: { source: sourceDefinitionSchema },
   },
   async ({ source }): Promise<CallToolResult> => {
-    const created = await addSource(source);
-    return { content: [{ type: "text", text: JSON.stringify({ ok: true, source: created }, null, 2) }] };
+    try {
+      const created = await addSource(source);
+      return { content: [{ type: "text", text: JSON.stringify({ ok: true, source: created }, null, 2) }] };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to add source";
+      return { content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }], isError: true };
+    }
   },
 );
 
@@ -424,8 +749,13 @@ server.registerTool(
     inputSchema: { packet: radarAssessmentPacketSchema },
   },
   async ({ packet }): Promise<CallToolResult> => {
-    const result = await submitPacket(packet);
-    return { content: [{ type: "text", text: JSON.stringify({ ok: true, ...result }, null, 2) }] };
+    try {
+      const result = await submitPacket(packet);
+      return { content: [{ type: "text", text: JSON.stringify({ ok: true, ...result }, null, 2) }] };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to submit packet";
+      return { content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }], isError: true };
+    }
   },
 );
 
@@ -436,8 +766,13 @@ server.registerTool(
     inputSchema: { radarId: z.string().min(1) },
   },
   async ({ radarId }): Promise<CallToolResult> => {
-    const snapshot = await reduceLive(radarId);
-    return { content: [{ type: "text", text: JSON.stringify({ ok: true, snapshot }, null, 2) }] };
+    try {
+      const snapshot = await reduceLive(radarId);
+      return { content: [{ type: "text", text: JSON.stringify({ ok: true, snapshot }, null, 2) }] };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Reduction failed";
+      return { content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }], isError: true };
+    }
   },
 );
 
@@ -448,8 +783,13 @@ server.registerTool(
     inputSchema: { radarId: z.string().min(1) },
   },
   async ({ radarId }): Promise<CallToolResult> => {
-    const snapshot = await sealDailySnapshot(radarId);
-    return { content: [{ type: "text", text: JSON.stringify({ ok: true, snapshot }, null, 2) }] };
+    try {
+      const snapshot = await sealDailySnapshot(radarId);
+      return { content: [{ type: "text", text: JSON.stringify({ ok: true, snapshot }, null, 2) }] };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Snapshot sealing failed";
+      return { content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }], isError: true };
+    }
   },
 );
 
@@ -461,8 +801,226 @@ server.registerTool(
     annotations: { readOnlyHint: true, destructiveHint: false, openWorldHint: false },
   },
   async ({ radarId }): Promise<CallToolResult> => {
-    const events = await store.listAuditEvents(radarId);
-    return { content: [{ type: "text", text: JSON.stringify(events, null, 2) }] };
+    try {
+      const events = await store.listAuditEvents(radarId);
+      return { content: [{ type: "text", text: JSON.stringify(events, null, 2) }] };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to get audit log";
+      return { content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }], isError: true };
+    }
+  },
+);
+
+server.registerTool(
+  "radar_collect_bluesky",
+  {
+    description: "Collect signals from Bluesky public feeds. Accepts a feed URI, actor handle, or search query. Fetches posts via the AT Protocol, normalizes each post into a SignalEvent with source='bluesky', and stores them in Postgres. No authentication needed for public feeds.",
+    inputSchema: {
+      feedUri: z.string().optional().describe("A Bluesky feed generator URI (at:// URI)"),
+      listUri: z.string().optional().describe("A Bluesky list URI (at:// URI)"),
+      actor: z.string().optional().describe("A Bluesky actor handle or DID to fetch posts from"),
+      searchQuery: z.string().optional().describe("A search query to find posts"),
+      limit: z.number().int().min(1).max(100).optional().describe("Maximum number of posts to fetch (default: 25)"),
+      radarId: z.string().optional().describe("Optional radar ID to associate collected signals with"),
+    },
+  },
+  async ({ feedUri, listUri, actor, searchQuery, limit, radarId }): Promise<CallToolResult> => {
+    try {
+      // Validate that at least one query parameter is provided
+      if (!feedUri && !listUri && !actor && !searchQuery) {
+        return {
+          content: [{ type: "text", text: JSON.stringify({ ok: false, error: "At least one of feedUri, listUri, actor, or searchQuery must be provided" }) }],
+          isError: true,
+        };
+      }
+
+      // Validate URI format for feedUri and listUri if provided
+      if (feedUri && !feedUri.startsWith("at://")) {
+        return {
+          content: [{ type: "text", text: JSON.stringify({ ok: false, error: "feedUri must be a valid AT Protocol URI (at://...)" }) }],
+          isError: true,
+        };
+      }
+      if (listUri && !listUri.startsWith("at://")) {
+        return {
+          content: [{ type: "text", text: JSON.stringify({ ok: false, error: "listUri must be a valid AT Protocol URI (at://...)" }) }],
+          isError: true,
+        };
+      }
+
+      const collector = new BlueskyCollector();
+      const query: BlueskyFeedQuery = {
+        limit: limit ?? 25,
+      };
+
+      if (feedUri) {
+        query.feed = feedUri;
+      } else if (listUri) {
+        query.list = listUri;
+      } else if (actor) {
+        query.actor = actor;
+      } else if (searchQuery) {
+        query.searchQuery = searchQuery;
+      }
+
+      const rawSignals = await collector.collectFromFeed(query);
+
+      // Normalize and deduplicate before storing
+      let collected = 0;
+      let duplicates = 0;
+      for (const raw of rawSignals) {
+        // Normalize the signal to populate normalized_content, category, quality_score
+        const signal = normalize({
+          id: raw.id,
+          radar_id: radarId,
+          provenance: raw.provenance,
+          text: raw.text,
+          title: raw.title,
+          links: raw.links,
+          domain_tags: raw.domain_tags,
+          observed_at: raw.observed_at,
+          ingested_at: raw.ingested_at,
+          content_hash: raw.content_hash,
+          metadata: raw.metadata,
+        });
+
+        if (signal.content_hash) {
+          const existing = await store.findSignalByContentHash(signal.content_hash);
+          if (existing) {
+            duplicates++;
+            continue;
+          }
+        }
+        await store.createSignal(signal);
+        collected++;
+      }
+
+      return {
+        content: [{ type: "text", text: JSON.stringify({ ok: true, collected, duplicates, total_fetched: rawSignals.length }) }],
+      };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Collection failed";
+      return {
+        content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }],
+        isError: true,
+      };
+    }
+  },
+);
+
+server.registerTool(
+  "radar_collect_reddit",
+  {
+    description: "Collect signals from Reddit subreddits. Accepts a list of subreddit names, fetches recent posts via the Reddit JSON API (no auth needed), normalizes each post into a SignalEvent with source='reddit', and stores them in Postgres.",
+    inputSchema: {
+      subreddits: z.array(z.string().min(1)).min(1).describe("List of subreddit names to collect from (e.g., ['machinelearning', 'LocalLLaMA'])"),
+      sort: z.enum(["hot", "new", "top", "rising"]).optional().describe("Sort order for posts (default: 'hot')"),
+      limit: z.number().int().min(1).max(100).optional().describe("Maximum number of posts per subreddit (default: 25)"),
+      timeframe: z.enum(["hour", "day", "week", "month", "year", "all"]).optional().describe("Time filter for 'top' sort (default: 'day')"),
+      radarId: z.string().optional().describe("Optional radar ID to associate collected signals with"),
+    },
+  },
+  async ({ subreddits, sort, limit, timeframe, radarId }): Promise<CallToolResult> => {
+    try {
+      const collector = new RedditCollector();
+      let totalCollected = 0;
+      let totalDuplicates = 0;
+      let totalFetched = 0;
+
+      for (const subreddit of subreddits) {
+        const rawSignals = await collector.collectFromSubreddit({
+          subreddit,
+          sort: sort ?? "hot",
+          limit: limit ?? 25,
+          timeframe: timeframe ?? "day",
+        });
+
+        totalFetched += rawSignals.length;
+
+        for (const raw of rawSignals) {
+          // Normalize the signal to populate normalized_content, category, quality_score
+          const signal = normalize({
+            id: raw.id,
+            radar_id: radarId,
+            provenance: raw.provenance,
+            text: raw.text,
+            title: raw.title,
+            links: raw.links,
+            domain_tags: raw.domain_tags,
+            observed_at: raw.observed_at,
+            ingested_at: raw.ingested_at,
+            content_hash: raw.content_hash,
+            metadata: raw.metadata,
+          });
+
+          if (signal.content_hash) {
+            const existing = await store.findSignalByContentHash(signal.content_hash);
+            if (existing) {
+              totalDuplicates++;
+              continue;
+            }
+          }
+          await store.createSignal(signal);
+          totalCollected++;
+        }
+      }
+
+      return {
+        content: [{ type: "text", text: JSON.stringify({ ok: true, collected: totalCollected, duplicates: totalDuplicates, total_fetched: totalFetched }) }],
+      };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Collection failed";
+      return {
+        content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }],
+        isError: true,
+      };
+    }
+  },
+);
+
+server.registerTool(
+  "radar_cluster_signals",
+  {
+    description: "Explicitly cluster signals for a given radar into threads using TF-IDF cosine similarity. Runs normalize() on any un-normalized signals, then clusters all signals for the radar into Thread objects. Existing threads for the radar are preserved; new threads are added.",
+    inputSchema: {
+      radarId: z.string().min(1).describe("The radar ID whose signals should be clustered"),
+    },
+  },
+  async ({ radarId }): Promise<CallToolResult> => {
+    try {
+      const radar = await store.getRadar(radarId);
+      if (!radar) {
+        return {
+          content: [{ type: "text", text: JSON.stringify({ ok: false, error: `Unknown radar: ${radarId}` }) }],
+          isError: true,
+        };
+      }
+
+      const signals = await store.listSignals(radarId);
+      if (signals.length === 0) {
+        return {
+          content: [{ type: "text", text: JSON.stringify({ ok: true, threads_created: 0, message: "No signals to cluster" }) }],
+        };
+      }
+
+      const threads = cluster(signals);
+      let created = 0;
+      for (const thread of threads) {
+        thread.radar_id = radarId;
+        await store.createThread(thread);
+        created++;
+      }
+
+      return {
+        content: [{ type: "text", text: JSON.stringify({ ok: true, threads_created: created, signal_count: signals.length }) }],
+      };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Clustering failed";
+      return {
+        content: [{ type: "text", text: JSON.stringify({ ok: false, error: message }) }],
+        isError: true,
+      };
+    }
   },
 );
 
