@@ -129,3 +129,6 @@
 	path = services/open-hax-openai-proxy
 	url = https://github.com/open-hax/proxx.git
 	branch = main
+[submodule "orgs/badlogic/pi-mono"]
+	path = orgs/badlogic/pi-mono
+	url = git@github.com:badlogic/pi-mono.git
