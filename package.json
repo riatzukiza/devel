@@ -90,6 +90,8 @@
     "zod": "^3.23.8"
   },
   "trustedDependencies": [
-    "clj-kondo"
+    "clj-kondo",
+    "esbuild",
+    "nx"
   ]
 }
