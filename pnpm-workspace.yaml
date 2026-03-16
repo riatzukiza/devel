@@ -8,8 +8,14 @@ packages:
   - packages/hermes
   - packages/reconstituter
   - packages/mcp-oauth
+  - packages/mcp-foundation
+  - packages/radar-core
+  - packages/thread-assessment
   - packages/npu-top
   - packages/omni-top
+  - orgs/riatzukiza/hormuz-clock-mcp
+  - orgs/riatzukiza/threat-radar-mcp
+  - orgs/riatzukiza/threat-radar-web
   - services/*
   - orgs/open-hax/workbench
   - orgs/riatzukiza/promethean/packages/*
