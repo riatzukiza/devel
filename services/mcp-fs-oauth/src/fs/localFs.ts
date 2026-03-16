@@ -95,8 +95,9 @@ export class LocalFsBackend implements FsBackend {
     }
 
     const candidates = Array.from(candidateToPath.keys());
+    const safeDirectory = await fs.realpath(this.rootAbs).catch(() => this.rootAbs);
     const stdout = await new Promise<string>((resolve, reject) => {
-      const child = spawn("git", ["check-ignore", "--no-index", "--stdin"], {
+      const child = spawn("git", ["-c", `safe.directory=${safeDirectory}`, "check-ignore", "--no-index", "--stdin"], {
         cwd: this.rootAbs,
       });
 

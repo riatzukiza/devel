@@ -16,6 +16,18 @@ cp .env.example .env
 npm run dev
 ```
 
+Container-first workflow from the workspace root:
+
+```bash
+pnpm docker:stack up openplanner -- --build
+pnpm docker:stack ps openplanner
+pnpm docker:stack logs openplanner -- -f
+```
+
+This stack now owns both the `openplanner` app on `7777` and `chroma` on `8000`.
+If `8000` is already in use on the host, override it with `OPENPLANNER_CHROMA_PORT=<port>`.
+When the root `ollama` stack is running, `openplanner` can use it over the shared `ai-infra` Docker network.
+
 Auth header:
 
 ```

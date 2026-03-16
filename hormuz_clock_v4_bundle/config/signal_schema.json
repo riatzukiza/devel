@@ -1,0 +1,42 @@
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "timestamp_utc",
+      "source",
+      "category",
+      "value",
+      "confidence",
+      "direction"
+    ],
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "timestamp_utc": {
+        "type": "string"
+      },
+      "source": {
+        "type": "string"
+      },
+      "category": {
+        "type": "string"
+      },
+      "value": {},
+      "confidence": {
+        "type": "number"
+      },
+      "direction": {
+        "type": "string"
+      },
+      "notes": {
+        "type": "string"
+      },
+      "url": {
+        "type": "string"
+      }
+    }
+  }
+}

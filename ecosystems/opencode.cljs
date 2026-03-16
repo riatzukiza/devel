@@ -9,7 +9,9 @@
           "4096"
           "--hostname"
           "0.0.0.0"]
-   :env {:NODE_ENV "production"}
+   :env {:NODE_ENV "production"
+         :OPENPLANNER_URL "http://127.0.0.1:7777"
+         :OPENPLANNER_API_KEY "change-me"}
    :instances 1
    :interpreter "/usr/bin/env"
    :autorestart true
@@ -36,11 +38,10 @@
            :CHROMA_URL "http://localhost:8000"
            :CHROMA_COLLECTION "opencode_messages_v1"
            :LEVEL_DIR "./.reconstitute/level"
-          :OLLAMA_URL "http://localhost:11434"
-          :OLLAMA_EMBED_MODEL "qwen3-embedding:0.6b"
-          :OLLAMA_NUM_CTX "32768"
-          :BATCH_SIZE "32"
-          :EMBED_TTL_MS "2592000000"}
+           :OLLAMA_URL "http://127.0.0.1:8789"
+           :OLLAMA_EMBED_MODEL "qwen3-embedding:0.6b"
+           :BATCH_SIZE "32"
+           :EMBED_TTL_MS "2592000000"}
     :autorestart false
     :watch false
     :cron_restart "0 * * * *"
@@ -54,4 +55,3 @@
     :min_uptime 60000})
 
 (clobber.macro/ecosystem-output)
-

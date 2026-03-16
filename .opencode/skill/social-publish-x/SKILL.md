@@ -1,0 +1,1 @@
+/home/err/.agents/skills/social-publish-x/SKILL.md

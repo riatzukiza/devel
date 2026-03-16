@@ -49,7 +49,9 @@
     "search-opencode-sessions": "tsx search_opencode_sessions.ts",
     "cleanup-empty-opencode-sessions": "node cleanup-empty-opencode-sessions.mjs",
     "reconstitute": "tsx reconstitute.ts",
-    "generate-ecosystem": "npx shadow-cljs release clobber"
+    "generate-ecosystem": "npx shadow-cljs release clobber",
+    "docker:stack": "node scripts/docker-stack.mjs",
+    "docker:stack:list": "node scripts/docker-stack.mjs list"
   },
   "bin": {
     "octavia": "dist/octavia/index.js"
@@ -62,6 +64,7 @@
     "@octokit/rest": "^22.0.1",
     "@opencode-ai/sdk": "^1.1.36",
     "@promethean-os/lmdb-cache": "*",
+    "@promethean-os/omni-top": "workspace:*",
     "chromadb": "^3.2.2",
     "commander": "^14.0.2",
     "level": "^10.0.0",
@@ -90,8 +93,6 @@
     "zod": "^3.23.8"
   },
   "trustedDependencies": [
-    "clj-kondo",
-    "esbuild",
-    "nx"
+    "clj-kondo"
   ]
 }

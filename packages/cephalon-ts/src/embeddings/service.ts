@@ -10,6 +10,7 @@ export interface EmbeddingConfig {
   baseUrl: string;
   model: string;
   contextSize: number;
+  apiKey?: string;
 }
 
 export class EmbeddingService {
@@ -34,13 +35,14 @@ export class EmbeddingService {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            ...(this.config.apiKey ? { Authorization: `Bearer ${this.config.apiKey}` } : {}),
           },
           body: JSON.stringify({
             model: this.config.model,
             prompt: text,
-            options: {
+            options: this.config.contextSize > 0 ? {
               num_ctx: this.config.contextSize,
-            },
+            } : undefined,
           }),
         });
 
