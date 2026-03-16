@@ -41,6 +41,11 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build CLJS client libraries
+        run: |
+          pnpm -C packages/openplanner-cljs-client build
+          pnpm -C packages/opencode-cljs-client build
+
       - name: Install Chrome
         run: |
           sudo apt-get update
