@@ -32,7 +32,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "pnpm"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -41,6 +40,11 @@ jobs:
 
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Build CLJS client libraries
+        run: |
+          pnpm -C packages/openplanner-cljs-client build
+          pnpm -C packages/opencode-cljs-client build
 
       - name: Install Chrome
         run: |
