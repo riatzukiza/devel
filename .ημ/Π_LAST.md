@@ -1,15 +1,16 @@
 # Π handoff
 
-- time: 2026-03-16T18:18:33-05:00
+- time: 2026-03-16T18:31:34-05:00
 - branch: feature/threat-radar-platform
 - pre-Π HEAD: 35eff84
-- Π HEAD: 86b94c4
+- Π HEAD: f7eee99
 
 ## Summary
 - Updated OpenCode skill docs in `.opencode/skills/*`.
 - Updated workspace documentation + scripts/config (`README.md`, `REPOSITORY_INDEX.md`, `docs/*`, `bb.edn`, `clojure-dev.clj`, `pnpm-workspace.yaml`, etc.).
 - Removed old centralized Clojure MCP artifacts (`CENTRALIZED_MCP_DOCUMENTATION.md`, `CLOJURE.md`, `centralized-clojure-mcp.edn`, `mcp-server.sh`, `src/centralized_clojure_mcp/server.clj`).
 - Updated submodule pointers (pantheon/promethean/agent-actors/opencode-skills/kanban/vaults/fork_tales) and included new snapshot commits where the submodule had local modifications.
+- `services/open-hax-openai-proxy`: advanced submodule pointer after an additional submodule snapshot commit (`021b82a`).
 
 ## Verification
 - `pnpm lint`: FAILED (exit 1)
