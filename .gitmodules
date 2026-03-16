@@ -139,3 +139,6 @@
 [submodule "orgs/ussyverse/kanban"]
 	path = orgs/ussyverse/kanban
 	url = https://github.com/open-hax/ussyverse-kanban.git
+[submodule "orgs/open-hax/privaxxy"]
+	path = orgs/open-hax/privaxxy
+	url = https://github.com/open-hax/privaxxy.git
