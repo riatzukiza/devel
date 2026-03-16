@@ -148,7 +148,11 @@ orgs/private/
 orgs/snorkel-ai/
 .shadow-cljs
 .shadow-cljs/
-.ημ/
+.ημ/*
+!.ημ/registry.jsonl
+!.ημ/Π_STATE.sexp
+!.ημ/Π_MANIFEST.sha256
+!.ημ/Π_LAST.md
 .Π/
 services/open-hax-openai-proxy/data/
 
@@ -156,6 +160,7 @@ services/open-hax-openai-proxy/data/
 *.duckdb
 *.duckdb.wal
 *.jsonl
+!.ημ/registry.jsonl
 
 # Sisyphus session artifacts - plugin no longer used
 .sisyphus/

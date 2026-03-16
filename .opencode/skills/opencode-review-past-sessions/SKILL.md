@@ -24,12 +24,15 @@ Review prior OpenCode sessions to recover context, decisions, and implementation
 - Time window or branch name
 
 ## Steps
-1. Run semantic search for the topic:
+1. Run keyword search for the topic (OpenPlanner FTS):
    `pnpm -C packages/reconstituter opencode-sessions search "<query>" --k 10`.
 2. Identify the most relevant session IDs and key messages.
 3. Use `--session` to narrow results and gather message excerpts.
 4. Summarize the decisions, constraints, and next steps found.
 5. Confirm any assumptions with the user before making changes.
+
+If keyword search is insufficient (you need semantic similarity), use:
+`pnpm -C packages/reconstituter reconstitute search "<query>"`.
 
 ## Output
 - A concise summary of prior decisions and context
