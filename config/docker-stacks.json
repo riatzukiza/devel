@@ -1,0 +1,142 @@
+{
+  "version": 1,
+  "stacks": [
+    {
+      "name": "devel",
+      "aliases": ["root"],
+      "cwd": ".",
+      "files": ["docker-compose.yml"],
+      "projectName": "devel",
+      "description": "Root workspace stack including Openclawssy and bundled proxy"
+    },
+    {
+      "name": "promethean",
+      "aliases": ["riatzukiza:promethean"],
+      "cwd": "orgs/riatzukiza/promethean",
+      "files": ["docker-compose.yml"],
+      "projectName": "promethean",
+      "description": "Main Promethean local services stack"
+    },
+    {
+      "name": "promethean:dev",
+      "cwd": "orgs/riatzukiza/promethean",
+      "files": ["docker-compose.dev.yml"],
+      "projectName": "promethean-dev",
+      "description": "Promethean development workspace stack"
+    },
+    {
+      "name": "promethean:sonarqube",
+      "cwd": "orgs/riatzukiza/promethean",
+      "files": ["docker-compose.sonarqube.yml"],
+      "projectName": "promethean-sonarqube",
+      "description": "Standalone SonarQube stack for Promethean"
+    },
+    {
+      "name": "promethean:tor",
+      "cwd": "orgs/riatzukiza/promethean",
+      "files": ["docker-compose.tor.yml"],
+      "projectName": "promethean-tor",
+      "description": "Tor and Privoxy sidecar stack for Promethean"
+    },
+    {
+      "name": "part64",
+      "aliases": ["fork-tales:part64"],
+      "cwd": "vaults/fork_tales/part64",
+      "files": ["docker-compose.yml"],
+      "projectName": "part64",
+      "description": "Main Fork Tales Part64 runtime stack"
+    },
+    {
+      "name": "part64:embed-bench",
+      "aliases": ["fork-tales:embed-bench"],
+      "cwd": "vaults/fork_tales/part64",
+      "files": ["docker-compose.embed-bench.yml"],
+      "projectName": "part64-embed-bench",
+      "description": "Embedding benchmark stack for Part64"
+    },
+    {
+      "name": "part64:muse-song-lab",
+      "aliases": ["fork-tales:muse-song-lab"],
+      "cwd": "vaults/fork_tales/part64",
+      "files": ["docker-compose.muse-song-lab.yml"],
+      "projectName": "part64-muse-song-lab",
+      "description": "Muse song lab experiment stack for Part64"
+    },
+    {
+      "name": "part64:sim-slice-bench",
+      "aliases": ["fork-tales:sim-slice-bench"],
+      "cwd": "vaults/fork_tales/part64",
+      "files": ["docker-compose.sim-slice-bench.yml"],
+      "projectName": "part64-sim-slice-bench",
+      "description": "Simulation slice benchmark stack for Part64"
+    },
+    {
+      "name": "part64:whisper-bench",
+      "aliases": ["fork-tales:whisper-bench"],
+      "cwd": "vaults/fork_tales/part64",
+      "files": ["docker-compose.whisper-bench.yml"],
+      "projectName": "part64-whisper-bench",
+      "description": "Whisper benchmark runner for Part64"
+    },
+    {
+      "name": "openplanner",
+      "cwd": "services/openplanner",
+      "files": ["docker-compose.yml"],
+      "projectName": "openplanner",
+      "description": "OpenPlanner app and Chroma service stack"
+    },
+    {
+      "name": "mcp",
+      "aliases": ["mcp-family"],
+      "cwd": "services/mcp-stack",
+      "files": ["docker-compose.yml"],
+      "projectName": "mcp-stack",
+      "hostPm2Apps": [
+        "janus",
+        "mcp-fs-oauth-stable",
+        "mcp-fs-oauth-dev",
+        "kronos",
+        "mnemosyne",
+        "mcp-github",
+        "mcp-process",
+        "mcp-devtools",
+        "mcp-tdd",
+        "mcp-sandboxes",
+        "mcp-ollama",
+        "mcp-exec"
+      ],
+      "description": "Shared-context container stack for Janus and the MCP family"
+    },
+    {
+      "name": "cephalon",
+      "cwd": "services/cephalon-stack",
+      "files": ["docker-compose.yml"],
+      "projectName": "cephalon-stack",
+      "hostPm2Apps": ["duck-cephalon", "duck-cephalon-ui", "duck-cephalon-cljs"],
+      "description": "Shared-context container stack for Cephalon and its memory UI"
+    },
+    {
+      "name": "ollama",
+      "cwd": "services/ollama-stack",
+      "files": ["docker-compose.yml"],
+      "projectName": "ollama-stack",
+      "description": "Container-owned Ollama runtime exposed on host loopback"
+    },
+    {
+      "name": "opencode",
+      "cwd": "services/opencode-stack",
+      "files": ["docker-compose.yml"],
+      "projectName": "opencode-stack",
+      "description": "Containerized OpenCode web runtime with full devel workspace access"
+    },
+    {
+      "name": "open-hax-openai-proxy",
+      "aliases": ["open-hax:proxy"],
+      "cwd": "services/open-hax-openai-proxy",
+      "files": ["docker-compose.yml"],
+      "projectName": "open-hax-openai-proxy",
+      "hostPm2Apps": ["open-hax-openai-proxy", "open-hax-openai-proxy-web"],
+      "description": "OpenAI-compatible proxy stack with bundled web UI"
+    }
+  ]
+}

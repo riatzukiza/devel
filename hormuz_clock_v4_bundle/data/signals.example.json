@@ -1,0 +1,37 @@
+[
+  {
+    "id": "jmic_critical_2026-03-06",
+    "timestamp_utc": "2026-03-06T00:00:00Z",
+    "source": "JMIC",
+    "category": "attack_tempo",
+    "value": "critical",
+    "confidence": 0.95,
+    "direction": "destabilizing",
+    "notes": "overall maritime risk critical; attacks likely"
+  },
+  {
+    "id": "tanker_transits_2_vs_50",
+    "timestamp_utc": "2026-03-06T00:00:00Z",
+    "source": "JMIC",
+    "category": "transit_flow",
+    "value": {
+      "current": 2,
+      "baseline": 50
+    },
+    "confidence": 0.9,
+    "direction": "destabilizing"
+  },
+  {
+    "id": "iea_bypass_capacity",
+    "timestamp_utc": "2026-03-04T00:00:00Z",
+    "source": "IEA",
+    "category": "bypass_capacity",
+    "value": {
+      "bypass_min_mbpd": 3.5,
+      "bypass_max_mbpd": 5.5,
+      "hormuz_mbpd": 20
+    },
+    "confidence": 0.95,
+    "direction": "neutral"
+  }
+]

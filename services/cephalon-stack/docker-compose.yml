@@ -1,0 +1,60 @@
+services:
+  mongodb:
+    image: mongo:7
+    volumes:
+      - cephalon-mongodb-data:/data/db
+    restart: unless-stopped
+
+  cephalon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      mongodb:
+        condition: service_started
+    ports:
+      - "${CEPHALON_UI_PORT:-3000}:3000"
+    environment:
+      WORKSPACE_ROOT: /workspace
+      DUCK_DISCORD_TOKEN: "${DUCK_DISCORD_TOKEN:-${DISCORD_TOKEN:-}}"
+      DISCORD_TOKEN: "${DISCORD_TOKEN:-${DUCK_DISCORD_TOKEN:-}}"
+      OPENPLANNER_URL: "${OPENPLANNER_URL:-http://host.docker.internal:7777}"
+      OPENPLANNER_API_BASE_URL: "${OPENPLANNER_API_BASE_URL:-http://host.docker.internal:7777}"
+      OPENPLANNER_API_KEY: "${OPENPLANNER_API_KEY:-change-me}"
+      CHROMA_URL: "${CHROMA_URL:-http://host.docker.internal:8000}"
+      OLLAMA_BASE_URL: "${OLLAMA_BASE_URL:-http://open-hax-openai-proxy:8789}"
+      OLLAMA_API_KEY: "${OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN:-change-me-open-hax-proxy-token}"
+      CEPHALON_TS_BRIDGE: "${CEPHALON_TS_BRIDGE:-true}"
+      MEMORY_UI_PORT: "3000"
+      CEPHALON_MONGODB_URI: "${CEPHALON_MONGODB_URI:-mongodb://mongodb:27017}"
+      MONGODB_URI: "${MONGODB_URI:-mongodb://mongodb:27017}"
+      CEPHALON_MONGODB_DB: "${CEPHALON_MONGODB_DB:-promethean}"
+      CEPHALON_MONGODB_COLLECTION: "${CEPHALON_MONGODB_COLLECTION:-cephalon_memories}"
+    volumes:
+      - ../..:/workspace
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/api/memories/count').then((response) => { if (!response.ok) { process.exit(1); } }).catch(() => process.exit(1))"
+        ]
+      interval: 30s
+      timeout: 15s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      default: {}
+      ai-infra: {}
+
+volumes:
+  cephalon-mongodb-data:
+
+networks:
+  ai-infra:
+    external: true
+    name: ai-infra

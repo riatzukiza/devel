@@ -125,10 +125,17 @@
 	path = services/vivgrid-openai-proxy
 	url = https://github.com/open-hax/vivgrid-openai-proxy.git
 	branch = device/stealth
+[submodule "services/codex-lb"]
+	path = services/codex-lb
+	url = https://github.com/Soju06/codex-lb.git
+[submodule "orgs/ussyverse/openclawssy"]
+	path = orgs/ussyverse/openclawssy
+	url = git@github.com:mojomast/openclawssy.git
+	branch = main
 [submodule "services/open-hax-openai-proxy"]
 	path = services/open-hax-openai-proxy
 	url = https://github.com/open-hax/proxx.git
 	branch = main
-[submodule "orgs/badlogic/pi-mono"]
-	path = orgs/badlogic/pi-mono
-	url = git@github.com:badlogic/pi-mono.git
+[submodule "orgs/ussyverse/kanban"]
+	path = orgs/ussyverse/kanban
+	url = https://github.com/open-hax/ussyverse-kanban.git

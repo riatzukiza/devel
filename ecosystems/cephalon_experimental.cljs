@@ -59,10 +59,10 @@
    :error-file "logs/pm2/duck-brain.err.log"
    :log-date-format "YYYY-MM-DD HH:mm:ss"
    :env {:DISCORD_IO_WS "ws://127.0.0.1:8787/ws"
-         :OLLAMA_MODEL "qwen3-vl:2b-thinking-bf16"
-         :OLLAMA_BASE_URL "http://127.0.0.1:11434"
-         :DUCK_ADMIN_WS_PORT "8788"
-         :DISCORD_TOKEN "${DUCK_DISCORD_TOKEN:-${DISCORD_TOKEN:-}}"}})
+          :OLLAMA_MODEL "qwen3.5:2b-bf16"
+          :OLLAMA_BASE_URL "http://127.0.0.1:8789"
+          :DUCK_ADMIN_WS_PORT "8788"
+          :DISCORD_TOKEN "${DUCK_DISCORD_TOKEN:-${DISCORD_TOKEN:-}}"}})
 
 (clobber.macro/defapp "duck-ui"
   {:script "clojure"

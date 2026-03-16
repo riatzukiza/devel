@@ -1,0 +1,47 @@
+{
+  "_comment": "Promethean Kanban Configuration - spec/ tasks",
+  "_description": "Kanban configuration for spec-backed tasks at repo root.",
+  "_usage": "Use 'pnpm kanban regenerate' to create the board from spec tasks.",
+
+  "tasksDir": "spec",
+  "indexFile": "docs/agile/boards/index.spec.jsonl",
+  "boardFile": "docs/agile/boards/generated.spec.md",
+  "cachePath": "docs/agile/boards/.cache/spec",
+  "exts": [".md"],
+
+  "requiredFields": ["title", "status", "priority", "storyPoints"],
+
+  "statusValues": [
+    "icebox",
+    "incoming",
+    "accepted",
+    "breakdown",
+    "blocked",
+    "ready",
+    "todo",
+    "in_progress",
+    "in_review",
+    "testing",
+    "document",
+    "done",
+    "rejected"
+  ],
+
+  "priorityValues": ["P0", "P1", "P2", "P3", "p3", "low", "medium", "high", "critical"],
+
+  "wipLimits": {
+    "accepted": 40,
+    "breakdown": 50,
+    "blocked": 15,
+    "ready": 100,
+    "todo": 75,
+    "in_progress": 50,
+    "testing": 40,
+    "in_review": 40,
+    "document": 40,
+    "done": 500,
+    "rejected": 9999,
+    "icebox": 9999,
+    "incoming": 9999
+  }
+}

@@ -5,16 +5,18 @@ export class OllamaEmbeddingFunction implements IEmbeddingFunction {
   private url: string;
   private truncate: boolean;
   private numCtx?: number;
+  private apiKey?: string;
 
   constructor(
     model: string,
     url: string = "http://localhost:11434",
-    opts?: { truncate?: boolean; numCtx?: number }
+    opts?: { truncate?: boolean; numCtx?: number; apiKey?: string }
   ) {
     this.model = model;
     this.url = url;
     this.truncate = opts?.truncate ?? true;
     this.numCtx = typeof opts?.numCtx === "number" && Number.isFinite(opts.numCtx) ? opts.numCtx : undefined;
+    this.apiKey = typeof opts?.apiKey === "string" && opts.apiKey.length > 0 ? opts.apiKey : undefined;
   }
 
   async generate(texts: string[]): Promise<number[][]> {
@@ -32,7 +34,10 @@ export class OllamaEmbeddingFunction implements IEmbeddingFunction {
 
       const res = await fetch(`${this.url}/api/embed`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(this.apiKey ? { Authorization: `Bearer ${this.apiKey}` } : {}),
+        },
         body: JSON.stringify(body),
       });
 

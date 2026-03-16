@@ -1,0 +1,55 @@
+name: cephalon-cljs-coverage
+
+on:
+  push:
+    paths:
+      - "services/cephalon-cljs/**"
+      - ".github/workflows/cephalon-cljs-coverage.yml"
+  pull_request:
+    paths:
+      - "services/cephalon-cljs/**"
+      - ".github/workflows/cephalon-cljs-coverage.yml"
+
+jobs:
+  cljs-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
+      - name: Setup Clojure
+        uses: DeLaGuardo/setup-clojure@13.0
+        with:
+          cli: "latest"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: "10.14.0"
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build CLJS client libraries
+        run: |
+          pnpm -C packages/openplanner-cljs-client build
+          pnpm -C packages/opencode-cljs-client build
+
+      - name: Install Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: CLJS Coverage
+        run: pnpm -C services/cephalon-cljs test:coverage

@@ -3,7 +3,7 @@
  :llm {:provider :openai-compatible
        :base-url nil
        :api-key nil
-       :model "qwen3-vl:2b-instruct"
+       :model "qwen3.5:2b-bf16"
        :temperature 0.3
        :max-tokens 1200}
  :eidolon {:embedding-model "qwen3-embedding"

@@ -1,0 +1,33 @@
+{
+  "name": "orgs-octave-commons-lineara-conversation-export",
+  "projectType": "application",
+  "tags": [
+    "submodule"
+  ],
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/octave-commons/lineara_conversation_export\" test"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/octave-commons/lineara_conversation_export\" build"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/octave-commons/lineara_conversation_export\" lint"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/octave-commons/lineara_conversation_export\" typecheck"
+      }
+    }
+  }
+}

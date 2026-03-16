@@ -1,0 +1,40 @@
+version: 4
+clock:
+  t0_utc: '2026-02-28T00:00:00Z'
+  dial_days: 180
+  minute_hand_days: 90
+  hour_hand_days: 30
+  structural_bar_days: 450
+states:
+  transit_flow:
+    thresholds: {normal: 0.80, stressed: 0.60, degraded: 0.30, impaired: 0.10}
+    semantics: proportion_of_baseline_transits
+  attack_tempo:
+    thresholds: {normal: 0, stressed: 1, degraded: 2, impaired: 3}
+    semantics: successful_or_confirmed_significant_attacks_per_7d
+  insurance_availability:
+    thresholds: {normal: 0, stressed: 1, degraded: 2, impaired: 3}
+    semantics: ordinal_market_condition
+  navigation_integrity:
+    thresholds: {normal: 0, stressed: 1, degraded: 2, impaired: 3}
+    semantics: ordinal_jamming_spoofing_disruption_condition
+  bypass_capacity:
+    thresholds: {normal: 0.80, stressed: 0.60, degraded: 0.40, impaired: 0.20}
+    semantics: available_bypass_capacity_divided_by_hormuz_normal_flow
+  asia_buffer_stress:
+    thresholds: {normal: 0, stressed: 1, degraded: 2, impaired: 3}
+    semantics: importer_stock_and_rationing_pressure_ordinal
+branches:
+  reopening: 0.25
+  effective_closure: 0.55
+  wider_escalation: 0.20
+buffer_windows:
+  - {start_day: 15, end_day: 25, label: 'Shipping pipeline'}
+  - {start_day: 25, end_day: 40, label: 'Refinery adjustment'}
+  - {start_day: 40, end_day: 60, label: 'SPR / reserve decision'}
+  - {start_day: 60, end_day: 90, label: 'Shortage cascade risk'}
+rewind_triggers:
+  - 'No successful attacks for 72h+'
+  - 'Broad war-risk cover returns'
+  - 'GNSS/AIS disruption materially drops'
+  - 'Tanker transits recover for 3-7 days'

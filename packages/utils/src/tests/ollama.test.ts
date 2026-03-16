@@ -15,7 +15,7 @@ function mockFetch(res: () => Response) {
 }
 
 test("OLLAMA_URL has default", (t) => {
-  t.is(OLLAMA_URL, process.env.OLLAMA_URL ?? "http://localhost:11434");
+  t.is(OLLAMA_URL, process.env.OLLAMA_URL ?? "http://127.0.0.1:8789");
 });
 
 test.serial("ollamaEmbed returns embedding", async (t) => {

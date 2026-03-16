@@ -1,0 +1,19 @@
+# Copy to social_profiles.yaml and fill in your own values.
+bluesky:
+  service: https://bsky.social
+  identifier: your.handle.example
+  app_password_env: BLUESKY_APP_PASSWORD
+
+discord:
+  channel_id: "123456789012345678"
+  token_env: DISCORD_BOT_TOKEN
+  allowed_mentions: none
+
+x:
+  token_env: X_USER_ACCESS_TOKEN
+  thread_default: false
+
+reddit:
+  subreddit: yoursubreddit
+  token_env: REDDIT_ACCESS_TOKEN
+  kind: self
