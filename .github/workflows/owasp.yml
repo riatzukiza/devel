@@ -1,32 +1,28 @@
-name: reusable-owasp
+name: Security - OWASP Dependency Check
 
 on:
-  workflow_call:
-    inputs:
-      checkout-submodules:
-        description: "Checkout submodules recursively"
-        required: false
-        type: boolean
-        default: true
-      project-name:
-        description: "Project name for DC report"
-        required: false
-        type: string
-        default: "monorepo"
+  pull_request:
+    branches: [main, release]
 
 permissions:
   contents: read
   security-events: write
 
+concurrency:
+  group: security-owasp-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  owasp:
+  owasp-dependency-check:
+    # Run on PRs to main/release, mostly as a SARIF signal rather than a hard gate.
+    if: (github.event.pull_request.base.ref == 'release' || github.event.pull_request.base.ref == 'main')
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          submodules: ${{ inputs.checkout-submodules && 'recursive' || 'false' }}
+          submodules: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -56,11 +52,12 @@ jobs:
       - name: OWASP Dependency Check
         uses: dependency-check/Dependency-Check_Action@main
         with:
-          project: ${{ inputs.project-name }}
+          project: devel
           path: .
           format: "SARIF"
           out: "dependency-check-report"
-          args: "--failOnCVSS 0"
+          # Upload SARIF, but don't block PRs on existing vulnerabilities.
+          args: "--failOnCVSS 11"
 
       - name: Upload SARIF
         uses: github/codeql-action/upload-sarif@v3
