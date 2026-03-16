@@ -48,7 +48,7 @@ jobs:
           fi
 
       - name: OWASP Dependency Check
-        uses: dependency-check/action@v4
+        uses: dependency-check/Dependency-Check_Action@main
         with:
           project: devel
           path: .
