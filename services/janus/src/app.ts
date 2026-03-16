@@ -85,6 +85,8 @@ export async function createApp(cfg: GatewayConfig): Promise<FastifyInstance> {
   await app.register(opencodeRoutes, {
     prefix: "/api",
     opencodeUrl: cfg.opencodeUrl,
+    opencodeUsername: cfg.opencodeUsername,
+    opencodePassword: cfg.opencodePassword,
     opencodeApiKey: cfg.opencodeApiKey
   });
 

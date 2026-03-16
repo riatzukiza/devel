@@ -9,6 +9,7 @@ export type OpenPlannerConfig = {
   chromaUrl: string;
   chromaCollection: string;
   ollamaBaseUrl: string;
+  ollamaApiKey?: string;
   embeddingModels: EmbeddingModelConfig;
   ollamaEmbedTruncate: boolean;
   ollamaEmbedNumCtx?: number;
@@ -27,7 +28,8 @@ export function loadConfig(): OpenPlannerConfig {
   const apiKey = mustGet("OPENPLANNER_API_KEY", "change-me");
   const chromaUrl = mustGet("CHROMA_URL", "http://127.0.0.1:8000");
   const chromaCollection = mustGet("CHROMA_COLLECTION", "openplanner_events_v1");
-  const ollamaBaseUrl = mustGet("OLLAMA_BASE_URL", mustGet("OLLAMA_URL", "http://localhost:11434"));
+  const ollamaBaseUrl = mustGet("OLLAMA_BASE_URL", mustGet("OLLAMA_URL", "http://127.0.0.1:8789"));
+  const ollamaApiKey = process.env.OLLAMA_API_KEY ?? process.env.OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN ?? undefined;
   const defaultEmbedModel = mustGet("OLLAMA_EMBED_MODEL", "qwen3-embedding:0.6b");
   const ollamaEmbedTruncate = (process.env.OLLAMA_EMBED_TRUNCATE ?? "true").toLowerCase() !== "false";
   const ollamaEmbedNumCtxRaw = (process.env.OLLAMA_EMBED_NUM_CTX ?? "").trim();
@@ -48,6 +50,7 @@ export function loadConfig(): OpenPlannerConfig {
     chromaUrl,
     chromaCollection,
     ollamaBaseUrl,
+    ollamaApiKey,
     embeddingModels,
     ollamaEmbedTruncate,
     ollamaEmbedNumCtx: finalOllamaEmbedNumCtx

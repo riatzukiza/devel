@@ -118,6 +118,9 @@ Protocol to keep work atomic and prevent scope creep.
 #### verify-resource-existence
 Protocol to verify a resource exists before creating a new one.
 
+#### webring-site
+Research the live ussyco.de ring, build a distinct single-page site in this workspace, preview it locally, and optionally register it with an API key from the environment.
+
 ### Git
 
 #### git-safety-check
@@ -297,4 +300,3 @@ Locate the right repo, file, and pattern quickly in a multi-repo workspace with 
 
 #### workspace-typecheck
 Type check all TypeScript files across the entire workspace, including all submodules under orgs/**, using strict TypeScript settings
-

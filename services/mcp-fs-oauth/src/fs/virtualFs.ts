@@ -322,6 +322,130 @@ export class VirtualFs {
     return result;
   }
 
+  private async globWithRipgrep(pattern: string, options: GlobOptions): Promise<GlobResult> {
+    if (!this.localRootAbs) {
+      throw new Error("Local root is not configured for ripgrep-backed glob");
+    }
+
+    const {
+      path: searchPath = "",
+      maxResults = 200,
+      includeHidden = false,
+    } = options;
+
+    const normalizedSearchPath = this.normalizeGlobSearchPath(searchPath, "local");
+    const normalizedPrefix = normalizedSearchPath.normalized.length > 0
+      ? `${normalizedSearchPath.normalized}/`
+      : "";
+    const resolvedRelPath = normalizedSearchPath.normalized.length > 0
+      ? normalizedSearchPath.normalized
+      : ".";
+
+    const args: string[] = ["--files"];
+    if (includeHidden) {
+      args.push("--hidden");
+    }
+
+    const rootGitignore = `${this.localRootAbs}/.gitignore`;
+    if (existsSync(rootGitignore)) {
+      args.push("--ignore-file", rootGitignore);
+    }
+
+    args.push(resolvedRelPath);
+
+    const matches: GlobMatch[] = [];
+    let truncated = false;
+    let stderr = "";
+
+    const result = await new Promise<GlobResult>((resolve, reject) => {
+      const child = spawn("rg", args, {
+        cwd: this.localRootAbs,
+      });
+
+      let buffer = "";
+      let forceStopped = false;
+
+      const handlePathLine = (line: string): void => {
+        const trimmed = line.trim();
+        if (!trimmed) {
+          return;
+        }
+
+        const normalizedPath = trimmed.replace(/^\.\//, "");
+        let patternCandidate = normalizedPath;
+        if (normalizedPrefix.length > 0 && normalizedPath.startsWith(normalizedPrefix)) {
+          patternCandidate = normalizedPath.slice(normalizedPrefix.length);
+        }
+
+        if (!this.matchesGlobPattern(patternCandidate, pattern)) {
+          return;
+        }
+
+        matches.push({
+          path: normalizedPath,
+          kind: "file",
+        });
+
+        if (matches.length >= maxResults) {
+          truncated = true;
+          forceStopped = true;
+          child.kill("SIGTERM");
+        }
+      };
+
+      const drainBuffer = (flushRemainder = false): void => {
+        while (true) {
+          const idx = buffer.indexOf("\n");
+          if (idx === -1) {
+            break;
+          }
+          const line = buffer.slice(0, idx);
+          buffer = buffer.slice(idx + 1);
+          handlePathLine(line);
+        }
+
+        if (flushRemainder && buffer.length > 0) {
+          handlePathLine(buffer);
+          buffer = "";
+        }
+      };
+
+      child.stdout.on("data", (chunk: Buffer | string) => {
+        buffer += chunk.toString();
+        drainBuffer();
+      });
+
+      child.stderr.on("data", (chunk: Buffer | string) => {
+        stderr += chunk.toString();
+      });
+
+      child.on("error", (error) => {
+        reject(new Error(`ripgrep glob failed to start: ${error.message}`));
+      });
+
+      child.on("close", (code, signal) => {
+        drainBuffer(true);
+
+        const success = code === 0 || code === 1;
+        const stoppedForLimit = truncated && (forceStopped || signal === "SIGTERM");
+        if (!success && !stoppedForLimit) {
+          reject(new Error(`ripgrep glob failed (code ${code ?? -1}): ${stderr.trim()}`));
+          return;
+        }
+
+        resolve({
+          path: normalizedSearchPath.original,
+          pattern,
+          maxResults,
+          truncated,
+          matches,
+        });
+      });
+    });
+
+    return result;
+  }
+
   async list(path: string, options: ListOptions = {}, backend?: FsBackendName): Promise<FsEntry[]> {
     const b = await this.pick(backend);
     const entries = await b.list(path);
@@ -647,6 +771,10 @@ export class VirtualFs {
 
   async glob(pattern: string, options: GlobOptions = {}, backend?: FsBackendName): Promise<GlobResult> {
     const b = await this.pick(backend);
+    if (b.name === "local" && !options.includeDirectories) {
+      return this.globWithRipgrep(pattern, options);
+    }
+
     const {
       path: searchPath = "",
       maxResults = 200,

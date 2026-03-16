@@ -1,0 +1,66 @@
+[
+  {
+    "id": "marad_fetch_error",
+    "timestamp_utc": "2026-03-11T18:35:57Z",
+    "source": "marad",
+    "category": "meta",
+    "value": "error",
+    "confidence": 0.0,
+    "direction": "neutral",
+    "notes": "403 Client Error: Forbidden for url: https://www.maritime.dot.gov/msci/2026-001a-strait-hormuz-persian-gulf-gulf-oman-and-arabian-sea-military-operations-and",
+    "url": "https://www.maritime.dot.gov/msci/2026-001a-strait-hormuz-persian-gulf-gulf-oman-and-arabian-sea-military-operations-and"
+  },
+  {
+    "id": "iea_transit_flow_below_10pct",
+    "timestamp_utc": "2026-03-11T18:35:57Z",
+    "source": "IEA",
+    "category": "transit_flow",
+    "value": {
+      "current": 9,
+      "baseline": 100
+    },
+    "confidence": 0.95,
+    "direction": "destabilizing",
+    "notes": "IEA says export volumes of crude oil and refined products are currently at less than 10% of pre-conflict levels",
+    "url": "https://www.iea.org/topics/the-middle-east-and-global-energy-markets"
+  },
+  {
+    "id": "iea_bypass_capacity_range",
+    "timestamp_utc": "2026-03-11T18:35:57Z",
+    "source": "IEA",
+    "category": "bypass_capacity",
+    "value": {
+      "bypass_min_mbpd": 3.5,
+      "bypass_max_mbpd": 5.5,
+      "hormuz_mbpd": 20.0
+    },
+    "confidence": 0.95,
+    "direction": "neutral",
+    "notes": "IEA cites 3.5-5.5 mb/d of bypass capacity versus about 20 mb/d normal Hormuz flow",
+    "url": "https://www.iea.org/topics/the-middle-east-and-global-energy-markets"
+  },
+  {
+    "id": "iea_emergency_stock_release",
+    "timestamp_utc": "2026-03-11T18:35:57Z",
+    "source": "IEA",
+    "category": "asia_buffer_stress",
+    "value": {
+      "release_million_barrels": 400
+    },
+    "confidence": 0.95,
+    "direction": "stabilizing",
+    "notes": "IEA members approved a 400 million barrel emergency stock release to cushion market disruptions",
+    "url": "https://www.iea.org/news/iea-member-countries-to-carry-out-largest-ever-oil-stock-release-amid-market-disruptions-from-middle-east-conflict"
+  },
+  {
+    "id": "ukmto_or_jmic_fetch_error",
+    "timestamp_utc": "2026-03-11T18:35:57Z",
+    "source": "ukmto_or_jmic",
+    "category": "meta",
+    "value": "error",
+    "confidence": 0.0,
+    "direction": "neutral",
+    "notes": "403 Client Error: Forbidden for url: https://www.ukmto.org/ukmto-products/advisories/2026",
+    "url": "https://www.ukmto.org/ukmto-products/advisories/2026"
+  }
+]

@@ -157,6 +157,29 @@ pnpm build
 pnpm build:all
 ```
 
+### Docker Stacks
+
+Use the root compose registry to discover and manage the curated monorepo stacks from `/home/err/devel`:
+
+```bash
+pnpm docker:stack:list
+pnpm docker:stack up devel -- --build
+pnpm docker:stack up mcp -- --build
+pnpm docker:stack up cephalon -- --build
+pnpm docker:stack up ollama
+pnpm docker:stack up opencode -- --build
+pnpm docker:stack show promethean
+pnpm docker:stack status open-hax-openai-proxy
+pnpm docker:stack use-container open-hax-openai-proxy -- --build
+pnpm docker:stack use-host open-hax-openai-proxy
+pnpm docker:stack up openplanner -- --build
+pnpm docker:stack up part64 -- --build
+pnpm docker:stack ps open-hax-openai-proxy
+pnpm docker:stack logs open-hax-openai-proxy -- -f
+```
+
+See `docs/docker-stacks.md` for the registered stack names and command behavior.
+
 ### Bin Utilities
 
 - `bin/install-pre-push-hooks.sh`: Installs `.hooks/pre-push-typecheck.sh` into the root repo and every submodule, adding `.nx/` to git excludes.

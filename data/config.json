@@ -1,0 +1,13 @@
+{
+  "githubOAuth": {
+    "clientId": "",
+    "clientSecret": "",
+    "updatedAt": ""
+  },
+  "allowedGitHubUsers": [],
+  "targets": {
+    "discord": [],
+    "bluesky": []
+  },
+  "updatedAt": "2026-03-11T18:58:41.663Z"
+}

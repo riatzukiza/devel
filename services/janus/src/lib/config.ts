@@ -6,6 +6,8 @@ export type GatewayConfig = {
   openplannerUrl: string;
   openplannerApiKey: string | null;
   opencodeUrl: string;
+  opencodeUsername: string | null;
+  opencodePassword: string | null;
   opencodeApiKey: string | null;
   workspaceRoot: string;
   mcpUrl: string;
@@ -40,6 +42,8 @@ export function loadConfig(): GatewayConfig {
   const openplannerUrl = mustGet("OPENPLANNER_URL", "http://127.0.0.1:7777");
   const openplannerApiKey = process.env.OPENPLANNER_API_KEY ?? null;
   const opencodeUrl = mustGet("OPENCODE_URL", "http://127.0.0.1:4096");
+  const opencodeUsername = process.env.OPENCODE_USERNAME ?? null;
+  const opencodePassword = process.env.OPENCODE_PASSWORD ?? process.env.OPENCODE_SERVER_PASSWORD ?? null;
   const opencodeApiKey = process.env.OPENCODE_API_KEY ?? null;
   const workspaceRoot = mustGet("WORKSPACE_ROOT", path.resolve(process.cwd(), "..", ".."));
   const mcpUrl = mustGet("MCP_FS_OAUTH_URL", "http://127.0.0.1:3001");
@@ -89,7 +93,7 @@ export function loadConfig(): GatewayConfig {
   const allowedHostsEnv = process.env.ALLOWED_HOSTS ?? "";
   const allowedHosts = allowedHostsEnv
     ? allowedHostsEnv.split(",").map(h => h.trim())
-    : ["localhost", "127.0.0.1", ".tailbe888a.ts.net"];
+    : ["localhost", "127.0.0.1", "host.docker.internal", "mcp-stack", ".tailbe888a.ts.net"];
 
   return {
     host,
@@ -97,6 +101,8 @@ export function loadConfig(): GatewayConfig {
     openplannerUrl,
     openplannerApiKey,
     opencodeUrl,
+    opencodeUsername,
+    opencodePassword,
     opencodeApiKey,
     workspaceRoot,
     mcpUrl,

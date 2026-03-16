@@ -21,6 +21,7 @@ export interface OllamaConfig {
   model: string;
   temperature?: number;
   maxTokens?: number;
+  apiKey?: string;
 }
 
 export interface LLMProvider {
@@ -123,7 +124,10 @@ export class OllamaProvider implements LLMProvider {
 
       const response = await fetch(`${this.config.baseUrl}/api/chat`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(this.config.apiKey ? { Authorization: `Bearer ${this.config.apiKey}` } : {}),
+        },
         body: JSON.stringify({
           model: this.config.model,
           messages: ollamaMessages,
@@ -205,7 +209,10 @@ export class OllamaProvider implements LLMProvider {
     // Ollama's tool calling format
       const response = await fetch(`${this.config.baseUrl}/api/chat`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(this.config.apiKey ? { Authorization: `Bearer ${this.config.apiKey}` } : {}),
+        },
         body: JSON.stringify({
           model: this.config.model,
           messages: ollamaMessages,

@@ -1,6 +1,7 @@
 import { retry } from './retry.js';
 
-export const OLLAMA_URL = process.env.OLLAMA_URL ?? 'http://localhost:11434';
+export const OLLAMA_URL = process.env.OLLAMA_URL ?? 'http://127.0.0.1:8789';
+export const OLLAMA_API_KEY = process.env.OLLAMA_API_KEY ?? process.env.OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN;
 
 export class OllamaError extends Error {
   constructor(
@@ -62,7 +63,10 @@ export async function ollamaEmbed(model: string, text: string): Promise<number[]
       try {
         const res = await fetch(`${OLLAMA_URL}/api/embeddings`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            ...(OLLAMA_API_KEY ? { Authorization: `Bearer ${OLLAMA_API_KEY}` } : {}),
+          },
           // send both fields for wider server compatibility
           body: JSON.stringify({ model, prompt: text, input: text }),
           signal: ac.signal,
@@ -131,7 +135,10 @@ export async function ollamaJSON(
   try {
     const res = await fetch(`${OLLAMA_URL}/api/generate`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(OLLAMA_API_KEY ? { Authorization: `Bearer ${OLLAMA_API_KEY}` } : {}),
+      },
       body: JSON.stringify(requestBody),
       signal: ac.signal,
     });
