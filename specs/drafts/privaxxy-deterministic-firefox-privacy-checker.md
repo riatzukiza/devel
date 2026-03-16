@@ -58,5 +58,5 @@ Provide a deterministic, offline CLI that audits a local Firefox profile for com
 ## Definition of done
 - `python3 privaxxy.py --profile-path ~/.mozilla/firefox/<profile> --format json` runs.
 - Output is stable across runs.
-- Unit tests pass (`python3 -m unittest`).
+- Unit tests pass (`python3 -m unittest discover -s tests` or `make test`).
 - Submodule committed in `devel`, submodule repo pushed to `open-hax/privaxxy`.
