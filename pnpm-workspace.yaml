@@ -10,6 +10,8 @@ packages:
   - packages/mcp-oauth
   - packages/mcp-foundation
   - packages/radar-core
+  - packages/eta-mu-docs
+  - packages/eta-mu-truth
   - packages/thread-assessment
   - packages/npu-top
   - packages/omni-top

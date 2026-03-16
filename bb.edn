@@ -1,7 +1,6 @@
 {:paths ["promethean/bb/src" 
           "promethean/packages/clj-hacks/src" 
-          "promethean/packages/clj-hacks/test"
-          "clojure-mcp/src"]
+          "promethean/packages/clj-hacks/test"]
 
  :tasks
  {;; === Central REPL Tasks ===
@@ -25,16 +24,6 @@
                :task (shell "shadow-cljs clean")}
 
   ;; === Project-Specific Tasks ===
-  ;; Clojure-MCP
-  mcp:start {:doc "Start Clojure-MCP server"
-             :task (clojure "-X:mcp")}
-  
-  mcp:shadow {:doc "Start Clojure-MCP with Shadow-CLJS integration"
-             :task (clojure "-X:mcp-shadow")}
-  
-  mcp:dev {:doc "Start Clojure-MCP in development mode"
-           :task (clojure "-M:dev")}
-
   ;; Promethean
   promethean:build {:doc "Build Promethean CLI and services"
                     :task (do
@@ -132,15 +121,15 @@
   dev:all {:doc "Start all development servers"
            :task (do
                    (println "Starting all development servers...")
-                   (run-parallel mcp:start promethean:watch))}
+                   (promethean:watch))}
   
   dev:opencode {:doc "Start Opencode development environment"
                :task (do
-                       (run-parallel mcp:shadow frontend:opencode))}
+                       (frontend:opencode))}
   
   dev:promethean {:doc "Start Promethean development environment"
                   :task (do
-                          (run-parallel mcp:start promethean:watch))}
+                          (promethean:watch))}
 
   ;; === Utility Tasks ===
   utils:deps-tree {:doc "Show dependency tree for all projects"
