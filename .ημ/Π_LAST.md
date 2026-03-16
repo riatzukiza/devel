@@ -3,7 +3,7 @@
 - time: 2026-03-16T18:18:33-05:00
 - branch: feature/threat-radar-platform
 - pre-Π HEAD: 35eff84
-- Π HEAD: 1c554b6
+- Π HEAD: 86b94c4
 
 ## Summary
 - Updated OpenCode skill docs in `.opencode/skills/*`.
