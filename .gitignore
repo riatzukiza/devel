@@ -143,6 +143,14 @@ elgrep-data.el
 
 docs.github/**/.cache/
 
+# OpenCode local archives / work areas (never commit)
+.opencode/knowledge/
+.opencode/pr-*/
+.opencode/pr-*
+
+# Git worktrees (local)
+.worktrees/
+
 workspaces/
 orgs/private/
 orgs/snorkel-ai/

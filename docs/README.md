@@ -6,6 +6,7 @@ This `docs/` folder contains workspace-level notes, reports, and reference mater
 - **[Master cross-reference index](MASTER_CROSS_REFERENCE_INDEX.md)** – navigation hub for the multi-repo workspace
 - **[Docker stacks](docker-stacks.md)** – curated `pnpm docker:stack ...` commands and registered stack names
 - **[Worktrees + submodules](worktrees-and-submodules.md)** – policies and troubleshooting
+- **[Git submodules remote-URL reference](git-submodules-documentation.md)** – submodule remote URLs and cross-links
 - **[Submodule CLI migration](SUBMODULE_CLI_MIGRATION.md)** – notes on migrating legacy scripts to the `submodule` CLI
 
 ## Automation docs

@@ -54,6 +54,10 @@
 	path = orgs/open-hax/agent-actors
 	url = git@github.com:open-hax/agent-actors.git
 	branch = device/stealth
+[submodule "orgs/open-hax/opencode-skills"]
+	path = orgs/open-hax/opencode-skills
+	url = https://github.com/open-hax/opencode-skills.git
+	branch = main
 [submodule "orgs/open-hax/clients"]
 	path = orgs/open-hax/clients
 	url = git@github.com:open-hax/clients.git
