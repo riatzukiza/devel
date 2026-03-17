@@ -21,7 +21,7 @@ Provide a deterministic, offline CLI that audits a local Firefox profile for com
 
 ## Output (deterministic)
 - Default: JSON to stdout with stable key ordering.
-- Optional: human readable text.
+- Optional: human-readable text.
 - Exit codes:
   - `0` no failing checks
   - `2` at least one failing check (when `--fail-on >=warning`)
