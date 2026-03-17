@@ -146,3 +146,7 @@
 [submodule "orgs/open-hax/privaxxy"]
 	path = orgs/open-hax/privaxxy
 	url = https://github.com/open-hax/privaxxy.git
+[submodule "orgs/agustif/codex-linux"]
+	path = orgs/agustif/codex-linux
+	url = git@github.com:agustif/codex-linux.git
+	branch = main
