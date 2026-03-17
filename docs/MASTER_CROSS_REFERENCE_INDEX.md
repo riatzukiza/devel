@@ -44,5 +44,6 @@ Most useful MCP servers in this workspace are implemented as Node/TypeScript ser
 ## Related docs
 - **[Repository index](../REPOSITORY_INDEX.md)** (root)
 - **[Worktrees + submodules](worktrees-and-submodules.md)**
+- **[Git submodules remote-URL reference](git-submodules-documentation.md)**
 - **[Docker stacks](docker-stacks.md)**
 - **[PR mirroring](pr-mirroring.md)**
