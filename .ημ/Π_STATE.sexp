@@ -1,14 +1,18 @@
 (Π_STATE
-  (time "2026-03-16T18:31:34-05:00")
+  (time "2026-03-17T10:55:17-05:00")
   (branch "feature/threat-radar-platform")
-  (pre_head "35eff84")
-  (head "f7eee99")
-  (dirty false)
+  (pre_head "d69c879")
+  (dirty true)
   (checks
-    (pnpm_lint (status failed) (exit 1)
-      (note "pnpm lint now runs; remaining failures are real lint/typecheck issues across multiple projects (see Π_LAST.md).")))
+    (check (status skipped) (note "root-only snapshot (superproject pointer + .ημ metadata)"))
+    (check (status passed) (command "services/open-hax-openai-proxy pnpm run build"))
+    (check (status passed) (command "services/open-hax-openai-proxy pnpm test (253/253)"))
+    (check (status passed) (command "services/open-hax-openai-proxy pnpm run typecheck (via pre-push hook)"))
+  )
   (repo_notes
-    (git_config (status_show_untracked_files "no"))
-    (untracked_files (count 117) (note "count after ignoring .opencode/knowledge; see git ls-files --others --exclude-standard"))
-    (submodule_tooling
-      (note "git submodule status --recursive: fixed by removing stray gitlink .opencode/pr-open-hax-openai-proxy and adding .gitmodules entry for orgs/open-hax/opencode-skills"))))
+    (upstream "origin/feature/threat-radar-platform")
+    (ahead_before_pi 1)
+    (submodule (path "services/open-hax-openai-proxy") (from "021b82a") (to "457a620") (tag "Π/2026-03-17/105250-457a620"))
+    (status_digest "2fc6-c3c7-eacd-2bf5")
+  )
+)
