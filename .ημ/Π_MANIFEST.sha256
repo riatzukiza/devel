@@ -1,3 +1,10 @@
-93130edac7573b5f4563ef49c870a341d04144dec3241f4cc5624c7f8b344bab  .ημ/registry.jsonl
-dd6929d2d025eee29551d90b1ac6d5065c94c529f2d0070fe63bc53f01d8c55b  .ημ/Π_LAST.md
-e19a3949e9229c097806d08ef4ec51cb89d0211868c3add0690e1d55540dbc5d  .ημ/Π_STATE.sexp
+a38ed50f4fb557efb9c10370dd1fca651d56540f77c54a0876bd815e6791d2dc  .ημ/registry.jsonl
+c69c1872f73bc55f3d99829c05b752a11a8d2a7a7c34929b81177ed550a9ac9c  .ημ/Π_LAST.md
+f7b6050bcd359f3617a1168af7202d01d2d20118af9e2dfb71f0cba778e90148  .ημ/Π_STATE.sexp
+433f75cfffef68ce977e5fdeb717cde8555be5927355f211520cc2800ff9dd72  receipts.log
+a0407745252f6655160be54fb8acf636f9b7e60bd570603e83df0ee5ebb79b3d  AGENTS.md
+e69e4ee09a4cc5569d8ffd56fd458736b49a786b5acea110e6e3580b7095b62e  package.json
+d236e17  services/open-hax-openai-proxy
+1c4a2268d  orgs/octave-commons/promethean
+78cac7b  orgs/open-hax/agent-actors
+e4ab5e354  orgs/riatzukiza/promethean
