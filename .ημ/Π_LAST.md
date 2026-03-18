@@ -1,22 +1,25 @@
 # Π handoff
 
-- time: 2026-03-17T10:55:17-05:00
+- time: 2026-03-18T00:06:05-05:00
 - branch: feature/threat-radar-platform
-- pre-Π HEAD: d69c879
+- pre-Π HEAD: 5164eca
 - Π HEAD: pending at capture time; resolved by the final git commit created after artifact assembly
 
 ## Summary
-- Advance services/open-hax-openai-proxy to the Factory 4xx diagnostics snapshot commit.
-- Submodule snapshot: 021b82a → 457a620 (Π/2026-03-17/105250-457a620).
-- Carry the already-ahead root branch state into a fresh Π handoff with updated .ημ artifacts.
+- Record new root workspace skill listings and `resume:workbench` script wiring.
+- Advance submodule snapshot: `services/open-hax-openai-proxy` → `d236e17` (`Π/2026-03-18/045554-d236e17`).
+- Advance submodule snapshot: `orgs/octave-commons/promethean` → `1c4a2268d` (`Π/2026-03-18/045202-1c4a2268d`).
+- Advance submodule snapshot: `orgs/open-hax/agent-actors` → `78cac7b` (`Π/2026-03-18/050110-78cac7b`).
+- Advance submodule snapshot: `orgs/riatzukiza/promethean` → `e4ab5e354` (`Π/2026-03-18/050508-e4ab5e354`).
 
 ## Verification
-- skipped: root-only snapshot (superproject pointer + .ημ metadata)
-- pass: services/open-hax-openai-proxy pnpm run build
-- pass: services/open-hax-openai-proxy pnpm test (253/253)
-- pass: services/open-hax-openai-proxy pnpm run typecheck (via pre-push hook)
+- pass: services/open-hax-openai-proxy `pnpm run web:build`
+- pass: services/open-hax-openai-proxy `pnpm run typecheck`
+- pass: services/open-hax-openai-proxy `pnpm test` (258/258)
+- pass: orgs/open-hax/agent-actors `pnpm typecheck`
+- pass: orgs/riatzukiza/promethean/packages/lmdb-cache `pnpm typecheck`
+- skipped: root-only snapshot (superproject pointers + .ημ metadata)
 
 ## Notes
-- Root branch was ahead of origin/feature/threat-radar-platform by 1 commit(s) before this Π run.
 - Root artifacts capture pre-commit state; final root commit/tag are emitted by git after snapshot creation.
-- Submodule branch/tag push succeeded before creating the root Π commit.
+- Recursive Π completed by pushing all dirty submodules before updating the superproject pointer.

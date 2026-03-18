@@ -118,6 +118,21 @@ Protocol to keep work atomic and prevent scope creep.
 #### verify-resource-existence
 Protocol to verify a resource exists before creating a new one.
 
+#### resume-fnord-ats
+Maintain ATS-clean and AI-signal ("fnord") variants of resumes/cover letters with deterministic naming, minimal diffs, and a factual-only capability footer.
+
+#### resume-oss-ats-audit
+Audit resumes with runnable open-source ATS, parser, and resume-optimization tools; distinguish real parser signal from demo hype and write a reproducible findings report.
+
+#### resume-ats-optimize
+Turn audit findings into ATS-clean resume variants by simplifying parser-hostile formatting, standardizing section labels, improving quantification, and preserving truthfulness.
+
+#### resume-ml-eval-research
+Research and synthesize credible ML techniques for resume and job-description evaluation, ranking, and improvement, favoring explainable, local, reproducible methods.
+
+#### resume-processing-workbench
+Build and use a local resume-processing workbench that ingests resumes and job descriptions, runs parser/score pipelines, and emits reproducible fit/improvement reports.
+
 #### webring-site
 Research the live ussyco.de ring, build a distinct single-page site in this workspace, preview it locally, and optionally register it with an API key from the environment.
 
