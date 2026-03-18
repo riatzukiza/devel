@@ -150,3 +150,6 @@
 	path = orgs/agustif/codex-linux
 	url = git@github.com:agustif/codex-linux.git
 	branch = main
+[submodule "orgs/shuv/codex-desktop-linux"]
+	path = orgs/shuv/codex-desktop-linux
+	url = git@github.com:shuv1337/codex-desktop-linux.git
