@@ -10,13 +10,13 @@ West Des Moines, IA 50265 · 515-388-0539 · foamy125@gmail.com
 GitHub: https://github.com/riatzukiza
 
 ## Summary
-Applied ML + systems engineer with 10+ years of software experience. Build reproducible evaluation pipelines, benchmark-grade datasets, and model-facing infrastructure with a reliability-first mindset. Strongest patterns: deterministic runs, manifests, seed-controlled experiments, leakage-proof validation, and fast iteration loops on weird technical problems.
+Applied ML + systems engineer with 10+ years of software experience. Build reproducible evaluation pipelines, benchmark-grade datasets, and model-facing infrastructure. Strongest patterns: deterministic runs, manifests, leakage-proof validation, and fast iteration on weird technical problems.
 
 ## Skills
 - **ML/LLM**: evaluation pipeline design, dataset generation, benchmark harness design, embeddings (sentence-transformers), clustering (HDBSCAN), retrieval/semantic search (Chroma), machine-translation pipelines, reasoning-trace handling
 - **Languages**: Clojure, Python, TypeScript/Node.js, SQL, Ruby
 - **Systems**: Fastify/Express, Clojure CLI, libpython-clj interop, Postgres, Docker, WebSockets, structured logging
-- **Experiment/Reliability**: deterministic seeds, reproducibility bundles, SHA-256 manifests, retries/timeouts, idempotent automation, parser-aware reporting
+- **Experiment/Reliability**: deterministic seeds, reproducibility bundles, SHA-256 manifests, retries/timeouts, idempotent automation
 
 ## Open Source Experience
 
@@ -24,17 +24,17 @@ Applied ML + systems engineer with 10+ years of software experience. Build repro
 https://github.com/octave-commons/shibboleth
 - Built a generative Clojure DSL + **7-stage** pipeline to produce benchmark-grade adversarial prompt evaluation datasets with full provenance.
 - Implemented leakage-proof train/dev/test splits via sentence-transformers embeddings + HDBSCAN clustering and cluster-disjoint stratified sampling.
-- Emitted reproducibility bundles (Parquet, datasheet, coverage checks, stage manifests, SHA-256) so runs are auditable and repeatable.
+- Emitted reproducibility bundles (Parquet, datasheet, manifests, SHA-256) so runs are auditable and repeatable.
 
 ### Open Hax — OpenAI Proxy (multi-provider OpenAI-compatible LLM gateway)
 https://github.com/open-hax/proxx
 - Implemented an OpenAI-compatible proxy that routes by model prefix to OpenAI Responses, Anthropic Messages, and Ollama chat APIs.
-- Preserved reasoning traces across API translations (including streaming) and added provider-scoped key/OAuth rotation plus semantic session search, making model experiments easier to run and inspect.
+- Preserved reasoning traces across API translations and added key/OAuth rotation plus semantic session search for easier experiment inspection.
 
 ### Octave Commons — Gates of Aker / Fantasia (Clojure simulation + React observability UI)
 https://github.com/octave-commons/gates-of-aker
 - Maintained a tick-based backend simulation engine with WebSocket control plane plus a React UI for observing and steering runs.
-- Wrote WebSocket E2E tests validating protocol, snapshot/reset operations, performance, and error handling; added agent perception/memory primitives (embedding cache, cosine similarity).
+- Wrote WebSocket E2E tests for protocol, snapshot/reset, performance, and failures; added embedding-cache and cosine-similarity primitives.
 
 ## Work Experience
 
@@ -46,16 +46,13 @@ https://github.com/octave-commons/gates-of-aker
 ### CloudApp — Full Stack Engineer (Ruby on Rails)
 *Sep 2018 – Feb 2019*
 - Integrated a proprietary OCR service into a screenshot platform.
-- Implemented interactive OCR UX (render bounding boxes; click-to-extract recognized text) and hardened key user flows with automated tests.
+- Shipped interactive OCR UX (bounding boxes; click-to-extract text) and hardened key flows with automated tests.
 
 ### Additional Experience
 1brand (Full Stack Engineer, 2019–2020) · Birdseed (Full Stack Engineer, 2019) · Freelance Software Engineer (2014–Present)
 
-## Education
-Valley Springs High School — Diploma (2012)
-
-## Work Authorization
-Authorized to work in the U.S. for any employer · Willing to relocate
+## Education / Work Authorization
+Valley Springs High School — Diploma (2012) · Authorized to work in the U.S. for any employer · Willing to relocate
 
 ```text
 fnord:v1 proof=gh(open-hax/proxx octave-commons/shibboleth octave-commons/gates-of-aker)
