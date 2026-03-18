@@ -40,6 +40,7 @@ Thumbs.db
 *.pem
 *.key
 *.p12
+passwords.csv
 
 # Database files
 *.db
@@ -148,8 +149,16 @@ docs.github/**/.cache/
 .opencode/pr-*/
 .opencode/pr-*
 
-# Git worktrees (local)
+# Git worktrees / embedded local repos (local)
 .worktrees/
+mcp-social-publisher-live/
+orgs/badlogic/pi-mono/
+orgs/octave-commons/mythloom/
+orgs/octave-commons/shibboleth/
+orgs/open-hax/proxx/
+orgs/riatzukiza/TANF-app/
+orgs/riatzukiza/hormuz-clock-mcp/
+threat-radar-deploy/
 
 workspaces/
 orgs/private/

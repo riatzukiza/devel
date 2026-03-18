@@ -1,0 +1,103 @@
+\documentclass[10pt]{article}
+\pagestyle{empty}
+
+% --- tight margins (no geometry dependency)
+\setlength{\topmargin}{-0.6in}
+\setlength{\textheight}{10.3in}
+\setlength{\oddsidemargin}{-0.25in}
+\setlength{\evensidemargin}{-0.25in}
+\setlength{\textwidth}{7.0in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1pt}
+\renewcommand\labelitemi{-}
+
+% (No external LaTeX packages: keep this file buildable on minimal TeX installs)
+
+\begin{document}
+
+{\LARGE \textbf{Aaron Beavers}}\\
+Machine Learning / Systems Engineer (Evaluation / Benchmarking / LLM Infrastructure)\\
+
+\vspace{2pt}
+\textbf{CONTACT}\\
+West Des Moines, IA 50265 \;\;\textbar\;\; 515-388-0539 \;\;\textbar\;\; foamy125@gmail.com\\
+GitHub: github.com/riatzukiza
+
+\vspace{4pt}
+\textbf{SUMMARY}\\
+Applied ML + systems engineer with 10+ years of software experience. Build reproducible evaluation pipelines, benchmark-grade datasets, and model-facing infrastructure with a reliability-first mindset. Strongest patterns: deterministic runs, manifests, seed-controlled experiments, leakage-proof validation, and fast iteration loops on weird technical problems.
+
+\vspace{2pt}
+\textbf{SKILLS}\\
+\textbf{ML/LLM}: evaluation pipeline design, dataset generation, benchmark harness design, embeddings (sentence-transformers), clustering (HDBSCAN), semantic search (Chroma), MT pipelines, reasoning traces.\\
+\textbf{Languages}: Clojure, Python, TypeScript/Node.js, SQL, Ruby.\\
+\textbf{Systems}: Fastify/Express, Clojure CLI, libpython-clj interop, Postgres, Docker, WebSockets, structured logging.\\
+\textbf{Experiment/Reliability}: deterministic seeds, reproducibility bundles, SHA-256 manifests, retries/timeouts, idempotent automation, parser-aware reporting.
+
+\vspace{4pt}
+\textbf{OPEN SOURCE EXPERIENCE}\\
+
+\textbf{Shibboleth} --- Generative adversarial prompt-eval dataset DSL \hfill \textit{github.com/octave-commons/shibboleth}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Built a generative Clojure DSL + 7-stage pipeline to produce benchmark-grade adversarial prompt evaluation datasets with full provenance.
+  \item Implemented leakage-proof train/dev/test splits via sentence-transformers embeddings + HDBSCAN clustering and cluster-disjoint stratified sampling.
+  \item Emitted reproducibility bundles (Parquet, datasheet, coverage checks, stage manifests, SHA-256) so runs are auditable and repeatable.
+\end{itemize}
+
+\textbf{Open Hax Proxy} --- Multi-provider OpenAI-compatible LLM gateway \hfill \textit{github.com/open-hax/proxx}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Implemented an OpenAI-compatible proxy that routes by model prefix to OpenAI Responses, Anthropic Messages, and Ollama chat APIs.
+  \item Preserved reasoning traces across API translations (including streaming) and added provider-scoped key/OAuth rotation plus semantic session search for easier experiment inspection.
+\end{itemize}
+
+\textbf{Gates of Aker / Fantasia} --- Clojure simulation + React observability UI \hfill \textit{github.com/octave-commons/gates-of-aker}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Maintained a tick-based backend simulation engine with WebSocket control plane plus a React UI for observing and steering runs.
+  \item Wrote WebSocket E2E tests validating protocol, snapshot/reset operations, performance, and error handling; added embedding-cache and cosine-similarity primitives.
+\end{itemize}
+
+\vspace{4pt}
+\textbf{WORK EXPERIENCE}\\
+
+\textbf{Raft Technologies} --- Full Stack Engineer (Python/Django + React) \hfill \textit{Jul 2020 -- Sep 2023}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Built and maintained 5-stage Celery pipelines for uploaded-file processing (parse $\rightarrow$ validate $\rightarrow$ summarize $\rightarrow$ report $\rightarrow$ notify) with safe failure modes and operational visibility.
+  \item Implemented robust file type + encoding detection and integrated anti-malware scanning automation (ClamAV REST) using retry/backoff + timeouts with persisted outcomes.
+\end{itemize}
+
+\textbf{CloudApp} --- Full Stack Engineer (Ruby on Rails) \hfill \textit{Sep 2018 -- Feb 2019}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Integrated a proprietary OCR service into a screenshot platform; implemented interactive OCR UX (bounding boxes, click-to-extract text) and hardened key user flows with automated tests.
+\end{itemize}
+
+\textbf{Additional experience}: 1brand (Full Stack Engineer, 2019--2020); Birdseed (Full Stack Engineer, 2019); Freelance Software Engineer (2014--Present).
+
+\vspace{4pt}
+\textbf{EDUCATION}\\
+Valley Springs High School --- Diploma (2012)
+
+\vspace{2pt}
+\textbf{WORK AUTHORIZATION}\\
+Authorized to work in the U.S. for any employer. Willing to relocate.
+
+\end{document}
