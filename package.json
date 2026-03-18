@@ -24,6 +24,7 @@
     "inbox:pipeline": "node scripts/inbox-pipeline.mjs",
     "inbox:meta-pipeline": "node scripts/meta-agent-evaluator.mjs",
     "resume:workbench": "tsx src/resume-workbench/cli.ts",
+    "resume:apply": "tsx src/resume-apply/cli.ts",
     "giga:nx:generate": "bun run src/giga/generate-nx-projects.ts",
     "giga:plugin:bundle": "bun run tools/nx-plugins/giga/bundle-plugin.ts",
     "giga:affected": "nx affected --target=test --build",
