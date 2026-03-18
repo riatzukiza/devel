@@ -1,0 +1,2 @@
+file: resume/analysis/tmp/jd-jorie-ai.txt
+capturedAt: 2026-03-18T07:05:05.633Z

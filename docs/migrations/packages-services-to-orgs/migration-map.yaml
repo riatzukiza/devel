@@ -1,0 +1,18 @@
+# Source of truth for promotions into orgs/.
+#
+# - Canonical checkout: orgs/<org>/<repo>
+# - Compatibility path: packages/<name> or services/<name> (symlink)
+#
+# Incrementally fill this file during Phase 0 inventory.
+
+services/open-hax-openai-proxy:
+  org: open-hax
+  repo: proxx
+  kind: node-service
+  upstream: https://github.com/open-hax/proxx.git
+  branch: main
+  extraction: n/a # already upstream + already submodule today; Phase 3 will relocate path
+  symlink:
+    from: services/open-hax-openai-proxy
+    to: orgs/open-hax/proxx
+  notes: "Keep services/ name stable; canonical is orgs/open-hax/proxx"

@@ -1,0 +1,71 @@
+{
+  "resume/applications/2099-01-02/acme-test/devsecops-engineer/synthesis/aaron-beavers-devsecops-ai-1p.pdf": {
+    "resume_data": {
+      "personal_info": {
+        "name": "Aaron Beavers",
+        "email": "foamy125@gmail.com",
+        "phone": "515-388-0539",
+        "location": "Des Moines"
+      },
+      "skills": [
+        "C",
+        "CircleCI",
+        "Clojure",
+        "Django",
+        "Docker",
+        "GitHub",
+        "Node.js",
+        "Python",
+        "R",
+        "React",
+        "Ruby",
+        "Ruby on Rails",
+        "Terraform",
+        "TypeScript"
+      ],
+      "education": [],
+      "experience": [],
+      "certifications": [],
+      "languages": [],
+      "summary": "Aaron Beavers\nDevSecOps Engineer (AI Systems / LLM Infrastructure / Secure Automation)\nCONTACT\nWest Des Moines, IA 50265 | 515-388-0539 | foamy125@gmail. com/riatzukiza\nSUMMARY\nDevSecOps / platform engineer focused on AI systems: secure LLM gateways, credential/OAuth workflows, and\nreproducible evaluation pipelines. ML-fluent (embeddings/clustering, eval design).",
+      "raw_text": "Aaron Beavers\nDevSecOps Engineer (AI Systems / LLM Infrastructure / Secure Automation)\nCONTACT\nWest Des Moines, IA 50265 | 515-388-0539 | foamy125@gmail.com\nGitHub: github.com/riatzukiza\nSUMMARY\nDevSecOps / platform engineer focused on AI systems: secure LLM gateways, credential/OAuth workflows, and\nreproducible evaluation pipelines. ML-fluent (embeddings/clustering, eval design). 10+ years building production\nsoftwarepre-agentic-AI;nowuseagentictoolingtoacceleratedeliverywithverification(tests,manifests,audittrails).\nSKILLS\nDevSecOps: Docker/Compose, Postgres, CI (CircleCI), cloud.gov / Cloud Foundry.\nSecurity & reliability: OAuth PKCE, token auth, key rotation on rate limits, retries/timeouts, audit logs.\nAI systems: OpenAI-compatible APIs, model-aware routing (Responses/Messages/chat), reasoning traces, embed-\ndings + clustering, Chroma semantic recall.\nLanguages: TypeScript/Node.js, Python, Clojure, SQL, Ruby.\nOPEN SOURCE EXPERIENCE\nOpen Hax Proxy — OpenAI-compatible multi-provider LLM gateway github.com/open-hax/proxx\n- Builta3-providertoken-authenticatedproxywithprovider-scopedAPI-key/OAuthrotationonratelimitsand\ncross-provider fallback for operational continuity.\n- Implementedmodel-awarerouting+payloadtranslationbetweenOpenAIResponses,AnthropicMessages,and\nOllama; preserved reasoning traces; shipped a web console and Chroma-backed session recall.\n- Reused the proxy + report stack in Mythloom, a worker-side anti-extractive resume analysis workbench.\nUssyverse / Battlebussy (contributor) — AI CTF platform github.com/shuv1337/battlebussy\n- Shippedproductiondeployment/hardeningforGo+NATSJetStreamcontrolplane: multi-archDockerbuilds,\nGHCR publish scripts, docker-compose prod stack, and OCI Terraform workflow/docs.\nShibboleth — Reproducible adversarial prompt-eval dataset pipeline github.com/octave-commons/shibboleth\n- Authored a generative DSL + 7-stage pipeline with deterministic seeds, full provenance, leakage-proof splits\n(sentence-transformers + HDBSCAN), and SHA-256 manifests/datasheets.\nGates of Aker / Fantasia — Simulation backend + observability UI github.com/octave-commons/gates-of-aker\n- Maintained a tick-based Clojure simulation with WebSocket control plane + React UI; added WS E2E tests\nand gate runtime modes (shadow/enforce/off).\nWORK EXPERIENCE\nRaft Technologies — Full Stack Engineer (Python/Django + React) Jul 2020 – Sep 2023\n- Built 5-stage Celery pipelines for file ingestion (parse → validate → summarize → report → notify) with safe\nfailure modes and operational visibility.\n- Integrated ClamAV REST scanning with retry/backoff + timeouts and persisted outcomes for auditability;\nimplemented robust file type + encoding detection.\n- Supported Cypress E2E automation in CI to prevent regressions.\nCloudApp — Full Stack Engineer (Ruby on Rails) Sep 2018 – Feb 2019\n- Integrated a proprietary OCR service into a screenshot platform; implemented interactive OCR UX and hard-\nened key flows with automated tests.\nAdditional experience: 1brand(FullStackEngineer, 2019–2020); Birdseed(FullStackEngineer, 2019); Freelance\nSoftware Engineer (2014–Present).\nEDUCATION\nValley Springs High School — Diploma (2012)\nWORK AUTHORIZATION\nAuthorized to work in the U.S. for any employer. Willing to relocate."
+    },
+    "insights": {
+      "profile_completeness": 43.75,
+      "skill_categories": {
+        "programming": [
+          "C",
+          "Clojure",
+          "Python",
+          "R",
+          "Ruby",
+          "TypeScript"
+        ],
+        "web_technologies": [
+          "Django",
+          "Node.js",
+          "React",
+          "Ruby on Rails"
+        ],
+        "tools": [
+          "CircleCI",
+          "Docker",
+          "GitHub",
+          "Terraform"
+        ]
+      },
+      "experience_summary": {
+        "total_positions": 0,
+        "companies": [],
+        "job_titles": [],
+        "estimated_years": 0
+      },
+      "education_level": "Not specified",
+      "career_progression": "Insufficient data for analysis",
+      "technical_score": 60,
+      "language_diversity": 0,
+      "certification_count": 0
+    },
+    "parsing_timestamp": "2026-03-18 02:05:10"
+  }
+}
