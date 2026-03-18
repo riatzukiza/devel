@@ -17,12 +17,12 @@ type ModuleVersionRow = {
   id: string;
   radar_id: string;
   version: number;
-  signal_definitions: object;
-  branch_definitions: object;
-  source_adapter_refs: object;
-  model_weight_table: object;
-  reducer_config: object;
-  validation_rules: object;
+  signal_definitions: unknown;
+  branch_definitions: unknown;
+  source_adapter_refs: unknown;
+  model_weight_table: unknown;
+  reducer_config: unknown;
+  validation_rules: unknown;
   status: string;
   created_by: string;
   created_at: Date;
@@ -34,9 +34,9 @@ type SourceRow = {
   kind: string;
   name: string;
   uri: string;
-  adapter_config: object | null;
-  trust_profile: object | null;
-  freshness_policy: object | null;
+  adapter_config: unknown;
+  trust_profile: unknown;
+  freshness_policy: unknown;
   status: string;
   created_at: Date;
 };
@@ -47,10 +47,10 @@ type PacketRow = {
   module_version_id: string;
   timestamp_utc: Date;
   model_id: string;
-  sources: object;
-  signal_scores: object;
-  branch_assessment: object;
-  uncertainties: object;
+  sources: unknown;
+  signal_scores: unknown;
+  branch_assessment: unknown;
+  uncertainties: unknown;
   weight: number;
   received_at: Date;
 };
@@ -61,12 +61,12 @@ type SnapshotRow = {
   module_version_id: string;
   snapshot_kind: string;
   as_of_utc: Date;
-  signals: object;
-  branches: object;
+  signals: unknown;
+  branches: unknown;
   model_count: number;
   disagreement_index: number;
   quality_score: number;
-  render_state: object;
+  render_state: unknown;
   created_at: Date;
 };
 
@@ -74,7 +74,7 @@ type AuditRow = {
   id: string;
   radar_id: string;
   event_type: string;
-  payload: object;
+  payload: unknown;
   created_at: Date;
 };
 
@@ -82,7 +82,29 @@ function nowIso(): string {
   return new Date().toISOString();
 }
 
+function cloneJsonValue<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value)) as T;
+}
+
+function decodeJsonField<T>(value: unknown, fallback: T): T {
+  if (value === null || value === undefined) {
+    return fallback;
+  }
+  if (typeof value === "string") {
+    try {
+      return JSON.parse(value) as T;
+    } catch {
+      return fallback;
+    }
+  }
+  return value as T;
+}
+
 export class PostgresRadarStore {
+  private json(value: unknown) {
+    return getSql().json(cloneJsonValue(value) as never);
+  }
+
   async getRadar(radarId: string): Promise<Radar | null> {
     const sql = getSql();
     const rows = await sql<RadarRow[]>`
@@ -161,12 +183,16 @@ export class PostgresRadarStore {
       id: r.id,
       radar_id: r.radar_id,
       version: r.version,
-      signal_definitions: r.signal_definitions as RadarModuleVersion["signal_definitions"],
-      branch_definitions: r.branch_definitions as RadarModuleVersion["branch_definitions"],
-      source_adapter_refs: r.source_adapter_refs as RadarModuleVersion["source_adapter_refs"],
-      model_weight_table: r.model_weight_table as RadarModuleVersion["model_weight_table"],
-      reducer_config: r.reducer_config as RadarModuleVersion["reducer_config"],
-      validation_rules: r.validation_rules as RadarModuleVersion["validation_rules"],
+      signal_definitions: decodeJsonField<RadarModuleVersion["signal_definitions"]>(r.signal_definitions, []),
+      branch_definitions: decodeJsonField<RadarModuleVersion["branch_definitions"]>(r.branch_definitions, []),
+      source_adapter_refs: decodeJsonField<RadarModuleVersion["source_adapter_refs"]>(r.source_adapter_refs, []),
+      model_weight_table: decodeJsonField<RadarModuleVersion["model_weight_table"]>(r.model_weight_table, {}),
+      reducer_config: decodeJsonField<RadarModuleVersion["reducer_config"]>(r.reducer_config, {
+        signal_quantile_low: 0.25,
+        signal_quantile_high: 0.75,
+        disagreement_divisor: 2,
+      }),
+      validation_rules: decodeJsonField<RadarModuleVersion["validation_rules"]>(r.validation_rules, {}),
       status: r.status as RadarModuleVersion["status"],
       created_by: r.created_by,
       created_at: r.created_at.toISOString(),
@@ -182,12 +208,16 @@ export class PostgresRadarStore {
       id: r.id,
       radar_id: r.radar_id,
       version: r.version,
-      signal_definitions: r.signal_definitions as RadarModuleVersion["signal_definitions"],
-      branch_definitions: r.branch_definitions as RadarModuleVersion["branch_definitions"],
-      source_adapter_refs: r.source_adapter_refs as RadarModuleVersion["source_adapter_refs"],
-      model_weight_table: r.model_weight_table as RadarModuleVersion["model_weight_table"],
-      reducer_config: r.reducer_config as RadarModuleVersion["reducer_config"],
-      validation_rules: r.validation_rules as RadarModuleVersion["validation_rules"],
+      signal_definitions: decodeJsonField<RadarModuleVersion["signal_definitions"]>(r.signal_definitions, []),
+      branch_definitions: decodeJsonField<RadarModuleVersion["branch_definitions"]>(r.branch_definitions, []),
+      source_adapter_refs: decodeJsonField<RadarModuleVersion["source_adapter_refs"]>(r.source_adapter_refs, []),
+      model_weight_table: decodeJsonField<RadarModuleVersion["model_weight_table"]>(r.model_weight_table, {}),
+      reducer_config: decodeJsonField<RadarModuleVersion["reducer_config"]>(r.reducer_config, {
+        signal_quantile_low: 0.25,
+        signal_quantile_high: 0.75,
+        disagreement_divisor: 2,
+      }),
+      validation_rules: decodeJsonField<RadarModuleVersion["validation_rules"]>(r.validation_rules, {}),
       status: r.status as RadarModuleVersion["status"],
       created_by: r.created_by,
       created_at: r.created_at.toISOString(),
@@ -205,12 +235,12 @@ export class PostgresRadarStore {
         ${mv.id},
         ${mv.radar_id},
         ${mv.version},
-        ${JSON.stringify(mv.signal_definitions)}::jsonb,
-        ${JSON.stringify(mv.branch_definitions)}::jsonb,
-        ${JSON.stringify(mv.source_adapter_refs)}::jsonb,
-        ${JSON.stringify(mv.model_weight_table)}::jsonb,
-        ${JSON.stringify(mv.reducer_config)}::jsonb,
-        ${JSON.stringify(mv.validation_rules)}::jsonb,
+        ${this.json(mv.signal_definitions)},
+        ${this.json(mv.branch_definitions)},
+        ${this.json(mv.source_adapter_refs)},
+        ${this.json(mv.model_weight_table)},
+        ${this.json(mv.reducer_config)},
+        ${this.json(mv.validation_rules)},
         ${mv.status},
         ${mv.created_by},
         ${mv.created_at}
@@ -229,9 +259,12 @@ export class PostgresRadarStore {
       kind: r.kind as SourceDefinition["kind"],
       name: r.name,
       uri: r.uri,
-      adapter_config: (r.adapter_config ?? {}) as SourceDefinition["adapter_config"],
-      trust_profile: (r.trust_profile ?? {}) as SourceDefinition["trust_profile"],
-      freshness_policy: (r.freshness_policy ?? {}) as SourceDefinition["freshness_policy"],
+      adapter_config: decodeJsonField<SourceDefinition["adapter_config"]>(r.adapter_config, {}),
+      trust_profile: decodeJsonField<SourceDefinition["trust_profile"]>(r.trust_profile, {
+        default_confidence: 0.5,
+        quality: "secondary",
+      }),
+      freshness_policy: decodeJsonField<SourceDefinition["freshness_policy"]>(r.freshness_policy, {}),
       status: r.status as SourceDefinition["status"],
     }));
   }
@@ -246,9 +279,9 @@ export class PostgresRadarStore {
         ${source.kind},
         ${source.name},
         ${source.uri},
-        ${JSON.stringify(source.adapter_config ?? {})}::jsonb,
-        ${JSON.stringify(source.trust_profile ?? {})}::jsonb,
-        ${JSON.stringify(source.freshness_policy ?? {})}::jsonb,
+        ${this.json(source.adapter_config ?? {})},
+        ${this.json(source.trust_profile ?? {})},
+        ${this.json(source.freshness_policy ?? {})},
         ${source.status},
         ${nowIso()}
       )
@@ -267,10 +300,10 @@ export class PostgresRadarStore {
         module_version_id: r.module_version_id,
         timestamp_utc: r.timestamp_utc.toISOString(),
         model_id: r.model_id,
-        sources: r.sources as RadarAssessmentPacket["sources"],
-        signal_scores: r.signal_scores as RadarAssessmentPacket["signal_scores"],
-        branch_assessment: r.branch_assessment as RadarAssessmentPacket["branch_assessment"],
-        uncertainties: r.uncertainties as RadarAssessmentPacket["uncertainties"],
+        sources: decodeJsonField<RadarAssessmentPacket["sources"]>(r.sources, []),
+        signal_scores: decodeJsonField<RadarAssessmentPacket["signal_scores"]>(r.signal_scores, {}),
+        branch_assessment: decodeJsonField<RadarAssessmentPacket["branch_assessment"]>(r.branch_assessment, []),
+        uncertainties: decodeJsonField<RadarAssessmentPacket["uncertainties"]>(r.uncertainties, []),
       },
       weight: r.weight,
       receivedAt: r.received_at.toISOString(),
@@ -290,10 +323,10 @@ export class PostgresRadarStore {
         ${packet.module_version_id},
         ${packet.timestamp_utc},
         ${packet.model_id},
-        ${JSON.stringify(packet.sources)}::jsonb,
-        ${JSON.stringify(packet.signal_scores)}::jsonb,
-        ${JSON.stringify(packet.branch_assessment)}::jsonb,
-        ${JSON.stringify(packet.uncertainties)}::jsonb,
+        ${this.json(packet.sources)},
+        ${this.json(packet.signal_scores)},
+        ${this.json(packet.branch_assessment)},
+        ${this.json(packet.uncertainties)},
         ${weight},
         ${nowIso()}
       )
@@ -334,12 +367,12 @@ export class PostgresRadarStore {
         ${snapshot.module_version_id},
         ${snapshot.snapshot_kind},
         ${snapshot.as_of_utc},
-        ${JSON.stringify(snapshot.signals)}::jsonb,
-        ${JSON.stringify(snapshot.branches)}::jsonb,
+        ${this.json(snapshot.signals)},
+        ${this.json(snapshot.branches)},
         ${snapshot.model_count},
         ${snapshot.disagreement_index},
         ${snapshot.quality_score},
-        ${JSON.stringify(snapshot.render_state)}::jsonb
+        ${this.json(snapshot.render_state)}
       )
     `;
   }
@@ -361,12 +394,12 @@ export class PostgresRadarStore {
       module_version_id: r.module_version_id,
       snapshot_kind: r.snapshot_kind as ReducedSnapshot["snapshot_kind"],
       as_of_utc: r.as_of_utc.toISOString(),
-      signals: r.signals as ReducedSnapshot["signals"],
-      branches: r.branches as ReducedSnapshot["branches"],
+      signals: decodeJsonField<ReducedSnapshot["signals"]>(r.signals, {}),
+      branches: decodeJsonField<ReducedSnapshot["branches"]>(r.branches, []),
       model_count: r.model_count,
       disagreement_index: r.disagreement_index,
       quality_score: r.quality_score,
-      render_state: r.render_state as ReducedSnapshot["render_state"],
+      render_state: decodeJsonField<ReducedSnapshot["render_state"]>(r.render_state, {}),
     };
   }
 
@@ -375,7 +408,7 @@ export class PostgresRadarStore {
     const id = `${radarId}:${eventType}:${Date.now()}`;
     await sql`
       INSERT INTO radar_audit_events (id, radar_id, event_type, payload)
-      VALUES (${id}, ${radarId}, ${eventType}, ${JSON.stringify(payload)}::jsonb)
+      VALUES (${id}, ${radarId}, ${eventType}, ${this.json(payload)})
     `;
   }
 
@@ -389,7 +422,7 @@ export class PostgresRadarStore {
     `;
     return rows.map((r) => ({
       event_type: r.event_type,
-      payload: r.payload as object,
+      payload: decodeJsonField<object>(r.payload, {}),
       created_at: r.created_at.toISOString(),
     }));
   }

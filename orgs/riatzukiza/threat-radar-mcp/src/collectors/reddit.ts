@@ -1,5 +1,24 @@
-import type { SignalEvent } from "@workspace/radar-core";
 import { randomUUID } from "node:crypto";
+
+type SignalEvent = {
+  id: string;
+  provenance: {
+    source_type: string;
+    author: string;
+    post_uri: string;
+    parent_uri?: string;
+    confidence_class: string;
+    retrieved_at: string;
+  };
+  text: string;
+  title?: string;
+  links: string[];
+  domain_tags: string[];
+  observed_at: string;
+  ingested_at: string;
+  content_hash: string;
+  metadata: Record<string, unknown>;
+};
 
 export interface RedditCollectorConfig {
   userAgent?: string;
