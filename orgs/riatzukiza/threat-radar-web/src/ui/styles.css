@@ -53,6 +53,32 @@ body {
   line-height: 1.5;
 }
 
+.status-line {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.state-card {
+  max-width: 1400px;
+  margin: 0 auto 18px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(23, 27, 34, 0.72);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.state-card h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.state-card p {
+  margin: 6px 0 0;
+  color: var(--muted);
+}
+
 .wall {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -135,12 +161,27 @@ body {
   fill: var(--accent-2);
 }
 
+.tile-note {
+  margin: 4px 0 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
 .tile-meta {
   display: flex;
   justify-content: space-between;
   gap: 8px;
   color: var(--muted);
   font-size: 12px;
+}
+
+.tile-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  color: var(--muted);
+  font-size: 14px;
 }
 
 @keyframes pulse {
