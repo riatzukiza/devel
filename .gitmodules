@@ -153,3 +153,7 @@
 [submodule "orgs/shuv/codex-desktop-linux"]
 	path = orgs/shuv/codex-desktop-linux
 	url = git@github.com:shuv1337/codex-desktop-linux.git
+[submodule "orgs/openai/parameter-golf"]
+	path = orgs/openai/parameter-golf
+	url = org-14957082@github.com:openai/parameter-golf.git
+	branch = main

@@ -1,0 +1,117 @@
+{
+  "generatedAt": "2026-03-18T07:05:10.669Z",
+  "resumes": [
+    "resume/applications/2099-01-02/acme-test/devsecops-engineer/synthesis/aaron-beavers-devsecops-ai-1p.pdf"
+  ],
+  "jobDescriptions": [
+    "resume/applications/2099-01-02/acme-test/devsecops-engineer/sources/job-posting.txt"
+  ],
+  "pairs": [
+    {
+      "resumePath": "resume/applications/2099-01-02/acme-test/devsecops-engineer/synthesis/aaron-beavers-devsecops-ai-1p.pdf",
+      "jobDescriptionPath": "resume/applications/2099-01-02/acme-test/devsecops-engineer/sources/job-posting.txt",
+      "breakdown": {
+        "keywordCoverage": 0.1875,
+        "keywordHits": [
+          "python",
+          "build",
+          "automation",
+          "web",
+          "data",
+          "automate",
+          "workflows",
+          "workflow",
+          "design"
+        ],
+        "keywordMisses": [
+          "rpa",
+          "developer",
+          "jorie",
+          "ai.",
+          "intelligent",
+          "resilient",
+          "solutions",
+          "revenue",
+          "cycle",
+          "management",
+          "rcm",
+          "move",
+          "beyond",
+          "simple",
+          "scraping",
+          "custom",
+          "development",
+          "using",
+          "selenium",
+          "browser",
+          "interaction",
+          "opencv",
+          "visual",
+          "processing",
+          "ocr.",
+          "complex",
+          "involving",
+          "ehrs",
+          "claims",
+          "portals",
+          "legacy",
+          "systems.",
+          "desired",
+          "strengths",
+          "include",
+          "python-based",
+          "ocr/vision",
+          "production-grade",
+          "reliability."
+        ],
+        "phraseCoverage": 0,
+        "phraseHits": [],
+        "phraseMisses": [
+          "python rpa developer at jorie ai",
+          "build intelligent resilient automation solutions for revenue cycle management rcm",
+          "automate complex workflows involving ehrs claims portals and legacy systems",
+          "python rpa developer",
+          "rpa developer at",
+          "developer at jorie",
+          "at jorie ai.",
+          "jorie ai. build",
+          "ai. build intelligent",
+          "build intelligent resilient",
+          "intelligent resilient automation",
+          "resilient automation solutions",
+          "automation solutions for",
+          "solutions for revenue",
+          "for revenue cycle",
+          "revenue cycle management",
+          "cycle management rcm",
+          "management rcm .",
+          ". move beyond",
+          "move beyond simple",
+          "beyond simple web",
+          "simple web scraping",
+          "web scraping to",
+          "scraping to custom",
+          "to custom python",
+          "custom python development",
+          "python development using",
+          "development using selenium",
+          "using selenium for",
+          "selenium for browser"
+        ],
+        "lexicalSimilarity": 0.05704768066996664,
+        "sectionSignal": 0.8571428571428571,
+        "hybridScore": 0.17497620588177737
+      },
+      "recommendations": [
+        "Review missing JD tokens: rpa, developer, jorie, ai., intelligent, resilient, solutions, revenue, cycle, management",
+        "Review missing JD phrases: python rpa developer at jorie ai | build intelligent resilient automation solutions for revenue cycle management rcm | automate complex workflows involving ehrs claims portals and legacy systems | python rpa developer | rpa developer at",
+        "Low lexical similarity: consider tighter JD-specific phrasing where truthful."
+      ]
+    }
+  ],
+  "notes": [
+    "This is a worker-side alignment score. Do not use it for ranking other candidates.",
+    "Dense embeddings are not enabled here; this is lexical+structure only.",
+    "Use parser ensemble outputs alongside this report; do not over-trust a single score."
+  ]
+}

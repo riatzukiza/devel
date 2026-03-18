@@ -1,0 +1,82 @@
+#!/usr/bin/env node
+import { chromium } from 'patchright';
+import * as readline from 'readline';
+
+(async () => {
+  const browser = await chromium.launch({
+    channel: 'chrome',
+    headless: false,
+  });
+
+  const page = await browser.newPage();
+
+  // Go to OpenBlock dashboard login
+  await page.goto('https://dashboard.openblocklabs.com/');
+  await page.waitForTimeout(2000);
+
+  console.log('URL:', page.url());
+
+  // Click Sign In
+  await page.locator('a:has-text("Sign in")').click();
+  await page.waitForTimeout(2000);
+  console.log('After sign-in:', page.url());
+
+  // Enter email
+  const emailInput = page.locator('input[type="email"], input[name="email"], input').first();
+  await emailInput.fill('kud0gfx@gmail.com');
+
+  // Click Continue
+  await page.locator('button:has-text("Continue")').click();
+  await page.waitForTimeout(2000);
+  console.log('After continue:', page.url());
+
+  // Click Email sign-in code
+  await page.locator('button:has-text("Email sign-in code")').click();
+  await page.waitForTimeout(3000);
+  console.log('After email code click:', page.url());
+
+  // Wait for code input (6 digit boxes)
+  await page.waitForSelector('input', { timeout: 10000 });
+
+  console.log('\n========================================');
+  console.log('CHECK YOUR EMAIL FOR THE 6-DIGIT CODE');
+  console.log('Browser is waiting...');
+  console.log('========================================\n');
+
+  // Keep browser open - user enters code manually or we wait
+  // Wait up to 5 minutes for URL change (successful login)
+  try {
+    await page.waitForURL('**/dashboard.openblocklabs.com/**', { timeout: 300000 });
+    console.log('\n✓ LOGGED IN SUCCESSFULLY!');
+    console.log('Final URL:', page.url());
+
+    // Capture session
+    const cookies = await page.context().cookies();
+    const localStorage = await page.evaluate(() => {
+      const items = {};
+      for (let i = 0; i < window.localStorage.length; i++) {
+        const key = window.localStorage.key(i);
+        items[key] = window.localStorage.getItem(key);
+      }
+      return items;
+    });
+
+    console.log('\nSession captured:');
+    console.log('Cookies:', cookies.length);
+    console.log('LocalStorage keys:', Object.keys(localStorage));
+
+    // Save session
+    const session = { cookies, localStorage, url: page.url() };
+    const fs = await import('fs');
+    fs.writeFileSync('outputs/session.json', JSON.stringify(session, null, 2));
+    console.log('\nSession saved to outputs/session.json');
+
+  } catch (e) {
+    console.log('Timeout or error:', e.message);
+  }
+
+  // Keep open
+  console.log('\nPress Ctrl+C to close...');
+  await new Promise(() => {}); // Wait forever
+
+})();

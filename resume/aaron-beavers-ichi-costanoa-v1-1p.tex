@@ -1,0 +1,103 @@
+\documentclass[10pt]{article}
+\pagestyle{empty}
+
+% --- tight margins (no geometry dependency)
+\setlength{\topmargin}{-0.6in}
+\setlength{\textheight}{10.3in}
+\setlength{\oddsidemargin}{-0.25in}
+\setlength{\evensidemargin}{-0.25in}
+\setlength{\textwidth}{7.0in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\renewcommand\labelitemi{-}
+
+% (No external LaTeX packages: keep this file buildable on minimal TeX installs)
+
+\begin{document}
+
+{\LARGE \textbf{Aaron Beavers}}\\
+Staff / Senior Full-Stack Software Engineer (React / Ruby on Rails / AI Systems)\\
+
+\vspace{2pt}
+\textbf{CONTACT}\\
+West Des Moines, IA 50265 \;\;\textbar\;\; 515-388-0539 \;\;\textbar\;\; foamy125@gmail.com\\
+GitHub: github.com/riatzukiza
+
+\vspace{6pt}
+\textbf{SUMMARY}\\
+Staff-level full-stack engineer with 10+ years of production software experience (pre-agentic-AI) building reliable systems end-to-end: APIs, data pipelines, web UIs, and automation. Recent work centers on AI-native infrastructure---model-agnostic LLM gateways, OAuth/credential workflows, and reproducible evaluation pipelines---shipping pragmatic architecture with tests, observability, and clear operational knobs.
+
+\vspace{2pt}
+\textbf{SKILLS}\\
+\textbf{Full stack}: Ruby on Rails, React, TypeScript/Node (Fastify/Express), Python (Django/DRF/Celery).\\
+\textbf{Data}: Postgres, file pipelines/ETL, background jobs/queues.\\
+\textbf{AI systems}: OpenAI-compatible APIs, multi-provider routing/fallback, reasoning traces, semantic recall (Chroma).\\
+\textbf{Security/reliability}: OAuth PKCE, token auth, retries/timeouts, idempotency, audit logs.\\
+\textbf{DevOps}: Docker/Compose, CI regression prevention, Terraform (OCI).
+
+\vspace{6pt}
+\textbf{OPEN SOURCE EXPERIENCE}\\
+
+\textbf{Founder / Maintainer} --- Open Hax / Octave Commons / RiatZukiza (Independent OSS) \hfill \textit{2023 -- Present}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item \textbf{Open Hax Proxy}: 3-provider OpenAI-compatible gateway integrating OpenAI Responses, Anthropic Messages, and Ollama via model-aware routing; OAuth account ingestion; rate-limit-aware rotation/fallback; React/Vite console + Chroma session recall. \textit{github.com/open-hax/proxx}
+  \item \textbf{Shibboleth}: 7-stage generative prompt-eval dataset DSL + pipeline (Clojure + Python bridge) with deterministic builds, provenance, and reproducibility bundles (Parquet + SHA-256 manifests); leakage-proof splits via sentence-transformers + HDBSCAN. \textit{github.com/octave-commons/shibboleth}
+\end{itemize}
+
+\textbf{Ussyverse / Battlebussy (contributor)} --- AI CTF platform \hfill \textit{2026}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Production deployment + hardening for Go + NATS JetStream control plane: multi-arch Docker builds, GHCR publish/pull workflows, docker-compose prod (optional nginx + health checks), and OCI (ARM64) Terraform provisioning docs. \textit{github.com/shuv1337/battlebussy}
+\end{itemize}
+
+\textbf{Mythloom} --- Worker-side resume analysis workbench \hfill \textit{2026}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Built a worker-side resume analysis workbench for comparing resume variants against job descriptions with explainable scoring and reproducible reports, explicitly framed against employer-side candidate ranking.
+\end{itemize}
+
+\vspace{6pt}
+\textbf{WORK EXPERIENCE}\\
+
+\textbf{Raft Technologies} --- Full Stack Engineer (Python/Django + React) \hfill \textit{Jul 2020 -- Sep 2023}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Built and maintained 5-stage Celery pipelines for uploaded-file processing (parse $\rightarrow$ validate $\rightarrow$ summarize $\rightarrow$ report $\rightarrow$ notify) with safe failure modes and operational visibility.
+  \item Implemented robust file type + encoding detection and validation guardrails (caching, OOM prevention) producing structured errors for end users/analysts.
+  \item Integrated ClamAV REST scanning with retry/backoff + timeouts with persisted outcomes for auditability.
+  \item Supported CI-driven end-to-end automation (Cypress E2E) to prevent regressions.
+\end{itemize}
+
+\textbf{CloudApp} --- Full Stack Engineer (Ruby on Rails) \hfill \textit{Sep 2018 -- Feb 2019}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Integrated a proprietary OCR service into a screenshot product and implemented interactive OCR UX (bounding boxes + click-to-extract text).
+\end{itemize}
+
+\textbf{Additional experience}: 1brand (Full Stack Engineer, 2019--2020); Birdseed (Full Stack Engineer, 2019); Freelance Software Engineer (2014--Present).
+
+\vspace{6pt}
+\textbf{EDUCATION}\\
+Valley Springs High School --- Diploma (2012)
+
+\vspace{2pt}
+\textbf{WORK AUTHORIZATION}\\
+Authorized to work in the U.S. for any employer. Fully remote (U.S.).
+
+\end{document}
