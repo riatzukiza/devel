@@ -1,4 +1,4 @@
-1145ed0f47ae56b223d1702e8aa467055024558ff51c1c00ec3a7d5a92e2ea31  git-ls-files
+a03d07acd6f2a8827d7539c39e730eb0690459c0349405a5da85d29b5553dcc4  git-ls-files
 6450bae4a02cd363c25b2889d479910a01141359c7dbbe7958eca755abcc7175  .clobber/index.cjs
 975cbb22ce236ae60349820066fdfada1bb37ce793d10bb3d53f07e48cc8001e  .clobber/index.cjs.map
 a18bf6257e7e96f65cdf910a0c4f0a612ed7190d7087ceaf82cef2b909658451  .clobber/index.js
@@ -19,8 +19,8 @@ d617f0ab1537cf3cf1d507ad7fe79761b678cfde8fcf86ef81ace24c4be7e136  .github/workfl
 5c41c90c73d18ec331bc654e9deed7c467bde08fecef226bd540833cf821650b  .github/workflows/semgrep.yml
 662fa87c5746b19beb2878bd102bb23a7af885c5b3fec1794bde2dde27fdfd98  .github/workflows/sonar-submodules.yml
 ebc90735c4364acc33a51dd97674f17153060ab9b982cc7614bb7e07a902fbfc  .github/workflows/sonar.yml
-47c7bfef25861282b84ab53160cf37b6f48f7b6b2412a5a5adbb99b926204639  .gitignore
-7ac073a0df24181e79e2bb57359600d776b2ad36497cc16d0dc39491995c9403  .gitmodules
+934f29e1542efe23035278f758dafec716f3265fda7d7f334274f9a052e5fe71  .gitignore
+af8fa8384105d0ccec6b8d7addd58035f8239725289cb775140cc09726e8e24e  .gitmodules
 bddc10a05580989da9ae900b1f07abd8d2f131678ea35d5f7df900801d63cf41  .hooks/pre-commit-secrets.sh
 577eea43b22dd2b892545203d0cc94d8fd1777c45f2a6cd75c3b4944e0f15834  .hooks/pre-push-typecheck.sh
 7736a418ab5a54e52fe9a9c82392feeabc4c1643a66e893a35263ffdf3a81ee5  .markdownlint-cli2.yaml
@@ -190,10 +190,6 @@ d6cc38b9ccf081911e55318cfa2f596e53ff8eca4af9b13ea9b2600b1087a273  .opencode/skil
 36c7cb442fba2a86c57c1d71851ce2d08858358ffeb54f9d217010813690a241  .opencode/workflows/fix_clojure_ns.yml
 09680da2f9e98fed38830d0e8d188e7fca1404f026e226dbcdee08f5da184e9d  .pm2/opencode.json
 20b9395cfc6cb6a61471a86f8f210c65af7e062b395525ea4e3a684f6500cdab  .spacemacs
-99ff7e3eee3f46dbca630cf59a7345839bbb2d8d511ab96de095290a8f174be8  .ημ/registry.jsonl
-d3c765ee6317036efe7e9a54a4040a853bf3a2adc6ced2512827893d9fa412e6  .ημ/Π_LAST.md
-99acb7f65e94908fb32e8bf47e8463bfac22a4c86a7a2245953730cca0eb2904  .ημ/Π_MANIFEST.sha256
-ff65e1d4f02c8dd7726532f333f67aa133648378e6f940d96be4c608be25b14f  .ημ/Π_STATE.sexp
 a0407745252f6655160be54fb8acf636f9b7e60bd570603e83df0ee5ebb79b3d  AGENTS.md
 35b430d73ee6020dbadc25b492a6a755a6daeb748f9fe26b7c15d3bca26075ac  OPENCODE-SESSIONS-INDEXER.md
 c2f902daa5d334962d71450e13366758c1775564cc0e415150270e061dbe356a  README.md
@@ -247,25 +243,6 @@ acfd8a3e8a45f81914825e037eb85fce8380d5f77ef98b9609373d2c64cc5b28  docs/Tell me a
 8661ea7e55eee49b482032f0479ffa9b25400da23fad3050bebe307e32f1a2b2  docs/agile/boards/index.jsonl
 c494cf9ee7c0c65c07e462644a2b03ee449190b8d7cb04dff2a0ce88f80eb33f  docs/agile/reports/nested-submodule-manifest-survey.md
 d890dff7ae8252c709ff00e9f39080ed810c12bde4a1e3559b0c1f90801918ae  docs/agile/reports/nss-manifest-schema.md
-35eef4fe4c5ffb63cbf15419cfdee475e260dfeb413cff48feb38ec5a43f8462  docs/agile/tasks/--title Nested Submodule Package Phase 1 — Requirements and Manifest Schema.md
-6c1cf6297db01be37e72cb555f5c1b6ab7cea0c3bed4d4e242b6b997b4cdd305  docs/agile/tasks/--title Nested Submodule Package Phase 2 — Graph Builder and Discovery Utilities.md
-84614bf9c303df467b6167bc499630108ea9b058efa3f5aa384ed4bd0a54b5bd  docs/agile/tasks/--title Nested Submodule Package Phase 3 — Bootstrap and Sync Engine.md
-a075a3a5adba898e7a9219cbc181dfb6623554f7a68b8e6f804068ef7f92c2c9  docs/agile/tasks/--title Nested Submodule Package Phase 4 — Commit and Push Orchestration.md
-401320f625f1d115b6de7e95ebb705b17b51555722c34304d4f1e6fffc43825e  docs/agile/tasks/--title Nested Submodule Package Phase 5 — Developer Experience and Diagnostics.md
-f495656f4b8639c4ea9945a4dd6dfb0a5b5fa3acb122b6fdd53a3ff1cd20b5db  docs/agile/tasks/--title Nested Submodule Package Phase 6 — Packaging and Distribution.md
-031862828e5b034827441d8da0b43e3c8a251402f9c3d2a8a1ecc5186ec1e285  docs/agile/tasks/--title Phase 0 — Discovery, Design Inputs, Alignment.md
-d551e3df2b89b198862cea1988736fec80ccf75483f68e1ab64ac6afa47c67ef  docs/agile/tasks/--title Phase 1 — Repo Scanner + PM2 Launcher.md
-ef07fff9888ac15580c2cf6751404772f60d2eaf6856db21cddd1039a1be8a92  docs/agile/tasks/--title Phase 10 — Deep GitHub Integrations & Actions.md
-52a3692c3d8aa7593d9962a1984fe5a0d9027f5f6b7894b040969fef4f52ab4a  docs/agile/tasks/--title Phase 11 — Knowledge Graph Implementation.md
-727e4a85ed6d05cd3b9c001c6ecd66718b93da54f350b28a19750039fce1b5c6  docs/agile/tasks/--title Phase 12 — Docs and Developer Experience.md
-60ba86f59c98021127b10f8bba9f04210653298a0f97dc63d1f4eb6e3c5fbee3  docs/agile/tasks/--title Phase 2 — GitHub Data Gateway Service.md
-efd3d877451f937411592a215fee7a977773e09f5efb3e11f34023497113eeb5  docs/agile/tasks/--title Phase 3 — Context Store & RAG Foundation.md
-5566a576bc362cf052c4ec8d993e69b6056637c135bef9fb222e2198d7035710  docs/agile/tasks/--title Phase 4 — Unified UI Shell (Chat + IDE + Graph).md
-2d439badbedc8c930c5c91d6a347d8f39f21cb41679101a03e3124b517e321b7  docs/agile/tasks/--title Phase 5 — Clojure Integration (Servers + Tooling).md
-baec884484a62d50745bad41ee598c1d90474529b217204b4f0013396d3d1d1d  docs/agile/tasks/--title Phase 6 — Promethean Layering, Eidolon Fields, Micro-Training.md
-2b45cc73b88ca1a7d42908c894d5a5d0b1b7faa2ac302c99fc5a103b1fff8f29  docs/agile/tasks/--title Phase 7 — System Health and Automation.md
-2437be2613f541839ab793495998301c22721625bc432f673e29a34d4291aed2  docs/agile/tasks/--title Phase 8 — Configuration Update .config opencode opencode.json.md
-842e6ae2b088558d0afcccda13a8f77e5aaa55997e927a89452bca6bfb6e69ff  docs/agile/tasks/--title Phase 9 — Packaging With NX + PM2 Orchestration.md
 79e139c9fbd465ccd61586ac0ae3c40ac9d50652b8a1bd93a586134645f12e95  docs/agile/tasks/--title Setup basic kanban --debug.md
 41bd27cef3e1e5b9ea76275937d5a2c9a77151c4dd0cee2497d82a28058f9f27  docs/agile/tasks/--title Test simple kanban setup.md
 34cd08fd06f30b3383b08234e28065d27205c00b01d0a9207f01cc219e14f172  docs/agile/tasks/epic-codex-opencode-integration.md
@@ -391,10 +368,6 @@ c6736f82e661594fe7f89f47b00dfd45dfb124eb59c28537ac1d948128ed8c96  docs/reports/r
 22bcc9534307fca0fc62963cd645367a0e3b66fc61ca8998a9d65b29f4a53332  docs/sing.v3.md
 f0187a69be1bee4b90dd599c8e2a2f04c88891cda7b5d9ef872c3c6f9586f716  docs/skill-optimization-guide.md
 bdcf843062df0df8f8586088993f6cf662f20985c9ed5c06c528875ceba98015  docs/tasks/--title Manual CLI Parser Unification.md
-c6e47f2d3764959b349863360328171d4e57b64a2e7afa0268185e4e1b7b891b  docs/tasks/--title NSS Task 1 — Comprehensive Test Suite.md
-8d8f0b6da4c6c0b036f1a9a408d20f5ee16f7ba5617963bd012d9a2783592ecd  docs/tasks/--title NSS Task 2 — Gitmodules Validation Hardening.md
-e26618736ab783e63fa259d8d6db72288afcd44b4a20803e9c55a2de0b428e49  docs/tasks/--title NSS Task 3 — CLI UX and Input Validation.md
-189058f084fc0e83aa9748c225692c66363ca5a361267191036c099004beb65c  docs/tasks/--title NSS Task 4 — Auth Config and Documentation Alignment.md
 f09f0ba3c8ed2ecc4d2913246064d62cffb1c3099c153bfca6452d9854c7ca4e  docs/tasks/--title Unified Indexer Client CRUD Contract.md
 3c9907d9154101dcd29a1e538f01bcf771326e0d9686c328ba480f66f8f7fe53  docs/tasks/--title Unified Indexer Regression Tests.md
 a820cf3aeecf8be7e56afabbda4ea9dd41379b3bb4621979529e12ffe5979469  docs/tasks/--title Unified Indexer Stats Integrity.md
@@ -561,12 +534,12 @@ b0082f65000f456eb0a2cedec2f9fa4494747e8c90f7f4f2ef36c9ded654a654  orgs/riatzukiz
 f44d1fa0d94a47b0f71b51894f9ee3ffce110aca506a04dc6937e9ee445e85dc  orgs/riatzukiza/threat-radar-web/package.json
 4a8f706c610bc1952e9217fb2e4e81411f8a832d7b8bd8d5f1f18dd7ce1a923f  orgs/riatzukiza/threat-radar-web/render.yaml
 72ab6cbaf33d4d39891ae39fca9d60d753ac15e36b886519d5b11175db1bdaff  orgs/riatzukiza/threat-radar-web/src/main.tsx
-96cf189c3a3da03b39d997672ec63a525f2e8fa28fb684f96ee80422b0b13538  orgs/riatzukiza/threat-radar-web/src/ui/App.tsx
-8fd401144f52a8435a0db385d07b80fa473caa5116dc925b9544b8f2baf3aab5  orgs/riatzukiza/threat-radar-web/src/ui/styles.css
+33602288e33e2671663e16bafb7804baa37d060782d1c8db65be7a2ca8c2dccb  orgs/riatzukiza/threat-radar-web/src/ui/App.tsx
+264d0d40c53d4ee250782a18b55fb2f0d7685071cd1e22a2038adfa2fbf8dbad  orgs/riatzukiza/threat-radar-web/src/ui/styles.css
 b440b802c2cfeac6a24eda510bd63c1f23c6ab5c52bcfe3a32a918dbad6b46c8  orgs/riatzukiza/threat-radar-web/src/vite-env.d.ts
 3c34effab40cedadb2755f25a0f74a4764c75b5c83bb8727d71c36353aadf945  orgs/riatzukiza/threat-radar-web/tsconfig.json
 7617cef450e8e87b57b39b0cd049dfd37ffa3a897703e45e3bf6d6217b381e57  orgs/riatzukiza/threat-radar-web/vite.config.ts
-dd4fc68f128990a4bd7f3826f5ac79eb41d98c778cdd5023da51a5db92ca6c60  package.json
+7347c0892c3371a432305712922c338e193248ed53343e815fc27bc9fc17c143  package.json
 6ab431e358dbedd9f6fa2469af55f1446311116d9efed4edf1ffe52901be700e  packages/aether/AGENTS.md
 499f8c84fc18ded31e94fdd26a05e8454ec414b192d324f33de41e26df99d53a  packages/aether/package.json
 57276afeedf972afebc43ab0f49a32c056bc9e2037d719c72454b7a10502a0a5  packages/aether/src/http.ts
@@ -1360,7 +1333,7 @@ d980bbc8e57d13ecb7688f693351bdd3f0e994586de545f76505e9aaa6b33abe  projects/webri
 7c747cb9175b3d141885bec617ffbc7916375644caa9a77d1deabe872b4fcf2d  promethean.kanban.json
 1a72d7f32aa65dab1ac3432d5bfa9eb4775241f61777ad8de2b27d59105700d2  readmeflow-debug.js
 e85ec566aae92963ded5b66c4d4d0dbcf2a5be2925593ef25d1b24cbd32fc67e  readmeflow-debug.ts
-3bb1e9e0120d78a698f25104865f1167acd20eb773e3bbd55d8f5e64850631b2  receipts.log
+440a88a9ba87a760647b2850ce25d874b6c4da7221c93028e3e0d4dcf45beb90  receipts.log
 6ab431e358dbedd9f6fa2469af55f1446311116d9efed4edf1ffe52901be700e  reconstitute-mcp/AGENTS.md
 3d0b88157a535d46ff1332d2c8fbb5990739e1dd7ae8d139b6f962e840dd7b5d  reconstitute-mcp/package.json
 d8c05c2c39e5b17d6b7e1547a0aaf9f4a75f235998a189f1a930fbf3da2de073  reconstitute-mcp/src/index.ts
@@ -1508,6 +1481,27 @@ c5cf338ec77da9bfd6686ff1f37bf6588d04a61684ff4c521f7ef05956bd65c4  resume/analysi
 cc337587c62e58d0dc972f20cdf3bae154551eced475e7febe50a746e7018696  resume/analysis/resume-ml-workbench-2026-03-18.md
 be9fb5515a4620005a4cd30a300f1c6bf79acf5608b1af13b10e6df50512859d  resume/analysis/resume-page-tiering-2026-03-18.md
 1c17886d6271d2bc41934a08c9309e553ed247affbbb7980c34875930ccbbdbb  resume/analysis/resume-parser-sweep-2026-03-18.md
+034706c8981121b5f668c572ad3110d4b2a5bf72a581ad154f2a432383d0d0eb  resume/applications/2026-03-18/openai/parameter-golf/RECEIPTS.md
+7061b6a38ffa569be877ec115ca1d79b871904969f8d8d8f1a630e7fab7e60ca  resume/applications/2026-03-18/openai/parameter-golf/extracted/keywords.json
+bf31e2d1f9af47b70e5062a4d61fb0d74a864b0f45ee8051814bea584f3771cf  resume/applications/2026-03-18/openai/parameter-golf/extracted/requirements.json
+b57d8f3d234cdfa5907fd013c62514c1de6c1fc44aed86f3c27ec4bf37ba07e4  resume/applications/2026-03-18/openai/parameter-golf/sources/parameter-golf-official.md
+aa029e25138eb56c32833be284adcdbbe1df101d41859d258590180f293dab16  resume/applications/2026-03-18/openai/parameter-golf/sources/public-landscape-2026-03-18.md
+0fcc0be48f2ce64a7ca9676274a268853a0b96f71b5691853fb69b7222b10316  resume/applications/2026-03-18/openai/parameter-golf/sources/workspace-scan-2026-03-18.md
+533150ff8e633dab02caa4b655a48a0487b91293f48e66e13093669515662293  resume/applications/2026-03-18/openai/parameter-golf/synthesis/QUIZ.md
+ebd608bcceca1e9b97a3e9b86defdc2626d81f10be1a0d3303f8d0879789e4c4  resume/applications/2026-03-18/openai/parameter-golf/synthesis/aaron-beavers-openai-parameter-golf-ats.md
+fe4c10a066be30989dd377ca7f8fffdbdf9ef417137fc46e448abf1199f84c60  resume/applications/2026-03-18/openai/parameter-golf/synthesis/aaron-beavers-openai-parameter-golf-ats.pdf
+1eed4e287c0622355e23b691ad809daf9ba7f5a438af22099516b4e4737f415c  resume/applications/2026-03-18/openai/parameter-golf/synthesis/aaron-beavers-openai-parameter-golf-ats.tex
+6296b8c11dec6f5f124ec759a8f8c857d4c801c9562449e1eb6daee4bb01e114  resume/applications/2026-03-18/openai/parameter-golf/synthesis/aaron-beavers-openai-parameter-golf-fnord.md
+dff448378620e0098829408f4cff4eed8465183055aa389f92a2ca8096b0689f  resume/applications/2026-03-18/openai/parameter-golf/synthesis/aaron-beavers-openai-parameter-golf-fnord.pdf
+e8e579fbfca68d86eafd2db72aacb863b2d2a412cb24c81511ee2ad9e70e3088  resume/applications/2026-03-18/openai/parameter-golf/synthesis/aaron-beavers-openai-parameter-golf-fnord.tex
+f7d737ca6c49cf3b9d622c9adaab9e21c6dbfcfaa8aadf7d701308fef57c74c6  resume/applications/2026-03-18/openai/parameter-golf/synthesis/cover-letter-openai-parameter-golf.md
+5751657ab6588b96a7392ba72882e7b71dcae0dfcf686afd249e9d2b0c066136  resume/applications/2026-03-18/openai/parameter-golf/synthesis/cover-letter-openai-parameter-golf.pdf
+f00418076e7cf046422a2cbd849526f7010200e4a504f7c90b29b3d12888b480  resume/applications/2026-03-18/openai/parameter-golf/synthesis/cover-letter-openai-parameter-golf.tex
+f6c41c0c9134095fe4f7149126ccf349b089ab5b622632bcdc1196adba65f02c  resume/applications/2026-03-18/openai/parameter-golf/synthesis/pitch-notes.md
+f64ba7cdb481e6dac2207d82519855a39cee743be653afcd23200fa15eec87c3  resume/applications/2026-03-18/openai/parameter-golf/synthesis/resume-selected.txt
+e7e8609c8328dc94e57336ae2e5cf6b5b0ee9b1bbe1b5004d1e65c8dd5b53777  resume/applications/2026-03-18/openai/parameter-golf/verification/artifact-checks.json
+f20c52d474ba51a4fdfca94a4f824d19b73898d977d734b15850355e2caad9f2  resume/applications/2026-03-18/openai/parameter-golf/verification/run-plan.md
+2ee94398e656674c0c71c44333702b063192acc0abb978842d96a80fe048acc3  resume/applications/2026-03-18/openai/parameter-golf/verification/setup-status.md
 a5a606952e9732ddcfc4d0a36146e2a1b5e0f67669c608455a058adbcf8626fa  resume/applications/2099-01-02/acme-test/devsecops-engineer/RECEIPTS.md
 e92141542c9498b074fa857424be7e737a2ea26324b14fe7fdf08b958d79b532  resume/applications/2099-01-02/acme-test/devsecops-engineer/extracted/keywords.json
 5ae2aa4a299660132a2f0ca17eccc925c9ddd67328f18526fc27555eba5ef95c  resume/applications/2099-01-02/acme-test/devsecops-engineer/extracted/requirements.json
@@ -1538,6 +1532,10 @@ fbabe80c887f95a1ede6847f22dd91b380bda9d17ae8bfaa72e1741b16aa41e9  resume/cover-l
 9651041b1b407806fb01ac5002612828c0449847ce4b2d775028779842e88107  resume/cover-letter-open-hax-fun.md
 9b06e883442c697c15a7a0648528e66b95aa54736a50c639d19c296e063183ad  resume/cover-letter-open-hax-fun.pdf
 e4ceeda6508bbf981cefc0395ae88eaebd9f325aa98c170e9510b8d0e4ea9df8  resume/cover-letter-open-hax-fun.tex
+fbabe80c887f95a1ede6847f22dd91b380bda9d17ae8bfaa72e1741b16aa41e9  resume/cover-letter-openai-parameter-golf.aux
+f7d737ca6c49cf3b9d622c9adaab9e21c6dbfcfaa8aadf7d701308fef57c74c6  resume/cover-letter-openai-parameter-golf.md
+5751657ab6588b96a7392ba72882e7b71dcae0dfcf686afd249e9d2b0c066136  resume/cover-letter-openai-parameter-golf.pdf
+f00418076e7cf046422a2cbd849526f7010200e4a504f7c90b29b3d12888b480  resume/cover-letter-openai-parameter-golf.tex
 031670b613fc2b846ad0a11a7b0132862e0befaada56fec497c3167a655cae34  resume/feedback/aaron-beavers-resume-v2.docx
 8e1f3fb59b0afb38a02574891930fe4033be4593f6ccebf94a5ba2976da140b7  scripts/codex-release-monitor.mjs
 e71360b0c826daf78ed9d1286e17fc8137506deb7014108dbdc663f6c2b5a697  scripts/docker-stack.mjs
@@ -2303,19 +2301,23 @@ b78c4a3f09c7332f66a813e02904c5d3dfbba554b50db81800d163e45ecb91bb  specs/drafts/m
 d56cb4b5e28cb021c3ce602cb6901c176492ab44c9ebe47d64e78d746f4d0188  specs/drafts/openai-parameter-golf-application-2026-03-18.md
 b66bd859606d06e8544bd0ffe0f9db87b585581d75c07d0e6e4a8d1b4d3049d2  specs/drafts/opencode-openai-websearch-tool.md
 555ed400eb6fc61aa9d855b9614ea5b73370f01d183adfec89fec7abbb7702ff  specs/drafts/openhax-kanban-local-web-ui.md
+8a948b172cf15b8f4f4dc24f8ca9d420e3056adabeb96f7269fae2ea2486d0ac  specs/drafts/parameter-golf-ant-lab.md
+92f02f97ec4e56e280f8e0b801d146f063fc2d24160b16b81d771ebaeeb96338  specs/drafts/parameter-golf-shibboleth-sidecar-eval.md
 332f239847268f240be0f64f0f4ff012941fd6414ba0df11e85087cfabf5dc0d  specs/drafts/pi-image-tool-tui.md
 bcf1a5c2e7819ff5736c2e5237d966c40c5f6ee616edb0669cceebd75b478383  specs/drafts/pi-openai-image-generation-oauth.md
 0afaff264fd3a0e7636f36c47745084e2295bce7343a200a8b58759476cdacf8  specs/drafts/pi-openai-websearch-tool.md
+54936db182f18f609bad3565a7a2ba8624eb7f7082c8bc691dbf68d8239a19e2  specs/drafts/presence-golf-brainstorm-2026-03-18.md
 803ef68c4d0c68a2e39c633d28af9284959cea75caa0136b71e81681b8507ec6  specs/drafts/privaxxy-deterministic-firefox-privacy-checker.md
 8711319ae384b360824983a8364509232dfbbae194e06db6c38724a4a35adead  specs/drafts/resume-ats-optimize-2026-03-18.md
 544ae517139ea9904bea4a71188557478a15f9fdabfab3e73553b2f70eaf7624  specs/drafts/resume-ml-workbench-2026-03-18.md
 dbe335da78036e011be73797cc342be211efa1659afac9c43136a40a07520e86  specs/drafts/resume-oss-ats-audit-2026-03-17.md
 c5662241cc45baacdb7e11d42d77b137c28abda534a913a1e78437d9d52b0885  specs/drafts/resume-page-tiering-2026-03-18.md
 0d15ba202c14f8af76cf807821c07fd265dd14cf095fa4ef68c33e91480ac15e  specs/drafts/review-fixes-2026-03-14.md
+a802e5ab92f5b36360ef75a6e1d65a112e693935c8a10eac2399a6d117331ae7  specs/drafts/shibboleth-refusal-precision-benchmark.md
 1b22c07d795c23af410e60c3a24f74ba049ce249ac1ce025fe5ee18ffb92caa1  specs/drafts/shibboleth-validation-pipeline.md
 1fcaffb23c010e35aec48e9e9228c574a16169909c263191bb589073df2f6c94  specs/drafts/shuv-codex-desktop-linux.md
 d63c2b7ccb2d884a43922c59a1530ccaa12c49d0bf0dd1056c6d66decacb24b6  specs/drafts/threat-radar-platform.md
-484374c4a2a50cbb6b728197ff5d5212d74d856ce4e6821b1a2a2aeab145d54c  specs/drafts/threat-radar-web-mvp-2026-03-18.md
+d21f2c4bec2951e060a591cd04b9535c239c871a3f6a79c05a1310b31e65305d  specs/drafts/threat-radar-web-mvp-2026-03-18.md
 b3a1d40521e57b61571dc139ee19a564e385d34e7661706cff87f9a339f15c31  specs/drafts/trello-to-main-sync.md
 dd0a723ab0ca64e9eeb6a05040ae55df11cd7ee4494aa009ba9e9234c7f76345  specs/drafts/ussyco-webring-kanban-system.md
 06184c9e4ae231ee1ba50d3a2903d67551b012d7f09f511b386bff8c6ed7b390  specs/drafts/val-dsl-foundation-assertions.md
@@ -2352,6 +2354,12 @@ f62020a5384d14c326bb16d403f70c4dd055a5b629da28f7c3b6945424f9aea7  src/octavia/ro
 4e83920b443dc6ce9676c8866e5f4b4f729ecd7d1e31bc47a3f852eb1ae6c8ee  src/octavia/runner.ts
 c2ebc33b724161643e9839b1c5914a6fbf2c585c271dcf4bf93a4486d5715467  src/octavia/selector.ts
 fa2bbfbd032aa29a43f39909eff67a0fc1c066196d85ccf114cd8421b43dc551  src/octavia/types.ts
+68236f233c216306eea29a68ed5cd769310c44bbc56520df427389bd2bc87f1e  src/parameter-golf-ant-lab/__tests__/cli.test.ts
+4d99f1d80d0bafede4d0c6a41aba3933e052c7674f3792474c4c56cc39793aa2  src/parameter-golf-ant-lab/aco.ts
+e17995f8bffa9761f74b6607a540d30be82c400281d0b916c906756f64d0ef4e  src/parameter-golf-ant-lab/cli.ts
+9638850e7f2bac571fdaf9a509839694a8e9b7400bb2ab58813a0ea425a18b45  src/parameter-golf-ant-lab/io.ts
+ea376ad0f33a8be6b1202ca22ef917036ce4dffb26ca57a55865a039a10bf868  src/parameter-golf-ant-lab/profiles.ts
+d18c4af2c1982a9ba16470ff3f59704b3cad2b74f97b78e4c8207c5d348d3ece  src/parameter-golf-ant-lab/types.ts
 3d78bcd71e9ae78895d89bf02545097d0c68f35174b6de3b2bef202d9d543369  src/promethean/bridge/cephalon_ts.cljs
 0cd3786c456f7d5ca9c644e56b3d6b1b0adee54d2eaf9b6fc75a4fa79be570f5  src/resume-apply/README.md
 27e0970d9f5bce01947fd8e8d4e20f4d6e426fa18b40e966890b5f8816d13f3e  src/resume-apply/__tests__/cli.test.ts

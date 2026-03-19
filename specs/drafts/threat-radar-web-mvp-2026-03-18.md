@@ -48,10 +48,21 @@ The current `threat-radar-web` app loads a blank page in the browser even though
 - Add loading, error, and empty states.
 - Keep clock rendering guarded when snapshot data is absent or partial.
 
+### Phase 2b: MVP signal-to-noise cleanup
+- De-prioritize or hide obvious integration / lab radars by default.
+- Add a small toggle so the full wall is still reachable.
+- Surface a tiny summary row with shown/live/hidden counts.
+
 ### Phase 3: Verification
 - Run typecheck/build for `@workspace/radar-core`, `@workspace/mcp-foundation`, `@riatzukiza/threat-radar-mcp`, and `@riatzukiza/threat-radar-web`.
 - Restart local PM2 processes.
 - Verify with browser automation that the wall renders visible content.
+
+## Implementation status
+- ✅ Phase 1 completed: MCP store now decodes JSON-backed fields on read, uses JSON-safe writes for future rows, `.env` now defaults to port `10002`, and the stale `SignalEvent` import was localized in the Reddit collector.
+- ✅ Phase 2 completed: the web app now normalizes payloads defensively, renders loading/error/empty states, and no longer crashes on the current Postgres-backed rows.
+- ✅ Phase 2b completed: the wall now hides lab/test radars by default and exposes a `Show lab radars` toggle for the full dataset.
+- ✅ Phase 3 completed: local builds/typechecks passed and browser automation confirmed both the focused MVP wall and the full wall toggle.
 
 ## Definition of done
 - `http://127.0.0.1:5176` renders visible Threat Radar content in the browser.

@@ -126,6 +126,15 @@ function averageSignal(snapshot: RadarTile["liveSnapshot"]): number {
   return values.reduce((sum, signal) => sum + signal.median, 0) / values.length;
 }
 
+function isLabTile(tile: RadarTile): boolean {
+  return tile.radar.category === "test" || /test|integration/i.test(tile.radar.name);
+}
+
+function rankTile(tile: RadarTile): number {
+  const signalCount = Object.keys(tile.liveSnapshot?.signals ?? {}).length;
+  return (tile.liveSnapshot ? 1000 : 0) + signalCount * 100 + tile.submissionCount * 10 + tile.sourceCount;
+}
+
 function ClockTile({ tile }: { tile: RadarTile }): JSX.Element {
   const mean = averageSignal(tile.liveSnapshot);
   const angle = -90 + (mean / 4) * 360;
@@ -190,6 +199,7 @@ export function App(): JSX.Element {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdatedAt, setLastUpdatedAt] = useState<string | null>(null);
+  const [showLabRadars, setShowLabRadars] = useState(false);
 
   const apiUrl = import.meta.env.VITE_API_URL ?? "";
 
@@ -241,12 +251,32 @@ export function App(): JSX.Element {
     };
   }, [apiUrl]);
 
+  const orderedTiles = useMemo(
+    () => [...tiles].sort((left, right) => rankTile(right) - rankTile(left)),
+    [tiles],
+  );
+
+  const labRadarCount = useMemo(
+    () => orderedTiles.filter((tile) => isLabTile(tile)).length,
+    [orderedTiles],
+  );
+
+  const visibleTiles = useMemo(
+    () => (showLabRadars ? orderedTiles : orderedTiles.filter((tile) => !isLabTile(tile))),
+    [orderedTiles, showLabRadars],
+  );
+
   const headline = useMemo(() => {
     if (loading && tiles.length === 0) {
       return "Loading radars…";
     }
-    return `${tiles.length} active radars`;
-  }, [loading, tiles.length]);
+    return `${visibleTiles.length} active radars`;
+  }, [loading, tiles.length, visibleTiles.length]);
+
+  const liveRadarCount = useMemo(
+    () => visibleTiles.filter((tile) => tile.liveSnapshot).length,
+    [visibleTiles],
+  );
 
   const statusLine = useMemo(() => {
     if (error && tiles.length === 0) {
@@ -271,6 +301,24 @@ export function App(): JSX.Element {
         <h1>{headline}</h1>
         <p className="lede">A live wall of agent-maintained clocks. Each tile is a deterministic synthesis over evolving evidence, not a single model opinion.</p>
         <p className="status-line">{statusLine}</p>
+        <div className="summary-row">
+          <span className="summary-pill">{visibleTiles.length} shown</span>
+          <span className="summary-pill">{liveRadarCount} live clocks</span>
+          {labRadarCount > 0 ? (
+            <span className="summary-pill">{showLabRadars ? `${labRadarCount} lab radars visible` : `${labRadarCount} lab radars hidden`}</span>
+          ) : null}
+          {labRadarCount > 0 ? (
+            <button
+              type="button"
+              className="toggle-button"
+              onClick={() => {
+                setShowLabRadars((current) => !current);
+              }}
+            >
+              {showLabRadars ? "Hide lab radars" : "Show lab radars"}
+            </button>
+          ) : null}
+        </div>
       </header>
       {error && tiles.length === 0 ? (
         <section className="state-card" aria-live="polite">
@@ -285,9 +333,15 @@ export function App(): JSX.Element {
           <p>Create or ingest a radar in the MCP service and it will appear here.</p>
         </section>
       ) : null}
+      {!loading && !error && tiles.length > 0 && visibleTiles.length === 0 ? (
+        <section className="state-card" aria-live="polite">
+          <h2>Only lab radars are available</h2>
+          <p>Use the toggle above to reveal integration and test radars.</p>
+        </section>
+      ) : null}
       <section className="wall">
-        {tiles.map((tile) => <ClockTile key={tile.radar.id} tile={tile} />)}
-        {loading && tiles.length > 0 ? <article className="tile tile-placeholder">Refreshing live wall…</article> : null}
+        {visibleTiles.map((tile) => <ClockTile key={tile.radar.id} tile={tile} />)}
+        {loading && visibleTiles.length > 0 ? <article className="tile tile-placeholder">Refreshing live wall…</article> : null}
       </section>
     </main>
   );

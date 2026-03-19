@@ -153,12 +153,12 @@ docs.github/**/.cache/
 .worktrees/
 mcp-social-publisher-live/
 orgs/badlogic/pi-mono/
-orgs/octave-commons/mythloom/
-orgs/octave-commons/shibboleth/
-orgs/open-hax/proxx/
-orgs/riatzukiza/TANF-app/
-orgs/riatzukiza/hormuz-clock-mcp/
-threat-radar-deploy/
+# orgs/octave-commons/mythloom/
+# orgs/octave-commons/shibboleth/
+# orgs/open-hax/proxx/
+# orgs/riatzukiza/TANF-app/
+# orgs/riatzukiza/hormuz-clock-mcp/
+# threat-radar-deploy/
 
 workspaces/
 orgs/private/

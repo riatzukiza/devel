@@ -1,18 +1,23 @@
 # Π handoff
 
-- time: 2026-03-18T21:24:33Z
+- time: 2026-03-19T01:23:21Z
 - branch: feature/threat-radar-platform
-- pre-Π HEAD: e63722d
+- pre-Π HEAD: d768e7f
 - Π HEAD: pending at capture time; resolved by the final git commit created after artifact assembly
 
 ## Summary
-- Carry OpenAI Parameter Golf resume refinements plus threat-radar MCP/store updates and MVP draft changes into the root snapshot.
-- Advance submodule `services/open-hax-openai-proxy` → `51ac946` (`Π/2026-03-18/211455-51ac946`).
-- Preserve the already-snapshotted workspace bulk state while converging the remaining dirty root files into one clean handoff.
+- Snapshot the root threat-radar web MVP polish, parameter-golf ant-lab + application bundle drafts, and current workspace docs/spec additions into one handoff.
+- Advance `services/open-hax-openai-proxy` to `76e9455` (`Π/2026-03-19/002313-76e9455`).
+- Absorb embedded repos as tracked submodules: `orgs/octave-commons/shibboleth` (`6ec01e6`), `orgs/open-hax/proxx` (`b44fca6` on `pi/fork-tax-20260319`), `orgs/riatzukiza/TANF-app` (`be5de0b`), and `threat-radar-deploy` (`2bbf55c`).
+- Track local-only repos as file-backed submodules so the current workspace graph is explicit: `orgs/octave-commons/mythloom` (`0ea0091`), `orgs/riatzukiza/hormuz-clock-mcp` (`2c570db`), and `orgs/open-hax/voice-gateway` (`4653ea9`).
+- Restore the previously missing Open Hax submodule worktrees before the root snapshot.
 
 ## Verification
-- pass: threat radar build/dev smoke (from 2026-03-18T21:00:06Z receipt)
-- pass: services/open-hax-openai-proxy `pnpm run typecheck`
-- pass: services/open-hax-openai-proxy `pnpm test` (273/273)
-- pass: services/open-hax-openai-proxy `pnpm run build`
-- skipped: root resume/spec text changes are non-executable
+- pass: `pnpm --filter @riatzukiza/threat-radar-web typecheck`
+- pass: `pnpm --filter @riatzukiza/threat-radar-web build`
+- pass: `pnpm test:pg:ants` (1/1)
+- pass: `services/open-hax-openai-proxy pnpm run typecheck` (from 2026-03-19T00:22:40Z receipt)
+- pass: `services/open-hax-openai-proxy pnpm test` (275/275 from 2026-03-19T00:22:40Z receipt)
+- pass: `services/open-hax-openai-proxy pnpm run build` (from 2026-03-19T00:22:40Z receipt)
+- pass: `services/open-hax-openai-proxy pnpm run web:build` (from 2026-03-19T00:22:40Z receipt)
+- note: local-only submodules were committed/tagged locally because no remote origin exists yet
