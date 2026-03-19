@@ -157,3 +157,31 @@
 	path = orgs/openai/parameter-golf
 	url = org-14957082@github.com:openai/parameter-golf.git
 	branch = main
+[submodule "orgs/octave-commons/mythloom"]
+	path = orgs/octave-commons/mythloom
+	url = file:///home/err/devel/orgs/octave-commons/mythloom
+	branch = main
+[submodule "orgs/octave-commons/shibboleth"]
+	path = orgs/octave-commons/shibboleth
+	url = git@github.com:octave-commons/shibboleth.git
+	branch = main
+[submodule "orgs/open-hax/proxx"]
+	path = orgs/open-hax/proxx
+	url = https://github.com/open-hax/proxx.git
+	branch = pi/fork-tax-20260319
+[submodule "orgs/open-hax/voice-gateway"]
+	path = orgs/open-hax/voice-gateway
+	url = file:///home/err/devel/orgs/open-hax/voice-gateway
+	branch = main
+[submodule "orgs/riatzukiza/TANF-app"]
+	path = orgs/riatzukiza/TANF-app
+	url = git@github.com:riatzukiza/TANF-app.git
+	branch = main
+[submodule "orgs/riatzukiza/hormuz-clock-mcp"]
+	path = orgs/riatzukiza/hormuz-clock-mcp
+	url = file:///home/err/devel/orgs/riatzukiza/hormuz-clock-mcp
+	branch = main
+[submodule "threat-radar-deploy"]
+	path = threat-radar-deploy
+	url = https://github.com/riatzukiza/threat-radar.git
+	branch = main
