@@ -59,6 +59,39 @@ body {
   font-size: 14px;
 }
 
+.summary-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.summary-pill {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 12px;
+}
+
+.toggle-button {
+  border: 1px solid rgba(255, 209, 102, 0.35);
+  border-radius: 999px;
+  padding: 7px 12px;
+  background: rgba(255, 209, 102, 0.08);
+  color: var(--accent-2);
+  font: inherit;
+  cursor: pointer;
+}
+
+.toggle-button:hover {
+  background: rgba(255, 209, 102, 0.14);
+}
+
 .state-card {
   max-width: 1400px;
   margin: 0 auto 18px;
