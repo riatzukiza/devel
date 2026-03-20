@@ -13,8 +13,10 @@ pnpm docker:stack up ollama
 pnpm docker:stack up opencode -- --build
 pnpm docker:stack show promethean
 pnpm docker:stack status open-hax-openai-proxy
+pnpm docker:stack status voxx
 pnpm docker:stack use-container open-hax-openai-proxy -- --build
 pnpm docker:stack use-host open-hax-openai-proxy
+pnpm docker:stack up voxx -- --build
 pnpm docker:stack up openplanner -- --build
 pnpm docker:stack up part64 -- --build
 pnpm docker:stack ps open-hax-openai-proxy
@@ -41,7 +43,8 @@ pnpm docker:stack down promethean:dev
 - `part64:muse-song-lab` - `vaults/fork_tales/part64/docker-compose.muse-song-lab.yml`
 - `part64:sim-slice-bench` - `vaults/fork_tales/part64/docker-compose.sim-slice-bench.yml`
 - `part64:whisper-bench` - `vaults/fork_tales/part64/docker-compose.whisper-bench.yml`
-- `open-hax-openai-proxy` - `services/open-hax-openai-proxy/docker-compose.yml`
+- `open-hax-openai-proxy` - `services/proxx/docker-compose.yml`
+- `voxx` - `services/voxx/compose.yaml`
 
 ## Notes
 
@@ -58,6 +61,8 @@ pnpm docker:stack down promethean:dev
 - `opencode` is a containerized web runtime that mounts all of `/home/err/devel`, so it can operate across the whole monorepo instead of a single subproject.
 - `opencode` bind-mounts the host OpenCode XDG paths, so it uses the same `opencode.db`, auth state, prompt history, and session database as a host runtime.
 - The root `devel` stack now includes `open-hax-openai-proxy`, so `openclawssy` can talk to the proxy over Docker networking instead of `host.docker.internal`.
+- `open-hax-openai-proxy` is now sourced from `orgs/open-hax/proxx` while `services/proxx` holds runtime/devops material.
+- `voxx` is sourced from `orgs/open-hax/voxx` while `services/voxx` holds the compose runtime wrapper.
 - `openplanner` is now a full app-plus-Chroma Compose stack instead of a Chroma-only sidecar.
 - `mcp` and `cephalon` use shared-context runtime containers: the image supplies process tooling, while the live workspace is mounted at `/workspace` so grouped services can operate on the real repo without host-global PM2.
 - The `ollama` stack publishes onto the shared `ai-infra` Docker network so containerized services can use `http://ollama:11434` directly.

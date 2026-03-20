@@ -1,7 +1,7 @@
 services:
   open-hax-openai-proxy:
     build:
-      context: ./services/open-hax-openai-proxy
+      context: ./orgs/open-hax/proxx
       dockerfile: Dockerfile
     ports:
       - '${OPEN_HAX_OPENAI_PROXY_PORT:-8789}:8789'
@@ -40,8 +40,8 @@ services:
       CHROMA_COLLECTION: ${OPEN_HAX_PROXY_CHROMA_COLLECTION:-open_hax_proxy_sessions}
       CHROMA_EMBED_MODEL: ${OPEN_HAX_PROXY_CHROMA_EMBED_MODEL:-nomic-embed-text:latest}
     volumes:
-      - ./services/open-hax-openai-proxy:/workspace/service-config:ro
-      - ./services/open-hax-openai-proxy/data:/app/data
+      - ./services/proxx:/workspace/service-config:ro
+      - ./services/proxx/data:/app/data
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     healthcheck:

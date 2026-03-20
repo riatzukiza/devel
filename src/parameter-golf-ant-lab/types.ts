@@ -17,6 +17,17 @@ export interface MetricGoal {
   readonly target: number;
 }
 
+export interface StrategySeed {
+  readonly id: string;
+  readonly label: string;
+  readonly choices: Readonly<Record<string, string>>;
+  readonly hypothesis: string;
+  readonly tags: readonly string[];
+  readonly priorBelief: number;
+  readonly riskLevel: "low" | "medium" | "high";
+  readonly signalBoost?: number;
+}
+
 export interface LabProfile {
   readonly version: 1;
   readonly profileId: string;
@@ -27,6 +38,7 @@ export interface LabProfile {
   readonly antsPerStep: number;
   readonly dimensions: readonly DecisionDimension[];
   readonly metrics: readonly MetricGoal[];
+  readonly seedStrategies: readonly StrategySeed[];
   readonly baseEnv: Readonly<Record<string, string>>;
   readonly command: string;
   readonly notes: readonly string[];
@@ -40,6 +52,13 @@ export interface CandidateRecipe {
   readonly novelty: number;
   readonly pheromoneScore: number;
   readonly heuristicScore: number;
+  readonly priorScore: number;
+  readonly compositeScore: number;
+  readonly strategyId: string | null;
+  readonly strategyLabel: string | null;
+  readonly hypothesis: string;
+  readonly tags: readonly string[];
+  readonly riskLevel: "low" | "medium" | "high";
   readonly shellEnv: string;
   readonly command: string;
   readonly status: CandidateStatus;
