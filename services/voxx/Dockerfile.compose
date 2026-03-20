@@ -1,0 +1,37 @@
+# syntax=docker/dockerfile:1.7
+
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app/src \
+    VOICE_GATEWAY_DATA_DIR=/app/data \
+    VOICE_GATEWAY_HOST=0.0.0.0 \
+    VOICE_GATEWAY_PORT=8788
+
+WORKDIR /app
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+      espeak-ng \
+      ffmpeg \
+      libsndfile1 \
+    && rm -rf /var/lib/apt/lists/* \
+    && groupadd -g 1000 appuser \
+    && useradd -m -u 1000 -g 1000 appuser
+
+COPY orgs/open-hax/voxx/requirements.txt /app/requirements.txt
+COPY orgs/open-hax/voxx/README.md /app/README.md
+COPY orgs/open-hax/voxx/.env.example /app/.env.example
+COPY orgs/open-hax/voxx/package.json /app/package.json
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY orgs/open-hax/voxx/src /app/src
+
+RUN mkdir -p /app/data \
+    && chown -R appuser:appuser /app
+
+EXPOSE 8788
+
+USER appuser
+CMD ["python", "-m", "voice_gateway"]

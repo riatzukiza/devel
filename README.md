@@ -170,8 +170,10 @@ pnpm docker:stack up ollama
 pnpm docker:stack up opencode -- --build
 pnpm docker:stack show promethean
 pnpm docker:stack status open-hax-openai-proxy
+pnpm docker:stack status voxx
 pnpm docker:stack use-container open-hax-openai-proxy -- --build
 pnpm docker:stack use-host open-hax-openai-proxy
+pnpm docker:stack up voxx -- --build
 pnpm docker:stack up openplanner -- --build
 pnpm docker:stack up part64 -- --build
 pnpm docker:stack ps open-hax-openai-proxy

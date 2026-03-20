@@ -23,6 +23,8 @@ const average = (values: readonly number[]): number => {
   return values.reduce((sum, value) => sum + value, 0) / values.length;
 };
 
+const normalizePheromone = (value: number): number => clamp(Math.min(value, 3) / 3, 0, 1);
+
 const candidateKey = (choices: Readonly<Record<string, string>>): string =>
   JSON.stringify(Object.entries(choices).sort(([left], [right]) => left.localeCompare(right)));
 
@@ -37,21 +39,34 @@ const countValueFrequency = (state: LabState): Readonly<Record<string, Readonly<
   return counts;
 };
 
+const effectivePrior = (strategy: { readonly priorBelief: number; readonly signalBoost?: number }): number =>
+  clamp(strategy.priorBelief + (strategy.signalBoost ?? 0), 0, 1);
+
+const valuePriorAffinity = (profile: LabProfile, dimensionName: string, value: string): number => {
+  const matches = profile.seedStrategies.filter((strategy) => strategy.choices[dimensionName] === value);
+  if (matches.length === 0) {
+    return 0.5;
+  }
+  return average(matches.map((strategy) => effectivePrior(strategy)));
+};
+
 const chooseWeightedValue = (
   values: readonly string[],
   pheromoneByValue: Readonly<Record<string, number>>,
   frequencies: Readonly<Record<string, number>>,
+  priorAffinities: Readonly<Record<string, number>>,
   rng: () => number
 ): { readonly value: string; readonly explorationScore: number; readonly pheromoneScore: number } => {
   const weights = values.map((value) => {
     const pheromone = pheromoneByValue[value] ?? 1;
     const frequency = frequencies[value] ?? 0;
     const exploration = 1 / (1 + frequency);
+    const priorAffinity = priorAffinities[value] ?? 0.5;
     return {
       value,
       pheromone,
       exploration,
-      weight: pheromone * (0.45 + 0.55 * exploration)
+      weight: pheromone * (0.35 + 0.45 * exploration + 0.20 * priorAffinity)
     };
   });
 
@@ -88,6 +103,98 @@ const buildShellEnv = (profile: LabProfile, choices: Readonly<Record<string, str
   return envEntries.join(" \\\n");
 };
 
+const estimatePriorFromSeeds = (profile: LabProfile, choices: Readonly<Record<string, string>>): { readonly priorBelief: number; readonly label: string; readonly riskLevel: "low" | "medium" | "high" } => {
+  const dimensions = profile.dimensions.length;
+  const ranked = profile.seedStrategies.map((strategy) => {
+    const matches = profile.dimensions.filter((dimension) => strategy.choices[dimension.name] === choices[dimension.name]).length;
+    const similarity = dimensions === 0 ? 0 : matches / dimensions;
+    return {
+      strategy,
+      similarity,
+      score: effectivePrior(strategy) * (0.45 + 0.55 * similarity)
+    };
+  }).sort((left, right) => right.score - left.score);
+
+  const best = ranked[0];
+  if (!best) {
+    return { priorBelief: 0.5, label: "free-ant", riskLevel: "medium" };
+  }
+  return {
+    priorBelief: best.score,
+    label: `free-ant≈${best.strategy.label}`,
+    riskLevel: best.strategy.riskLevel
+  };
+};
+
+const buildCandidateId = (
+  profile: LabProfile,
+  step: number,
+  strategyId: string | null,
+  attempt: number,
+  choices: Readonly<Record<string, string>>
+): string => hashText(`${profile.profileId}|${step}|${strategyId ?? "free"}|${attempt}|${JSON.stringify(choices)}`).slice(0, 12);
+
+const buildCandidateFromChoices = (
+  profile: LabProfile,
+  step: number,
+  createdAt: string,
+  choices: Readonly<Record<string, string>>,
+  noveltyScores: readonly number[],
+  pheromoneScores: readonly number[],
+  strategy: { readonly id: string; readonly label: string; readonly hypothesis: string; readonly tags: readonly string[]; readonly priorBelief: number; readonly riskLevel: "low" | "medium" | "high" } | null,
+  attempt: number
+): CandidateRecipe => {
+  const id = buildCandidateId(profile, step, strategy?.id ?? null, attempt, choices);
+  const novelty = average(noveltyScores);
+  const pheromoneScore = average(pheromoneScores);
+  const fallbackPrior = estimatePriorFromSeeds(profile, choices);
+  const priorScore = strategy ? effectivePrior(strategy) : fallbackPrior.priorBelief;
+  const heuristicScore = 0.55 * priorScore + 0.30 * novelty + 0.15 * normalizePheromone(pheromoneScore);
+  const compositeScore = 0.60 * priorScore + 0.25 * normalizePheromone(pheromoneScore) + 0.15 * novelty;
+  return {
+    id,
+    createdAt,
+    step,
+    choices,
+    novelty,
+    pheromoneScore,
+    heuristicScore,
+    priorScore,
+    compositeScore,
+    strategyId: strategy?.id ?? null,
+    strategyLabel: strategy?.label ?? fallbackPrior.label,
+    hypothesis: strategy?.hypothesis ?? "Explore an unseeded path suggested by current pheromones and under-covered values.",
+    tags: strategy?.tags ?? ["free-ant"],
+    riskLevel: strategy?.riskLevel ?? fallbackPrior.riskLevel,
+    shellEnv: buildShellEnv(profile, choices, id),
+    command: profile.command,
+    status: "proposed"
+  };
+};
+
+const buildSeededCandidate = (
+  profile: LabProfile,
+  state: LabState,
+  step: number,
+  createdAt: string,
+  strategyIndex: number
+): CandidateRecipe | null => {
+  const strategy = profile.seedStrategies[strategyIndex];
+  if (!strategy) {
+    return null;
+  }
+
+  const seen = new Set(state.candidates.map((candidate) => candidateKey(candidate.choices)));
+  if (seen.has(candidateKey(strategy.choices))) {
+    return null;
+  }
+
+  const historicalCandidates = state.candidates.filter((candidate) => candidate.step < step);
+  const noveltyScores = profile.dimensions.map((dimension) => 1 / (1 + historicalCandidates.filter((candidate) => candidate.choices[dimension.name] === strategy.choices[dimension.name]).length));
+  const pheromoneScores = profile.dimensions.map((dimension) => state.pheromones[dimension.name]?.[strategy.choices[dimension.name] ?? ""] ?? 1);
+  return buildCandidateFromChoices(profile, step, createdAt, strategy.choices, noveltyScores, pheromoneScores, strategy, strategyIndex);
+};
+
 const buildCandidate = (
   profile: LabProfile,
   state: LabState,
@@ -105,10 +212,12 @@ const buildCandidate = (
     const pheromoneScores: number[] = [];
 
     for (const dimension of profile.dimensions) {
+      const priorAffinities = Object.fromEntries(dimension.values.map((value) => [value, valuePriorAffinity(profile, dimension.name, value)]));
       const selected = chooseWeightedValue(
         dimension.values,
         state.pheromones[dimension.name] ?? {},
         valueFrequencies[dimension.name] ?? {},
+        priorAffinities,
         rng
       );
       choices[dimension.name] = selected.value;
@@ -120,23 +229,7 @@ const buildCandidate = (
       continue;
     }
 
-    const material = `${profile.profileId}|${step}|${attempt}|${JSON.stringify(choices)}`;
-    const id = hashText(material).slice(0, 12);
-    const novelty = average(noveltyScores);
-    const pheromoneScore = average(pheromoneScores);
-    const heuristicScore = 0.5 * novelty + 0.5 * Math.min(pheromoneScore, 3) / 3;
-    return {
-      id,
-      createdAt,
-      step,
-      choices,
-      novelty,
-      pheromoneScore,
-      heuristicScore,
-      shellEnv: buildShellEnv(profile, choices, id),
-      command: profile.command,
-      status: "proposed"
-    };
+    return buildCandidateFromChoices(profile, step, createdAt, choices, noveltyScores, pheromoneScores, null, attempt);
   }
 
   throw new Error(`Unable to produce a unique candidate for profile ${profile.profileId} at step ${step}`);
@@ -165,11 +258,21 @@ export const generateSuggestionBatch = (
   generatedAt: string
 ): { readonly batch: SuggestionBatch; readonly nextState: LabState } => {
   const step = state.step + 1;
-  const candidates = Array.from({ length: count }, (_, index) => buildCandidate(profile, state, step, index, generatedAt));
+  const candidates: CandidateRecipe[] = [];
+  let workingState = state;
+  for (let index = 0; index < count; index += 1) {
+    const seeded = step === 1 ? buildSeededCandidate(profile, workingState, step, generatedAt, index) : null;
+    const candidate = seeded ?? buildCandidate(profile, workingState, step, index, generatedAt);
+    candidates.push(candidate);
+    workingState = {
+      ...workingState,
+      candidates: [...workingState.candidates, candidate]
+    };
+  }
   const nextState: LabState = {
     ...state,
     step,
-    candidates: [...state.candidates, ...candidates]
+    candidates: [...state.candidates, ...candidates].sort((left, right) => right.compositeScore - left.compositeScore)
   };
   return {
     batch: {
@@ -177,7 +280,7 @@ export const generateSuggestionBatch = (
       profileId: profile.profileId,
       objective: profile.objective,
       step,
-      candidates
+      candidates: [...candidates].sort((left, right) => right.compositeScore - left.compositeScore)
     },
     nextState
   };

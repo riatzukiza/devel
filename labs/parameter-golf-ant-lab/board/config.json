@@ -1,0 +1,361 @@
+{
+  "version": 1,
+  "profileId": "board",
+  "objective": "board",
+  "seed": 1337,
+  "evaporationRate": 0.12,
+  "pheromoneDeposit": 0.45,
+  "antsPerStep": 10,
+  "dimensions": [
+    {
+      "name": "num_layers",
+      "envVar": "NUM_LAYERS",
+      "values": [
+        "7",
+        "8",
+        "9",
+        "10"
+      ],
+      "description": "Physical transformer blocks."
+    },
+    {
+      "name": "model_dim",
+      "envVar": "MODEL_DIM",
+      "values": [
+        "448",
+        "512",
+        "576",
+        "640"
+      ],
+      "description": "Hidden width for the compact backbone."
+    },
+    {
+      "name": "num_kv_heads",
+      "envVar": "NUM_KV_HEADS",
+      "values": [
+        "2",
+        "4",
+        "6"
+      ],
+      "description": "Grouped-query attention KV heads."
+    },
+    {
+      "name": "mlp_mult",
+      "envVar": "MLP_MULT",
+      "values": [
+        "2",
+        "3"
+      ],
+      "description": "MLP expansion multiple."
+    },
+    {
+      "name": "tied_embed_lr",
+      "envVar": "TIED_EMBED_LR",
+      "values": [
+        "0.03",
+        "0.05",
+        "0.07"
+      ],
+      "description": "Tied embedding learning rate."
+    },
+    {
+      "name": "matrix_lr",
+      "envVar": "MATRIX_LR",
+      "values": [
+        "0.03",
+        "0.04",
+        "0.05"
+      ],
+      "description": "Muon-managed matrix learning rate."
+    },
+    {
+      "name": "train_seq_len",
+      "envVar": "TRAIN_SEQ_LEN",
+      "values": [
+        "768",
+        "1024",
+        "1536"
+      ],
+      "description": "Training sequence length."
+    },
+    {
+      "name": "train_batch_tokens",
+      "envVar": "TRAIN_BATCH_TOKENS",
+      "values": [
+        "393216",
+        "524288",
+        "655360"
+      ],
+      "description": "Total train tokens per step."
+    }
+  ],
+  "metrics": [
+    {
+      "name": "val_bpb",
+      "direction": "minimize",
+      "weight": 0.55,
+      "baseline": 1.25,
+      "target": 1.18
+    },
+    {
+      "name": "bytes_total",
+      "direction": "minimize",
+      "weight": 0.25,
+      "baseline": 16000000,
+      "target": 15400000
+    },
+    {
+      "name": "wallclock_seconds",
+      "direction": "minimize",
+      "weight": 0.2,
+      "baseline": 600,
+      "target": 480
+    }
+  ],
+  "seedStrategies": [
+    {
+      "id": "baseline-anchor",
+      "label": "Baseline anchor",
+      "choices": {
+        "num_layers": "9",
+        "model_dim": "512",
+        "num_kv_heads": "4",
+        "mlp_mult": "2",
+        "tied_embed_lr": "0.05",
+        "matrix_lr": "0.04",
+        "train_seq_len": "1024",
+        "train_batch_tokens": "524288"
+      },
+      "hypothesis": "Anchor the search on something close to the published naive baseline so we can measure deltas honestly.",
+      "tags": [
+        "anchor",
+        "baseline",
+        "published-near"
+      ],
+      "priorBelief": 0.74,
+      "riskLevel": "low",
+      "signalBoost": 0
+    },
+    {
+      "id": "wide-balance",
+      "label": "Wide balance",
+      "choices": {
+        "num_layers": "8",
+        "model_dim": "640",
+        "num_kv_heads": "4",
+        "mlp_mult": "2",
+        "tied_embed_lr": "0.05",
+        "matrix_lr": "0.04",
+        "train_seq_len": "1024",
+        "train_batch_tokens": "524288"
+      },
+      "hypothesis": "A wider but slightly shallower model may preserve compression quality while staying quantization-friendly.",
+      "tags": [
+        "width",
+        "capacity",
+        "balanced"
+      ],
+      "priorBelief": 0.82,
+      "riskLevel": "medium",
+      "signalBoost": 0.04001638719734197
+    },
+    {
+      "id": "deep-narrow",
+      "label": "Deep narrow",
+      "choices": {
+        "num_layers": "10",
+        "model_dim": "448",
+        "num_kv_heads": "4",
+        "mlp_mult": "2",
+        "tied_embed_lr": "0.05",
+        "matrix_lr": "0.04",
+        "train_seq_len": "1024",
+        "train_batch_tokens": "524288"
+      },
+      "hypothesis": "If depth matters more than width at this scale, a narrow-deep run might beat a width-heavy recipe under the byte cap.",
+      "tags": [
+        "depth",
+        "narrow",
+        "capacity-shift"
+      ],
+      "priorBelief": 0.71,
+      "riskLevel": "medium",
+      "signalBoost": 0.07248513908136255
+    },
+    {
+      "id": "kv-thin",
+      "label": "KV-thin attention",
+      "choices": {
+        "num_layers": "9",
+        "model_dim": "512",
+        "num_kv_heads": "2",
+        "mlp_mult": "2",
+        "tied_embed_lr": "0.05",
+        "matrix_lr": "0.04",
+        "train_seq_len": "1024",
+        "train_batch_tokens": "524288"
+      },
+      "hypothesis": "Aggressively reducing KV heads may save representational bytes or runtime while preserving enough attention quality.",
+      "tags": [
+        "gqa",
+        "kv-slim",
+        "attention"
+      ],
+      "priorBelief": 0.76,
+      "riskLevel": "medium",
+      "signalBoost": 0.018566091207349908
+    },
+    {
+      "id": "kv-fat",
+      "label": "KV-fat attention",
+      "choices": {
+        "num_layers": "9",
+        "model_dim": "512",
+        "num_kv_heads": "6",
+        "mlp_mult": "2",
+        "tied_embed_lr": "0.05",
+        "matrix_lr": "0.04",
+        "train_seq_len": "1024",
+        "train_batch_tokens": "524288"
+      },
+      "hypothesis": "If the bottleneck is attention expressivity rather than parameter count alone, extra KV heads may improve bpb enough to justify the cost.",
+      "tags": [
+        "gqa",
+        "kv-heavy",
+        "attention"
+      ],
+      "priorBelief": 0.63,
+      "riskLevel": "medium",
+      "signalBoost": 0.009865166092842855
+    },
+    {
+      "id": "mlp-heavy",
+      "label": "MLP-heavy",
+      "choices": {
+        "num_layers": "9",
+        "model_dim": "512",
+        "num_kv_heads": "4",
+        "mlp_mult": "3",
+        "tied_embed_lr": "0.05",
+        "matrix_lr": "0.04",
+        "train_seq_len": "1024",
+        "train_batch_tokens": "524288"
+      },
+      "hypothesis": "A fatter feed-forward path may buy more compression power than additional attention structure at this size.",
+      "tags": [
+        "mlp",
+        "capacity",
+        "ffn"
+      ],
+      "priorBelief": 0.68,
+      "riskLevel": "medium",
+      "signalBoost": 0.18
+    },
+    {
+      "id": "long-context-budget",
+      "label": "Long-context budget",
+      "choices": {
+        "num_layers": "8",
+        "model_dim": "512",
+        "num_kv_heads": "4",
+        "mlp_mult": "2",
+        "tied_embed_lr": "0.03",
+        "matrix_lr": "0.03",
+        "train_seq_len": "1536",
+        "train_batch_tokens": "393216"
+      },
+      "hypothesis": "Longer contexts with a more conservative throughput budget may improve compression structure even if steps are fewer.",
+      "tags": [
+        "context",
+        "long-seq",
+        "budgeted"
+      ],
+      "priorBelief": 0.56,
+      "riskLevel": "medium",
+      "signalBoost": 0.17256210635971392
+    },
+    {
+      "id": "throughput-push",
+      "label": "Throughput push",
+      "choices": {
+        "num_layers": "8",
+        "model_dim": "512",
+        "num_kv_heads": "4",
+        "mlp_mult": "2",
+        "tied_embed_lr": "0.07",
+        "matrix_lr": "0.05",
+        "train_seq_len": "768",
+        "train_batch_tokens": "655360"
+      },
+      "hypothesis": "Shorter sequences and hotter learning rates may let the run see more tokens and reach a better wallclock-constrained optimum.",
+      "tags": [
+        "throughput",
+        "hot-lr",
+        "short-seq"
+      ],
+      "priorBelief": 0.79,
+      "riskLevel": "medium",
+      "signalBoost": 0.11567637160628483
+    },
+    {
+      "id": "byte-cautious",
+      "label": "Byte cautious",
+      "choices": {
+        "num_layers": "7",
+        "model_dim": "448",
+        "num_kv_heads": "2",
+        "mlp_mult": "2",
+        "tied_embed_lr": "0.05",
+        "matrix_lr": "0.03",
+        "train_seq_len": "1024",
+        "train_batch_tokens": "393216"
+      },
+      "hypothesis": "A more conservative recipe may leave headroom for later architecture edits or safer quantization without losing the board entirely.",
+      "tags": [
+        "bytes",
+        "conservative",
+        "quantization-headroom"
+      ],
+      "priorBelief": 0.61,
+      "riskLevel": "low",
+      "signalBoost": 0.18
+    },
+    {
+      "id": "capacity-stress",
+      "label": "Capacity stress",
+      "choices": {
+        "num_layers": "10",
+        "model_dim": "640",
+        "num_kv_heads": "6",
+        "mlp_mult": "3",
+        "tied_embed_lr": "0.03",
+        "matrix_lr": "0.05",
+        "train_seq_len": "768",
+        "train_batch_tokens": "655360"
+      },
+      "hypothesis": "Intentionally push the supported upstream knobs toward the edge to learn where runtime or byte collapse begins.",
+      "tags": [
+        "stress",
+        "edge",
+        "capacity-max"
+      ],
+      "priorBelief": 0.34,
+      "riskLevel": "high",
+      "signalBoost": 0.0922334662015645
+    }
+  ],
+  "baseEnv": {
+    "DATA_PATH": "./data/datasets/fineweb10B_sp1024",
+    "TOKENIZER_PATH": "./data/tokenizers/fineweb_1024_bpe.model",
+    "VOCAB_SIZE": "1024",
+    "NUM_HEADS": "8",
+    "TIE_EMBEDDINGS": "1",
+    "VAL_LOSS_EVERY": "200",
+    "MAX_WALLCLOCK_SECONDS": "600"
+  },
+  "command": "torchrun --standalone --nproc_per_node=1 train_gpt.py",
+  "notes": [
+    "Competition-facing profile using mostly supported upstream trainer knobs.",
+    "Candidates emitted from this profile should be runnable with minimal hand editing inside orgs/openai/parameter-golf."
+  ]
+}

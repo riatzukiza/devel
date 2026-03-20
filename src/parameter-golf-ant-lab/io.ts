@@ -60,10 +60,18 @@ export const writeSuggestionBatch = async (paths: LabPaths, batch: SuggestionBat
     ...batch.candidates.flatMap((candidate, index) => [
       `## Candidate ${index + 1} — ${candidate.id}`,
       "",
+      `- strategy: ${candidate.strategyLabel ?? "free-ant"}`,
+      `- priorScore: ${candidate.priorScore.toFixed(4)}`,
       `- novelty: ${candidate.novelty.toFixed(4)}`,
       `- pheromoneScore: ${candidate.pheromoneScore.toFixed(4)}`,
       `- heuristicScore: ${candidate.heuristicScore.toFixed(4)}`,
+      `- compositeScore: ${candidate.compositeScore.toFixed(4)}`,
       `- status: ${candidate.status}`,
+      `- risk: ${candidate.riskLevel}`,
+      `- tags: ${candidate.tags.join(", ")}`,
+      "",
+      "### Hypothesis",
+      candidate.hypothesis,
       "",
       "### Choices",
       formatChoices(candidate.choices),
@@ -81,6 +89,7 @@ export const writeSuggestionBatch = async (paths: LabPaths, batch: SuggestionBat
 };
 
 export const writeRootReadme = async (rootDir: string): Promise<void> => {
+  await ensureDir(rootDir);
   const readmePath = path.join(rootDir, "README.md");
   const content = [
     "# Parameter Golf Ant Lab",
@@ -92,7 +101,7 @@ export const writeRootReadme = async (rootDir: string): Promise<void> => {
     "Suggested commands:",
     "```bash",
     "pnpm pg:ants init --lab-dir labs/parameter-golf-ant-lab --profile all",
-    "pnpm pg:ants step --lab-dir labs/parameter-golf-ant-lab --profile board --count 8",
+    "pnpm pg:ants step --lab-dir labs/parameter-golf-ant-lab --profile board",
     "pnpm pg:ants status --lab-dir labs/parameter-golf-ant-lab --profile board",
     "pnpm pg:ants record --lab-dir labs/parameter-golf-ant-lab --profile board --candidate-id <id> --metrics-json '{\"val_bpb\":1.21,\"bytes_total\":15800000,\"wallclock_seconds\":590}'",
     "```",

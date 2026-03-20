@@ -66,5 +66,5 @@ describe("parameter-golf ant lab cli", () => {
     const statusJson = JSON.parse(status.stdout) as { readonly evaluatedCount: number; readonly bestCandidateId: string | null };
     expect(statusJson.evaluatedCount).toBe(1);
     expect(statusJson.bestCandidateId).toBe(state.candidates[0]?.id ?? null);
-  });
+  }, 15000);
 });

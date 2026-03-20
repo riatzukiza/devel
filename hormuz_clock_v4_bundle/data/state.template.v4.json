@@ -1,0 +1,77 @@
+{
+  "as_of_utc": "2026-03-11T18:35:57Z",
+  "clock": {
+    "t0_utc": "2026-02-28T00:00:00Z",
+    "second_hand_days": 11.77,
+    "minute_hand_days": 90,
+    "hour_hand_days": 30,
+    "structural_bar_days": 450
+  },
+  "states": {
+    "transit_flow": {
+      "score": 4,
+      "trend": "flat-high",
+      "confidence": 0.95,
+      "notes": "IEA says export volumes of crude oil and refined products are currently at less than 10% of pre-conflict levels"
+    },
+    "attack_tempo": {
+      "score": 4,
+      "trend": "flat-high",
+      "confidence": 0.85,
+      "notes": "MARAD 2026-001A says vessels should keep clear if possible"
+    },
+    "insurance_availability": {
+      "score": 4,
+      "trend": "flat-high",
+      "confidence": 0.8,
+      "notes": "cover scarce, repriced, or withdrawn"
+    },
+    "navigation_integrity": {
+      "score": 3,
+      "trend": "flat-high",
+      "confidence": 0.8,
+      "notes": "persistent GNSS/GPS and AIS disruption"
+    },
+    "bypass_capacity": {
+      "score": 3,
+      "trend": "flat-high",
+      "confidence": 0.95,
+      "notes": "IEA cites 3.5-5.5 mb/d of bypass capacity versus about 20 mb/d normal Hormuz flow"
+    },
+    "asia_buffer_stress": {
+      "score": 1,
+      "trend": "flat",
+      "confidence": 0.95,
+      "notes": "IEA members approved a 400 million barrel emergency stock release to cushion market disruptions"
+    }
+  },
+  "branches": {
+    "reopening": {
+      "center": 0.25,
+      "range": {
+        "low": 0.15,
+        "high": 0.35
+      },
+      "confidence": 0.4,
+      "confidence_label": "low"
+    },
+    "effective_closure": {
+      "center": 0.55,
+      "range": {
+        "low": 0.45,
+        "high": 0.65
+      },
+      "confidence": 0.45,
+      "confidence_label": "low"
+    },
+    "wider_escalation": {
+      "center": 0.2,
+      "range": {
+        "low": 0.1,
+        "high": 0.3
+      },
+      "confidence": 0.35,
+      "confidence_label": "low"
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "generatedAt": "2026-03-20",
+  "runs": [
+    {
+      "candidateId": "f9d65cff70d6",
+      "strategy": "KV-thin attention",
+      "val_bpb": 2.44485203,
+      "bytes_total": 9058583,
+      "wallclockSeconds": 281.96,
+      "train_time_ms": 47351,
+      "effectiveTrainBatchTokens": 65536,
+      "runDir": "/home/err/devel/labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-50-08.757Z-f9d65cff70d6"
+    },
+    {
+      "candidateId": "de7915d3d64c",
+      "strategy": "Throughput push",
+      "val_bpb": 2.45097482,
+      "bytes_total": 7227805,
+      "wallclockSeconds": 267.612,
+      "train_time_ms": 64692,
+      "effectiveTrainBatchTokens": 98304,
+      "runDir": "/home/err/devel/labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-45-05.059Z-de7915d3d64c"
+    },
+    {
+      "candidateId": "29b0fcb6da31",
+      "strategy": "Baseline anchor",
+      "val_bpb": 2.4629559,
+      "bytes_total": 8121850,
+      "wallclockSeconds": 268.584,
+      "train_time_ms": 49841,
+      "effectiveTrainBatchTokens": 65536,
+      "runDir": "/home/err/devel/labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-40-19.381Z-29b0fcb6da31"
+    },
+    {
+      "candidateId": "5340081a0d53",
+      "strategy": "Wide balance",
+      "val_bpb": 2.49175933,
+      "bytes_total": 10120146,
+      "wallclockSeconds": 300.634,
+      "train_time_ms": 57420,
+      "effectiveTrainBatchTokens": 57344,
+      "runDir": "/home/err/devel/labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-34-54.474Z-5340081a0d53"
+    }
+  ]
+}
