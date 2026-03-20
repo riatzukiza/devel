@@ -25,8 +25,8 @@ matches_blocked_generated_path() {
   esac
 }
 
-if ! command -v detect-secrets-hook >/dev/null 2>&1; then
-  log "Missing detect-secrets-hook; install detect-secrets to enable the secrets gate"
+if ! command -v detect-secrets >/dev/null 2>&1; then
+  log "Missing detect-secrets; install detect-secrets to enable the secrets gate"
   exit 1
 fi
 
@@ -98,14 +98,6 @@ if [[ ${#scan_paths[@]} -eq 0 ]]; then
   exit 0
 fi
 
-tmp_dir=$(mktemp -d "${TMPDIR:-/tmp}/pre-commit-secrets.XXXXXX")
-cleanup() {
-  rm -rf "$tmp_dir"
-}
-trap cleanup EXIT
-
-printf '%s\0' "${scan_paths[@]}" | git -C "$repo_root" checkout-index --quiet --force --stdin -z --prefix="$tmp_dir/"
-
 baseline_args=()
 if [[ -f "$repo_root/.secrets.baseline" ]]; then
   baseline_args+=(--baseline "$repo_root/.secrets.baseline")
@@ -114,7 +106,7 @@ elif [[ -f "$repo_root/.detect-secrets.baseline" ]]; then
 fi
 
 log "Scanning ${#scan_paths[@]} staged file(s) for secrets"
-if (cd "$tmp_dir" && detect-secrets-hook "${baseline_args[@]}" "${scan_paths[@]}"); then
+if (cd "$repo_root" && detect-secrets-hook "${baseline_args[@]}" "${scan_paths[@]}"); then
   log "No secrets detected"
   exit 0
 fi
