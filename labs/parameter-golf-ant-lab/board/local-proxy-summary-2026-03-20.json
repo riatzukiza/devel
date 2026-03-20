@@ -2,6 +2,26 @@
   "generatedAt": "2026-03-20",
   "runs": [
     {
+      "candidateId": "9fbd60b89a28",
+      "strategy": "free-ant\u2248KV-thin attention",
+      "val_bpb": 2.29287105,
+      "bytes_total": 7749176,
+      "wallclockSeconds": 215.077,
+      "train_time_ms": 38572,
+      "effectiveTrainBatchTokens": 81920,
+      "runDir": "/home/err/devel/labs/parameter-golf-ant-lab/runs/board/2026-03-20T17-24-30.873Z-9fbd60b89a28"
+    },
+    {
+      "candidateId": "2d0731942b8d",
+      "strategy": "free-ant\u2248Wide balance",
+      "val_bpb": 2.39919389,
+      "bytes_total": 7313979,
+      "wallclockSeconds": 239.016,
+      "train_time_ms": 48783,
+      "effectiveTrainBatchTokens": 73728,
+      "runDir": "/home/err/devel/labs/parameter-golf-ant-lab/runs/board/2026-03-20T16-52-29.925Z-2d0731942b8d"
+    },
+    {
       "candidateId": "f9d65cff70d6",
       "strategy": "KV-thin attention",
       "val_bpb": 2.44485203,
@@ -30,6 +50,16 @@
       "train_time_ms": 49841,
       "effectiveTrainBatchTokens": 65536,
       "runDir": "/home/err/devel/labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-40-19.381Z-29b0fcb6da31"
+    },
+    {
+      "candidateId": "d97a3d0f999f",
+      "strategy": "free-ant\u2248Throughput push",
+      "val_bpb": 2.47211069,
+      "bytes_total": 7261634,
+      "wallclockSeconds": 227.321,
+      "train_time_ms": 45751,
+      "effectiveTrainBatchTokens": 73728,
+      "runDir": "/home/err/devel/labs/parameter-golf-ant-lab/runs/board/2026-03-20T17-15-38.853Z-d97a3d0f999f"
     },
     {
       "candidateId": "5340081a0d53",

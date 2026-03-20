@@ -66,8 +66,8 @@ services:
     command: >-
       bash -lc "corepack enable && corepack prepare pnpm@10.14.0 --activate &&
       pnpm --dir /workspace install --no-frozen-lockfile --filter @riatzukiza/hormuz-clock-mcp... &&
-      pnpm --dir /workspace --filter @riatzukiza/hormuz-clock-mcp... build &&
-      node dist/main.js"
+      cd /workspace/orgs/riatzukiza/hormuz-clock-mcp &&
+      node --import tsx src/main.ts"
     volumes:
       - ../..:/workspace
     ports:
@@ -181,7 +181,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
-      - "127.0.0.1:8788:8788"
+      - "127.0.0.1:8790:8788"
       - "127.0.0.1:3001:3001"
       - "127.0.0.1:3002:3002"
       - "127.0.0.1:4011:4011"
@@ -204,7 +204,7 @@ services:
     image: node:22-bookworm-slim
     working_dir: /workspace/vaults/fork_tales/part64/code
     command: >-
-      bash -lc "npm install && node web_graph_weaver.js"
+      bash -lc "npm install ../../../../orgs/open-hax/openhax/packages/signal-source-utils ../../../../orgs/open-hax/openhax/packages/signal-watchlists && npm install && node web_graph_weaver.js"
     environment:
       WEAVER_HOST: 0.0.0.0
       WEAVER_PORT: "8793"

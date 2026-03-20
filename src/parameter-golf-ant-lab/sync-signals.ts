@@ -29,6 +29,13 @@ interface DashboardPayload {
   readonly submissions: readonly DashboardSubmission[];
 }
 
+interface LocalProxySummary {
+  readonly runs: ReadonlyArray<{
+    readonly strategy: string;
+    readonly val_bpb: number;
+  }>;
+}
+
 const motifPatterns: Readonly<Record<string, readonly RegExp[]>> = {
   quantization: [/\bint6\b/i, /\bqat\b/i, /\bbitnet\b/i, /quant/i, /fp16 embed/i],
   sliding_window: [/sliding window/i, /sliding eval/i, /doc-isolated sliding/i],
@@ -112,11 +119,31 @@ const computeMotifScores = (submissions: readonly DashboardSubmission[], maxSubm
   return Object.fromEntries(Object.entries(raw).map(([name, value]) => [name, value / max]));
 };
 
-const applyStrategyBoosts = (profile: LabProfile, motifScores: Readonly<Record<string, number>>): LabProfile => {
+const readLocalBoosts = async (profileDir: string): Promise<ReadonlyMap<string, number>> => {
+  const localBoosts = new Map<string, number>();
+  const localSummaryPath = path.join(profileDir, "local-proxy-summary-2026-03-20.json");
+  try {
+    const payload = JSON.parse(await fs.readFile(localSummaryPath, "utf8")) as LocalProxySummary;
+    const ranked = [...payload.runs].sort((left, right) => left.val_bpb - right.val_bpb);
+    ranked.forEach((run, index) => {
+      const boost = Math.max(0, 0.16 - index * 0.04);
+      if (boost > 0) {
+        localBoosts.set(run.strategy, boost);
+      }
+    });
+  } catch {
+    return localBoosts;
+  }
+  return localBoosts;
+};
+
+const applyStrategyBoosts = async (profileDir: string, profile: LabProfile, motifScores: Readonly<Record<string, number>>): Promise<LabProfile> => {
+  const localBoosts = await readLocalBoosts(profileDir);
   const seedStrategies = profile.seedStrategies.map((strategy) => {
     const mapping = strategyMotifWeights[strategy.id] ?? {};
     const rawBoost = Object.entries(mapping).reduce((sum, [motif, weight]) => sum + weight * (motifScores[motif] ?? 0), 0);
-    const boundedBoost = Math.min(0.18, rawBoost);
+    const localBoost = localBoosts.get(strategy.label) ?? 0;
+    const boundedBoost = Math.min(0.25, rawBoost + localBoost);
     return {
       ...strategy,
       signalBoost: boundedBoost
@@ -150,7 +177,8 @@ const writeSignalsReport = async (
     }))
     .sort((left, right) => right.effectivePrior - left.effectivePrior);
 
-  await fs.writeFile(jsonPath, `${JSON.stringify({ generatedAt: new Date().toISOString(), maxSubmissions, motifScores, strategies }, null, 2)}\n`, "utf8");
+  const localBoosts = await readLocalBoosts(profileDir);
+  await fs.writeFile(jsonPath, `${JSON.stringify({ generatedAt: new Date().toISOString(), maxSubmissions, motifScores, localBoosts: Object.fromEntries(localBoosts.entries()), strategies }, null, 2)}\n`, "utf8");
   const lines = [
     `# ${profile.profileId} leaderboard signals`,
     "",
@@ -163,6 +191,12 @@ const writeSignalsReport = async (
   ];
   for (const [motif, score] of Object.entries(motifScores).sort((left, right) => right[1] - left[1])) {
     lines.push(`- ${motif}: ${score.toFixed(4)}`);
+  }
+  if (localBoosts.size > 0) {
+    lines.push("", "## Local proxy boosts", "");
+    for (const [label, boost] of [...localBoosts.entries()].sort((left, right) => right[1] - left[1])) {
+      lines.push(`- ${label}: ${boost.toFixed(4)}`);
+    }
   }
   lines.push("", "## Strategy boosts", "", "| Strategy | prior | signalBoost | effectivePrior | risk |", "|---|---:|---:|---:|---|" );
   for (const strategy of strategies) {
@@ -179,7 +213,7 @@ const main = async (): Promise<void> => {
   const profile = await readConfig(paths);
   const payload = await fetchDashboardPayload();
   const motifScores = computeMotifScores(payload.submissions, args.maxSubmissions);
-  const boostedProfile = applyStrategyBoosts(profile, motifScores);
+  const boostedProfile = await applyStrategyBoosts(paths.profileDir, profile, motifScores);
   await writeConfig(paths, boostedProfile);
   const report = await writeSignalsReport(paths.profileDir, motifScores, boostedProfile, args.maxSubmissions);
   process.stdout.write(`${JSON.stringify({ profileId: boostedProfile.profileId, motifScores, report }, null, 2)}\n`);

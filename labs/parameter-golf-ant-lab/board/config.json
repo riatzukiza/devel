@@ -157,7 +157,7 @@
       ],
       "priorBelief": 0.82,
       "riskLevel": "medium",
-      "signalBoost": 0.04001638719734197
+      "signalBoost": 0.05833352535007726
     },
     {
       "id": "deep-narrow",
@@ -180,7 +180,7 @@
       ],
       "priorBelief": 0.71,
       "riskLevel": "medium",
-      "signalBoost": 0.07248513908136255
+      "signalBoost": 0.07144417061900078
     },
     {
       "id": "kv-thin",
@@ -203,7 +203,7 @@
       ],
       "priorBelief": 0.76,
       "riskLevel": "medium",
-      "signalBoost": 0.018566091207349908
+      "signalBoost": 0.08238799823381439
     },
     {
       "id": "kv-fat",
@@ -226,7 +226,7 @@
       ],
       "priorBelief": 0.63,
       "riskLevel": "medium",
-      "signalBoost": 0.009865166092842855
+      "signalBoost": 0.001066739022942161
     },
     {
       "id": "mlp-heavy",
@@ -249,7 +249,7 @@
       ],
       "priorBelief": 0.68,
       "riskLevel": "medium",
-      "signalBoost": 0.18
+      "signalBoost": 0.20640802474424397
     },
     {
       "id": "long-context-budget",
@@ -272,7 +272,7 @@
       ],
       "priorBelief": 0.56,
       "riskLevel": "medium",
-      "signalBoost": 0.17256210635971392
+      "signalBoost": 0.14587973451353767
     },
     {
       "id": "throughput-push",
@@ -295,7 +295,7 @@
       ],
       "priorBelief": 0.79,
       "riskLevel": "medium",
-      "signalBoost": 0.11567637160628483
+      "signalBoost": 0.18728977443693925
     },
     {
       "id": "byte-cautious",
@@ -318,7 +318,7 @@
       ],
       "priorBelief": 0.61,
       "riskLevel": "low",
-      "signalBoost": 0.18
+      "signalBoost": 0.22
     },
     {
       "id": "capacity-stress",
@@ -341,7 +341,7 @@
       ],
       "priorBelief": 0.34,
       "riskLevel": "high",
-      "signalBoost": 0.0922334662015645
+      "signalBoost": 0.09285809500634788
     }
   ],
   "baseEnv": {
