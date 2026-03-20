@@ -28,6 +28,7 @@
     "pg:ants": "tsx src/parameter-golf-ant-lab/cli.ts",
     "pg:ants:local": "tsx src/parameter-golf-ant-lab/local-run.ts",
     "pg:ants:signals": "tsx src/parameter-golf-ant-lab/sync-signals.ts",
+    "pg:ants:prior-art": "tsx src/parameter-golf-ant-lab/sync-prior-art.ts",
     "test:pg:ants": "bun test src/parameter-golf-ant-lab/__tests__/cli.test.ts",
     "giga:nx:generate": "bun run src/giga/generate-nx-projects.ts",
     "giga:plugin:bundle": "bun run tools/nx-plugins/giga/bundle-plugin.ts",

@@ -1,4 +1,4 @@
-502c36a7aefb9c69b3e69423eb4e14a4f1e86729ae6178fa9dc09923d1ded362  git-ls-files
+434a623921d8bb69a637c1d473ddce7032a0819ed21c342a8f9bd93b55ea149e  git-ls-files
 6450bae4a02cd363c25b2889d479910a01141359c7dbbe7958eca755abcc7175  .clobber/index.cjs
 975cbb22ce236ae60349820066fdfada1bb37ce793d10bb3d53f07e48cc8001e  .clobber/index.cjs.map
 a18bf6257e7e96f65cdf910a0c4f0a612ed7190d7087ceaf82cef2b909658451  .clobber/index.js
@@ -21,10 +21,10 @@ d617f0ab1537cf3cf1d507ad7fe79761b678cfde8fcf86ef81ace24c4be7e136  .github/workfl
 5c41c90c73d18ec331bc654e9deed7c467bde08fecef226bd540833cf821650b  .github/workflows/semgrep.yml
 662fa87c5746b19beb2878bd102bb23a7af885c5b3fec1794bde2dde27fdfd98  .github/workflows/sonar-submodules.yml
 ebc90735c4364acc33a51dd97674f17153060ab9b982cc7614bb7e07a902fbfc  .github/workflows/sonar.yml
-934f29e1542efe23035278f758dafec716f3265fda7d7f334274f9a052e5fe71  .gitignore
+4c32678972abdcc969b615b8ab6f9541949beb5bc82d0dc08d78d1f672378427  .gitignore
 6ecf0f84f5022e79de6a8c4e0eb82d03305833d1b3f2d178152ced6c0fe91a69  .gitmodules
-bddc10a05580989da9ae900b1f07abd8d2f131678ea35d5f7df900801d63cf41  .hooks/pre-commit-secrets.sh
-577eea43b22dd2b892545203d0cc94d8fd1777c45f2a6cd75c3b4944e0f15834  .hooks/pre-push-typecheck.sh
+cdc22a15f20bffc693e96d3388bc21228f8f98f4c8d35177cd774f9a9612e2c8  .hooks/pre-commit-secrets.sh
+cb9cfbe2cf1571f54358e6ed539afd7caac5dff9f04f06c919e42ccb23aaaa3b  .hooks/pre-push-typecheck.sh
 7736a418ab5a54e52fe9a9c82392feeabc4c1643a66e893a35263ffdf3a81ee5  .markdownlint-cli2.yaml
 38fe6aad330e34d3fb18f4f51907b3a2cb962b0af47301b4a11ceac0f9d54520  .markdownlint.jsonc
 4e7c90ff631fbe498fa96f95d6d24a44c3c5ff843fa690b055c6e94150db9e87  .marksman.toml
@@ -193,10 +193,10 @@ d6cc38b9ccf081911e55318cfa2f596e53ff8eca4af9b13ea9b2600b1087a273  .opencode/skil
 09680da2f9e98fed38830d0e8d188e7fca1404f026e226dbcdee08f5da184e9d  .pm2/opencode.json
 bb48ce47d7d0ee987fc2227c0dfd6f97dc35344a9ec392425f7c5b50efa97a1b  .secrets.baseline
 a79f9b158b0c33f763cbc71a4c7f4fe360a35fa9c56f3374f75a20752be9e237  .spacemacs (symlink)
-1629a446aaa4428ea6db80ca12e71c9e11af5df126a248f0e7a8ab3e5d28cc2e  .ημ/registry.jsonl
-df8d3a87327f089ec7514300b3380f7071a26687feb4607ba4d1fa7386d2736a  .ημ/Π_LAST.md
-d236275341cd5ae18df1062d10b8632277f77a92948d7d99af164bbc858b893a  .ημ/Π_MANIFEST.sha256
-39794a7aff108e64983d880a8a98f994627abed3fd5674d71ff68e74c7fdb5b3  .ημ/Π_STATE.sexp
+20c897a58b3f0c6d8fbb41c19ae6a6ab1f1c2dcfaa9a73a50fe7bce67dd1d149  .ημ/registry.jsonl
+ba20ee64d06440410fe0c213e96fc9c5b37be79a7c45e31f486720ffaff5b565  .ημ/Π_LAST.md
+05d890a29ec1f599b28e3161f3e98cf27c03b3277273c5adbeb3c6134731cd83  .ημ/Π_MANIFEST.sha256
+d5090c1f612ee798da7dbdc4e61cc0867da4999a3afc4c232568bf4a2487bc40  .ημ/Π_STATE.sexp
 a0407745252f6655160be54fb8acf636f9b7e60bd570603e83df0ee5ebb79b3d  AGENTS.md
 35b430d73ee6020dbadc25b492a6a755a6daeb748f9fe26b7c15d3bca26075ac  OPENCODE-SESSIONS-INDEXER.md
 ee7a8ff7783a01d327adbca6973a318ca45be741306816fe8d9631c6cb103f25  README.md
@@ -216,7 +216,7 @@ a9312d5c1761b9c9a7279fb1ccb7aad6260e8e4196f7eccb39717ed852729b61  bin/giga-commi
 cfa8e52ba0e7b1af2207c97656d956bef417f51ec464d7b36f8b13a5bf9618c9  bin/giga-watch
 12588a1d18c27a99259383ae018ebd6d21e78952e555170293b24ba8c8dfa92d  bin/github-transfer-submodules
 67914a01a7df56b8eacf1bcfbfc8b018ad9bbf7fa19050fe04db82727ed59cdf  bin/init-pnpm-submodules
-e05f37ba321fe340db3e2dbc91f84a5becc6251cba31e668db529cce3e6dcc18  bin/install-pre-push-hooks.sh
+cf303a78589f70d7e79fc0ef93d22a08efd6f6fcc083e6a0c717c1af7ae15a50  bin/install-pre-push-hooks.sh
 ff0b32db9305827e221f081d664698e6bc7fd9c583ee67c09dd9cbee77396df1  bin/olympia
 e24b07d784c4ff69b1791a742def669b6c0dedffcd3ac94e36ce76af1444c8d3  bin/openblock_auth
 5599a66fb65b4077db7df272b4211427679bccd52fb0006251dabed47254c3f6  bin/opencode-command
@@ -481,11 +481,6 @@ caa8b223dab38d0eeccc14b808b527fb8ae365cc67ce59ce7d7d8973077135bd  hormuz_clock_v
 1b1ba1fce1b524c89cfa1d1748d66512f88aa490d5fa7e4f568df556af195390  hormuz_clock_v4_bundle/reports/bluesky_thread_2026-03-19.md
 0200a754baf09d77ae7b8623a55951089dd3726f1eb7a353818af3dda0d82128  hormuz_clock_v4_bundle/reports/lyrics_2026-03-19.md
 4ae6ee2366255b690f4f3df26793f19ef94124866defdb432f6ce2f1097534f3  hormuz_clock_v4_bundle/reports/v4_snapshot.md
-e343b3dbc636bdf5f02ac7305918e30e3244c100722721ebf3d5ac036b2b2ac8  hormuz_clock_v4_bundle/scripts/__pycache__/export_threat_radar_packet.cpython-312.pyc
-bd85f70c04bfe589228720da7d20bed58d619a3f5b615812d965a2bf9cd7a13e  hormuz_clock_v4_bundle/scripts/__pycache__/extract_signals.cpython-312.pyc
-8ead2f5c7524e66f0052721db95bcbbed9a4fc3b65249f86336428b4c0a687c8  hormuz_clock_v4_bundle/scripts/__pycache__/generate_v4_clock.cpython-312.pyc
-6ca8b4b158e9be0bbc2d978d8c343bdd98f04e641174bcb25d54fab3e3045835  hormuz_clock_v4_bundle/scripts/__pycache__/render_snapshot_report.cpython-312.pyc
-88ba3c2fff3ed6754443e7bb3a33fa2a2428c23edd6f400fd73e83ec1db9f295  hormuz_clock_v4_bundle/scripts/__pycache__/update_state.cpython-312.pyc
 6f91480f8b7889844f433de491d0fd36cf29e3765f04d538336ef45b23b7697d  hormuz_clock_v4_bundle/scripts/animate_transition.py
 8f38114b0550e9ba11cb753e64fd70ca6aaea971d1ef3af0104db247a981f4f8  hormuz_clock_v4_bundle/scripts/export_threat_radar_packet.py
 066a1ca11618f6bb472a7ac0b012689417bd02c045f94c2c870750f43f6050ce  hormuz_clock_v4_bundle/scripts/extract_signals.py
@@ -534,50 +529,6 @@ e5ab1bc9bc966f7be64301a5e25f0787922637c4bdfe77007eb644f8ca26981b  labs/parameter
 b6cf03f548c5a96bcdfdc8d1452aacc8bb29f4606d5d8a50d8d88d6fce18d2b0  labs/parameter-golf-ant-lab/presence/state.json
 dccaa61e36f97352e9ac237868abc4ef82f97e2038c6c6acd52c4e52174d26a5  labs/parameter-golf-ant-lab/presence/suggestions/step-0001.json
 45333459f04014d3df4bbdc52a51a30cf1a302473d6344b264d88a5821b6ad27  labs/parameter-golf-ant-lab/presence/suggestions/step-0001.md
-a25d42c6ea19d67d89e5072d6efcded10995985dcf8b84f3f6c1beb22a2e2db0  labs/parameter-golf-ant-lab/runs/board/2026-03-19T17-29-29.228Z-5340081a0d53/plan.json
-09b681534442ffb3ebdcb67141cddfef77be4fe4906ec2796d3b0dcebcc2c136  labs/parameter-golf-ant-lab/runs/board/2026-03-19T17-29-29.228Z-5340081a0d53/result.json
-a25d42c6ea19d67d89e5072d6efcded10995985dcf8b84f3f6c1beb22a2e2db0  labs/parameter-golf-ant-lab/runs/board/2026-03-19T19-08-42.440Z-5340081a0d53/plan.json
-4fbce413e4c3eb6c84e1f7b4f0114bbcf673460e93faabceb1e15bcfedf97624  labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-32-27.830Z-5340081a0d53/plan.json
-7d2754226b03c190d9fb24ff8bfaf50733ab2535bd4050cf9d3331ad86a86eeb  labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-34-54.474Z-5340081a0d53/final_model.int8.ptz
-b6875130f79f9ce9e72b4ee6761eae34360d4a638914e5aab0956bff45461dba  labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-34-54.474Z-5340081a0d53/final_model.pt
-115ef356f58496dcbd1fd8d88b339db7530ee30c50c590aed61f32b8b14fee1b  labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-34-54.474Z-5340081a0d53/plan.json
-96613cf348fcae9c304db08637fba2ad75f452c29cdafc0bc22dc430f2cc6ee3  labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-34-54.474Z-5340081a0d53/result.json
-90fe081934b7e6dd5c47b503eddce35f19982d986bc540c1daa04757437d1722  labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-40-19.381Z-29b0fcb6da31/final_model.int8.ptz
-d829cbbcd968e5d042e8dbb1cf949d58ea9ee26b205af96c599eed81a3179d43  labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-40-19.381Z-29b0fcb6da31/final_model.pt
-36316923239acf834006c8021d9f20142f33e573d2b3fe4e5e2eddf7b3f68a1b  labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-40-19.381Z-29b0fcb6da31/plan.json
-514d9b952c66e07d70bcabfd016ac9f53d996f7c0a2ac08524123c21aec87244  labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-40-19.381Z-29b0fcb6da31/result.json
-5a29e1e00090f26530740492bd311ffd2f878bb238ed7252db5d440e2927a571  labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-45-05.059Z-de7915d3d64c/final_model.int8.ptz
-54e3f5589031647fc280bf4240b5dd44eca8b98a32af3bd14752b76445857e26  labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-45-05.059Z-de7915d3d64c/final_model.pt
-81017e75c0a7ae10a7f7a276da9d465a564fc74d11b9237e4c702dd9d5ee34a3  labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-45-05.059Z-de7915d3d64c/plan.json
-39a8e91a8972f8f82ef34d5ab96ad64483439b4973a40fee4d2da0a4040a7cec  labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-45-05.059Z-de7915d3d64c/result.json
-58fcea6bf77aac005e7bfe165942b4e62533670e9f4f5abfac6f8445d58ee270  labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-50-08.757Z-f9d65cff70d6/final_model.int8.ptz
-464b9ed8a7c09255c37892c739a2804c028f966ad2f1699219bfa09ed49692bd  labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-50-08.757Z-f9d65cff70d6/final_model.pt
-74f93a49f51248e60521bdef0b76d755f61b2e857f72f9115f45dd2ed69737bf  labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-50-08.757Z-f9d65cff70d6/plan.json
-e06df50b953bffa0d9b4a5a24ecf1c3cc604e951669f71af149c9958addf91fe  labs/parameter-golf-ant-lab/runs/board/2026-03-20T01-50-08.757Z-f9d65cff70d6/result.json
-ba8a23a52cb8395cefa5e839d12a9b3d74d4fc1971deeb10c54e41ecb122095c  labs/parameter-golf-ant-lab/runs/board/2026-03-20T16-52-29.925Z-2d0731942b8d/final_model.int8.ptz
-22f2e790efe52e1a122c983a70c3eda1f7395fc3db4bfdfd0a1fb96e5eb746a4  labs/parameter-golf-ant-lab/runs/board/2026-03-20T16-52-29.925Z-2d0731942b8d/final_model.pt
-a0bc1b124b42b8ce29ae2f6d7b7cad27c33ef4a9e39d5c26d43a3421d26fa7a0  labs/parameter-golf-ant-lab/runs/board/2026-03-20T16-52-29.925Z-2d0731942b8d/plan.json
-150993366af7d61133f1dabd31031fc881b793efcb276bcbb7390a160397f19f  labs/parameter-golf-ant-lab/runs/board/2026-03-20T16-52-29.925Z-2d0731942b8d/result.json
-2fb9e5e9ac4ed8692c656fdc88c28b60440235986832bca332b783cc52726565  labs/parameter-golf-ant-lab/runs/board/2026-03-20T17-15-38.853Z-d97a3d0f999f/final_model.int8.ptz
-90f27f718ef3c3b14d42c16e9a099aa82ddc683a12494cc9c2c3e5a6e56f3d6a  labs/parameter-golf-ant-lab/runs/board/2026-03-20T17-15-38.853Z-d97a3d0f999f/final_model.pt
-f5a58b4aa38eeb0a488f4931937ff4faa2c7f3b5f40f0032b53bddfb3c27b174  labs/parameter-golf-ant-lab/runs/board/2026-03-20T17-15-38.853Z-d97a3d0f999f/plan.json
-ead2d0810691a79899ae32b87a7dcbe131482e4f54d16e8bc30bd60ab98e289d  labs/parameter-golf-ant-lab/runs/board/2026-03-20T17-15-38.853Z-d97a3d0f999f/result.json
-a257b8179eb1a99731ddcd8dec433e18f68ab8c0b1267c2572dfe01629ef774f  labs/parameter-golf-ant-lab/runs/board/2026-03-20T17-24-30.873Z-9fbd60b89a28/final_model.int8.ptz
-fc24ab78582ada941919378aedcc7f344808299c5b8f98f9ac0497a01781827b  labs/parameter-golf-ant-lab/runs/board/2026-03-20T17-24-30.873Z-9fbd60b89a28/final_model.pt
-dcb1d63b12d33aec1a988a68c9a6bf2a620b711f0648c517c48f78810b1f34cc  labs/parameter-golf-ant-lab/runs/board/2026-03-20T17-24-30.873Z-9fbd60b89a28/plan.json
-2936cde289d3aceb4dffa8495528f852fcf1fc353797fdec0f05c3ec923f2900  labs/parameter-golf-ant-lab/runs/board/2026-03-20T17-24-30.873Z-9fbd60b89a28/result.json
-90fdcfedf12b3d22f1cfc0daccec07a641aebf3f529cd08c6035006bfa9bbe2c  labs/parameter-golf-ant-lab/runs/board/2026-03-20T17-40-53.165Z-9fbd60b89a28/final_model.int8.ptz
-e0ad1879102d6350dcafd0c9a93d98ae14e1932e3dd6d937c89a89572edff429  labs/parameter-golf-ant-lab/runs/board/2026-03-20T17-40-53.165Z-9fbd60b89a28/final_model.pt
-b3b5c78ccf991757a7240e0e05e4db26380ffc1674602e336c7313376c45d102  labs/parameter-golf-ant-lab/runs/board/2026-03-20T17-40-53.165Z-9fbd60b89a28/plan.json
-9c17b6625b2947ed72108784f9acd503b0c97abf439dbad4cf609e53ca9f1b73  labs/parameter-golf-ant-lab/runs/board/2026-03-20T17-40-53.165Z-9fbd60b89a28/result.json
-73649df6e0c337296d261d77384276cd873bad0acdfefff36715e1d17966347d  labs/parameter-golf-ant-lab/runs/board/2026-03-20T18-02-01.967Z-de7915d3d64c/final_model.int8.ptz
-f588f142557d98edb7634b201c0527f92759e3268f65754e4a2692103e48150a  labs/parameter-golf-ant-lab/runs/board/2026-03-20T18-02-01.967Z-de7915d3d64c/final_model.pt
-4cfdfb619d84701f9935d3de107c9379bd835e0a1bc30dce537a3233b118181f  labs/parameter-golf-ant-lab/runs/board/2026-03-20T18-02-01.967Z-de7915d3d64c/plan.json
-31fc4f7ebff2d58eb1842406aacb2ea814f05e4ac6735ca34888a7a2c897b899  labs/parameter-golf-ant-lab/runs/board/2026-03-20T18-02-01.967Z-de7915d3d64c/result.json
-414bfc242a0d52534ca95d982c518fe2b97dc94d1c35fd5d789cdd70eedf3bfb  labs/parameter-golf-ant-lab/runs/board/2026-03-20T18-02-02.070Z-2d0731942b8d/final_model.int8.ptz
-44d8643f9bef4d9c35d5c9b564dafe7166ed4ad2b2c05e37c91056dc54a955f5  labs/parameter-golf-ant-lab/runs/board/2026-03-20T18-02-02.070Z-2d0731942b8d/final_model.pt
-38411919ba2f1bdf678e8f4c316ab9120d91bd80b014979cfd1b3aebe877240d  labs/parameter-golf-ant-lab/runs/board/2026-03-20T18-02-02.070Z-2d0731942b8d/plan.json
-4bd980f0d9ee35b52761ac6bdc582f3e2b7bd8ee217e26ad60ecb04c70f92b13  labs/parameter-golf-ant-lab/runs/board/2026-03-20T18-02-02.070Z-2d0731942b8d/result.json
 4c124a79bbf79fd18f233dd5990b5ede2c04d368  lightyear (gitlink)
 40cc9fecf5a884995a71692ed4141cd8cb16987c  mcp-social-publisher-live (gitlink)
 ac28d24f6370e1c71b23a0c0a530501e166423f3370a7b11705316ff1cb64f1a  mcp.lith-nexus.config.lith
@@ -606,7 +557,7 @@ ba260e0abe1131241d81d9e08990d151c0fb15ea  orgs/octave-commons/lineara_conversati
 a02e160fdc7f560b58d5ab0e3ead3d30c32cc441  orgs/octave-commons/pantheon (gitlink)
 1c4a2268d36066da2b783f1c02b00b81fe2bd1f6  orgs/octave-commons/promethean (gitlink)
 0e579d2437f788072e5e66e905a5ff900f41fa0b  orgs/octave-commons/promethean-agent-system (gitlink)
-a9c07e93817d84a1db55fbe91f482bd355d1be87  orgs/octave-commons/shibboleth (gitlink)
+91ea4b80f52e383c50bb0fe715c00a536ba60191  orgs/octave-commons/shibboleth (gitlink)
 78cac7bf8aeb95c0ff66987f47ada9fbbca8714f  orgs/open-hax/agent-actors (gitlink)
 a72a9e6c18bb09ede04c8ce946ac4954e263e517  orgs/open-hax/clients (gitlink)
 81f5513d0a4c95b78b52e20549cdb3a85a02ec84  orgs/open-hax/cljs-plugin-template (gitlink)
@@ -672,7 +623,7 @@ fc97eba7d7c4fe5bf7e456f687af785b7c2ae171  orgs/open-hax/openhax (gitlink)
 1d1322b5914dff5d83a445694db1661c8b6b09523ab58e1014013b3bb4edd4f4  orgs/open-hax/plugins/AGENTS.md
 b8ae5b417ee7b394bc136b945a18bbcf2ecaad63  orgs/open-hax/plugins/codex (gitlink)
 4210d33c69af1f09c476643c7a1326ab8b958167  orgs/open-hax/privaxxy (gitlink)
-7777fb6a4b52dbaad69b9c5dce57c2e8e10dedd8  orgs/open-hax/proxx (gitlink)
+d238d351c9a812fb08044541c926f5d4fc7ed829  orgs/open-hax/proxx (gitlink)
 a0f603e755ae703d13342df467b2b7a74d9e6f07  orgs/open-hax/voxx (gitlink)
 601386e422c02e693cbafe9199c1a4abd122e69e  orgs/open-hax/workbench (gitlink)
 a9fd418e58d14bb2190c2cdf1d90ca721632a863  orgs/openai/codex (gitlink)
@@ -1514,7 +1465,7 @@ ed40d2f3929a4e32b904816c8b9dfb861c0a7db3d22076dd1e9f5f5bd179eacc  promethean (sy
 7c747cb9175b3d141885bec617ffbc7916375644caa9a77d1deabe872b4fcf2d  promethean.kanban.json
 1a72d7f32aa65dab1ac3432d5bfa9eb4775241f61777ad8de2b27d59105700d2  readmeflow-debug.js
 e85ec566aae92963ded5b66c4d4d0dbcf2a5be2925593ef25d1b24cbd32fc67e  readmeflow-debug.ts
-edc71be5e395cd721e6fad46d3a14b20f2829a517d591ccdf8959311a0f0409b  receipts.log
+984c4e1c3782cf1bbf74b12c1475e265a08b43a79a4ee5a8cd66935b2b01b56c  receipts.log
 6ab431e358dbedd9f6fa2469af55f1446311116d9efed4edf1ffe52901be700e  reconstitute-mcp/AGENTS.md
 3d0b88157a535d46ff1332d2c8fbb5990739e1dd7ae8d139b6f962e840dd7b5d  reconstitute-mcp/package.json
 d8c05c2c39e5b17d6b7e1547a0aaf9f4a75f235998a189f1a930fbf3da2de073  reconstitute-mcp/src/index.ts
@@ -2356,8 +2307,6 @@ fd0f245dfae393cfa8a11501b2fa6712365d662a7721a377db06310f2132290a  services/openp
 3fb8af7710aded1a482baf6518d01401677232298320cc47f78042d45d2855fe  services/proxx/.gitignore
 5aac8f96c0018f41973845018d9d2b1da73c1d5ea14a5cb96b006465ddb9a153  services/proxx/Caddyfile
 c4faee3fbe060df01699603b1c827f61669f867e31660f8fd3028eb8340416b9  services/proxx/README.md
-5a40c6a6dddafa75d5bd58851fac3bcdcc2eb41f04da54ee05759582f18d5446  services/proxx/db-backups/open-hax-openai-proxy-20260319T155448Z.sql.gz
-be739e5c40d4cb6a070e8584c0363f180bdf97361bcaacb6092466c33ff88f94  services/proxx/db-backups/open-hax-openai-proxy-20260320T031727Z.sql.gz
 ec65700af0c9f766794fef2bba84ca8c3088a750d29dbffe830881750993ebb2  services/proxx/docker-compose.factory-auth.override.yml
 efcf45ada1e0088efcfef93e8d2d88ea95115de66175cab0abd6ee0d6a2cbdfd  services/proxx/docker-compose.glm5.yml
 a88d0d7e67a1619e7885f06954d61562e64ec2597bb888e20cfac1b319a9c268  services/proxx/docker-compose.ssl.yml
@@ -2373,15 +2322,14 @@ d9ef92ce237813aea058ad0a8d9f1a36605b81e3392aa353622c974632e620bb  services/radar
 12b8cddc9282aa09b39ff14c229b175ce01a2d6f9557ce6a93d2cf0d168be0b5  services/radar-stack/docker-compose.yml
 fcbcde2c321e741cb04b87e3dd4e7ec687b4c6f66517af7324892e1ee6f01e62  services/radar-stack/hormuz-agent-loop.sh
 43417e7c7a0dbe2750af823a56999acf114dd0c520bd45c653f26cec74fc112a  services/radar-stack/nginx.radar-web.conf
-6956d0d7995afeef16292bc56b6912f164356ed5b03d854e8ee93b1ab1876b58  services/radar-stack/scripts/__pycache__/hormuz_cycle.cpython-312.pyc
 a484b04991721dfe5f808a29a6856cff694b2a76d5448acf65f957dd38554a4a  services/radar-stack/scripts/hormuz_cycle.py
 c7d8623afa86779b5923a2f7c579c7acc78db685c2158d6b2c2f0eaaca17daf6  services/radar-stack/watchlists/hormuz-watchlist.json
 1ec677ca5dfa8e03109866f9c069dcf96b589529  services/vivgrid-openai-proxy (gitlink)
-1b10202e64df489414d9cc1f9dfa68cea8f517cfaff8e1097373b33bfd9d35f2  services/voxx/.env.example
+99f72110f52867788460265dff25e53ef645fe9b3851bda4bf559bae49a7c111  services/voxx/.env.example
 11c7a64da154ea4d04fe40a6c70dadccac1cb168853c8c8ff6391e1a446db9fd  services/voxx/.gitignore
 63f5f3a38ecdd3c9564ccf7b3e365cf089337e55d15e6f6a71565c7d8accdefe  services/voxx/Dockerfile.compose
-80064dd82bb178e01c6a38279269a6de3715ed5f05886627ac80d05919c7d47c  services/voxx/README.md
-674bd4d5a2f91554b8704457f8006bd21702b7f71fe2f63f35a6aaea74281b23  services/voxx/compose.yaml
+8109e84107ad2f772487b84db0386ad2f9499821d14eae4b6c625946088e5bcc  services/voxx/README.md
+2a0152b1ac6e60a6d1b9a51c2c12d61278be12aa551eabd99e7074a4c6407a55  services/voxx/compose.yaml
 658fea89c0d1246e592b2e06d8093bd4e6f95d8250390f92727c0eea36877772  shadow-cljs.edn
 a67e0115f2da824b151b6f3ce060e5cb8cf09dc926ef4307dbc51de0f23ab3ce  share/applications/codex-open-hax.desktop
 1c926e380bfe6a50f40648dd9bc5de88da7271546491adf99ec72172e17df6a0  share/icons/codex-open-hax.png
@@ -2537,6 +2485,7 @@ a5bf11d83b6a2a2ceef773dedd5841862849e97b787b9acfd0d99b3bc54a8327  specs/drafts/p
 dbe335da78036e011be73797cc342be211efa1659afac9c43136a40a07520e86  specs/drafts/resume-oss-ats-audit-2026-03-17.md
 c5662241cc45baacdb7e11d42d77b137c28abda534a913a1e78437d9d52b0885  specs/drafts/resume-page-tiering-2026-03-18.md
 0d15ba202c14f8af76cf807821c07fd265dd14cf095fa4ef68c33e91480ac15e  specs/drafts/review-fixes-2026-03-14.md
+13b7a3ba496b456508841758816733a5ce361bffa66232b71b736388d22567dd  specs/drafts/root-packlimit-rewrite-and-artifact-guards-2026-03-20.md
 01a99729246be4a0e1b12e88b2836bfafcec8fa85237ee69c4c28377a51f1a7b  specs/drafts/service-devops-homes-proxx-voxx-2026-03-19.md
 a802e5ab92f5b36360ef75a6e1d65a112e693935c8a10eac2399a6d117331ae7  specs/drafts/shibboleth-refusal-precision-benchmark.md
 1b22c07d795c23af410e60c3a24f74ba049ce249ac1ce025fe5ee18ffb92caa1  specs/drafts/shibboleth-validation-pipeline.md
@@ -2584,9 +2533,9 @@ c2f2f0b9716883a98f3b1bdf344458df35b8579f61f0404eee135056002c945e  src/parameter-
 e17995f8bffa9761f74b6607a540d30be82c400281d0b916c906756f64d0ef4e  src/parameter-golf-ant-lab/cli.ts
 56d2e4fa6a6e0f87c711cc98f4da1b1571fb72be2150d6464973b1378677b2ba  src/parameter-golf-ant-lab/io.ts
 4b8ab86a8589861f9d6d1cbb6602a6024db53f5e371032ba170c81f372a36060  src/parameter-golf-ant-lab/local-run.ts
-ad8ea28ea101af00fa07e96f1a6abd95908e821bacbc4954398c90f49206c6de  src/parameter-golf-ant-lab/profiles.ts
+dae6d227a2b27cb3355e2a254b088b590d4529722cc8d24014b6a9ba94cfd8f6  src/parameter-golf-ant-lab/profiles.ts
 cc53040a4727f21cba901a1884c1b13a00753b7436435b89a5887c752d9828c1  src/parameter-golf-ant-lab/sync-signals.ts
-5d3a1cd7a53cf4dece0156fe929fd204c955bfb2d4143999bb9733477680c3d4  src/parameter-golf-ant-lab/types.ts
+a5f1309bd97ba475fd0686dfa818532d688b39130b4e14d450a7b7dbaece3ef6  src/parameter-golf-ant-lab/types.ts
 3d78bcd71e9ae78895d89bf02545097d0c68f35174b6de3b2bef202d9d543369  src/promethean/bridge/cephalon_ts.cljs
 0cd3786c456f7d5ca9c644e56b3d6b1b0adee54d2eaf9b6fc75a4fa79be570f5  src/resume-apply/README.md
 27e0970d9f5bce01947fd8e8d4e20f4d6e426fa18b40e966890b5f8816d13f3e  src/resume-apply/__tests__/cli.test.ts

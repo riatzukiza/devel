@@ -288,6 +288,111 @@ const presenceSeedStrategies: readonly StrategySeed[] = [
   }
 ];
 
+const frontierSeedStrategies: readonly StrategySeed[] = [
+  {
+    id: "int6-sliding-mlp3x",
+    label: "Int6 sliding MLP3x",
+    choices: {
+      shared_depth: "none",
+      quantization_recipe: "int6-qat",
+      eval_strategy: "sliding-window",
+      vocab_strategy: "sp1024",
+      optimizer_recipe: "normuon",
+      specialization: "norm-only",
+      artifact_interface: "outlier-protected"
+    },
+    hypothesis: "Fuse the strongest visible public motifs — int6-ish quantization, sliding-window evaluation, MLP-heavy capacity, and optimizer tuning — into one explicit frontier family.",
+    tags: ["frontier", "quantization", "sliding-window", "public-motif"],
+    priorBelief: 0.88,
+    riskLevel: "medium"
+  },
+  {
+    id: "shared-depth-rms-interface",
+    label: "Shared-depth RMS interface",
+    choices: {
+      shared_depth: "phase-conditioned-sharing",
+      quantization_recipe: "mixed-int6-fp16",
+      eval_strategy: "standard-roundtrip",
+      vocab_strategy: "sp1024",
+      optimizer_recipe: "muon-warmdown",
+      specialization: "micro-gates",
+      artifact_interface: "outlier-protected"
+    },
+    hypothesis: "Combine the research-garden seam between shared depth, extra normalization, and tiny role-specific adaptation into a compression-aware recurrent interface.",
+    tags: ["garden", "shared-depth", "normalization", "micro-specialization"],
+    priorBelief: 0.84,
+    riskLevel: "medium"
+  },
+  {
+    id: "global-codebook-backbone",
+    label: "Global codebook backbone",
+    choices: {
+      shared_depth: "depth-recurrence",
+      quantization_recipe: "global-codebook",
+      eval_strategy: "standard-roundtrip",
+      vocab_strategy: "sp1024",
+      optimizer_recipe: "muon",
+      specialization: "none",
+      artifact_interface: "codec-bank"
+    },
+    hypothesis: "Exploit recurrence twice: once in the architecture and once in the codec, amortizing storage through a shared codebook bank rather than per-tensor compression alone.",
+    tags: ["garden", "codec", "recurrence", "novel-compression"],
+    priorBelief: 0.79,
+    riskLevel: "high"
+  },
+  {
+    id: "tokenizer-head-swap",
+    label: "Tokenizer head swap",
+    choices: {
+      shared_depth: "none",
+      quantization_recipe: "int6-qat",
+      eval_strategy: "sliding-window",
+      vocab_strategy: "sp4096",
+      optimizer_recipe: "normuon",
+      specialization: "norm-only",
+      artifact_interface: "regenerated-head"
+    },
+    hypothesis: "Trade a more aggressive tokenizer/vocabulary move against a compressed or regenerated output head, following the garden's tokenizer-head co-design lane.",
+    tags: ["garden", "tokenizer", "lm-head", "co-design"],
+    priorBelief: 0.73,
+    riskLevel: "high"
+  },
+  {
+    id: "role-state-recurrence",
+    label: "Role-state recurrence",
+    choices: {
+      shared_depth: "role-state-recurrence",
+      quantization_recipe: "mixed-int6-fp16",
+      eval_strategy: "iterative-refinement",
+      vocab_strategy: "sp1024",
+      optimizer_recipe: "adaptive-schedule",
+      specialization: "persistent-role-state",
+      artifact_interface: "artifact-native"
+    },
+    hypothesis: "Specialize repeated depth through tiny persistent role state instead of storing more unique layers, borrowing the garden's role-state recurrence moonshot.",
+    tags: ["moonshot", "recurrence", "state", "novel"],
+    priorBelief: 0.69,
+    riskLevel: "high"
+  },
+  {
+    id: "artifact-native-ttt",
+    label: "Artifact-native TTT",
+    choices: {
+      shared_depth: "cross-layer-tying",
+      quantization_recipe: "int8-row",
+      eval_strategy: "ttt",
+      vocab_strategy: "byte260",
+      optimizer_recipe: "muon-swa",
+      specialization: "lens-heads",
+      artifact_interface: "artifact-native"
+    },
+    hypothesis: "Lean into evaluation-time compute and artifact-native training ideas: store less, adapt more at evaluation, and let compute stand in for artifact bytes.",
+    tags: ["ttt", "artifact-native", "eval-time-compute", "moonshot"],
+    priorBelief: 0.62,
+    riskLevel: "high"
+  }
+];
+
 const boardProfile: LabProfile = {
   version: 1,
   profileId: "board",
@@ -429,9 +534,72 @@ const presenceProfile: LabProfile = {
   ]
 };
 
+const frontierProfile: LabProfile = {
+  version: 1,
+  profileId: "frontier",
+  objective: "frontier",
+  seed: 42042,
+  evaporationRate: 0.10,
+  pheromoneDeposit: 0.50,
+  antsPerStep: 10,
+  dimensions: [
+    {
+      name: "shared_depth",
+      values: ["none", "depth-recurrence", "cross-layer-tying", "phase-conditioned-sharing", "role-state-recurrence"],
+      description: "How the model reuses or conditions depth under an artifact cap."
+    },
+    {
+      name: "quantization_recipe",
+      values: ["int8-row", "int6-qat", "mixed-int6-fp16", "bitnet-ternary", "global-codebook"],
+      description: "Compression/training recipe for the stored weights."
+    },
+    {
+      name: "eval_strategy",
+      values: ["standard-roundtrip", "sliding-window", "doc-isolated-sliding", "iterative-refinement", "ttt"],
+      description: "How evaluation-time compute is spent."
+    },
+    {
+      name: "vocab_strategy",
+      values: ["sp1024", "sp2048", "sp4096", "byte260", "bigramhash"],
+      description: "Tokenizer / vocabulary family."
+    },
+    {
+      name: "optimizer_recipe",
+      values: ["muon", "normuon", "muon-swa", "muon-warmdown", "adaptive-schedule"],
+      description: "Training dynamics / optimizer family."
+    },
+    {
+      name: "specialization",
+      values: ["none", "norm-only", "micro-gates", "lens-heads", "persistent-role-state"],
+      description: "How repeated or compact structure regains role specialization."
+    },
+    {
+      name: "artifact_interface",
+      values: ["plain-zlib", "outlier-protected", "codec-bank", "regenerated-head", "artifact-native"],
+      description: "Interface between stored artifact structure and recovered model behavior."
+    }
+  ],
+  metrics: [
+    { name: "val_bpb", direction: "minimize", weight: 0.30, baseline: 1.25, target: 1.15 },
+    { name: "bytes_total", direction: "minimize", weight: 0.15, baseline: 16000000, target: 12000000 },
+    { name: "wallclock_seconds", direction: "minimize", weight: 0.10, baseline: 600, target: 480 },
+    { name: "post_quant_gap", direction: "minimize", weight: 0.15, baseline: 0.08, target: 0.01 },
+    { name: "novelty_score", direction: "maximize", weight: 0.15, baseline: 0.2, target: 0.9 },
+    { name: "implementability", direction: "maximize", weight: 0.15, baseline: 0.2, target: 0.9 }
+  ],
+  seedStrategies: frontierSeedStrategies,
+  baseEnv: {},
+  command: "# frontier profile: conceptual search space for code-changing Parameter Golf submissions",
+  notes: [
+    "Frontier profile expands beyond current env-only knobs and is intended to synthesize public motifs, research-garden ideas, and moonshots into candidate architecture families.",
+    "Use this profile to prioritize which code-changing branches deserve implementation effort, not as a directly runnable trainer command."
+  ]
+};
+
 const builtInProfiles = new Map<string, LabProfile>([
   [boardProfile.profileId, boardProfile],
-  [presenceProfile.profileId, presenceProfile]
+  [presenceProfile.profileId, presenceProfile],
+  [frontierProfile.profileId, frontierProfile]
 ]);
 
 export const listProfiles = (): readonly LabProfile[] => Array.from(builtInProfiles.values());
