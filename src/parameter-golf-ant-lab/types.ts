@@ -1,4 +1,4 @@
-export type OptimizationObjective = "board" | "presence";
+export type OptimizationObjective = "board" | "presence" | "frontier";
 export type MetricDirection = "minimize" | "maximize";
 export type CandidateStatus = "proposed" | "evaluated";
 
