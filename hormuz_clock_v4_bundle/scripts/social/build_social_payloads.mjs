@@ -42,11 +42,14 @@ function formatAsOf(input) {
 }
 
 function branchRange(branch) {
+  if (typeof branch === 'number') return pct(branch);
   if (!branch || typeof branch !== 'object') return '?';
   return `${pct(branch.range?.low ?? 0)}-${pct(branch.range?.high ?? 0)}`;
 }
 
 function branchConfidenceLabel(branches) {
+  const numericOnly = Object.values(branches || {}).every((branch) => typeof branch === 'number');
+  if (numericOnly && Object.keys(branches || {}).length > 0) return 'model-based';
   const values = Object.values(branches || {})
     .map((branch) => Number(branch?.confidence ?? 0))
     .filter((value) => Number.isFinite(value));
