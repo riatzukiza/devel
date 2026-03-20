@@ -123,6 +123,12 @@ unique/
 .cpcache/
 .clj-kondo/
 
+# Large generated artifacts / runtime dumps
+services/*/db-backups/
+labs/*/runs/
+**/__pycache__/
+*.pyc
+
 # LSP / analysis caches
 .lsp/
 .scannerwork/
