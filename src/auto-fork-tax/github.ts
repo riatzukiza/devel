@@ -30,21 +30,35 @@ export const repoExists = async (slug: RepoSlug): Promise<boolean> => {
   return result.exitCode === 0;
 };
 
+const ownerAccountType = async (owner: string): Promise<"User" | "Organization" | null> => {
+  const result = await runCommand("gh", ["api", `users/${owner}`, "--jq", ".type"], {
+    reject: false,
+  });
+  if (result.exitCode !== 0) {
+    return null;
+  }
+  const value = result.stdout.trim();
+  return value === "User" || value === "Organization" ? value : null;
+};
+
 export const ensureFork = async (source: RepoSlug, desiredOwner: string): Promise<RepoSlug> => {
   const forkSlug: RepoSlug = { owner: desiredOwner, name: source.name };
   if (await repoExists(forkSlug)) {
     return forkSlug;
   }
 
-  await runCommand("gh", [
+  const args = [
     "repo",
     "fork",
     formatRepoName(source),
-    "--org",
-    desiredOwner,
     "--clone=false",
     "--default-branch-only",
-  ]);
+  ];
+  if ((await ownerAccountType(desiredOwner)) === "Organization") {
+    args.splice(3, 0, "--org", desiredOwner);
+  }
+
+  await runCommand("gh", args);
   return forkSlug;
 };
 
