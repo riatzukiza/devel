@@ -43,7 +43,6 @@ export const ensureFork = async (source: RepoSlug, desiredOwner: string): Promis
     "--org",
     desiredOwner,
     "--clone=false",
-    "--remote=false",
     "--default-branch-only",
   ]);
   return forkSlug;
