@@ -14,6 +14,7 @@ WORKDIR /workspace
 COPY pnpm-lock.yaml ./pnpm-lock.yaml
 RUN printf '{"name":"threat-radar-image","private":true}\n' > package.json
 RUN printf 'packages:\n  - packages/mcp-foundation\n  - packages/radar-core\n  - packages/signal-atproto\n  - services/threat-radar-mcp\n' > pnpm-workspace.yaml
+RUN pnpm add -Dw @types/node@22.10.0
 
 COPY packages/mcp-foundation/package.json packages/mcp-foundation/
 COPY packages/radar-core/package.json packages/radar-core/

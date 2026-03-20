@@ -14,6 +14,20 @@ def pct(value: float) -> str:
     return f"{round(float(value) * 100):.0f}%"
 
 
+def branch_line(name: str, value) -> str:
+    if isinstance(value, (int, float)):
+        return f"- **{name}**: {pct(value)}"
+    low = value.get('range', {}).get('low', 0)
+    high = value.get('range', {}).get('high', 0)
+    center = value.get('center', 0)
+    conf = value.get('confidence', 0)
+    label = value.get('confidence_label', '')
+    return (
+        f"- **{name}**: midpoint {pct(center)} (range {pct(low)}-{pct(high)}, "
+        f"confidence {pct(conf)}, {label})"
+    )
+
+
 lines = []
 lines.append('# Hormuz Risk Clock Snapshot')
 lines.append('')
@@ -32,18 +46,17 @@ for k, v in state['states'].items():
         )
         lines.append(f"  - Sources: {sources}")
 lines.append('')
-lines.append('## Working branch ranges (model choice, not fact)')
+if all(isinstance(v, (int, float)) for v in state['branches'].values()):
+    lines.append('## Working branch priors (model choice, not fact)')
+else:
+    lines.append('## Working branch ranges (model choice, not fact)')
 for k, v in state['branches'].items():
-    low = v.get('range', {}).get('low', 0)
-    high = v.get('range', {}).get('high', 0)
-    center = v.get('center', 0)
-    conf = v.get('confidence', 0)
-    label = v.get('confidence_label', '')
-    lines.append(
-        f"- **{k}**: midpoint {pct(center)} (range {pct(low)}-{pct(high)}, confidence {pct(conf)}, {label})"
-    )
+    lines.append(branch_line(k, v))
 lines.append('')
-lines.append('> Range note: these scenario bands overlap by design. They express model uncertainty around each branch share and are not calibrated prediction intervals.')
+if all(isinstance(v, (int, float)) for v in state['branches'].values()):
+    lines.append('> Prior note: these branch shares are explicit model choices, not calibrated forecast probabilities.')
+else:
+    lines.append('> Range note: these scenario bands overlap by design. They express model uncertainty around each branch share and are not calibrated prediction intervals.')
 branch_model = state.get('branch_model') or {}
 if branch_model:
     lines.append('')

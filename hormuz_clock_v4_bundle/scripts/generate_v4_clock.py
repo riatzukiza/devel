@@ -144,19 +144,32 @@ for key, value in state['states'].items():
 
 box3 = FancyBboxPatch((760, 395), 590, 170, boxstyle='round,pad=0.02,rounding_size=10', linewidth=1.6, edgecolor='black', facecolor='white')
 ax.add_patch(box3)
-ax.text(780, 535, 'Working branch ranges (band = range, tick = midpoint)', fontsize=13, fontweight='bold', ha='left')
+numeric_branches = all(isinstance(branch, (int, float)) for _, branch in branches)
+ax.text(
+    780,
+    535,
+    'Working branch priors (tick = share)' if numeric_branches else 'Working branch ranges (band = range, tick = midpoint)',
+    fontsize=13,
+    fontweight='bold',
+    ha='left',
+)
 for i, (name, branch) in enumerate(branches):
     y = 480 - i * 38
-    low = float(branch.get('range', {}).get('low', 0.0))
-    high = float(branch.get('range', {}).get('high', 0.0))
-    center = float(branch.get('center', 0.0))
-    confidence = float(branch.get('confidence', 0.0))
+    if isinstance(branch, (int, float)):
+        low = high = center = float(branch)
+        confidence = 0.0
+    else:
+        low = float(branch.get('range', {}).get('low', 0.0))
+        high = float(branch.get('range', {}).get('high', 0.0))
+        center = float(branch.get('center', 0.0))
+        confidence = float(branch.get('confidence', 0.0))
     ax.text(780, y, name, fontsize=11, ha='left', va='center')
     ax.add_patch(Rectangle((960, y - 8), 240, 16, linewidth=1.0, edgecolor='black', facecolor='white'))
     ax.add_patch(Rectangle((960 + (240 * low), y - 8), max(2, 240 * (high - low)), 16, linewidth=0, facecolor='0.75'))
     marker_x = 960 + (240 * center)
     ax.add_patch(Rectangle((marker_x - 2, y - 11), 4, 22, linewidth=0, facecolor='0.20'))
-    ax.text(1210, y, f"{pct(low)}-{pct(high)} • c{pct(confidence)}", fontsize=10, ha='left', va='center')
+    suffix = pct(center) if isinstance(branch, (int, float)) else f"{pct(low)}-{pct(high)} • c{pct(confidence)}"
+    ax.text(1210, y, suffix, fontsize=10, ha='left', va='center')
 
 box4 = FancyBboxPatch((55, 35), 1295, 78, boxstyle='round,pad=0.02,rounding_size=10', linewidth=1.6, edgecolor='black', facecolor='white')
 ax.add_patch(box4)
@@ -178,8 +191,8 @@ for d in [0, 30, 90, 180, 270, 360, 450]:
     ax.text(x, bar_y - 12, f'{d}', ha='center', va='top', fontsize=8)
 
 branch_model = state.get('branch_model', {})
-branch_note = branch_model.get('version', 'manual ranges')
-ax.text(700, 12, f'v4: dynamic signal wedges + buffer-burn arcs + separate 450d bar + state snapshot + branch ranges via {branch_note}.', ha='center', va='bottom', fontsize=8)
+branch_note = branch_model.get('version', 'manual priors' if numeric_branches else 'manual ranges')
+ax.text(700, 12, f'v4: dynamic signal wedges + buffer-burn arcs + separate 450d bar + state snapshot + branch {"priors" if numeric_branches else "ranges"} via {branch_note}.', ha='center', va='bottom', fontsize=8)
 out_path.parent.mkdir(parents=True, exist_ok=True)
 plt.savefig(out_path, bbox_inches='tight')
 print(out_path)

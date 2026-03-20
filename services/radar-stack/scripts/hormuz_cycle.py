@@ -52,7 +52,7 @@ def api_request(method: str, path: str, payload: dict[str, Any] | None = None, *
         method,
         f"{RADAR_API_URL}{path}",
         headers={
-            "Authorization": f"Bearer {RADAR_ADMIN_AUTH_KEY}",
+            "x-admin-auth-key": RADAR_ADMIN_AUTH_KEY,
             "Content-Type": "application/json",
         },
         json=payload,
@@ -97,6 +97,8 @@ def ensure_radar() -> dict[str, Any]:
 
 
 def run_bundle_pipeline() -> dict[str, Any]:
+    (BUNDLE_ROOT / "reports").mkdir(parents=True, exist_ok=True)
+    (BUNDLE_ROOT / "assets").mkdir(parents=True, exist_ok=True)
     run_command(["python3", "scripts/extract_signals.py"], BUNDLE_ROOT)
     run_command(["python3", "scripts/update_state.py"], BUNDLE_ROOT)
     report = run_command(["python3", "scripts/render_snapshot_report.py"], BUNDLE_ROOT)
