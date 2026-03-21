@@ -51,7 +51,8 @@
     "reconstitute": "tsx reconstitute.ts",
     "generate-ecosystem": "npx shadow-cljs release clobber",
     "docker:stack": "node scripts/docker-stack.mjs",
-    "docker:stack:list": "node scripts/docker-stack.mjs list"
+    "docker:stack:list": "node scripts/docker-stack.mjs list",
+    "github:eta-mu:rollout": "tsx src/github/eta-mu-rollout.ts"
   },
   "bin": {
     "octavia": "dist/octavia/index.js"
