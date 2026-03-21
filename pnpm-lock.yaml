@@ -5221,73 +5221,6 @@ importers:
         specifier: ^5.4.5
         version: 5.9.3
 
-  services/open-hax-openai-proxy:
-    dependencies:
-      '@fastify/cookie':
-        specifier: ^11.0.2
-        version: 11.0.2
-      chromadb:
-        specifier: ^3.2.2
-        version: 3.2.2
-      cors:
-        specifier: ^2.8.6
-        version: 2.8.6
-      express:
-        specifier: ^5.2.1
-        version: 5.2.1
-      fastify:
-        specifier: ^4.27.0
-        version: 4.29.1
-      postgres:
-        specifier: ^3.4.8
-        version: 3.4.8
-      zod:
-        specifier: ^4.3.6
-        version: 4.3.6
-    devDependencies:
-      '@types/cors':
-        specifier: ^2.8.19
-        version: 2.8.19
-      '@types/express':
-        specifier: ^5.0.6
-        version: 5.0.6
-      '@types/node':
-        specifier: ^22.10.0
-        version: 22.19.1
-      '@types/react':
-        specifier: ^18.3.5
-        version: 18.3.26
-      '@types/react-dom':
-        specifier: ^18.3.0
-        version: 18.3.7(@types/react@18.3.26)
-      '@vitejs/plugin-react':
-        specifier: ^4.3.4
-        version: 4.7.0(vite@5.4.21(@types/node@22.19.1))
-      imapflow:
-        specifier: ^1.2.13
-        version: 1.2.15
-      playwright:
-        specifier: ^1.58.2
-        version: 1.58.2
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-      react-router-dom:
-        specifier: ^6.30.1
-        version: 6.30.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      tsx:
-        specifier: ^4.20.6
-        version: 4.20.6
-      typescript:
-        specifier: ^5.6.3
-        version: 5.9.3
-      vite:
-        specifier: ^5.4.10
-        version: 5.4.21(@types/node@22.19.1)
-
   services/opencode-compat:
     dependencies:
       fastify:
@@ -7037,9 +6970,6 @@ packages:
 
   '@fastify/busboy@3.2.0':
     resolution: {integrity: sha512-m9FVDXU3GT2ITSe0UaMA5rU3QkfC/UXtCU8y0gSN/GugTqtVldOBWIB5V6V3sbmenVZUIpU6f+mPEO2+m5iTaA==}
-
-  '@fastify/cookie@11.0.2':
-    resolution: {integrity: sha512-GWdwdGlgJxyvNv+QcKiGNevSspMQXncjMZ1J8IvuDQk0jvkzgWWZFNC2En3s+nHndZBGV8IbLwOI/sxCZw/mzA==}
 
   '@fastify/cookie@9.4.0':
     resolution: {integrity: sha512-Th+pt3kEkh4MQD/Q2q1bMuJIB5NX/D5SwSpOKu3G/tjoGbwfpurIMJsWSPS0SJJ4eyjtmQ8OipDQspf8RbUOlg==}
@@ -9640,9 +9570,6 @@ packages:
     resolution: {integrity: sha512-nrUSn7hzt7J6JWgWGz78ZYI8wj+gdIJdk0Ynjpp8l+trkn58Uqsf6RYrYkEK+3X18EX+TNdtJI0WxAtc+L84SQ==}
     hasBin: true
 
-  '@zone-eu/mailsplit@5.4.8':
-    resolution: {integrity: sha512-eEyACj4JZ7sjzRvy26QhLgKEMWwQbsw1+QZnlLX+/gihcNH07lVPOcnwf5U6UAL7gkc//J3jVd76o/WS+taUiA==}
-
   JSONStream@1.3.5:
     resolution: {integrity: sha512-E+iruNOY8VV9s4JEbe1aNEm6MiszPRr/UfcHMz0TQh1BXSxHK+ASV1R6W4HpjBhSeS+54PIsAMCBmwD06LLsqQ==}
     hasBin: true
@@ -11828,10 +11755,6 @@ packages:
     resolution: {integrity: sha512-Q0n9HRi4m6JuGIV1eFlmvJB7ZEVxu93IrMyiMsGC0lrMJMWzRgx6WGquyfQgZVb31vhGgXnfmPNNXmxnOkRBrg==}
     engines: {node: '>= 0.8'}
 
-  encoding-japanese@2.2.0:
-    resolution: {integrity: sha512-EuJWwlHPZ1LbADuKTClvHtwbaFn4rOD+dRAbWysqEOXRc2Uui0hJInNJrsdH0c+OhJA4nrCBdSkW4DD5YxAo6A==}
-    engines: {node: '>=8.10.0'}
-
   encoding@0.1.13:
     resolution: {integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==}
 
@@ -13121,9 +13044,6 @@ packages:
   image-q@4.0.0:
     resolution: {integrity: sha512-PfJGVgIfKQJuq3s0tTDOKtztksibuUEbJQIYT3by6wctQo+Rdlh7ef4evJ5NCdxY4CfMbvFkocEwbl4BF8RlJw==}
 
-  imapflow@1.2.15:
-    resolution: {integrity: sha512-sYpvo7P6TRjjv1sr9Q+ObQH3TKmMwaTIuRx0VQNZ7gwRybB3HRlM+JupeBVp1WKi3Ag8VrKbXFpAUO9v1MrwDg==}
-
   import-fresh@3.3.1:
     resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
     engines: {node: '>=6'}
@@ -13790,15 +13710,6 @@ packages:
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
-
-  libbase64@1.3.0:
-    resolution: {integrity: sha512-GgOXd0Eo6phYgh0DJtjQ2tO8dc0IVINtZJeARPeiIJqge+HdsWSuaDTe8ztQ7j/cONByDZ3zeB325AHiv5O0dg==}
-
-  libmime@5.3.7:
-    resolution: {integrity: sha512-FlDb3Wtha8P01kTL3P9M+ZDNDWPKPmKHWaU/cG/lg5pfuAwdflVpZE+wm9m7pKmC5ww6s+zTxBKS1p6yl3KpSw==}
-
-  libqp@2.1.1:
-    resolution: {integrity: sha512-0Wd+GPz1O134cP62YU2GTOPNA7Qgl09XwCqM5zpBv87ERCXdfDtyKXvV7c9U22yWJh44QZqBocFnXN11K96qow==}
 
   libsodium-wrappers@0.7.15:
     resolution: {integrity: sha512-E4anqJQwcfiC6+Yrl01C1m8p99wEhLmJSs0VQqST66SbQXXBoaJY0pF4BNjRYa/sOQAxx6lXAaAFIlx+15tXJQ==}
@@ -14769,10 +14680,6 @@ packages:
     resolution: {integrity: sha512-Y4jr/8SRS5hzEdZ7SGuvZGwfORvNsSsNRwDXx5WisiqzsVfeftDvRgfeqWNgZvWSJbgubTRVRYBzK6UO+ErqjA==}
     engines: {node: '>=12'}
 
-  nodemailer@8.0.2:
-    resolution: {integrity: sha512-zbj002pZAIkWQFxyAaqoxvn+zoIwRnS40hgjqTXudKOOJkiFFgBeNqjgD3/YCR12sZnrghWYBY+yP1ZucdDRpw==}
-    engines: {node: '>=6.0.0'}
-
   nodemon@3.1.11:
     resolution: {integrity: sha512-is96t8F/1//UHAjNPHpbsNY46ELPpftGUoSVNXwUfMk/qdjSylYrWSu1XavVTBOn526kFiOR733ATgNBCQyH0g==}
     engines: {node: '>=10'}
@@ -15382,15 +15289,8 @@ packages:
   pino-abstract-transport@2.0.0:
     resolution: {integrity: sha512-F63x5tizV6WCh4R6RHyi2Ml+M70DNRXt/+HANowMflpgGFMAym/VKm6G7ZOQRjqN7XbGxK1Lg9t6ZrtzOaivMw==}
 
-  pino-abstract-transport@3.0.0:
-    resolution: {integrity: sha512-wlfUczU+n7Hy/Ha5j9a/gZNy7We5+cXp8YL+X+PG8S0KXxw7n/JXA3c46Y0zQznIJ83URJiwy7Lh56WLokNuxg==}
-
   pino-std-serializers@7.0.0:
     resolution: {integrity: sha512-e906FRY0+tV27iq4juKzSYPbUj2do2X2JX4EzSca1631EB2QJQUqGbDuERal7LCtOpxl6x3+nvo9NPZcmjkiFA==}
-
-  pino@10.3.1:
-    resolution: {integrity: sha512-r34yH/GlQpKZbU1BvFFqOjhISRo1MNx1tWYsYvmj6KIRHSPMT2+yHOEb1SG6NMvRoHRF0a07kCOox/9yakl1vg==}
-    hasBin: true
 
   pino@9.14.0:
     resolution: {integrity: sha512-8OEwKp5juEvb/MjpIc4hjqfgCNysrS94RIOMXYvpYCdm/jglrKEiAYmiumbmGhCvs+IcInsphYDFwqrjr7398w==}
@@ -17338,10 +17238,6 @@ packages:
 
   thread-stream@3.1.0:
     resolution: {integrity: sha512-OqyPZ9u96VohAyMfJykzmivOrY2wfMSf3C5TtFJVgN+Hm6aj+voFhlK+kZEIv2FBh1X6Xp3DlnCOfEQ3B2J86A==}
-
-  thread-stream@4.0.0:
-    resolution: {integrity: sha512-4iMVL6HAINXWf1ZKZjIPcz5wYaOdPhtO8ATvZ+Xqp3BTdaqtAwQkNmKORqcIo5YkQqGXq5cwfswDwMqqQNrpJA==}
-    engines: {node: '>=20'}
 
   three@0.177.0:
     resolution: {integrity: sha512-EiXv5/qWAaGI+Vz2A+JfavwYCMdGjxVsrn3oBwllUoqYeaBO75J63ZfyaQKoiLrqNHoTlUc6PFgMXnS0kI45zg==}
@@ -20475,11 +20371,6 @@ snapshots:
   '@fastify/busboy@2.1.1': {}
 
   '@fastify/busboy@3.2.0': {}
-
-  '@fastify/cookie@11.0.2':
-    dependencies:
-      cookie: 1.0.2
-      fastify-plugin: 5.1.0
 
   '@fastify/cookie@9.4.0':
     dependencies:
@@ -23841,18 +23732,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@22.19.1))':
-    dependencies:
-      '@babel/core': 7.28.5
-      '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.28.5)
-      '@babel/plugin-transform-react-jsx-source': 7.27.1(@babel/core@7.28.5)
-      '@rolldown/pluginutils': 1.0.0-beta.27
-      '@types/babel__core': 7.20.5
-      react-refresh: 0.17.0
-      vite: 5.4.21(@types/node@22.19.1)
-    transitivePeerDependencies:
-      - supports-color
-
   '@vitejs/plugin-react@4.7.0(vite@5.4.21(@types/node@24.10.1))':
     dependencies:
       '@babel/core': 7.28.5
@@ -24053,12 +23932,6 @@ snapshots:
   '@zkochan/js-yaml@0.0.7':
     dependencies:
       argparse: 2.0.1
-
-  '@zone-eu/mailsplit@5.4.8':
-    dependencies:
-      libbase64: 1.3.0
-      libmime: 5.3.7
-      libqp: 2.1.1
 
   JSONStream@1.3.5:
     dependencies:
@@ -26672,8 +26545,6 @@ snapshots:
 
   encodeurl@2.0.0: {}
 
-  encoding-japanese@2.2.0: {}
-
   encoding@0.1.13:
     dependencies:
       iconv-lite: 0.6.3
@@ -28559,18 +28430,6 @@ snapshots:
     dependencies:
       '@types/node': 16.9.1
 
-  imapflow@1.2.15:
-    dependencies:
-      '@zone-eu/mailsplit': 5.4.8
-      encoding-japanese: 2.2.0
-      iconv-lite: 0.7.2
-      libbase64: 1.3.0
-      libmime: 5.3.7
-      libqp: 2.1.1
-      nodemailer: 8.0.2
-      pino: 10.3.1
-      socks: 2.8.7
-
   import-fresh@3.3.1:
     dependencies:
       parent-module: 1.0.1
@@ -29309,17 +29168,6 @@ snapshots:
     dependencies:
       prelude-ls: 1.2.1
       type-check: 0.4.0
-
-  libbase64@1.3.0: {}
-
-  libmime@5.3.7:
-    dependencies:
-      encoding-japanese: 2.2.0
-      iconv-lite: 0.6.3
-      libbase64: 1.3.0
-      libqp: 2.1.1
-
-  libqp@2.1.1: {}
 
   libsodium-wrappers@0.7.15:
     dependencies:
@@ -30609,8 +30457,6 @@ snapshots:
     dependencies:
       '@babel/parser': 7.28.5
 
-  nodemailer@8.0.2: {}
-
   nodemon@3.1.11:
     dependencies:
       chokidar: 3.6.0
@@ -31327,25 +31173,7 @@ snapshots:
     dependencies:
       split2: 4.2.0
 
-  pino-abstract-transport@3.0.0:
-    dependencies:
-      split2: 4.2.0
-
   pino-std-serializers@7.0.0: {}
-
-  pino@10.3.1:
-    dependencies:
-      '@pinojs/redact': 0.4.0
-      atomic-sleep: 1.0.0
-      on-exit-leak-free: 2.1.2
-      pino-abstract-transport: 3.0.0
-      pino-std-serializers: 7.0.0
-      process-warning: 5.0.0
-      quick-format-unescaped: 4.0.4
-      real-require: 0.2.0
-      safe-stable-stringify: 2.5.0
-      sonic-boom: 4.2.0
-      thread-stream: 4.0.0
 
   pino@9.14.0:
     dependencies:
@@ -31397,7 +31225,8 @@ snapshots:
 
   playwright-core@1.58.1: {}
 
-  playwright-core@1.58.2: {}
+  playwright-core@1.58.2:
+    optional: true
 
   playwright@1.58.1:
     dependencies:
@@ -31410,6 +31239,7 @@ snapshots:
       playwright-core: 1.58.2
     optionalDependencies:
       fsevents: 2.3.2
+    optional: true
 
   plist@3.1.0:
     dependencies:
@@ -33934,10 +33764,6 @@ snapshots:
       any-promise: 1.3.0
 
   thread-stream@3.1.0:
-    dependencies:
-      real-require: 0.2.0
-
-  thread-stream@4.0.0:
     dependencies:
       real-require: 0.2.0
 

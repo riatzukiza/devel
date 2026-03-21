@@ -34,6 +34,24 @@ If you do not need Factory auth mounts, omit the override file.
 
 Optional factory-auth secret mounts live in `docker-compose.factory-auth.override.yml`; include that file only when you have the matching host paths/env vars.
 
+## Host fleet dashboard
+
+The proxx web console now includes a **Hosts** page for multi-host ops.
+
+Runtime requirements:
+- `docker.sock` is mounted read-only into the proxx container so it can enumerate local containers
+- the runtime directory is mounted read-only at `/workspace/runtime-repo` so the API can parse the active `Caddyfile`
+
+Recommended env on `ussy.promethean.rest`:
+
+```bash
+HOST_DASHBOARD_SELF_ID=ussy
+HOST_DASHBOARD_TARGETS_JSON=[{"id":"ussy","label":"ussy.promethean.rest","baseUrl":"https://ussy.promethean.rest"},{"id":"ussy3","label":"ussy3.promethean.rest","baseUrl":"https://ussy3.promethean.rest","authTokenEnv":"HOST_DASHBOARD_USSY3_TOKEN"}]
+HOST_DASHBOARD_USSY3_TOKEN=<staging-proxy-auth-token>
+```
+
+If a future host is not reachable yet, keep it in `HOST_DASHBOARD_TARGETS_JSON` anyway — the page will render an error card instead of disappearing the host.
+
 ## Root stack wrapper
 From `/home/err/devel`:
 ```bash

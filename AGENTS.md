@@ -41,6 +41,20 @@ Multi-repository development workspace with git submodules organized under `orgs
 - Nx for affected detection and workspace automation.
 - Rust in `orgs/openai/codex`.
 
+## Deployment Semantics
+- When the user says `Deploy X`, interpret it as: inspect the target project and, if needed, stand up the full local -> PR -> staging -> PR -> prod delivery flow rather than doing a one-off manual deploy.
+- Default Promethean naming convention:
+  - staging: `staging.<service-name>.promethean.rest`
+  - production: `<service-name>.promethean.rest`
+- Default DNS auth source: `CLOUD_FLARE_PROMETHEAN_DOT_REST_DNS_ZONE_TOKEN`.
+- Allowed base hosts for Promethean service placement:
+  - `ussy.promethean.rest`
+  - `ussy2.promethean.rest`
+  - `ussy3.promethean.rest`
+  - `big.ussy.promethean.rest`
+- Prefer the deploy skills `promethean-service-deploy`, `promethean-host-slotting`, `promethean-rest-dns`, and `pr-promotion-workflows` for this flow.
+- The workspace command template `.opencode/commands/deploy-promethean-service.md` mirrors this contract for future-agent discovery.
+
 ## SKILLS
 
 The following skills are available in this workspace. They are organized by category.
@@ -60,6 +74,9 @@ Protocol to recover from Clojure/Script syntax errors, specifically bracket mism
 
 #### apology-action-protocol
 Protocol to stop apology loops and focus on verified fixes.
+
+#### atproto-auth-standardization
+Standardize human login, service identity, and inter-service auth around AT Protocol DIDs and Bluesky-backed one-time sign-in while retiring host-local static secrets.
 
 #### break-edit-loop
 Protocol to break out of repetitive, failing edit loops by forcing analysis over action.
@@ -99,6 +116,9 @@ Create or revise skills so they are reusable, scoped, and load correctly in Open
 
 #### skill-optimizing
 Improve existing or new skills using the workspace optimization guide and template checks for clarity, scope, and reliability
+
+#### passwords-csv-browser-auth
+Use local ignored `passwords.csv` exports to authenticate browser automation safely without printing or committing secrets.
 
 #### social-publish-bluesky
 Turn the latest Hormuz clock snapshot into a concise Bluesky post or thread with dry-run-first behavior.
@@ -143,6 +163,18 @@ Protocol to ensure safe git operations and avoid detached HEAD or dirty commits.
 
 #### github-integration
 Perform GitHub operations across all tracked repositories in orgs/**, including issue/PR management, repository synchronization, and automation workflows
+
+#### pr-promotion-workflows
+Set up PR-based branch promotion workflows with tiered CI gates, staging/main deploy hooks, and explicit GitHub branch-protection follow-through
+
+#### promethean-host-slotting
+Choose staging and production Promethean host slots, subdomains, runtime paths, and compose-project names from the allowed base-host pool
+
+#### promethean-rest-dns
+Create or update *.promethean.rest DNS A records through Cloudflare by copying current allowed base-host IPs while preserving unrelated zone records
+
+#### promethean-service-deploy
+Interpret `Deploy X` as bootstrapping or repairing a full local -> PR -> staging -> PR -> prod Promethean deployment flow with DNS, GitHub automation, and live validation
 
 #### submodule-ops
 Make safe, consistent changes in a workspace with many git submodules under orgs/**

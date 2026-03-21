@@ -13,6 +13,12 @@ Container-first deployment stack for the live Hormuz / threat-radar system on `u
 - `fork-tales-weaver` — Fork Tales crawler / web graph weaver
 - `hormuz-agent` — recurring Hormuz refresh + packet submitter
 
+The recurring Hormuz cycle now pulls from three planes before reclustering/reduction:
+
+- Hormuz bundle packet export
+- social collection (Bluesky + Reddit)
+- Fork Tales weaver crawler status/domain/node collection
+
 ## Bring-up
 
 ```bash

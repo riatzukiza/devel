@@ -23,6 +23,10 @@ services:
       PUBLIC_BASE_URL: https://radar.promethean.rest
       ADMIN_AUTH_KEY: ${RADAR_ADMIN_AUTH_KEY}
       DATABASE_URL: postgresql://threat_radar:threat_radar@radar-db:5432/threat_radar
+      REDIS_URL: redis://redis:6379
+      JETSTREAM_ENABLED: ${JETSTREAM_ENABLED:-true}
+      JETSTREAM_URL: ${JETSTREAM_URL:-wss://jetstream2.us-east.bsky.network/subscribe}
+      ATPROTO_SERVICE: ${ATPROTO_SERVICE:-https://public.api.bsky.app}
       ALLOW_UNAUTH_LOCAL: "true"
       FEDERATION_INSTANCE_NAME: radar.promethean.rest
     ports:

@@ -1,0 +1,316 @@
+{
+  "generatedAt": "2026-03-20T20:04:12.580Z",
+  "profileId": "frontier",
+  "objective": "frontier",
+  "step": 1,
+  "candidates": [
+    {
+      "id": "d0e5633d4f8d",
+      "createdAt": "2026-03-20T20:04:12.580Z",
+      "step": 1,
+      "choices": {
+        "shared_depth": "none",
+        "quantization_recipe": "int6-qat",
+        "eval_strategy": "sliding-window",
+        "vocab_strategy": "sp1024",
+        "optimizer_recipe": "normuon",
+        "specialization": "norm-only",
+        "artifact_interface": "outlier-protected"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.9000000000000001,
+      "priorScore": 1,
+      "compositeScore": 0.8333333333333334,
+      "strategyId": "int6-sliding-mlp3x",
+      "strategyLabel": "Int6 sliding MLP3x",
+      "hypothesis": "Fuse the strongest visible public motifs — int6-ish quantization, sliding-window evaluation, MLP-heavy capacity, and optimizer tuning — into one explicit frontier family.",
+      "tags": [
+        "frontier",
+        "quantization",
+        "sliding-window",
+        "public-motif"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "RUN_ID=frontier-d0e5633d4f8d",
+      "command": "# frontier profile: conceptual search space for code-changing Parameter Golf submissions",
+      "status": "proposed"
+    },
+    {
+      "id": "4ef55db3ebcc",
+      "createdAt": "2026-03-20T20:04:12.580Z",
+      "step": 1,
+      "choices": {
+        "shared_depth": "phase-conditioned-sharing",
+        "quantization_recipe": "mixed-int6-fp16",
+        "eval_strategy": "standard-roundtrip",
+        "vocab_strategy": "sp1024",
+        "optimizer_recipe": "muon-warmdown",
+        "specialization": "micro-gates",
+        "artifact_interface": "outlier-protected"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.9000000000000001,
+      "priorScore": 1,
+      "compositeScore": 0.8333333333333334,
+      "strategyId": "shared-depth-rms-interface",
+      "strategyLabel": "Shared-depth RMS interface",
+      "hypothesis": "Combine the research-garden seam between shared depth, extra normalization, and tiny role-specific adaptation into a compression-aware recurrent interface.",
+      "tags": [
+        "garden",
+        "shared-depth",
+        "normalization",
+        "micro-specialization"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "RUN_ID=frontier-4ef55db3ebcc",
+      "command": "# frontier profile: conceptual search space for code-changing Parameter Golf submissions",
+      "status": "proposed"
+    },
+    {
+      "id": "6a6290f4bf5e",
+      "createdAt": "2026-03-20T20:04:12.580Z",
+      "step": 1,
+      "choices": {
+        "shared_depth": "depth-recurrence",
+        "quantization_recipe": "global-codebook",
+        "eval_strategy": "standard-roundtrip",
+        "vocab_strategy": "sp1024",
+        "optimizer_recipe": "muon",
+        "specialization": "none",
+        "artifact_interface": "codec-bank"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.9000000000000001,
+      "priorScore": 1,
+      "compositeScore": 0.8333333333333334,
+      "strategyId": "global-codebook-backbone",
+      "strategyLabel": "Global codebook backbone",
+      "hypothesis": "Exploit recurrence twice: once in the architecture and once in the codec, amortizing storage through a shared codebook bank rather than per-tensor compression alone.",
+      "tags": [
+        "garden",
+        "codec",
+        "recurrence",
+        "novel-compression"
+      ],
+      "riskLevel": "high",
+      "shellEnv": "RUN_ID=frontier-6a6290f4bf5e",
+      "command": "# frontier profile: conceptual search space for code-changing Parameter Golf submissions",
+      "status": "proposed"
+    },
+    {
+      "id": "7ea24448e5c3",
+      "createdAt": "2026-03-20T20:04:12.580Z",
+      "step": 1,
+      "choices": {
+        "shared_depth": "none",
+        "quantization_recipe": "int6-qat",
+        "eval_strategy": "sliding-window",
+        "vocab_strategy": "sp4096",
+        "optimizer_recipe": "normuon",
+        "specialization": "norm-only",
+        "artifact_interface": "regenerated-head"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.7980711644096181,
+      "priorScore": 0.8146748443811236,
+      "compositeScore": 0.7221382399620075,
+      "strategyId": "tokenizer-head-swap",
+      "strategyLabel": "Tokenizer head swap",
+      "hypothesis": "Trade a more aggressive tokenizer/vocabulary move against a compressed or regenerated output head, following the garden's tokenizer-head co-design lane.",
+      "tags": [
+        "garden",
+        "tokenizer",
+        "lm-head",
+        "co-design"
+      ],
+      "riskLevel": "high",
+      "shellEnv": "RUN_ID=frontier-7ea24448e5c3",
+      "command": "# frontier profile: conceptual search space for code-changing Parameter Golf submissions",
+      "status": "proposed"
+    },
+    {
+      "id": "1b5d0da13317",
+      "createdAt": "2026-03-20T20:04:12.580Z",
+      "step": 1,
+      "choices": {
+        "shared_depth": "role-state-recurrence",
+        "quantization_recipe": "mixed-int6-fp16",
+        "eval_strategy": "iterative-refinement",
+        "vocab_strategy": "sp1024",
+        "optimizer_recipe": "adaptive-schedule",
+        "specialization": "persistent-role-state",
+        "artifact_interface": "artifact-native"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.7805208134920636,
+      "priorScore": 0.7827651154401154,
+      "compositeScore": 0.7029924025974026,
+      "strategyId": "role-state-recurrence",
+      "strategyLabel": "Role-state recurrence",
+      "hypothesis": "Specialize repeated depth through tiny persistent role state instead of storing more unique layers, borrowing the garden's role-state recurrence moonshot.",
+      "tags": [
+        "moonshot",
+        "recurrence",
+        "state",
+        "novel"
+      ],
+      "riskLevel": "high",
+      "shellEnv": "RUN_ID=frontier-1b5d0da13317",
+      "command": "# frontier profile: conceptual search space for code-changing Parameter Golf submissions",
+      "status": "proposed"
+    },
+    {
+      "id": "7ac0e974e5f3",
+      "createdAt": "2026-03-20T20:04:12.580Z",
+      "step": 1,
+      "choices": {
+        "shared_depth": "cross-layer-tying",
+        "quantization_recipe": "int8-row",
+        "eval_strategy": "ttt",
+        "vocab_strategy": "byte260",
+        "optimizer_recipe": "muon-swa",
+        "specialization": "lens-heads",
+        "artifact_interface": "artifact-native"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.7324088888888889,
+      "priorScore": 0.6952888888888888,
+      "compositeScore": 0.6505066666666667,
+      "strategyId": "artifact-native-ttt",
+      "strategyLabel": "Artifact-native TTT",
+      "hypothesis": "Lean into evaluation-time compute and artifact-native training ideas: store less, adapt more at evaluation, and let compute stand in for artifact bytes.",
+      "tags": [
+        "ttt",
+        "artifact-native",
+        "eval-time-compute",
+        "moonshot"
+      ],
+      "riskLevel": "high",
+      "shellEnv": "RUN_ID=frontier-7ac0e974e5f3",
+      "command": "# frontier profile: conceptual search space for code-changing Parameter Golf submissions",
+      "status": "proposed"
+    },
+    {
+      "id": "049310e68cee",
+      "createdAt": "2026-03-20T20:04:12.580Z",
+      "step": 1,
+      "choices": {
+        "shared_depth": "cross-layer-tying",
+        "quantization_recipe": "global-codebook",
+        "eval_strategy": "ttt",
+        "vocab_strategy": "sp1024",
+        "optimizer_recipe": "adaptive-schedule",
+        "specialization": "none",
+        "artifact_interface": "plain-zlib"
+      },
+      "novelty": 0.5047619047619049,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.5785714285714286,
+      "priorScore": 0.6857142857142857,
+      "compositeScore": 0.5704761904761905,
+      "strategyId": null,
+      "strategyLabel": "free-ant≈Global codebook backbone",
+      "hypothesis": "Explore an unseeded path suggested by current pheromones and under-covered values.",
+      "tags": [
+        "free-ant"
+      ],
+      "riskLevel": "high",
+      "shellEnv": "RUN_ID=frontier-049310e68cee",
+      "command": "# frontier profile: conceptual search space for code-changing Parameter Golf submissions",
+      "status": "proposed"
+    },
+    {
+      "id": "c08db0744479",
+      "createdAt": "2026-03-20T20:04:12.580Z",
+      "step": 1,
+      "choices": {
+        "shared_depth": "depth-recurrence",
+        "quantization_recipe": "mixed-int6-fp16",
+        "eval_strategy": "iterative-refinement",
+        "vocab_strategy": "byte260",
+        "optimizer_recipe": "muon",
+        "specialization": "none",
+        "artifact_interface": "outlier-protected"
+      },
+      "novelty": 0.4523809523809524,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.562857142857143,
+      "priorScore": 0.6857142857142857,
+      "compositeScore": 0.5626190476190476,
+      "strategyId": null,
+      "strategyLabel": "free-ant≈Global codebook backbone",
+      "hypothesis": "Explore an unseeded path suggested by current pheromones and under-covered values.",
+      "tags": [
+        "free-ant"
+      ],
+      "riskLevel": "high",
+      "shellEnv": "RUN_ID=frontier-c08db0744479",
+      "command": "# frontier profile: conceptual search space for code-changing Parameter Golf submissions",
+      "status": "proposed"
+    },
+    {
+      "id": "ba05f952cb6a",
+      "createdAt": "2026-03-20T20:04:12.580Z",
+      "step": 1,
+      "choices": {
+        "shared_depth": "cross-layer-tying",
+        "quantization_recipe": "global-codebook",
+        "eval_strategy": "standard-roundtrip",
+        "vocab_strategy": "sp4096",
+        "optimizer_recipe": "muon-swa",
+        "specialization": "persistent-role-state",
+        "artifact_interface": "artifact-native"
+      },
+      "novelty": 0.39285714285714285,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.5017857142857144,
+      "priorScore": 0.6071428571428572,
+      "compositeScore": 0.506547619047619,
+      "strategyId": null,
+      "strategyLabel": "free-ant≈Global codebook backbone",
+      "hypothesis": "Explore an unseeded path suggested by current pheromones and under-covered values.",
+      "tags": [
+        "free-ant"
+      ],
+      "riskLevel": "high",
+      "shellEnv": "RUN_ID=frontier-ba05f952cb6a",
+      "command": "# frontier profile: conceptual search space for code-changing Parameter Golf submissions",
+      "status": "proposed"
+    },
+    {
+      "id": "71215beb02f3",
+      "createdAt": "2026-03-20T20:04:12.580Z",
+      "step": 1,
+      "choices": {
+        "shared_depth": "cross-layer-tying",
+        "quantization_recipe": "bitnet-ternary",
+        "eval_strategy": "doc-isolated-sliding",
+        "vocab_strategy": "bigramhash",
+        "optimizer_recipe": "normuon",
+        "specialization": "none",
+        "artifact_interface": "regenerated-head"
+      },
+      "novelty": 0.6309523809523808,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.53,
+      "priorScore": 0.5285714285714286,
+      "compositeScore": 0.49511904761904757,
+      "strategyId": null,
+      "strategyLabel": "free-ant≈Int6 sliding MLP3x",
+      "hypothesis": "Explore an unseeded path suggested by current pheromones and under-covered values.",
+      "tags": [
+        "free-ant"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "RUN_ID=frontier-71215beb02f3",
+      "command": "# frontier profile: conceptual search space for code-changing Parameter Golf submissions",
+      "status": "proposed"
+    }
+  ]
+}

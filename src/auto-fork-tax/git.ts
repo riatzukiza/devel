@@ -36,36 +36,56 @@ export const hasChanges = async (cwd: string): Promise<boolean> => {
   return (await statusPorcelain(cwd)).trim().length > 0;
 };
 
-export const listDirtySubmodules = async (root: string): Promise<readonly string[]> => {
+const topLevelSubmodulePaths = async (root: string): Promise<readonly string[]> => {
   const gitmodulesPath = path.join(root, ".gitmodules");
-  let entries: ReadonlyArray<{ readonly path: string; readonly absolutePath: string }> = [];
   try {
     const content = await fs.readFile(gitmodulesPath, "utf8");
-    entries = parseGitmodules(content).map((record) => ({
-      path: record.path,
-      absolutePath: path.resolve(root, record.path),
-    }));
+    return parseGitmodules(content).map((record) => record.path);
   } catch (error) {
-    if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
-      throw error;
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+      return [];
+    }
+    throw error;
+  }
+};
+
+export const listSnapshotCandidatePaths = async (root: string): Promise<readonly string[]> => {
+  const submodulePaths = await topLevelSubmodulePaths(root);
+  const status = await statusPorcelain(root);
+  const candidates: string[] = [];
+  for (const rawLine of status.split(/\r?\n/)) {
+    if (rawLine.trim().length === 0) {
+      continue;
+    }
+    const pathText = rawLine.slice(3).trim();
+    const normalizedPath = pathText.includes(" -> ") ? pathText.split(" -> ").at(-1) ?? pathText : pathText;
+    if (!submodulePaths.includes(normalizedPath)) {
+      candidates.push(normalizedPath);
     }
   }
-  const dirty: string[] = [];
-  for (const entry of entries) {
-    try {
-      if ((await repoRoot(entry.absolutePath)) !== path.resolve(entry.absolutePath)) {
-        dirty.push(`${entry.path} (not initialized as its own git repo)`);
-        continue;
-      }
-      if (await hasChanges(entry.absolutePath)) {
-        dirty.push(entry.path);
-      }
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      dirty.push(`${entry.path} (status unreadable: ${message})`);
+  return candidates;
+};
+
+export const hasSnapshotCandidateChanges = async (root: string): Promise<boolean> => {
+  return (await listSnapshotCandidatePaths(root)).length > 0;
+};
+
+export const listDirtySubmodules = async (root: string): Promise<readonly string[]> => {
+  const submodulePaths = await topLevelSubmodulePaths(root);
+
+  const status = await statusPorcelain(root);
+  const dirty = new Set<string>();
+  for (const rawLine of status.split(/\r?\n/)) {
+    if (rawLine.trim().length === 0) {
+      continue;
+    }
+    const pathText = rawLine.slice(3).trim();
+    const normalizedPath = pathText.includes(" -> ") ? pathText.split(" -> ").at(-1) ?? pathText : pathText;
+    if (submodulePaths.includes(normalizedPath)) {
+      dirty.add(normalizedPath);
     }
   }
-  return dirty;
+  return [...dirty].sort();
 };
 
 export const isAncestor = async (cwd: string, ancestor: string, descendant: string): Promise<boolean> => {
@@ -78,6 +98,12 @@ export const isAncestor = async (cwd: string, ancestor: string, descendant: stri
 
 export const addAll = async (cwd: string): Promise<void> => {
   await runCommand("git", ["add", "-A"], { cwd });
+};
+
+export const stageSnapshotChanges = async (cwd: string): Promise<void> => {
+  const submodulePaths = await topLevelSubmodulePaths(cwd);
+  const args = ["add", "-A", "--", ".", ...submodulePaths.map((value) => `:(exclude)${value}`)];
+  await runCommand("git", args, { cwd });
 };
 
 export const commitAll = async (cwd: string, message: string): Promise<void> => {
@@ -158,6 +184,14 @@ export const setRemoteUrl = async (cwd: string, remote: string, url: string): Pr
     return;
   }
   await runCommand("git", ["remote", "add", remote, url], { cwd });
+};
+
+export const removeRemote = async (cwd: string, remote: string): Promise<void> => {
+  const existing = await remoteByName(cwd, remote);
+  if (!existing) {
+    return;
+  }
+  await runCommand("git", ["remote", "remove", remote], { cwd });
 };
 
 export const discoverSubmodulePaths = async (root: string): Promise<readonly string[]> => {
