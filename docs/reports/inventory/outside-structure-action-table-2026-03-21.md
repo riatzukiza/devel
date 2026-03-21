@@ -4,11 +4,11 @@
 - `docs/reference/outside-structure-exception-policy.md`
 
 ## Summary counts
-- total: **27**
 - keep: **2**
-- normalize: **3**
+- normalize: **4**
 - retire: **0**
-- explicitException: **22**
+- explicitException: **21**
+- total: **27**
 
 ## Action table
 
@@ -20,9 +20,9 @@
 | `reconstitute` | root-module | **explicit-exception** | `root-tooling-exception` | Active root CLI/tooling entrypoint referenced by scripts, commands, and skills. | When the tooling home is settled and compatibility command paths can be preserved elsewhere. |
 | `reconstitute-mcp` | root-module | **normalize** | `planning-bundle` | Reads more like experimental/documented surface nested under reconstitute than a stable standalone root. | Once the MCP surface is either folded into reconstitute docs or promoted into a real package/service. |
 | `mcp-social-publisher-live` | root-module | **normalize** | `standalone-source-deploy-root-pending-placement` | Active live deploy/source root should eventually get a canonical structured home. | When its placement under packages/services/orgs is decided and live deployment is repointed. |
-| `threat-radar-deploy` | root-module | **normalize** | `standalone-source-deploy-root-pending-placement` | Active product/source root for the radar stack should not remain indefinitely ambiguous at workspace root. | When a canonical org home and runtime-home split are chosen. |
+| `threat-radar-deploy` | root-module | **normalize** | `standalone-source-deploy-root-pending-placement` | User explicitly directed that all threat-radar-related work normalize into orgs/open-hax/eta-mu-radar. | When canonical source is moved or mirrored into orgs/open-hax/eta-mu-radar and runtime/deploy references are updated. |
 | `verathar-server` | root-module | **explicit-exception** | `foreign-fork-vendor-mirror` | Currently mostly bookkeeping; no strong active integration pressure justifies a forced move. | If active product work resumes or the repo becomes more than a preserved absorbed root. |
-| `threat-radar-next-step` | root-module | **explicit-exception** | `planning-bundle` | Clearly functioning as a planning bundle rather than live source. | Once the useful content is folded back into canonical specs or the bundle becomes stale. |
+| `threat-radar-next-step` | root-module | **normalize** | `planning-bundle` | User explicitly directed that all threat-radar-related work, including planning bundles, consolidate into orgs/open-hax/eta-mu-radar. | When the useful planning/spec content is folded into orgs/open-hax/eta-mu-radar docs/specs and the standalone bundle becomes redundant. |
 | `bevy_replicon` | root-module | **explicit-exception** | `foreign-fork-vendor-mirror` | Mostly preserved through bookkeeping artifacts, not active workspace integration. | If a dedicated vendor/forks area is created or the fork ceases to matter. |
 | `egregoria` | root-module | **explicit-exception** | `foreign-fork-vendor-mirror` | Mostly preserved through bookkeeping artifacts, not active workspace integration. | If a dedicated vendor/forks area is created or the fork ceases to matter. |
 | `game_network` | root-module | **explicit-exception** | `foreign-fork-vendor-mirror` | Mostly preserved through bookkeeping artifacts, not active workspace integration. | If a dedicated vendor/forks area is created or the fork ceases to matter. |
@@ -51,13 +51,13 @@
 ### Normalize next
 - `reconstitute-mcp` — Reads more like experimental/documented surface nested under reconstitute than a stable standalone root.
 - `mcp-social-publisher-live` — Active live deploy/source root should eventually get a canonical structured home.
-- `threat-radar-deploy` — Active product/source root for the radar stack should not remain indefinitely ambiguous at workspace root.
+- `threat-radar-deploy` — User explicitly directed that all threat-radar-related work normalize into orgs/open-hax/eta-mu-radar.
+- `threat-radar-next-step` — User explicitly directed that all threat-radar-related work, including planning bundles, consolidate into orgs/open-hax/eta-mu-radar.
 
 ### Explicit exceptions
 - `pm2-clj-project` (`root-tooling-exception`) — Active workspace tooling fixture but no agreed long-term structured home yet.
 - `reconstitute` (`root-tooling-exception`) — Active root CLI/tooling entrypoint referenced by scripts, commands, and skills.
 - `verathar-server` (`foreign-fork-vendor-mirror`) — Currently mostly bookkeeping; no strong active integration pressure justifies a forced move.
-- `threat-radar-next-step` (`planning-bundle`) — Clearly functioning as a planning bundle rather than live source.
 - `bevy_replicon` (`foreign-fork-vendor-mirror`) — Mostly preserved through bookkeeping artifacts, not active workspace integration.
 - `egregoria` (`foreign-fork-vendor-mirror`) — Mostly preserved through bookkeeping artifacts, not active workspace integration.
 - `game_network` (`foreign-fork-vendor-mirror`) — Mostly preserved through bookkeeping artifacts, not active workspace integration.
@@ -79,5 +79,4 @@
 
 ## Notes
 - No current item was marked `retire` immediately because each still has either active usage, explicit planning value, or surviving bookkeeping value that should be adjudicated first.
-- The strongest normalize candidates are the active standalone source/deploy roots: `mcp-social-publisher-live` and `threat-radar-deploy`, plus the more documentation-only `reconstitute-mcp` surface.
-- The strongest keep candidates are the compatibility aliases `desktop` and `promethean`, because they still have significant active references.
+- Threat-radar-related roots now normalize toward `orgs/open-hax/eta-mu-radar` per explicit user directive.

@@ -56,3 +56,4 @@ The action table should assign one of:
 - 2026-03-21T20:06:00Z Authored `docs/reference/outside-structure-exception-policy.md` with explicit exception classes for aliases, tooling roots, standalone source/deploy roots, planning bundles, foreign forks, worktrees, foreign-org repos, private-org repos, and aggregation trees.
 - 2026-03-21T20:09:00Z Wrote a machine-readable outside-structure action table assigning `keep`, `normalize`, or `explicit-exception` across the current outside-structure set.
 - 2026-03-21T20:10:00Z Linked the exception policy from the placement contract and `AGENTS.md`, then verified the policy and action table contain the expected categories and representative paths.
+- 2026-03-21T21:48:00Z Updated the action table to reflect the new directive that all threat-radar-related roots should normalize into `orgs/open-hax/eta-mu-radar`, including the planning bundle `threat-radar-next-step`.

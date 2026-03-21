@@ -72,6 +72,7 @@ Extract the current standalone kanban implementation out of `orgs/open-hax/openh
 - ✅ Phase 6 complete: added live `github apply` label support and applied the first managed kanban labels to `open-hax/proxx`, `open-hax/openhax`, and `open-hax/codex`, while leaving `riatzukiza/TANF-app` untouched.
 - ✅ Phase 7 complete: captured the workflow as the `eta-mu-board` skill, updated Kanban-related skills to point at `packages/kanban`, and added the `bin/eta-mu-board` workspace wrapper.
 - ✅ Follow-on rollout: used `bin/eta-mu-board` to apply the remaining `open-hax/proxx` incoming / accepted / in_review labels after a dry-run-first pass.
+- ✅ Next-pass planning: produced a dry-run-only high-signal label plan for the canonical `octave-commons/promethean` queue (`blocked`, `breakdown`, `accepted`) without mutating the mirrored Promethean repos yet.
 
 ## Definition of done
 - A kanban package exists under `packages/` and is wired into the workspace.

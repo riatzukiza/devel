@@ -330,3 +330,67 @@ packages/utils:
       - orgs/riatzukiza/promethean/packages/utils
   inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
   notes: "Verified-useful Promethean extraction. Current evidence still points to internal ecosystem utility first, with canonical descendant cleanup pending."
+
+packages/radar-core:
+  kind: package
+  status: candidate-promote
+  target_org: open-hax
+  repo: eta-mu-radar
+  package_kind: foundational-library
+  confidence: high
+  canonical_home_type: existing-monorepo-package
+  canonical_descendant_candidate: orgs/open-hax/eta-mu-radar/packages/radar-core
+  extraction: consolidate-into-target-repo
+  provenance:
+    classification: direct-prototype
+    source_corpus: null
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "User-directed normalization target: all threat-radar-related work consolidates into orgs/open-hax/eta-mu-radar, making radar-core part of the eta-mu-radar package set."
+
+packages/signal-atproto:
+  kind: package
+  status: candidate-promote
+  target_org: open-hax
+  repo: eta-mu-radar
+  package_kind: signal-library
+  confidence: medium-high
+  canonical_home_type: existing-monorepo-package
+  canonical_descendant_candidate: orgs/open-hax/eta-mu-radar/packages/signal-atproto
+  extraction: consolidate-into-target-repo
+  provenance:
+    classification: direct-prototype
+    source_corpus: null
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "Part of the current radar stack dependency surface; normalize with the eta-mu-radar consolidation under open-hax."
+
+packages/signal-embed-browser:
+  kind: package
+  status: candidate-promote
+  target_org: open-hax
+  repo: eta-mu-radar
+  package_kind: signal-library
+  confidence: medium-high
+  canonical_home_type: existing-monorepo-package
+  canonical_descendant_candidate: orgs/open-hax/eta-mu-radar/packages/signal-embed-browser
+  extraction: consolidate-into-target-repo
+  provenance:
+    classification: direct-prototype
+    source_corpus: null
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "Active radar-web dependency; normalize with eta-mu-radar and remove threat-centric framing over time."
+
+packages/thread-assessment:
+  kind: package
+  status: candidate-promote
+  target_org: open-hax
+  repo: eta-mu-radar
+  package_kind: assessment-library
+  confidence: medium-high
+  canonical_home_type: existing-monorepo-package
+  canonical_descendant_candidate: orgs/open-hax/eta-mu-radar/packages/thread-assessment
+  extraction: consolidate-into-target-repo
+  provenance:
+    classification: direct-prototype
+    source_corpus: null
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "Radar-adjacent assessment package currently used in the runtime surface; normalize into eta-mu-radar under open-hax."
