@@ -1,0 +1,423 @@
+{
+  "generatedAt": "2026-03-21T19:59:56Z",
+  "scope": "Root-level outside-structure modules from the outside-structure manifest (aliases + standalone roots + root-level vendor/fork/special checkouts).",
+  "records": [
+    {
+      "path": "desktop",
+      "outsideCategory": "top-level-alias-outside-structure",
+      "activeStatus": "active-alias",
+      "referenceFileCount": 22,
+      "referenceAreaCounts": {
+        "other": 6,
+        "gitmodules": 1,
+        "opencode": 1,
+        "docs": 10,
+        "config-or-manifest": 2,
+        "receipts-or-fork-tax": 1,
+        "specs": 1
+      },
+      "sampleReferenceFiles": [
+        "\".\\316\\267\\316\\274/\\316\\240_MANIFEST.sha256\"",
+        "\".\\316\\267\\316\\274/registry.jsonl\"",
+        ".gitmodules",
+        ".opencode/skills/webring-site/SKILL.md",
+        "README.md",
+        "bin/codex-open-hax-desktop",
+        "docs/Tell me about this AI wargame study recently.md",
+        "docs/agile/reports/nested-submodule-manifest-survey.md",
+        "docs/agile/tasks/orgs-duplication-analysis-report-2025-11-06.md",
+        "docs/manifests/github-remotes-local-manifest-2025-11-06.md",
+        "docs/manifests/riatzukiza-repos-manifest-2025-11-06.md",
+        "docs/opencode-session-ses_3e34.md"
+      ],
+      "keyEvidence": [
+        "bin/codex-open-hax-desktop",
+        "share/applications/codex-open-hax.desktop",
+        "docs/manifests/riatzukiza-repos-manifest-2025-11-06.md"
+      ],
+      "whyUsed": "Root alias for orgs/riatzukiza/desktop still supports launcher, desktop-entry, and documentation/manifests that refer to the short root path.",
+      "suggestedNextDecision": "Keep as an explicit operator convenience alias or migrate launcher/docs to orgs/riatzukiza/desktop and retire the alias later."
+    },
+    {
+      "path": "promethean",
+      "outsideCategory": "top-level-alias-outside-structure",
+      "activeStatus": "active-alias",
+      "referenceFileCount": 674,
+      "referenceAreaCounts": {
+        "other": 387,
+        "gitmodules": 1,
+        "opencode": 19,
+        "config-or-manifest": 219,
+        "docs": 34,
+        "receipts-or-fork-tax": 1,
+        "specs": 13
+      },
+      "sampleReferenceFiles": [
+        "\".\\316\\267\\316\\274/\\316\\240_MANIFEST.sha256\"",
+        "\".\\316\\267\\316\\274/\\316\\240_STATE.sexp\"",
+        "\".\\316\\267\\316\\274/registry.jsonl\"",
+        "\"docs/agile/tasks/--title Phase 1 \\342\\200\\224 Repo Scanner + PM2 Launcher.md\"",
+        "\"docs/agile/tasks/--title Phase 2 \\342\\200\\224 GitHub Data Gateway Service.md\"",
+        "\"docs/agile/tasks/--title Phase 8 \\342\\200\\224 Configuration Update .config opencode opencode.json.md\"",
+        ".gitmodules",
+        ".opencode/commands/deploy-promethean-service.md",
+        ".opencode/commands/giga-build.md",
+        ".opencode/commands/giga-test.md",
+        ".opencode/commands/giga-typecheck.md",
+        ".opencode/commands/issues-project.md"
+      ],
+      "keyEvidence": [
+        "shadow-cljs.edn",
+        "tests/pm2-clj.parity.test.ts",
+        "docs/PACKAGE_MANIFEST.md"
+      ],
+      "whyUsed": "Root alias for orgs/riatzukiza/promethean is still embedded in shadow-cljs source paths, PM2 parity tests, and workspace documentation.",
+      "suggestedNextDecision": "Either bless the alias as a stable compatibility path or rewrite source-path/test/docs references to the canonical org path."
+    },
+    {
+      "path": "pm2-clj-project",
+      "outsideCategory": "top-level-standalone-root",
+      "activeStatus": "active-tooling-fixture",
+      "referenceFileCount": 4,
+      "referenceAreaCounts": {
+        "other": 2,
+        "docs": 1,
+        "config-or-manifest": 1
+      },
+      "sampleReferenceFiles": [
+        "\".\\316\\267\\316\\274/\\316\\240_MANIFEST.sha256\"",
+        "docs/PACKAGE_MANIFEST.md",
+        "shadow-cljs.edn",
+        "tests/pm2-clj.parity.test.ts"
+      ],
+      "keyEvidence": [
+        "tests/pm2-clj.parity.test.ts",
+        "shadow-cljs.edn",
+        "docs/PACKAGE_MANIFEST.md"
+      ],
+      "whyUsed": "Used as a root-level PM2/ClojureScript tooling fixture and compiler source path for ecosystem parity and manifest docs.",
+      "suggestedNextDecision": "Decide whether this belongs in packages/, orgs/riatzukiza/, or as an explicit root-level tooling exception."
+    },
+    {
+      "path": "reconstitute",
+      "outsideCategory": "top-level-standalone-root",
+      "activeStatus": "active-tooling-root",
+      "referenceFileCount": 55,
+      "referenceAreaCounts": {
+        "other": 33,
+        "opencode": 10,
+        "docs": 2,
+        "config-or-manifest": 7,
+        "receipts-or-fork-tax": 1,
+        "specs": 2
+      },
+      "sampleReferenceFiles": [
+        "\".\\316\\267\\316\\274/\\316\\240_MANIFEST.sha256\"",
+        ".clobber/index.cjs",
+        ".clobber/index.cjs.map",
+        ".gitignore",
+        ".opencode/commands/opencode-sessions-index.md",
+        ".opencode/commands/opencode-sessions-search.md",
+        ".opencode/skill_graph.json",
+        ".opencode/skills/AGENTS.md",
+        ".opencode/skills/opencode-apply-reconstituted-diffs/SKILL.md",
+        ".opencode/skills/opencode-reconstituter/SKILL.md",
+        ".opencode/skills/opencode-recover-project/SKILL.md",
+        ".opencode/skills/opencode-review-past-sessions/SKILL.md"
+      ],
+      "keyEvidence": [
+        "package.json",
+        ".opencode/commands/opencode-sessions-index.md",
+        ".opencode/skills/opencode-reconstituter/SKILL.md"
+      ],
+      "whyUsed": "Acts as a root CLI/tooling entrypoint around the reconstitution workflow and is referenced by root package scripts, OpenCode commands, and skills.",
+      "suggestedNextDecision": "Classify it as an intentional tooling root or normalize it into packages/ or an org repo while leaving a compatibility command path."
+    },
+    {
+      "path": "reconstitute-mcp",
+      "outsideCategory": "top-level-standalone-root",
+      "activeStatus": "doc-and-experimental-surface",
+      "referenceFileCount": 5,
+      "referenceAreaCounts": {
+        "other": 5
+      },
+      "sampleReferenceFiles": [
+        "\".\\316\\267\\316\\274/\\316\\240_MANIFEST.sha256\"",
+        "reconstitute/docs/notes/reconstitute/reconstitute-background-indexer.md",
+        "reconstitute/docs/notes/reconstitute/reconstitute-event-indexing.md",
+        "reconstitute/docs/notes/reconstitute/reconstitute-mcp-server.md",
+        "reconstitute/spec/notes-extracted/reconstitute--reconstitute-mcp-server.md"
+      ],
+      "keyEvidence": [
+        "reconstitute/docs/notes/reconstitute/reconstitute-mcp-server.md",
+        "reconstitute/spec/notes-extracted/reconstitute--reconstitute-mcp-server.md"
+      ],
+      "whyUsed": "Appears to persist mainly as an experimental/documented MCP surface referenced by notes inside the reconstitute project, not as a clearly active standalone module.",
+      "suggestedNextDecision": "Either fold it into reconstitute as documented design material or promote it into a real package/service if it becomes runnable."
+    },
+    {
+      "path": "mcp-social-publisher-live",
+      "outsideCategory": "top-level-standalone-root",
+      "activeStatus": "active-standalone-deploy-root",
+      "referenceFileCount": 6,
+      "referenceAreaCounts": {
+        "other": 3,
+        "gitmodules": 1,
+        "receipts-or-fork-tax": 1,
+        "specs": 1
+      },
+      "sampleReferenceFiles": [
+        "\".\\316\\267\\316\\274/\\316\\240_MANIFEST.sha256\"",
+        "\".\\316\\267\\316\\274/registry.jsonl\"",
+        ".gitignore",
+        ".gitmodules",
+        "receipts.log",
+        "specs/drafts/mcp-social-publisher-ussy-key-auth-deploy-2026-03-21.md"
+      ],
+      "keyEvidence": [
+        "specs/drafts/mcp-social-publisher-ussy-key-auth-deploy-2026-03-21.md",
+        ".gitmodules",
+        "receipts.log"
+      ],
+      "whyUsed": "Standalone repo used as the current source/deploy root for the live ussy deployment, with deployment specs and receipts pointing at it explicitly.",
+      "suggestedNextDecision": "Give it an explicit placement decision rather than leaving it ambiguous at the workspace root."
+    },
+    {
+      "path": "threat-radar-deploy",
+      "outsideCategory": "top-level-standalone-root",
+      "activeStatus": "active-product-source-root",
+      "referenceFileCount": 12,
+      "referenceAreaCounts": {
+        "other": 6,
+        "gitmodules": 1,
+        "receipts-or-fork-tax": 1,
+        "config-or-manifest": 1,
+        "specs": 3
+      },
+      "sampleReferenceFiles": [
+        "\".\\316\\267\\316\\274/\\316\\240_LAST.md\"",
+        "\".\\316\\267\\316\\274/\\316\\240_MANIFEST.sha256\"",
+        "\".\\316\\267\\316\\274/\\316\\240_STATE.sexp\"",
+        "\".\\316\\267\\316\\274/registry.jsonl\"",
+        ".gitignore",
+        ".gitmodules",
+        "receipts.log",
+        "services/radar-stack/Dockerfile.hormuz-clock-mcp",
+        "services/radar-stack/docker-compose.yml",
+        "specs/drafts/radar-crawler-integration-2026-03-20.md",
+        "specs/drafts/radar-deployment-declutter-formalization-2026-03-21.md",
+        "specs/drafts/radar-live-deploy-2026-03-20.md"
+      ],
+      "keyEvidence": [
+        "services/radar-stack/docker-compose.yml",
+        "specs/drafts/radar-live-deploy-2026-03-20.md",
+        "specs/drafts/radar-deployment-declutter-formalization-2026-03-21.md"
+      ],
+      "whyUsed": "Active product/source surface for the radar system; live runtime glue builds from it and deployment specs name it as the current application source.",
+      "suggestedNextDecision": "Classify it explicitly or promote it into a canonical org home before further deployment cleanup."
+    },
+    {
+      "path": "verathar-server",
+      "outsideCategory": "top-level-standalone-root",
+      "activeStatus": "bookkeeping-only-for-now",
+      "referenceFileCount": 4,
+      "referenceAreaCounts": {
+        "other": 2,
+        "gitmodules": 1,
+        "receipts-or-fork-tax": 1
+      },
+      "sampleReferenceFiles": [
+        "\".\\316\\267\\316\\274/\\316\\240_MANIFEST.sha256\"",
+        "\".\\316\\267\\316\\274/registry.jsonl\"",
+        ".gitmodules",
+        "receipts.log"
+      ],
+      "keyEvidence": [
+        ".gitmodules",
+        "receipts.log",
+        ".\u03b7\u03bc/registry.jsonl"
+      ],
+      "whyUsed": "Currently visible primarily through submodule bookkeeping, receipts, and snapshot artifacts rather than active tracked integration points.",
+      "suggestedNextDecision": "Either mark as an explicit external/fork exception or move it under a clearer home if active work resumes."
+    },
+    {
+      "path": "threat-radar-next-step",
+      "outsideCategory": "top-level-standalone-root",
+      "activeStatus": "planning-bundle",
+      "referenceFileCount": 4,
+      "referenceAreaCounts": {
+        "other": 3,
+        "specs": 1
+      },
+      "sampleReferenceFiles": [
+        "\".\\316\\267\\316\\274/\\316\\240_MANIFEST.sha256\"",
+        "\".\\316\\267\\316\\274/registry.jsonl\"",
+        "inbox/threat-radar-next-step.zip",
+        "specs/drafts/radar-deployment-declutter-formalization-2026-03-21.md"
+      ],
+      "keyEvidence": [
+        "specs/drafts/radar-deployment-declutter-formalization-2026-03-21.md",
+        "inbox/threat-radar-next-step.zip"
+      ],
+      "whyUsed": "Used as a future/platform design bundle; current deployment formalization explicitly distinguishes it from the live threat-radar source surface.",
+      "suggestedNextDecision": "Keep as a named planning bundle exception or fold its useful content back into canonical specs/repo structure."
+    },
+    {
+      "path": "bevy_replicon",
+      "outsideCategory": "root-level-vendor-or-fork-repo",
+      "activeStatus": "bookkeeping-only-foreign-fork",
+      "referenceFileCount": 4,
+      "referenceAreaCounts": {
+        "other": 2,
+        "gitmodules": 1,
+        "receipts-or-fork-tax": 1
+      },
+      "sampleReferenceFiles": [
+        "\".\\316\\267\\316\\274/\\316\\240_MANIFEST.sha256\"",
+        "\".\\316\\267\\316\\274/registry.jsonl\"",
+        ".gitmodules",
+        "receipts.log"
+      ],
+      "keyEvidence": [
+        ".gitmodules",
+        "receipts.log",
+        ".\u03b7\u03bc/registry.jsonl"
+      ],
+      "whyUsed": "Tracked mainly as an absorbed top-level fork/submodule with no strong active integration references outside bookkeeping artifacts.",
+      "suggestedNextDecision": "Treat as a foreign-fork exception or relocate under a clearer vendor/forks area."
+    },
+    {
+      "path": "egregoria",
+      "outsideCategory": "root-level-vendor-or-fork-repo",
+      "activeStatus": "bookkeeping-only-foreign-fork",
+      "referenceFileCount": 4,
+      "referenceAreaCounts": {
+        "other": 2,
+        "gitmodules": 1,
+        "receipts-or-fork-tax": 1
+      },
+      "sampleReferenceFiles": [
+        "\".\\316\\267\\316\\274/\\316\\240_MANIFEST.sha256\"",
+        "\".\\316\\267\\316\\274/registry.jsonl\"",
+        ".gitmodules",
+        "receipts.log"
+      ],
+      "keyEvidence": [
+        ".gitmodules",
+        "receipts.log",
+        ".\u03b7\u03bc/registry.jsonl"
+      ],
+      "whyUsed": "Tracked mainly as an absorbed top-level fork/submodule with no strong active integration references outside bookkeeping artifacts.",
+      "suggestedNextDecision": "Treat as a foreign-fork exception or relocate under a clearer vendor/forks area."
+    },
+    {
+      "path": "game_network",
+      "outsideCategory": "root-level-vendor-or-fork-repo",
+      "activeStatus": "bookkeeping-only-foreign-fork",
+      "referenceFileCount": 4,
+      "referenceAreaCounts": {
+        "other": 2,
+        "gitmodules": 1,
+        "receipts-or-fork-tax": 1
+      },
+      "sampleReferenceFiles": [
+        "\".\\316\\267\\316\\274/\\316\\240_MANIFEST.sha256\"",
+        "\".\\316\\267\\316\\274/registry.jsonl\"",
+        ".gitmodules",
+        "receipts.log"
+      ],
+      "keyEvidence": [
+        ".gitmodules",
+        "receipts.log",
+        ".\u03b7\u03bc/registry.jsonl"
+      ],
+      "whyUsed": "Tracked mainly as an absorbed top-level fork/submodule with no strong active integration references outside bookkeeping artifacts.",
+      "suggestedNextDecision": "Treat as a foreign-fork exception or relocate under a clearer vendor/forks area."
+    },
+    {
+      "path": "ggrs",
+      "outsideCategory": "root-level-vendor-or-fork-repo",
+      "activeStatus": "bookkeeping-only-foreign-fork",
+      "referenceFileCount": 4,
+      "referenceAreaCounts": {
+        "other": 2,
+        "gitmodules": 1,
+        "receipts-or-fork-tax": 1
+      },
+      "sampleReferenceFiles": [
+        "\".\\316\\267\\316\\274/\\316\\240_MANIFEST.sha256\"",
+        "\".\\316\\267\\316\\274/registry.jsonl\"",
+        ".gitmodules",
+        "receipts.log"
+      ],
+      "keyEvidence": [
+        ".gitmodules",
+        "receipts.log",
+        ".\u03b7\u03bc/registry.jsonl"
+      ],
+      "whyUsed": "Tracked mainly as an absorbed top-level fork/submodule with no strong active integration references outside bookkeeping artifacts.",
+      "suggestedNextDecision": "Treat as a foreign-fork exception or relocate under a clearer vendor/forks area."
+    },
+    {
+      "path": "lightyear",
+      "outsideCategory": "root-level-vendor-or-fork-repo",
+      "activeStatus": "bookkeeping-only-foreign-fork",
+      "referenceFileCount": 4,
+      "referenceAreaCounts": {
+        "other": 2,
+        "gitmodules": 1,
+        "receipts-or-fork-tax": 1
+      },
+      "sampleReferenceFiles": [
+        "\".\\316\\267\\316\\274/\\316\\240_MANIFEST.sha256\"",
+        "\".\\316\\267\\316\\274/registry.jsonl\"",
+        ".gitmodules",
+        "receipts.log"
+      ],
+      "keyEvidence": [
+        ".gitmodules",
+        "receipts.log",
+        ".\u03b7\u03bc/registry.jsonl"
+      ],
+      "whyUsed": "Tracked mainly as an absorbed top-level fork/submodule with no strong active integration references outside bookkeeping artifacts.",
+      "suggestedNextDecision": "Treat as a foreign-fork exception or relocate under a clearer vendor/forks area."
+    },
+    {
+      "path": "gates-pr35-hardening-main",
+      "outsideCategory": "root-level-worktree-or-fork-repo",
+      "activeStatus": "active-special-worktree",
+      "referenceFileCount": 5,
+      "referenceAreaCounts": {
+        "other": 2,
+        "gitmodules": 1,
+        "opencode": 1,
+        "receipts-or-fork-tax": 1
+      },
+      "sampleReferenceFiles": [
+        "\".\\316\\267\\316\\274/\\316\\240_MANIFEST.sha256\"",
+        "\".\\316\\267\\316\\274/registry.jsonl\"",
+        ".gitmodules",
+        ".opencode/skills/agile-process/SKILL.md",
+        "receipts.log"
+      ],
+      "keyEvidence": [
+        ".opencode/skills/agile-process/SKILL.md",
+        ".gitmodules",
+        "receipts.log"
+      ],
+      "whyUsed": "Special-purpose hardening checkout is still referenced by the agile-process skill as a work/spec source, beyond ordinary submodule bookkeeping.",
+      "suggestedNextDecision": "Keep as an explicit worktree/sprint exception until the hardening branch is merged or retired."
+    }
+  ],
+  "counts": {
+    "totalRootModules": 15,
+    "activeAliases": 2,
+    "activeStandaloneRoots": 5,
+    "planningBundles": 1,
+    "bookkeepingOnly": 6
+  },
+  "globalNotes": [
+    "Root modules are not all the same problem: some are active aliases, some are active product/deploy roots, some are planning bundles, and some are only preserved through bookkeeping artifacts.",
+    "Reference counts are based on tracked-file searches outside each module's own tree and should be read as evidence of external dependency, not exhaustive runtime truth."
+  ]
+}

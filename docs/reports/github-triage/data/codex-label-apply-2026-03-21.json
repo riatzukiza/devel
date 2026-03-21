@@ -1,0 +1,74 @@
+{
+  "repo": "open-hax/codex",
+  "selectedCount": 4,
+  "ensuredLabels": [
+    "artifact:issue",
+    "kanban",
+    "priority:P2",
+    "priority:P3",
+    "state:accepted",
+    "state:blocked",
+    "state:icebox",
+    "triage:stale"
+  ],
+  "updatedItems": [
+    {
+      "kind": "issue",
+      "number": 40,
+      "title": "[FEATURE] Model stats html dashboard server",
+      "labels": [
+        "artifact:issue",
+        "enhancement",
+        "kanban",
+        "priority:P3",
+        "state:icebox",
+        "triage:stale"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 67,
+      "title": "Auto-update: check npm latest, clear old install, toast user",
+      "labels": [
+        "artifact:issue",
+        "enhancement",
+        "kanban",
+        "priority:P3",
+        "state:icebox",
+        "triage:stale"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 82,
+      "title": "[BUG] Failure to get openhax/codex error openhax/codex: Failed to fetch OpenCode codex.txt from GitHub",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P2",
+        "state:accepted"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 6,
+      "title": "Feature: richer Codex metrics and request inspection commands",
+      "labels": [
+        "artifact:issue",
+        "blocked",
+        "effort-large",
+        "kanban",
+        "metrics",
+        "priority-medium",
+        "priority:P2",
+        "state:blocked",
+        "triage:stale"
+      ],
+      "dryRun": false
+    }
+  ]
+}

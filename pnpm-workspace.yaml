@@ -15,6 +15,7 @@ packages:
   - packages/thread-assessment
   - packages/npu-top
   - packages/omni-top
+  - packages/kanban
   - orgs/riatzukiza/hormuz-clock-mcp
   - orgs/riatzukiza/threat-radar-mcp
   - orgs/riatzukiza/threat-radar-web

@@ -2,6 +2,12 @@
 
 Container-first deployment stack for the live Hormuz / threat-radar system on `ussy.promethean.rest`.
 
+This is the **canonical** live deployment surface for `https://radar.promethean.rest`.
+
+- edge routing is provided by `services/proxx/Caddyfile`
+- application source lives in `threat-radar-deploy/`
+- Render deployment is retired for Threat Radar
+
 ## Services
 
 - `radar-mcp` — threat-radar control plane + API

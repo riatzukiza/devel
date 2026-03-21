@@ -41,6 +41,15 @@ Multi-repository development workspace with git submodules organized under `orgs
 - Nx for affected detection and workspace automation.
 - Rust in `orgs/openai/codex`.
 
+## Canonical Kanban Tooling
+- The workspace-canonical Kanban tool now lives in `packages/kanban`.
+- Access it through `bin/eta-mu-board` (chat shorthand: `@bin/eta-mu-board`).
+- Prefer `bin/eta-mu-board` over legacy `pnpm kanban` / `@promethean-os/kanban` references unless you are explicitly repairing the legacy Promethean implementation.
+- Common entrypoints:
+  - `bin/eta-mu-board fsm show`
+  - `bin/eta-mu-board github refine ...`
+  - `bin/eta-mu-board github apply ...`
+
 ## Project Placement Contract
 - Default project mode is rapid prototyping in `packages/*` unless the user explicitly says otherwise.
 - `services/*` is devops-exclusive: use it for runtime wrappers, compose files, deployment config, env examples, operator docs, orchestration glue, and stable runtime paths/aliases.
@@ -54,6 +63,7 @@ Multi-repository development workspace with git submodules organized under `orgs
 - `devel` is the crucible that extracts, tests, and operationalizes useful kernels from the Promethean corpus.
 - When code appears both in Promethean and elsewhere, distinguish: slop, corpus artifact, verified extraction, and canonical descendant.
 - Canonical source/build/release/deploy contracts should live with the org repo; `devel` remains the giga-repo for composition, local integration, fleet placement, and cross-service orchestration.
+- Work that still sits outside the structure should be handled via named exception classes rather than ad-hoc cleanup; see `docs/reference/outside-structure-exception-policy.md`.
 - Reference doc: `docs/reference/devel-placement-contract.md`
 
 ## Deployment Semantics
@@ -198,6 +208,9 @@ Interpret `Deploy X` as bootstrapping or repairing a full local -> PR -> staging
 Make safe, consistent changes in a workspace with many git submodules under orgs/**
 
 ### Kanban
+
+#### eta-mu-board
+Use the workspace kanban CLI at `packages/kanban` via `bin/eta-mu-board` for FSM inspection, GitHub backlog refinement, and managed label application.
 
 #### work-on-accepted-task
 Execute the best next work for a task currently in `accepted`.

@@ -46,3 +46,6 @@ The manifest should distinguish true misplacements from intentional exceptions s
 
 ## Execution log
 - 2026-03-21T19:33:00Z Began inventory of work outside the active placement structure.
+- 2026-03-21T19:41:00Z Enumerated top-level project-like roots, foreign org repos, and aggregation trees that fall outside `packages/*`, `services/*`, and the four active org namespaces.
+- 2026-03-21T19:44:00Z Wrote JSON and markdown manifest artifacts separating top-level aliases, standalone roots, vendor/fork roots, foreign org repos, and aggregation trees.
+- 2026-03-21T19:45:00Z Verified the manifest parses and includes the expected major outside-structure categories and representative paths.

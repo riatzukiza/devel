@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
+cd "$repo_root"
+
+if [ ! -f "packages/kanban/dist/cli.js" ]; then
+  pnpm --filter @openhax/kanban build >/dev/null
+fi
+
+exec node "packages/kanban/dist/cli.js" "$@"
