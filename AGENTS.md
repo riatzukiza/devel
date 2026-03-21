@@ -4,8 +4,8 @@ Multi-repository development workspace with git submodules organized under `orgs
 
 ## Repository Structure
 - `orgs/` contains submodules grouped by GitHub organization.
-- Top-level workspace directories: `src/`, `docs/`, `tools/`, `ecosystems/`, `.opencode/`.
-- Primary orgs in this workspace: `riatzukiza`, `anomalyco`, `open-hax`, `moofone`, `openai`, `bhauman`.
+- Top-level workspace directories: `packages/`, `services/`, `src/`, `docs/`, `tools/`, `ecosystems/`, `.opencode/`.
+- Primary orgs in this workspace: `riatzukiza`, `octave-commons`, `open-hax`, `ussyverse`, `anomalyco`, `moofone`, `openai`, `bhauman`.
 
 ### Key Submodules
 - `orgs/riatzukiza/promethean` - local LLM enhancement system and agent framework
@@ -41,6 +41,45 @@ Multi-repository development workspace with git submodules organized under `orgs
 - Nx for affected detection and workspace automation.
 - Rust in `orgs/openai/codex`.
 
+## Canonical Kanban Tooling
+- The workspace-canonical Kanban tool now lives in `packages/kanban`.
+- Access it through `bin/eta-mu-board` (chat shorthand: `@bin/eta-mu-board`).
+- Prefer `bin/eta-mu-board` over legacy `pnpm kanban` / `@promethean-os/kanban` references unless you are explicitly repairing the legacy Promethean implementation.
+- Common entrypoints:
+  - `bin/eta-mu-board fsm show`
+  - `bin/eta-mu-board github refine ...`
+  - `bin/eta-mu-board github apply ...`
+
+## Project Placement Contract
+- Default project mode is rapid prototyping in `packages/*` unless the user explicitly says otherwise.
+- `services/*` is devops-exclusive: use it for runtime wrappers, compose files, deployment config, env examples, operator docs, orchestration glue, and stable runtime paths/aliases.
+- Do not treat `services/*` as the default canonical home for product/application source code.
+- Mature projects graduate into org repos by identity and intent:
+  - `orgs/riatzukiza/*` -> mature internal devel-only integrations with independent timelines.
+  - `orgs/octave-commons/*` -> mature experimental, research, narrative-driven, or myth-encoded work.
+  - `orgs/open-hax/*` -> production-grade products that are portable, documented, tested, and useful beyond this workspace.
+  - `orgs/ussyverse/*` -> collective/community works not owned solely by one person.
+- Special case: `orgs/octave-commons/promethean` is treated as a corpus of living documentation and documentation-as-code, not as a normal product repo.
+- `devel` is the crucible that extracts, tests, and operationalizes useful kernels from the Promethean corpus.
+- When code appears both in Promethean and elsewhere, distinguish: slop, corpus artifact, verified extraction, and canonical descendant.
+- Canonical source/build/release/deploy contracts should live with the org repo; `devel` remains the giga-repo for composition, local integration, fleet placement, and cross-service orchestration.
+- Work that still sits outside the structure should be handled via named exception classes rather than ad-hoc cleanup; see `docs/reference/outside-structure-exception-policy.md`.
+- Reference doc: `docs/reference/devel-placement-contract.md`
+
+## Deployment Semantics
+- When the user says `Deploy X`, interpret it as: inspect the target project and, if needed, stand up the full local -> PR -> staging -> PR -> prod delivery flow rather than doing a one-off manual deploy.
+- Default Promethean naming convention:
+  - staging: `staging.<service-name>.promethean.rest`
+  - production: `<service-name>.promethean.rest`
+- Default DNS auth source: `CLOUD_FLARE_PROMETHEAN_DOT_REST_DNS_ZONE_TOKEN`.
+- Allowed base hosts for Promethean service placement:
+  - `ussy.promethean.rest`
+  - `ussy2.promethean.rest`
+  - `ussy3.promethean.rest`
+  - `big.ussy.promethean.rest`
+- Prefer the deploy skills `promethean-service-deploy`, `promethean-host-slotting`, `promethean-rest-dns`, and `pr-promotion-workflows` for this flow.
+- In pi, the project-local mirrors live under `.pi/skills/`; use `/skill:promethean-service-deploy` to force-load the orchestrator when needed.
+
 ## SKILLS
 
 The following skills are available in this workspace. They are organized by category.
@@ -60,6 +99,9 @@ Protocol to recover from Clojure/Script syntax errors, specifically bracket mism
 
 #### apology-action-protocol
 Protocol to stop apology loops and focus on verified fixes.
+
+#### atproto-auth-standardization
+Standardize human login, service identity, and inter-service auth around AT Protocol DIDs and Bluesky-backed one-time sign-in while retiring host-local static secrets.
 
 #### break-edit-loop
 Protocol to break out of repetitive, failing edit loops by forcing analysis over action.
@@ -100,6 +142,9 @@ Create or revise skills so they are reusable, scoped, and load correctly in Open
 #### skill-optimizing
 Improve existing or new skills using the workspace optimization guide and template checks for clarity, scope, and reliability
 
+#### passwords-csv-browser-auth
+Use local ignored `passwords.csv` exports to authenticate browser automation safely without printing or committing secrets.
+
 #### social-publish-bluesky
 Turn the latest Hormuz clock snapshot into a concise Bluesky post or thread with dry-run-first behavior.
 
@@ -118,6 +163,21 @@ Protocol to keep work atomic and prevent scope creep.
 #### verify-resource-existence
 Protocol to verify a resource exists before creating a new one.
 
+#### resume-fnord-ats
+Maintain ATS-clean and AI-signal ("fnord") variants of resumes/cover letters with deterministic naming, minimal diffs, and a factual-only capability footer.
+
+#### resume-oss-ats-audit
+Audit resumes with runnable open-source ATS, parser, and resume-optimization tools; distinguish real parser signal from demo hype and write a reproducible findings report.
+
+#### resume-ats-optimize
+Turn audit findings into ATS-clean resume variants by simplifying parser-hostile formatting, standardizing section labels, improving quantification, and preserving truthfulness.
+
+#### resume-ml-eval-research
+Research and synthesize credible ML techniques for resume and job-description evaluation, ranking, and improvement, favoring explainable, local, reproducible methods.
+
+#### resume-processing-workbench
+Build and use a local resume-processing workbench that ingests resumes and job descriptions, runs parser/score pipelines, and emits reproducible fit/improvement reports.
+
 #### webring-site
 Research the live ussyco.de ring, build a distinct single-page site in this workspace, preview it locally, and optionally register it with an API key from the environment.
 
@@ -129,10 +189,28 @@ Protocol to ensure safe git operations and avoid detached HEAD or dirty commits.
 #### github-integration
 Perform GitHub operations across all tracked repositories in orgs/**, including issue/PR management, repository synchronization, and automation workflows
 
+#### pr-promotion-workflows
+Set up PR-based branch promotion workflows with tiered CI gates, staging/main deploy hooks, and explicit GitHub branch-protection follow-through
+
+#### promethean-host-slotting
+Choose staging and production Promethean host slots, subdomains, runtime paths, and compose-project names from the allowed base-host pool
+
+#### promethean-host-runtime-inventory
+SSH into Promethean hosts, inventory active Docker/Podman/systemd/Proxmox runtimes, map public subdomains to live services, and write JSON plus markdown inventory artifacts
+
+#### promethean-rest-dns
+Create or update *.promethean.rest DNS A records through Cloudflare by copying current allowed base-host IPs while preserving unrelated zone records
+
+#### promethean-service-deploy
+Interpret `Deploy X` as bootstrapping or repairing a full local -> PR -> staging -> PR -> prod Promethean deployment flow with DNS, GitHub automation, and live validation
+
 #### submodule-ops
 Make safe, consistent changes in a workspace with many git submodules under orgs/**
 
 ### Kanban
+
+#### eta-mu-board
+Use the workspace kanban CLI at `packages/kanban` via `bin/eta-mu-board` for FSM inspection, GitHub backlog refinement, and managed label application.
 
 #### work-on-accepted-task
 Execute the best next work for a task currently in `accepted`.

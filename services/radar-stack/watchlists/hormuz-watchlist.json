@@ -1,0 +1,43 @@
+{
+  "record": "eta-mu.world-watchlist.v1",
+  "schema_version": "world.watchlist.v1",
+  "enabled": true,
+  "domains": [
+    {
+      "id": "hormuz",
+      "label": "Hormuz Risk Watch",
+      "seed_urls": [
+        {
+          "url": "https://www.ukmto.org/advisory/003-26",
+          "kind": "maritime:ukmto_advisory",
+          "title": "UKMTO Advisory 003-26",
+          "source_type": "website"
+        },
+        {
+          "url": "https://www.maritime.dot.gov/msci",
+          "kind": "maritime:marad_advisory",
+          "title": "MARAD Maritime Security Communications with Industry",
+          "source_type": "website"
+        },
+        {
+          "url": "https://api.gdeltproject.org/api/v2/doc/doc?format=json&maxrecords=50&mode=ArtList&query=%22Strait%20of%20Hormuz%22",
+          "kind": "maritime:dataset",
+          "title": "GDELT Document API - Strait of Hormuz",
+          "source_type": "dataset"
+        },
+        {
+          "url": "https://www.iea.org/topics/the-middle-east-and-global-energy-markets",
+          "kind": "energy:market_watch",
+          "title": "IEA Middle East and global energy markets",
+          "source_type": "website"
+        },
+        {
+          "url": "https://www.jmiconline.org/updates",
+          "kind": "maritime:jmic_updates",
+          "title": "JMIC updates",
+          "source_type": "website"
+        }
+      ]
+    }
+  ]
+}

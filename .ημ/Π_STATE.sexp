@@ -1,0 +1,21 @@
+(Π_STATE
+  (time "2026-03-21T22:19:32Z")
+  (branch "feature/threat-radar-platform")
+  (pre_head "098ebd6")
+  (dirty true)
+  (checks
+    (check (status passed) (command "git submodule status orgs/open-hax/proxx"))
+  )
+  (repo_notes
+    (upstream "origin/feature/threat-radar-platform")
+    (status_digest "c355-8c91-7d0b-0c87")
+    (note "Advance orgs/open-hax/proxx to 2d3e285, the final dedicated Proxx Π snapshot for the z.ai live-env validation/spec/results sequence.")
+    (note "Refresh root receipts and handoff artifacts so the workspace finally records the clean recursive Proxx state.")
+    (submodule (path "orgs/open-hax/proxx") (to "2d3e285") (tag "Π/2026-03-21/221743-2d3e285"))
+    (changed_file ".ημ/Π_LAST.md")
+    (changed_file ".ημ/Π_MANIFEST.sha256")
+    (changed_file ".ημ/Π_STATE.sexp")
+    (changed_file "orgs/open-hax/proxx")
+    (changed_file "receipts.log")
+  )
+)

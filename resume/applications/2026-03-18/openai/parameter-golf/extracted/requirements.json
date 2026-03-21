@@ -1,0 +1,25 @@
+{
+  "company": "OpenAI",
+  "project": "Parameter Golf",
+  "capturedAt": "2026-03-18",
+  "sourceUrls": [
+    "https://openai.com/index/parameter-golf/",
+    "https://github.com/openai/parameter-golf"
+  ],
+  "challengeConstraints": [
+    "submission artifact must fit within 16,000,000 bytes",
+    "leaderboard submissions must reproduce in under 10 minutes on 8xH100",
+    "primary metric is tokenizer-agnostic FineWeb validation compression reported as val_bpb",
+    "submission should be a reproducible PR adding a record folder with README, submission.json, train.log, and runnable code"
+  ],
+  "hiringSignals": [
+    "solves very difficult technical problems",
+    "shows creativity and rigor on unfamiliar problems",
+    "can stand out through challenge participation and quality of execution"
+  ],
+  "openQuestions": [
+    "exact evaluation environment details are still being clarified publicly",
+    "README wording around the 10-minute requirement has prompted clarification questions"
+  ],
+  "selectedResume": "resume/aaron-beavers-openai-parameter-golf-ats.pdf"
+}

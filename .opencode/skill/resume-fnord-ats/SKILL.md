@@ -1,0 +1,1 @@
+/home/err/.agents/skills/resume-fnord-ats/SKILL.md

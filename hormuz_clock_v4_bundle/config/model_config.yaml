@@ -25,9 +25,64 @@ states:
     thresholds: {normal: 0, stressed: 1, degraded: 2, impaired: 3}
     semantics: importer_stock_and_rationing_pressure_ordinal
 branches:
-  reopening: 0.25
-  effective_closure: 0.55
-  wider_escalation: 0.20
+  reopening: {center: 0.25, low: 0.15, high: 0.35, confidence: 0.40}
+  effective_closure: {center: 0.55, low: 0.45, high: 0.65, confidence: 0.45}
+  wider_escalation: {center: 0.20, low: 0.10, high: 0.30, confidence: 0.35}
+signal_categories:
+  insurance_availability:
+    semantics: war_risk_cover_cost_and_capacity
+    note: impaired can mean cover remains available but only at extreme cost
+  reopening_pressure:
+    semantics: explicit public planning or diplomatic motion toward resumed protected transits
+    experimental: true
+  regional_escalation:
+    semantics: conflict spreading beyond shipping into regional energy or civilian infrastructure
+    experimental: true
+branch_model:
+  version: weighted-state-ranges-v1
+  base:
+    reopening: 0.58
+    effective_closure: 0.42
+    wider_escalation: 0.22
+  state_weights:
+    reopening:
+      transit_flow: -0.09
+      attack_tempo: -0.08
+      insurance_availability: -0.04
+      navigation_integrity: -0.04
+      bypass_capacity: -0.03
+      asia_buffer_stress: -0.02
+    effective_closure:
+      transit_flow: 0.14
+      attack_tempo: 0.10
+      insurance_availability: 0.06
+      navigation_integrity: 0.05
+      bypass_capacity: 0.04
+      asia_buffer_stress: -0.02
+    wider_escalation:
+      transit_flow: 0.02
+      attack_tempo: 0.07
+      insurance_availability: 0.02
+      navigation_integrity: 0.03
+      bypass_capacity: 0.01
+      asia_buffer_stress: 0.01
+  signal_adjustments:
+    reopening_pressure:
+      reopening: 0.08
+      effective_closure: -0.04
+      wider_escalation: -0.04
+    regional_escalation:
+      reopening: -0.04
+      effective_closure: 0.02
+      wider_escalation: 0.08
+  uncertainty:
+    range_floor: 0.07
+    range_scale: 0.16
+    range_ceiling: 0.22
+    confidence_floor: 0.25
+    confidence_scale: 0.50
+    confidence_ceiling: 0.85
+    experimental_penalty_scale: 0.10
 buffer_windows:
   - {start_day: 15, end_day: 25, label: 'Shipping pipeline'}
   - {start_day: 25, end_day: 40, label: 'Refinery adjustment'}

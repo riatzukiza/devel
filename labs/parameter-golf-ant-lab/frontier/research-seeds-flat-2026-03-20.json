@@ -1,0 +1,309 @@
+{
+  "seeds": [
+    {
+      "url": "https://parameter-golf.github.io/data/summary.json",
+      "label": "seed-1",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://parameter-golf.github.io/data/submissions.json",
+      "label": "seed-2",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://patch-diff.githubusercontent.com/raw/openai/parameter-golf/pull/120.patch",
+      "label": "seed-3",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://patch-diff.githubusercontent.com/raw/openai/parameter-golf/pull/198.patch",
+      "label": "seed-4",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://patch-diff.githubusercontent.com/raw/openai/parameter-golf/pull/262.patch",
+      "label": "seed-5",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://patch-diff.githubusercontent.com/raw/openai/parameter-golf/pull/265.patch",
+      "label": "seed-6",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/openai/parameter-golf/458f9db061f700c09d8c8c9c4a7b57471f018f76/records/track_10min_16mb/2026-03-19_MLP3x_STE_QAT_SlidingWindow/submission.json",
+      "label": "seed-7",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/openai/parameter-golf/372bddea57f465c7217c5e26af2252a803221518/records/track_10min_16mb/2026-03-20_11L_Int6_MLP3x_WD04_SmearBigram2k_1.1318/submission.json",
+      "label": "seed-8",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/openai/parameter-golf/ff039576dcb411563636e2afde6d780f0be2fed1/records/track_10min_16mb/2026-03-20_8L_PaidPrefix_ibarrajo/submission.json",
+      "label": "seed-9",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://arxiv.org/abs/2505.08823",
+      "label": "seed-10",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://arxiv.org/abs/2502.05003",
+      "label": "seed-11",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://arxiv.org/abs/2402.17764",
+      "label": "seed-12",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/challenge-history/likely-strategy-families.md",
+      "label": "seed-13",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/lanes/quantization-and-outliers.md",
+      "label": "seed-14",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/papers/extra-rmsnorm.md",
+      "label": "seed-15",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/papers/quest.md",
+      "label": "seed-16",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://patch-diff.githubusercontent.com/raw/openai/parameter-golf/pull/51.patch",
+      "label": "seed-17",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://patch-diff.githubusercontent.com/raw/openai/parameter-golf/pull/148.patch",
+      "label": "seed-18",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/openai/parameter-golf/a12277f9dd41756c5a557063bb4a1db4138d1e83/records/track_10min_16mb/2026-03-19_DepthRecurrentQAT/submission.json",
+      "label": "seed-19",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://arxiv.org/abs/2410.20672",
+      "label": "seed-20",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://arxiv.org/abs/2411.09816",
+      "label": "seed-21",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://arxiv.org/abs/2401.12819",
+      "label": "seed-22",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://arxiv.org/abs/1807.03819",
+      "label": "seed-23",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/frontiers/compression-interfaces-for-shared-depth.md",
+      "label": "seed-24",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/lanes/recursive-sharing.md",
+      "label": "seed-25",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/hypotheses/phase-conditioned-sharing.md",
+      "label": "seed-26",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/notes/recursive-layer-sharing.md",
+      "label": "seed-27",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://patch-diff.githubusercontent.com/raw/openai/parameter-golf/pull/223.patch",
+      "label": "seed-28",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://patch-diff.githubusercontent.com/raw/openai/parameter-golf/pull/254.patch",
+      "label": "seed-29",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/openai/parameter-golf/479b8bcfa8ea0e5e7b711aff7f54fafb9b72b0c2/records/track_10min_16mb/2026-03-20_FarnsworthEngine_TTT_11L_Int6_MLP3x/submission.json",
+      "label": "seed-30",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://arxiv.org/abs/2408.00724",
+      "label": "seed-31",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://arxiv.org/abs/2512.23675",
+      "label": "seed-32",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.06642",
+      "label": "seed-33",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://blog.skypilot.co/scaling-autoresearch/",
+      "label": "seed-34",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/lanes/inference-time-compute.md",
+      "label": "seed-35",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/moonshots/artifact-native-training.md",
+      "label": "seed-36",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/frontiers/refinement-loops-as-decompression.md",
+      "label": "seed-37",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://patch-diff.githubusercontent.com/raw/openai/parameter-golf/pull/76.patch",
+      "label": "seed-38",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://patch-diff.githubusercontent.com/raw/openai/parameter-golf/pull/123.patch",
+      "label": "seed-39",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://arxiv.org/abs/2410.04335",
+      "label": "seed-40",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://arxiv.org/abs/2411.06371",
+      "label": "seed-41",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://arxiv.org/abs/2506.03101",
+      "label": "seed-42",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://arxiv.org/abs/2402.09977",
+      "label": "seed-43",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/lanes/tokenizer-and-vocabulary.md",
+      "label": "seed-44",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/notes/output-head-budget.md",
+      "label": "seed-45",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/ideas/head-to-depth-budget-swap.md",
+      "label": "seed-46",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://arxiv.org/abs/2401.06118",
+      "label": "seed-47",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://arxiv.org/abs/2503.13089",
+      "label": "seed-48",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://arxiv.org/abs/2410.01309",
+      "label": "seed-49",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/ideas/global-codebook-recursive-backbone.md",
+      "label": "seed-50",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/moonshots/role-state-recurrence.md",
+      "label": "seed-51",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/moonshots/compilerized-model-artifacts.md",
+      "label": "seed-52",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/moonshots/regenerated-lm-head.md",
+      "label": "seed-53",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/runmatrix/main/README.md",
+      "label": "seed-54",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/runmatrix/main/docs/ARCHITECTURE.md",
+      "label": "seed-55",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/runmatrix/main/docs/MANIFESTS.md",
+      "label": "seed-56",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/graph.md",
+      "label": "seed-57",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/atlas.md",
+      "label": "seed-58",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/reports/orphans-and-hidden-clusters.md",
+      "label": "seed-59",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/reports/missing-bridge-pages.md",
+      "label": "seed-60",
+      "kind": "seed:url"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/agustif/parameter-golf-research-garden/main/content/experiments/local-research-lineage.md",
+      "label": "seed-61",
+      "kind": "seed:url"
+    }
+  ]
+}
