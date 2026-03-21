@@ -211,10 +211,10 @@
       "keyEvidence": [
         "services/radar-stack/docker-compose.yml",
         "specs/drafts/radar-live-deploy-2026-03-20.md",
-        "specs/drafts/radar-deployment-declutter-formalization-2026-03-21.md"
+        "specs/drafts/eta-mu-radar-normalization-2026-03-21.md"
       ],
-      "whyUsed": "Active product/source surface for the radar system; live runtime glue builds from it and deployment specs name it as the current application source.",
-      "suggestedNextDecision": "Classify it explicitly or promote it into a canonical org home before further deployment cleanup."
+      "whyUsed": "Active product/source surface for the current radar system; user has now directed that it be normalized and consolidated into orgs/open-hax/eta-mu-radar.",
+      "suggestedNextDecision": "Normalize into orgs/open-hax/eta-mu-radar and retarget runtime/deploy references while keeping services/radar-stack as the runtime home."
     },
     {
       "path": "verathar-server",
@@ -257,10 +257,11 @@
       ],
       "keyEvidence": [
         "specs/drafts/radar-deployment-declutter-formalization-2026-03-21.md",
+        "specs/drafts/eta-mu-radar-normalization-2026-03-21.md",
         "inbox/threat-radar-next-step.zip"
       ],
-      "whyUsed": "Used as a future/platform design bundle; current deployment formalization explicitly distinguishes it from the live threat-radar source surface.",
-      "suggestedNextDecision": "Keep as a named planning bundle exception or fold its useful content back into canonical specs/repo structure."
+      "whyUsed": "Used as a future/platform design bundle, but user has now directed that all threat-radar-related work consolidate into orgs/open-hax/eta-mu-radar.",
+      "suggestedNextDecision": "Fold useful planning/spec material into orgs/open-hax/eta-mu-radar and retire the standalone bundle once absorbed."
     },
     {
       "path": "bevy_replicon",
