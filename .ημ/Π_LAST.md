@@ -1,18 +1,17 @@
 # Π handoff
 
-- time: 2026-03-21T22:04:12Z
+- time: 2026-03-21T22:11:40Z
 - branch: feature/threat-radar-platform
-- pre-Π HEAD: 8307c11
+- pre-Π HEAD: ef24aa9
 - Π HEAD: pending at capture time; resolved by the final commit after artifact assembly
 
 ## Summary
-- Persist the eta-mu follow-on governance results: remaining proxx FSM label application notes, rollout-PR/branch-protection notes, and matching receipt updates.
-- Carry the services/proxx z.ai default passthrough update and advance orgs/open-hax/proxx to e03041d, the latest dedicated Proxx Π snapshot.
+- Persist the eta-mu-radar normalization follow-on updates in the outside-structure, package-placement, and root-module-usage inventories.
+- Advance orgs/open-hax/proxx to 100df62, the latest dedicated Proxx Π snapshot carrying the z.ai catalog-path fix and matching test/build verification.
 
 ## Notes
-- submodule orgs/open-hax/proxx -> e03041d (Π/2026-03-21/215514-e03041d, push pi/fork-tax/2026-03-21-211345)
+- submodule orgs/open-hax/proxx -> 100df62 (Π/2026-03-21/220802-100df62, push pi/fork-tax/2026-03-21-211345)
 
 ## Verification
+- pass: python json.load docs/reports/inventory/outside-structure-action-table-2026-03-21.json docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json docs/reports/inventory/root-module-usage-manifest-2026-03-21.json
 - pass: git submodule status orgs/open-hax/proxx
-- pass: docker compose -f services/proxx/docker-compose.yml config
-- pass: python json.load docs/reports/github-triage/data/proxx-remaining-label-apply-2026-03-21.json docs/reports/inventory/eta-mu-rollout-prs-2026-03-21.json

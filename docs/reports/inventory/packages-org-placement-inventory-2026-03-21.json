@@ -3,11 +3,11 @@
   "scope": "Top-level packages/* provisional org-placement inventory",
   "counts": {
     "totalPackages": 25,
-    "stayPrototype": 7,
-    "candidatePromote": 18,
-    "topCandidateRiatzukiza": 11,
-    "topCandidateOctaveCommons": 5,
-    "topCandidateOpenHax": 9,
+    "stayPrototype": 4,
+    "candidatePromote": 21,
+    "topCandidateRiatzukiza": 10,
+    "topCandidateOctaveCommons": 2,
+    "topCandidateOpenHax": 13,
     "topCandidateUssyverse": 0,
     "packagesWithExistingOrgMatches": 7
   },
@@ -767,26 +767,31 @@
       "workspaceDeps": [],
       "existingOrgPackageMatches": [],
       "stageRecommendation": "candidate-promote",
-      "topCandidateOrg": "riatzukiza",
-      "confidence": "medium-high",
-      "suggestedCanonicalHomeType": "future-monorepo-package",
+      "topCandidateOrg": "open-hax",
+      "confidence": "high",
+      "suggestedCanonicalHomeType": "existing-monorepo-package",
       "likelyOrgCandidates": [
         {
-          "org": "riatzukiza",
-          "score": 0.79,
-          "reason": "threat-radar core schema/reducer logic is currently tightly linked to your internal radar ecosystem."
+          "org": "open-hax",
+          "score": 0.93,
+          "reason": "User explicitly directed all threat-radar-related work to normalize into orgs/open-hax/eta-mu-radar."
         },
         {
-          "org": "open-hax",
-          "score": 0.34,
-          "reason": "some pieces could eventually harden into public signal libraries, but current docs are thin."
+          "org": "riatzukiza",
+          "score": 0.18,
+          "reason": "Earlier internal-platform reading is now superseded by the explicit eta-mu-radar directive."
         }
       ],
-      "rationale": "Looks like mature internal platform core rather than finished public product.",
+      "rationale": "User directive now makes radar-core part of the eta-mu-radar normalization under open-hax.",
       "notes": [
-        "Current @workspace scope is a weak signal that the package is still internal or pre-promotion."
+        "Current @workspace scope is a weak signal that the package is still internal or pre-promotion.",
+        "Target canonical descendant: orgs/open-hax/eta-mu-radar/packages/radar-core"
       ],
-      "prometheanRelationship": null
+      "prometheanRelationship": null,
+      "etaMuRadarRelationship": {
+        "targetRepo": "orgs/open-hax/eta-mu-radar",
+        "targetSubpath": "packages/radar-core"
+      }
     },
     {
       "path": "packages/reconstituter",
@@ -841,25 +846,31 @@
       "scripts": [],
       "workspaceDeps": [],
       "existingOrgPackageMatches": [],
-      "stageRecommendation": "stay-prototype",
-      "topCandidateOrg": "octave-commons",
-      "confidence": "low-medium",
-      "suggestedCanonicalHomeType": "standalone-repo",
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "open-hax",
+      "confidence": "medium-high",
+      "suggestedCanonicalHomeType": "existing-monorepo-package",
       "likelyOrgCandidates": [
         {
-          "org": "octave-commons",
-          "score": 0.55,
-          "reason": "signal-analysis naming and lack of product polish point more toward research/artifact work."
+          "org": "open-hax",
+          "score": 0.81,
+          "reason": "This package is part of the radar stack dependency graph and the user directed all threat-radar-related work into eta-mu-radar."
         },
         {
-          "org": "riatzukiza",
-          "score": 0.41,
-          "reason": "it may also simply be unfinished internal infrastructure."
+          "org": "octave-commons",
+          "score": 0.16,
+          "reason": "Earlier research-artifact framing is now overridden for the radar-facing use."
         }
       ],
-      "rationale": "Not enough documentation to promote; likely research/internal until clarified.",
-      "notes": [],
-      "prometheanRelationship": null
+      "rationale": "Because it is part of the current radar stack, signal-atproto should normalize with eta-mu-radar under open-hax.",
+      "notes": [
+        "Target canonical descendant: orgs/open-hax/eta-mu-radar/packages/signal-atproto"
+      ],
+      "prometheanRelationship": null,
+      "etaMuRadarRelationship": {
+        "targetRepo": "orgs/open-hax/eta-mu-radar",
+        "targetSubpath": "packages/signal-atproto"
+      }
     },
     {
       "path": "packages/signal-embed-browser",
@@ -871,25 +882,31 @@
       "scripts": [],
       "workspaceDeps": [],
       "existingOrgPackageMatches": [],
-      "stageRecommendation": "stay-prototype",
-      "topCandidateOrg": "octave-commons",
-      "confidence": "medium-low",
-      "suggestedCanonicalHomeType": "standalone-repo",
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "open-hax",
+      "confidence": "medium-high",
+      "suggestedCanonicalHomeType": "existing-monorepo-package",
       "likelyOrgCandidates": [
         {
-          "org": "octave-commons",
-          "score": 0.58,
-          "reason": "browser-side embedding/similarity engine feels exploratory and research-adjacent right now."
+          "org": "open-hax",
+          "score": 0.8,
+          "reason": "It is an explicit dependency of the current radar web build surface and now inherits the eta-mu-radar normalization target."
         },
         {
-          "org": "open-hax",
-          "score": 0.37,
-          "reason": "could become a useful public component later if documented and hardened."
+          "org": "octave-commons",
+          "score": 0.15,
+          "reason": "Earlier exploratory framing is now secondary to its active product role."
         }
       ],
-      "rationale": "The package has implementation surface but not enough public-facing maturity yet.",
-      "notes": [],
-      "prometheanRelationship": null
+      "rationale": "Because it is part of the active radar web dependency surface, signal-embed-browser should normalize with eta-mu-radar under open-hax.",
+      "notes": [
+        "Target canonical descendant: orgs/open-hax/eta-mu-radar/packages/signal-embed-browser"
+      ],
+      "prometheanRelationship": null,
+      "etaMuRadarRelationship": {
+        "targetRepo": "orgs/open-hax/eta-mu-radar",
+        "targetSubpath": "packages/signal-embed-browser"
+      }
     },
     {
       "path": "packages/test-utils",
@@ -956,27 +973,32 @@
       ],
       "workspaceDeps": [],
       "existingOrgPackageMatches": [],
-      "stageRecommendation": "stay-prototype",
-      "topCandidateOrg": "octave-commons",
-      "confidence": "medium",
-      "suggestedCanonicalHomeType": "standalone-repo",
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "open-hax",
+      "confidence": "medium-high",
+      "suggestedCanonicalHomeType": "existing-monorepo-package",
       "likelyOrgCandidates": [
         {
-          "org": "octave-commons",
-          "score": 0.64,
-          "reason": "assessment/reducer/evidence packet framing feels like maturing research/analysis work."
+          "org": "open-hax",
+          "score": 0.77,
+          "reason": "Used in the current radar/hormuz runtime surface and covered by the eta-mu-radar normalization directive."
         },
         {
-          "org": "riatzukiza",
-          "score": 0.43,
-          "reason": "it may still simply support internal evaluation pipelines."
+          "org": "octave-commons",
+          "score": 0.21,
+          "reason": "Its research flavor remains real, but the explicit consolidation directive takes precedence."
         }
       ],
-      "rationale": "Promising research package, but it still needs README/identity work before promotion.",
+      "rationale": "Because it participates in the current radar-adjacent runtime surface, thread-assessment should consolidate into eta-mu-radar under open-hax.",
       "notes": [
-        "Current @workspace scope is a weak signal that the package is still internal or pre-promotion."
+        "Current @workspace scope is a weak signal that the package is still internal or pre-promotion.",
+        "Target canonical descendant: orgs/open-hax/eta-mu-radar/packages/thread-assessment"
       ],
-      "prometheanRelationship": null
+      "prometheanRelationship": null,
+      "etaMuRadarRelationship": {
+        "targetRepo": "orgs/open-hax/eta-mu-radar",
+        "targetSubpath": "packages/thread-assessment"
+      }
     },
     {
       "path": "packages/utils",
@@ -1038,6 +1060,7 @@
     "These recommendations are provisional and apply the new placement contract plus promotion checklists, not a hard move plan.",
     "Several foundational packages already exist under current Promethean monorepos in orgs/, which means the real decision is often canonical-home cleanup rather than fresh repo creation.",
     "No current top-level package looks like a strong ussyverse candidate from the available evidence.",
-    "User clarified that Promethean overlap for the matched foundational packages reflects verified extraction from a living documentation corpus, not generic bad drift."
+    "User clarified that Promethean overlap for the matched foundational packages reflects verified extraction from a living documentation corpus, not generic bad drift.",
+    "User directed that all threat-radar-related work normalize into orgs/open-hax/eta-mu-radar and that the threat framing be cleaned up/removed in favor of authorship, agency, and mutual self-interest."
   ]
 }

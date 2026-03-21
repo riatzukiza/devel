@@ -207,8 +207,8 @@ c43500ccada05ef98f256a4123c34371bec8d7eb1b8502225a3f2b32172446c9  .pi/skills/pro
 a9e3f5c5ab1de06b615ac380e2f92e1ddc3abafe758a959186e8a6dd9e6c18ce  .secrets.baseline
 20b9395cfc6cb6a61471a86f8f210c65af7e062b395525ea4e3a684f6500cdab  .spacemacs
 792150d711eb0286222c3b50c478dc741530b88c2afaaabd4373945c023f28b7  .ημ/registry.jsonl
-71ad82661772fe54ef1ee24a74882dca7eeafedc86ca7fb6645cc0f0b9ad08c9  .ημ/Π_LAST.md
-98b50251b0cbd8c10a9e3e964b66a06c416cd2a72a67f4e586ba5071ab8d8cb1  .ημ/Π_STATE.sexp
+48be53e66595aa37ce36305a608f1964718e4f715bcfd2d551d3e584adf88da2  .ημ/Π_LAST.md
+4611ec0cae007dacc6280e243bd65c4f10066d7889a83c599ea59d433680fca3  .ημ/Π_STATE.sexp
 8c35d1ca672b56400408d7f45caf58e23e8ee2c7e7925839b3935ebf0ea018fd  AGENTS.md
 35b430d73ee6020dbadc25b492a6a755a6daeb748f9fe26b7c15d3bca26075ac  OPENCODE-SESSIONS-INDEXER.md
 ee7a8ff7783a01d327adbca6973a318ca45be741306816fe8d9631c6cb103f25  README.md
@@ -356,7 +356,7 @@ f9a21a36599a718193b7ab6ac123bfa97b2b1e4386602ae27e268528afc2abfc  docs/manifests
 850c3561cce13fe87c7e5bc9f7019fa7bc0143d61e8bf717beedc84104a0759a  docs/manifests/sst-repos-manifest-2025-11-06.md
 c6caedd3d90cc61c72fffe9e52d3ad614ca23be4ea8ece4c1bdce73a55f35937  docs/migrations/packages-services-to-orgs/README.md
 c4256c60b7eaa80acd287e47e28eef5735cecbfd3dfb7344f74871c4ae3dd878  docs/migrations/packages-services-to-orgs/links.yaml
-cc2b3b80137744d3ccb2a80252a3a45337c49541c7fe9243956843674015e757  docs/migrations/packages-services-to-orgs/migration-map.yaml
+6c3619b0cb13d5ba6cba2eb5de98c312c4ecdf720f92179cf6d382896f3a6a8d  docs/migrations/packages-services-to-orgs/migration-map.yaml
 d5b4585ec4cb936d62af1b0a67d2d60ded175042042c379e613f2a67fdabbbed  docs/migrations/packages-services-to-orgs/promotion-checklists.md
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  docs/notes/2026.02.13.13.36.22.md
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  docs/notes/2026.03.05.21.39.51.md
@@ -401,7 +401,7 @@ ec36282a5d5eb75537a9ce287ff69afc9fecc4831b44b8e44f50eed6f12b5c07  docs/reference
 0570e52d2cdea0ca0fb945d04030595d7d059d44de748843af52f8c875b5058d  docs/reports/github-triage/data/org-submodule-refinement-2026-03-21.json
 c67b65d93c29cfd1954176970d93a544a7b7d0e5920c959d9a6ac225d3f14238  docs/reports/github-triage/data/org-submodule-sweep-2026-03-21.json
 6b6588b526d51ba2de66c1701e038bed9de18cc0e5033a748b3a48f38ac1bf1f  docs/reports/github-triage/data/proxx-breakdown-label-apply-2026-03-21.json
-efdfba85d6099a593dfda8dad867db4297c38b7fbafa6cd62549dfdfc36546d7  docs/reports/github-triage/label-apply-2026-03-21.md
+a932e828b45500f0fafeda561115a5e6ba2b352dd85723cc53fc1029bdcfbd03  docs/reports/github-triage/label-apply-2026-03-21.md
 f5e3e629adcd407fb822696eda4abaded4bb9d16e455e8c631a3461521f42f36  docs/reports/github-triage/org-submodule-refinement-2026-03-21.md
 91f1717bad123b4a8c08c9c00e99247b4fb57199865d7bc8dfab33e84c5d816a  docs/reports/github-triage/org-submodule-sweep-2026-03-21.md
 87225666f60a69c06f64988f7ebcf4d186abbe0b94412f051e30272dd88bd619  docs/reports/inventory/eta-mu-admin-submodule-targets-2026-03-21.json
@@ -410,15 +410,15 @@ d2b0bc1b6fecebd68c294c94efb481baa6d160dd73edb283f45bf458fedd270c  docs/reports/i
 7f97dc29f1c1f26cb853f73d958ee9596b5a2917952113e4c21f5f131af036e1  docs/reports/inventory/eta-mu-rollout-prs-2026-03-21.json
 eddee63b73c2d5b6a987e6af7363ad4d97e86949021b616cbdff53851184456b  docs/reports/inventory/eta-mu-rollout-prs-2026-03-21.md
 d5f2fb18a292275090b7d9969905c457ac58ad0ac682c199c0d71e5bad506732  docs/reports/inventory/outside-structure-action-table-2026-03-21.json
-1e2574015baefebb986a1367dd3b8b5077798a6eeb1997394b3caae525819bbf  docs/reports/inventory/outside-structure-action-table-2026-03-21.md
+62264adc2e2a23f2ad896162dff529dcdbc424df71c1d4ac18af88625cb04dd2  docs/reports/inventory/outside-structure-action-table-2026-03-21.md
 9acae878be333b2b992895b2c8a52fba334336ea7a65005fa054e3f875db1bbd  docs/reports/inventory/outside-structure-manifest-2026-03-21.json
 5ed23aca9a9ed28c22bea8ca76f8bc05eb3cc9184e7752bfb7bb706bd28411a2  docs/reports/inventory/outside-structure-manifest-2026-03-21.md
 6e3fdb38fdaabb68a0ae3a3efea63771b42021c823bee6dcc3e81b88e84a962c  docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
-420ce4e782fe9e29e3abfdcfd27980a73f19418833c916fa31af8abbb5ac3563  docs/reports/inventory/packages-org-placement-inventory-2026-03-21.md
+22286f91ff79e57ec1c914840cb57a55f9d1aa1af403842438de1b410c585df0  docs/reports/inventory/packages-org-placement-inventory-2026-03-21.md
 04a09899ebf51bfe86671ed00d2e584ff08ac09492382688b4e3c742fdced467  docs/reports/inventory/promethean-host-runtime-inventory-2026-03-21.json
 61d5784dce5e6cec413921ec0ac309e43c05522d6b80e3506fdf3b6c9fd346f8  docs/reports/inventory/promethean-host-runtime-inventory-2026-03-21.md
 d23ccb65fff056cb4fa01140dda68f29ee7a7daf15784d0e9e2b9a54a679ea52  docs/reports/inventory/root-module-usage-manifest-2026-03-21.json
-61f4663e7c4a6d73419fd819cb259a889646cf01b141cca2e837b90fba400bfe  docs/reports/inventory/root-module-usage-manifest-2026-03-21.md
+7f293d7f2810d4dc7e2154909a2f725412a75d25a91472c2870d36380ede5716  docs/reports/inventory/root-module-usage-manifest-2026-03-21.md
 2c667d9aefab66b305f831797b1f7ff8d0d7f0ca3d1d40036d5479279bf77f27  docs/reports/inventory/services-pr-promotion-inventory-2026-03-21.json
 a01dd0c793c4013b6ae38758edb38d13250620b348124dfaf20325b57259d76a  docs/reports/inventory/services-pr-promotion-inventory-2026-03-21.md
 89866a306e102ac35dd147567706062e07bc1cf8522a0338660e3ff8e52bef26  docs/reports/open-hax-vs-numman-codex.md
@@ -1479,7 +1479,7 @@ d980bbc8e57d13ecb7688f693351bdd3f0e994586de545f76505e9aaa6b33abe  projects/webri
 7c747cb9175b3d141885bec617ffbc7916375644caa9a77d1deabe872b4fcf2d  promethean.kanban.json
 1a72d7f32aa65dab1ac3432d5bfa9eb4775241f61777ad8de2b27d59105700d2  readmeflow-debug.js
 e85ec566aae92963ded5b66c4d4d0dbcf2a5be2925593ef25d1b24cbd32fc67e  readmeflow-debug.ts
-9eea7c26aa51ed4862e1424e83c73da124043a5e675979531b1657091fd02202  receipts.log
+ab1e096bf1083758f835697e8b7ab23f12e347ca882e7e91d98c2b9249195ad3  receipts.log
 6ab431e358dbedd9f6fa2469af55f1446311116d9efed4edf1ffe52901be700e  reconstitute-mcp/AGENTS.md
 3d0b88157a535d46ff1332d2c8fbb5990739e1dd7ae8d139b6f962e840dd7b5d  reconstitute-mcp/package.json
 d8c05c2c39e5b17d6b7e1547a0aaf9f4a75f235998a189f1a930fbf3da2de073  reconstitute-mcp/src/index.ts
@@ -2499,7 +2499,7 @@ e817b03a3d019f74c5565722ea28a69e9229716781248ebd2c2937f90f052cdc  specs/drafts/g
 b68181cde6d727b87049fec87ffc353a286b9f85316defe58eccf76fc90343cc  specs/drafts/hormuz-clock-evolve-2026-03-19.md
 35f8e2990a090803e67324d98a3d946f5bfb8e8f3fbe7cfd46a032126a08cbf4  specs/drafts/hormuz-clock-range-priors-2026-03-19.md
 5309314f05479fdd8066c2f4c26f055d24d02fa8ae01f36a83894a69894feea3  specs/drafts/job-application-research-synthesis-process-2026-03-18.md
-12333f185b9045418af398016e7aafc2904cab75cdab419bce9a5efadb87a3d2  specs/drafts/kanban-extraction-and-issue-refinement-2026-03-21.md
+5a7f43a251ea78f9db78ccc3353503bb8cab1eb44d8d2f6ad28e9bf0915d2278  specs/drafts/kanban-extraction-and-issue-refinement-2026-03-21.md
 5b41ffeb9f62d160d1b6b77993d69bb70e654f8399b417d6709e69fbcbd4387d  specs/drafts/mcp-social-publisher-ussy-key-auth-deploy-2026-03-21.md
 1c641fde941cbaff55eb2dc6ad6ffb9b75f364f26e1de801a2b2a5e70305812c  specs/drafts/migrate-packages-services-to-orgs-phase-0-inventory.md
 5df8b182dd9bbe45fecdce2aaf93eee933e2b49609c0e5853b6719d85c484e86  specs/drafts/migrate-packages-services-to-orgs-phase-1-symlink-layer.md
@@ -2537,7 +2537,7 @@ a5bf11d83b6a2a2ceef773dedd5841862849e97b787b9acfd0d99b3bc54a8327  specs/drafts/p
 dbe335da78036e011be73797cc342be211efa1659afac9c43136a40a07520e86  specs/drafts/resume-oss-ats-audit-2026-03-17.md
 c5662241cc45baacdb7e11d42d77b137c28abda534a913a1e78437d9d52b0885  specs/drafts/resume-page-tiering-2026-03-18.md
 0d15ba202c14f8af76cf807821c07fd265dd14cf095fa4ef68c33e91480ac15e  specs/drafts/review-fixes-2026-03-14.md
-69e2b1a25eb872705a47fa7bf8555a41d028f5fbc6096f4a5c603e2fc90d801e  specs/drafts/root-module-exception-policy-2026-03-21.md
+08a1253d21a170cec73bba2ded64d697cd0b268c50d2b5a34631972ff4a1095a  specs/drafts/root-module-exception-policy-2026-03-21.md
 6bdf6cf417088c677acd7a1447caf27ade39926c77b751f71ed9a1452cfd517f  specs/drafts/root-module-usage-manifest-2026-03-21.md
 13b7a3ba496b456508841758816733a5ce361bffa66232b71b736388d22567dd  specs/drafts/root-packlimit-rewrite-and-artifact-guards-2026-03-20.md
 01a99729246be4a0e1b12e88b2836bfafcec8fa85237ee69c4c28377a51f1a7b  specs/drafts/service-devops-homes-proxx-voxx-2026-03-19.md
