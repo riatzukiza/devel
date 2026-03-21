@@ -1,7 +1,7 @@
 (Π_STATE
-  (time "2026-03-21T22:01:11Z")
+  (time "2026-03-21T22:04:12Z")
   (branch "feature/threat-radar-platform")
-  (pre_head "5cf0ef0")
+  (pre_head "8307c11")
   (dirty true)
   (checks
     (check (status passed) (command "git submodule status orgs/open-hax/proxx"))
@@ -10,8 +10,8 @@
   )
   (repo_notes
     (upstream "origin/feature/threat-radar-platform")
-    (status_digest "f1ca-599e-b218-d45c")
-    (note "Persist the eta-mu follow-on rollout results: remaining open-hax/proxx FSM label application, rollout-PR notes, and branch-protection notes recorded in docs/specs/receipts.")
+    (status_digest "ae0f-7834-251b-a287")
+    (note "Persist the eta-mu follow-on governance results: remaining proxx FSM label application notes, rollout-PR/branch-protection notes, and matching receipt updates.")
     (note "Carry the services/proxx z.ai default passthrough update and advance orgs/open-hax/proxx to e03041d, the latest dedicated Proxx Π snapshot.")
     (submodule (path "orgs/open-hax/proxx") (to "e03041d") (tag "Π/2026-03-21/215514-e03041d"))
     (changed_file ".ημ/Π_LAST.md")
