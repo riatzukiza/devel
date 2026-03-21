@@ -139,3 +139,6 @@
 [submodule "orgs/ussyverse/kanban"]
 	path = orgs/ussyverse/kanban
 	url = https://github.com/open-hax/ussyverse-kanban.git
+[submodule "orgs/open-hax/eta-mu-github"]
+	path = orgs/open-hax/eta-mu-github
+	url = https://github.com/open-hax/eta-mu-github.git

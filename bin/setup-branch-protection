@@ -1,109 +1,224 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# setup-branch-protection: Apply baseline GitHub branch protection to all submodules
-# - Targets each repo referenced in .gitmodules (GitHub only)
-# - Protects the default branch (via gh repo view --json defaultBranchRef)
-# - Optional: set ALSO_DEV=true to also protect a 'dev' branch if it exists
-# - Use --dry-run to print intended actions without applying changes
+# setup-branch-protection: apply baseline GitHub branch protection to devel and/or
+# GitHub-backed submodules where the current token has admin access.
 #
-# Baseline protections applied:
-# - enforce_admins: true
-# - required_linear_history: true
-# - required_conversation_resolution: true
-# - allow_force_pushes: false
-# - allow_deletions: false
-# - required_pull_request_reviews: 1 approval, dismiss stale reviews
+# Defaults:
+# - Protect every GitHub-backed submodule listed in .gitmodules
+# - Skip repos where viewerPermission is not ADMIN
+# - Enforce review-thread resolution, linear history, and baseline PR review rules
+# - Preserve existing required status checks and optionally merge additional ones
 #
-# Notes:
-# - This script requires the GitHub CLI (`gh`) to be authenticated with admin permissions
-#   for each target repository. It will skip repos where permissions are insufficient.
-# - Status checks are NOT enforced by default to avoid breaking repos without defined checks.
-#   You can extend the JSON payload below to include required_status_checks if desired.
+# Options:
+#   --dry-run        Print intended actions only
+#   --include-root   Include the current root repo in addition to submodules
+#   --require-check  Add an additional required status-check context (repeatable)
+#
+# Environment:
+#   ALSO_DEV=true            Also protect a dev branch if it exists
+#   REQUIRED_CHECKS=a,b,c    Comma-separated required contexts to merge in
 
 DRY_RUN=0
-if [[ "${1:-}" == "--dry-run" ]]; then
-  DRY_RUN=1
-fi
+INCLUDE_ROOT=0
+REQUESTED_CHECKS=()
 
-# Resolve repo slugs (owner/repo) from .gitmodules, filtering only GitHub repos
-resolve_slugs() {
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --dry-run)
+      DRY_RUN=1
+      shift
+      ;;
+    --include-root)
+      INCLUDE_ROOT=1
+      shift
+      ;;
+    --require-check)
+      REQUESTED_CHECKS+=("${2:-}")
+      shift 2
+      ;;
+    *)
+      echo "Unknown argument: $1" >&2
+      exit 64
+      ;;
+  esac
+done
+
+IFS=',' read -r -a ENV_CHECKS <<< "${REQUIRED_CHECKS:-}"
+for check in "${ENV_CHECKS[@]}"; do
+  if [[ -n "$check" ]]; then
+    REQUESTED_CHECKS+=("$check")
+  fi
+done
+
+resolve_slug_from_url() {
+  local url="$1"
+  case "$url" in
+    git@github.com:*) printf '%s\n' "${url#git@github.com:}" ;;
+    https://github.com/*) printf '%s\n' "${url#https://github.com/}" ;;
+    ssh://git@github.com/*) printf '%s\n' "${url#ssh://git@github.com/}" ;;
+    git://github.com/*) printf '%s\n' "${url#git://github.com/}" ;;
+    *) return 1 ;;
+  esac
+}
+
+resolve_submodule_slugs() {
   if [[ ! -f .gitmodules ]]; then
-    echo "No .gitmodules found in $(pwd)" >&2
-    return 1
+    return 0
   fi
   git config -f .gitmodules --get-regexp '^submodule\..*\.url' 2>/dev/null | awk '{print $2}' | while read -r url; do
-    slug=""
-    case "$url" in
-      git@github.com:*) slug=${url#git@github.com:} ;;
-      https://github.com/*) slug=${url#https://github.com/} ;;
-      ssh://git@github.com/*) slug=${url#ssh://git@github.com/} ;;
-      git://github.com/*) slug=${url#git://github.com/} ;;
-      *) slug="" ;;
-    esac
+    slug=$(resolve_slug_from_url "$url" || true)
     [[ -z "$slug" ]] && continue
-    slug=${slug%.git}
-    printf '%s\n' "$slug"
+    printf '%s\n' "${slug%.git}"
   done | sort -u
 }
 
-# Get default branch for a repo slug using gh
+resolve_root_slug() {
+  local url
+  url=$(git remote get-url origin 2>/dev/null || true)
+  [[ -z "$url" ]] && return 0
+  resolve_slug_from_url "$url" | sed 's/\.git$//'
+}
+
+get_viewer_permission() {
+  local slug="$1"
+  gh repo view "$slug" --json viewerPermission --jq .viewerPermission 2>/dev/null || true
+}
+
 get_default_branch() {
   local slug="$1"
   gh repo view "$slug" --json defaultBranchRef --jq .defaultBranchRef.name 2>/dev/null || true
 }
 
-# Check if a branch exists for a repo slug
 branch_exists() {
   local slug="$1" branch="$2"
   gh api -H "Accept: application/vnd.github+json" "repos/$slug/branches/$branch" >/dev/null 2>&1
 }
 
-apply_protection() {
+fetch_existing_protection() {
   local slug="$1" branch="$2"
-  local json
-  json='{
-    "enforce_admins": true,
-    "required_linear_history": true,
-    "allow_force_pushes": false,
-    "allow_deletions": false,
-    "required_conversation_resolution": true,
-    "required_status_checks": null,
-    "restrictions": null,
-    "required_pull_request_reviews": {
-      "dismiss_stale_reviews": true,
-      "require_code_owner_reviews": false,
-      "required_approving_review_count": 1,
-      "require_last_push_approval": false
+  gh api -H "Accept: application/vnd.github+json" "repos/$slug/branches/$branch/protection" 2>/dev/null || true
+}
+
+merge_required_contexts() {
+  python - <<'PY'
+import json, os
+existing_raw = os.environ.get('EXISTING_JSON', '').strip()
+requested = [c.strip() for c in os.environ.get('REQUESTED_CHECKS', '').split(',') if c.strip()]
+merged = []
+seen = set()
+if existing_raw:
+    try:
+        existing = json.loads(existing_raw)
+        for ctx in existing.get('required_status_checks', {}).get('contexts', []) or []:
+            if ctx and ctx not in seen:
+                merged.append(ctx)
+                seen.add(ctx)
+        for item in existing.get('required_status_checks', {}).get('checks', []) or []:
+            ctx = item.get('context')
+            if ctx and ctx not in seen:
+                merged.append(ctx)
+                seen.add(ctx)
+    except Exception:
+        pass
+for ctx in requested:
+    if ctx not in seen:
+        merged.append(ctx)
+        seen.add(ctx)
+print(json.dumps(merged))
+PY
+}
+
+existing_strict_flag() {
+  python - <<'PY'
+import json, os
+raw = os.environ.get('EXISTING_JSON', '').strip()
+if not raw:
+    print('false')
+else:
+    try:
+        strict = bool(json.loads(raw).get('required_status_checks', {}).get('strict', False))
+        print('true' if strict else 'false')
+    except Exception:
+        print('false')
+PY
+}
+
+build_payload() {
+  python - <<'PY'
+import json, os
+contexts = json.loads(os.environ['CONTEXTS_JSON'])
+strict = os.environ.get('STRICT_FLAG', 'false') == 'true'
+payload = {
+    'enforce_admins': True,
+    'required_linear_history': True,
+    'allow_force_pushes': False,
+    'allow_deletions': False,
+    'required_conversation_resolution': True,
+    'restrictions': None,
+    'required_status_checks': None,
+    'required_pull_request_reviews': {
+        'dismiss_stale_reviews': True,
+        'require_code_owner_reviews': False,
+        'required_approving_review_count': 1,
+        'require_last_push_approval': False,
+    },
+}
+if contexts:
+    payload['required_status_checks'] = {
+        'strict': strict,
+        'contexts': contexts,
     }
-  }'
+print(json.dumps(payload))
+PY
+}
+
+apply_protection() {
+  local slug="$1" branch="$2" existing strict contexts_json payload
+  existing=$(fetch_existing_protection "$slug" "$branch")
+  strict=$(EXISTING_JSON="$existing" existing_strict_flag)
+  contexts_json=$(EXISTING_JSON="$existing" REQUESTED_CHECKS="$(IFS=','; echo "${REQUESTED_CHECKS[*]}")" merge_required_contexts)
+  payload=$(CONTEXTS_JSON="$contexts_json" STRICT_FLAG="$strict" build_payload)
 
   if [[ $DRY_RUN -eq 1 ]]; then
-    echo "[DRY-RUN] Would protect $slug:$branch with baseline protections"
+    echo "[DRY-RUN] Would protect $slug:$branch"
+    echo "$payload"
     return 0
   fi
 
-  if ! gh api --method PUT -H "Accept: application/vnd.github+json" \
-      "repos/$slug/branches/$branch/protection" \
-      --input - <<<"$json" >/dev/null; then
-    echo "[ERROR] Failed to set protection on $slug:$branch" >&2
-    return 1
-  fi
+  gh api --method PUT -H "Accept: application/vnd.github+json" \
+    "repos/$slug/branches/$branch/protection" \
+    --input - <<<"$payload" >/dev/null
   echo "[OK] Protected $slug:$branch"
 }
 
 main() {
-  local failures=()
-  local slugs
-  mapfile -t slugs < <(resolve_slugs)
+  local failures=() slugs=() slug permission default_branch
+
+  if [[ $INCLUDE_ROOT -eq 1 ]]; then
+    while read -r slug; do
+      [[ -n "$slug" ]] && slugs+=("$slug")
+    done < <(resolve_root_slug)
+  fi
+
+  while read -r slug; do
+    [[ -n "$slug" ]] && slugs+=("$slug")
+  done < <(resolve_submodule_slugs)
 
   if [[ ${#slugs[@]} -eq 0 ]]; then
-    echo "No GitHub-backed submodules found in .gitmodules" >&2
+    echo "No GitHub-backed repos found" >&2
     exit 1
   fi
 
+  mapfile -t slugs < <(printf '%s\n' "${slugs[@]}" | sort -u)
+
   for slug in "${slugs[@]}"; do
-    local default_branch
+    permission=$(get_viewer_permission "$slug")
+    if [[ "$permission" != "ADMIN" ]]; then
+      echo "[INFO] Skipping $slug (viewerPermission=$permission; ADMIN required)"
+      continue
+    fi
+
     default_branch=$(get_default_branch "$slug")
     if [[ -z "$default_branch" ]]; then
       echo "[WARN] Could not determine default branch for $slug; skipping" >&2
@@ -111,19 +226,13 @@ main() {
       continue
     fi
 
-    # Protect default branch
     if ! apply_protection "$slug" "$default_branch"; then
       failures+=("$slug:$default_branch")
     fi
 
-    # Optionally protect 'dev' branch if requested and exists
-    if [[ "${ALSO_DEV:-false}" == "true" ]]; then
-      if branch_exists "$slug" "dev"; then
-        if ! apply_protection "$slug" "dev"; then
-          failures+=("$slug:dev")
-        fi
-      else
-        echo "[INFO] Branch 'dev' not found for $slug; skipping"
+    if [[ "${ALSO_DEV:-false}" == "true" ]] && branch_exists "$slug" dev; then
+      if ! apply_protection "$slug" dev; then
+        failures+=("$slug:dev")
       fi
     fi
   done
@@ -136,4 +245,4 @@ main() {
   fi
 }
 
-main "$@"
+main
