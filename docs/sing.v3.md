@@ -11,7 +11,7 @@ description: pay the fork tax (crystallize + bloom)
 
   (inputs
     (inspiration
-      (path "/home/err/devel/vaults/fork_tales/.fork_Π_ημ_frags/.μη_ports")
+      (path "/home/err/devel/orgs/octave-commons/fork_tales/.fork_Π_ημ_frags/.μη_ports")
       (notes
         "Remember the Mixed Japanese/English names on things in the interface."
         "Investigate the lore in the ημ/Π packets you have.")))

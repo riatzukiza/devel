@@ -117,8 +117,9 @@
 	path = orgs/open-hax/museeks
 	url = https://github.com/open-hax/museeks.git
 	branch = device/stealth
-[submodule "vaults/fork_tales"]
-	path = vaults/fork_tales
+
+[submodule "orgs/octave-commons/fork_tales"]
+	path = orgs/octave-commons/fork_tales
 	url = https://github.com/octave-commons/fork_tales.git
 	branch = device/stealth
 [submodule "vaults/static_man"]

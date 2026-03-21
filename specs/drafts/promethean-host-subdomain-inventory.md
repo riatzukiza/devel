@@ -34,6 +34,7 @@
 - 2026-03-21T01:20:00Z Verified active proxy config and local route behavior on `ussy` and `ussy3`; `ussy2` currently has no Docker runtime or deployed app tree under `~/devel`.
 - 2026-03-21T02:10:00Z Re-synced the live `services/proxx` Caddy config to `ussy`, added the missing runtime network attachments for the Caddy frontend, created the missing Cloudflare DNS A record for `voxx.ussy.promethean.rest` without enabling proxying, and verified live HTTPS/browser-facing responses for radar, battlebussy, voxx, and the two core hosts.
 - 2026-03-21T02:35:00Z Added `shibboleth.promethean.rest` to the live `ussy` Caddy config, created the missing Cloudflare A record with proxying disabled, and verified both the UI and `/api/health` over HTTPS.
+- 2026-03-21T04:45:00Z Bootstrapped Docker on `ussy2`, deployed the standalone `host-fleet-dashboard` with a dedicated Caddy TLS frontend, created `portal.promethean.rest` in Cloudflare with proxying disabled, and verified the portal UI plus authenticated aggregated host inventory over HTTPS.
 
 ## Findings
 ### ussy (`104.130.31.129`)
@@ -74,10 +75,16 @@
 
 ### ussy2 (`104.130.31.121`)
 - Reachable: yes
-- Docker runtime: no `docker` or `podman` found in `PATH`
-- App tree: no `~/devel` directory present for user `error`
-- Intended public subdomains from current runtime evidence: none found
-- Current state looks like a bare host with SSH only, not an active application host
+- Docker runtime: yes (bootstrapped during this pass)
+- Public/browser-facing service now deployed:
+  - `portal.promethean.rest` -> standalone `host-fleet-dashboard`
+- Verified live behavior:
+  - public HTML from `https://portal.promethean.rest/`
+  - authenticated `/api/hosts` returns aggregated host cards for `ussy2`, `ussy`, and `ussy3`
+  - browser snapshot shows a live local host card plus remote cards from the other ussy hosts
+- Running portal containers:
+  - `host-fleet-dashboard`
+  - `host-fleet-dashboard-ssl`
 
 ## Candidate hostname inventory from runtime evidence
 ### Confirmed active now
@@ -87,11 +94,8 @@
 - `voxx.ussy.promethean.rest` -> served on `ussy`
 - `shibboleth.promethean.rest` -> served on `ussy`
 - `ussy3.promethean.rest` -> served on `ussy3`
-
-### Not currently serving an app
-- `ussy2.promethean.rest` -> host reachable, but no active application runtime discovered
+- `portal.promethean.rest` -> served on `ussy2`
 
 ## Recommended next action
 - Keep all discovered records **DNS only / not proxied** until each service is validated by its intended clients.
-- `ussy2` should remain a plain A record with no proxying until it actually hosts an application runtime.
-- The current browser-inspectable service set is ready for manual client-by-client validation: Proxx (`ussy`/`ussy3`), Radar, Battlebussy, and Voxx.
+- The current browser-inspectable service set is ready for manual client-by-client validation: Proxx (`ussy`/`ussy3`), Radar, Battlebussy, Voxx, Shibboleth, and the new Portal on `ussy2`.

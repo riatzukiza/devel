@@ -26,7 +26,7 @@ Deploy a live threat-radar platform to `ssh error@ussy.promethean.rest` with pub
 - `threat-radar-deploy/`
 - `services/openplanner/`
 - `services/mcp-stack/`
-- `vaults/fork_tales/part64/code/web_graph_weaver.js`
+- `orgs/octave-commons/fork_tales/part64/code/web_graph_weaver.js`
 - `specs/drafts/threat-radar-platform.md`
 
 ## Open Questions

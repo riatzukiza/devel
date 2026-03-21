@@ -39,6 +39,22 @@ docker compose up --build -d
 curl http://127.0.0.1:8791/api/health
 ```
 
+## TLS / standalone portal
+A dedicated TLS frontend can serve this dashboard directly on `portal.promethean.rest`:
+
+```bash
+cd /home/err/devel/services/host-fleet-dashboard
+cp .env.example .env
+# ensure portal.promethean.rest resolves to the host first
+docker network create ai-infra || true
+docker compose -f compose.yaml -f docker-compose.ssl.yml up --build -d
+```
+
+This expects:
+- `portal.promethean.rest` DNS pointing directly at the host
+- ports `80` and `443` available on the host
+- the dashboard service reachable as `host-fleet-dashboard:8791` on `ai-infra`
+
 The compose stack mounts:
 - `/var/run/docker.sock` for local container inventory
 - `../` as `/workspace/services` so local route files like `/workspace/services/proxx/Caddyfile` can be parsed

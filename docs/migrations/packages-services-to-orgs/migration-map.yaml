@@ -1,18 +1,332 @@
-# Source of truth for promotions into orgs/.
+# Source of truth for promotions into orgs and workspace runtime homes.
 #
-# - Canonical checkout: orgs/<org>/<repo>
-# - Compatibility path: packages/<name> or services/<name> (symlink)
+# Core fields:
+# - kind: package | service
+# - status: prototype | candidate-promote | canonical
+# - canonical_home_type:
+#   - standalone-repo
+#   - existing-monorepo-package
+#   - future-monorepo-package
+#   - runtime-home
+#   - compatibility-alias
+# - provenance.classification:
+#   - direct-prototype
+#   - verified-extraction
+#   - corpus-artifact
+#   - canonical-descendant
+#   - slop
 #
-# Incrementally fill this file during Phase 0 inventory.
+# Notes:
+# - Default birthplace for new work is packages/<name> unless explicitly overridden.
+# - services/<name> is for runtime/devops/integration material, not default canonical source.
+# - This file currently reflects a cautious first pass only: high-confidence package candidates
+#   plus Promethean-derived verified extractions whose provenance should be preserved.
 
 services/open-hax-openai-proxy:
+  kind: service
+  status: canonical
   org: open-hax
   repo: proxx
-  kind: node-service
+  service_kind: node-service
   upstream: https://github.com/open-hax/proxx.git
   branch: main
-  extraction: n/a # already upstream + already submodule today; Phase 3 will relocate path
-  symlink:
+  canonical_source: orgs/open-hax/proxx
+  canonical_home_type: compatibility-alias
+  runtime_home: services/proxx
+  provenance:
+    classification: canonical-descendant
+    source_corpus: null
+  compat:
     from: services/open-hax-openai-proxy
-    to: orgs/open-hax/proxx
-  notes: "Keep services/ name stable; canonical is orgs/open-hax/proxx"
+    to: services/proxx
+  notes: "Legacy operator alias; source truth lives in orgs/open-hax/proxx while workspace runtime truth lives in services/proxx."
+
+packages/cephalon-clj:
+  kind: package
+  status: candidate-promote
+  target_org: riatzukiza
+  repo: cephalon-clj
+  package_kind: clj-package
+  confidence: high
+  canonical_home_type: standalone-repo
+  extraction: history-or-snapshot
+  provenance:
+    classification: direct-prototype
+    source_corpus: null
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "Internal cognitive-system architecture with reproducible run docs; strongest current fit is a mature devel-only integration with its own timeline."
+
+packages/cephalon-ts:
+  kind: package
+  status: candidate-promote
+  target_org: riatzukiza
+  repo: cephalon-ts
+  package_kind: ts-package
+  confidence: high
+  canonical_home_type: standalone-repo
+  extraction: history-or-snapshot
+  provenance:
+    classification: direct-prototype
+    source_corpus: null
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "Mature internal integration with Discord, policy, and memory coupling; promote out of packages when ready for independent timeline hygiene."
+
+packages/eta-mu-docs:
+  kind: package
+  status: candidate-promote
+  target_org: octave-commons
+  repo: eta-mu-docs
+  package_kind: docs-indexing-library
+  confidence: medium-high
+  canonical_home_type: standalone-repo
+  extraction: history-or-snapshot
+  provenance:
+    classification: direct-prototype
+    source_corpus: null
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "Symbolic docs/view-graph substrate; strongest fit is mature research/artifact work rather than internal-only integration."
+
+packages/eta-mu-truth:
+  kind: package
+  status: candidate-promote
+  target_org: octave-commons
+  repo: eta-mu-truth
+  package_kind: truth-kernel
+  confidence: high
+  canonical_home_type: standalone-repo
+  extraction: history-or-snapshot
+  provenance:
+    classification: direct-prototype
+    source_corpus: null
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "Truth-graph kernel with append-only ops and symbolic framing; strongest fit is mature research/artifact work."
+
+packages/npu-top:
+  kind: package
+  status: candidate-promote
+  target_org: open-hax
+  repo: npu-top
+  package_kind: tui-tool
+  confidence: high
+  canonical_home_type: standalone-repo
+  extraction: history-or-snapshot
+  provenance:
+    classification: direct-prototype
+    source_corpus: null
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "Already reads like an independently useful operator/developer tool with portable value beyond devel."
+
+packages/omni-top:
+  kind: package
+  status: candidate-promote
+  target_org: open-hax
+  repo: omni-top
+  package_kind: tui-tool
+  confidence: high
+  canonical_home_type: standalone-repo
+  extraction: history-or-snapshot
+  provenance:
+    classification: direct-prototype
+    source_corpus: null
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "Portable telemetry dashboard with product/tool posture; strong open-hax candidate."
+
+packages/opencode-cljs-client:
+  kind: package
+  status: candidate-promote
+  target_org: open-hax
+  repo: opencode-cljs-client
+  package_kind: client-library
+  confidence: high
+  canonical_home_type: standalone-repo
+  extraction: history-or-snapshot
+  provenance:
+    classification: direct-prototype
+    source_corpus: null
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "Reusable client library with build/test surface and externally meaningful API."
+
+packages/opencode-openplanner-plugin-cljs:
+  kind: package
+  status: candidate-promote
+  target_org: open-hax
+  repo: opencode-openplanner-plugin-cljs
+  package_kind: plugin-library
+  confidence: medium-high
+  canonical_home_type: standalone-repo
+  extraction: history-or-snapshot
+  provenance:
+    classification: direct-prototype
+    source_corpus: null
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "Reusable OpenCode/OpenPlanner integration plugin; close enough to productized to include in first pass."
+
+packages/openplanner-cljs-client:
+  kind: package
+  status: candidate-promote
+  target_org: open-hax
+  repo: openplanner-cljs-client
+  package_kind: client-library
+  confidence: high
+  canonical_home_type: standalone-repo
+  extraction: history-or-snapshot
+  provenance:
+    classification: direct-prototype
+    source_corpus: null
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "Portable client library with clear external developer value."
+
+packages/reconstituter:
+  kind: package
+  status: candidate-promote
+  target_org: open-hax
+  repo: reconstituter
+  package_kind: cli-tooling
+  confidence: high
+  canonical_home_type: standalone-repo
+  extraction: history-or-snapshot
+  provenance:
+    classification: direct-prototype
+    source_corpus: null
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "One of the clearest open-hax package candidates: documented CLI/tooling with obvious use beyond devel."
+
+packages/embedding:
+  kind: package
+  status: candidate-promote
+  target_org: riatzukiza
+  repo: embedding
+  package_kind: foundational-library
+  confidence: medium
+  canonical_home_type: existing-monorepo-package
+  canonical_descendant_candidate: orgs/riatzukiza/promethean/packages/embedding
+  extraction: already-extracted
+  provenance:
+    classification: verified-extraction
+    source_corpus: orgs/octave-commons/promethean
+    canonical_descendant_pending: true
+    matches:
+      - orgs/octave-commons/promethean/packages/embedding
+      - orgs/riatzukiza/promethean/packages/embedding
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "Verified-useful Promethean extraction. First-pass recommendation is to bless the internal riatzukiza/promethean home before considering any later public split."
+
+packages/event:
+  kind: package
+  status: candidate-promote
+  target_org: riatzukiza
+  repo: event
+  package_kind: foundational-library
+  confidence: medium
+  canonical_home_type: existing-monorepo-package
+  canonical_descendant_candidate: orgs/riatzukiza/promethean/packages/event
+  extraction: already-extracted
+  provenance:
+    classification: verified-extraction
+    source_corpus: orgs/octave-commons/promethean
+    canonical_descendant_pending: true
+    matches:
+      - orgs/octave-commons/promethean/packages/event
+      - orgs/riatzukiza/promethean/packages/event
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "Verified-useful Promethean extraction. Treat current overlap as provenance work; current best fit remains internal ecosystem infrastructure."
+
+packages/fsm:
+  kind: package
+  status: candidate-promote
+  target_org: riatzukiza
+  repo: fsm
+  package_kind: foundational-library
+  confidence: medium
+  canonical_home_type: existing-monorepo-package
+  canonical_descendant_candidate: orgs/riatzukiza/promethean/packages/fsm
+  extraction: already-extracted
+  provenance:
+    classification: verified-extraction
+    source_corpus: orgs/octave-commons/promethean
+    canonical_descendant_pending: true
+    matches:
+      - orgs/octave-commons/promethean/packages/fsm
+      - orgs/riatzukiza/promethean/packages/fsm
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "Verified-useful Promethean extraction. Current best fit is internal monorepo package with possible later open-hax utility extraction."
+
+packages/logger:
+  kind: package
+  status: candidate-promote
+  target_org: riatzukiza
+  repo: logger
+  package_kind: foundational-library
+  confidence: medium
+  canonical_home_type: existing-monorepo-package
+  canonical_descendant_candidate: orgs/riatzukiza/promethean/packages/logger
+  extraction: already-extracted
+  provenance:
+    classification: verified-extraction
+    source_corpus: orgs/octave-commons/promethean
+    canonical_descendant_pending: true
+    matches:
+      - orgs/octave-commons/promethean/packages/logger
+      - orgs/riatzukiza/promethean/packages/logger
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "Verified-useful Promethean extraction. Promote by blessing a canonical descendant home rather than treating the overlap as generic slop."
+
+packages/persistence:
+  kind: package
+  status: candidate-promote
+  target_org: open-hax
+  repo: persistence
+  package_kind: foundational-library
+  confidence: medium
+  canonical_home_type: standalone-repo
+  extraction: already-extracted
+  provenance:
+    classification: verified-extraction
+    source_corpus: orgs/octave-commons/promethean
+    canonical_descendant_pending: true
+    matches:
+      - orgs/octave-commons/promethean/packages/persistence
+      - orgs/riatzukiza/promethean/packages/persistence
+      - orgs/octave-commons/pantheon/packages/persistence
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "Verified-useful Promethean extraction with stronger long-term product potential than the other foundational overlaps; keep provenance explicit while moving toward an open-hax canonical descendant."
+
+packages/test-utils:
+  kind: package
+  status: candidate-promote
+  target_org: riatzukiza
+  repo: test-utils
+  package_kind: foundational-library
+  confidence: medium
+  canonical_home_type: existing-monorepo-package
+  canonical_descendant_candidate: orgs/riatzukiza/promethean/packages/test-utils
+  extraction: already-extracted
+  provenance:
+    classification: verified-extraction
+    source_corpus: orgs/octave-commons/promethean
+    canonical_descendant_pending: true
+    matches:
+      - orgs/octave-commons/promethean/packages/test-utils
+      - orgs/riatzukiza/promethean/packages/test-utils
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "Verified-useful Promethean extraction. Shared internal helper first; public-product pressure is weak right now."
+
+packages/utils:
+  kind: package
+  status: candidate-promote
+  target_org: riatzukiza
+  repo: utils
+  package_kind: foundational-library
+  confidence: medium
+  canonical_home_type: existing-monorepo-package
+  canonical_descendant_candidate: orgs/riatzukiza/promethean/packages/utils
+  extraction: already-extracted
+  provenance:
+    classification: verified-extraction
+    source_corpus: orgs/octave-commons/promethean
+    canonical_descendant_pending: true
+    matches:
+      - orgs/octave-commons/promethean/packages/utils
+      - orgs/riatzukiza/promethean/packages/utils
+  inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+  notes: "Verified-useful Promethean extraction. Current evidence still points to internal ecosystem utility first, with canonical descendant cleanup pending."

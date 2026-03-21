@@ -1,5 +1,8 @@
-# Managed symlinks (compat paths -> canonical orgs checkouts)
+# Managed workspace aliases.
+#
+# `from` is a stable operator/developer path kept for compatibility.
+# `to` is the current runtime or canonical target inside this workspace.
 
 links:
   - from: services/open-hax-openai-proxy
-    to: orgs/open-hax/proxx
+    to: services/proxx

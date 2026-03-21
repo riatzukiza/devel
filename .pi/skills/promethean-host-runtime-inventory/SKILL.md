@@ -1,0 +1,1 @@
+/home/err/.pi/agent/skills/promethean-host-runtime-inventory/SKILL.md

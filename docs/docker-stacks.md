@@ -38,11 +38,11 @@ pnpm docker:stack down promethean:dev
 - `promethean:sonarqube` - `orgs/riatzukiza/promethean/docker-compose.sonarqube.yml`
 - `promethean:tor` - `orgs/riatzukiza/promethean/docker-compose.tor.yml`
 - `openplanner` - `services/openplanner/docker-compose.yml`
-- `part64` - `vaults/fork_tales/part64/docker-compose.yml`
-- `part64:embed-bench` - `vaults/fork_tales/part64/docker-compose.embed-bench.yml`
-- `part64:muse-song-lab` - `vaults/fork_tales/part64/docker-compose.muse-song-lab.yml`
-- `part64:sim-slice-bench` - `vaults/fork_tales/part64/docker-compose.sim-slice-bench.yml`
-- `part64:whisper-bench` - `vaults/fork_tales/part64/docker-compose.whisper-bench.yml`
+- `part64` - `orgs/octave-commons/fork_tales/part64/docker-compose.yml`
+- `part64:embed-bench` - `orgs/octave-commons/fork_tales/part64/docker-compose.embed-bench.yml`
+- `part64:muse-song-lab` - `orgs/octave-commons/fork_tales/part64/docker-compose.muse-song-lab.yml`
+- `part64:sim-slice-bench` - `orgs/octave-commons/fork_tales/part64/docker-compose.sim-slice-bench.yml`
+- `part64:whisper-bench` - `orgs/octave-commons/fork_tales/part64/docker-compose.whisper-bench.yml`
 - `open-hax-openai-proxy` - `services/proxx/docker-compose.yml`
 - `voxx` - `services/voxx/compose.yaml`
 

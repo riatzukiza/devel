@@ -36,7 +36,7 @@ This leaves crawler activity invisible to the radar wall.
 - `threat-radar-deploy/services/threat-radar-mcp/src/store.ts`
 - `threat-radar-deploy/packages/radar-core/src/{schema,normalize,cluster}.ts`
 - `services/radar-stack/scripts/hormuz_cycle.py`
-- `vaults/fork_tales/part64/code/web_graph_weaver.js`
+- `orgs/octave-commons/fork_tales/part64/code/web_graph_weaver.js`
 - remote weaver endpoints:
   - `/api/weaver/status`
   - `/api/weaver/events`

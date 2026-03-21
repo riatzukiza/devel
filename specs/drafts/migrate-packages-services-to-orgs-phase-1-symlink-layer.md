@@ -1,34 +1,36 @@
-# Draft Spec (Phase 1): Keep packages/ + services/ as symlink + prototyping layer
+# Draft Spec (Phase 1): Keep `packages/*` as prototype layer and `services/*` as runtime/devops layer
 
 ## Mission
-Make `packages/` and `services/` remain first-class directories for:
-1) **rapid prototyping** (real directories committed in this repo)
-2) **compatibility symlinks** pointing at canonical module homes under `orgs/<org>/<repo>`
-
-This phase defines and implements the *link layer* so subsequent phases can migrate modules into `orgs/` without breaking paths.
+Establish the link and path conventions that support the active placement contract:
+1. `packages/*` remains the default rapid-prototyping layer
+2. `services/*` remains the runtime/devops/integration layer
+3. `orgs/<org>/<repo>` is the canonical home for mature source
+4. compatibility aliases may exist, but should be explicit and deterministic
 
 ## Context / Current State
-- Today, many modules live directly under `packages/` and `services/`.
-- Some `services/*` are already submodules.
-- pnpm workspace config currently enumerates many `packages/...` explicitly and includes `services/*`.
+- Today, many modules still live directly under `packages/*` and `services/*`.
+- Some `services/*` entries are legacy names, historical source checkouts, or runtime wrappers.
+- The active contract no longer treats `services/*` as a prototype home.
 
 ## Goals
 1. Establish a clear convention:
-   - Canonical code lives at: `orgs/<org>/<repo>` (when promoted out of prototype)
-   - Compatibility link lives at: `packages/<name>` or `services/<name>` (symlink)
-   - Prototypes remain as real dirs under `packages/` or `services/` until promotion
-2. Provide tooling to manage links deterministically:
-   - create/repair symlinks
+   - canonical mature code lives at `orgs/<org>/<repo>`
+   - prototypes live at `packages/<name>`
+   - runtime/devops homes live at `services/<name>`
+   - aliases are explicit and documented, not accidental duplicates
+2. Provide tooling to manage aliases deterministically:
+   - create/repair symlinks where desired
    - detect broken links
-   - detect collisions (a real dir exists where a symlink should be)
-3. Ensure pnpm + Nx discovery works with the new structure.
+   - detect collisions
+3. Keep pnpm/Nx discovery working with the new structure.
 
 ## Non-goals
-- No module migrations to upstream/submodules yet (that’s Phase 2/3).
+- No bulk module migrations to upstream repos yet.
+- No assumption that every `services/*` path becomes a symlink.
 
 ## Proposed Conventions
 ### A. Link manifest
-Add a source-of-truth file:
+Add or maintain a source-of-truth file:
 
 `docs/migrations/packages-services-to-orgs/links.yaml`
 
@@ -36,73 +38,62 @@ Add a source-of-truth file:
 links:
   - from: packages/logger
     to: orgs/riatzukiza/logger
-  - from: services/mcp-github
-    to: orgs/open-hax/mcp-github
-  # Example where the compatibility path name intentionally differs from upstream repo name:
   - from: services/open-hax-openai-proxy
-    to: orgs/open-hax/proxx
+    to: services/proxx
 ```
 
+A link may point either to:
+- a canonical org checkout, or
+- a stable runtime/devops home
+
 ### B. Deterministic link tool
-Add a script (Node or Bun) that:
+Add a script that:
 - reads `links.yaml`
 - ensures `from` is a symlink pointing at `to`
 - refuses to delete non-symlink directories unless `--force` is passed
+- distinguishes managed aliases from real runtime homes
 
 Suggested commands:
 - `pnpm run links:check`
 - `pnpm run links:sync`
 
 ### C. Workspace discovery
-Update `pnpm-workspace.yaml` to include both:
-- prototypes: `packages/*`, `services/*`
-- canonical: `orgs/*/*` (careful not to glob too broadly)
-
-Then:
-- symlinked entries under `packages/*` and `services/*` are “compat paths”, not the only mechanism by which pnpm finds packages.
+Update workspace discovery to reflect role separation:
+- `packages/*` -> prototypes and optional compatibility paths
+- `services/*` -> runtime/devops homes and optional aliases
+- `orgs/*/*` -> canonical mature repos
 
 ## Open Questions
-1. Should we prefer **relative symlink targets** (portable inside repo) or absolute ones (machine-specific but unambiguous)?
-   - Default recommendation: **relative**.
-2. For Windows collaborators (if any), do we need a fallback (junctions / copy) or is this repo Linux-first?
-3. Do we want a naming rule for link path vs repo path when they differ?
-   - ex: `packages/opencode-cljs-client` → `orgs/open-hax/opencode-cljs-client`
-   - ex: `services/open-hax-openai-proxy` → `orgs/open-hax/proxx` (upstream repo name)
+1. Should relative symlink targets be preferred over absolute ones?
+   - Recommendation: relative.
+2. Do promoted `packages/*` entries always keep a compatibility path, or only when the path has operator value?
+3. Which `services/*` entries should stay real directories even after their source has moved to `orgs/*/*`?
 
 ## Risks
-- pnpm workspace tooling may treat symlink paths in surprising ways (duplicate workspace packages, realpath resolution).
-  - Mitigation: ensure canonical `orgs/*/*` paths are in workspace; treat symlinks as compatibility only.
-- Symlink collisions: a real prototype dir might occupy a name later needed for a link.
-  - Mitigation: the link tool refuses destructive operations without `--force`.
+- Workspace tooling may double-discover canonical and alias paths.
+- A real runtime home could be overwritten if alias management is too aggressive.
+- Historical docs may still imply that `services/*` is a prototype layer.
 
 ## Implementation Plan
-1. Add `docs/migrations/packages-services-to-orgs/links.yaml` (initially minimal, can start empty).
-2. Add `scripts/workspace-links.mjs` (or `.ts`) implementing:
-   - `sync` (create/repair links)
-   - `check` (CI-friendly validation)
-3. Wire root `package.json` scripts:
-   - `links:sync`, `links:check`
-4. Update `pnpm-workspace.yaml` globs to include `orgs/*/*` and keep `packages/*` + `services/*`.
-5. Document the rule of thumb:
-   - “Prototype in packages/services; promote to orgs + upstream; leave symlink behind.”
+1. Maintain `links.yaml` with only intentional aliases.
+2. Add alias management tooling.
+3. Wire root scripts for `links:sync` and `links:check`.
+4. Update workspace docs to say: prototype in `packages/*`; operate from `services/*`; mature source in `orgs/*/*`.
 
 ## Affected Files
-- `docs/migrations/packages-services-to-orgs/links.yaml` (new)
-- `scripts/workspace-links.mjs` (new)
-- `package.json` (add scripts)
-- `pnpm-workspace.yaml` (workspace package globs)
-- `docs/migrations/packages-services-to-orgs/README.md` (new; brief conventions)
+- `docs/migrations/packages-services-to-orgs/links.yaml`
+- `scripts/workspace-links.mjs`
+- `package.json`
+- `pnpm-workspace.yaml`
+- `docs/migrations/packages-services-to-orgs/README.md`
 
 ## Verification
 - `pnpm run links:sync` is idempotent.
-- `pnpm run links:check` exits non-zero on:
-  - broken symlink
-  - wrong target
-  - missing target
-  - collision (real dir where a managed symlink should be)
+- `pnpm run links:check` fails on broken or incorrect managed aliases.
+- No real runtime home is replaced unintentionally.
 - `pnpm install` still works.
 
 ## Definition of Done
 - Link conventions are documented.
-- Link tooling exists and is wired into scripts.
-- Workspace config supports canonical `orgs/` paths while allowing prototypes in `packages/` and `services/`.
+- Alias tooling exists and is wired into scripts.
+- Workspace config supports canonical `orgs/*/*` paths while preserving the distinct roles of `packages/*` and `services/*`.
