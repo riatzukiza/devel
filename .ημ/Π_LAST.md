@@ -1,12 +1,12 @@
 # Π handoff
 
-- time: 2026-03-21T22:01:11Z
+- time: 2026-03-21T22:04:12Z
 - branch: feature/threat-radar-platform
-- pre-Π HEAD: 5cf0ef0
+- pre-Π HEAD: 8307c11
 - Π HEAD: pending at capture time; resolved by the final commit after artifact assembly
 
 ## Summary
-- Persist the eta-mu follow-on rollout results: remaining open-hax/proxx FSM label application, rollout-PR notes, and branch-protection notes recorded in docs/specs/receipts.
+- Persist the eta-mu follow-on governance results: remaining proxx FSM label application notes, rollout-PR/branch-protection notes, and matching receipt updates.
 - Carry the services/proxx z.ai default passthrough update and advance orgs/open-hax/proxx to e03041d, the latest dedicated Proxx Π snapshot.
 
 ## Notes
