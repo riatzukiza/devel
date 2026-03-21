@@ -46,3 +46,4 @@ This slice focuses on the project-like **root-level** modules already surfaced b
 - 2026-03-21T19:54:00Z Collected tracked-file reference counts and sample file hits for the root aliases, standalone roots, and vendor/fork roots outside the active placement structure.
 - 2026-03-21T19:58:00Z Wrote JSON and markdown usage manifests with provisional active-status categories such as alias, tooling root, deploy root, planning bundle, bookkeeping-only fork, and special worktree.
 - 2026-03-21T19:59:00Z Verified the manifests parse and include the major root modules: `desktop`, `promethean`, `reconstitute`, `mcp-social-publisher-live`, `threat-radar-deploy`, and `gates-pr35-hardening-main`.
+- 2026-03-21T21:47:00Z Updated the radar-related root usage entries so `threat-radar-deploy` and `threat-radar-next-step` now point at normalization into `orgs/open-hax/eta-mu-radar` rather than remaining generic ambiguous outside-structure roots.

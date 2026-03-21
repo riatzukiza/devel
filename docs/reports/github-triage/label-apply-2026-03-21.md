@@ -112,4 +112,6 @@ Unrelated existing labels are preserved.
 ## Not yet applied
 The following remain local recommendations only for now:
 - mirrored `promethean` queues
+  - dry-run artifact prepared: `docs/reports/github-triage/promethean-high-signal-dry-run-2026-03-21.md`
+  - no live apply yet; mirror policy decision still needed
 - non-OpenHax org repos outside the explicit live passes above

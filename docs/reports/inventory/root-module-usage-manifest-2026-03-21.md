@@ -25,9 +25,9 @@ Machine-readable companion artifact:
 | `reconstitute` | active-tooling-root | 55 | Acts as a root CLI/tooling entrypoint around the reconstitution workflow and is referenced by root package scripts, OpenCode commands, and skills. | Classify it as an intentional tooling root or normalize it into packages/ or an org repo while leaving a compatibility command path. |
 | `reconstitute-mcp` | doc-and-experimental-surface | 5 | Appears to persist mainly as an experimental/documented MCP surface referenced by notes inside the reconstitute project, not as a clearly active standalone module. | Either fold it into reconstitute as documented design material or promote it into a real package/service if it becomes runnable. |
 | `mcp-social-publisher-live` | active-standalone-deploy-root | 6 | Standalone repo used as the current source/deploy root for the live ussy deployment, with deployment specs and receipts pointing at it explicitly. | Give it an explicit placement decision rather than leaving it ambiguous at the workspace root. |
-| `threat-radar-deploy` | active-product-source-root | 12 | Active product/source surface for the radar system; live runtime glue builds from it and deployment specs name it as the current application source. | Classify it explicitly or promote it into a canonical org home before further deployment cleanup. |
+| `threat-radar-deploy` | active-product-source-root | 12 | Active product/source surface for the current radar system; user has now directed that it be normalized and consolidated into orgs/open-hax/eta-mu-radar. | Normalize into orgs/open-hax/eta-mu-radar and retarget runtime/deploy references while keeping services/radar-stack as the runtime home. |
 | `verathar-server` | bookkeeping-only-for-now | 4 | Currently visible primarily through submodule bookkeeping, receipts, and snapshot artifacts rather than active tracked integration points. | Either mark as an explicit external/fork exception or move it under a clearer home if active work resumes. |
-| `threat-radar-next-step` | planning-bundle | 4 | Used as a future/platform design bundle; current deployment formalization explicitly distinguishes it from the live threat-radar source surface. | Keep as a named planning bundle exception or fold its useful content back into canonical specs/repo structure. |
+| `threat-radar-next-step` | planning-bundle | 4 | Used as a future/platform design bundle, but user has now directed that all threat-radar-related work consolidate into orgs/open-hax/eta-mu-radar. | Fold useful planning/spec material into orgs/open-hax/eta-mu-radar and retire the standalone bundle once absorbed. |
 | `bevy_replicon` | bookkeeping-only-foreign-fork | 4 | Tracked mainly as an absorbed top-level fork/submodule with no strong active integration references outside bookkeeping artifacts. | Treat as a foreign-fork exception or relocate under a clearer vendor/forks area. |
 | `egregoria` | bookkeeping-only-foreign-fork | 4 | Tracked mainly as an absorbed top-level fork/submodule with no strong active integration references outside bookkeeping artifacts. | Treat as a foreign-fork exception or relocate under a clearer vendor/forks area. |
 | `game_network` | bookkeeping-only-foreign-fork | 4 | Tracked mainly as an absorbed top-level fork/submodule with no strong active integration references outside bookkeeping artifacts. | Treat as a foreign-fork exception or relocate under a clearer vendor/forks area. |
@@ -195,11 +195,11 @@ Machine-readable companion artifact:
   - `other`: 6
   - `receipts-or-fork-tax`: 1
   - `specs`: 3
-- why used: Active product/source surface for the radar system; live runtime glue builds from it and deployment specs name it as the current application source.
+- why used: Active product/source surface for the current radar system; user has now directed that it be normalized and consolidated into orgs/open-hax/eta-mu-radar.
 - key evidence:
   - `services/radar-stack/docker-compose.yml`
   - `specs/drafts/radar-live-deploy-2026-03-20.md`
-  - `specs/drafts/radar-deployment-declutter-formalization-2026-03-21.md`
+  - `specs/drafts/eta-mu-radar-normalization-2026-03-21.md`
 - sample reference files:
   - `".\316\267\316\274/\316\240_LAST.md"`
   - `".\316\267\316\274/\316\240_MANIFEST.sha256"`
@@ -211,7 +211,7 @@ Machine-readable companion artifact:
   - `services/radar-stack/Dockerfile.hormuz-clock-mcp`
   - `services/radar-stack/docker-compose.yml`
   - `specs/drafts/radar-crawler-integration-2026-03-20.md`
-- suggested next decision: Classify it explicitly or promote it into a canonical org home before further deployment cleanup.
+- suggested next decision: Normalize into orgs/open-hax/eta-mu-radar and retarget runtime/deploy references while keeping services/radar-stack as the runtime home.
 
 ## `verathar-server`
 - outside category: `top-level-standalone-root`
@@ -240,16 +240,17 @@ Machine-readable companion artifact:
 - reference area counts:
   - `other`: 3
   - `specs`: 1
-- why used: Used as a future/platform design bundle; current deployment formalization explicitly distinguishes it from the live threat-radar source surface.
+- why used: Used as a future/platform design bundle, but user has now directed that all threat-radar-related work consolidate into orgs/open-hax/eta-mu-radar.
 - key evidence:
   - `specs/drafts/radar-deployment-declutter-formalization-2026-03-21.md`
+  - `specs/drafts/eta-mu-radar-normalization-2026-03-21.md`
   - `inbox/threat-radar-next-step.zip`
 - sample reference files:
   - `".\316\267\316\274/\316\240_MANIFEST.sha256"`
   - `".\316\267\316\274/registry.jsonl"`
   - `inbox/threat-radar-next-step.zip`
   - `specs/drafts/radar-deployment-declutter-formalization-2026-03-21.md`
-- suggested next decision: Keep as a named planning bundle exception or fold its useful content back into canonical specs/repo structure.
+- suggested next decision: Fold useful planning/spec material into orgs/open-hax/eta-mu-radar and retire the standalone bundle once absorbed.
 
 ## `bevy_replicon`
 - outside category: `root-level-vendor-or-fork-repo`
@@ -374,8 +375,9 @@ Machine-readable companion artifact:
 - suggested next decision: Keep as an explicit worktree/sprint exception until the hardening branch is merged or retired.
 
 ## Interpretation
-- `desktop` and `promethean` are still active mainly as **compatibility aliases**.
+- `desktop` and `promethean` are still active mainly as compatibility aliases.
 - `pm2-clj-project`, `reconstitute`, `mcp-social-publisher-live`, and `threat-radar-deploy` have real active usage and are not just residue.
+- Threat-radar roots are now explicitly expected to normalize into `orgs/open-hax/eta-mu-radar`.
 - `reconstitute-mcp` and `threat-radar-next-step` look more like documentation/planning surfaces than stable canonical homes.
 - `bevy_replicon`, `egregoria`, `game_network`, `ggrs`, `lightyear`, and `verathar-server` currently look mostly preserved by bookkeeping rather than active integration.
 - `gates-pr35-hardening-main` is a special exception because it is still referenced by an active skill/workflow surface.

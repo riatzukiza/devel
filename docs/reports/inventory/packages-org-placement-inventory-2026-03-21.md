@@ -10,12 +10,12 @@ Machine-readable companion artifact:
 
 ## Summary
 - Total packages: **25**
-- Keep in `packages/*` for now: **7**
-- Candidate promotions: **18**
+- Keep in `packages/*` for now: **4**
+- Candidate promotions: **21**
 - Top candidate org counts:
-  - `riatzukiza`: **11**
-  - `octave-commons`: **5**
-  - `open-hax`: **9**
+  - `riatzukiza`: **10**
+  - `octave-commons`: **2**
+  - `open-hax`: **13**
   - `ussyverse`: **0**
 - Packages whose names already exist under current org monorepos: **7**
 
@@ -24,12 +24,15 @@ Machine-readable companion artifact:
 - Treat overlaps with `orgs/octave-commons/promethean` as **verified extraction from a living documentation corpus** unless later review proves a case is just slop.
 - The remaining governance question is usually: what is the canonical descendant home now?
 
+## Eta-mu-radar normalization note
+- User directed that all threat-radar-related work normalize into `orgs/open-hax/eta-mu-radar`.
+- This overrides earlier provisional org guesses for the radar-related package set.
+
 ## Highest-confidence promotion candidates
 
 ### `riatzukiza`
 - `packages/cephalon-clj` — Internal cognitive-system architecture with reproducible run docs points most strongly at riatzukiza.
 - `packages/cephalon-ts` — Mature enough to leave packages, but still primarily coupled to your internal ecosystem.
-- `packages/radar-core` — Looks like mature internal platform core rather than finished public product.
 
 ### `octave-commons`
 - `packages/eta-mu-docs` — The symbolic framing and substrate focus fit octave-commons better than a purely internal integration bucket.
@@ -41,7 +44,11 @@ Machine-readable companion artifact:
 - `packages/opencode-cljs-client` — Strong open-hax candidate because the package promise is externally reusable.
 - `packages/opencode-openplanner-plugin-cljs` — Looks like a reusable integration product rather than a purely internal binding.
 - `packages/openplanner-cljs-client` — Fits open-hax better than an internal-only bucket.
+- `packages/radar-core` — User directive now makes radar-core part of the eta-mu-radar normalization under open-hax.
 - `packages/reconstituter` — One of the clearest open-hax candidates in packages/*.
+- `packages/signal-atproto` — Because it is part of the current radar stack, signal-atproto should normalize with eta-mu-radar under open-hax.
+- `packages/signal-embed-browser` — Because it is part of the active radar web dependency surface, signal-embed-browser should normalize with eta-mu-radar under open-hax.
+- `packages/thread-assessment` — Because it participates in the current radar-adjacent runtime surface, thread-assessment should consolidate into eta-mu-radar under open-hax.
 
 ## Packages that should stay in `packages/*` for now
 
@@ -49,9 +56,6 @@ Machine-readable companion artifact:
 - `packages/hermes` -> tentative future org `riatzukiza` (low); Too little surface area and documentation to justify promotion yet.
 - `packages/mcp-foundation` -> tentative future org `open-hax` (medium-low); Promise points toward open-hax, but the maturity gate is not cleared yet.
 - `packages/mcp-oauth` -> tentative future org `open-hax` (medium-low); Likely future open-hax material, but not ready to leave packages.
-- `packages/signal-atproto` -> tentative future org `octave-commons` (low-medium); Not enough documentation to promote; likely research/internal until clarified.
-- `packages/signal-embed-browser` -> tentative future org `octave-commons` (medium-low); The package has implementation surface but not enough public-facing maturity yet.
-- `packages/thread-assessment` -> tentative future org `octave-commons` (medium); Promising research package, but it still needs README/identity work before promotion.
 
 ## Full inventory
 
@@ -75,16 +79,21 @@ Machine-readable companion artifact:
 | `packages/opencode-openplanner-plugin-cljs` | candidate-promote | `open-hax` | medium-high | standalone-repo | Looks like a reusable integration product rather than a purely internal binding. |
 | `packages/openplanner-cljs-client` | candidate-promote | `open-hax` | high | standalone-repo | Fits open-hax better than an internal-only bucket. |
 | `packages/persistence` | candidate-promote | `open-hax` | medium | standalone-repo | Strong open-hax potential, but existing Promethean copies indicate cleanup is needed before canonization.; existing org package match(es) present; Promethean verified-extraction overlap |
-| `packages/radar-core` | candidate-promote | `riatzukiza` | medium-high | future-monorepo-package | Looks like mature internal platform core rather than finished public product.; @workspace scope |
+| `packages/radar-core` | candidate-promote | `open-hax` | high | existing-monorepo-package | User directive now makes radar-core part of the eta-mu-radar normalization under open-hax.; eta-mu-radar target; @workspace scope |
 | `packages/reconstituter` | candidate-promote | `open-hax` | high | standalone-repo | One of the clearest open-hax candidates in packages/*. |
-| `packages/signal-atproto` | stay-prototype | `octave-commons` | low-medium | standalone-repo | Not enough documentation to promote; likely research/internal until clarified. |
-| `packages/signal-embed-browser` | stay-prototype | `octave-commons` | medium-low | standalone-repo | The package has implementation surface but not enough public-facing maturity yet. |
+| `packages/signal-atproto` | candidate-promote | `open-hax` | medium-high | existing-monorepo-package | Because it is part of the current radar stack, signal-atproto should normalize with eta-mu-radar under open-hax.; eta-mu-radar target |
+| `packages/signal-embed-browser` | candidate-promote | `open-hax` | medium-high | existing-monorepo-package | Because it is part of the active radar web dependency surface, signal-embed-browser should normalize with eta-mu-radar under open-hax.; eta-mu-radar target |
 | `packages/test-utils` | candidate-promote | `riatzukiza` | medium | existing-monorepo-package | Shared internal helper more than standalone public product right now.; existing org package match(es) present; Promethean verified-extraction overlap |
-| `packages/thread-assessment` | stay-prototype | `octave-commons` | medium | standalone-repo | Promising research package, but it still needs README/identity work before promotion.; @workspace scope |
+| `packages/thread-assessment` | candidate-promote | `open-hax` | medium-high | existing-monorepo-package | Because it participates in the current radar-adjacent runtime surface, thread-assessment should consolidate into eta-mu-radar under open-hax.; eta-mu-radar target; @workspace scope |
 | `packages/utils` | candidate-promote | `riatzukiza` | medium | existing-monorepo-package | Looks mature, but current evidence points to internal ecosystem utility first.; existing org package match(es) present; Promethean verified-extraction overlap |
 
-## Promethean-derived overlaps
+## Eta-mu-radar related package set
+- `packages/radar-core` -> `orgs/open-hax/eta-mu-radar/packages/radar-core`
+- `packages/signal-atproto` -> `orgs/open-hax/eta-mu-radar/packages/signal-atproto`
+- `packages/signal-embed-browser` -> `orgs/open-hax/eta-mu-radar/packages/signal-embed-browser`
+- `packages/thread-assessment` -> `orgs/open-hax/eta-mu-radar/packages/thread-assessment`
 
+## Promethean-derived overlaps
 ### `packages/embedding`
 - classification: **verified-extraction**
 - source corpus: `orgs/octave-commons/promethean`
@@ -156,7 +165,6 @@ Machine-readable companion artifact:
 - Treat this overlap as Promethean corpus extraction rather than automatic slop or accidental duplication.
 
 ## Packages with existing org-package matches
-
 ### `packages/embedding`
 - existing match: `orgs/octave-commons/promethean/packages/embedding`
 - existing match: `orgs/riatzukiza/promethean/packages/embedding`
@@ -207,6 +215,6 @@ Machine-readable companion artifact:
 
 ## Interpretation
 - `riatzukiza` currently dominates where a package is clearly mature but still ecosystem-coupled.
-- `open-hax` is the strongest destination for already-documented tool/client packages that look portable beyond `devel`.
-- `octave-commons` fits the symbolic or research-oriented `eta-mu` / signal-analysis line best, but some of those packages are still too under-documented to promote immediately.
+- `open-hax` is now also the explicit target for the eta-mu-radar package set.
+- `octave-commons` fits the symbolic or research-oriented `eta-mu` line best, but some of those packages are still too under-documented to promote immediately.
 - Several foundational packages already have name-matches under current Promethean monorepos, so the next governance question is often whether to bless an existing monorepo home or extract a new standalone repo.
