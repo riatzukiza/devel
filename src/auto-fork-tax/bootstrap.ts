@@ -1,7 +1,8 @@
-import { access } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
+import { parseGitmodules } from "../nss/gitmodules";
 import { runCommand } from "./process";
 
 const expandHome = (value: string): string => {
@@ -35,9 +36,26 @@ const installDependencies = async (cwd: string): Promise<void> => {
   });
 };
 
+const topLevelSubmodulePaths = async (cwd: string): Promise<readonly string[]> => {
+  try {
+    const content = await readFile(path.join(cwd, ".gitmodules"), "utf8");
+    return parseGitmodules(content).map((record) => record.path);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+      return [];
+    }
+    throw error;
+  }
+};
+
 const syncSubmodules = async (cwd: string): Promise<void> => {
   await runCommand("git", ["submodule", "sync", "--recursive"], { cwd, reject: false });
-  await runCommand("git", ["submodule", "update", "--init"], { cwd, reject: false });
+  for (const submodulePath of await topLevelSubmodulePaths(cwd)) {
+    await runCommand("git", ["submodule", "update", "--init", "--", submodulePath], {
+      cwd,
+      reject: false,
+    });
+  }
   await runCommand(
     "git",
     [

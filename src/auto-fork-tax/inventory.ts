@@ -47,7 +47,25 @@ export const buildForkPlan = async (config: InventoryConfig): Promise<readonly S
 
   for (const entry of entries) {
     const cwd = entry.absolutePath;
-    const remotes = await listRemotes(cwd);
+    let remotes: readonly RemoteInfo[] = [];
+    try {
+      remotes = await listRemotes(cwd);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      plans.push({
+        path: entry.path,
+        remotes: [],
+        origin: null,
+        upstream: null,
+        target: null,
+        needsFork: false,
+        needsOriginRewrite: false,
+        needsUpstream: false,
+        localOnly: true,
+        reasons: [`submodule repo unavailable: ${message}`],
+      });
+      continue;
+    }
     const origin = remotes.find((remote) => remote.name === "origin") ?? null;
     const upstream = remotes.find((remote) => remote.name === "upstream") ?? null;
     const localOnly = origin?.slug == null && upstream?.slug == null;
