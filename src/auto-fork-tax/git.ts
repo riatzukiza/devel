@@ -12,6 +12,11 @@ export const currentBranch = async (cwd: string): Promise<string> => {
   return result.stdout.trim();
 };
 
+export const repoRoot = async (cwd: string): Promise<string> => {
+  const result = await runCommand("git", ["rev-parse", "--show-toplevel"], { cwd });
+  return path.resolve(result.stdout.trim());
+};
+
 export const headSha = async (cwd: string): Promise<string> => {
   const result = await runCommand("git", ["rev-parse", "HEAD"], { cwd });
   return result.stdout.trim();
@@ -48,6 +53,10 @@ export const listDirtySubmodules = async (root: string): Promise<readonly string
   const dirty: string[] = [];
   for (const entry of entries) {
     try {
+      if ((await repoRoot(entry.absolutePath)) !== path.resolve(entry.absolutePath)) {
+        dirty.push(`${entry.path} (not initialized as its own git repo)`);
+        continue;
+      }
       if (await hasChanges(entry.absolutePath)) {
         dirty.push(entry.path);
       }
@@ -96,6 +105,9 @@ export const checkoutBranch = async (cwd: string, branch: string): Promise<void>
 };
 
 export const listRemotes = async (cwd: string): Promise<readonly RemoteInfo[]> => {
+  if ((await repoRoot(cwd)) !== path.resolve(cwd)) {
+    return [];
+  }
   const result = await runCommand("git", ["remote", "-v"], { cwd, reject: false });
   if (result.stdout.trim().length === 0) {
     return [];
