@@ -32,10 +32,33 @@ When a premium ElevenLabs voice is ready later, add `ELEVENLABS_API_KEY` + `ELEV
 VOICE_GATEWAY_TTS_BACKEND_ORDER=elevenlabs,requesty,melo,espeak
 ```
 
+Voxx also now carries a backend-agnostic sports-commentator postprocess profile by default, so any provider voice can be pushed toward the same high-energy broadcast texture:
+
+```bash
+TTS_POSTPROCESS_ENABLED=1
+TTS_POSTPROCESS_PROFILE=sports-commentator-v1
+```
+
+Disable it with `TTS_POSTPROCESS_ENABLED=0` if you want the raw upstream voice back.
+
 If port `8788` is busy:
 ```bash
 VOXX_PORT=8798 docker compose up --build -d
 ```
+
+## Deploys from source-repo `main`
+
+The source repo now carries a GitHub Actions pipeline at:
+
+- `orgs/open-hax/voxx/.github/workflows/voxx-main.yml`
+
+That pipeline publishes a GHCR image and, on successful `main` pushes, updates this runtime by SSH.
+
+Operational contract on the host:
+- keep runtime secrets in `services/voxx/.env`
+- let CI own `services/voxx/.env.deploy`
+- `.env.deploy` pins `VOXX_IMAGE=ghcr.io/...:sha-<commit>` for the currently deployed build
+- deploy step runs `docker compose pull voxx && docker compose up -d --no-build voxx`
 
 ## Source workflows
 For source edits, work in `../../orgs/open-hax/voxx`.

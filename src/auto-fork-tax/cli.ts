@@ -2,18 +2,19 @@ import path from "node:path";
 
 import { bootstrapClone } from "./bootstrap";
 import { ensureFork, createPullRequest, commentOnPullRequest, formatRepoName, parseGithubSlug } from "./github";
-import { buildForkPlan, type InventoryConfig, applyRemotePlan } from "./inventory";
+import { buildForkPlan, type InventoryConfig, applyRemotePlan, writeInventoryReport } from "./inventory";
 import {
-  addAll,
   commitAll,
   createOrUpdateBranchRef,
   createTag,
   currentBranch,
-  hasChanges,
+  hasSnapshotCandidateChanges,
   headSha,
   isAncestor,
   listDirtySubmodules,
+  listSnapshotCandidatePaths,
   shortSha,
+  stageSnapshotChanges,
   statusPorcelain,
   pushRef,
 } from "./git";
@@ -201,6 +202,8 @@ const buildPullRequestBody = (params: {
   readonly sourceBranch: string;
   readonly tag: string;
   readonly head: string;
+  readonly stagedPaths: readonly string[];
+  readonly dirtySubmodules: readonly string[];
 }): string => {
   return [
     `## Auto Fork Tax Snapshot`,
@@ -209,6 +212,8 @@ const buildPullRequestBody = (params: {
     `- snapshot branch: ${params.sourceBranch}`,
     `- tag: ${params.tag}`,
     `- head: ${params.head}`,
+    `- staged paths: ${params.stagedPaths.length}`,
+    `- dirty submodules observed but excluded from staging: ${params.dirtySubmodules.length}`,
     ``,
     `### Safety protocol`,
     `- cron-driven, not file-watch driven`,
@@ -216,6 +221,13 @@ const buildPullRequestBody = (params: {
     `- PR chain targets the most recent compatible snapshot branch when possible`,
     `- no auto-merge`,
     `- pi review can comment, but does not merge`,
+    `- root snapshots stage only non-submodule paths; recursive submodule Π remains a separate future phase`,
+    ...(params.stagedPaths.length > 0
+      ? ["", "### Staged paths", ...params.stagedPaths.slice(0, 50).map((value) => `- ${value}`)]
+      : []),
+    ...(params.dirtySubmodules.length > 0
+      ? ["", "### Excluded dirty submodules", ...params.dirtySubmodules.slice(0, 50).map((value) => `- ${value}`)]
+      : []),
   ].join("\n");
 };
 
@@ -240,14 +252,15 @@ const runReview = async (
 };
 
 const runSnapshotPr = async (args: ParsedArgs): Promise<SnapshotResult | { skipped: true; reason: string }> => {
-  if (!(await hasChanges(args.root))) {
-    return { skipped: true, reason: "working tree is clean" };
+  const dirtySubmodules = await listDirtySubmodules(args.root);
+  if (!(await hasSnapshotCandidateChanges(args.root))) {
+    const reason = dirtySubmodules.length > 0
+      ? "no non-submodule changes to snapshot; only submodule dirt is present"
+      : "working tree is clean";
+    return { skipped: true, reason };
   }
 
-  const dirtySubmodules = await listDirtySubmodules(args.root);
-  if (dirtySubmodules.length > 0 && !args.allowDirtySubmodules) {
-    throw new Error(`dirty submodules block auto fork-tax: ${dirtySubmodules.join(", ")}`);
-  }
+  const stagedPaths = await listSnapshotCandidatePaths(args.root);
 
   await ensureQuiescent(args.root);
 
@@ -267,7 +280,7 @@ const runSnapshotPr = async (args: ParsedArgs): Promise<SnapshotResult | { skipp
 
   const commitMessage = `Π: snapshot ${new Date().toISOString()} [${current}] (${pre})`;
 
-  await addAll(args.root);
+  await stageSnapshotChanges(args.root);
   await commitAll(args.root, commitMessage);
   const head = await shortSha(args.root);
   const tag = forkTaxTagFor(head);
@@ -287,6 +300,8 @@ const runSnapshotPr = async (args: ParsedArgs): Promise<SnapshotResult | { skipp
       sourceBranch: snapshotBranch,
       tag,
       head,
+      stagedPaths,
+      dirtySubmodules,
     }),
   });
 
@@ -373,12 +388,14 @@ const main = async (): Promise<void> => {
   switch (args.command) {
     case "inventory": {
       const plans = await buildForkPlan(inventoryConfigFor(args));
-      process.stdout.write(`${JSON.stringify({ summary: renderPlanSummary(plans), plans }, null, 2)}\n`);
+      const reportPath = await writeInventoryReport(args.root, plans);
+      process.stdout.write(`${JSON.stringify({ summary: renderPlanSummary(plans), reportPath, plans }, null, 2)}\n`);
       return;
     }
     case "ensure-forks": {
       const plans = await runEnsureForks(args);
-      process.stdout.write(`${JSON.stringify({ summary: renderPlanSummary(plans), plans }, null, 2)}\n`);
+      const reportPath = await writeInventoryReport(args.root, plans);
+      process.stdout.write(`${JSON.stringify({ summary: renderPlanSummary(plans), reportPath, plans }, null, 2)}\n`);
       return;
     }
     case "review-pr": {

@@ -1,7 +1,10 @@
+import { mkdir, writeFile } from "node:fs/promises";
+import path from "node:path";
+
 import { discoverGitmodules } from "../nss/gitmodules";
 
 import { formatHttpsSlug, parseGithubSlug } from "./github";
-import { listRemotes, repoPath, setRemoteUrl } from "./git";
+import { listRemotes, removeRemote, repoPath, setRemoteUrl } from "./git";
 import type { ForkTarget, RepoSlug, SubmoduleForkPlan } from "./types";
 
 export interface InventoryConfig {
@@ -155,4 +158,28 @@ export const applyRemotePlan = async (root: string, plan: SubmoduleForkPlan): Pr
   if (plan.needsUpstream) {
     await setRemoteUrl(cwd, "upstream", formatHttpsSlug(plan.target.source));
   }
+
+  const preserve = new Set(["origin", "upstream", "legacy-services-local"]);
+  for (const remote of plan.remotes) {
+    if (preserve.has(remote.name)) {
+      continue;
+    }
+    const duplicatesOrigin = remote.slug?.owner === plan.target.desiredOrigin.owner
+      && remote.slug?.name === plan.target.desiredOrigin.name;
+    const duplicatesUpstream = remote.slug?.owner === plan.target.source.owner
+      && remote.slug?.name === plan.target.source.name;
+    if (duplicatesOrigin || duplicatesUpstream) {
+      await removeRemote(cwd, remote.name);
+    }
+  }
+};
+
+export const writeInventoryReport = async (
+  root: string,
+  plans: readonly SubmoduleForkPlan[],
+): Promise<string> => {
+  const reportPath = path.join(root, ".ημ", "auto-fork-tax", "inventory.json");
+  await mkdir(path.dirname(reportPath), { recursive: true });
+  await writeFile(reportPath, `${JSON.stringify({ generatedAt: new Date().toISOString(), plans }, null, 2)}\n`, "utf8");
+  return reportPath;
 };

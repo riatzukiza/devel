@@ -7,6 +7,7 @@ import subprocess
 import sys
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 import requests
 
@@ -32,6 +33,42 @@ HORMUZ_REDDIT_SUBREDDITS = [
     if row.strip()
 ]
 HORMUZ_SKIP_SOCIAL_COLLECTION = os.environ.get("HORMUZ_SKIP_SOCIAL_COLLECTION", "false").strip().lower() in {"1", "true", "yes", "on"}
+HORMUZ_WEAVER_URL = os.environ.get("HORMUZ_WEAVER_URL", "http://fork-tales-weaver:8793").strip()
+HORMUZ_WATCHLIST_PATH = Path(
+    os.environ.get(
+        "HORMUZ_WATCHLIST_PATH",
+        str(WORKSPACE_ROOT / "services" / "radar-stack" / "watchlists" / "hormuz-watchlist.json"),
+    )
+)
+HORMUZ_WEAVER_KEYWORDS = [
+    row.strip()
+    for row in os.environ.get(
+        "HORMUZ_WEAVER_KEYWORDS",
+        "hormuz,strait of hormuz,persian gulf,gulf of oman,shipping,maritime,jmic,ukmto,transit,energy markets",
+    ).split(",")
+    if row.strip()
+]
+HORMUZ_JETSTREAM_ENABLED = os.environ.get("HORMUZ_JETSTREAM_ENABLED", "false").strip().lower() in {"1", "true", "yes", "on"}
+HORMUZ_JETSTREAM_USERS = [
+    row.strip()
+    for row in os.environ.get("HORMUZ_JETSTREAM_USERS", "").split(",")
+    if row.strip()
+]
+HORMUZ_JETSTREAM_HASHTAGS = [
+    row.strip()
+    for row in os.environ.get("HORMUZ_JETSTREAM_HASHTAGS", "hormuz,straitofhormuz").split(",")
+    if row.strip()
+]
+HORMUZ_JETSTREAM_KEYWORDS = [
+    row.strip()
+    for row in os.environ.get(
+        "HORMUZ_JETSTREAM_KEYWORDS",
+        "hormuz,strait of hormuz,persian gulf,gulf of oman,shipping,jmic,ukmto",
+    ).split(",")
+    if row.strip()
+]
+HORMUZ_JETSTREAM_WINDOW_SECONDS = int(os.environ.get("HORMUZ_JETSTREAM_WINDOW_SECONDS", "3600") or "3600")
+HORMUZ_JETSTREAM_MAX_EVENTS = int(os.environ.get("HORMUZ_JETSTREAM_MAX_EVENTS", "250") or "250")
 
 
 class ApiError(RuntimeError):
@@ -94,6 +131,29 @@ def ensure_radar() -> dict[str, Any]:
     if not isinstance(radar, dict):
         raise ApiError(f"ensure radar returned unexpected payload: {data}")
     return radar
+
+
+def load_watchlist_domains() -> list[str]:
+    if not HORMUZ_WATCHLIST_PATH.exists():
+        return []
+    try:
+        payload = json.loads(HORMUZ_WATCHLIST_PATH.read_text())
+    except Exception:
+        return []
+
+    domains: set[str] = set()
+    for entry in payload.get("domains", []):
+        for seed in entry.get("seed_urls", []):
+            url = str(seed.get("url", "")).strip()
+            if not url:
+                continue
+            try:
+                host = urlparse(url).hostname or ""
+            except Exception:
+                host = ""
+            if host:
+                domains.add(host.lower())
+    return sorted(domains)
 
 
 def run_bundle_pipeline() -> dict[str, Any]:
@@ -178,6 +238,50 @@ def collect_social_signals(radar_id: str) -> list[dict[str, Any]]:
     return results
 
 
+def collect_crawler_signals(radar_id: str) -> dict[str, Any]:
+    domains = load_watchlist_domains()
+    return api_request(
+        "POST",
+        "/api/collect/weaver",
+        {
+            "baseUrl": HORMUZ_WEAVER_URL,
+            "domainAllowlist": domains,
+            "keywords": HORMUZ_WEAVER_KEYWORDS,
+            "domainSignalLimit": 6,
+            "recentNodeLimit": 8,
+            "graphNodeLimit": 1200,
+            "radarId": radar_id,
+        },
+    )
+
+
+def collect_jetstream_signals(radar_id: str) -> dict[str, Any]:
+    if not HORMUZ_JETSTREAM_ENABLED:
+        return {"ok": True, "skipped": True, "reason": "jetstream-disabled"}
+
+    api_request(
+        "PUT",
+        f"/api/jetstream/rules/{radar_id}",
+        {
+            "wantedUsers": HORMUZ_JETSTREAM_USERS,
+            "hashtags": HORMUZ_JETSTREAM_HASHTAGS,
+            "keywords": HORMUZ_JETSTREAM_KEYWORDS,
+            "windowSeconds": HORMUZ_JETSTREAM_WINDOW_SECONDS,
+            "maxEvents": HORMUZ_JETSTREAM_MAX_EVENTS,
+            "enabled": True,
+            "allowNetworkWide": len(HORMUZ_JETSTREAM_USERS) == 0,
+        },
+    )
+    return api_request(
+        "POST",
+        "/api/collect/jetstream",
+        {
+            "radarId": radar_id,
+            "limit": HORMUZ_JETSTREAM_MAX_EVENTS,
+        },
+    )
+
+
 def maybe_seal_daily(runtime_state: dict[str, Any], radar_id: str, bundle_state: dict[str, Any]) -> dict[str, Any]:
     as_of_utc = str(bundle_state.get("as_of_utc", "")).strip()
     current_day = as_of_utc[:10]
@@ -201,6 +305,8 @@ def main() -> int:
     radar = ensure_radar()
     bundle_state = run_bundle_pipeline()
     submission = maybe_submit_packet(runtime_state, radar, bundle_state)
+    jetstream = collect_jetstream_signals(radar["id"])
+    crawler = collect_crawler_signals(radar["id"])
     social = collect_social_signals(radar["id"])
     cluster_result = api_request("POST", f"/api/cluster/{radar['id']}", {})
     live_result = api_request("POST", f"/api/reduce-live/{radar['id']}", {})
@@ -212,6 +318,8 @@ def main() -> int:
         "radar_id": radar["id"],
         "bundle_as_of_utc": bundle_state.get("as_of_utc"),
         "submission": submission,
+        "jetstream": jetstream,
+        "crawler": crawler,
         "social": social,
         "cluster": cluster_result,
         "live": live_result,

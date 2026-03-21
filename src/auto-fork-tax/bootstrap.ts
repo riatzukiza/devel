@@ -96,14 +96,12 @@ export const bootstrapClone = async (options: BootstrapCloneOptions): Promise<Bo
   if (!(await pathExists(cloneDir))) {
     await runCommand("git", [
       "clone",
-      "--no-local",
       "--branch",
       options.branch,
       "--single-branch",
-      options.sourceRoot,
+      originUrl,
       cloneDir,
     ]);
-    await runCommand("git", ["remote", "set-url", "origin", originUrl], { cwd: cloneDir });
     await syncSubmodules(cloneDir);
     await installDependencies(cloneDir);
     if (options.installHooks) {

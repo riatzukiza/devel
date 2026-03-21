@@ -1,0 +1,490 @@
+{
+  "generatedAt": "2026-03-20T20:04:11.221Z",
+  "evidence": {
+    "shared_depth": {
+      "none": {
+        "score": 0.5947058823529412,
+        "hits": [
+          "garden:challenge-history/conceptual-evolution.md",
+          "garden:challenge-history/index.md",
+          "garden:challenge-history/likely-strategy-families.md",
+          "garden:challenge-history/public-runs/four-hour-quasi10b-sp1024.md",
+          "garden:challenge-history/public-runs/index.md"
+        ]
+      },
+      "depth-recurrence": {
+        "score": 1.7000000000000008,
+        "hits": [
+          "garden:challenge-history/conceptual-evolution.md",
+          "garden:challenge-history/likely-strategy-families.md",
+          "hint:challenge-history/likely-strategy-families.md",
+          "garden:challenge-history/public-runs/four-hour-quasi10b-sp1024.md",
+          "garden:challenge-history/public-runs/index.md"
+        ]
+      },
+      "cross-layer-tying": {
+        "score": 1.2000000000000004,
+        "hits": [
+          "garden:challenge-history/conceptual-evolution.md",
+          "garden:challenge-history/likely-strategy-families.md",
+          "garden:challenge-history/public-runs/index.md",
+          "garden:challenge-history/submission-archetypes.md",
+          "garden:frontiers/compression-interfaces-for-shared-depth.md"
+        ]
+      },
+      "phase-conditioned-sharing": {
+        "score": 0.7800000000000001,
+        "hits": [
+          "garden:frontiers/compression-interfaces-for-shared-depth.md",
+          "hint:frontiers/compression-interfaces-for-shared-depth.md",
+          "garden:frontiers/entropy-friendly-model-structure.md",
+          "garden:frontiers/refinement-loops-as-decompression.md",
+          "garden:hypotheses/ledger.md"
+        ]
+      },
+      "role-state-recurrence": {
+        "score": 0.2,
+        "hits": [
+          "garden:moonshots/index.md",
+          "garden:moonshots/role-state-recurrence.md",
+          "hint:moonshots/role-state-recurrence.md"
+        ]
+      }
+    },
+    "quantization_recipe": {
+      "int8-row": {
+        "score": 0.7470220271023627,
+        "hits": [
+          "garden:challenge-history/likely-strategy-families.md",
+          "garden:challenge-history/public-runs/four-hour-quasi10b-sp1024.md",
+          "garden:challenge-history/public-runs/naive-baseline.md",
+          "garden:challenge-history/submission-archetypes.md",
+          "garden:frontiers/byte-allocation-beats-average-bit-width.md"
+        ]
+      },
+      "int6-qat": {
+        "score": 1.8955215383530064,
+        "hits": [
+          "garden:challenge-history/index.md",
+          "hint:challenge-history/likely-strategy-families.md",
+          "garden:challenge-history/public-runs/four-hour-quasi10b-sp1024.md",
+          "garden:challenge-history/public-runs/naive-baseline.md",
+          "garden:challenge-history/submission-archetypes.md"
+        ]
+      },
+      "mixed-int6-fp16": {
+        "score": 1.3137552483358939,
+        "hits": [
+          "garden:challenge-history/conceptual-evolution.md",
+          "garden:challenge-history/likely-strategy-families.md",
+          "garden:challenge-history/public-runs/four-hour-quasi10b-sp1024.md",
+          "garden:challenge-history/public-runs/index.md",
+          "garden:challenge-history/public-runs/naive-baseline.md"
+        ]
+      },
+      "bitnet-ternary": {
+        "score": 0.2,
+        "hits": [
+          "garden:challenge-history/public-runs/naive-baseline.md",
+          "garden:challenge-history/submission-archetypes.md",
+          "garden:frontiers/compression-interfaces-for-shared-depth.md",
+          "garden:hypotheses/rmsnorm-scaling.md",
+          "garden:notes/normalization-pre-projections.md"
+        ]
+      },
+      "global-codebook": {
+        "score": 0.6,
+        "hits": [
+          "garden:frontiers/byte-allocation-beats-average-bit-width.md",
+          "garden:frontiers/entropy-friendly-model-structure.md",
+          "garden:frontiers/rate-distortion-for-artifact-caps.md",
+          "garden:hypotheses/ledger.md",
+          "garden:hypotheses/output-head-compression.md"
+        ]
+      }
+    },
+    "eval_strategy": {
+      "standard-roundtrip": {
+        "score": 0.45258064516129026,
+        "hits": [
+          "garden:challenge-history/conceptual-evolution.md",
+          "garden:challenge-history/public-runs/four-hour-quasi10b-sp1024.md",
+          "garden:challenge-history/public-runs/naive-baseline.md",
+          "garden:challenge-history/submission-archetypes.md",
+          "garden:frontiers/learned-weight-codecs-and-compressible-training.md"
+        ]
+      },
+      "sliding-window": {
+        "score": 0.1581258268520307,
+        "hits": [
+          "leaderboard:Int6 11L + SmearGate + BigramHash + SWA + OrthoInit + MuonWD (val_bpb 1.1555)",
+          "leaderboard:[Val Only]: MLP 3x + STE int6 QAT + sliding window, val_bpb=0.9588",
+          "leaderboard:Record Update: val_bpb=0.9271 (val-only) + 1.1465 (standard)",
+          "leaderboard:Record: FarnsworthEngine v1 — TTT + 11L Int6 MLP3x, val_bpb=1.1303",
+          "leaderboard:11-Layer Int6 + WD=0.04 + SWA + FA3 (val_bpb: 1.1318)"
+        ]
+      },
+      "doc-isolated-sliding": {
+        "score": 0,
+        "hits": []
+      },
+      "iterative-refinement": {
+        "score": 0.7753023088023089,
+        "hits": [
+          "garden:challenge-history/likely-strategy-families.md",
+          "hint:challenge-history/likely-strategy-families.md",
+          "garden:challenge-history/submission-archetypes.md",
+          "garden:frontiers/refinement-loops-as-decompression.md",
+          "garden:frontiers/tokenizer-head-co-design.md"
+        ]
+      },
+      "ttt": {
+        "score": 0.04888888888888889,
+        "hits": [
+          "leaderboard:Draft: SOTA+ TTT + RoPE50K + EMA + Curriculum (pending H100 run)",
+          "leaderboard:Record: FarnsworthEngine v1 — TTT + 11L Int6 MLP3x, val_bpb=1.1303"
+        ]
+      }
+    },
+    "vocab_strategy": {
+      "sp1024": {
+        "score": 0.13692424242424242,
+        "hits": [
+          "garden:challenge-history/likely-strategy-families.md",
+          "garden:challenge-history/public-runs/four-hour-quasi10b-sp1024.md",
+          "garden:challenge-history/public-runs/index.md",
+          "leaderboard:val-only 10min record (val_bpb:1.1111)",
+          "leaderboard:Record: 10L Int6 QAT + Zstd MLP2.6x Muon0.99 Sliding Window (val_bpb 1.1598)"
+        ]
+      },
+      "sp2048": {
+        "score": 0.1561958602598619,
+        "hits": [
+          "leaderboard:[WIP] Depth-recurrent QAT: 3x4 loops, 768d, 15.6MB artifact",
+          "leaderboard:11-Layer Int6 + WD=0.04 + SWA + FA3 (val_bpb: 1.1318)",
+          "leaderboard:4 the Leaderboard: 11L Int6 + SmearGate + Batch Optimization (val_bpb=1.1400)",
+          "leaderboard:11L Int6 QAT + Per-Dim SmearGate + SWA: 1.1480 BPB (3-seed mean)",
+          "leaderboard:Record: Int6 MLP3x + SmearGate + BigramHash + MuonWD + SWA (mean val_bpb=1.1483)"
+        ]
+      },
+      "sp4096": {
+        "score": 0.1756855303852208,
+        "hits": [
+          "hint:challenge-history/likely-strategy-families.md",
+          "hint:lanes/tokenizer-and-vocabulary.md",
+          "leaderboard:[Val Only]: MLP 3x + STE int6 QAT + sliding window, val_bpb=0.9588",
+          "leaderboard:Record Update: val_bpb=0.9271 (val-only) + 1.1465 (standard)",
+          "leaderboard:Record: Int6 MLP3x + SmearGate + BigramHash + MuonWD + SWA (mean val_bpb=1.1483)"
+        ]
+      },
+      "byte260": {
+        "score": 0,
+        "hits": []
+      },
+      "bigramhash": {
+        "score": 0.1371241770678034,
+        "hits": [
+          "leaderboard:Draft: SOTA+ TTT + RoPE50K + EMA + Curriculum (pending H100 run)",
+          "leaderboard:Int6 11L + SmearGate + BigramHash + SWA + OrthoInit + MuonWD (val_bpb 1.1555)",
+          "leaderboard:Record: FarnsworthEngine v1 — TTT + 11L Int6 MLP3x, val_bpb=1.1303",
+          "leaderboard:11-Layer Int6 + WD=0.04 + SWA + FA3 (val_bpb: 1.1318)",
+          "leaderboard:4 the Leaderboard: 11L Int6 + SmearGate + Batch Optimization (val_bpb=1.1400)"
+        ]
+      }
+    },
+    "optimizer_recipe": {
+      "muon": {
+        "score": 0.1890024062793094,
+        "hits": [
+          "garden:frontiers/learned-weight-codecs-and-compressible-training.md",
+          "leaderboard:Int6 11L + SmearGate + BigramHash + SWA + OrthoInit + MuonWD (val_bpb 1.1555)",
+          "leaderboard:[Val Only]: MLP 3x + STE int6 QAT + sliding window, val_bpb=0.9588",
+          "leaderboard:Record Update: val_bpb=0.9271 (val-only) + 1.1465 (standard)",
+          "leaderboard:Record: FarnsworthEngine v1 — TTT + 11L Int6 MLP3x, val_bpb=1.1303"
+        ]
+      },
+      "normuon": {
+        "score": 0.017665512637462147,
+        "hits": [
+          "leaderboard:Record: Int6 STE + SmearGate + Seq2048 + OrthoInit + RoPE50K + SWA/100 (mean val_bpb=1.1507)",
+          "leaderboard:Record submission : Int6 + MLP 3x + Flash Attention 3 + NorMuon, val_bpb = 1.1532",
+          "leaderboard:Record: Int6 + MLP 3x + NorMuon + SmearGate + BigramHash + OrthoInit + Sliding Window, val_bpb=1.1541",
+          "leaderboard:Record: Sliding Window Eval, 2048 Vocab Size, fp16 embeddings, SWA, NorMuon, FA3; mean_val_bpb:1.160",
+          "leaderboard:feat(record): Int6 STE + NorMuon + SWA + Sliding Window (val_bpb=1.16019)"
+        ]
+      },
+      "muon-swa": {
+        "score": 0.17311574160164994,
+        "hits": [
+          "garden:ideas/head-to-depth-budget-swap.md",
+          "garden:ideas/index.md",
+          "leaderboard:Int6 11L + SmearGate + BigramHash + SWA + OrthoInit + MuonWD (val_bpb 1.1555)",
+          "leaderboard:Record: FarnsworthEngine v1 — TTT + 11L Int6 MLP3x, val_bpb=1.1303",
+          "leaderboard:11-Layer Int6 + WD=0.04 + SWA + FA3 (val_bpb: 1.1318)"
+        ]
+      },
+      "muon-warmdown": {
+        "score": 0.03677451547420588,
+        "hits": [
+          "leaderboard:[Val Only]: MLP 3x + STE int6 QAT + sliding window, val_bpb=0.9588",
+          "leaderboard:Record: Int6 MLP3x + SmearGate + BigramHash + MuonWD + SWA (mean val_bpb=1.1483)",
+          "leaderboard:Submission: OrthoInit + Int6 MLP3x + SmearGate + BigramHash (val_bpb: 1.1524)",
+          "leaderboard:Int6 MLP3x + Tuned LR + SmearGate + SlidingWindow (val_bpb: 1.1618)",
+          "leaderboard:Record: OrthoInit + Int6 MLP3x + BigramHash + SmearGate (val_bpb: 1.1539)"
+        ]
+      },
+      "adaptive-schedule": {
+        "score": 0.4953023088023088,
+        "hits": [
+          "garden:challenge-history/conceptual-evolution.md",
+          "garden:challenge-history/index.md",
+          "garden:challenge-history/likely-strategy-families.md",
+          "garden:challenge-history/submission-archetypes.md",
+          "garden:frontiers/index.md"
+        ]
+      }
+    },
+    "specialization": {
+      "none": {
+        "score": 0.5947058823529412,
+        "hits": [
+          "garden:challenge-history/conceptual-evolution.md",
+          "garden:challenge-history/index.md",
+          "garden:challenge-history/likely-strategy-families.md",
+          "garden:challenge-history/public-runs/four-hour-quasi10b-sp1024.md",
+          "garden:challenge-history/public-runs/index.md"
+        ]
+      },
+      "norm-only": {
+        "score": 0.8400000000000002,
+        "hits": [
+          "garden:challenge-history/conceptual-evolution.md",
+          "garden:challenge-history/likely-strategy-families.md",
+          "garden:challenge-history/public-runs/naive-baseline.md",
+          "garden:challenge-history/submission-archetypes.md",
+          "garden:frontiers/compression-interfaces-for-shared-depth.md"
+        ]
+      },
+      "micro-gates": {
+        "score": 0.7474435243871508,
+        "hits": [
+          "garden:frontiers/compression-interfaces-for-shared-depth.md",
+          "hint:frontiers/compression-interfaces-for-shared-depth.md",
+          "garden:hypotheses/ledger.md",
+          "garden:hypotheses/phase-conditioned-sharing.md",
+          "garden:hypotheses/recurrent-wide-architecture.md"
+        ]
+      },
+      "lens-heads": {
+        "score": 1.3621052631578954,
+        "hits": [
+          "garden:challenge-history/conceptual-evolution.md",
+          "garden:challenge-history/likely-strategy-families.md",
+          "garden:challenge-history/public-runs/four-hour-quasi10b-sp1024.md",
+          "garden:challenge-history/public-runs/naive-baseline.md",
+          "garden:challenge-history/submission-archetypes.md"
+        ]
+      },
+      "persistent-role-state": {
+        "score": 0.2,
+        "hits": [
+          "garden:moonshots/index.md",
+          "garden:moonshots/role-state-recurrence.md",
+          "hint:moonshots/role-state-recurrence.md"
+        ]
+      }
+    },
+    "artifact_interface": {
+      "plain-zlib": {
+        "score": 0.22142857142857145,
+        "hits": [
+          "garden:challenge-history/public-runs/four-hour-quasi10b-sp1024.md",
+          "garden:challenge-history/public-runs/naive-baseline.md",
+          "garden:challenge-history/submission-archetypes.md",
+          "leaderboard:[WIP] Depth-recurrent QAT: 3x4 loops, 768d, 15.6MB artifact",
+          "leaderboard:SOTA Attempt: Paid prefix (val_bpb=1.0238)"
+        ]
+      },
+      "outlier-protected": {
+        "score": 1.3137552483358939,
+        "hits": [
+          "garden:challenge-history/conceptual-evolution.md",
+          "garden:challenge-history/likely-strategy-families.md",
+          "garden:challenge-history/public-runs/four-hour-quasi10b-sp1024.md",
+          "garden:challenge-history/public-runs/index.md",
+          "garden:challenge-history/public-runs/naive-baseline.md"
+        ]
+      },
+      "codec-bank": {
+        "score": 0.62,
+        "hits": [
+          "garden:frontiers/byte-allocation-beats-average-bit-width.md",
+          "garden:frontiers/entropy-friendly-model-structure.md",
+          "garden:frontiers/learned-weight-codecs-and-compressible-training.md",
+          "garden:frontiers/rate-distortion-for-artifact-caps.md",
+          "garden:hypotheses/output-head-compression.md"
+        ]
+      },
+      "regenerated-head": {
+        "score": 0.7400000000000001,
+        "hits": [
+          "garden:challenge-history/conceptual-evolution.md",
+          "garden:challenge-history/likely-strategy-families.md",
+          "garden:challenge-history/submission-archetypes.md",
+          "garden:frontiers/byte-allocation-beats-average-bit-width.md",
+          "garden:frontiers/tokenizer-head-co-design.md"
+        ]
+      },
+      "artifact-native": {
+        "score": 0.28,
+        "hits": [
+          "garden:frontiers/learned-weight-codecs-and-compressible-training.md",
+          "garden:moonshots/artifact-dropout.md",
+          "garden:moonshots/artifact-native-training.md",
+          "garden:moonshots/compilerized-model-artifacts.md",
+          "garden:moonshots/exception-topology-codecs.md"
+        ]
+      }
+    }
+  },
+  "strategies": [
+    {
+      "id": "int6-sliding-mlp3x",
+      "label": "Int6 sliding MLP3x",
+      "choices": {
+        "shared_depth": "none",
+        "quantization_recipe": "int6-qat",
+        "eval_strategy": "sliding-window",
+        "vocab_strategy": "sp1024",
+        "optimizer_recipe": "normuon",
+        "specialization": "norm-only",
+        "artifact_interface": "outlier-protected"
+      },
+      "hypothesis": "Fuse the strongest visible public motifs — int6-ish quantization, sliding-window evaluation, MLP-heavy capacity, and optimizer tuning — into one explicit frontier family.",
+      "tags": [
+        "frontier",
+        "quantization",
+        "sliding-window",
+        "public-motif"
+      ],
+      "priorBelief": 0.88,
+      "riskLevel": "medium",
+      "signalBoost": 0.27246573994829537
+    },
+    {
+      "id": "shared-depth-rms-interface",
+      "label": "Shared-depth RMS interface",
+      "choices": {
+        "shared_depth": "phase-conditioned-sharing",
+        "quantization_recipe": "mixed-int6-fp16",
+        "eval_strategy": "standard-roundtrip",
+        "vocab_strategy": "sp1024",
+        "optimizer_recipe": "muon-warmdown",
+        "specialization": "micro-gates",
+        "artifact_interface": "outlier-protected"
+      },
+      "hypothesis": "Combine the research-garden seam between shared depth, extra normalization, and tiny role-specific adaptation into a compression-aware recurrent interface.",
+      "tags": [
+        "garden",
+        "shared-depth",
+        "normalization",
+        "micro-specialization"
+      ],
+      "priorBelief": 0.84,
+      "riskLevel": "medium",
+      "signalBoost": 0.2706832443677668
+    },
+    {
+      "id": "global-codebook-backbone",
+      "label": "Global codebook backbone",
+      "choices": {
+        "shared_depth": "depth-recurrence",
+        "quantization_recipe": "global-codebook",
+        "eval_strategy": "standard-roundtrip",
+        "vocab_strategy": "sp1024",
+        "optimizer_recipe": "muon",
+        "specialization": "none",
+        "artifact_interface": "codec-bank"
+      },
+      "hypothesis": "Exploit recurrence twice: once in the architecture and once in the codec, amortizing storage through a shared codebook bank rather than per-tensor compression alone.",
+      "tags": [
+        "garden",
+        "codec",
+        "recurrence",
+        "novel-compression"
+      ],
+      "priorBelief": 0.79,
+      "riskLevel": "high",
+      "signalBoost": 0.26260000000000006
+    },
+    {
+      "id": "tokenizer-head-swap",
+      "label": "Tokenizer head swap",
+      "choices": {
+        "shared_depth": "none",
+        "quantization_recipe": "int6-qat",
+        "eval_strategy": "sliding-window",
+        "vocab_strategy": "sp4096",
+        "optimizer_recipe": "normuon",
+        "specialization": "norm-only",
+        "artifact_interface": "regenerated-head"
+      },
+      "hypothesis": "Trade a more aggressive tokenizer/vocabulary move against a compressed or regenerated output head, following the garden's tokenizer-head co-design lane.",
+      "tags": [
+        "garden",
+        "tokenizer",
+        "lm-head",
+        "co-design"
+      ],
+      "priorBelief": 0.73,
+      "riskLevel": "high",
+      "signalBoost": 0.08467484438112363
+    },
+    {
+      "id": "role-state-recurrence",
+      "label": "Role-state recurrence",
+      "choices": {
+        "shared_depth": "role-state-recurrence",
+        "quantization_recipe": "mixed-int6-fp16",
+        "eval_strategy": "iterative-refinement",
+        "vocab_strategy": "sp1024",
+        "optimizer_recipe": "adaptive-schedule",
+        "specialization": "persistent-role-state",
+        "artifact_interface": "artifact-native"
+      },
+      "hypothesis": "Specialize repeated depth through tiny persistent role state instead of storing more unique layers, borrowing the garden's role-state recurrence moonshot.",
+      "tags": [
+        "moonshot",
+        "recurrence",
+        "state",
+        "novel"
+      ],
+      "priorBelief": 0.69,
+      "riskLevel": "high",
+      "signalBoost": 0.09276511544011545
+    },
+    {
+      "id": "artifact-native-ttt",
+      "label": "Artifact-native TTT",
+      "choices": {
+        "shared_depth": "cross-layer-tying",
+        "quantization_recipe": "int8-row",
+        "eval_strategy": "ttt",
+        "vocab_strategy": "byte260",
+        "optimizer_recipe": "muon-swa",
+        "specialization": "lens-heads",
+        "artifact_interface": "artifact-native"
+      },
+      "hypothesis": "Lean into evaluation-time compute and artifact-native training ideas: store less, adapt more at evaluation, and let compute stand in for artifact bytes.",
+      "tags": [
+        "ttt",
+        "artifact-native",
+        "eval-time-compute",
+        "moonshot"
+      ],
+      "priorBelief": 0.62,
+      "riskLevel": "high",
+      "signalBoost": 0.0752888888888889
+    }
+  ]
+}

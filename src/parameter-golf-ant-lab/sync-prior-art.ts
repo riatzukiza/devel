@@ -192,7 +192,7 @@ const parseFrontmatter = (text: string): { readonly title: string; readonly tags
 };
 
 const fetchGardenDocs = async (maxDocs: number): Promise<readonly GardenDoc[]> => {
-  const tree = await fetch("https://api.github.com/repos/agustif/parameter-golf-research-garden/git/trees/main?recursive=1").then((response) => response.json()) as { readonly tree?: readonly Array<{ readonly path: string; readonly type: string }> };
+  const tree = await fetch("https://api.github.com/repos/agustif/parameter-golf-research-garden/git/trees/main?recursive=1").then((response) => response.json()) as { readonly tree?: ReadonlyArray<{ readonly path: string; readonly type: string }> };
   const selected = (tree.tree ?? [])
     .filter((entry) => entry.type === "blob" && entry.path.startsWith("content/") && entry.path.endsWith(".md"))
     .filter((entry) => /(challenge-history|frontiers|hypotheses|ideas|lanes|moonshots|notes)\//.test(entry.path))

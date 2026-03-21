@@ -167,7 +167,7 @@
 	branch = main
 [submodule "orgs/open-hax/voxx"]
 	path = orgs/open-hax/voxx
-	url = file:///home/err/devel/orgs/open-hax/voxx
+	url = git@github.com:open-hax/voxx.git
 	branch = main
 [submodule "orgs/riatzukiza/TANF-app"]
 	path = orgs/riatzukiza/TANF-app
