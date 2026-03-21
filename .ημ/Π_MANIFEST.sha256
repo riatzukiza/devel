@@ -207,8 +207,8 @@ c43500ccada05ef98f256a4123c34371bec8d7eb1b8502225a3f2b32172446c9  .pi/skills/pro
 a9e3f5c5ab1de06b615ac380e2f92e1ddc3abafe758a959186e8a6dd9e6c18ce  .secrets.baseline
 20b9395cfc6cb6a61471a86f8f210c65af7e062b395525ea4e3a684f6500cdab  .spacemacs
 792150d711eb0286222c3b50c478dc741530b88c2afaaabd4373945c023f28b7  .ημ/registry.jsonl
-5bcfbcac41f6681d1428a6effbd8929277fefb33e19d8280aa22694365147e66  .ημ/Π_LAST.md
-0b5ab1e3f9a7369826c4b542691b4ff6a3c3f92d53b02b81ac15e910b10335a2  .ημ/Π_STATE.sexp
+544159ba31d5c2a383e453d7d53fad56870e02622ffe9b8609f66f93eabf760d  .ημ/Π_LAST.md
+4875f34fb1df7d6a765d61e253fcf228d401d67f86dd2e042c75d5aec355d54d  .ημ/Π_STATE.sexp
 8c35d1ca672b56400408d7f45caf58e23e8ee2c7e7925839b3935ebf0ea018fd  AGENTS.md
 35b430d73ee6020dbadc25b492a6a755a6daeb748f9fe26b7c15d3bca26075ac  OPENCODE-SESSIONS-INDEXER.md
 ee7a8ff7783a01d327adbca6973a318ca45be741306816fe8d9631c6cb103f25  README.md
@@ -401,11 +401,14 @@ ec36282a5d5eb75537a9ce287ff69afc9fecc4831b44b8e44f50eed6f12b5c07  docs/reference
 0570e52d2cdea0ca0fb945d04030595d7d059d44de748843af52f8c875b5058d  docs/reports/github-triage/data/org-submodule-refinement-2026-03-21.json
 c67b65d93c29cfd1954176970d93a544a7b7d0e5920c959d9a6ac225d3f14238  docs/reports/github-triage/data/org-submodule-sweep-2026-03-21.json
 6b6588b526d51ba2de66c1701e038bed9de18cc0e5033a748b3a48f38ac1bf1f  docs/reports/github-triage/data/proxx-breakdown-label-apply-2026-03-21.json
-e256b5f8f49380e80fb8eb2900856f465bb0b839c51a32df7070a43ba1de7e17  docs/reports/github-triage/label-apply-2026-03-21.md
+efdfba85d6099a593dfda8dad867db4297c38b7fbafa6cd62549dfdfc36546d7  docs/reports/github-triage/label-apply-2026-03-21.md
 f5e3e629adcd407fb822696eda4abaded4bb9d16e455e8c631a3461521f42f36  docs/reports/github-triage/org-submodule-refinement-2026-03-21.md
 91f1717bad123b4a8c08c9c00e99247b4fb57199865d7bc8dfab33e84c5d816a  docs/reports/github-triage/org-submodule-sweep-2026-03-21.md
 87225666f60a69c06f64988f7ebcf4d186abbe0b94412f051e30272dd88bd619  docs/reports/inventory/eta-mu-admin-submodule-targets-2026-03-21.json
 d2b0bc1b6fecebd68c294c94efb481baa6d160dd73edb283f45bf458fedd270c  docs/reports/inventory/eta-mu-admin-submodule-targets-2026-03-21.md
+9e7020058362dee11c722c512e8913b6c3268a599baf65e96dff616b366181a3  docs/reports/inventory/eta-mu-branch-protection-apply-2026-03-21.md
+7f97dc29f1c1f26cb853f73d958ee9596b5a2917952113e4c21f5f131af036e1  docs/reports/inventory/eta-mu-rollout-prs-2026-03-21.json
+eddee63b73c2d5b6a987e6af7363ad4d97e86949021b616cbdff53851184456b  docs/reports/inventory/eta-mu-rollout-prs-2026-03-21.md
 f8266bfc6986acca9399fe2dcd796f2a44668fc7c562efc0226b76b1decb3526  docs/reports/inventory/outside-structure-action-table-2026-03-21.json
 1e2574015baefebb986a1367dd3b8b5077798a6eeb1997394b3caae525819bbf  docs/reports/inventory/outside-structure-action-table-2026-03-21.md
 9acae878be333b2b992895b2c8a52fba334336ea7a65005fa054e3f875db1bbd  docs/reports/inventory/outside-structure-manifest-2026-03-21.json
@@ -1476,7 +1479,7 @@ d980bbc8e57d13ecb7688f693351bdd3f0e994586de545f76505e9aaa6b33abe  projects/webri
 7c747cb9175b3d141885bec617ffbc7916375644caa9a77d1deabe872b4fcf2d  promethean.kanban.json
 1a72d7f32aa65dab1ac3432d5bfa9eb4775241f61777ad8de2b27d59105700d2  readmeflow-debug.js
 e85ec566aae92963ded5b66c4d4d0dbcf2a5be2925593ef25d1b24cbd32fc67e  readmeflow-debug.ts
-e3f9698a68d264fabdfe3d8b77d8bfa278f54cb5baa45773a461660e9b7038b2  receipts.log
+9eea7c26aa51ed4862e1424e83c73da124043a5e675979531b1657091fd02202  receipts.log
 6ab431e358dbedd9f6fa2469af55f1446311116d9efed4edf1ffe52901be700e  reconstitute-mcp/AGENTS.md
 3d0b88157a535d46ff1332d2c8fbb5990739e1dd7ae8d139b6f962e840dd7b5d  reconstitute-mcp/package.json
 d8c05c2c39e5b17d6b7e1547a0aaf9f4a75f235998a189f1a930fbf3da2de073  reconstitute-mcp/src/index.ts
@@ -2340,7 +2343,7 @@ b7cccd181360311d554189e1b7c231da96d77db31b71dd6261fd8a2fad9e41fc  services/proxx
 ec65700af0c9f766794fef2bba84ca8c3088a750d29dbffe830881750993ebb2  services/proxx/docker-compose.factory-auth.override.yml
 efcf45ada1e0088efcfef93e8d2d88ea95115de66175cab0abd6ee0d6a2cbdfd  services/proxx/docker-compose.glm5.yml
 a88d0d7e67a1619e7885f06954d61562e64ec2597bb888e20cfac1b319a9c268  services/proxx/docker-compose.ssl.yml
-5150ce3ff031da12fcd3b81f5d090fce4d17d14ebca332d997a4a85bbc5f8311  services/proxx/docker-compose.yml
+004d880c6351640f58f44992eed5445ef8e1bae159a24239345abb77100fda0f  services/proxx/docker-compose.yml
 8d619dcc3f63b58a8ff64fe6822246ea457c4685f5d64eb6673d4c62435d1a5b  services/proxx/keys.example.json
 26ed3c9b9c35d06422e7fae40547736137f453987852ec6867cb6ad53ff0afd8  services/proxx/models.example.json
 e6d041e5bec334549e9ac44e67d7cb1233e74ef754e2544ffead2e3eb5a20d5c  services/radar-stack/.env.example
@@ -2487,7 +2490,7 @@ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  specs/drafts/a
 0176a5c77af417b75a8fabed05ba8b26b353af5160284a45c35357a6907f3daa  specs/drafts/deploy-x-promethean-skills.md
 56883cad2f92e95f193a34be7229bf2ed35d131801bcc89f724d3096451feca2  specs/drafts/devel-placement-contract-2026-03-21.md
 9aa7eb03ca119239c9b05ee607b9ee1ca2d1171a7534916cfe7908163c243be8  specs/drafts/documentation-refresh.md
-6c9ffabef9ff9851445e7cbb9488e0c3b72f3b928e916554d0f848ac04c4bb76  specs/drafts/eta-mu-github-integration-2026-03-21.md
+cb670d97faecb2f4a247a98e0aa049b11b1629becb84d88b31fb183a0806be1a  specs/drafts/eta-mu-github-integration-2026-03-21.md
 177b77498e2869404305878edc05662a396d473dd3fec99a81ac9a745ccd202b  specs/drafts/eta-mu-truth-workbench.md
 e605d2de86a96c2dae086bdeab266efeadaab4e4b83ed8eae34617b15c1b6c02  specs/drafts/fork-tales-submodule-relocation-2026-03-21.md
 e817b03a3d019f74c5565722ea28a69e9229716781248ebd2c2937f90f052cdc  specs/drafts/gemini-key-image-cost-ui.md
@@ -2496,7 +2499,7 @@ e817b03a3d019f74c5565722ea28a69e9229716781248ebd2c2937f90f052cdc  specs/drafts/g
 b68181cde6d727b87049fec87ffc353a286b9f85316defe58eccf76fc90343cc  specs/drafts/hormuz-clock-evolve-2026-03-19.md
 35f8e2990a090803e67324d98a3d946f5bfb8e8f3fbe7cfd46a032126a08cbf4  specs/drafts/hormuz-clock-range-priors-2026-03-19.md
 5309314f05479fdd8066c2f4c26f055d24d02fa8ae01f36a83894a69894feea3  specs/drafts/job-application-research-synthesis-process-2026-03-18.md
-ee8c1596084196dce1e4015643b70ff6a0dc7f0197503a1313680386dcd1ef09  specs/drafts/kanban-extraction-and-issue-refinement-2026-03-21.md
+12333f185b9045418af398016e7aafc2904cab75cdab419bce9a5efadb87a3d2  specs/drafts/kanban-extraction-and-issue-refinement-2026-03-21.md
 5b41ffeb9f62d160d1b6b77993d69bb70e654f8399b417d6709e69fbcbd4387d  specs/drafts/mcp-social-publisher-ussy-key-auth-deploy-2026-03-21.md
 1c641fde941cbaff55eb2dc6ad6ffb9b75f364f26e1de801a2b2a5e70305812c  specs/drafts/migrate-packages-services-to-orgs-phase-0-inventory.md
 5df8b182dd9bbe45fecdce2aaf93eee933e2b49609c0e5853b6719d85c484e86  specs/drafts/migrate-packages-services-to-orgs-phase-1-symlink-layer.md
