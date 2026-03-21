@@ -158,3 +158,6 @@ This contract supersedes that assumption:
 - `packages/*` is the prototype default
 - `services/*` is the runtime/devops layer
 - org repos remain the canonical long-term homes for mature projects
+
+For work that still lives outside the placement structure, use the exception policy:
+- `docs/reference/outside-structure-exception-policy.md`

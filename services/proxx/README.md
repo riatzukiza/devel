@@ -32,6 +32,8 @@ docker compose logs -f
 
 If you do not need Factory auth mounts, omit the override file.
 
+If you want z.ai/GLM routing in the local compose stack, set `ZAI_API_KEY` (or `ZHIPU_API_KEY`) in `services/proxx/.env` before `docker compose up`; `docker-compose.yml` passes those vars through to the running proxy container.
+
 Optional factory-auth secret mounts live in `docker-compose.factory-auth.override.yml`; include that file only when you have the matching host paths/env vars.
 
 ## Host fleet dashboard

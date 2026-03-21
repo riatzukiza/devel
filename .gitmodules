@@ -222,3 +222,6 @@
 	path = verathar-server
 	url = https://github.com/isaacsaancheez/verathar-server.git
 	branch = master
+[submodule "orgs/open-hax/eta-mu-github"]
+	path = orgs/open-hax/eta-mu-github
+	url = https://github.com/open-hax/eta-mu-github.git

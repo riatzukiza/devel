@@ -1,25 +1,28 @@
 # Π handoff
 
-- time: 2026-03-21T19:43:03Z
+- time: 2026-03-21T21:49:45Z
 - branch: feature/threat-radar-platform
-- pre-Π HEAD: 758a99e
+- pre-Π HEAD: dba9902
 - Π HEAD: pending at capture time; resolved by the final commit after artifact assembly
 
 ## Summary
-- Persist the current workspace placement-contract and deployment-governance bundle: AGENTS/doc updates, promotion checklists, inventory reports, and Promethean host/runtime skill mirrors.
-- Move the canonical Fork Tales submodule from vaults/fork_tales to orgs/octave-commons/fork_tales, retarget dependent workspace/repo paths, and preserve the Shuv fork as a documented local secondary remote on the canonical checkout.
-- Advance recursive submodule pointers to freshly pushed Π snapshots for orgs/octave-commons/gates-of-aker, orgs/octave-commons/shibboleth, orgs/open-hax/voxx, and threat-radar-deploy.
+- Persist the eta-mu GitHub integration foundation: workflows, rollout tooling, skill links, docs, triage artifacts, admin-target inventories, and the new eta-mu-github submodule.
+- Carry the extracted packages/kanban workspace bundle, current outside-structure/root-module manifests, services/proxx runtime-doc updates, and the radar deployment declutter documentation.
+- Advance recursive submodule pointers to proxx b365a1f, voxx 88b45bf, Promethean 77e919128, and threat-radar-deploy 7436cc4, each already published as dedicated Π snapshots.
 
 ## Notes
-- submodule orgs/octave-commons/gates-of-aker -> 6061513 (Π/2026-03-21/193814-6061513, push pi/fork-tax/2026-03-21-193439)
-- submodule orgs/octave-commons/shibboleth -> 5858a97 (Π/2026-03-21/193903-5858a97, push pi/fork-tax/2026-03-21-193439)
-- submodule orgs/open-hax/voxx -> 7df28c5 (Π/2026-03-21/193930-7df28c5, push pi/fork-tax/2026-03-21-193439)
-- submodule threat-radar-deploy -> b77c0bb (Π/2026-03-21/193954-b77c0bb, push pi/fork-tax/2026-03-21-193439)
-- orgs/octave-commons/fork_tales remains at 70a5e68; the added shuv remote is a local checkout configuration and is documented in specs/drafts/fork-tales-submodule-relocation-2026-03-21.md.
+- submodule orgs/open-hax/eta-mu-github -> ea04877 (new tracked submodule)
+- submodule orgs/open-hax/proxx -> b365a1f (Π/2026-03-21/214639-b365a1f, push pi/fork-tax/2026-03-21-211345)
+- submodule orgs/open-hax/voxx -> 88b45bf (Π/2026-03-21/213331-88b45bf, push pi/fork-tax/2026-03-21-211345)
+- submodule orgs/riatzukiza/promethean -> 77e919128 (Π/2026-03-21/212146-77e919128, push pi/fork-tax/2026-03-21-211345)
+- submodule threat-radar-deploy -> 7436cc4 (Π/2026-03-21/212356-7436cc4, push pi/fork-tax/2026-03-21-211345)
 
 ## Verification
-- pass: python json.load config/docker-stacks.json + projects/vaults-fork-tales/project.json + inventory JSON reports
+- pass: pnpm --filter @openhax/kanban build
+- pass: pnpm --filter @openhax/kanban test (17 passed)
+- pass: bash -n bin/setup-branch-protection
+- pass: node --check src/github/eta-mu-rollout.ts
+- pass: python json.load selected github-triage and inventory artifacts
+- pass: git submodule status orgs/open-hax/eta-mu-github orgs/open-hax/proxx orgs/open-hax/voxx orgs/riatzukiza/promethean threat-radar-deploy
+- pass: docker compose -f services/proxx/docker-compose.yml config
 - pass: docker compose -f services/radar-stack/docker-compose.yml config (env warnings only)
-- fail: docker compose -f services/host-fleet-dashboard/docker-compose.ssl.yml config (depends on undefined service host-fleet-dashboard)
-- pass: git grep tracked non-receipt files found no remaining vaults/fork_tales references
-- pass: recursive Π pushes succeeded for gates-of-aker, shibboleth, voxx, and threat-radar-deploy
