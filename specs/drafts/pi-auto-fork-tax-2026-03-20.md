@@ -27,25 +27,28 @@ Build a cron-driven replacement for the old file-watch autocommit flow, inspired
 
 ## Phase plan
 ### Phase 1 — Foundations
-- Add root CLI under `src/auto-fork-tax/`.
-- Implement submodule inventory and fork/origin planning.
-- Implement pi-backed PR review command.
-- Emit cron entry and state-file metadata.
+- [x] Add root CLI under `src/auto-fork-tax/`.
+- [x] Implement submodule inventory and fork/origin planning.
+- [x] Implement pi-backed PR review command scaffold.
+- [x] Emit cron entry and state-file metadata.
 
 ### Phase 2 — Snapshot PR flow
-- Create one-shot `snapshot-pr` and `cycle` commands.
-- Push snapshot branch + tag and open PR.
-- Persist last snapshot branch/head/tag/PR in `.ημ/auto-fork-tax/state.json`.
+- [x] Create one-shot `snapshot-pr` and `cycle` commands.
+- [x] Push snapshot branch + tag and open PR logic.
+- [x] Persist last snapshot branch/head/tag/PR in `.ημ/auto-fork-tax/state.json`.
+- [ ] Run a full end-to-end `snapshot-pr --apply` smoke in a dedicated automation clone.
 
 ### Phase 3 — Fork normalization rollout
-- Apply `ensure-forks --apply` across the submodule fleet.
-- Add owner overrides where the default fork owner is wrong.
-- Document any local-only/file-backed submodules that should stay out of GitHub fork management.
+- [x] Apply `ensure-forks --apply` across the current foreign-origin submodule fleet.
+- [x] Add owner overrides where the default fork owner is wrong.
+- [ ] Review and clean up redundant legacy remote names after the origin/upstream normalization pass.
+- [ ] Document any local-only/file-backed submodules that should stay out of GitHub fork management.
 
 ### Phase 4 — Ops integration
-- Add cron/systemd timer examples.
-- Add review-agent posting mode and optional status labels.
-- Consider a dedicated automation clone/worktree bootstrap script.
+- [x] Add cron/systemd timer examples.
+- [x] Add review-agent posting mode scaffolding.
+- [x] Add a dedicated automation clone bootstrap command.
+- [ ] Decide whether PR review comments should be plain comments, formal reviews, or both.
 
 ## Affected files
 - `src/auto-fork-tax/**`
@@ -54,6 +57,8 @@ Build a cron-driven replacement for the old file-watch autocommit flow, inspired
 
 ## Definition of done
 - `tsx src/auto-fork-tax/cli.ts inventory` reports a fork/origin plan.
+- `ensure-forks --apply` normalizes foreign-origin submodules to owned `origin` + original `upstream` where applicable.
 - `tsx src/auto-fork-tax/cli.ts review-pr ...` can generate a pi review via the production Open Hax proxy.
-- `tsx src/auto-fork-tax/cli.ts snapshot-pr --apply` can create a snapshot branch, tag, and PR in a dedicated automation clone.
+- `tsx src/auto-fork-tax/cli.ts snapshot-pr --apply` can create a snapshot branch, tag, and PR in a dedicated automation target clone.
+- `tsx src/auto-fork-tax/cli.ts bootstrap-clone` emits a working target clone plus a practical cron line.
 - `tsx src/auto-fork-tax/cli.ts cron-entry` emits a 6-hour cron line.

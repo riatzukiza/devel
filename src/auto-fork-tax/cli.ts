@@ -1,5 +1,6 @@
 import path from "node:path";
 
+import { bootstrapClone } from "./bootstrap";
 import { ensureFork, createPullRequest, commentOnPullRequest, formatRepoName, parseGithubSlug } from "./github";
 import { buildForkPlan, type InventoryConfig, applyRemotePlan } from "./inventory";
 import {
@@ -34,6 +35,7 @@ interface ParsedArgs {
   readonly branchPrefix: string;
   readonly defaultForkOwner: string;
   readonly piModel: string;
+  readonly cloneDir: string;
 }
 
 const DEFAULT_OWNED_ORGS = ["riatzukiza", "octave-commons", "open-hax"] as const;
@@ -51,6 +53,7 @@ const parseArgs = (argv: readonly string[]): ParsedArgs => {
   let branchPrefix = process.env.AUTO_FORK_TAX_BRANCH_PREFIX ?? "pi/auto-fork-tax";
   let defaultForkOwner = process.env.AUTO_FORK_TAX_DEFAULT_FORK_OWNER ?? "riatzukiza";
   let piModel = process.env.AUTO_FORK_TAX_PI_MODEL ?? "open-hax-completions/gpt-5.4";
+  let cloneDir = process.env.AUTO_FORK_TAX_CLONE_DIR ?? "~/.local/share/pi-auto-fork-tax/devel";
 
   for (let index = 1; index < argv.length; index += 1) {
     const token = argv[index];
@@ -95,6 +98,10 @@ const parseArgs = (argv: readonly string[]): ParsedArgs => {
         piModel = argv[index + 1] ?? piModel;
         index += 1;
         break;
+      case "--clone-dir":
+        cloneDir = argv[index + 1] ?? cloneDir;
+        index += 1;
+        break;
       default:
         break;
     }
@@ -113,6 +120,7 @@ const parseArgs = (argv: readonly string[]): ParsedArgs => {
     branchPrefix,
     defaultForkOwner,
     piModel,
+    cloneDir,
   };
 };
 
@@ -125,6 +133,7 @@ const usage = (): never => {
     "  tsx src/auto-fork-tax/cli.ts review-pr --repo owner/repo --pr 123 [--post-comment] [--pi-model model]",
     "  tsx src/auto-fork-tax/cli.ts cycle [--root dir] [--apply] [--review] [--post-comment] [--allow-dirty-submodules]",
     "  tsx src/auto-fork-tax/cli.ts cron-entry [--root dir]",
+    "  tsx src/auto-fork-tax/cli.ts bootstrap-clone [--root dir] [--clone-dir dir]",
   ].join("\n"));
 };
 
@@ -343,6 +352,21 @@ const runCronEntry = (args: ParsedArgs): { readonly cron: string } => ({
   cron: `0 */6 * * * cd ${args.root} && pnpm tsx src/auto-fork-tax/cli.ts cycle --root ${args.root} --apply --review --post-comment >> ${path.join(args.root, ".ημ", "auto-fork-tax", "cron.log")} 2>&1`,
 });
 
+const runBootstrapClone = async (args: ParsedArgs): Promise<unknown> => {
+  const branch = await currentBranch(args.root);
+  const result = await bootstrapClone({
+    sourceRoot: args.root,
+    cloneDir: args.cloneDir,
+    branch,
+    installHooks: true,
+  });
+  return {
+    ...result,
+    runnerRoot: args.root,
+    suggestedCron: `0 */6 * * * cd ${args.root} && pnpm tsx src/auto-fork-tax/cli.ts cycle --root ${result.cloneDir} --apply --review --post-comment >> ${path.join(result.cloneDir, ".ημ", "auto-fork-tax", "cron.log")} 2>&1`,
+  };
+};
+
 const main = async (): Promise<void> => {
   const args = parseArgs(process.argv.slice(2));
 
@@ -378,6 +402,10 @@ const main = async (): Promise<void> => {
     }
     case "cron-entry": {
       process.stdout.write(`${JSON.stringify(runCronEntry(args), null, 2)}\n`);
+      return;
+    }
+    case "bootstrap-clone": {
+      process.stdout.write(`${JSON.stringify(await runBootstrapClone(args), null, 2)}\n`);
       return;
     }
     default:
