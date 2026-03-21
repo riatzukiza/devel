@@ -43,6 +43,7 @@
 - 2026-03-20T23:50:00Z Added support for the zone-scoped token alias `CLOUD_FLARE_PROMETHEAN_DOT_REST_DNS_ZONE_TOKEN` and verified a real Cloudflare dry-run plan against zone `promethean.rest` using `battlebussy-smoke.promethean.rest` -> `ussy`.
 - 2026-03-21T02:15:00Z Extended the helper to support nested host labels (for names like `voxx.ussy`) and applied the missing `voxx.ussy.promethean.rest` A record directly in Cloudflare with `proxied=false`.
 - 2026-03-21T02:35:00Z Applied the missing `shibboleth.promethean.rest` A record directly in Cloudflare with `proxied=false` after verifying the UI on port `5197` and control-plane API on port `8787` were alive on `ussy`.
+- 2026-03-21T04:45:00Z Applied `portal.promethean.rest` -> `ussy2` directly in Cloudflare with `proxied=false` as part of the new standalone portal bootstrap on the previously empty `ussy2` host.
 
 ## Verification
 - `python tools/promethean_rest_dns.py show-cores` ✅

@@ -1,4 +1,4 @@
-c76f075fc338edd51366d5a3a1f3a40c070cfbcdcf7e0aaa1fecc624f366bbcb  git-ls-files
+41adba0fedd4dc817c7a39eda7b6726e64d2c00649d6ce582e3f6b3e7d6cdf09  git-ls-files
 6450bae4a02cd363c25b2889d479910a01141359c7dbbe7958eca755abcc7175  .clobber/index.cjs
 975cbb22ce236ae60349820066fdfada1bb37ce793d10bb3d53f07e48cc8001e  .clobber/index.cjs.map
 a18bf6257e7e96f65cdf910a0c4f0a612ed7190d7087ceaf82cef2b909658451  .clobber/index.js
@@ -22,7 +22,7 @@ d617f0ab1537cf3cf1d507ad7fe79761b678cfde8fcf86ef81ace24c4be7e136  .github/workfl
 662fa87c5746b19beb2878bd102bb23a7af885c5b3fec1794bde2dde27fdfd98  .github/workflows/sonar-submodules.yml
 ebc90735c4364acc33a51dd97674f17153060ab9b982cc7614bb7e07a902fbfc  .github/workflows/sonar.yml
 4c32678972abdcc969b615b8ab6f9541949beb5bc82d0dc08d78d1f672378427  .gitignore
-af420980b3ae43c0a98ee3641b2154ede42b95ce8c3394407489aec7a277be1e  .gitmodules
+79ee3c3edbecee951fd1857897984910aee6d1edafe436fcd25f4aefcda97bd2  .gitmodules
 3b2f3bb3c9383531502a719b43b0aea8105790a36388d2335796a1b7cbb8e11f  .hooks/pre-commit-secrets.sh
 cb9cfbe2cf1571f54358e6ed539afd7caac5dff9f04f06c919e42ccb23aaaa3b  .hooks/pre-push-typecheck.sh
 7736a418ab5a54e52fe9a9c82392feeabc4c1643a66e893a35263ffdf3a81ee5  .markdownlint-cli2.yaml
@@ -34,6 +34,7 @@ cb9cfbe2cf1571f54358e6ed539afd7caac5dff9f04f06c919e42ccb23aaaa3b  .hooks/pre-pus
 8c1b520053d9780e82b544afbfa798f6e1a8353c011d880295a79862159db614  .opencode/agents/release-impact.md
 8d6f887855a15d60d4257443fa99117677990d09ba4420336fceeea85fcfec74  .opencode/agents/task-master.md
 7155a6d8b9b64b24059948563250b7b83b85ed63de8607d683cc215d19d4831f  .opencode/commands/build-workspace.md
+54a4e72d0fc074b6cc1edadd6b4baf63426375c7190596f4a21e385876c6d766  .opencode/commands/deploy-promethean-service.md
 ad753766aa409bec5783b125a2b72555ee085f13296247757e00d15679da239d  .opencode/commands/giga-build.md
 89690ffff57c2432ba3e837d10c248c9329158e4a0137d9b803eaa662dda66f7  .opencode/commands/giga-test.md
 f5c83ae62db88a24a856277c3bc5d0e6f40c8b5777c960b8a1cf2cff2daa0a5c  .opencode/commands/giga-typecheck.md
@@ -51,6 +52,7 @@ b7237a8f4f232a8b34f2e17766e29ca1fcc93836936604b3838e658ca2e8d3ac  .opencode/skil
 fab229579d2bda1c1a6bbc20a77957d41b2e8226809281a94df6d1ca97bb6de6  .opencode/skill/hormuz-risk-clock/SKILL.md (symlink)
 e3b254f2153daed11450e8c48440a9bd096224b7dd6bba0e923429919881205c  .opencode/skill/passwords-csv-browser-auth/SKILL.md (symlink)
 7fc4d8af1fb4e575d370e3555ee69523a83602aa865bb56bd03089baf27e805b  .opencode/skill/pr-promotion-workflows/SKILL.md (symlink)
+86425fe3a4277976f8839c993a32af8689094d244444a615b93ccc6a9124eb6f  .opencode/skill/promethean-host-runtime-inventory/SKILL.md (symlink)
 4320edc6d281d3e1f08eb37981ac08be8efc2f24263472d3a010333d671f1652  .opencode/skill/promethean-host-slotting/SKILL.md (symlink)
 497117ce966d819e544707a0dc7b62e31efc22d68ef8f87445ed71965ec46413  .opencode/skill/promethean-rest-dns/SKILL.md (symlink)
 76d192d1c2f6ed88615f26d2dc5a1cf5acb98dfde20ece2726bdc2edf45897e7  .opencode/skill/promethean-service-deploy/SKILL.md (symlink)
@@ -196,13 +198,18 @@ d6cc38b9ccf081911e55318cfa2f596e53ff8eca4af9b13ea9b2600b1087a273  .opencode/skil
 6d5285a2718505d61a8d52f02dc480b2733ad928ce83e1b0cabadff80d9c508c  .opencode/skills/workspace-typecheck/SKILL.md
 2afcceb5abf58b09f8aea799ea542c282d1f896a60ebaffd3b148b95414e8ec8  .opencode/skills/worktree-ops/SKILL.md
 36c7cb442fba2a86c57c1d71851ce2d08858358ffeb54f9d217010813690a241  .opencode/workflows/fix_clojure_ns.yml
+7fc4d8af1fb4e575d370e3555ee69523a83602aa865bb56bd03089baf27e805b  .pi/skills/pr-promotion-workflows/SKILL.md (symlink)
+86425fe3a4277976f8839c993a32af8689094d244444a615b93ccc6a9124eb6f  .pi/skills/promethean-host-runtime-inventory/SKILL.md (symlink)
+4320edc6d281d3e1f08eb37981ac08be8efc2f24263472d3a010333d671f1652  .pi/skills/promethean-host-slotting/SKILL.md (symlink)
+497117ce966d819e544707a0dc7b62e31efc22d68ef8f87445ed71965ec46413  .pi/skills/promethean-rest-dns/SKILL.md (symlink)
+76d192d1c2f6ed88615f26d2dc5a1cf5acb98dfde20ece2726bdc2edf45897e7  .pi/skills/promethean-service-deploy/SKILL.md (symlink)
 09680da2f9e98fed38830d0e8d188e7fca1404f026e226dbcdee08f5da184e9d  .pm2/opencode.json
 a9e3f5c5ab1de06b615ac380e2f92e1ddc3abafe758a959186e8a6dd9e6c18ce  .secrets.baseline
 a79f9b158b0c33f763cbc71a4c7f4fe360a35fa9c56f3374f75a20752be9e237  .spacemacs (symlink)
 20c897a58b3f0c6d8fbb41c19ae6a6ab1f1c2dcfaa9a73a50fe7bce67dd1d149  .ημ/registry.jsonl
 fe6c863ef9ccc09f2143889a6fea5afe96611ee94d5673aad7c2fe412f457cfc  .ημ/Π_LAST.md
 698f65c01ce49df400a79910cd09dc75fe9512a1cbc96278eadcf4df9d2e745e  .ημ/Π_STATE.sexp
-c5743a21e631e05340590b6e0a61c11b67a6269307b40b9c0895b3b2b010b2b9  AGENTS.md
+661f898eb85b9f902fa85be2e48353075d52bf216b9e3d681f6f8f4b43e96e80  AGENTS.md
 35b430d73ee6020dbadc25b492a6a755a6daeb748f9fe26b7c15d3bca26075ac  OPENCODE-SESSIONS-INDEXER.md
 ee7a8ff7783a01d327adbca6973a318ca45be741306816fe8d9631c6cb103f25  README.md
 61e5a7e03eb7f67fe5fa053ab59f3c1e3368ee995872311a21bc3c97cc875b0f  REPOSITORY_INDEX.md
@@ -237,7 +244,7 @@ eedd72ca3bd6e5bc68c335c7ad4ce8002ab42864bafebe102efdc7e8d8c982e8  bun.lock
 4af9b9f806f797246be528cb3d723d9079712d7c8dd7a056cffe9fb464e0e594  cleanup-empty-opencode-sessions.mjs
 4119d3408f6395c1ade2c6e94b1802d97ef72ec7805fb8577cd6056ea5ad9fcb  clojure-dev.clj
 87524883dbc0fb8f469c1bfb0df146365ea90ac4fce8115f79c12d81eb56642d  config/ava.config.mjs
-e008622c8175ca8fe6b0bcdc13e8be9b2fcd322d36441e81ff0aabd635fd7fe2  config/docker-stacks.json
+67b9717cd2c0d90ab78f588d3a4c91edf3aa2f85546426d51aca35ebe141ac52  config/docker-stacks.json
 a35a0e4f03f865f7144b9de4c4423deca2fc122b2316a719805addcbe56059a1  config/tsconfig.base.json
 8595ef578a14cea1d23645d9486e41e013debfbacb264196d541f0b1feb7a037  config/tsconfig.build.json
 229ebf504e7361852d57b6609cc2e3abdea67a2de4845f193e11a7fa585134e2  data/config.json
@@ -292,7 +299,7 @@ a2517241fe51207940193565e3a09f735038247f9e3f7a94f0ffae6a8e69ba3d  docs/dataset_s
 05585dd0a7132bc85c7615b2ee79a5bc554c919d21d1d98a65953465d2d2d1f9  docs/deep-research-report(2).md
 6523cfa35567a069955be95a64ac22ba150b649d3c6f5983e3a9b1fc31e53bb4  docs/deep-research-report.md
 eb3380bc8ebee17e7e60e4ce63ef7144ea93fea4ab9d4191ee7313c7a4dbbc7c  docs/deep_research_prompt_non_english_single_language_adversarial_prompt_datasets.md
-04675e75d3a3c613005d202d3892822674fe1e7b711c89a9d6de4e447b03cb18  docs/docker-stacks.md
+bc219666daf43a359a6269849bfec1d525cb25aea7a19578f1f0f75c6647c3e7  docs/docker-stacks.md
 79d2ddabae47266d3b91435c2e5d8d649f13e67bea46586c5179bc2078269d3a  docs/evaluation_runner_spec_policy_router_model_adapters_logging_metrics_seu_curves.md
 64ea82a047525b10eb1cc1eba56c22de843cf89a81b9e28d316ecb293a974ee0  docs/git-submodules-documentation.md
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  docs/inbox/2025.08.08.20.08.56.md
@@ -349,9 +356,10 @@ dd4fc19536d008d3844cd3fae8dd5626356df7eb835d387149e22a9d34eaf014  docs/manifests
 7df00060f2d87dc30a35f033c387fed3cf2b116adf92b166c1c0f2db1f0bde07  docs/manifests/openai-repos-manifest-2025-11-06.md
 f9a21a36599a718193b7ab6ac123bfa97b2b1e4386602ae27e268528afc2abfc  docs/manifests/riatzukiza-repos-manifest-2025-11-06.md
 850c3561cce13fe87c7e5bc9f7019fa7bc0143d61e8bf717beedc84104a0759a  docs/manifests/sst-repos-manifest-2025-11-06.md
-cc889850bad2da72751f1ab9e56a0ea0835e063d22ec3ed9d2c6fa7db7d91661  docs/migrations/packages-services-to-orgs/README.md
-bf9d5d28e734dd7713b6990bc4a2e6c710f9b9e750862e90962947ccb85f27cb  docs/migrations/packages-services-to-orgs/links.yaml
-6f642e2b075e52b66e975e645f1e9592ef2602f4cc5abe8b2cf9f68941f52368  docs/migrations/packages-services-to-orgs/migration-map.yaml
+c6caedd3d90cc61c72fffe9e52d3ad614ca23be4ea8ece4c1bdce73a55f35937  docs/migrations/packages-services-to-orgs/README.md
+c4256c60b7eaa80acd287e47e28eef5735cecbfd3dfb7344f74871c4ae3dd878  docs/migrations/packages-services-to-orgs/links.yaml
+cc2b3b80137744d3ccb2a80252a3a45337c49541c7fe9243956843674015e757  docs/migrations/packages-services-to-orgs/migration-map.yaml
+d5b4585ec4cb936d62af1b0a67d2d60ded175042042c379e613f2a67fdabbbed  docs/migrations/packages-services-to-orgs/promotion-checklists.md
 4804ae6fa301a10675b81cf408ec9f2649cd67322d4a9f43435118567f04fb33  docs/notes/.#2026.01.31.15.43.30.md (symlink)
 4804ae6fa301a10675b81cf408ec9f2649cd67322d4a9f43435118567f04fb33  docs/notes/.#2026.01.31.18.38.27.md (symlink)
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  docs/notes/2026.02.13.13.36.22.md
@@ -387,8 +395,15 @@ db145550de1f85622a64487489f835ba0694c2140fd74c1b3b8620e29f408d8b  docs/pr-mirror
 1fff6a01187f6b571a98e9415fc3958624bfaf7f306d5db4fc21e9eaaf21b370  docs/redis-file-lock-migration-plan.md
 ef9b914d3cc673ed46dc4ec0c06632b10c3d67a4f231f06d21081c49a74330c2  docs/redis-file-lock-testing-deployment.md
 e9209be54917a5559581ededa05303098820ea53e9a38c7cac5a1d218a0ea018  docs/reference/agents.md
+1a7c43067e16ffdef2855c3be7b838d0afbb8b5f09f92e669355daec33591ca6  docs/reference/devel-placement-contract.md
 bd8a7fdf5bb64dc1944721374a82b4714566dd470e816138e9d5cb1ddac093fc  docs/reference/kanban-cli-reference.md
 07b398472a41fdeaf2db29d6fb5b4a2bcdab3d09605b504202d046daec4cc417  docs/reference/process.md
+98ed432da77e4d9b2a78bc76d4f14ae0d663ebafd2f5a7e17d0b7657f07c8a90  docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
+420ce4e782fe9e29e3abfdcfd27980a73f19418833c916fa31af8abbb5ac3563  docs/reports/inventory/packages-org-placement-inventory-2026-03-21.md
+04a09899ebf51bfe86671ed00d2e584ff08ac09492382688b4e3c742fdced467  docs/reports/inventory/promethean-host-runtime-inventory-2026-03-21.json
+61d5784dce5e6cec413921ec0ac309e43c05522d6b80e3506fdf3b6c9fd346f8  docs/reports/inventory/promethean-host-runtime-inventory-2026-03-21.md
+2c667d9aefab66b305f831797b1f7ff8d0d7f0ca3d1d40036d5479279bf77f27  docs/reports/inventory/services-pr-promotion-inventory-2026-03-21.json
+a01dd0c793c4013b6ae38758edb38d13250620b348124dfaf20325b57259d76a  docs/reports/inventory/services-pr-promotion-inventory-2026-03-21.md
 89866a306e102ac35dd147567706062e07bc1cf8522a0338660e3ff8e52bef26  docs/reports/open-hax-vs-numman-codex.md
 8e6c1080ee19d9d5611310c40178433d030c067a2903659d7ecab0484c7663d2  docs/reports/package-doc-matrix.md
 69862b233c9cddb3bdcb834a26a14c1613ab61165f43a51d158be1a02e76e92f  docs/reports/redis-file-lock-phase1-complete.md
@@ -401,7 +416,7 @@ c6736f82e661594fe7f89f47b00dfd45dfb124eb59c28537ac1d948128ed8c96  docs/reports/r
 64c2428c07644bdd014ff544749c95780f4da9eaa4606a518291d82b30e83a9d  docs/reports/research/promethean-effects-instrumentation.md
 7ee5bf1b04c2727411bc2f4eccc57a2c322337d2562565e2d6540de758855d50  docs/reports/submodules-recursive-status-2025-11-13.md
 11621f087aa5a986d24ee09e9960118581a2e69d8bf24c16a36e04e3f88648bd  docs/research/free-devops-resources.md
-22bcc9534307fca0fc62963cd645367a0e3b66fc61ca8998a9d65b29f4a53332  docs/sing.v3.md
+ade6d54cf5b28103aee5b37d7c3bc3cc4df16810761b151ed09ebb9eae3f8204  docs/sing.v3.md
 f0187a69be1bee4b90dd599c8e2a2f04c88891cda7b5d9ef872c3c6f9586f716  docs/skill-optimization-guide.md
 bdcf843062df0df8f8586088993f6cf662f20985c9ed5c06c528875ceba98015  docs/tasks/--title Manual CLI Parser Unification.md
 c6e47f2d3764959b349863360328171d4e57b64a2e7afa0268185e4e1b7b891b  docs/tasks/--title NSS Task 1 — Comprehensive Test Suite.md
@@ -567,7 +582,8 @@ b6181bed92299f7df0b4e9a2e8bda9a7f65a2405  orgs/badlogic/pi-mono (gitlink)
 9b22d120480af8bb8d53046cf81d585ce62215fd  orgs/moofone/codex-ts-sdk (gitlink)
 4e81c2e68ab88ebe349e95da5c2401d3e30bc8b801f99b4013a9a60d0c1b35ef  orgs/node_modules (symlink)
 1d1322b5914dff5d83a445694db1661c8b6b09523ab58e1014013b3bb4edd4f4  orgs/octave-commons/cephalon-clj/AGENTS.md
-86b8d713d441a86317ff285ba2bd357eb505b99b  orgs/octave-commons/gates-of-aker (gitlink)
+70a5e68cad91670f60994e38b83218e627445094  orgs/octave-commons/fork_tales (gitlink)
+60615136869fb0c5f8e5b900c58ba9d20419e3f3  orgs/octave-commons/gates-of-aker (gitlink)
 d0c3782a24468a96ddc3ebead4a4f0c21db77ad9  orgs/octave-commons/helm (gitlink)
 ba260e0abe1131241d81d9e08990d151c0fb15ea  orgs/octave-commons/lineara_conversation_export (gitlink)
 0ea0091b94d6821ca67da098f2bde61fe3bbe70e  orgs/octave-commons/mythloom (gitlink)
@@ -575,7 +591,7 @@ ba260e0abe1131241d81d9e08990d151c0fb15ea  orgs/octave-commons/lineara_conversati
 a02e160fdc7f560b58d5ab0e3ead3d30c32cc441  orgs/octave-commons/pantheon (gitlink)
 1c4a2268d36066da2b783f1c02b00b81fe2bd1f6  orgs/octave-commons/promethean (gitlink)
 0e579d2437f788072e5e66e905a5ff900f41fa0b  orgs/octave-commons/promethean-agent-system (gitlink)
-7b22b23b17932265dff1c01b051061326577741a  orgs/octave-commons/shibboleth (gitlink)
+5858a97d2efec3b14dd2069678574a29918e685b  orgs/octave-commons/shibboleth (gitlink)
 78cac7bf8aeb95c0ff66987f47ada9fbbca8714f  orgs/open-hax/agent-actors (gitlink)
 a72a9e6c18bb09ede04c8ce946ac4954e263e517  orgs/open-hax/clients (gitlink)
 81f5513d0a4c95b78b52e20549cdb3a85a02ec84  orgs/open-hax/cljs-plugin-template (gitlink)
@@ -642,7 +658,7 @@ fc97eba7d7c4fe5bf7e456f687af785b7c2ae171  orgs/open-hax/openhax (gitlink)
 b8ae5b417ee7b394bc136b945a18bbcf2ecaad63  orgs/open-hax/plugins/codex (gitlink)
 4210d33c69af1f09c476643c7a1326ab8b958167  orgs/open-hax/privaxxy (gitlink)
 adc1b5dfa7b420b3e74e4da360537ab5b7303569  orgs/open-hax/proxx (gitlink)
-7d3899b9e78e092c42474e80d15e92c8b34499b4  orgs/open-hax/voxx (gitlink)
+7df28c5c403d2d25d67cf90747954e83e662a4bc  orgs/open-hax/voxx (gitlink)
 601386e422c02e693cbafe9199c1a4abd122e69e  orgs/open-hax/workbench (gitlink)
 a9fd418e58d14bb2190c2cdf1d90ca721632a863  orgs/openai/codex (gitlink)
 fe9ba72ab525cd500c97401f28d39cbae9ad3fe7  orgs/openai/parameter-golf (gitlink)
@@ -1475,7 +1491,7 @@ e01620783fa6fa4b97753d6f71b539bb76ed1c01d73c695c72128b80165042e1  projects/orgs-
 5268cc4d574078379e03b7d79f11f3980dc194431d6daf2d1fd35ab3af9b69c8  projects/orgs-riatzukiza-riatzukiza-github-io/project.json
 a6397f3d0ed14011d156bd6968aabe0525218f268656643ea5c1b7a947f9f5b8  projects/orgs-riatzukiza-stt/project.json
 792af5ecf4ca858889ee89178441598f40d933967fa2ee798118a797a32ff59e  projects/orgs-sst-opencode/project.json
-125ab1dbdc2d8b5fea250f03c5bda34f68c6315130c02443bef4991a1fe4e9b6  projects/vaults-fork-tales/project.json
+b5bca7f3658ff9c7ea47bb80faee2d68262dd0075d09aa47725488b3ad113356  projects/vaults-fork-tales/project.json
 8363e0ea60990753fad80e75f6f316015697480f78b74c381ed8786162d306fa  projects/vaults-static-man/project.json
 62218eab26121866821ef2506a6237bb9f4bb2c2b51b6a76099d288830d8f344  projects/webring-sites/pheromone-atlas/index.html
 d980bbc8e57d13ecb7688f693351bdd3f0e994586de545f76505e9aaa6b33abe  projects/webring-sites/pheromone-atlas/my-server
@@ -1483,7 +1499,7 @@ ed40d2f3929a4e32b904816c8b9dfb861c0a7db3d22076dd1e9f5f5bd179eacc  promethean (sy
 7c747cb9175b3d141885bec617ffbc7916375644caa9a77d1deabe872b4fcf2d  promethean.kanban.json
 1a72d7f32aa65dab1ac3432d5bfa9eb4775241f61777ad8de2b27d59105700d2  readmeflow-debug.js
 e85ec566aae92963ded5b66c4d4d0dbcf2a5be2925593ef25d1b24cbd32fc67e  readmeflow-debug.ts
-8c2072b44fe8e0e977cb42d58db00005ae2c739fcd9e33ea925d09d250569a20  receipts.log
+950a1b70bdaaed3c0f5f4000a64de61d23d8689d67b25b712e6fe8ed484396ff  receipts.log
 6ab431e358dbedd9f6fa2469af55f1446311116d9efed4edf1ffe52901be700e  reconstitute-mcp/AGENTS.md
 3d0b88157a535d46ff1332d2c8fbb5990739e1dd7ae8d139b6f962e840dd7b5d  reconstitute-mcp/package.json
 d8c05c2c39e5b17d6b7e1547a0aaf9f4a75f235998a189f1a930fbf3da2de073  reconstitute-mcp/src/index.ts
@@ -1926,9 +1942,11 @@ ccda7adc71e25ae4ad59c351e8840e1cb45a3cabf7a064da7dfb87bb47138f48  services/eta-m
 a1f0d16aff0007a68392883c35339e0d07b033516f9bd9da2240f716b7b93f0f  services/eta-mu-truth-workbench/ui/app.js
 b9e2861fbd4184b3d55ecf1a01edd943a46b80acfc0d0d37829356a13cdcd1f0  services/eta-mu-truth-workbench/ui/index.html
 6888079db3576fdbf4cd6f7b728f579fef3a214db69c52e82c5452eee936007b  services/host-fleet-dashboard/.env.example
+7fe728be6ccaadeb998a0fb5f2ece82d3b43b7a4d8e26b2370a06a494200de82  services/host-fleet-dashboard/Caddyfile
 086de024a365780d11a18f2be28b3226e422b024c4e736150e4d7419b32db6f0  services/host-fleet-dashboard/Dockerfile
-7fc5b8f6cf62debb59271b990ec80b77009513650761ae3f6a0759beaef848b4  services/host-fleet-dashboard/README.md
+2ac67219f2df2d9aea5d4634440ae21d299bdc86da2242e9085e170b59a740e5  services/host-fleet-dashboard/README.md
 37464ef588f951799a8bf4369c05b0937d557069a4bec4149937f5024a1f2fcf  services/host-fleet-dashboard/compose.yaml
+0e98c53251ecafee93eecfe5252e5a262709acd5fbc4b9320ad6b940ae72d14f  services/host-fleet-dashboard/docker-compose.ssl.yml
 980f01a5c3d3008854d515d2e4e2fd9763c326d850e4891dacfcc2aa3a347ca8  services/host-fleet-dashboard/package.json
 1f5befa12274dc7b39adefc98d7d0d8cd12916c56f9d35d4e5dea4e2abaae34c  services/host-fleet-dashboard/specs/drafts/standalone-host-fleet-dashboard.md
 2e40394e362eba78e4fe7a4b5619fb5666f2a87ca6a336a89d44ae1a5d5d0720  services/host-fleet-dashboard/src/collector.js
@@ -2355,7 +2373,7 @@ e6d041e5bec334549e9ac44e67d7cb1233e74ef754e2544ffead2e3eb5a20d5c  services/radar
 29095cc8dc044e9258b74e829fd9482bd869d2d53bfeae5a1322c3abe04551f9  services/radar-stack/Dockerfile.threat-radar-mcp
 d9ef92ce237813aea058ad0a8d9f1a36605b81e3392aa353622c974632e620bb  services/radar-stack/Dockerfile.threat-radar-web
 4ec54ca7120c3b722dad63ddebc2a33ebd251f8b0486a71112775313ff1b75b9  services/radar-stack/README.md
-5673451ef83710fa4365f85c504b39ad474329467b53e3620e0d88332877034f  services/radar-stack/docker-compose.yml
+4cbbe558dacc818fd857a7ee2067596db86d67c7e6ecff821baf1ef64accfca0  services/radar-stack/docker-compose.yml
 fcbcde2c321e741cb04b87e3dd4e7ec687b4c6f66517af7324892e1ee6f01e62  services/radar-stack/hormuz-agent-loop.sh
 43417e7c7a0dbe2750af823a56999acf114dd0c520bd45c653f26cec74fc112a  services/radar-stack/nginx.radar-web.conf
 f299cb6f23e4656b298ebeb890246e9f57ab4b9e5652156d3cea6fce854631c4  services/radar-stack/scripts/hormuz_cycle.py
@@ -2403,8 +2421,8 @@ e6a80d992c75443ee2417eb1267886e8837a02af8e1b6229805be53e6e5e852f  spec/2026-02-0
 2ed708444e2d94526cbea4edb43ee388db093546eb6e38e04df37a54e568b8cf  spec/2026-02-08-opencode-delegation-tools.md
 229a9579fae0ea29dadf7d316bdfd6383a55c2e760ae8b8889ce13ebeb3c344a  spec/2026-02-08-orchestrator-platform-tool-ideas.md
 b211b5fd0e59ea596909688d968f8cde4847ccf212d945a27ca4bb31e3ea932a  spec/2026-02-09-lsp-diagnostics-tools-plan.md
-706a0f157af3661ff91c8d1424c504f925a6a470b06ddb405d9048f7296850f5  spec/2026-02-24-opencode-snapshot-stability-fork-tales.md
-0d2b4e9abb052f1162fee8e4b0aba5764051d9b99e587876a94aa0cd85de2de1  spec/2026-03-08-docker-stack-registry.md
+9e77efd1aace7524db116126a14bd7bee045908f889f68a1ceb1cb1faff7d116  spec/2026-02-24-opencode-snapshot-stability-fork-tales.md
+b8fcce1b5ce228c324f7b355b920c68eacd8ee17d1fa6eff285f861152fa6fe1  spec/2026-03-08-docker-stack-registry.md
 a57f74f1ee61048220f1a75637c726ef280e98ec2e5dc129bf72ec2001e7fffb  spec/2026-03-09-eta-mu-openplanner-myth.md
 57d718df3865e5b32a827df0ae9718d1a0a23600cc4ab53319cf2fb728c8bcff  spec/2026-03-09-opencode-auth-stack.md
 feeec321f147726fd38b76686c2832f5d2492e92cea3493e58a4d0626cf159be  spec/30-gateway-mux.md
@@ -2490,26 +2508,32 @@ c2afae1e19a7d5e1f1dd43352f9b2d0b2a96999387ad40c73d753105e98ec4c1  spec/submodule
 fc6b3f73362c7d7dc711725c1b6a0200c7aca3d8924745704147ed2d557a694b  spec/zen-api-key.md
 370e96ead6c2c36f8461d84199462304f92be6162a4ce9ad8f23891132d09c88  specs/drafts/add-agustif-codex-linux-submodule.md
 dd2797d2aa56666205cd0ed4dcbbf53912622e64ee0f6edf7ae83a2984046a5b  specs/drafts/atproto-auth-standardization-skill.md
-4d30e366e12cb491c7e46cf5ff07d6e83a517ca2653ed18b37462d56c47fd6e7  specs/drafts/atproto-mission-control-2026-03-20.md
-0e24a76f2cad96660e70f14e34b89868bc80bf528b529fb47ced9998f19db370  specs/drafts/deploy-x-promethean-skills.md
+e0384d3bab8adf18cc82dbd3e53900a1edafa1fd6e7247f663b6deb4e57039e0  specs/drafts/atproto-mission-control-2026-03-20.md
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  specs/drafts/auto-fork-tax-smoke-2026-03-20.md
+0176a5c77af417b75a8fabed05ba8b26b353af5160284a45c35357a6907f3daa  specs/drafts/deploy-x-promethean-skills.md
+56883cad2f92e95f193a34be7229bf2ed35d131801bcc89f724d3096451feca2  specs/drafts/devel-placement-contract-2026-03-21.md
 9aa7eb03ca119239c9b05ee607b9ee1ca2d1171a7534916cfe7908163c243be8  specs/drafts/documentation-refresh.md
 177b77498e2869404305878edc05662a396d473dd3fec99a81ac9a745ccd202b  specs/drafts/eta-mu-truth-workbench.md
+e605d2de86a96c2dae086bdeab266efeadaab4e4b83ed8eae34617b15c1b6c02  specs/drafts/fork-tales-submodule-relocation-2026-03-21.md
 e817b03a3d019f74c5565722ea28a69e9229716781248ebd2c2937f90f052cdc  specs/drafts/gemini-key-image-cost-ui.md
 0021d51e6a08a9b52c449836695ee4807e315057f2f1f7448d61c5aa41cdd75c  specs/drafts/guardrail-promptbench-dsl.md
 b68181cde6d727b87049fec87ffc353a286b9f85316defe58eccf76fc90343cc  specs/drafts/hormuz-clock-evolve-2026-03-19.md
 35f8e2990a090803e67324d98a3d946f5bfb8e8f3fbe7cfd46a032126a08cbf4  specs/drafts/hormuz-clock-range-priors-2026-03-19.md
 5309314f05479fdd8066c2f4c26f055d24d02fa8ae01f36a83894a69894feea3  specs/drafts/job-application-research-synthesis-process-2026-03-18.md
 5b41ffeb9f62d160d1b6b77993d69bb70e654f8399b417d6709e69fbcbd4387d  specs/drafts/mcp-social-publisher-ussy-key-auth-deploy-2026-03-21.md
-e12e3e0000e3dbf81ee911b65332a0e1ffdf5e59c4771f2764ff7c5e7ef1ee41  specs/drafts/migrate-packages-services-to-orgs-phase-0-inventory.md
-8f778969d7a54c6f7e73798a201f2fc9b2c9b1c75ff868f3279e59cacdd4ecfa  specs/drafts/migrate-packages-services-to-orgs-phase-1-symlink-layer.md
-ae1120036587db6ef1eb8e7a218835b820738283f10819d0806a3bff83fc1f01  specs/drafts/migrate-packages-services-to-orgs-phase-2-packages-to-orgs-submodules.md
-743ca6d8dc447199cfd8e7e56b4b8a4291f46713e74c7a5d77ac808e810e83e2  specs/drafts/migrate-packages-services-to-orgs-phase-3-services-to-orgs-submodules.md
-b78c4a3f09c7332f66a813e02904c5d3dfbba554b50db81800d163e45ecb91bb  specs/drafts/migrate-packages-services-to-orgs-phase-4-governance-polish.md
+1c641fde941cbaff55eb2dc6ad6ffb9b75f364f26e1de801a2b2a5e70305812c  specs/drafts/migrate-packages-services-to-orgs-phase-0-inventory.md
+5df8b182dd9bbe45fecdce2aaf93eee933e2b49609c0e5853b6719d85c484e86  specs/drafts/migrate-packages-services-to-orgs-phase-1-symlink-layer.md
+4c5d1ed14fdc617458735e7d9772e4a775dec735cea8f76653911ba441ecb161  specs/drafts/migrate-packages-services-to-orgs-phase-2-packages-to-orgs-submodules.md
+1214b23cb704f912454d0b8341d685353b3e14d64eb126f063d1de7a2fbdb426  specs/drafts/migrate-packages-services-to-orgs-phase-3-services-to-orgs-submodules.md
+fc24c8d5509bbe6fd86297021360de92fe23208f647343ee2258f981ca7a316e  specs/drafts/migrate-packages-services-to-orgs-phase-4-governance-polish.md
 0f235496698f3ac558d476c8fa431b32b3abab0eb72832be129e9967ea0df102  specs/drafts/open-hax-openai-proxy-multitenancy-user-model.md
 35f976631bfe6934123b135bf99870444192ceba2eb453b1beb9603409306030  specs/drafts/open-hax-voxx-compose-2026-03-19.md
 d56cb4b5e28cb021c3ce602cb6901c176492ab44c9ebe47d64e78d746f4d0188  specs/drafts/openai-parameter-golf-application-2026-03-18.md
 b66bd859606d06e8544bd0ffe0f9db87b585581d75c07d0e6e4a8d1b4d3049d2  specs/drafts/opencode-openai-websearch-tool.md
 555ed400eb6fc61aa9d855b9614ea5b73370f01d183adfec89fec7abbb7702ff  specs/drafts/openhax-kanban-local-web-ui.md
+ad5ef1d591efb0071d2707570a28662e9e301fbffb063bfba86b6922d9fc9fb9  specs/drafts/outside-structure-manifest-2026-03-21.md
+4eb8fd488590aca13b473e06c45f3bb78ac2ac220164381251004e6d32852484  specs/drafts/packages-migration-map-first-pass-2026-03-21.md
+acfc7ff7ae9a6906c1c66b9f0d921f65abf58ba19b4308dc257988600859a43a  specs/drafts/packages-org-placement-inventory-2026-03-21.md
 8a948b172cf15b8f4f4dc24f8ca9d420e3056adabeb96f7269fae2ea2486d0ac  specs/drafts/parameter-golf-ant-lab.md
 92f02f97ec4e56e280f8e0b801d146f063fc2d24160b16b81d771ebaeeb96338  specs/drafts/parameter-golf-shibboleth-sidecar-eval.md
 a1626fc967ad495e0f319589be4400b31309f0a4658d5b889fe4f2f0ebc2e59d  specs/drafts/passwords-csv-browser-auth-skill-2026-03-21.md
@@ -2517,14 +2541,17 @@ a1626fc967ad495e0f319589be4400b31309f0a4658d5b889fe4f2f0ebc2e59d  specs/drafts/p
 332f239847268f240be0f64f0f4ff012941fd6414ba0df11e85087cfabf5dc0d  specs/drafts/pi-image-tool-tui.md
 bcf1a5c2e7819ff5736c2e5237d966c40c5f6ee616edb0669cceebd75b478383  specs/drafts/pi-openai-image-generation-oauth.md
 0afaff264fd3a0e7636f36c47745084e2295bce7343a200a8b58759476cdacf8  specs/drafts/pi-openai-websearch-tool.md
+1adf879a50ed67b1b173eda51f5e6eafdc3c287fe8eff4f21364c869fc6f1b72  specs/drafts/portal-ussy2-bootstrap.md
 54936db182f18f609bad3565a7a2ba8624eb7f7082c8bc691dbf68d8239a19e2  specs/drafts/presence-golf-brainstorm-2026-03-18.md
 803ef68c4d0c68a2e39c633d28af9284959cea75caa0136b71e81681b8507ec6  specs/drafts/privaxxy-deterministic-firefox-privacy-checker.md
-aa7c3946b2d43bd414a21cd6770634df5c2d78d1779b5062dbeff1e270e4ed38  specs/drafts/promethean-host-subdomain-inventory.md
-140b6bfa580e08c7d64d2abc2f4af9f04b0ff77dd3cc89ca4442ad3460102ee5  specs/drafts/promethean-rest-dns-automation.md
+8350d2a4d9e5706dd3d8c8b2bb81458e311e702ae78a17263c6e817d4b73dbf5  specs/drafts/promethean-host-runtime-inventory-skill.md
+7aaf700c929b5ad6be2cb0d11a3fdd1e2eb5a7cf1f7f48b7bf4221a73d58c67c  specs/drafts/promethean-host-subdomain-inventory.md
+31a560dd22af8a1c41070bba38815ab84e11f36b019c5355fc4b3361f2e0c1f8  specs/drafts/promethean-rest-dns-automation.md
 a5bf11d83b6a2a2ceef773dedd5841862849e97b787b9acfd0d99b3bc54a8327  specs/drafts/proxx-legacy-services-retirement-2026-03-19.md
 90027853f3bc4c0023510d5c416cb9227f490fb972f78612a5b1a765ebe819e3  specs/drafts/proxx-openai-refresh-followup-2026-03-19.md
-dacd5d56fc41774a1178c630cf8a2352e98e43a58b4fa2b906e2623edc92e125  specs/drafts/radar-crawler-integration-2026-03-20.md
-7c85547d7373c3e04d86027b2860e7f038e4c0ac6adccefcecae83ea7f077be6  specs/drafts/radar-live-deploy-2026-03-20.md
+03970ce662ac0455fe11a88f71fad4e190d474243074f8be25924a744a84e5bb  specs/drafts/radar-crawler-integration-2026-03-20.md
+ecb990a96708e3bf7ecf1985007cdf2214f16a865b9b7a461a06a12c89742b35  specs/drafts/radar-deployment-declutter-formalization-2026-03-21.md
+8bdc97b11d03d5172c5c0871cb1fb11f28af7b6652984b5cd0ac233d9734bc3b  specs/drafts/radar-live-deploy-2026-03-20.md
 8711319ae384b360824983a8364509232dfbbae194e06db6c38724a4a35adead  specs/drafts/resume-ats-optimize-2026-03-18.md
 544ae517139ea9904bea4a71188557478a15f9fdabfab3e73553b2f70eaf7624  specs/drafts/resume-ml-workbench-2026-03-18.md
 dbe335da78036e011be73797cc342be211efa1659afac9c43136a40a07520e86  specs/drafts/resume-oss-ats-audit-2026-03-17.md
@@ -2532,6 +2559,7 @@ c5662241cc45baacdb7e11d42d77b137c28abda534a913a1e78437d9d52b0885  specs/drafts/r
 0d15ba202c14f8af76cf807821c07fd265dd14cf095fa4ef68c33e91480ac15e  specs/drafts/review-fixes-2026-03-14.md
 13b7a3ba496b456508841758816733a5ce361bffa66232b71b736388d22567dd  specs/drafts/root-packlimit-rewrite-and-artifact-guards-2026-03-20.md
 01a99729246be4a0e1b12e88b2836bfafcec8fa85237ee69c4c28377a51f1a7b  specs/drafts/service-devops-homes-proxx-voxx-2026-03-19.md
+35b604c7ae8fc8d202fae605926a0c07ee53b84dd7ec3ab97415dd5243d9f5ff  specs/drafts/services-pr-promotion-inventory-2026-03-21.md
 0f0b0ba35d91f90ffdb11632c4c3af4a3e65f2527bb6c9d3cb8d355045e58018  specs/drafts/shared-depth-rms-interface-implementation.md
 a802e5ab92f5b36360ef75a6e1d65a112e693935c8a10eac2399a6d117331ae7  specs/drafts/shibboleth-refusal-precision-benchmark.md
 1b22c07d795c23af410e60c3a24f74ba049ce249ac1ce025fe5ee18ffb92caa1  specs/drafts/shibboleth-validation-pipeline.md
@@ -2630,7 +2658,7 @@ cd10c2743179d617e2ada061fd6591888e9c893dfbb2d406ec89d66233795268  testdata/redac
 70fc405af437163be625a16e8dcbdca82d5dcd6d74cad127f73be241bc03f22f  tests/octavia.e2e.test.ts
 2fc4faf4c51b896f238f39b796f61603d40d53b403d886f0acd0f19dc1e8fb10  tests/octavia.unit.test.ts
 7cae3a9f9b3a6b6340897179a3ed23df66d0c80790a48a42e1e8ca44e62a208f  tests/pm2-clj.parity.test.ts
-75d2e262e52cb5c435516d9c9361d6230a80697c  threat-radar-deploy (gitlink)
+b77c0bb0cea903c15c155dc69e1ea367d812c8d6  threat-radar-deploy (gitlink)
 87c747819966da1bc639cb8493fe221470898d552766dd7e1c0ead8e03206981  threat-radar-next-step/README.md
 4f90a12482d4dab1eedb42f14a38fc118df63d0780a5e634a8edee2fe8e0074c  threat-radar-next-step/orgs/riatzukiza/threat-radar-mcp/src/repositories/interface.ts
 f50f8c6fc001bf852038034d424ed0f546c71abeb3caca9b79be3a41cfccd35f  threat-radar-next-step/orgs/riatzukiza/threat-radar-mcp/src/repositories/postgres.ts
@@ -2685,7 +2713,6 @@ e95c5a3ebf2ebdc0888031183cccda28bf226e7f6185b514683610d1e5a4e0e5  tools/promethe
 e8177ad3cb140e19f54a944369ccb47ab2fd678327315104597d33a4880c625a  tsconfig.octavia.json
 d78c9d8a0f812a871707316610d329004138cd2765b8f6dab9130b811b368195  types/bun.d.ts
 6d8eda12d6790375bd096bddf24ac2c94ede7761bb2b9d1490c536434d4e9c21  update-package-versions.mjs
-70a5e68cad91670f60994e38b83218e627445094  vaults/fork_tales (gitlink)
 54ebec689e97c0d5ffd5366e779b4252c460c1d2  vaults/static_man (gitlink)
 3b5aabb4f861de270c2cf496ba92557e91400e0c  verathar-server (gitlink)
 b022374b6469c6c8af2ab0ed63e2995a8e68f966d5cd1b26741f598bd7e062bd  vitest.config.js

@@ -4,8 +4,8 @@ Multi-repository development workspace with git submodules organized under `orgs
 
 ## Repository Structure
 - `orgs/` contains submodules grouped by GitHub organization.
-- Top-level workspace directories: `src/`, `docs/`, `tools/`, `ecosystems/`, `.opencode/`.
-- Primary orgs in this workspace: `riatzukiza`, `anomalyco`, `open-hax`, `moofone`, `openai`, `bhauman`.
+- Top-level workspace directories: `packages/`, `services/`, `src/`, `docs/`, `tools/`, `ecosystems/`, `.opencode/`.
+- Primary orgs in this workspace: `riatzukiza`, `octave-commons`, `open-hax`, `ussyverse`, `anomalyco`, `moofone`, `openai`, `bhauman`.
 
 ### Key Submodules
 - `orgs/riatzukiza/promethean` - local LLM enhancement system and agent framework
@@ -41,6 +41,21 @@ Multi-repository development workspace with git submodules organized under `orgs
 - Nx for affected detection and workspace automation.
 - Rust in `orgs/openai/codex`.
 
+## Project Placement Contract
+- Default project mode is rapid prototyping in `packages/*` unless the user explicitly says otherwise.
+- `services/*` is devops-exclusive: use it for runtime wrappers, compose files, deployment config, env examples, operator docs, orchestration glue, and stable runtime paths/aliases.
+- Do not treat `services/*` as the default canonical home for product/application source code.
+- Mature projects graduate into org repos by identity and intent:
+  - `orgs/riatzukiza/*` -> mature internal devel-only integrations with independent timelines.
+  - `orgs/octave-commons/*` -> mature experimental, research, narrative-driven, or myth-encoded work.
+  - `orgs/open-hax/*` -> production-grade products that are portable, documented, tested, and useful beyond this workspace.
+  - `orgs/ussyverse/*` -> collective/community works not owned solely by one person.
+- Special case: `orgs/octave-commons/promethean` is treated as a corpus of living documentation and documentation-as-code, not as a normal product repo.
+- `devel` is the crucible that extracts, tests, and operationalizes useful kernels from the Promethean corpus.
+- When code appears both in Promethean and elsewhere, distinguish: slop, corpus artifact, verified extraction, and canonical descendant.
+- Canonical source/build/release/deploy contracts should live with the org repo; `devel` remains the giga-repo for composition, local integration, fleet placement, and cross-service orchestration.
+- Reference doc: `docs/reference/devel-placement-contract.md`
+
 ## Deployment Semantics
 - When the user says `Deploy X`, interpret it as: inspect the target project and, if needed, stand up the full local -> PR -> staging -> PR -> prod delivery flow rather than doing a one-off manual deploy.
 - Default Promethean naming convention:
@@ -53,7 +68,7 @@ Multi-repository development workspace with git submodules organized under `orgs
   - `ussy3.promethean.rest`
   - `big.ussy.promethean.rest`
 - Prefer the deploy skills `promethean-service-deploy`, `promethean-host-slotting`, `promethean-rest-dns`, and `pr-promotion-workflows` for this flow.
-- The workspace command template `.opencode/commands/deploy-promethean-service.md` mirrors this contract for future-agent discovery.
+- In pi, the project-local mirrors live under `.pi/skills/`; use `/skill:promethean-service-deploy` to force-load the orchestrator when needed.
 
 ## SKILLS
 
@@ -169,6 +184,9 @@ Set up PR-based branch promotion workflows with tiered CI gates, staging/main de
 
 #### promethean-host-slotting
 Choose staging and production Promethean host slots, subdomains, runtime paths, and compose-project names from the allowed base-host pool
+
+#### promethean-host-runtime-inventory
+SSH into Promethean hosts, inventory active Docker/Podman/systemd/Proxmox runtimes, map public subdomains to live services, and write JSON plus markdown inventory artifacts
 
 #### promethean-rest-dns
 Create or update *.promethean.rest DNS A records through Cloudflare by copying current allowed base-host IPs while preserving unrelated zone records

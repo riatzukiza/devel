@@ -206,7 +206,7 @@ services:
 
   fork-tales-weaver:
     image: node:22-bookworm-slim
-    working_dir: /workspace/vaults/fork_tales/part64/code
+    working_dir: /workspace/orgs/octave-commons/fork_tales/part64/code
     command: >-
       bash -lc "npm install ../../../../orgs/open-hax/openhax/packages/signal-source-utils ../../../../orgs/open-hax/openhax/packages/signal-watchlists && npm install && node web_graph_weaver.js"
     environment:

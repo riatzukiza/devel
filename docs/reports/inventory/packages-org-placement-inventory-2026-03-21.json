@@ -1,0 +1,1043 @@
+{
+  "generatedAt": "2026-03-21T19:05:36Z",
+  "scope": "Top-level packages/* provisional org-placement inventory",
+  "counts": {
+    "totalPackages": 25,
+    "stayPrototype": 7,
+    "candidatePromote": 18,
+    "topCandidateRiatzukiza": 11,
+    "topCandidateOctaveCommons": 5,
+    "topCandidateOpenHax": 9,
+    "topCandidateUssyverse": 0,
+    "packagesWithExistingOrgMatches": 7
+  },
+  "records": [
+    {
+      "path": "packages/aether",
+      "packageName": "@workspace/aether",
+      "private": true,
+      "description": null,
+      "hasReadme": false,
+      "readme": null,
+      "scripts": [
+        "build",
+        "clean"
+      ],
+      "workspaceDeps": [],
+      "existingOrgPackageMatches": [],
+      "stageRecommendation": "stay-prototype",
+      "topCandidateOrg": "riatzukiza",
+      "confidence": "low",
+      "suggestedCanonicalHomeType": "standalone-repo",
+      "likelyOrgCandidates": [
+        {
+          "org": "riatzukiza",
+          "score": 0.52,
+          "reason": "private workspace package with minimal docs/tests and an internal-sounding MCP foundation role."
+        },
+        {
+          "org": "open-hax",
+          "score": 0.31,
+          "reason": "could evolve into a public protocol helper later, but it is not there yet."
+        }
+      ],
+      "rationale": "Minimal metadata and no README keep it in packages for now.",
+      "notes": [
+        "Current @workspace scope is a weak signal that the package is still internal or pre-promotion."
+      ],
+      "prometheanRelationship": null
+    },
+    {
+      "path": "packages/cephalon-clj",
+      "packageName": null,
+      "private": null,
+      "description": null,
+      "hasReadme": true,
+      "readme": "README.md",
+      "scripts": [],
+      "workspaceDeps": [],
+      "existingOrgPackageMatches": [],
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "riatzukiza",
+      "confidence": "high",
+      "suggestedCanonicalHomeType": "standalone-repo",
+      "likelyOrgCandidates": [
+        {
+          "org": "riatzukiza",
+          "score": 0.88,
+          "reason": "Cephalon conversation-export / always-on mind architecture reads as a mature internal integration tied to your devel ecosystem."
+        },
+        {
+          "org": "octave-commons",
+          "score": 0.22,
+          "reason": "the conceptual framing is rich, but the primary use appears infrastructural rather than research-artifact first."
+        }
+      ],
+      "rationale": "Internal cognitive-system architecture with reproducible run docs points most strongly at riatzukiza.",
+      "notes": [],
+      "prometheanRelationship": null
+    },
+    {
+      "path": "packages/cephalon-ts",
+      "packageName": "@promethean-os/cephalon-ts",
+      "private": true,
+      "description": null,
+      "hasReadme": true,
+      "readme": "README.md",
+      "scripts": [
+        "build",
+        "dev",
+        "start",
+        "test",
+        "test:coverage",
+        "test:watch",
+        "typecheck"
+      ],
+      "workspaceDeps": [
+        "@promethean-os/event",
+        "@promethean-os/openplanner-cljs-client"
+      ],
+      "existingOrgPackageMatches": [],
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "riatzukiza",
+      "confidence": "high",
+      "suggestedCanonicalHomeType": "standalone-repo",
+      "likelyOrgCandidates": [
+        {
+          "org": "riatzukiza",
+          "score": 0.9,
+          "reason": "Discord integration, persistent memory, and policy coupling make this look like a mature devel-centric integration."
+        },
+        {
+          "org": "open-hax",
+          "score": 0.28,
+          "reason": "it could become more public later, but current README emphasizes internal bot/testing workflow."
+        }
+      ],
+      "rationale": "Mature enough to leave packages, but still primarily coupled to your internal ecosystem.",
+      "notes": [],
+      "prometheanRelationship": null
+    },
+    {
+      "path": "packages/embedding",
+      "packageName": "@promethean-os/embedding",
+      "private": true,
+      "description": null,
+      "hasReadme": false,
+      "readme": null,
+      "scripts": [
+        "build",
+        "clean"
+      ],
+      "workspaceDeps": [],
+      "existingOrgPackageMatches": [
+        "orgs/octave-commons/promethean/packages/embedding",
+        "orgs/riatzukiza/promethean/packages/embedding"
+      ],
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "riatzukiza",
+      "confidence": "medium",
+      "suggestedCanonicalHomeType": "existing-monorepo-package",
+      "likelyOrgCandidates": [
+        {
+          "org": "riatzukiza",
+          "score": 0.69,
+          "reason": "exact package-name matches already exist in the riatzukiza/promethean monorepo, and current package polish is still thin."
+        },
+        {
+          "org": "open-hax",
+          "score": 0.33,
+          "reason": "generic embedding helpers could later become public, but current evidence is mostly internal ecosystem reuse."
+        }
+      ],
+      "rationale": "Existing Promethean monorepo matches imply internal canonical-home drift more than a new standalone public package.",
+      "notes": [
+        "Package name already exists under one or more current org monorepos; promotion should resolve source-of-truth drift rather than create a third copy."
+      ],
+      "prometheanRelationship": {
+        "sourceCorpus": "orgs/octave-commons/promethean",
+        "classification": "verified-extraction",
+        "canonicalDescendantPending": true,
+        "notes": [
+          "User clarified that these overlapping modules were extracted because their usefulness was verified from Promethean.",
+          "Treat this overlap as Promethean corpus extraction rather than automatic slop or accidental duplication."
+        ],
+        "prometheanMatches": [
+          "orgs/octave-commons/promethean/packages/embedding",
+          "orgs/riatzukiza/promethean/packages/embedding"
+        ]
+      }
+    },
+    {
+      "path": "packages/eta-mu-docs",
+      "packageName": "@workspace/eta-mu-docs",
+      "private": true,
+      "description": null,
+      "hasReadme": true,
+      "readme": "README.md",
+      "scripts": [
+        "test"
+      ],
+      "workspaceDeps": [],
+      "existingOrgPackageMatches": [],
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "octave-commons",
+      "confidence": "medium-high",
+      "suggestedCanonicalHomeType": "standalone-repo",
+      "likelyOrgCandidates": [
+        {
+          "org": "octave-commons",
+          "score": 0.77,
+          "reason": "\u03b7\u03bc docs indexing / view-graph substrate is mature, conceptual, and framed like a research/artifact component."
+        },
+        {
+          "org": "riatzukiza",
+          "score": 0.46,
+          "reason": "it also functions as internal infrastructure, so it could remain internal if you do not want to foreground the conceptual layer."
+        }
+      ],
+      "rationale": "The symbolic framing and substrate focus fit octave-commons better than a purely internal integration bucket.",
+      "notes": [
+        "Current @workspace scope is a weak signal that the package is still internal or pre-promotion."
+      ],
+      "prometheanRelationship": null
+    },
+    {
+      "path": "packages/eta-mu-truth",
+      "packageName": "@workspace/eta-mu-truth",
+      "private": true,
+      "description": null,
+      "hasReadme": true,
+      "readme": "README.md",
+      "scripts": [
+        "test"
+      ],
+      "workspaceDeps": [
+        "@workspace/eta-mu-docs"
+      ],
+      "existingOrgPackageMatches": [],
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "octave-commons",
+      "confidence": "high",
+      "suggestedCanonicalHomeType": "standalone-repo",
+      "likelyOrgCandidates": [
+        {
+          "org": "octave-commons",
+          "score": 0.84,
+          "reason": "truth-graph kernel with append-only ops and symbolic framing reads as mature research/artifact work."
+        },
+        {
+          "org": "riatzukiza",
+          "score": 0.38,
+          "reason": "it has internal-infrastructure value too, but the package identity is more conceptual than operational."
+        }
+      ],
+      "rationale": "Strongest current fit is octave-commons because the package identity is concept-heavy rather than productized.",
+      "notes": [
+        "Current @workspace scope is a weak signal that the package is still internal or pre-promotion."
+      ],
+      "prometheanRelationship": null
+    },
+    {
+      "path": "packages/event",
+      "packageName": "@promethean-os/event",
+      "private": true,
+      "description": null,
+      "hasReadme": true,
+      "readme": "README.md",
+      "scripts": [
+        "build",
+        "clean",
+        "coverage",
+        "format",
+        "lint",
+        "test",
+        "typecheck"
+      ],
+      "workspaceDeps": [
+        "@promethean-os/test-utils"
+      ],
+      "existingOrgPackageMatches": [
+        "orgs/octave-commons/promethean/packages/event",
+        "orgs/riatzukiza/promethean/packages/event"
+      ],
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "riatzukiza",
+      "confidence": "medium",
+      "suggestedCanonicalHomeType": "existing-monorepo-package",
+      "likelyOrgCandidates": [
+        {
+          "org": "riatzukiza",
+          "score": 0.71,
+          "reason": "exact package matches already exist under riatzukiza/promethean and current coupling still looks ecosystem-specific."
+        },
+        {
+          "org": "open-hax",
+          "score": 0.58,
+          "reason": "the docs/tests and generic API make it a plausible future public utility once decoupled."
+        }
+      ],
+      "rationale": "Today it looks like mature Promethean plumbing; later it may deserve open-hax treatment if extracted cleanly.",
+      "notes": [
+        "Package name already exists under one or more current org monorepos; promotion should resolve source-of-truth drift rather than create a third copy."
+      ],
+      "prometheanRelationship": {
+        "sourceCorpus": "orgs/octave-commons/promethean",
+        "classification": "verified-extraction",
+        "canonicalDescendantPending": true,
+        "notes": [
+          "User clarified that these overlapping modules were extracted because their usefulness was verified from Promethean.",
+          "Treat this overlap as Promethean corpus extraction rather than automatic slop or accidental duplication."
+        ],
+        "prometheanMatches": [
+          "orgs/octave-commons/promethean/packages/event",
+          "orgs/riatzukiza/promethean/packages/event"
+        ]
+      }
+    },
+    {
+      "path": "packages/fsm",
+      "packageName": "@promethean-os/fsm",
+      "private": true,
+      "description": null,
+      "hasReadme": true,
+      "readme": "README.md",
+      "scripts": [
+        "build",
+        "clean",
+        "coverage",
+        "format",
+        "lint",
+        "test",
+        "typecheck"
+      ],
+      "workspaceDeps": [],
+      "existingOrgPackageMatches": [
+        "orgs/octave-commons/promethean/packages/fsm",
+        "orgs/riatzukiza/promethean/packages/fsm"
+      ],
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "riatzukiza",
+      "confidence": "medium",
+      "suggestedCanonicalHomeType": "existing-monorepo-package",
+      "likelyOrgCandidates": [
+        {
+          "org": "riatzukiza",
+          "score": 0.69,
+          "reason": "exact monorepo matches and current ecosystem scope outweigh its public utility for now."
+        },
+        {
+          "org": "open-hax",
+          "score": 0.56,
+          "reason": "the package is well-documented and broadly reusable, so it could later graduate into a public utility."
+        }
+      ],
+      "rationale": "Current best fit is internal monorepo package with open-hax potential later.",
+      "notes": [
+        "Package name already exists under one or more current org monorepos; promotion should resolve source-of-truth drift rather than create a third copy."
+      ],
+      "prometheanRelationship": {
+        "sourceCorpus": "orgs/octave-commons/promethean",
+        "classification": "verified-extraction",
+        "canonicalDescendantPending": true,
+        "notes": [
+          "User clarified that these overlapping modules were extracted because their usefulness was verified from Promethean.",
+          "Treat this overlap as Promethean corpus extraction rather than automatic slop or accidental duplication."
+        ],
+        "prometheanMatches": [
+          "orgs/octave-commons/promethean/packages/fsm",
+          "orgs/riatzukiza/promethean/packages/fsm"
+        ]
+      }
+    },
+    {
+      "path": "packages/hermes",
+      "packageName": "@workspace/hermes",
+      "private": true,
+      "description": null,
+      "hasReadme": false,
+      "readme": null,
+      "scripts": [
+        "build",
+        "clean",
+        "test"
+      ],
+      "workspaceDeps": [],
+      "existingOrgPackageMatches": [],
+      "stageRecommendation": "stay-prototype",
+      "topCandidateOrg": "riatzukiza",
+      "confidence": "low",
+      "suggestedCanonicalHomeType": "standalone-repo",
+      "likelyOrgCandidates": [
+        {
+          "org": "riatzukiza",
+          "score": 0.51,
+          "reason": "minimal docs and internal/private status suggest it is still a devel-centric experiment."
+        },
+        {
+          "org": "octave-commons",
+          "score": 0.27,
+          "reason": "name alone is mythic, but there is not enough evidence to treat it as a mature research artifact."
+        }
+      ],
+      "rationale": "Too little surface area and documentation to justify promotion yet.",
+      "notes": [
+        "Current @workspace scope is a weak signal that the package is still internal or pre-promotion."
+      ],
+      "prometheanRelationship": null
+    },
+    {
+      "path": "packages/logger",
+      "packageName": "@promethean-os/logger",
+      "private": true,
+      "description": null,
+      "hasReadme": false,
+      "readme": null,
+      "scripts": [
+        "build",
+        "clean"
+      ],
+      "workspaceDeps": [],
+      "existingOrgPackageMatches": [
+        "orgs/octave-commons/promethean/packages/logger",
+        "orgs/riatzukiza/promethean/packages/logger"
+      ],
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "riatzukiza",
+      "confidence": "medium",
+      "suggestedCanonicalHomeType": "existing-monorepo-package",
+      "likelyOrgCandidates": [
+        {
+          "org": "riatzukiza",
+          "score": 0.7,
+          "reason": "exact Promethean monorepo matches exist and current package polish is minimal."
+        },
+        {
+          "org": "open-hax",
+          "score": 0.35,
+          "reason": "logging helpers can become public, but this one is not yet documented to that standard."
+        }
+      ],
+      "rationale": "Looks like internal ecosystem infrastructure more than a finished public library.",
+      "notes": [
+        "Package name already exists under one or more current org monorepos; promotion should resolve source-of-truth drift rather than create a third copy."
+      ],
+      "prometheanRelationship": {
+        "sourceCorpus": "orgs/octave-commons/promethean",
+        "classification": "verified-extraction",
+        "canonicalDescendantPending": true,
+        "notes": [
+          "User clarified that these overlapping modules were extracted because their usefulness was verified from Promethean.",
+          "Treat this overlap as Promethean corpus extraction rather than automatic slop or accidental duplication."
+        ],
+        "prometheanMatches": [
+          "orgs/octave-commons/promethean/packages/logger",
+          "orgs/riatzukiza/promethean/packages/logger"
+        ]
+      }
+    },
+    {
+      "path": "packages/mcp-foundation",
+      "packageName": "@workspace/mcp-foundation",
+      "private": true,
+      "description": null,
+      "hasReadme": false,
+      "readme": null,
+      "scripts": [
+        "build",
+        "clean",
+        "typecheck"
+      ],
+      "workspaceDeps": [],
+      "existingOrgPackageMatches": [],
+      "stageRecommendation": "stay-prototype",
+      "topCandidateOrg": "open-hax",
+      "confidence": "medium-low",
+      "suggestedCanonicalHomeType": "standalone-repo",
+      "likelyOrgCandidates": [
+        {
+          "org": "open-hax",
+          "score": 0.57,
+          "reason": "generic MCP server/http foundation could become broadly useful to real developers."
+        },
+        {
+          "org": "riatzukiza",
+          "score": 0.45,
+          "reason": "right now it is under-documented and still feels like internal scaffolding."
+        }
+      ],
+      "rationale": "Promise points toward open-hax, but the maturity gate is not cleared yet.",
+      "notes": [
+        "Current @workspace scope is a weak signal that the package is still internal or pre-promotion."
+      ],
+      "prometheanRelationship": null
+    },
+    {
+      "path": "packages/mcp-oauth",
+      "packageName": "@workspace/mcp-oauth",
+      "private": true,
+      "description": null,
+      "hasReadme": false,
+      "readme": null,
+      "scripts": [
+        "build",
+        "clean"
+      ],
+      "workspaceDeps": [],
+      "existingOrgPackageMatches": [],
+      "stageRecommendation": "stay-prototype",
+      "topCandidateOrg": "open-hax",
+      "confidence": "medium-low",
+      "suggestedCanonicalHomeType": "standalone-repo",
+      "likelyOrgCandidates": [
+        {
+          "org": "open-hax",
+          "score": 0.59,
+          "reason": "OAuth helpers for MCP could be externally useful if documented and hardened."
+        },
+        {
+          "org": "riatzukiza",
+          "score": 0.4,
+          "reason": "current package surface is still thin and private."
+        }
+      ],
+      "rationale": "Likely future open-hax material, but not ready to leave packages.",
+      "notes": [
+        "Current @workspace scope is a weak signal that the package is still internal or pre-promotion."
+      ],
+      "prometheanRelationship": null
+    },
+    {
+      "path": "packages/npu-top",
+      "packageName": "@promethean-os/npu-top",
+      "private": true,
+      "description": null,
+      "hasReadme": true,
+      "readme": "README.md",
+      "scripts": [
+        "build",
+        "clean",
+        "dev",
+        "start",
+        "typecheck"
+      ],
+      "workspaceDeps": [],
+      "existingOrgPackageMatches": [],
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "open-hax",
+      "confidence": "high",
+      "suggestedCanonicalHomeType": "standalone-repo",
+      "likelyOrgCandidates": [
+        {
+          "org": "open-hax",
+          "score": 0.86,
+          "reason": "standalone documented TUI tool with clear outside-user value."
+        },
+        {
+          "org": "riatzukiza",
+          "score": 0.22,
+          "reason": "it can still be used internally, but its package identity is product/tool first."
+        }
+      ],
+      "rationale": "This already reads like an independently useful open-hax tool.",
+      "notes": [],
+      "prometheanRelationship": null
+    },
+    {
+      "path": "packages/omni-top",
+      "packageName": "@promethean-os/omni-top",
+      "private": true,
+      "description": null,
+      "hasReadme": true,
+      "readme": "README.md",
+      "scripts": [
+        "build",
+        "clean",
+        "dev",
+        "start",
+        "typecheck"
+      ],
+      "workspaceDeps": [
+        "@promethean-os/npu-top"
+      ],
+      "existingOrgPackageMatches": [],
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "open-hax",
+      "confidence": "high",
+      "suggestedCanonicalHomeType": "standalone-repo",
+      "likelyOrgCandidates": [
+        {
+          "org": "open-hax",
+          "score": 0.87,
+          "reason": "documented standalone telemetry dashboard with clear external utility."
+        },
+        {
+          "org": "riatzukiza",
+          "score": 0.2,
+          "reason": "internal usage does not appear to be its main identity."
+        }
+      ],
+      "rationale": "Portable operator/developer tool with product-ish posture.",
+      "notes": [],
+      "prometheanRelationship": null
+    },
+    {
+      "path": "packages/opencode-cljs-client",
+      "packageName": "@promethean-os/opencode-cljs-client",
+      "private": true,
+      "description": null,
+      "hasReadme": true,
+      "readme": "README.md",
+      "scripts": [
+        "build",
+        "test",
+        "test:coverage",
+        "test:mutation",
+        "watch"
+      ],
+      "workspaceDeps": [],
+      "existingOrgPackageMatches": [],
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "open-hax",
+      "confidence": "high",
+      "suggestedCanonicalHomeType": "standalone-repo",
+      "likelyOrgCandidates": [
+        {
+          "org": "open-hax",
+          "score": 0.84,
+          "reason": "reusable client library for OpenCode consumers with build/test surface and public-facing API."
+        },
+        {
+          "org": "riatzukiza",
+          "score": 0.31,
+          "reason": "it is still part of your ecosystem, but it clearly aims beyond internal-only use."
+        }
+      ],
+      "rationale": "Strong open-hax candidate because the package promise is externally reusable.",
+      "notes": [],
+      "prometheanRelationship": null
+    },
+    {
+      "path": "packages/opencode-openplanner-plugin-cljs",
+      "packageName": "@promethean-os/opencode-openplanner-plugin-cljs",
+      "private": true,
+      "description": null,
+      "hasReadme": true,
+      "readme": "README.md",
+      "scripts": [
+        "build",
+        "test",
+        "test:coverage",
+        "test:mutation",
+        "watch"
+      ],
+      "workspaceDeps": [
+        "@promethean-os/opencode-cljs-client",
+        "@promethean-os/openplanner-cljs-client"
+      ],
+      "existingOrgPackageMatches": [],
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "open-hax",
+      "confidence": "medium-high",
+      "suggestedCanonicalHomeType": "standalone-repo",
+      "likelyOrgCandidates": [
+        {
+          "org": "open-hax",
+          "score": 0.78,
+          "reason": "plugin package for OpenCode/OpenPlanner integration is portable and tool-facing."
+        },
+        {
+          "org": "riatzukiza",
+          "score": 0.36,
+          "reason": "current usage likely starts inside your ecosystem first."
+        }
+      ],
+      "rationale": "Looks like a reusable integration product rather than a purely internal binding.",
+      "notes": [],
+      "prometheanRelationship": null
+    },
+    {
+      "path": "packages/openplanner-cljs-client",
+      "packageName": "@promethean-os/openplanner-cljs-client",
+      "private": true,
+      "description": null,
+      "hasReadme": true,
+      "readme": "README.md",
+      "scripts": [
+        "build",
+        "test",
+        "test:coverage",
+        "test:mutation",
+        "watch"
+      ],
+      "workspaceDeps": [],
+      "existingOrgPackageMatches": [],
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "open-hax",
+      "confidence": "high",
+      "suggestedCanonicalHomeType": "standalone-repo",
+      "likelyOrgCandidates": [
+        {
+          "org": "open-hax",
+          "score": 0.83,
+          "reason": "client library framing, API docs, build/test surface, and clear portability signal."
+        },
+        {
+          "org": "riatzukiza",
+          "score": 0.3,
+          "reason": "still ecosystem-linked, but not primarily internal in presentation."
+        }
+      ],
+      "rationale": "Fits open-hax better than an internal-only bucket.",
+      "notes": [],
+      "prometheanRelationship": null
+    },
+    {
+      "path": "packages/persistence",
+      "packageName": "@promethean-os/persistence",
+      "private": null,
+      "description": null,
+      "hasReadme": true,
+      "readme": "README.md",
+      "scripts": [
+        "build",
+        "clean",
+        "coverage",
+        "format",
+        "lint",
+        "lisp",
+        "test",
+        "typecheck"
+      ],
+      "workspaceDeps": [
+        "@promethean-os/embedding",
+        "@promethean-os/logger"
+      ],
+      "existingOrgPackageMatches": [
+        "orgs/octave-commons/pantheon/packages/persistence",
+        "orgs/octave-commons/promethean/packages/persistence",
+        "orgs/riatzukiza/promethean/packages/persistence"
+      ],
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "open-hax",
+      "confidence": "medium",
+      "suggestedCanonicalHomeType": "standalone-repo",
+      "likelyOrgCandidates": [
+        {
+          "org": "open-hax",
+          "score": 0.72,
+          "reason": "install docs, quickstart, tests/lint/coverage, and generic cache utility shape all fit a public product library."
+        },
+        {
+          "org": "riatzukiza",
+          "score": 0.56,
+          "reason": "exact monorepo matches in Promethean show unresolved current internal-home drift."
+        }
+      ],
+      "rationale": "Strong open-hax potential, but existing Promethean copies indicate cleanup is needed before canonization.",
+      "notes": [
+        "Package name already exists under one or more current org monorepos; promotion should resolve source-of-truth drift rather than create a third copy."
+      ],
+      "prometheanRelationship": {
+        "sourceCorpus": "orgs/octave-commons/promethean",
+        "classification": "verified-extraction",
+        "canonicalDescendantPending": true,
+        "notes": [
+          "User clarified that these overlapping modules were extracted because their usefulness was verified from Promethean.",
+          "Treat this overlap as Promethean corpus extraction rather than automatic slop or accidental duplication."
+        ],
+        "prometheanMatches": [
+          "orgs/octave-commons/promethean/packages/persistence",
+          "orgs/riatzukiza/promethean/packages/persistence"
+        ]
+      }
+    },
+    {
+      "path": "packages/radar-core",
+      "packageName": "@workspace/radar-core",
+      "private": true,
+      "description": null,
+      "hasReadme": false,
+      "readme": null,
+      "scripts": [
+        "build",
+        "clean",
+        "typecheck"
+      ],
+      "workspaceDeps": [],
+      "existingOrgPackageMatches": [],
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "riatzukiza",
+      "confidence": "medium-high",
+      "suggestedCanonicalHomeType": "future-monorepo-package",
+      "likelyOrgCandidates": [
+        {
+          "org": "riatzukiza",
+          "score": 0.79,
+          "reason": "threat-radar core schema/reducer logic is currently tightly linked to your internal radar ecosystem."
+        },
+        {
+          "org": "open-hax",
+          "score": 0.34,
+          "reason": "some pieces could eventually harden into public signal libraries, but current docs are thin."
+        }
+      ],
+      "rationale": "Looks like mature internal platform core rather than finished public product.",
+      "notes": [
+        "Current @workspace scope is a weak signal that the package is still internal or pre-promotion."
+      ],
+      "prometheanRelationship": null
+    },
+    {
+      "path": "packages/reconstituter",
+      "packageName": "@promethean-os/reconstituter",
+      "private": true,
+      "description": null,
+      "hasReadme": true,
+      "readme": "README.md",
+      "scripts": [
+        "build",
+        "dev",
+        "opencode-sessions",
+        "prebuild",
+        "predev",
+        "preopencode-sessions",
+        "reconstitute",
+        "start",
+        "test"
+      ],
+      "workspaceDeps": [
+        "@promethean-os/opencode-cljs-client",
+        "@promethean-os/openplanner-cljs-client"
+      ],
+      "existingOrgPackageMatches": [],
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "open-hax",
+      "confidence": "high",
+      "suggestedCanonicalHomeType": "standalone-repo",
+      "likelyOrgCandidates": [
+        {
+          "org": "open-hax",
+          "score": 0.85,
+          "reason": "documented CLI/tooling for OpenCode session indexing and reconstruction has obvious outside utility."
+        },
+        {
+          "org": "riatzukiza",
+          "score": 0.28,
+          "reason": "it is used heavily in your workspace, but not framed as an internal-only integration."
+        }
+      ],
+      "rationale": "One of the clearest open-hax candidates in packages/*.",
+      "notes": [],
+      "prometheanRelationship": null
+    },
+    {
+      "path": "packages/signal-atproto",
+      "packageName": null,
+      "private": null,
+      "description": null,
+      "hasReadme": false,
+      "readme": null,
+      "scripts": [],
+      "workspaceDeps": [],
+      "existingOrgPackageMatches": [],
+      "stageRecommendation": "stay-prototype",
+      "topCandidateOrg": "octave-commons",
+      "confidence": "low-medium",
+      "suggestedCanonicalHomeType": "standalone-repo",
+      "likelyOrgCandidates": [
+        {
+          "org": "octave-commons",
+          "score": 0.55,
+          "reason": "signal-analysis naming and lack of product polish point more toward research/artifact work."
+        },
+        {
+          "org": "riatzukiza",
+          "score": 0.41,
+          "reason": "it may also simply be unfinished internal infrastructure."
+        }
+      ],
+      "rationale": "Not enough documentation to promote; likely research/internal until clarified.",
+      "notes": [],
+      "prometheanRelationship": null
+    },
+    {
+      "path": "packages/signal-embed-browser",
+      "packageName": null,
+      "private": null,
+      "description": null,
+      "hasReadme": false,
+      "readme": null,
+      "scripts": [],
+      "workspaceDeps": [],
+      "existingOrgPackageMatches": [],
+      "stageRecommendation": "stay-prototype",
+      "topCandidateOrg": "octave-commons",
+      "confidence": "medium-low",
+      "suggestedCanonicalHomeType": "standalone-repo",
+      "likelyOrgCandidates": [
+        {
+          "org": "octave-commons",
+          "score": 0.58,
+          "reason": "browser-side embedding/similarity engine feels exploratory and research-adjacent right now."
+        },
+        {
+          "org": "open-hax",
+          "score": 0.37,
+          "reason": "could become a useful public component later if documented and hardened."
+        }
+      ],
+      "rationale": "The package has implementation surface but not enough public-facing maturity yet.",
+      "notes": [],
+      "prometheanRelationship": null
+    },
+    {
+      "path": "packages/test-utils",
+      "packageName": "@promethean-os/test-utils",
+      "private": true,
+      "description": null,
+      "hasReadme": false,
+      "readme": null,
+      "scripts": [
+        "build",
+        "clean"
+      ],
+      "workspaceDeps": [],
+      "existingOrgPackageMatches": [
+        "orgs/octave-commons/promethean/packages/test-utils",
+        "orgs/riatzukiza/promethean/packages/test-utils"
+      ],
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "riatzukiza",
+      "confidence": "medium",
+      "suggestedCanonicalHomeType": "existing-monorepo-package",
+      "likelyOrgCandidates": [
+        {
+          "org": "riatzukiza",
+          "score": 0.68,
+          "reason": "exact Promethean monorepo matches and internal shared-test-helper role fit internal integration first."
+        },
+        {
+          "org": "open-hax",
+          "score": 0.29,
+          "reason": "public utility possible later, but current scope appears ecosystem-supportive."
+        }
+      ],
+      "rationale": "Shared internal helper more than standalone public product right now.",
+      "notes": [
+        "Package name already exists under one or more current org monorepos; promotion should resolve source-of-truth drift rather than create a third copy."
+      ],
+      "prometheanRelationship": {
+        "sourceCorpus": "orgs/octave-commons/promethean",
+        "classification": "verified-extraction",
+        "canonicalDescendantPending": true,
+        "notes": [
+          "User clarified that these overlapping modules were extracted because their usefulness was verified from Promethean.",
+          "Treat this overlap as Promethean corpus extraction rather than automatic slop or accidental duplication."
+        ],
+        "prometheanMatches": [
+          "orgs/octave-commons/promethean/packages/test-utils",
+          "orgs/riatzukiza/promethean/packages/test-utils"
+        ]
+      }
+    },
+    {
+      "path": "packages/thread-assessment",
+      "packageName": "@workspace/thread-assessment",
+      "private": true,
+      "description": null,
+      "hasReadme": false,
+      "readme": null,
+      "scripts": [
+        "build",
+        "clean",
+        "test",
+        "typecheck"
+      ],
+      "workspaceDeps": [],
+      "existingOrgPackageMatches": [],
+      "stageRecommendation": "stay-prototype",
+      "topCandidateOrg": "octave-commons",
+      "confidence": "medium",
+      "suggestedCanonicalHomeType": "standalone-repo",
+      "likelyOrgCandidates": [
+        {
+          "org": "octave-commons",
+          "score": 0.64,
+          "reason": "assessment/reducer/evidence packet framing feels like maturing research/analysis work."
+        },
+        {
+          "org": "riatzukiza",
+          "score": 0.43,
+          "reason": "it may still simply support internal evaluation pipelines."
+        }
+      ],
+      "rationale": "Promising research package, but it still needs README/identity work before promotion.",
+      "notes": [
+        "Current @workspace scope is a weak signal that the package is still internal or pre-promotion."
+      ],
+      "prometheanRelationship": null
+    },
+    {
+      "path": "packages/utils",
+      "packageName": "@promethean-os/utils",
+      "private": null,
+      "description": null,
+      "hasReadme": true,
+      "readme": "README.md",
+      "scripts": [
+        "build",
+        "clean",
+        "coverage",
+        "format",
+        "lint",
+        "test",
+        "typecheck"
+      ],
+      "workspaceDeps": [],
+      "existingOrgPackageMatches": [
+        "orgs/octave-commons/promethean/packages/utils",
+        "orgs/riatzukiza/promethean/packages/utils"
+      ],
+      "stageRecommendation": "candidate-promote",
+      "topCandidateOrg": "riatzukiza",
+      "confidence": "medium",
+      "suggestedCanonicalHomeType": "existing-monorepo-package",
+      "likelyOrgCandidates": [
+        {
+          "org": "riatzukiza",
+          "score": 0.67,
+          "reason": "exact Promethean monorepo matches suggest it is still foundational ecosystem glue."
+        },
+        {
+          "org": "open-hax",
+          "score": 0.54,
+          "reason": "docs/tests and generic utility shape could later justify a public utility package."
+        }
+      ],
+      "rationale": "Looks mature, but current evidence points to internal ecosystem utility first.",
+      "notes": [
+        "Package name already exists under one or more current org monorepos; promotion should resolve source-of-truth drift rather than create a third copy."
+      ],
+      "prometheanRelationship": {
+        "sourceCorpus": "orgs/octave-commons/promethean",
+        "classification": "verified-extraction",
+        "canonicalDescendantPending": true,
+        "notes": [
+          "User clarified that these overlapping modules were extracted because their usefulness was verified from Promethean.",
+          "Treat this overlap as Promethean corpus extraction rather than automatic slop or accidental duplication."
+        ],
+        "prometheanMatches": [
+          "orgs/octave-commons/promethean/packages/utils",
+          "orgs/riatzukiza/promethean/packages/utils"
+        ]
+      }
+    }
+  ],
+  "globalNotes": [
+    "These recommendations are provisional and apply the new placement contract plus promotion checklists, not a hard move plan.",
+    "Several foundational packages already exist under current Promethean monorepos in orgs/, which means the real decision is often canonical-home cleanup rather than fresh repo creation.",
+    "No current top-level package looks like a strong ussyverse candidate from the available evidence.",
+    "User clarified that Promethean overlap for the matched foundational packages reflects verified extraction from a living documentation corpus, not generic bad drift."
+  ]
+}

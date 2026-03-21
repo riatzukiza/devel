@@ -1,85 +1,103 @@
-# Draft Spec (Phase 3): Migrate services/* → orgs/<org>/* as submodules + leave symlinks
+# Draft Spec (Phase 3): Align `services/*` runtime homes with canonical org repos
 
 ## Mission
-Promote selected `services/*` modules into canonical submodules under:
+Normalize `services/*` so it functions as the workspace runtime/devops layer rather than the canonical source layer.
 
-`orgs/<org>/<repo>`
-
-…while keeping `services/<name>` as a symlink compatibility path.
-
-This phase also handles the special case where some services are **already submodules located under `services/`** today.
+This phase focuses on:
+- identifying the canonical org repo for each independently deployable service
+- making `services/<name>` a real runtime/devops home when the workspace needs one
+- keeping legacy compatibility aliases only where they still provide operator value
 
 ## Context / Current State
-- `services/` includes multiple Node services, MCP servers, and other runtime processes.
-- `.gitmodules` already contains submodules in `services/` (e.g. openai proxy variants).
-- pnpm workspace includes `services/*`.
+- `services/*` contains multiple Node services, MCP servers, runtime processes, and historical paths.
+- Some service source has already been promoted to canonical repos under `orgs/*/*`.
+- The active contract now says:
+  - canonical source/build/release/deploy truth belongs in the org repo
+  - `services/*` belongs to devops/runtime/integration concerns
 
 ## Goals
-1. For each service in the Phase 0 mapping:
-   - create/confirm upstream repo under chosen org
-   - ensure the repo is present as a submodule at `orgs/<org>/<repo>`
-   - replace `services/<name>` with a symlink to the canonical location
-2. For services already tracked as submodules under `services/<name>`:
-   - relocate the submodule path to `orgs/<org>/<repo>`
-   - ensure `services/<name>` becomes a symlink
-3. Keep runtime + dev workflows working (docker compose, pm2 configs, scripts).
+1. For each service-related entry, decide whether `services/<name>` is:
+   - a runtime/devops home
+   - a compatibility alias
+   - a legacy source path that must be retired
+   - or an explicit devel-only exception
+2. Ensure independently deployable services have canonical repos under the appropriate org namespace.
+3. Keep local runtime and operator workflows stable.
+4. Avoid split-brain truth between `orgs/*/*` source and `services/*` source.
 
 ## Non-goals
-- Major architecture changes.
-- Rewriting deployment topology.
+- Automatically turning every `services/*` path into a symlink.
+- Rewriting deployment topology just to satisfy naming aesthetics.
+- Eliminating legitimate runtime homes such as `services/proxx` or `services/voxx`.
 
-## Special Case: moving an existing submodule
-If `services/<name>` is already a git submodule:
-1. Move the submodule path to `orgs/<org>/<repo>` (update `.gitmodules`).
-2. Ensure the gitlink is updated.
-3. Create the symlink at the original `services/<name>` location.
+## Working rule
+Use `services/*` for:
+- Docker Compose wrappers
+- deployment config
+- env examples
+- operator docs
+- workspace-specific orchestration glue
+- stable runtime paths
+
+Use `orgs/*/*` for:
+- source of truth
+- build/test contract
+- release/deploy contract
+- independently reusable service repos
+
+## Special Case: legacy service source already under `services/*`
+When a service source checkout still lives under `services/*`:
+1. decide whether it should graduate into an org repo
+2. if yes, relocate the canonical source to `orgs/<org>/<repo>`
+3. leave behind either:
+   - a real runtime home in `services/<name>` that builds from the org repo, or
+   - a compatibility alias when the old path should remain stable
+
+### Example
+- canonical source: `orgs/open-hax/proxx`
+- runtime home: `services/proxx`
+- compatibility alias: `services/open-hax-openai-proxy -> services/proxx`
 
 ## Open Questions
-1. Do we want to preserve the *service directory names* as the symlink name even if the upstream repo name differs?
-   - Decision: **yes**. Example: keep `services/open-hax-openai-proxy` as the stable compat path, even though the upstream repo is `open-hax/proxx` and the canonical checkout becomes `orgs/open-hax/proxx`.
-2. Which runtime references should become canonical?
-   - keep referring to `services/<name>` (compat path)
-   - or update scripts to refer to `orgs/<org>/<repo>` explicitly
-   - Recommendation: keep referencing `services/<name>` for ergonomics; treat it as stable.
-3. Are there any services that must remain monorepo-local (never upstreamed)?
+1. Which current `services/*` directories should remain long-term runtime homes?
+2. Which legacy service paths should remain as aliases for operator ergonomics?
+3. Are there any services that should stay devel-local and never become independent org repos?
 
 ## Risks
-- Compose/PM2 paths: these often hardcode relative paths into `services/`.
-  - Mitigation: keep `services/<name>` stable as a symlink.
-- Submodules + runtime tooling: some tools dislike symlinked working dirs.
-  - Mitigation: ensure canonical dir is a real checkout under `orgs/`.
+- Compose/PM2 paths often hardcode `services/*` locations.
+- Some tools dislike symlinked working directories, so runtime homes should remain real directories when needed.
+- Without an explicit runtime-home map, services can drift back into being accidental source homes.
 
 ## Implementation Phases (within Phase 3)
-### Phase 3.1 — Pilot service migration
-- Choose one low-risk service.
-- Validate: dev run, build, tests, docker/pm2 interactions.
+### Phase 3.1 — Pilot runtime-home alignment
+- Use `proxx` and `voxx` as the model.
+- Confirm the difference between canonical source, runtime home, and compatibility alias.
 
-### Phase 3.2 — Convert existing service-submodules
-- Relocate any `services/*` submodules into `orgs/*/*`.
-- Add symlink compatibility.
+### Phase 3.2 — Convert legacy service source paths
+- For service source still living under `services/*`, move canonical truth into `orgs/*/*` where appropriate.
+- Replace stale historical names with explicit aliases or runtime homes.
 
-### Phase 3.3 — Bulk migrate remaining services
-- Upstream creation + add as submodules + symlink.
-- Validate after each move.
+### Phase 3.3 — Stabilize runtime-home contracts
+- Document which `services/*` paths are canonical runtime homes.
+- Document which are aliases only.
+- Remove misleading docs that imply `services/*` is the source of truth.
 
 ## Affected Files
 - `.gitmodules`
-- `services/*` (replace dirs/submodules with symlinks)
-- `orgs/<org>/*` (new submodule directories)
+- `services/*`
+- `orgs/<org>/*`
 - `docs/migrations/packages-services-to-orgs/links.yaml`
-- `docker-compose*.yml`, `ecosystem*.edn`, `system/**`, `scripts/**` (as needed for path stability)
+- `docs/migrations/packages-services-to-orgs/migration-map.yaml`
+- runtime docs and deploy scripts as needed
 
 ## Verification
-Per migrated service:
-- `pnpm --filter <service> build` (if applicable)
-- smoke run command (service-specific; document per module in migration map)
-
-End of phase:
-- `pnpm -w build` (or Nx affected build)
-- `pnpm -w test` (or Nx affected test)
-- Optional: fresh clone with `--recurse-submodules` + `pnpm install`.
+Per aligned service:
+- build/test from the canonical org repo
+- smoke-run or `docker compose config` from the runtime home
+- verify compatibility aliases still resolve where intentionally preserved
 
 ## Definition of Done
-- All services selected for promotion are present under `orgs/<org>/...` as submodules.
-- `services/<name>` remains a stable path via symlink.
-- Dev/runtime workflows that previously used `services/<name>` still work.
+- Selected independently deployable services have canonical org repos or an explicit devel-only exception.
+- `services/*` paths are classified as runtime homes, aliases, or exceptions.
+- Local runtime workflows still work.
+- No active spec in this migration stack assumes `services/*` is a generic prototype layer.

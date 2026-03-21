@@ -125,3 +125,7 @@ New Phase 1 target:
   - workspace prefs now store an operator objective, long-term direction, strategic notes, and challenge mode
   - the operator panel exposes explicit goal fields instead of only ingest controls
   - the main dashboard now shows a mission briefing layer with strategy lines, heuristic world-map hotspots, and narrative candidates tied back to the objective
+- Tightened the Bluesky and operator UX loop:
+  - Bluesky operator requests now attempt refresh-token recovery when access JWTs go stale, reducing home-feed 400s from expired sessions
+  - the actual Bluesky home feed was moved into the main mission briefing area instead of cramming it into the side dock
+  - the side dock now defaults to a simpler shape with objective + compose visible and ingest/tooling controls collapsed behind advanced sections

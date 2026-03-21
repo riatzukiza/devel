@@ -1,72 +1,68 @@
 # Draft Spec (Phase 4): Governance + polish gates + cleanup after migration
 
 ## Mission
-After packages/services are migrated to canonical `orgs/` submodules with compatibility symlinks, establish:
-1) a stable governance model (prototype → promoted)
-2) polish gates for open-hax
-3) cleanup so the workspace remains ergonomic and maintainable.
+After project placement is normalized, establish:
+1. a stable lifecycle contract
+2. polish gates for each org namespace
+3. drift detection so source truth, runtime truth, and compatibility paths do not diverge
 
 ## Context / Current State
-- Phase 1 introduces link tooling + conventions.
-- Phase 2/3 migrate actual modules.
-- After migration, maintenance risk shifts to keeping conventions consistent (and preventing “mystery copies” / drift).
+- `packages/*` is the default prototype layer.
+- `orgs/*/*` holds canonical mature projects.
+- `services/*` holds runtime/devops/integration material.
+- Migration work is only successful if the workspace keeps those roles legible over time.
 
 ## Goals
 1. Document the lifecycle:
-   - **Prototype**: real directory under `packages/` or `services/` tracked in this monorepo.
-   - **Candidate**: inventory + mapping decision exists; minimal docs.
-   - **Promoted**: lives under `orgs/<org>/<repo>` with upstream; symlink exists at original path.
-2. Add “promotion checklists” per target org:
-   - **riatzukiza**: minimal docs, license, basic build reproducibility.
-   - **open-hax**: README, examples, tests, CI, clear API, sensible defaults.
-   - **octave-commons**: intent note + safe use framing; avoid tactical harm enablement.
+   - **Prototype**: real directory under `packages/*`
+   - **Promoted source**: canonical repo under `orgs/<org>/<repo>`
+   - **Runtime home**: operator/deploy surface under `services/*` when needed
+   - **Alias**: explicitly managed compatibility path only when it still has value
+2. Add promotion checklists per target org:
+   - **riatzukiza**: minimal docs, license, basic build reproducibility, independent timeline
+   - **open-hax**: README, examples, tests, CI, clear API, sensible defaults, production readiness
+   - **octave-commons**: intent note, safe-use framing, clear research/artifact positioning
+   - **ussyverse**: contribution/governance notes, ownership clarity, collaboration expectations
 3. Make drift detectable:
-   - CI/job (or local script) that verifies:
-     - symlinks match manifest
-     - no duplicate workspaces due to symlink+canonical double-discovery
-     - submodules are initialized
-4. Clean up workspace config and docs:
-   - remove redundant explicit workspace paths
-   - ensure `REPOSITORY_INDEX.md` (or equivalent) points at canonical locations
+   - alias correctness
+   - submodule initialization
+   - canonical source vs runtime-home mapping correctness
+   - no accidental duplicate workspace discovery
+4. Clean up workspace docs and config so the placement contract is discoverable and consistent.
 
 ## Non-goals
-- Forcing every existing module to be polished.
-- Rewriting package naming / scopes.
+- Forcing every prototype to be polished prematurely.
+- Making `devel` own a service's only real deploy contract when that service should be independently reusable.
 
 ## Open Questions
-1. Should we introduce an explicit “quarantine” namespace for prototypes (e.g. `@workspace/*`) to prevent accidental publish?
-2. Should we enforce license uniformity across extracted repos (GPLv3) immediately or gradually?
-3. Do we want a bot/script to open issues in upstream repos for missing polish items?
+1. Should promoted packages always leave behind compatibility aliases, or should that be opt-in?
+2. Do we want an explicit quarantine marker for prototypes to avoid accidental publish/release?
+3. Should runtime-home metadata live only in `migration-map.yaml`, or also in a dedicated `runtime-homes.yaml`?
 
 ## Risks
-- Over-enforcement slows prototyping.
-  - Mitigation: governance rules should be advisory except for link correctness + workspace green.
-- “Myth-coded” framing could confuse well-meaning users.
-  - Mitigation: keep intent/safety docs clear; avoid operational details that enable harm.
+- Over-enforcement can slow down prototyping.
+- Under-enforcement recreates split-brain source/deploy truth.
+- Historical docs can silently reintroduce obsolete assumptions.
 
 ## Implementation Plan
-1. Add docs:
-   - `docs/migrations/packages-services-to-orgs/README.md` expanded into a short guide.
-   - `docs/migrations/packages-services-to-orgs/promotion-checklists.md`
-2. Strengthen tooling:
-   - `links:check` becomes mandatory in CI (if CI exists) or as a pre-push hook.
-3. Workspace hygiene:
-   - ensure pnpm discovery does not double-count packages.
-   - ensure Nx project generation (if used) respects canonical locations.
+1. Expand the migration docs into a durable placement/governance guide.
+2. Add promotion checklists covering all four org namespaces.
+3. Strengthen link/runtime-home drift detection.
+4. Update repository indexes and workflow docs to point at canonical source plus runtime home intentionally.
 
 ## Affected Files
 - `docs/migrations/packages-services-to-orgs/README.md`
-- `docs/migrations/packages-services-to-orgs/promotion-checklists.md` (new)
-- `.hooks/**` or pre-push hook config (optional)
-- `pnpm-workspace.yaml` (final cleanup)
-- `REPOSITORY_INDEX.md` (optional updates)
+- `docs/migrations/packages-services-to-orgs/promotion-checklists.md`
+- `docs/reference/devel-placement-contract.md`
+- `pnpm-workspace.yaml`
+- optional CI / pre-push checks for alias/runtime-home correctness
 
 ## Verification
-- `pnpm run links:check` passes.
-- `pnpm -w install` produces a consistent lockfile.
-- A fresh clone with `--recurse-submodules` works and `pnpm install` succeeds.
+- `links:check` (or equivalent) passes.
+- workspace install/build remains consistent.
+- fresh clone with submodules and runtime-home docs is understandable and reproducible.
 
 ## Definition of Done
-- Governance/promotion docs exist.
-- Link drift detection is in place.
-- Workspace config is simplified and stable.
+- Governance and promotion docs exist for all four org namespaces.
+- Drift detection covers aliases and runtime-home/source mappings.
+- The workspace contract remains: prototype in `packages/*`, identity in `orgs/*/*`, operations in `services/*`.
