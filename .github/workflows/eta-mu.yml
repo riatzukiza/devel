@@ -24,6 +24,12 @@ concurrency:
 jobs:
   eta-mu:
     runs-on: ubuntu-latest
+    env:
+      ETA_MU_APP_ID: ${{ secrets.ETA_MU_APP_ID }}
+      ETA_MU_APP_PRIVATE_KEY: ${{ secrets.ETA_MU_APP_PRIVATE_KEY }}
+      # Open Hax proxy configuration for pi model access
+      OPEN_HAX_OPENAI_PROXY_URL: ${{ vars.OPEN_HAX_OPENAI_PROXY_URL }}
+      OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN: ${{ secrets.OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN }}
     steps:
       - name: Checkout target repository
         uses: actions/checkout@v4
@@ -36,13 +42,19 @@ jobs:
           repository: open-hax/eta-mu-github
           path: .eta-mu
 
+      - name: Checkout eta-mu-pi (skills, extensions, settings)
+        uses: actions/checkout@v4
+        with:
+          repository: open-hax/eta-mu-pi
+          path: .pi
+
       - name: Create eta-mu app token
         id: eta_mu_token
-        if: ${{ secrets.ETA_MU_APP_ID != '' && secrets.ETA_MU_APP_PRIVATE_KEY != '' }}
+        if: ${{ env.ETA_MU_APP_ID != '' && env.ETA_MU_APP_PRIVATE_KEY != '' }}
         uses: actions/create-github-app-token@v1
         with:
-          app-id: ${{ secrets.ETA_MU_APP_ID }}
-          private-key: ${{ secrets.ETA_MU_APP_PRIVATE_KEY }}
+          app-id: ${{ env.ETA_MU_APP_ID }}
+          private-key: ${{ env.ETA_MU_APP_PRIVATE_KEY }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -69,9 +81,15 @@ jobs:
           ETA_MU_REVIEW_ACTORS: ${{ vars.ETA_MU_REVIEW_ACTORS }}
           ETA_MU_MENTION_TOKENS: ${{ vars.ETA_MU_MENTION_TOKENS }}
           ETA_MU_IGNORE_LOGINS: ${{ vars.ETA_MU_IGNORE_LOGINS }}
+          # Open Hax proxy configuration
+          OPEN_HAX_OPENAI_PROXY_URL: ${{ vars.OPEN_HAX_OPENAI_PROXY_URL }}
+          OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN: ${{ secrets.OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN }}
+          # Fallback provider keys
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Point pi to the checked-out eta-mu-pi config
+          PI_CODING_AGENT_DIR: ${{ github.workspace }}/.pi/agent
         run: >-
           pnpm --dir .eta-mu dev run-event
           --repo "${GITHUB_REPOSITORY}"
