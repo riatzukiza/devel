@@ -33,6 +33,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
+          package-manager-cache: false
       - run: node --test packages/eta-mu-docs/tests/*.test.cjs
       - run: node --test packages/eta-mu-truth/tests/*.test.cjs
 
@@ -49,6 +50,7 @@ jobs:
     name: staging-promotion-gate
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    if: ${{ github.event.pull_request.head.ref == 'staging' }}
     steps:
       - uses: actions/checkout@v5
         with:
