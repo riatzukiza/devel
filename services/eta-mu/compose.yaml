@@ -1,0 +1,38 @@
+services:
+  eta-mu:
+    container_name: ${ETA_MU_CONTAINER_NAME:-openhax-eta-mu}
+    image: ${ETA_MU_IMAGE:-openhax/eta-mu:compose}
+    build:
+      context: ../..
+      dockerfile: services/eta-mu-truth-workbench/Dockerfile
+    environment:
+      WEB_PORT: 8790
+      ETA_MU_VAULT_ROOT: /app/vault
+      ETA_MU_MOUNTS_PATH: .opencode/runtime/eta_mu_mounts.v1.json
+      ETA_MU_DOCS_INDEX_PATH: .opencode/runtime/eta_mu_docs_index.v1.jsonl
+      ETA_MU_DOCS_BACKLINKS_PATH: .opencode/runtime/eta_mu_docs_backlinks.v1.jsonl
+      ETA_MU_GITHUB_TOKEN: ${ETA_MU_GITHUB_TOKEN:-}
+      ETA_MU_AUTOMATION_ENABLED: ${ETA_MU_AUTOMATION_ENABLED:-true}
+      ETA_MU_AUTOMATION_INTERVAL_MS: ${ETA_MU_AUTOMATION_INTERVAL_MS:-300000}
+      ETA_MU_AUTOMATION_VAULTS: ${ETA_MU_AUTOMATION_VAULTS:-proxx}
+      ETA_MU_CONTROL_PLANE_RECEIPTS_PATH: ${ETA_MU_CONTROL_PLANE_RECEIPTS_PATH:-.Π/eta_mu_control_plane_receipts.v1.jsonl}
+    ports:
+      - "${ETA_MU_BIND_HOST:-0.0.0.0}:${ETA_MU_PORT:-8790}:8790"
+    volumes:
+      - eta-mu-vault:/app/vault
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "const http = require('http'); const req = http.get('http://127.0.0.1:8790/api/info', (res) => { process.exit(res.statusCode === 200 ? 0 : 1); }); req.on('error', () => process.exit(1)); req.end();"
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  eta-mu-vault:

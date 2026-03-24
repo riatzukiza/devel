@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>fork//tales :: signal archive</title>
+    <meta
+      name="description"
+      content="A haunted retro-future archive for Fork Tales: chapters, lore, choir tracks, artwork, and a speaking thread console."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <div class="boot-overlay" id="boot-overlay">
+      <div class="boot-card window">
+        <p class="eyebrow">fork//tales :: wired archive node</p>
+        <h1>OPEN THE SIGNAL</h1>
+        <p>
+          A wiki, if a wiki could talk back. A shrine, if the shrine kept receipts. A 90s future that still
+          thinks the modem is a ritual object.
+        </p>
+        <button id="boot-enter" class="enter-button" type="button">enter the wire</button>
+      </div>
+    </div>
+
+    <main class="page-shell">
+      <header class="hero window">
+        <div class="hero-grid">
+          <div>
+            <p class="eyebrow">big.ussy.promethean.rest // fork.tales.promethean.rest</p>
+            <h1>fork//tales</h1>
+            <p class="tagline">story, song, lore, witness thread</p>
+            <p class="lead">
+              Built like a late-night intranet from a future imagined in 1998: part chapter shrine, part choir deck,
+              part operator console. Ask the thread and it answers from the archive.
+            </p>
+          </div>
+          <div class="hero-side">
+            <div class="signal-box">
+              <div class="signal-label">current mode</div>
+              <div class="signal-value" id="status-mode">standby / waiting for breath</div>
+            </div>
+            <div class="signal-box">
+              <div class="signal-label">active shard</div>
+              <div class="signal-value" id="status-active">loading archive...</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-row" id="stats-row"></div>
+
+        <div class="prompt-row">
+          <span class="prompt-row-label">quick prompts</span>
+          <div class="prompt-buttons" id="prompt-buttons"></div>
+        </div>
+      </header>
+
+      <section class="layout-grid">
+        <aside class="left-rail">
+          <section class="window section-window">
+            <div class="window-head">
+              <h2>channel directory</h2>
+              <span class="window-code">dir://signal</span>
+            </div>
+            <label class="search-field">
+              <span>search archive</span>
+              <input id="search-input" type="search" placeholder="chapter, lyric, witness, fork tax..." />
+            </label>
+            <div class="filter-chip-row" id="filter-chip-row"></div>
+          </section>
+
+          <section class="window section-window list-window">
+            <div class="window-head">
+              <h2>chapter stream</h2>
+              <span class="window-code">manuscript://live</span>
+            </div>
+            <div class="list-panel" id="chapter-list"></div>
+          </section>
+
+          <section class="window section-window list-window">
+            <div class="window-head">
+              <h2>lore files</h2>
+              <span class="window-code">docs://echo</span>
+            </div>
+            <div class="list-panel" id="doc-list"></div>
+          </section>
+        </aside>
+
+        <section class="main-stage">
+          <section class="window section-window reader-window">
+            <div class="window-head reader-head">
+              <div>
+                <p class="micro-label" id="reader-kind">signal</p>
+                <h2 id="reader-title">loading...</h2>
+              </div>
+              <div class="reader-meta" id="reader-meta"></div>
+            </div>
+            <article class="reader-content" id="reader-content"></article>
+          </section>
+
+          <section class="window section-window chat-window">
+            <div class="window-head">
+              <h2>thread console</h2>
+              <span class="window-code">oracle://ask</span>
+            </div>
+            <p class="console-copy">
+              Ask about the gate, the cast, the songs, the fractures, the lore. The interface answers from the curated
+              archive and shows the shards it touched.
+            </p>
+            <div class="chat-toolbar">
+              <label class="toggle-row">
+                <input id="speak-toggle" type="checkbox" />
+                <span>voice responses with browser synth</span>
+              </label>
+              <button id="clear-chat" type="button" class="ghost-button">clear console</button>
+            </div>
+            <div class="chat-log" id="chat-log"></div>
+            <form id="chat-form" class="chat-form">
+              <textarea
+                id="chat-input"
+                rows="3"
+                placeholder="What is the gate? Which song opens the wound? Who is Duct when the light goes out?"
+              ></textarea>
+              <div class="chat-actions">
+                <button type="submit" class="enter-button">transmit</button>
+                <span class="chat-status" id="chat-status">standby</span>
+              </div>
+            </form>
+            <div class="citation-dock" id="citation-dock"></div>
+          </section>
+
+          <section class="window section-window audio-window">
+            <div class="window-head">
+              <h2>choir deck</h2>
+              <span class="window-code">audio://chorus</span>
+            </div>
+            <div class="audio-stage">
+              <div class="audio-display">
+                <div class="cover-frame" id="cover-frame">
+                  <img id="cover-art" alt="current cover art" hidden />
+                  <div class="cover-fallback" id="cover-fallback">signal<br />waiting</div>
+                </div>
+                <canvas id="visualizer" width="540" height="160" aria-label="audio visualizer"></canvas>
+                <audio id="audio-player" controls preload="metadata"></audio>
+              </div>
+              <div class="audio-meta">
+                <p class="micro-label" id="track-collection">collection</p>
+                <h3 id="track-title">select a track</h3>
+                <p id="track-excerpt">The choir deck will surface lyrics, covers, and related chapters here.</p>
+                <div class="playlist-row" id="playlist-row"></div>
+              </div>
+            </div>
+            <div class="audio-grid">
+              <div>
+                <h3 class="subhead">track list</h3>
+                <div class="list-panel track-list" id="track-list"></div>
+              </div>
+              <div>
+                <h3 class="subhead">lyrics / packet residue</h3>
+                <article class="lyrics-panel" id="lyrics-panel"></article>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <aside class="right-rail">
+          <section class="window section-window status-window">
+            <div class="window-head">
+              <h2>signal scope</h2>
+              <span class="window-code">watch://ambient</span>
+            </div>
+            <div class="ambient-card">
+              <p class="scope-label">drifting line</p>
+              <p class="scope-quote" id="ambient-quote">loading witness thread...</p>
+            </div>
+            <div class="ambient-card">
+              <p class="scope-label">next suggested artifact</p>
+              <button type="button" class="artifact-jump" id="artifact-jump">waiting...</button>
+            </div>
+            <div class="ambient-card">
+              <p class="scope-label">roster</p>
+              <ul class="roster-list" id="roster-list"></ul>
+            </div>
+          </section>
+
+          <section class="window section-window gallery-window">
+            <div class="window-head">
+              <h2>fracture gallery</h2>
+              <span class="window-code">image://stills</span>
+            </div>
+            <div class="gallery-grid" id="gallery-grid"></div>
+          </section>
+
+          <section class="window section-window ring-window">
+            <div class="window-head">
+              <h2>ring connection</h2>
+              <span class="window-code">webring://open</span>
+            </div>
+            <p class="ring-copy">
+              This node belongs in the weird internet. The ritual link lives below.
+            </p>
+            <div id="webring" data-theme="dark"></div>
+          </section>
+        </aside>
+      </section>
+    </main>
+
+    <script src="https://ussyco.de/api/webring/widget.js"></script>
+    <script src="app.js" type="module"></script>
+  </body>
+</html>

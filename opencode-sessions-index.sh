@@ -1,6 +1,6 @@
 #!/bin/bash
 # opencode-sessions-index.sh
-# Shell script for indexing OpenCode sessions with ChromaDB
+# Shell wrapper for indexing OpenCode sessions into OpenPlanner (historical backfill)
 # This can be run manually or via cron
 
 set -e

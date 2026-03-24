@@ -1,0 +1,1 @@
+/home/err/.agents/skills/passwords-csv-browser-auth/SKILL.md

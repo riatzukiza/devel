@@ -41,7 +41,7 @@
     {
       "name": "part64",
       "aliases": ["fork-tales:part64"],
-      "cwd": "vaults/fork_tales/part64",
+      "cwd": "orgs/octave-commons/fork_tales/part64",
       "files": ["docker-compose.yml"],
       "projectName": "part64",
       "description": "Main Fork Tales Part64 runtime stack"
@@ -49,7 +49,7 @@
     {
       "name": "part64:embed-bench",
       "aliases": ["fork-tales:embed-bench"],
-      "cwd": "vaults/fork_tales/part64",
+      "cwd": "orgs/octave-commons/fork_tales/part64",
       "files": ["docker-compose.embed-bench.yml"],
       "projectName": "part64-embed-bench",
       "description": "Embedding benchmark stack for Part64"
@@ -57,7 +57,7 @@
     {
       "name": "part64:muse-song-lab",
       "aliases": ["fork-tales:muse-song-lab"],
-      "cwd": "vaults/fork_tales/part64",
+      "cwd": "orgs/octave-commons/fork_tales/part64",
       "files": ["docker-compose.muse-song-lab.yml"],
       "projectName": "part64-muse-song-lab",
       "description": "Muse song lab experiment stack for Part64"
@@ -65,7 +65,7 @@
     {
       "name": "part64:sim-slice-bench",
       "aliases": ["fork-tales:sim-slice-bench"],
-      "cwd": "vaults/fork_tales/part64",
+      "cwd": "orgs/octave-commons/fork_tales/part64",
       "files": ["docker-compose.sim-slice-bench.yml"],
       "projectName": "part64-sim-slice-bench",
       "description": "Simulation slice benchmark stack for Part64"
@@ -73,7 +73,7 @@
     {
       "name": "part64:whisper-bench",
       "aliases": ["fork-tales:whisper-bench"],
-      "cwd": "vaults/fork_tales/part64",
+      "cwd": "orgs/octave-commons/fork_tales/part64",
       "files": ["docker-compose.whisper-bench.yml"],
       "projectName": "part64-whisper-bench",
       "description": "Whisper benchmark runner for Part64"
@@ -131,12 +131,20 @@
     },
     {
       "name": "open-hax-openai-proxy",
-      "aliases": ["open-hax:proxy"],
-      "cwd": "services/open-hax-openai-proxy",
+      "aliases": ["proxx", "open-hax:proxy"],
+      "cwd": "services/proxx",
       "files": ["docker-compose.yml"],
       "projectName": "open-hax-openai-proxy",
       "hostPm2Apps": ["open-hax-openai-proxy", "open-hax-openai-proxy-web"],
       "description": "OpenAI-compatible proxy stack with bundled web UI"
+    },
+    {
+      "name": "voxx",
+      "aliases": ["open-hax:voxx"],
+      "cwd": "services/voxx",
+      "files": ["compose.yaml"],
+      "projectName": "voxx",
+      "description": "Voice gateway stack backed by orgs/open-hax/voxx source"
     }
   ]
 }
