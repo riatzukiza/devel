@@ -128,7 +128,7 @@ The tool returns a structured interpretation:
     ],
     "confidence": 0.0-1.0
   },
-  "model_used": "gpt-4o|gpt-5.4|vision-model-id",
+  "model_used": "gpt-5.4",
   "cached": false,
   "tokens_used": { "input": number, "output": number }
 }
@@ -384,4 +384,5 @@ Mitigation: Document that images are sent to configured vision endpoint. Allow o
 - [ ] Session-scoped caching
 - [ ] Usage tracking (tokens, cache hits/misses)
 - [ ] Test fixtures for each interpretation_type
+- [ ] Documentation for non-vision model authorspe
 - [ ] Documentation for non-vision model authors
