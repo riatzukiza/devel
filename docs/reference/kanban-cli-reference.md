@@ -1,5 +1,11 @@
 # Kanban CLI — reference
 
+> Devel note: the workspace-canonical Kanban entrypoint is now
+> `bin/eta-mu-board` (chat shorthand: `@bin/eta-mu-board`), backed by `packages/kanban`. The remainder of this file
+> documents the older Promethean `pnpm kanban` / `@promethean-os/kanban`
+> surface and should be treated as legacy reference unless you are explicitly
+> working on that implementation.
+
 > NOTE: Frontmatter **labels** are deprecated. Use **`tags:`** (lowercase) in YAML frontmatter.
 > Generators (e.g., `generate-by-tags`) filter by **frontmatter `tags`** and do not read body "Tags:" headers.
 

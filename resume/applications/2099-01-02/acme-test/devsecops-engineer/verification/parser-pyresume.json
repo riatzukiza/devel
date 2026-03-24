@@ -1,0 +1,23 @@
+{
+  "contact": {
+    "name": null,
+    "email": "foamy125@gmail.com",
+    "phone": "+1 515-388-0539",
+    "github": "https://github.com/riatzukiza"
+  },
+  "counts": {
+    "education": 1,
+    "experience": 0,
+    "skills": 24,
+    "certifications": 7,
+    "projects": 0
+  },
+  "sections_found": [
+    "summary",
+    "skills",
+    "experience",
+    "education"
+  ],
+  "overall_confidence": 0.83
+}
+

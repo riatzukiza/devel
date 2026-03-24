@@ -1,0 +1,154 @@
+{
+  "generatedAt": "2026-03-20T17:29:12.119Z",
+  "maxSubmissions": 40,
+  "motifScores": {
+    "quantization": 1,
+    "recurrence": 0.25601736550611864,
+    "optimizer": 0.5874157836792031,
+    "mlp_heavy": 0.5213600824808132,
+    "ttt": 0.12800868275305932,
+    "vocab": 0.3948715213848422,
+    "sliding_window": 0.5025934194528681,
+    "long_context": 0.18900437759568356,
+    "kv_structure": 0.007111593486281073,
+    "smaller_batch": 0.006737299092266279
+  },
+  "localBoosts": {
+    "free-ant≈KV-thin attention": 0.16,
+    "free-ant≈Wide balance": 0.12,
+    "KV-thin attention": 0.08,
+    "Throughput push": 0.04000000000000001
+  },
+  "strategies": [
+    {
+      "id": "throughput-push",
+      "label": "Throughput push",
+      "priorBelief": 0.79,
+      "signalBoost": 0.18728977443693925,
+      "effectivePrior": 0.9772897744369393,
+      "riskLevel": "medium",
+      "tags": [
+        "throughput",
+        "hot-lr",
+        "short-seq"
+      ]
+    },
+    {
+      "id": "mlp-heavy",
+      "label": "MLP-heavy",
+      "priorBelief": 0.68,
+      "signalBoost": 0.20640802474424397,
+      "effectivePrior": 0.8864080247442441,
+      "riskLevel": "medium",
+      "tags": [
+        "mlp",
+        "capacity",
+        "ffn"
+      ]
+    },
+    {
+      "id": "wide-balance",
+      "label": "Wide balance",
+      "priorBelief": 0.82,
+      "signalBoost": 0.05833352535007726,
+      "effectivePrior": 0.8783335253500772,
+      "riskLevel": "medium",
+      "tags": [
+        "width",
+        "capacity",
+        "balanced"
+      ]
+    },
+    {
+      "id": "kv-thin",
+      "label": "KV-thin attention",
+      "priorBelief": 0.76,
+      "signalBoost": 0.08238799823381439,
+      "effectivePrior": 0.8423879982338144,
+      "riskLevel": "medium",
+      "tags": [
+        "gqa",
+        "kv-slim",
+        "attention"
+      ]
+    },
+    {
+      "id": "byte-cautious",
+      "label": "Byte cautious",
+      "priorBelief": 0.61,
+      "signalBoost": 0.22,
+      "effectivePrior": 0.83,
+      "riskLevel": "low",
+      "tags": [
+        "bytes",
+        "conservative",
+        "quantization-headroom"
+      ]
+    },
+    {
+      "id": "deep-narrow",
+      "label": "Deep narrow",
+      "priorBelief": 0.71,
+      "signalBoost": 0.07144417061900078,
+      "effectivePrior": 0.7814441706190007,
+      "riskLevel": "medium",
+      "tags": [
+        "depth",
+        "narrow",
+        "capacity-shift"
+      ]
+    },
+    {
+      "id": "baseline-anchor",
+      "label": "Baseline anchor",
+      "priorBelief": 0.74,
+      "signalBoost": 0,
+      "effectivePrior": 0.74,
+      "riskLevel": "low",
+      "tags": [
+        "anchor",
+        "baseline",
+        "published-near"
+      ]
+    },
+    {
+      "id": "long-context-budget",
+      "label": "Long-context budget",
+      "priorBelief": 0.56,
+      "signalBoost": 0.14587973451353767,
+      "effectivePrior": 0.7058797345135377,
+      "riskLevel": "medium",
+      "tags": [
+        "context",
+        "long-seq",
+        "budgeted"
+      ]
+    },
+    {
+      "id": "kv-fat",
+      "label": "KV-fat attention",
+      "priorBelief": 0.63,
+      "signalBoost": 0.001066739022942161,
+      "effectivePrior": 0.6310667390229422,
+      "riskLevel": "medium",
+      "tags": [
+        "gqa",
+        "kv-heavy",
+        "attention"
+      ]
+    },
+    {
+      "id": "capacity-stress",
+      "label": "Capacity stress",
+      "priorBelief": 0.34,
+      "signalBoost": 0.09285809500634788,
+      "effectivePrior": 0.4328580950063479,
+      "riskLevel": "high",
+      "tags": [
+        "stress",
+        "edge",
+        "capacity-max"
+      ]
+    }
+  ]
+}

@@ -121,8 +121,6 @@ This document provides a comprehensive inventory of all package manifest and bui
 #### Project-Specific Tasks
 | Task | Description |
 |------|-------------|
-| `mcp:start` | Start Clojure-MCP server |
-| `mcp:dev` | Start Clojure-MCP in dev mode |
 | `promethean:build` | Build Promethean CLI and services |
 | `promethean:watch` | Watch frontend development |
 

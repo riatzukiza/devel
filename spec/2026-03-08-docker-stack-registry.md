@@ -7,7 +7,7 @@ Make the main monorepo Docker Compose stacks discoverable and runnable from the 
 ## Scope
 
 - `orgs/riatzukiza/promethean`
-- `vaults/fork_tales/part64`
+- `orgs/octave-commons/fork_tales/part64`
 - `services/open-hax-openai-proxy`
 
 ## Chosen Approach

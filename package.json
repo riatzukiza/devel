@@ -23,6 +23,15 @@
     "issues:project": "bun run src/issues/projector.ts",
     "inbox:pipeline": "node scripts/inbox-pipeline.mjs",
     "inbox:meta-pipeline": "node scripts/meta-agent-evaluator.mjs",
+    "resume:workbench": "tsx src/resume-workbench/cli.ts",
+    "resume:apply": "tsx src/resume-apply/cli.ts",
+    "pg:ants": "tsx src/parameter-golf-ant-lab/cli.ts",
+    "pg:ants:local": "tsx src/parameter-golf-ant-lab/local-run.ts",
+    "pg:ants:signals": "tsx src/parameter-golf-ant-lab/sync-signals.ts",
+    "pg:ants:prior-art": "tsx src/parameter-golf-ant-lab/sync-prior-art.ts",
+    "forktax:auto": "tsx src/auto-fork-tax/cli.ts",
+    "github:eta-mu:rollout": "tsx src/github/eta-mu-rollout.ts",
+    "test:pg:ants": "bun test src/parameter-golf-ant-lab/__tests__/cli.test.ts",
     "giga:nx:generate": "bun run src/giga/generate-nx-projects.ts",
     "giga:plugin:bundle": "bun run tools/nx-plugins/giga/bundle-plugin.ts",
     "giga:affected": "nx affected --target=test --build",
@@ -51,7 +60,8 @@
     "reconstitute": "tsx reconstitute.ts",
     "generate-ecosystem": "npx shadow-cljs release clobber",
     "docker:stack": "node scripts/docker-stack.mjs",
-    "docker:stack:list": "node scripts/docker-stack.mjs list"
+    "docker:stack:list": "node scripts/docker-stack.mjs list",
+    "eta:truth:workbench": "pnpm --filter @workspace/eta-mu-truth test"
   },
   "bin": {
     "octavia": "dist/octavia/index.js"
