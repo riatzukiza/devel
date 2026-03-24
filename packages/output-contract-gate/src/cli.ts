@@ -77,7 +77,7 @@ Flags:
   --artifacts-root  Optional root for run artifacts (default: ./artifacts/output-contract-gate)
   --base-url   OpenAI-compatible base URL for generate/review mode (default: OPENAI_BASE_URL or http://127.0.0.1:8789/v1)
   --model      Model id for generate/review mode (default: gpt-5.4)
-  --api-key    Explicit API key for generate/review mode
+  --api-key    Explicit API credential for generate/review mode
   --temperature Numeric temperature for generate/review mode (default: 0.2 for generate, 0.3 for review)
   --max-session-turns  Max session turns for review-gpt (default: 10)
   --no-fallback  For review-gpt: fail instead of falling back to stub on error
