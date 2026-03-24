@@ -92,7 +92,26 @@ jobs:
       - name: Install eta-mu dependencies
         run: pnpm --dir .eta-mu --ignore-workspace install --frozen-lockfile
 
+      - name: Detect eta-mu model auth
+        id: eta_mu_model_auth
+        shell: bash
+        env:
+          OPEN_HAX_OPENAI_PROXY_URL: ${{ vars.OPEN_HAX_OPENAI_PROXY_URL }}
+          OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN: ${{ secrets.OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          ready=false
+          if [[ -n "${OPEN_HAX_OPENAI_PROXY_URL:-}" && -n "${OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN:-}" ]]; then
+            ready=true
+          elif [[ -n "${OPENAI_API_KEY:-}" || -n "${ANTHROPIC_API_KEY:-}" || -n "${GEMINI_API_KEY:-}" ]]; then
+            ready=true
+          fi
+          echo "ready=${ready}" >> "$GITHUB_OUTPUT"
+
       - name: Run eta-mu event handler
+        if: ${{ steps.eta_mu_model_auth.outputs.ready == 'true' }}
         env:
           GITHUB_TOKEN: ${{ steps.eta_mu_token.outputs.token != '' && steps.eta_mu_token.outputs.token || github.token }}
           ETA_MU_APP_ID: ${{ secrets.ETA_MU_APP_ID }}
@@ -117,3 +136,7 @@ jobs:
           --event-name "${GITHUB_EVENT_NAME}"
           --event-path "${GITHUB_EVENT_PATH}"
           --cwd "$PWD"
+
+      - name: Skip eta-mu event handler when no model auth is configured
+        if: ${{ steps.eta_mu_model_auth.outputs.ready != 'true' }}
+        run: echo "Skipping eta-mu event handling because no model auth is configured for this repo."
