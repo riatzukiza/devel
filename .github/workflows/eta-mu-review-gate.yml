@@ -24,6 +24,7 @@ jobs:
         with:
           repository: open-hax/eta-mu-github
           path: .eta-mu
+          ref: cbb54f11a690af4d7ed4c4cebc79dbeba6a1a337 # pragma: allowlist secret
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4

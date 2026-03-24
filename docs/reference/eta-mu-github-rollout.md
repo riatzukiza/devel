@@ -18,7 +18,7 @@ The canonical eta-mu logic lives in the submodule:
 - `.github/workflows/eta-mu.yml`
 - `.github/workflows/eta-mu-review-gate.yml`
 
-The root repo runs eta-mu from the checked-out submodule so PRs that update eta-mu logic can exercise the same code.
+The root workflow checks out `open-hax/eta-mu-github` directly into the `.eta-mu` directory and executes the runtime from that checkout, so PRs that update eta-mu logic can exercise the same code without relying on a root-repo submodule checkout.
 
 ## Inventory / rollout helper
 
