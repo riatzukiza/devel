@@ -28,7 +28,7 @@ trap 'rm -rf "$TMP_DIR"' EXIT
 
 expand_remote_path() {
   local raw_path="$1"
-  if [[ "$raw_path" == "~/"* ]]; then
+  if [[ $raw_path == \~/* ]]; then
     local remote_home
     remote_home="$(ssh "${SSH_OPTS[@]}" "$REMOTE" 'printf %s "$HOME"')"
     printf '%s/%s' "$remote_home" "${raw_path#"~/"}"
@@ -61,6 +61,7 @@ push_remote_file() {
   local remote_path="$2"
   local remote_dir
   remote_dir="$(dirname "$remote_path")"
+  # shellcheck disable=SC2029
   ssh "${SSH_OPTS[@]}" "$REMOTE" "mkdir -p '$remote_dir' && cat > '$remote_path'" < "$local_path"
 }
 
@@ -82,6 +83,7 @@ EOF
 }
 
 sync_payload() {
+  # shellcheck disable=SC2029
   ssh "${SSH_OPTS[@]}" "$REMOTE" "mkdir -p '$REMOTE_DEPLOY_PATH/packages/eta-mu-docs' '$REMOTE_DEPLOY_PATH/packages/eta-mu-truth' '$REMOTE_DEPLOY_PATH/services/eta-mu' '$REMOTE_DEPLOY_PATH/services/eta-mu-truth-workbench'"
 
   rsync -az --delete \

@@ -28,6 +28,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
+          package-manager-cache: false
       - run: sudo apt-get update && sudo apt-get install -y shellcheck
       - run: bash -n services/eta-mu/scripts/deploy-remote.sh
       - run: shellcheck services/eta-mu/scripts/deploy-remote.sh
