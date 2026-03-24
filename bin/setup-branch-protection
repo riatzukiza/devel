@@ -34,7 +34,11 @@ while [[ $# -gt 0 ]]; do
       shift
       ;;
     --require-check)
-      REQUESTED_CHECKS+=("${2:-}")
+      if [[ $# -lt 2 || -z "${2:-}" || "${2:-}" == -* ]]; then
+        echo "--require-check expects a non-empty status check name" >&2
+        exit 64
+      fi
+      REQUESTED_CHECKS+=("$2")
       shift 2
       ;;
     *)

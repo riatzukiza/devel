@@ -31,6 +31,25 @@ jobs:
       OPEN_HAX_OPENAI_PROXY_URL: ${{ vars.OPEN_HAX_OPENAI_PROXY_URL }}
       OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN: ${{ secrets.OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN }}
     steps:
+      - name: Resolve eta-mu refs
+        id: eta_mu_refs
+        shell: bash
+        env:
+          ETA_MU_PI_REF_MAIN: ${{ vars.ETA_MU_PI_REF_MAIN }}
+          ETA_MU_PI_REF_STAGING: ${{ vars.ETA_MU_PI_REF_STAGING }}
+        run: |
+          target_branch="${GITHUB_REF_NAME}"
+          if [[ "${GITHUB_EVENT_NAME}" == pull_request* ]]; then
+            target_branch="${GITHUB_BASE_REF}"
+          fi
+
+          pi_ref="${ETA_MU_PI_REF_MAIN:-main}"
+          if [[ "$target_branch" == "staging" ]]; then
+            pi_ref="${ETA_MU_PI_REF_STAGING:-${ETA_MU_PI_REF_MAIN:-main}}"
+          fi
+
+          echo "pi_ref=${pi_ref}" >> "$GITHUB_OUTPUT"
+
       - name: Checkout target repository
         uses: actions/checkout@v4
         with:
@@ -41,16 +60,18 @@ jobs:
         with:
           repository: open-hax/eta-mu-github
           path: .eta-mu
+          ref: cbb54f11a690af4d7ed4c4cebc79dbeba6a1a337 # pragma: allowlist secret
 
       - name: Checkout eta-mu-pi (skills, extensions, settings)
         uses: actions/checkout@v4
         with:
           repository: open-hax/eta-mu-pi
           path: .pi
+          ref: ${{ steps.eta_mu_refs.outputs.pi_ref }}
 
       - name: Create eta-mu app token
         id: eta_mu_token
-        if: ${{ env.ETA_MU_APP_ID != '' && env.ETA_MU_APP_PRIVATE_KEY != '' }}
+        continue-on-error: true
         uses: actions/create-github-app-token@v1
         with:
           app-id: ${{ env.ETA_MU_APP_ID }}
