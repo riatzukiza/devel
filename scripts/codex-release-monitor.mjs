@@ -371,7 +371,7 @@ function buildEvidenceSection(evidence) {
         return [`- ${item.trim()}`];
       }
       if (item?.path && item?.description) {
-        return [`- \\`${item.path}\\` – ${item.description}`];
+        return [`- \`${item.path}\` – ${item.description}`];
       }
       if (item?.description) {
         return [`- ${item.description}`];
