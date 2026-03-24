@@ -81,7 +81,7 @@ services:
       PROXY_KEY_RELOAD_MS: "${PROXY_KEY_RELOAD_MS:-5000}"
       PROXY_KEY_COOLDOWN_MS: "${PROXY_KEY_COOLDOWN_MS:-30000}"
 
-      DATABASE_URL: "postgresql://federation_proxy:federation_proxy@open-hax-federation-peer-db:5432/federation_proxy"
+      DATABASE_URL: "postgresql://federation_proxy:federation_proxy@open-hax-federation-peer-db:5432/federation_proxy" # pragma: allowlist secret
 
       VITE_ALLOWED_HOSTS: "${VITE_ALLOWED_HOSTS:-}"
 
@@ -129,7 +129,7 @@ services:
     environment:
       POSTGRES_DB: federation_proxy
       POSTGRES_USER: federation_proxy
-      POSTGRES_PASSWORD: federation_proxy
+      POSTGRES_PASSWORD: federation_proxy # pragma: allowlist secret
     ports:
       - "${FEDERATION_DB_PORT:-5433}:5432"
     volumes:
