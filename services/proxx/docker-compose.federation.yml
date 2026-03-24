@@ -29,7 +29,7 @@ services:
       PROXY_PORT: "8789"
       PORT: "8789"
       OPENAI_OAUTH_CALLBACK_PORT: "${FEDERATION_OAUTH_CALLBACK_PORT:-1456}"
-      PROXY_AUTH_TOKEN: "${FEDERATION_PROXY_AUTH_TOKEN:-federation-peer-token}"
+      PROXY_AUTH_TOKEN: "${FEDERATION_PROXY_AUTH_TOKEN:-federation-peer-token}" # gitguardian: ignore secret
 
       # Keys and models - can share with main or have separate credentials
       PROXY_KEYS_FILE: /workspace/service-config/keys.json
@@ -51,7 +51,7 @@ services:
       OPENAI_API_BASE_URL: "${OPENAI_API_BASE_URL:-https://api.openai.com}"
       GEMINI_API_KEY: "${GEMINI_API_KEY:-}"
       OPENAI_IMAGES_UPSTREAM_MODE: "${OPENAI_IMAGES_UPSTREAM_MODE:-auto}"
-      OPENAI_OAUTH_CLIENT_ID: "${OPENAI_OAUTH_CLIENT_ID:-app_EMoamEEZ73f0CkXaXp7hrann}"
+      OPENAI_OAUTH_CLIENT_ID: "${OPENAI_OAUTH_CLIENT_ID:-app_EMoamEEZ73f0CkXaXp7hrann}" # gitguardian: ignore secret
       OPENAI_OAUTH_CLIENT_SECRET: "${OPENAI_OAUTH_CLIENT_SECRET:-}"
       OPENAI_OAUTH_ISSUER: "${OPENAI_OAUTH_ISSUER:-https://auth.openai.com}"
       OPENAI_OAUTH_SCOPES: "${OPENAI_OAUTH_SCOPES:-openid profile email offline_access}"
@@ -81,7 +81,7 @@ services:
       PROXY_KEY_RELOAD_MS: "${PROXY_KEY_RELOAD_MS:-5000}"
       PROXY_KEY_COOLDOWN_MS: "${PROXY_KEY_COOLDOWN_MS:-30000}"
 
-      DATABASE_URL: "postgresql://federation_proxy:federation_proxy@open-hax-federation-peer-db:5432/federation_proxy" # pragma: allowlist secret
+      DATABASE_URL: "postgresql://federation_proxy:federation_proxy@open-hax-federation-peer-db:5432/federation_proxy" # gitguardian: ignore secret
 
       VITE_ALLOWED_HOSTS: "${VITE_ALLOWED_HOSTS:-}"
 
@@ -129,7 +129,7 @@ services:
     environment:
       POSTGRES_DB: federation_proxy
       POSTGRES_USER: federation_proxy
-      POSTGRES_PASSWORD: federation_proxy # pragma: allowlist secret
+      POSTGRES_PASSWORD: federation_proxy # gitguardian: ignore secret
     ports:
       - "${FEDERATION_DB_PORT:-5433}:5432"
     volumes:
