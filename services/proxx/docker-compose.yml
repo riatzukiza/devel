@@ -75,6 +75,7 @@ services:
       PROXY_KEY_RELOAD_MS: "${PROXY_KEY_RELOAD_MS:-5000}"
       PROXY_KEY_COOLDOWN_MS: "${PROXY_KEY_COOLDOWN_MS:-30000}"
       UPSTREAM_REQUEST_TIMEOUT_MS: "${UPSTREAM_REQUEST_TIMEOUT_MS:-180000}"
+      UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS: "${UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS:-180000}"
       PROXY_ALLOW_UNAUTHENTICATED: "${PROXY_ALLOW_UNAUTHENTICATED:-false}"
       DATABASE_URL: "${DATABASE_URL:-postgresql://openai_proxy:openai_proxy@open-hax-openai-proxy-db:5432/openai_proxy}" # pragma: allowlist secret
       VITE_ALLOWED_HOSTS: "${VITE_ALLOWED_HOSTS:-}"
@@ -90,6 +91,14 @@ services:
       OTEL_EXPORTER_OTLP_HEADERS: "${OTEL_EXPORTER_OTLP_HEADERS:-}"
       OTEL_SERVICE_NAME: "${OTEL_SERVICE_NAME:-proxx}"
       OTEL_RESOURCE_ATTRIBUTES: "${OTEL_RESOURCE_ATTRIBUTES:-service.name=proxx}"
+
+      # Federation identity for the primary node
+      FEDERATION_SELF_NODE_ID: "${FEDERATION_SELF_NODE_ID:-primary}"
+      FEDERATION_SELF_GROUP_ID: "${FEDERATION_SELF_GROUP_ID:-local-test-group}"
+      FEDERATION_SELF_CLUSTER_ID: "${FEDERATION_SELF_CLUSTER_ID:-local-test-cluster}"
+      FEDERATION_SELF_PEER_DID: "${FEDERATION_SELF_PEER_DID:-}"
+      FEDERATION_SELF_PUBLIC_BASE_URL: "${FEDERATION_SELF_PUBLIC_BASE_URL:-http://open-hax-openai-proxy:8789}"
+      FEDERATION_REQUEST_TIMEOUT_MS: "${FEDERATION_REQUEST_TIMEOUT_MS:-30000}"
     volumes:
       - ./keys.json:/workspace/service-config/keys.json
       - ./models.json:/workspace/service-config/models.json:ro

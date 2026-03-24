@@ -1,0 +1,107 @@
+name: eta-mu-deploy-production
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/eta-mu-docs/**'
+      - 'packages/eta-mu-truth/**'
+      - 'services/eta-mu/**'
+      - 'services/eta-mu-truth-workbench/**'
+      - '.github/workflows/eta-mu*.yml'
+      - 'src/github/eta-mu-rollout.ts'
+      - 'orgs/open-hax/eta-mu-github/**'
+  workflow_dispatch:
+
+concurrency:
+  group: eta-mu-production
+  cancel-in-progress: false
+
+jobs:
+  production-preflight:
+    name: production-preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - run: bash -n services/eta-mu/scripts/deploy-remote.sh
+      - run: shellcheck services/eta-mu/scripts/deploy-remote.sh
+      - run: node --test packages/eta-mu-docs/tests/*.test.cjs
+      - run: node --test packages/eta-mu-truth/tests/*.test.cjs
+      - run: docker compose --project-name eta-mu-production-ci -f services/eta-mu/compose.yaml config >/tmp/eta-mu-compose.txt
+      - run: docker build -f services/eta-mu-truth-workbench/Dockerfile .
+
+  deploy-production:
+    name: deploy-production
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs:
+      - production-preflight
+    environment: eta-mu-production
+    steps:
+      - uses: actions/checkout@v5
+      - name: configure production ssh
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "${ETA_MU_PRODUCTION_SSH_PRIVATE_KEY}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf 'Host *\n  IdentityFile ~/.ssh/deploy_key\n  IdentitiesOnly yes\n' > ~/.ssh/config
+          chmod 600 ~/.ssh/config
+          touch ~/.ssh/known_hosts
+          ssh-keyscan -H "${ETA_MU_PRODUCTION_SSH_HOST}" >> ~/.ssh/known_hosts
+        env:
+          ETA_MU_PRODUCTION_SSH_HOST: ${{ vars.ETA_MU_PRODUCTION_SSH_HOST || 'big.ussy.promethean.rest' }}
+          ETA_MU_PRODUCTION_SSH_PRIVATE_KEY: ${{ secrets.ETA_MU_PRODUCTION_SSH_PRIVATE_KEY }}
+      - run: chmod +x services/eta-mu/scripts/deploy-remote.sh
+      - name: deploy eta-mu production runtime
+        run: services/eta-mu/scripts/deploy-remote.sh
+        env:
+          DEPLOY_HOST: ${{ vars.ETA_MU_PRODUCTION_SSH_HOST || 'big.ussy.promethean.rest' }}
+          DEPLOY_USER: ${{ vars.ETA_MU_PRODUCTION_SSH_USER || 'error' }}
+          DEPLOY_PATH: ${{ vars.ETA_MU_PRODUCTION_DEPLOY_PATH || '/home/error/devel/services/eta-mu' }}
+          DEPLOY_COMPOSE_PROJECT_NAME: ${{ vars.ETA_MU_PRODUCTION_COMPOSE_PROJECT_NAME || 'eta-mu' }}
+          DEPLOY_CONTAINER_NAME: ${{ vars.ETA_MU_PRODUCTION_CONTAINER_NAME || 'openhax-eta-mu' }}
+          DEPLOY_PORT: ${{ vars.ETA_MU_PRODUCTION_PORT || '8790' }}
+          DEPLOY_PUBLIC_HOST: ${{ vars.ETA_MU_PRODUCTION_PUBLIC_HOST || 'eta.mu.promethean.rest' }}
+          DEPLOY_GITHUB_TOKEN: ${{ secrets.ETA_MU_PRODUCTION_GITHUB_TOKEN }}
+          DEPLOY_AUTOMATION_ENABLED: ${{ vars.ETA_MU_PRODUCTION_AUTOMATION_ENABLED || 'true' }}
+          DEPLOY_AUTOMATION_INTERVAL_MS: ${{ vars.ETA_MU_PRODUCTION_AUTOMATION_INTERVAL_MS || '300000' }}
+          DEPLOY_AUTOMATION_VAULTS: ${{ vars.ETA_MU_PRODUCTION_AUTOMATION_VAULTS || 'proxx' }}
+      - name: production deploy failure logs
+        if: failure()
+        run: |
+          ssh ${ETA_MU_PRODUCTION_SSH_USER}@${ETA_MU_PRODUCTION_SSH_HOST} "cd ${ETA_MU_PRODUCTION_DEPLOY_PATH} && docker compose --project-name '${ETA_MU_PRODUCTION_COMPOSE_PROJECT_NAME}' -f services/eta-mu/compose.yaml ps && docker compose --project-name '${ETA_MU_PRODUCTION_COMPOSE_PROJECT_NAME}' -f services/eta-mu/compose.yaml logs --tail=200"
+        env:
+          ETA_MU_PRODUCTION_SSH_HOST: ${{ vars.ETA_MU_PRODUCTION_SSH_HOST || 'big.ussy.promethean.rest' }}
+          ETA_MU_PRODUCTION_SSH_USER: ${{ vars.ETA_MU_PRODUCTION_SSH_USER || 'error' }}
+          ETA_MU_PRODUCTION_DEPLOY_PATH: ${{ vars.ETA_MU_PRODUCTION_DEPLOY_PATH || '/home/error/devel/services/eta-mu' }}
+          ETA_MU_PRODUCTION_COMPOSE_PROJECT_NAME: ${{ vars.ETA_MU_PRODUCTION_COMPOSE_PROJECT_NAME || 'eta-mu' }}
+
+  verify-production:
+    name: verify-production
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs:
+      - deploy-production
+    environment: eta-mu-production
+    steps:
+      - name: wait for production health
+        run: |
+          for attempt in $(seq 1 30); do
+            if curl -fsS "${ETA_MU_PRODUCTION_VERIFY_URL}/health" >/dev/null; then
+              exit 0
+            fi
+            sleep 10
+          done
+          exit 1
+        env:
+          ETA_MU_PRODUCTION_VERIFY_URL: ${{ vars.ETA_MU_PRODUCTION_VERIFY_URL || 'https://eta.mu.promethean.rest' }}
+      - name: verify production control plane endpoint
+        run: curl -fsS "${ETA_MU_PRODUCTION_VERIFY_URL}/api/control-plane/vaults" >/dev/null
+        env:
+          ETA_MU_PRODUCTION_VERIFY_URL: ${{ vars.ETA_MU_PRODUCTION_VERIFY_URL || 'https://eta.mu.promethean.rest' }}

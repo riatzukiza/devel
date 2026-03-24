@@ -1,13 +1,39 @@
-# Π handoff
+# Π Last Snapshot
 
-- time: 2026-03-21T22:19:32Z
-- branch: feature/threat-radar-platform
-- pre-Π HEAD: 098ebd6
-- Π HEAD: pending at capture time; resolved by the final commit after artifact assembly
+**Time:** 2026-03-24T02:23:04Z
+**Branch:** feature/threat-radar-platform
+**Pre-commit HEAD:** 993ec69
 
 ## Summary
-- Advance orgs/open-hax/proxx to 2d3e285, the final dedicated Proxx Π snapshot for the z.ai live-env validation/spec/results sequence.
-- Refresh root receipts and handoff artifacts so the workspace finally records the clean recursive Proxx state.
+
+Snapshot of working state on threat-radar-platform branch. Recent work includes:
+
+- **fix: harden eta-mu workflow pinning and rollout safety** (993ec69)
+- **chore: update submodules** (eta-mu-github, proxx) (a0d8003)
+- **feat: configure eta-mu workflow** to use open-hax proxy and eta-mu-pi config (800b188)
+
+## Dirty Files
+
+- `.gitmodules` — submodule configuration
+- `.opencode/AGENTS.md` — agent instructions
+- `.opencode/skills/webring-site/SKILL.md` — webring skill
+- `AGENTS.md` — workspace AGENTS.md
+- `orgs/open-hax/eta-mu-github` — submodule
+- `orgs/open-hax/proxx` — submodule
+- `orgs/riatzukiza/promethean` — submodule
+- `pnpm-lock.yaml` / `pnpm-workspace.yaml`
+- `receipts.log` — receipt river
+- `scripts/codex-release-monitor.mjs`
+- `services/eta-mu-truth-workbench/*` — truth workbench updates
+- `services/proxx/Caddyfile`, `docker-compose.yml`
 
 ## Verification
-- pass: git submodule status orgs/open-hax/proxx
+
+- No blocking lint/test verification (fast path skipped due to dirty submodules)
+- State captured as-is for handoff
+
+## Tag
+
+```
+Π/2026-03-24/022304-993ec69
+```

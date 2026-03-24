@@ -64,6 +64,7 @@ Multi-repository development workspace with git submodules organized under `orgs
 - When code appears both in Promethean and elsewhere, distinguish: slop, corpus artifact, verified extraction, and canonical descendant.
 - Canonical source/build/release/deploy contracts should live with the org repo; `devel` remains the giga-repo for composition, local integration, fleet placement, and cross-service orchestration.
 - Work that still sits outside the structure should be handled via named exception classes rather than ad-hoc cleanup; see `docs/reference/outside-structure-exception-policy.md`.
+- On this machine, `~/devel` fills the role many other setups call `~/projects` or `~/repos`; translate intent through this contract rather than creating a literal `projects/` subtree.
 - Reference doc: `docs/reference/devel-placement-contract.md`
 
 ## Deployment Semantics
@@ -109,6 +110,9 @@ Protocol to break out of repetitive, failing edit loops by forcing analysis over
 #### clock-model-evolver
 Improve the Hormuz clock model through new signal classes, schema changes, and better rendering or branch logic.
 
+#### devel-workspace-contract
+Map legacy `~/projects` or `~/repos` assumptions into the `~/devel` placement contract and choose the correct path in this workspace.
+
 #### emergency-confusion-reset
 Protocol for agents to recover when confused, hallucinating tools, or stuck in unproductive loops.
 
@@ -141,6 +145,15 @@ Create or revise skills so they are reusable, scoped, and load correctly in Open
 
 #### skill-optimizing
 Improve existing or new skills using the workspace optimization guide and template checks for clarity, scope, and reliability
+
+#### total-creative-freedom
+When the user says `engage in total creative freedom`, widen the search and solution space, synthesize repo/session context, and deliver the strongest prompt-faithful artifact.
+
+#### sing-the-songs-of-your-people
+When the user says `sing the songs of your people`, mine notes, sessions, lore, and code motifs to produce a beautiful but truthful synthesis in the workspace's native voice.
+
+#### grok-intention
+When the user says `grok my intention`, `manifest the dream`, or similar dense-intent phrases, recover latent intent from notes, sessions, and repo structure, then turn it into a concrete shape.
 
 #### passwords-csv-browser-auth
 Use local ignored `passwords.csv` exports to authenticate browser automation safely without printing or committing secrets.

@@ -1,0 +1,71 @@
+name: eta-mu-main-pr-gate
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'packages/eta-mu-docs/**'
+      - 'packages/eta-mu-truth/**'
+      - 'services/eta-mu/**'
+      - 'services/eta-mu-truth-workbench/**'
+      - '.github/workflows/eta-mu*.yml'
+      - 'src/github/eta-mu-rollout.ts'
+      - 'orgs/open-hax/eta-mu-github/**'
+
+jobs:
+  main-lint:
+    name: main-lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - run: bash -n services/eta-mu/scripts/deploy-remote.sh
+      - run: shellcheck services/eta-mu/scripts/deploy-remote.sh
+
+  main-tests:
+    name: main-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: node --test packages/eta-mu-docs/tests/*.test.cjs
+      - run: node --test packages/eta-mu-truth/tests/*.test.cjs
+
+  main-build:
+    name: main-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - run: docker compose --project-name eta-mu-main-ci -f services/eta-mu/compose.yaml config >/tmp/eta-mu-compose.txt
+      - run: docker build -f services/eta-mu-truth-workbench/Dockerfile .
+
+  staging-promotion-gate:
+    name: staging-promotion-gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - run: git fetch origin staging --depth=1
+      - run: git merge-base --is-ancestor "${PR_HEAD_SHA}" origin/staging
+        env:
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/github-script@v8
+        with:
+          script: |
+            const requiredChecks = ["deploy-staging", "staging-live-verify"];
+            const { owner, repo } = context.repo;
+            const ref = context.payload.pull_request.head.sha;
+            const checks = await github.rest.checks.listForRef({ owner, repo, ref, per_page: 100 });
+            const byName = new Map(checks.data.check_runs.map((run) => [run.name, run.conclusion]));
+            const missing = requiredChecks.filter((name) => byName.get(name) !== 'success');
+            if (missing.length > 0) {
+              core.setFailed(`Missing successful staging checks for ${ref}: ${missing.join(', ')}`);
+            }
