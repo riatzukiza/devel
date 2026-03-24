@@ -134,3 +134,4 @@
 [submodule "orgs/open-hax/eta-mu"]
 	path = orgs/open-hax/eta-mu
 	url = https://github.com/open-hax/eta-mu.git
+	branch = main
