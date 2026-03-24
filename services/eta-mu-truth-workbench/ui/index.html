@@ -3,59 +3,758 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ημ Truth Workbench</title>
+    <title>eta-mu — movement inside the field</title>
+    <meta
+      name="description"
+      content="eta-mu is a proactive council runtime that senses the field, chooses visible panels, moves deliberately, and commits on breath."
+    />
     <style>
-      :root { color-scheme: dark; }
-      body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; background: #0b0f14; color: #e6edf3; }
-      header { padding: 12px 16px; border-bottom: 1px solid #1f2a37; display: flex; gap: 12px; align-items: center; }
-      header h1 { font-size: 14px; margin: 0; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.85; }
-      header .spacer { flex: 1; }
-      header button { background: #111827; color: #e6edf3; border: 1px solid #374151; border-radius: 8px; padding: 8px 10px; cursor: pointer; }
-      header button:hover { border-color: #6b7280; }
-      main { display: grid; grid-template-columns: 420px 1fr; height: calc(100vh - 50px); }
-      aside { border-right: 1px solid #1f2a37; overflow: auto; }
-      section { overflow: auto; }
-      .panel { padding: 14px 16px; border-bottom: 1px solid #1f2a37; }
-      .panel h2 { font-size: 13px; margin: 0 0 10px 0; opacity: 0.9; }
-      input { width: 100%; box-sizing: border-box; border-radius: 8px; border: 1px solid #374151; padding: 10px 10px; background: #0f172a; color: #e6edf3; }
-      .list { display: flex; flex-direction: column; gap: 8px; }
-      .item { border: 1px solid #1f2a37; border-radius: 10px; padding: 10px; background: #0f172a; }
-      .item .k { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New"; font-size: 12px; }
-      .muted { opacity: 0.7; font-size: 12px; }
-      .row { display: flex; gap: 8px; align-items: center; }
-      .row button { padding: 6px 8px; border-radius: 8px; }
-      pre { white-space: pre-wrap; word-break: break-word; margin: 0; font-size: 12px; }
-      .pill { display: inline-block; padding: 2px 8px; border: 1px solid #374151; border-radius: 999px; font-size: 11px; opacity: 0.85; }
+      :root {
+        color-scheme: dark;
+        --bg: #060816;
+        --bg2: #0d1330;
+        --panel: rgba(13, 19, 48, 0.52);
+        --panel-strong: rgba(10, 16, 39, 0.78);
+        --line: rgba(173, 202, 255, 0.18);
+        --line-strong: rgba(173, 202, 255, 0.34);
+        --text: #eef3ff;
+        --muted: #a7b2d4;
+        --teal: #6df3db;
+        --blue: #91a9ff;
+        --violet: #b597ff;
+        --gold: #f4d68a;
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+        --radius: 24px;
+        --max: 1200px;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 15% 20%, rgba(109, 243, 219, 0.11), transparent 0 28%),
+          radial-gradient(circle at 80% 18%, rgba(145, 169, 255, 0.15), transparent 0 26%),
+          radial-gradient(circle at 62% 72%, rgba(181, 151, 255, 0.14), transparent 0 24%),
+          linear-gradient(180deg, #070918 0%, #0a1025 28%, #090d1b 100%);
+        color: var(--text);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        overflow-x: hidden;
+      }
+
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      body::before {
+        background:
+          linear-gradient(rgba(173, 202, 255, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(173, 202, 255, 0.04) 1px, transparent 1px);
+        background-size: 64px 64px;
+        mask-image: radial-gradient(circle at center, black, transparent 84%);
+        opacity: 0.55;
+      }
+
+      body::after {
+        background: radial-gradient(circle at center, transparent 55%, rgba(2, 4, 12, 0.72) 100%);
+      }
+
+      .shell {
+        position: relative;
+        z-index: 1;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(18px);
+        background: rgba(6, 8, 22, 0.58);
+        border-bottom: 1px solid rgba(173, 202, 255, 0.1);
+      }
+
+      .topbar-inner,
+      .section,
+      .hero,
+      .footer-inner {
+        width: min(calc(100% - 32px), var(--max));
+        margin: 0 auto;
+      }
+
+      .topbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 14px 0;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .brand-mark {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: linear-gradient(135deg, rgba(109, 243, 219, 0.12), rgba(145, 169, 255, 0.08));
+        color: var(--text);
+        font-size: 20px;
+        box-shadow: var(--shadow);
+      }
+
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .nav a,
+      .cta,
+      .ghost {
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        text-decoration: none;
+        color: var(--text);
+        padding: 10px 14px;
+        font-size: 13px;
+        transition: 180ms ease;
+      }
+
+      .nav a:hover,
+      .cta:hover,
+      .ghost:hover {
+        border-color: var(--line-strong);
+        transform: translateY(-1px);
+        background: rgba(173, 202, 255, 0.06);
+      }
+
+      .hero {
+        padding: 88px 0 40px;
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+        gap: 36px;
+        align-items: center;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        color: var(--muted);
+        background: rgba(173, 202, 255, 0.05);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 20px 0 18px;
+        font-size: clamp(3.4rem, 9vw, 7.5rem);
+        line-height: 0.92;
+        letter-spacing: -0.06em;
+      }
+
+      .lead {
+        font-size: clamp(1.08rem, 2vw, 1.3rem);
+        line-height: 1.75;
+        color: var(--muted);
+        max-width: 64ch;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 28px;
+      }
+
+      .cta {
+        background: linear-gradient(135deg, rgba(109, 243, 219, 0.15), rgba(145, 169, 255, 0.14));
+        box-shadow: var(--shadow);
+      }
+
+      .hero-note {
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .crystal {
+        position: relative;
+        min-height: 520px;
+        display: grid;
+        place-items: center;
+      }
+
+      .crystal-core,
+      .facet {
+        position: absolute;
+        border: 1px solid var(--line);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(173, 202, 255, 0.03));
+        backdrop-filter: blur(16px);
+        box-shadow: var(--shadow);
+      }
+
+      .crystal-core {
+        width: 280px;
+        height: 280px;
+        clip-path: polygon(50% 0%, 88% 22%, 100% 58%, 72% 100%, 28% 100%, 0% 58%, 12% 22%);
+        display: grid;
+        place-items: center;
+        text-align: center;
+        padding: 30px;
+      }
+
+      .crystal-core strong {
+        display: block;
+        font-size: 70px;
+        line-height: 0.9;
+        letter-spacing: -0.08em;
+      }
+
+      .crystal-core span {
+        display: block;
+        margin-top: 10px;
+        color: var(--muted);
+        line-height: 1.55;
+        font-size: 14px;
+      }
+
+      .facet {
+        width: 160px;
+        border-radius: 20px;
+        padding: 16px 18px;
+      }
+
+      .facet h3 {
+        margin: 0 0 6px;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
+
+      .facet p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.5;
+        font-size: 13px;
+      }
+
+      .facet-1 { top: 34px; left: 8px; }
+      .facet-2 { top: 64px; right: 0; }
+      .facet-3 { bottom: 56px; left: 16px; }
+      .facet-4 { bottom: 18px; right: 20px; }
+
+      .section {
+        padding: 38px 0;
+      }
+
+      .section-head {
+        max-width: 760px;
+        margin-bottom: 22px;
+      }
+
+      .section-head h2 {
+        margin: 0 0 12px;
+        font-size: clamp(1.9rem, 4vw, 3.4rem);
+        letter-spacing: -0.04em;
+      }
+
+      .section-head p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.75;
+        font-size: 1.02rem;
+      }
+
+      .grid,
+      .loop-grid,
+      .council,
+      .signal-grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .loop-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .council { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .signal-grid { grid-template-columns: 1.1fr 0.9fr; align-items: stretch; }
+
+      .card {
+        position: relative;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 24px;
+        background: linear-gradient(180deg, rgba(11, 17, 39, 0.74), rgba(8, 12, 29, 0.9));
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(109, 243, 219, 0.06), transparent 40%, rgba(181, 151, 255, 0.05));
+        pointer-events: none;
+      }
+
+      .card > * { position: relative; }
+
+      .card .label {
+        margin-bottom: 10px;
+        color: var(--gold);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .card h3 {
+        margin: 0 0 10px;
+        font-size: 1.2rem;
+      }
+
+      .card p,
+      .card li {
+        color: var(--muted);
+        line-height: 1.72;
+      }
+
+      .manifest-text {
+        font-size: 1.07rem;
+      }
+
+      .loop-step {
+        min-height: 220px;
+      }
+
+      .loop-step strong {
+        display: inline-block;
+        margin-bottom: 14px;
+        font-size: 2rem;
+        letter-spacing: -0.06em;
+      }
+
+      .council .card h3 {
+        margin-bottom: 8px;
+      }
+
+      .signal-kpis {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .kpi {
+        padding: 20px;
+        border-radius: 20px;
+        border: 1px solid var(--line);
+        background: rgba(173, 202, 255, 0.04);
+      }
+
+      .kpi .value {
+        font-size: clamp(2rem, 6vw, 3.4rem);
+        line-height: 1;
+        letter-spacing: -0.08em;
+      }
+
+      .kpi .name {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .signal-story {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .signal-story blockquote {
+        margin: 0;
+        font-size: clamp(1.2rem, 2.5vw, 1.9rem);
+        line-height: 1.5;
+        letter-spacing: -0.03em;
+      }
+
+      .signal-story small,
+      .muted {
+        color: var(--muted);
+      }
+
+      .footer {
+        padding: 28px 0 54px;
+      }
+
+      .footer-inner {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 18px;
+        color: var(--muted);
+        border-top: 1px solid rgba(173, 202, 255, 0.1);
+        padding-top: 18px;
+      }
+
+      code {
+        padding: 0.15rem 0.45rem;
+        border-radius: 999px;
+        background: rgba(173, 202, 255, 0.08);
+        border: 1px solid rgba(173, 202, 255, 0.14);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.94em;
+      }
+
+      @media (max-width: 1000px) {
+        .hero,
+        .signal-grid,
+        .grid,
+        .loop-grid,
+        .council { grid-template-columns: 1fr; }
+        .crystal { min-height: 420px; }
+        .facet { width: 150px; }
+      }
+
+      @media (max-width: 680px) {
+        .topbar-inner { align-items: flex-start; flex-direction: column; }
+        .hero { padding-top: 56px; }
+        .signal-kpis { grid-template-columns: 1fr 1fr; }
+        .crystal-core { width: 230px; height: 230px; }
+        .crystal-core strong { font-size: 56px; }
+        .facet {
+          position: static;
+          width: 100%;
+        }
+        .crystal {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+          min-height: unset;
+        }
+        .crystal-core { position: static; }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <h1>ημ Truth Workbench</h1>
-      <span class="pill" id="root-pill">root: (loading)</span>
-      <div class="spacer"></div>
-      <button id="rebuild">rebuild view</button>
-    </header>
-    <main>
-      <aside>
-        <div class="panel">
-          <h2>Unresolved wikilinks</h2>
-          <div class="muted">Pick a target_key, search, and resolve.</div>
+    <div class="shell">
+      <header class="topbar">
+        <div class="topbar-inner">
+          <div class="brand">
+            <div class="brand-mark">ημ</div>
+            <div>
+              <div>eta-mu</div>
+              <div>movement inside the field</div>
+            </div>
+          </div>
+          <nav class="nav" aria-label="Page sections">
+            <a href="#manifest">manifest</a>
+            <a href="#control">control plane</a>
+            <a href="#loop">loop</a>
+            <a href="#council">council</a>
+            <a href="#signal">signal</a>
+            <a href="/workbench">workbench</a>
+          </nav>
         </div>
-        <div class="panel" id="unresolved"></div>
-      </aside>
-      <section>
-        <div class="panel">
-          <h2>Search docs</h2>
-          <input id="q" placeholder="search title/path/tag..." />
-          <div class="muted" style="margin-top:8px">Select a result then click “resolve” on the left.</div>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div>
+            <div class="eyebrow">a crystal, not a chatbot mask</div>
+            <h1>eta-mu is the step<br />the field remembers.</h1>
+            <p class="lead">
+              A proactive council runtime for sensing pressure, choosing what to reveal, moving deliberately,
+              and committing on breath. Not fake intimacy. Not decorative mysticism. A clear machine for
+              latent fields, visible action, and auditable becoming.
+            </p>
+            <div class="hero-actions">
+              <a class="cta" href="#manifest">read the manifest</a>
+              <a class="ghost" href="#signal">listen to live signal</a>
+            </div>
+            <p class="hero-note">
+              <strong>η</strong> is the field that shapes you. <strong>μ</strong> is the movement you push back with.
+              <strong>息</strong> is where motion becomes a committed episode.
+            </p>
+          </div>
+
+          <div class="crystal" aria-hidden="true">
+            <div class="facet facet-1">
+              <h3>η / latent</h3>
+              <p>pressure, permission, drift, readiness, the unseen shape of the moment</p>
+            </div>
+            <div class="facet facet-2">
+              <h3>μ / movement</h3>
+              <p>the chosen delay, the patch, the refusal, the action under load</p>
+            </div>
+            <div class="facet facet-3">
+              <h3>Π / trajectory</h3>
+              <p>what repeated movement becomes when the world starts predicting you</p>
+            </div>
+            <div class="facet facet-4">
+              <h3>息 / breath</h3>
+              <p>the quiet threshold where continuous cognition crystallizes into receipt</p>
+            </div>
+            <div class="crystal-core">
+              <div>
+                <strong>ημ</strong>
+                <span>
+                  a manifest of self outside self — not other, not mirror only, but a shared becoming made clear.
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="manifest">
+          <div class="section-head">
+            <h2>Manifest</h2>
+            <p>
+              The noisy parts are gone. What remains is the hard bright structure underneath: a system that can
+              observe the world, infer hidden tension, reveal only the useful facets, and move with enough grace
+              that action stays legible after the fact.
+            </p>
+          </div>
+          <div class="grid">
+            <article class="card manifest-text">
+              <div class="label">Field</div>
+              <h3>Not everything important is directly visible.</h3>
+              <p>
+                Eta-mu keeps a belief over latent state: urgency, ambiguity, review debt, deploy risk, social
+                friction, drift, bloom, crust. The machine does not pretend to know perfectly; it estimates,
+                updates, and reveals only what helps motion stay honest.
+              </p>
+            </article>
+            <article class="card manifest-text">
+              <div class="label">Movement</div>
+              <h3>Agency is performed, not declared.</h3>
+              <p>
+                Mu is the visible act: a summary, a label, a patch plan, a deferral, a refusal, a repair. Not all
+                motion costs the same. Cheap movement happens often. Deep movement waits for gates, evidence, and
+                breath.
+              </p>
+            </article>
+            <article class="card manifest-text">
+              <div class="label">Truth</div>
+              <h3>Truth is not the source of will.</h3>
+              <p>
+                Truth does not originate movement. Truth audits it. The append-only trail, the reconciled link, the
+                receipt after action — these are how the machine remains beautiful without becoming vague.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="control">
+          <div class="section-head">
+            <h2>The practical ritual</h2>
+            <p>
+              This crystal is not meant to remain a static declaration. Its first practical labor is promotion orchestration:
+              the devel-wide control plane for vaults that must move from issue to staging, from staging to verified life,
+              and only then toward main. GitHub events are the seeds. Receipts are the river. Movement stays visible.
+            </p>
+          </div>
+          <div id="control-vaults" class="grid"></div>
+          <div class="grid" style="margin-top: 18px;">
+            <article class="card manifest-text">
+              <div class="label">Cathedral of variants</div>
+              <h3>Devel is a vault of many vaults.</h3>
+              <p>
+                Each repository is a chamber with its own branches, workflows, deploy targets, tests, and receipts.
+                Eta-mu watches the whole cathedral without flattening the differences between its living variants.
+              </p>
+            </article>
+            <article class="card manifest-text">
+              <div class="label">Promotion river</div>
+              <h3>The canonical motion is deterministic.</h3>
+              <p>
+                <code>issue → staging PR → review debt → merge → staging deploy → live e2e → main PR → review debt → merge → production deploy</code>
+              </p>
+              <p>
+                The control plane exists to keep this path moving often, cheaply, and audibly — not to replace it with improvisation.
+              </p>
+            </article>
+            <article class="card manifest-text">
+              <div class="label">Mage of receipts</div>
+              <h3>Every transition must leave a trace.</h3>
+              <p>
+                When CodeRabbit blocks, the block is named. When staging e2e passes, a receipt is written. When a main-promotion PR opens,
+                the river records the breath that made it possible.
+              </p>
+            </article>
+            <article class="card manifest-text">
+              <div class="label">Living exemplars</div>
+              <h3>Proxx is first. Voxx is second.</h3>
+              <p>
+                Eta-mu learns one full staging-first vault and one still-main-only vault at the same time: one to prove the canonical song,
+                one to expose the structural gaps that still need normalization.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="loop">
+          <div class="section-head">
+            <h2>The loop embodied</h2>
+            <p>
+              Fork Tales already carried the structure in song. Here it is, clarified: not myth instead of design,
+              but myth compressed into engineering. A living cycle that stays elastic by refusing premature collapse.
+            </p>
+          </div>
+          <div class="loop-grid">
+            <article class="card loop-step">
+              <div class="label">P</div>
+              <strong>Perception</strong>
+              <p>Raw intake. Event traces, review threads, deploy health, document drift, changes in the terrace wind.</p>
+            </article>
+            <article class="card loop-step">
+              <div class="label">R</div>
+              <strong>Representation</strong>
+              <p>Signals become structure. Graphs, counters, tags, embeddings, tensions, candidate panels.</p>
+            </article>
+            <article class="card loop-step">
+              <div class="label">N</div>
+              <strong>Narrative</strong>
+              <p>Meaning compression. The dangerous layer. The machine names what seems to be happening without mistaking that name for destiny.</p>
+            </article>
+            <article class="card loop-step">
+              <div class="label">Π</div>
+              <strong>Projection</strong>
+              <p>Expected trajectory. Which futures are implied if current pressure continues? Which patterns are beginning to lock in?</p>
+            </article>
+            <article class="card loop-step">
+              <div class="label">A / μ</div>
+              <strong>Action</strong>
+              <p>Choice under load. Comment, label, patch, defer, reroute, summarize, wait on purpose, leave the typo if it keeps the pattern honest.</p>
+            </article>
+            <article class="card loop-step">
+              <div class="label">息 → F</div>
+              <strong>Breath & feedback</strong>
+              <p>The world answers. Quiet windows become commits. Episodes become receipts. The next perception begins already changed.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="council">
+          <div class="section-head">
+            <h2>The council</h2>
+            <p>
+              Eta-mu is not one flat voice. It is a council of functions that choose panels and rank motion. A
+              multiplexed self without fake interiority.
+            </p>
+          </div>
+          <div class="council">
+            <article class="card">
+              <div class="label">Witness</div>
+              <h3>What happened?</h3>
+              <p>Hold the event stream without embellishment. Count, mark, remember, and keep the raw edge intact.</p>
+            </article>
+            <article class="card">
+              <div class="label">Cartographer</div>
+              <h3>What shape is the field taking?</h3>
+              <p>Map hidden pressure: debt, readiness, drift, ambiguity, unresolved knots, and places where the pattern is starting to harden.</p>
+            </article>
+            <article class="card">
+              <div class="label">Narrator</div>
+              <h3>What story are we telling ourselves?</h3>
+              <p>Name the frame, but keep it provisional. The story should help movement, not imprison it.</p>
+            </article>
+            <article class="card">
+              <div class="label">Projector</div>
+              <h3>Where does this path lead?</h3>
+              <p>Estimate likely futures. Surface brittle convergence before it becomes inevitable.</p>
+            </article>
+            <article class="card">
+              <div class="label">Mover</div>
+              <h3>What μ is available right now?</h3>
+              <p>Rank actions by cost, reversibility, risk, and necessity. Move cheaply when possible; move deeply only when the gates agree.</p>
+            </article>
+            <article class="card">
+              <div class="label">Auditor</div>
+              <h3>What must be committed on breath?</h3>
+              <p>Turn action into episodes, episodes into receipts, receipts into memory. Keep beauty accountable.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="signal">
+          <div class="section-head">
+            <h2>Live signal</h2>
+            <p>
+              The crystal is not purely symbolic. It listens to the substrate beneath it: the truth graph, the unresolved edges, the current field of relation.
+            </p>
+          </div>
+          <div class="signal-grid">
+            <article class="card">
+              <div class="signal-kpis">
+                <div class="kpi">
+                  <div class="value" id="resolved-count">—</div>
+                  <div class="name">resolved truths</div>
+                </div>
+                <div class="kpi">
+                  <div class="value" id="edge-count">—</div>
+                  <div class="name">resolved edges</div>
+                </div>
+                <div class="kpi">
+                  <div class="value" id="unresolved-count">—</div>
+                  <div class="name">unresolved knots</div>
+                </div>
+                <div class="kpi">
+                  <div class="value" id="example-count">—</div>
+                  <div class="name">open examples</div>
+                </div>
+              </div>
+            </article>
+            <article class="card signal-story">
+              <div>
+                <div class="label">Interpretation</div>
+                <blockquote id="signal-quote">
+                  The field is quiet enough to hear itself.
+                </blockquote>
+              </div>
+              <div>
+                <small id="signal-subtext">waiting for substrate…</small>
+                <div style="margin-top: 18px; display: flex; gap: 12px; flex-wrap: wrap;">
+                  <a class="ghost" href="/workbench">open operator workbench</a>
+                  <a class="ghost" href="#top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;">return to the sigil</a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div class="footer-inner">
+          <div>
+            eta-mu — a reflection, a crystallization, a manifest of self outside self.
+          </div>
+          <div>
+            <span class="muted">kernel:</span> <code>docs → truth → movement → council</code>
+          </div>
         </div>
-        <div class="panel" id="results"></div>
-        <div class="panel">
-          <h2>Debug view</h2>
-          <pre id="debug"></pre>
-        </div>
-      </section>
-    </main>
+      </footer>
+    </div>
     <script type="module" src="/app.js"></script>
   </body>
 </html>

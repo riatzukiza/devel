@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ημ Truth Workbench</title>
+    <style>
+      :root { color-scheme: dark; }
+      body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; background: #0b0f14; color: #e6edf3; }
+      header { padding: 12px 16px; border-bottom: 1px solid #1f2a37; display: flex; gap: 12px; align-items: center; }
+      header h1 { font-size: 14px; margin: 0; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.85; }
+      header .spacer { flex: 1; }
+      header button,
+      header a { background: #111827; color: #e6edf3; border: 1px solid #374151; border-radius: 8px; padding: 8px 10px; cursor: pointer; text-decoration: none; }
+      header button:hover,
+      header a:hover { border-color: #6b7280; }
+      main { display: grid; grid-template-columns: 420px 1fr; height: calc(100vh - 50px); }
+      aside { border-right: 1px solid #1f2a37; overflow: auto; }
+      section { overflow: auto; }
+      .panel { padding: 14px 16px; border-bottom: 1px solid #1f2a37; }
+      .panel h2 { font-size: 13px; margin: 0 0 10px 0; opacity: 0.9; }
+      input { width: 100%; box-sizing: border-box; border-radius: 8px; border: 1px solid #374151; padding: 10px 10px; background: #0f172a; color: #e6edf3; }
+      .list { display: flex; flex-direction: column; gap: 8px; }
+      .item { border: 1px solid #1f2a37; border-radius: 10px; padding: 10px; background: #0f172a; }
+      .item .k { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New"; font-size: 12px; }
+      .muted { opacity: 0.7; font-size: 12px; }
+      .row { display: flex; gap: 8px; align-items: center; }
+      .row button { padding: 6px 8px; border-radius: 8px; }
+      pre { white-space: pre-wrap; word-break: break-word; margin: 0; font-size: 12px; }
+      .pill { display: inline-block; padding: 2px 8px; border: 1px solid #374151; border-radius: 999px; font-size: 11px; opacity: 0.85; }
+      @media (max-width: 960px) {
+        main { grid-template-columns: 1fr; height: auto; }
+        aside { border-right: 0; border-bottom: 1px solid #1f2a37; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>ημ Truth Workbench</h1>
+      <span class="pill" id="root-pill">root: (loading)</span>
+      <div class="spacer"></div>
+      <a href="/">return to crystal</a>
+      <button id="rebuild">rebuild view</button>
+    </header>
+    <main>
+      <aside>
+        <div class="panel">
+          <h2>Unresolved wikilinks</h2>
+          <div class="muted">Pick a target_key, search, and resolve.</div>
+        </div>
+        <div class="panel" id="unresolved"></div>
+      </aside>
+      <section>
+        <div class="panel">
+          <h2>Search docs</h2>
+          <input id="q" placeholder="search title/path/tag..." />
+          <div class="muted" style="margin-top:8px">Select a result then click “resolve” on the left.</div>
+        </div>
+        <div class="panel" id="results"></div>
+        <div class="panel">
+          <h2>Debug view</h2>
+          <pre id="debug"></pre>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="/workbench.js"></script>
+  </body>
+</html>

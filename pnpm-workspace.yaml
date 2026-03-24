@@ -12,6 +12,7 @@ packages:
   - packages/radar-core
   - packages/eta-mu-docs
   - packages/eta-mu-truth
+  - packages/output-contract-gate
   - packages/thread-assessment
   - packages/npu-top
   - packages/omni-top

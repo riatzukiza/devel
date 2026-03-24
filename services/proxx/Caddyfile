@@ -64,3 +64,16 @@ voxx.ussy.promethean.rest {
 
   reverse_proxy openhax-voxx:8788
 }
+
+gates.ussy.promethean.rest {
+  encode gzip zstd
+
+  @api path /api*
+  reverse_proxy @api host.docker.internal:3300
+
+  header {
+    Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  }
+
+  reverse_proxy host.docker.internal:5175
+}

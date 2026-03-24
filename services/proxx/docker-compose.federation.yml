@@ -1,0 +1,153 @@
+# Federation Peer - runs alongside the main proxx stack
+# Usage: docker compose -f docker-compose.yml -f docker-compose.federation.yml up -d
+#
+# This creates a second peer (proxx-federation) that can federate with the main proxy.
+# Both must share the same Docker network (ai-infra).
+#
+# Federation peers share account knowledge via the federation protocol:
+# - Each peer has its own database (no shared state)
+# - Peers register each other via /api/ui/federation/peers
+# - Projected accounts are synced from remote peers
+
+name: open-hax-federation-peer
+
+services:
+  open-hax-federation-peer:
+    depends_on:
+      open-hax-federation-peer-db:
+        condition: service_healthy
+    build:
+      context: ../../orgs/open-hax/proxx
+      dockerfile: Dockerfile
+    ports:
+      - "${FEDERATION_PROXY_PORT:-8792}:8789"
+      - "${FEDERATION_OAUTH_CALLBACK_PORT:-1456}:8789"
+      - "${FEDERATION_WEB_PORT:-5175}:5174"
+    environment:
+      NODE_ENV: production
+      PROXY_HOST: 0.0.0.0
+      PROXY_PORT: "8789"
+      PORT: "8789"
+      OPENAI_OAUTH_CALLBACK_PORT: "${FEDERATION_OAUTH_CALLBACK_PORT:-1456}"
+      PROXY_AUTH_TOKEN: "${FEDERATION_PROXY_AUTH_TOKEN:-federation-peer-token}"
+
+      # Keys and models - can share with main or have separate credentials
+      PROXY_KEYS_FILE: /workspace/service-config/keys.json
+      PROXY_MODELS_FILE: /workspace/service-config/models.json
+      PROXY_REQUEST_LOGS_FILE: /app/data/request-logs.jsonl
+      PROXY_REQUEST_LOGS_MAX_ENTRIES: "${PROXY_REQUEST_LOGS_MAX_ENTRIES:-100000}"
+      PROXY_REQUEST_LOGS_FLUSH_MS: "${PROXY_REQUEST_LOGS_FLUSH_MS:-1000}"
+      PROXY_PROMPT_AFFINITY_FLUSH_MS: "${PROXY_PROMPT_AFFINITY_FLUSH_MS:-250}"
+
+      # Upstream configuration
+      UPSTREAM_PROVIDER_ID: "${UPSTREAM_PROVIDER_ID:-openai}"
+      UPSTREAM_FALLBACK_PROVIDER_IDS: "${UPSTREAM_FALLBACK_PROVIDER_IDS:-ollama-cloud,requesty}"
+      DISABLED_PROVIDER_IDS: "${DISABLED_PROVIDER_IDS:-}"
+      UPSTREAM_BASE_URL: "${UPSTREAM_BASE_URL:-https://chatgpt.com/backend-api}"
+      UPSTREAM_PROVIDER_BASE_URLS: "${UPSTREAM_PROVIDER_BASE_URLS:-}"
+      REQUESTY_API_TOKEN: "${REQUESTY_API_TOKEN:-}"
+      OPENAI_PROVIDER_ID: "${OPENAI_PROVIDER_ID:-openai}"
+      OPENAI_BASE_URL: "${OPENAI_BASE_URL:-https://chatgpt.com/backend-api}"
+      OPENAI_API_BASE_URL: "${OPENAI_API_BASE_URL:-https://api.openai.com}"
+      GEMINI_API_KEY: "${GEMINI_API_KEY:-}"
+      OPENAI_IMAGES_UPSTREAM_MODE: "${OPENAI_IMAGES_UPSTREAM_MODE:-auto}"
+      OPENAI_OAUTH_CLIENT_ID: "${OPENAI_OAUTH_CLIENT_ID:-app_EMoamEEZ73f0CkXaXp7hrann}"
+      OPENAI_OAUTH_CLIENT_SECRET: "${OPENAI_OAUTH_CLIENT_SECRET:-}"
+      OPENAI_OAUTH_ISSUER: "${OPENAI_OAUTH_ISSUER:-https://auth.openai.com}"
+      OPENAI_OAUTH_SCOPES: "${OPENAI_OAUTH_SCOPES:-openid profile email offline_access}"
+      OPENAI_IMAGES_GENERATIONS_PATHS: "${OPENAI_IMAGES_GENERATIONS_PATHS:-}"
+      IMAGE_COST_USD_DEFAULT: "${IMAGE_COST_USD_DEFAULT:-0}"
+      IMAGE_COST_USD_BY_PROVIDER: "${IMAGE_COST_USD_BY_PROVIDER:-}"
+      OLLAMA_BASE_URL: "${OLLAMA_BASE_URL:-http://ollama:11434}"
+      ZAI_API_KEY: "${ZAI_API_KEY:-}"
+      ZHIPU_API_KEY: "${ZHIPU_API_KEY:-}"
+      ZAI_PROVIDER_ID: "${ZAI_PROVIDER_ID:-zai}"
+      ZHIPU_PROVIDER_ID: "${ZHIPU_PROVIDER_ID:-}"
+      ZAI_BASE_URL: "${ZAI_BASE_URL:-https://api.z.ai/api/paas/v4}"
+      ZHIPU_BASE_URL: "${ZHIPU_BASE_URL:-}"
+
+      UPSTREAM_REQUEST_TIMEOUT_MS: "${UPSTREAM_REQUEST_TIMEOUT_MS:-180000}"
+      UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS: "${UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS:-180000}"
+      PROXY_ALLOW_UNAUTHENTICATED: "${PROXY_ALLOW_UNAUTHENTICATED:-false}"
+
+      # Federation identity - this peer's identity
+      FEDERATION_SELF_NODE_ID: "${FEDERATION_SELF_NODE_ID:-federation-peer-1}"
+      FEDERATION_SELF_GROUP_ID: "${FEDERATION_SELF_GROUP_ID:-local-test-group}"
+      FEDERATION_SELF_CLUSTER_ID: "${FEDERATION_SELF_CLUSTER_ID:-local-test-cluster}"
+      FEDERATION_SELF_PEER_DID: "${FEDERATION_SELF_PEER_DID:-}"
+      FEDERATION_SELF_PUBLIC_BASE_URL: "${FEDERATION_SELF_PUBLIC_BASE_URL:-http://open-hax-federation-peer:8789}"
+      FEDERATION_REQUEST_TIMEOUT_MS: "${FEDERATION_REQUEST_TIMEOUT_MS:-30000}"
+
+      PROXY_KEY_RELOAD_MS: "${PROXY_KEY_RELOAD_MS:-5000}"
+      PROXY_KEY_COOLDOWN_MS: "${PROXY_KEY_COOLDOWN_MS:-30000}"
+
+      DATABASE_URL: "postgresql://federation_proxy:federation_proxy@open-hax-federation-peer-db:5432/federation_proxy"
+
+      VITE_ALLOWED_HOSTS: "${VITE_ALLOWED_HOSTS:-}"
+
+      # Disable Chroma for federation peer (uses main peer's Chroma if needed)
+      CHROMA_URL: "${CHROMA_URL:-}"
+      CHROMA_COLLECTION: "${CHROMA_COLLECTION:-}"
+
+      HOST_DASHBOARD_SELF_ID: "${HOST_DASHBOARD_SELF_ID:-}"
+      HOST_DASHBOARD_TARGETS_JSON: "${HOST_DASHBOARD_TARGETS_JSON:-}"
+      HOST_DASHBOARD_DOCKER_SOCKET_PATH: "${HOST_DASHBOARD_DOCKER_SOCKET_PATH:-/var/run/docker.sock}"
+      HOST_DASHBOARD_RUNTIME_ROOT: "${HOST_DASHBOARD_RUNTIME_ROOT:-/workspace/runtime-repo}"
+      HOST_DASHBOARD_REQUEST_TIMEOUT_MS: "${HOST_DASHBOARD_REQUEST_TIMEOUT_MS:-5000}"
+
+      OTEL_EXPORTER_OTLP_ENDPOINT: "${OTEL_EXPORTER_OTLP_ENDPOINT:-}"
+      OTEL_EXPORTER_OTLP_HEADERS: "${OTEL_EXPORTER_OTLP_HEADERS:-}"
+      OTEL_SERVICE_NAME: "federation-peer"
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=federation-peer"
+
+    volumes:
+      - ./keys.json:/workspace/service-config/keys.json
+      - ./models.json:/workspace/service-config/models.json:ro
+      - ./data-federation:/app/data
+      - ./:/workspace/runtime-repo:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "Promise.all([fetch('http://127.0.0.1:8789/health',{headers:{Authorization:'Bearer '+(process.env.PROXY_AUTH_TOKEN||'')}}), fetch('http://127.0.0.1:5174')]).then(([proxyResponse, webResponse]) => { if (!proxyResponse.ok || !webResponse.ok) { process.exit(1); } }).catch(() => process.exit(1))"
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+    networks:
+      ai-infra: {}
+
+  open-hax-federation-peer-db:
+    image: postgres:16-bookworm
+    environment:
+      POSTGRES_DB: federation_proxy
+      POSTGRES_USER: federation_proxy
+      POSTGRES_PASSWORD: federation_proxy
+    ports:
+      - "${FEDERATION_DB_PORT:-5433}:5432"
+    volumes:
+      - open-hax-federation-peer-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U federation_proxy -d federation_proxy"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      ai-infra: {}
+
+networks:
+  ai-infra:
+    external: true
+    name: ai-infra
+
+volumes:
+  open-hax-federation-peer-db-data:
