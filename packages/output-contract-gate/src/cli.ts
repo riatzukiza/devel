@@ -9,7 +9,7 @@ import { compileAgentOutputContract } from './edn.js';
 import { generateCandidate } from './generate.js';
 import { extractMarkdownSections } from './markdown.js';
 import { compileRepairPrompt } from './repair.js';
-import { buildStubReviewReport } from './review.js';
+import { buildStubReviewReport, buildGptReviewReport } from './review.js';
 import { toFailureReport, validateMarkdownResponse } from './validate.js';
 import type { RepairAttemptRecord } from './types.js';
 
@@ -38,7 +38,18 @@ type ReviewStubCliArgs = {
   readonly bundleDir: string;
 };
 
-type CliArgs = ValidateCliArgs | GenerateCliArgs | ReviewStubCliArgs;
+type ReviewGptCliArgs = {
+  readonly mode: 'review-gpt';
+  readonly bundleDir: string;
+  readonly model?: string;
+  readonly baseUrl?: string;
+  readonly apiKey?: string;
+  readonly maxSessionTurns?: number;
+  readonly temperature?: number;
+  readonly noFallback?: boolean;
+};
+
+type CliArgs = ValidateCliArgs | GenerateCliArgs | ReviewStubCliArgs | ReviewGptCliArgs;
 
 type CliIo = {
   readonly stdout: (text: string) => void;
@@ -54,6 +65,7 @@ const usage = `Usage:
   output-contract-gate --contract <path/to/contract.edn> --response <path/to/response.md>
   output-contract-gate generate --contract <path/to/contract.edn> (--task-file <path> | --task-text <text>)
   output-contract-gate review-stub --bundle <path/to/bundle>
+  output-contract-gate review-gpt --bundle <path/to/bundle>
 
 Flags:
   --contract   Path to an EDN contract file
@@ -63,10 +75,12 @@ Flags:
   --generator  fixture-valid | fixture-invalid | openai-chat (default: fixture-valid)
   --bundle     Path to a previously written artifact bundle
   --artifacts-root  Optional root for run artifacts (default: ./artifacts/output-contract-gate)
-  --base-url   OpenAI-compatible base URL for generate mode (default: OPENAI_BASE_URL or http://127.0.0.1:8789/v1)
-  --model      Model id for generate mode
-  --api-key    Explicit API key for generate mode
-  --temperature Numeric temperature for generate mode (default: 0.2)
+  --base-url   OpenAI-compatible base URL for generate/review mode (default: OPENAI_BASE_URL or http://127.0.0.1:8789/v1)
+  --model      Model id for generate/review mode (default: gpt-5.4)
+  --api-key    Explicit API key for generate/review mode
+  --temperature Numeric temperature for generate/review mode (default: 0.2 for generate, 0.3 for review)
+  --max-session-turns  Max session turns for review-gpt (default: 10)
+  --no-fallback  For review-gpt: fail instead of falling back to stub on error
   --no-artifacts    Disable artifact writing for this run
   --help       Show this help
 `;
@@ -247,12 +261,82 @@ const parseReviewStubArgs = (argv: readonly string[]): ReviewStubCliArgs => {
   };
 };
 
+const parseReviewGptArgs = (argv: readonly string[]): ReviewGptCliArgs => {
+  let bundleDir: string | undefined;
+  let model: string | undefined;
+  let baseUrl: string | undefined;
+  let apiKey: string | undefined;
+  let maxSessionTurns: number | undefined;
+  let temperature: number | undefined;
+  let noFallback = false;
+
+  for (let index = 0; index < argv.length; index += 1) {
+    const token = argv[index];
+    if (token === '--help') {
+      throw new CliUsageError(usage);
+    }
+    if (token === '--bundle') {
+      bundleDir = argv[index + 1];
+      index += 1;
+      continue;
+    }
+    if (token === '--model') {
+      model = argv[index + 1];
+      index += 1;
+      continue;
+    }
+    if (token === '--base-url') {
+      baseUrl = argv[index + 1];
+      index += 1;
+      continue;
+    }
+    if (token === '--api-key') {
+      apiKey = argv[index + 1];
+      index += 1;
+      continue;
+    }
+    if (token === '--max-session-turns') {
+      maxSessionTurns = Number(argv[index + 1]);
+      index += 1;
+      continue;
+    }
+    if (token === '--temperature') {
+      temperature = Number(argv[index + 1]);
+      index += 1;
+      continue;
+    }
+    if (token === '--no-fallback') {
+      noFallback = true;
+      continue;
+    }
+    throw new CliUsageError(`Unknown argument: ${token}`);
+  }
+
+  if (!bundleDir) {
+    throw new CliUsageError('review-gpt requires --bundle <path>.');
+  }
+
+  return {
+    mode: 'review-gpt',
+    bundleDir: resolve(bundleDir),
+    ...(model ? { model } : {}),
+    ...(baseUrl ? { baseUrl } : {}),
+    ...(apiKey ? { apiKey } : {}),
+    ...(maxSessionTurns !== undefined ? { maxSessionTurns } : {}),
+    ...(temperature !== undefined ? { temperature } : {}),
+    noFallback,
+  };
+};
+
 export const parseCliArgs = (argv: readonly string[]): CliArgs => {
   if (argv[0] === 'generate') {
     return parseGenerateArgs(argv.slice(1));
   }
   if (argv[0] === 'review-stub') {
     return parseReviewStubArgs(argv.slice(1));
+  }
+  if (argv[0] === 'review-gpt') {
+    return parseReviewGptArgs(argv.slice(1));
   }
   return parseValidateArgs(argv);
 };
@@ -289,6 +373,50 @@ export const runCli = async (argv: readonly string[], io: CliIo = defaultIo): Pr
       io.stdout(`${JSON.stringify({
         ok: reviewReport.ok,
         stage: 'review',
+        bundleDir: args.bundleDir,
+        reviewReport,
+        written,
+      }, null, 2)}\n`);
+      return reviewReport.ok ? 0 : 1;
+    }
+
+    if (args.mode === 'review-gpt') {
+      const contractIrPath = resolve(args.bundleDir, 'contract-ir.json');
+      const candidatePath = resolve(args.bundleDir, 'candidate.md');
+      const validationReportPath = resolve(args.bundleDir, 'validation-report.json');
+      const [contractIrSource, candidateMarkdown, validationReportSource] = await Promise.all([
+        readFile(contractIrPath, 'utf8'),
+        readFile(candidatePath, 'utf8'),
+        readFile(validationReportPath, 'utf8'),
+      ]);
+
+      const contract = JSON.parse(contractIrSource) as ReturnType<typeof compileAgentOutputContract>;
+      const structureReport = JSON.parse(validationReportSource) as ReturnType<typeof toFailureReport>;
+
+      if (!structureReport.ok) {
+        io.stderr(`${JSON.stringify({
+          ok: false,
+          stage: 'review',
+          error: 'review-gpt requires a structurally valid bundle',
+          bundleDir: args.bundleDir,
+        }, null, 2)}\n`);
+        return 2;
+      }
+
+      const reviewReport = await buildGptReviewReport(contract, candidateMarkdown, structureReport, {
+        model: args.model,
+        baseUrl: args.baseUrl,
+        apiKey: args.apiKey,
+        maxSessionTurns: args.maxSessionTurns,
+        temperature: args.temperature,
+        fallbackToStub: !args.noFallback,
+      });
+      const written = await writeReviewArtifacts(args.bundleDir, reviewReport);
+      io.stdout(`${JSON.stringify({
+        ok: reviewReport.ok,
+        stage: 'review',
+        reviewer: reviewReport.reviewer,
+        modelId: reviewReport.modelId,
         bundleDir: args.bundleDir,
         reviewReport,
         written,

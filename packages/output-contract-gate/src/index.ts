@@ -2,7 +2,7 @@ export { ContractCompileError, compileAgentOutputContract, parseEdnForm } from '
 export { writeGenerationArtifacts, writeRepairAttemptArtifacts, writeRunArtifacts, writeReviewArtifacts } from './artifacts.js';
 export { buildGenerationMessages, buildGenerationMessagesForAttempt, generateCandidate } from './generate.js';
 export { parseMarkdownAst, extractMarkdownSections, countSemanticItems, nodeText } from './markdown.js';
-export { buildStubReviewReport } from './review.js';
+export { buildStubReviewReport, buildGptReviewReport, buildReviewMessages } from './review.js';
 export { validateMarkdownResponse, toFailureReport } from './validate.js';
 export { compileRepairPrompt } from './repair.js';
 export {
@@ -19,6 +19,8 @@ export type {
   FailureReport,
   GenerationMode,
   GenerationReport,
+  GptReviewConfig,
+  GptReviewMessage,
   MarkdownNode,
   MarkdownRoot,
   NormalizedContract,

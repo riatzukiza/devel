@@ -119,7 +119,7 @@ export type ArtifactBundle = {
 
 export type ReviewReport = {
   readonly stage: 'review';
-  readonly reviewer: 'stub';
+  readonly reviewer: 'stub' | 'gpt';
   readonly ok: boolean;
   readonly threshold: number;
   readonly overallScore: number;
@@ -127,6 +127,23 @@ export type ReviewReport = {
   readonly deltas: readonly string[];
   readonly limitations: readonly string[];
   readonly generatedAt: string;
+  readonly modelId?: string;
+  readonly sessionTurns?: number;
+};
+
+export type GptReviewConfig = {
+  readonly model?: string;
+  readonly baseUrl?: string;
+  readonly apiKey?: string;
+  readonly sessionHistory?: readonly { readonly role: 'user' | 'assistant'; readonly content: string }[];
+  readonly maxSessionTurns?: number;
+  readonly temperature?: number;
+  readonly fallbackToStub?: boolean;
+};
+
+export type GptReviewMessage = {
+  readonly role: 'system' | 'user' | 'assistant';
+  readonly content: string;
 };
 
 export type GenerationMode = 'fixture-valid' | 'fixture-invalid' | 'openai-chat';
