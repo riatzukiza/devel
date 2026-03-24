@@ -1,0 +1,19 @@
+{
+  "16mb": 1,
+  "8xh100": 1,
+  "val_bpb": 1,
+  "fineweb": 1,
+  "compression": 1,
+  "reproducible": 1,
+  "submission": 1,
+  "records": 1,
+  "train_log": 1,
+  "artifact_size": 1,
+  "weight_sharing": 1,
+  "depth_recurrence": 1,
+  "quantization": 1,
+  "tokenizer": 1,
+  "benchmarking": 1,
+  "experiment_rigor": 1,
+  "creative_engineering": 1
+}

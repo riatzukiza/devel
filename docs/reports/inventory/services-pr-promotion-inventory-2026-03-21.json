@@ -1,0 +1,493 @@
+{
+  "generatedAt": "2026-03-21T17:59:30Z",
+  "scope": {
+    "serviceDirectories": "top-level services/* under /home/err/devel",
+    "question": "Which services already have GitHub staging -> main PR deploy flows in devel, which are submodules, and are any exclusive to the boxes?"
+  },
+  "serviceDirectoryCounts": {
+    "total": 30,
+    "rootOwned": 28,
+    "rootSubmodules": 1,
+    "nestedGitPointers": 1,
+    "symlinkAliases": 1
+  },
+  "serviceDirectories": [
+    {
+      "name": "api-gateway",
+      "path": "services/api-gateway",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "auto-fork-tax",
+      "path": "services/auto-fork-tax",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "cephalon-cljs",
+      "path": "services/cephalon-cljs",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "cephalon-stack",
+      "path": "services/cephalon-stack",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "eta-mu-truth-workbench",
+      "path": "services/eta-mu-truth-workbench",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "host-fleet-dashboard",
+      "path": "services/host-fleet-dashboard",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "janus",
+      "path": "services/janus",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "kronos",
+      "path": "services/kronos",
+      "classification": "nested-git-pointer",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": null,
+      "origin": null,
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": [
+        "Contains a .git pointer to ../../../../../.git/modules/promethean/modules/packages/mcp, but git commands do not resolve from this path in the current workspace."
+      ]
+    },
+    {
+      "name": "mcp-devtools",
+      "path": "services/mcp-devtools",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "mcp-exec",
+      "path": "services/mcp-exec",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "mcp-files",
+      "path": "services/mcp-files",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "mcp-fs-oauth",
+      "path": "services/mcp-fs-oauth",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "mcp-github",
+      "path": "services/mcp-github",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "mcp-ollama",
+      "path": "services/mcp-ollama",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "mcp-process",
+      "path": "services/mcp-process",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "mcp-sandboxes",
+      "path": "services/mcp-sandboxes",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "mcp-social-publisher",
+      "path": "services/mcp-social-publisher",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "mcp-stack",
+      "path": "services/mcp-stack",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "mcp-tdd",
+      "path": "services/mcp-tdd",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "mnemosyne",
+      "path": "services/mnemosyne",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "ollama-stack",
+      "path": "services/ollama-stack",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "open-hax-openai-proxy",
+      "path": "services/open-hax-openai-proxy",
+      "classification": "root-owned",
+      "isSymlink": true,
+      "symlinkTarget": "services/proxx",
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": [
+        "Symlink alias to services/proxx, not a distinct service boundary."
+      ]
+    },
+    {
+      "name": "opencode-compat",
+      "path": "services/opencode-compat",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "opencode-indexer",
+      "path": "services/opencode-indexer",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "opencode-stack",
+      "path": "services/opencode-stack",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "openplanner",
+      "path": "services/openplanner",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "proxx",
+      "path": "services/proxx",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": [
+        "Runtime/deploy directory in the root repo; matching source submodule with a full PR promotion flow exists at orgs/open-hax/proxx."
+      ]
+    },
+    {
+      "name": "radar-stack",
+      "path": "services/radar-stack",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": []
+    },
+    {
+      "name": "vivgrid-openai-proxy",
+      "path": "services/vivgrid-openai-proxy",
+      "classification": "root-submodule",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel/services/vivgrid-openai-proxy",
+      "origin": "https://github.com/open-hax/vivgrid-openai-proxy.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": [
+        "This is the only services/* path that is a root git submodule."
+      ]
+    },
+    {
+      "name": "voxx",
+      "path": "services/voxx",
+      "classification": "root-owned",
+      "isSymlink": false,
+      "symlinkTarget": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "directWorkflowFiles": [],
+      "directPromotionFlow": false,
+      "notes": [
+        "Runtime/deploy directory in the root repo; matching source submodule exists at orgs/open-hax/voxx but currently has main-only automation."
+      ]
+    }
+  ],
+  "workspacePromotionFlows": [
+    {
+      "repo": "orgs/open-hax/proxx",
+      "origin": "https://github.com/open-hax/proxx.git",
+      "backsServicePath": "services/proxx",
+      "flowStatus": "full",
+      "workflowFiles": [
+        "staging-pr.yml",
+        "main-pr-gate.yml",
+        "deploy-staging.yml",
+        "deploy-production.yml"
+      ],
+      "notes": [
+        "Implements PR gate to staging, PR gate to main, push-to-staging deploy, and push-to-main production deploy.",
+        "Main PR gate requires successful staging deploy/live checks before promotion."
+      ]
+    },
+    {
+      "repo": "orgs/open-hax/voxx",
+      "origin": "git@github.com:open-hax/voxx.git",
+      "backsServicePath": "services/voxx",
+      "flowStatus": "main-only",
+      "workflowFiles": [
+        "voxx-main.yml"
+      ],
+      "notes": [
+        "Has pull_request plus main push automation and production deploy.",
+        "No separate staging PR gate or push-to-staging deploy workflow is present."
+      ]
+    },
+    {
+      "repo": "services/vivgrid-openai-proxy",
+      "origin": "https://github.com/open-hax/vivgrid-openai-proxy.git",
+      "backsServicePath": "services/vivgrid-openai-proxy",
+      "flowStatus": "none",
+      "workflowFiles": [],
+      "notes": [
+        "Standalone root submodule with no .github/workflows directory in the checked-out repo."
+      ]
+    },
+    {
+      "repo": "orgs/ussyverse/battlebussy",
+      "origin": "workspace local repo",
+      "backsServicePath": null,
+      "flowStatus": "full",
+      "workflowFiles": [
+        "pr-staging.yml",
+        "pr-main.yml",
+        "deploy-staging.yml",
+        "deploy-main.yml"
+      ],
+      "notes": [
+        "Not under services/*, but it is live on the boxes and already has the desired staging/main PR promotion pattern."
+      ]
+    },
+    {
+      "repo": "mcp-social-publisher-live",
+      "origin": "https://github.com/riatzukiza/mcp-social-publisher",
+      "backsServicePath": null,
+      "flowStatus": "none",
+      "workflowFiles": [],
+      "notes": [
+        "Deployed on ussy under ~/apps/mcp-social-publisher-live but no GitHub workflow files are present locally."
+      ]
+    },
+    {
+      "repo": "orgs/octave-commons/gates-of-aker",
+      "origin": "workspace local repo",
+      "backsServicePath": null,
+      "flowStatus": "ci-only",
+      "workflowFiles": [
+        "backend.yml",
+        "ci.yml",
+        "frontend.yml",
+        "fullstack.yml"
+      ],
+      "notes": [
+        "Live on ussy under ~/apps/gates-of-aker, but current workflows are CI-oriented rather than staging/main deploy promotion."
+      ]
+    }
+  ],
+  "boxExclusiveFindings": {
+    "sourceExclusiveToBoxes": [],
+    "runtimePathExclusiveToBoxes": [
+      {
+        "path": "/home/error/devel/services/proxx-staging",
+        "host": "ussy3.promethean.rest",
+        "notes": "Remote staging runtime path exists only on the host; it is derived from local services/proxx plus orgs/open-hax/proxx workflows rather than a local services/proxx-staging directory."
+      }
+    ],
+    "boxOnlyDeployRootsWithLocalSourceElsewhere": [
+      {
+        "path": "/home/error/apps/gates-of-aker",
+        "host": "ussy.promethean.rest",
+        "localSource": "orgs/octave-commons/gates-of-aker"
+      },
+      {
+        "path": "/home/error/apps/mcp-social-publisher-live",
+        "host": "ussy.promethean.rest",
+        "localSource": "mcp-social-publisher-live"
+      }
+    ],
+    "notes": [
+      "From current evidence, no live service appears to exist only on the boxes with no corresponding source tree somewhere in devel.",
+      "Several live services are not under top-level services/*, but they do exist elsewhere in the workspace (for example battlebussy, shibboleth, gates-of-aker, parameter-golf, and mcp-social-publisher-live)."
+    ]
+  }
+}

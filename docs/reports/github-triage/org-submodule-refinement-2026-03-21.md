@@ -1,0 +1,760 @@
+# GitHub refinement report (2026-03-21)
+
+## Summary
+- Refined items: 177
+- Excluded repos: riatzukiza/TANF-app
+
+## Repo summaries
+
+- octave-commons/promethean: 83 items (81 issues, 2 PRs) — Ice Box=20, Incoming=45, Accepted=4, Breakdown=12, Blocked=2
+- open-hax/proxx: 69 items (67 issues, 2 PRs) — Incoming=33, Accepted=1, Breakdown=33, In Review=2
+- riatzukiza/riatzukiza.github.io: 6 items (0 issues, 6 PRs) — Ice Box=3, In Progress=3
+- open-hax/codex: 4 items (4 issues, 0 PRs) — Ice Box=2, Accepted=1, Blocked=1
+- open-hax/openhax: 3 items (1 issues, 2 PRs) — Blocked=2, Rejected=1
+- octave-commons/fork_tales: 1 items (0 issues, 1 PRs) — Blocked=1
+- octave-commons/gates-of-aker: 1 items (0 issues, 1 PRs) — Blocked=1
+- octave-commons/pantheon: 1 items (0 issues, 1 PRs) — In Review=1
+- octave-commons/shibboleth: 1 items (0 issues, 1 PRs) — In Review=1
+- open-hax/clients: 1 items (0 issues, 1 PRs) — In Review=1
+- open-hax/voxx: 1 items (0 issues, 1 PRs) — In Review=1
+- open-hax/workbench: 1 items (0 issues, 1 PRs) — In Review=1
+- riatzukiza/agent-shell: 1 items (0 issues, 1 PRs) — In Review=1
+- riatzukiza/book-of-shadows: 1 items (0 issues, 1 PRs) — Ice Box=1
+- riatzukiza/dotfiles: 1 items (0 issues, 1 PRs) — Ice Box=1
+- riatzukiza/goblin-lessons: 1 items (0 issues, 1 PRs) — Ice Box=1
+- riatzukiza/stt: 1 items (0 issues, 1 PRs) — Ice Box=1
+
+## Kanban buckets
+
+### Ice Box (29)
+
+- octave-commons/promethean#1627 [issue] — Implement kanban dev command with real-time sync and UI hosting  -experience -watching -time-sync -hosting -enhancement
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P1, state:icebox, triage:mirror-collapsed, triage:stale
+  - why: Long-idle enhancement request is better deferred to icebox. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1596 [issue] — Add CRUD subcommands to kanban CLI
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P2, state:icebox, triage:mirror-collapsed, triage:stale
+  - why: Long-idle enhancement request is better deferred to icebox. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1606 [issue] — Add CRUD subcommands to kanban CLI
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P2, state:icebox, triage:mirror-collapsed, triage:stale
+  - why: Long-idle enhancement request is better deferred to icebox. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1621 [issue] — Add CRUD subcommands to kanban CLI
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P2, state:icebox, triage:mirror-collapsed, triage:stale
+  - why: Long-idle enhancement request is better deferred to icebox. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1633 [issue] — Add CRUD subcommands to kanban CLI
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P2, state:icebox, triage:mirror-collapsed, triage:stale
+  - why: Long-idle enhancement request is better deferred to icebox. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1129 [issue] — Remove all CommonJS references and require() usage from repository
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P3, source:coderabbit, state:icebox, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Long-idle enhancement request is better deferred to icebox. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1461 [issue] — DUCK feature flags: rewrite web module + fix docs
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P3, state:icebox, triage:mirror-collapsed, triage:stale
+  - why: Long-idle enhancement request is better deferred to icebox. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1482 [issue] — Rulesets: tighten PR reviews + add CODEOWNERS follow-up
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P3, state:icebox, triage:mirror-collapsed, triage:stale
+  - why: Long-idle enhancement request is better deferred to icebox. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1579 [issue] — add-tsdoc-support|Add TSDoc support to the project
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P3, state:icebox, triage:mirror-collapsed, triage:stale
+  - why: Long-idle enhancement request is better deferred to icebox. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1582 [issue] — boardrev-vector-db|Add confidence calibration and historical accuracy tracking
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P3, state:icebox, triage:mirror-collapsed, triage:stale
+  - why: Long-idle enhancement request is better deferred to icebox. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1583 [issue] — boardrev-vector-db|Add continuous monitoring and real-time updates to boardrev
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P3, state:icebox, triage:mirror-collapsed, triage:stale
+  - why: Long-idle enhancement request is better deferred to icebox. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1584 [issue] — boardrev-vector-db|Enhance boardrev context analysis with weighted factors
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P3, state:icebox, triage:mirror-collapsed, triage:stale
+  - why: Long-idle enhancement request is better deferred to icebox. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1585 [issue] — boardrev-vector-db|Add incremental updates to boardrev indexing
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P3, state:icebox, triage:mirror-collapsed, triage:stale
+  - why: Long-idle enhancement request is better deferred to icebox. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1586 [issue] — boardrev-vector-db|Add interactive task management and auto-updates to boardrev
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P3, state:icebox, triage:mirror-collapsed, triage:stale
+  - why: Long-idle enhancement request is better deferred to icebox. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1587 [issue] — boardrev-vector-db|Implement multi-model evaluation for boardrev
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P3, state:icebox, triage:mirror-collapsed, triage:stale
+  - why: Long-idle enhancement request is better deferred to icebox. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#766 [issue] — Add Nx workspace configuration to the project
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P3, source:coderabbit, state:icebox, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Long-idle enhancement request is better deferred to icebox. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#767 [issue] — Add Nx configuration to the project
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P3, source:coderabbit, state:icebox, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Long-idle enhancement request is better deferred to icebox. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#800 [issue] — Add proofreader step to docops pipeline
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P3, source:coderabbit, state:icebox, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Long-idle enhancement request is better deferred to icebox. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#801 [issue] — Fix docops pipeline to add blank lines around headings and lists in generated sections
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P3, source:coderabbit, state:icebox, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Long-idle enhancement request is better deferred to icebox. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#955 [issue] — Add validation to ChromaWrapper upsert method
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P3, source:coderabbit, state:icebox, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Long-idle enhancement request is better deferred to icebox. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- open-hax/codex#40 [issue] — [FEATURE] Model stats html dashboard server
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P3, state:icebox, triage:stale
+  - why: Long-idle enhancement request is better deferred to icebox.
+  - source repos: open-hax/codex
+- open-hax/codex#67 [issue] — Auto-update: check npm latest, clear old install, toast user
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P3, state:icebox, triage:stale
+  - why: Long-idle enhancement request is better deferred to icebox.
+  - source repos: open-hax/codex
+- riatzukiza/book-of-shadows#1 [pr] — device/stealth updates
+  - labels: artifact:pr, kanban, priority:P3, state:icebox, triage:stale
+  - why: Long-idle PR should be explicitly revived or deferred instead of lingering in active review.
+  - source repos: riatzukiza/book-of-shadows
+- riatzukiza/dotfiles#2 [pr] — device/stealth updates
+  - labels: artifact:pr, kanban, priority:P3, state:icebox, triage:stale
+  - why: Long-idle PR should be explicitly revived or deferred instead of lingering in active review.
+  - source repos: riatzukiza/dotfiles
+- riatzukiza/goblin-lessons#1 [pr] — device/stealth updates
+  - labels: artifact:pr, kanban, priority:P3, state:icebox, triage:stale
+  - why: Long-idle PR should be explicitly revived or deferred instead of lingering in active review.
+  - source repos: riatzukiza/goblin-lessons
+- riatzukiza/riatzukiza.github.io#24 [pr] — Add game saves
+  - labels: artifact:pr, kanban, priority:P3, state:icebox, triage:stale
+  - why: Long-idle PR should be explicitly revived or deferred instead of lingering in active review.
+  - source repos: riatzukiza/riatzukiza.github.io
+- riatzukiza/riatzukiza.github.io#27 [pr] — Fix removal logic in binary search tree implementations
+  - labels: artifact:pr, kanban, priority:P3, state:icebox, triage:stale
+  - why: Long-idle PR should be explicitly revived or deferred instead of lingering in active review.
+  - source repos: riatzukiza/riatzukiza.github.io
+- riatzukiza/riatzukiza.github.io#32 [pr] — Improve project readme
+  - labels: artifact:pr, kanban, priority:P3, state:icebox, triage:stale
+  - why: Long-idle PR should be explicitly revived or deferred instead of lingering in active review.
+  - source repos: riatzukiza/riatzukiza.github.io
+- riatzukiza/stt#1 [pr] — device/stealth updates
+  - labels: artifact:pr, kanban, priority:P3, state:icebox, triage:stale
+  - why: Long-idle PR should be explicitly revived or deferred instead of lingering in active review.
+  - source repos: riatzukiza/stt
+
+### Incoming (78)
+
+- octave-commons/promethean#1591 [issue] — Migrate kanban system from JSONL to level-cache for memory efficiency    -cache -optimization    -cache -optimization    -cache -optimization    -cache -optimization    -cache -optimization    -cache -optimization
+  - labels: artifact:issue, kanban, priority:P1, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1601 [issue] — Migrate kanban system from JSONL to level-cache for memory efficiency    -cache -optimization    -cache -optimization    -cache -optimization
+  - labels: artifact:issue, kanban, priority:P1, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1616 [issue] — Migrate kanban system from JSONL to level-cache for memory efficiency    -cache -optimization    -cache -optimization    -cache -optimization
+  - labels: artifact:issue, kanban, priority:P1, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1628 [issue] — Migrate kanban system from JSONL to level-cache for memory efficiency    -cache -optimization    -cache -optimization    -cache -optimization
+  - labels: artifact:issue, kanban, priority:P1, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1630 [issue] — Implement WIP limit enforcement and address current violations
+  - labels: artifact:issue, kanban, priority:P1, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1597 [issue] — Fix SmartGPT Bridge grep parity with ripgrep /TASK-20241120-grepfix /kanban /InProgress /gpt /p2 /EPC-000 :auto :ts
+  - labels: artifact:issue, kanban, priority:P2, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1598 [issue] — Enforce /auth/me rate limiting in SmartGPT Bridge /TASK-20250307-0001 /kanban /InProgress /err /p2 /EPC-000 :auto :ts :smartgpt-bridge
+  - labels: artifact:issue, kanban, priority:P2, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1607 [issue] — Fix SmartGPT Bridge grep parity with ripgrep /TASK-20241120-grepfix /kanban /InProgress /gpt /p2 /EPC-000 :auto :ts
+  - labels: artifact:issue, kanban, priority:P2, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1608 [issue] — Enforce /auth/me rate limiting in SmartGPT Bridge /TASK-20250307-0001 /kanban /InProgress /err /p2 /EPC-000 :auto :ts :smartgpt-bridge
+  - labels: artifact:issue, kanban, priority:P2, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1622 [issue] — Fix SmartGPT Bridge grep parity with ripgrep /TASK-20241120-grepfix /kanban /InProgress /gpt /p2 /EPC-000 :auto :ts
+  - labels: artifact:issue, kanban, priority:P2, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1623 [issue] — Enforce /auth/me rate limiting in SmartGPT Bridge /TASK-20250307-0001 /kanban /InProgress /err /p2 /EPC-000 :auto :ts :smartgpt-bridge
+  - labels: artifact:issue, kanban, priority:P2, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1634 [issue] — Fix SmartGPT Bridge grep parity with ripgrep /TASK-20241120-grepfix /kanban /InProgress /gpt /p2 /EPC-000 :auto :ts
+  - labels: artifact:issue, kanban, priority:P2, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1635 [issue] — Enforce /auth/me rate limiting in SmartGPT Bridge /TASK-20250307-0001 /kanban /InProgress /err /p2 /EPC-000 :auto :ts :smartgpt-bridge
+  - labels: artifact:issue, kanban, priority:P2, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1637 [issue] — Update existing kanban tasks to use FSM statuses
+  - labels: artifact:issue, kanban, priority:P2, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1640 [issue] — Setup MCP server endpoint for kanban tooling
+  - labels: artifact:issue, kanban, priority:P2, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- open-hax/proxx#56 [issue] — [Minor] src/tests/factory-strategy.test.ts: Always tear down the temp upstream even if createApp() fails
+  - labels: artifact:issue, kanban, priority:P2, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Minor CodeRabbit note should remain in triage until clustered or batched.
+  - source repos: open-hax/proxx
+- octave-commons/promethean#1112 [issue] — Create markdown templater package in Clojure
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1153 [issue] — Automate board/project + docops workflows
+  - labels: artifact:issue, kanban, priority:P3, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1454 [issue] — Enable line-by-line review comments in github.review tool
+  - labels: artifact:issue, kanban, priority:P3, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1456 [issue] — Enhance github/review tool to support line-by-line review comments
+  - labels: artifact:issue, kanban, priority:P3, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1459 [issue] — Follow-up: rationale payload typing + event alias
+  - labels: artifact:issue, kanban, priority:P3, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1460 [issue] — Voice forwarder: document protocol + clamp frameDurationMs
+  - labels: artifact:issue, kanban, priority:P3, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1463 [issue] — WebSocket helper: DI factory + bearer guard
+  - labels: artifact:issue, kanban, priority:P3, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1464 [issue] — RTC DataChannel: throttled sender factory + tests
+  - labels: artifact:issue, kanban, priority:P3, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1466 [issue] — Enable line-by-line comments in github/review tool
+  - labels: artifact:issue, kanban, priority:P3, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1468 [issue] — Duck Revival integration plan: dependency order + cross-PR checklist
+  - labels: artifact:issue, kanban, priority:P3, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1580 [issue] — allow_old_unnessisary_messages_to_decay_from_database_while_retaining_index_entries_ids|allow old unnessisary messages to decay from database while retaining index entries ids md md
+  - labels: artifact:issue, kanban, priority:P3, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1581 [issue] — annotate_legacy_code_with_migration_tags|annotate legacy code with migration tags md
+  - labels: artifact:issue, kanban, priority:P3, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1668 [issue] — Guard MCP JSON adapter against nil server specs
+  - labels: artifact:issue, kanban, priority:P3, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1670 [issue] — Guard MCP JSON adapter against nil server specs
+  - labels: artifact:issue, kanban, priority:P3, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1671 [issue] — Fix DocOps pipeline rename step persistence to handle file reference management and sequencing
+  - labels: artifact:issue, kanban, priority:P3, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1672 [issue] — Document Piper environment defaults and provide configuration templates
+  - labels: artifact:issue, kanban, priority:P3, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1673 [issue] — Improve Kanban task complexity typing and validation
+  - labels: artifact:issue, kanban, priority:P3, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1707 [issue] — Restore Pantheon builds (currently skipped)
+  - labels: artifact:issue, kanban, priority:P3, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1708 [issue] — Unskip cephalon build (placeholder)
+  - labels: artifact:issue, kanban, priority:P3, state:incoming, triage:mirror-collapsed, triage:stale
+  - why: Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#802 [issue] — Fix generated sections to use Obsidian wikilinks and proper spacing
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#803 [issue] — Recover lost created_at timestamps from Git history in documentation pipeline
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#809 [issue] — Exclude compiled test files from published npm packages across all packages
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#817 [issue] — Enhance MCP CLI to automatically resolve executable paths
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#854 [issue] — Multiple AI assistants creating conflicting code review suggestions
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#904 [issue] — Improve SSE streaming robustness in v1 agent logs endpoint
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#954 [issue] — Schema registry compatibility checks fail for non-object schemas
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#956 [issue] — semverguard: Parameter tightening under-reported when parameter counts differ
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#959 [issue] — Update @fastify/* plugins for Fastify v5 compatibility in smartgpt-bridge
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#960 [issue] — Fix fragile JSON parsing in voice transcriber streaming response
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#978 [issue] — AVA watcher missing central config in ava-mcp package
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- open-hax/proxx#10 [issue] — web/src/App.tsx: Auto-clear fastModeMessage status after toggle
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date.
+  - source repos: open-hax/proxx
+- open-hax/proxx#11 [issue] — src/lib/proxy-settings-store.ts: Add mutex to prevent lost updates on concurrent set() calls
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Enhancement request still needs intake triage.
+  - source repos: open-hax/proxx
+- open-hax/proxx#12 [issue] — web/src/pages/DashboardPage.tsx: Remove redundant total > 0 guard in serviceTierShareBars
+  - labels: artifact:issue, kanban, kind:enhancement, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Enhancement request still needs intake triage.
+  - source repos: open-hax/proxx
+- open-hax/proxx#14 [issue] — web/src/pages: Extract shared formatServiceTier utility to eliminate duplication
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date.
+  - source repos: open-hax/proxx
+- open-hax/proxx#16 [issue] — [DEVEL.md] Document DATABASE_URL in the environment variables reference
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date.
+  - source repos: open-hax/proxx
+- open-hax/proxx#17 [issue] — [src/lib/config.ts] Avoid binding server host from generic HOST env var
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date.
+  - source repos: open-hax/proxx
+- open-hax/proxx#20 [issue] — [src/lib/policy/engine.ts] Apply exclusions before single-provider fast path in orderProvidersByRule
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date.
+  - source repos: open-hax/proxx
+- open-hax/proxx#21 [issue] — [src/lib/provider-policy.ts] Provider exclusions neutralized in orderProviderRoutesByPolicy
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date.
+  - source repos: open-hax/proxx
+- open-hax/proxx#27 [issue] — [src/lib/provider-strategy.ts] Refreshed retry path missing cooldown/affinity-reassignment logic
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date.
+  - source repos: open-hax/proxx
+- open-hax/proxx#33 [issue] — [src/lib/policy/loader.ts] fallbackModels entries not validated as strings
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date.
+  - source repos: open-hax/proxx
+- open-hax/proxx#36 [issue] — [render.yaml] UPSTREAM_BASE_URL and OPENAI_BASE_URL point to ChatGPT internal API, not official OpenAI API
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date.
+  - source repos: open-hax/proxx
+- open-hax/proxx#37 [issue] — [docker-compose.yml] Default DB port 5432 collides with local Postgres installations
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date.
+  - source repos: open-hax/proxx
+- open-hax/proxx#39 [issue] — [Dockerfile.fly] Missing pnpm-lock.yaml prevents reproducible Docker builds
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date.
+  - source repos: open-hax/proxx
+- open-hax/proxx#4 [issue] — src/tests/proxy.test.ts: Global fetch mock is race-prone in quota test
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date.
+  - source repos: open-hax/proxx
+- open-hax/proxx#40 [issue] — [fly.toml] Invalid memory format in [[vm]] block — must include units or be an integer
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date.
+  - source repos: open-hax/proxx
+- open-hax/proxx#47 [issue] — [Minor] src/lib/factory-compat.ts: Don't drop top-level system text when messages is empty
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Minor CodeRabbit note should remain in triage until clustered or batched.
+  - source repos: open-hax/proxx
+- open-hax/proxx#55 [issue] — [Minor] src/tests/factory-oauth-refresh.test.ts: Make the exact-threshold case deterministic
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Minor CodeRabbit note should remain in triage until clustered or batched.
+  - source repos: open-hax/proxx
+- open-hax/proxx#57 [issue] — [Minor] src/tests/factory-strategy.test.ts: Assert the documented 503 status exactly
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Minor CodeRabbit note should remain in triage until clustered or batched.
+  - source repos: open-hax/proxx
+- open-hax/proxx#6 [issue] — src/main.ts: Call app.close() before shutdownTelemetry() in signal handlers
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date.
+  - source repos: open-hax/proxx
+- open-hax/proxx#61 [issue] — [Minor] Update verification receipt to reflect the actual successful run (.ημ/registry.jsonl)
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Minor CodeRabbit note should remain in triage until clustered or batched.
+  - source repos: open-hax/proxx
+- open-hax/proxx#62 [issue] — [Minor] Fix incorrect hook location in ui-preferences-localstorage spec draft
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Minor CodeRabbit note should remain in triage until clustered or batched.
+  - source repos: open-hax/proxx
+- open-hax/proxx#67 [issue] — [Minor] Test count mismatch between PR description and state file (.ημ/Π_STATE.sexp)
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Minor CodeRabbit note should remain in triage until clustered or batched.
+  - source repos: open-hax/proxx
+- open-hax/proxx#7 [issue] — src/main.ts: Remove unused `telemetry` variable from initTelemetry() call
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date.
+  - source repos: open-hax/proxx
+- open-hax/proxx#70 [issue] — [Minor] Refresh the retention baseline in weekly-cost-water-validation.md spec draft
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Minor CodeRabbit note should remain in triage until clustered or batched.
+  - source repos: open-hax/proxx
+- open-hax/proxx#72 [issue] — [Minor] Recursive object branch in stripInvalidJsonChars silently corrupts non-plain objects (event-store.ts)
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Minor CodeRabbit note should remain in triage until clustered or batched.
+  - source repos: open-hax/proxx
+- open-hax/proxx#74 [issue] — [Minor] `toUsageWindow` misses normalized "weekly" input (ui-routes.ts)
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Minor CodeRabbit note should remain in triage until clustered or batched.
+  - source repos: open-hax/proxx
+- open-hax/proxx#78 [issue] — [Minor] Add accessible names (aria-label) to search inputs in AnalyticsPage (AnalyticsPage.tsx)
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Minor CodeRabbit note should remain in triage until clustered or batched.
+  - source repos: open-hax/proxx
+- open-hax/proxx#80 [issue] — [Minor] Use overflow-x: auto; overflow-y: visible for .analytics-table-wrap (styles.css)
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Minor CodeRabbit note should remain in triage until clustered or batched.
+  - source repos: open-hax/proxx
+- open-hax/proxx#81 [issue] — [Minor] Reword repeated "No … yet" bullets to satisfy markdown style lint (multitenancy-phase1 spec)
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Minor CodeRabbit note should remain in triage until clustered or batched.
+  - source repos: open-hax/proxx
+- open-hax/proxx#83 [issue] — [Minor] Add workspace lint verification to the handoff checks (.ημ/Π_LAST.md)
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Minor CodeRabbit note should remain in triage until clustered or batched.
+  - source repos: open-hax/proxx
+- open-hax/proxx#86 [issue] — [Minor] "Coverage starts Never" message is confusing when coverageStart is null (DashboardPage.tsx)
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Minor CodeRabbit note should remain in triage until clustered or batched.
+  - source repos: open-hax/proxx
+- open-hax/proxx#9 [issue] — Refactor: Extract shared JWT/helper utilities to eliminate code duplication
+  - labels: artifact:issue, kanban, priority:P3, source:coderabbit, state:incoming, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date.
+  - source repos: open-hax/proxx
+
+### Accepted (6)
+
+- octave-commons/promethean#1632 [issue] — Fix regenerateBoard to show all configured columns even when empty
+  - labels: artifact:issue, kanban, kind:bug, priority:P1, state:accepted, triage:mirror-collapsed, triage:stale
+  - why: Concrete bug report is worth keeping in the active queue. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1612 [issue] — Fix TypeScript build errors across key packages /TASK-20240921-buildfix /kanban /InProgress /codex-cloud /p2 /EPC-000 :auto :ts
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, state:accepted, triage:mirror-collapsed, triage:stale
+  - why: Concrete bug report is worth keeping in the active queue. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1639 [issue] — Fix TypeScript build errors across key packages /TASK-20240921-buildfix /kanban /InProgress /codex-cloud /p2 /EPC-000 :auto :ts
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, state:accepted, triage:mirror-collapsed, triage:stale
+  - why: Concrete bug report is worth keeping in the active queue. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#958 [issue] — Fix parseArgs index advance bug when flag value is literal 'true'
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, source:coderabbit, state:accepted, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Concrete bug report is worth keeping in the active queue. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- open-hax/codex#82 [issue] — [BUG] Failure to get openhax/codex error openhax/codex: Failed to fetch OpenCode codex.txt from GitHub
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, state:accepted
+  - why: Concrete bug report is worth keeping in the active queue.
+  - source repos: open-hax/codex
+- open-hax/proxx#25 [issue] — [src/lib/provider-strategy.ts] Throwing error in refreshed fetch catch block breaks fallback pattern
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, source:coderabbit, state:accepted, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Concrete bug report is worth keeping in the active queue.
+  - source repos: open-hax/proxx
+
+### Breakdown (45)
+
+- octave-commons/promethean#1143 [issue] — Security: treeDirectory vulnerable to symlink escapes outside sandbox
+  - labels: artifact:issue, kanban, kind:bug, priority:P0, risk:security, source:coderabbit, state:breakdown, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Security or secret-handling risk should be actively refined before implementation. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1144 [issue] — Security: writeFileContent allows sandbox escape via symlinks
+  - labels: artifact:issue, kanban, kind:bug, priority:P0, risk:security, source:coderabbit, state:breakdown, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Security or secret-handling risk should be actively refined before implementation. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1145 [issue] — Apply symlink-safe write protections to writeFileLines function
+  - labels: artifact:issue, kanban, kind:bug, priority:P0, risk:security, source:coderabbit, state:breakdown, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Security or secret-handling risk should be actively refined before implementation. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#791 [issue] — Improve secret scanning with detect-secrets tool
+  - labels: artifact:issue, kanban, kind:bug, priority:P0, risk:security, source:coderabbit, state:breakdown, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Security or secret-handling risk should be actively refined before implementation. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#905 [issue] — SSE endpoint vulnerable to write-after-end crashes in agent streaming
+  - labels: artifact:issue, kanban, kind:bug, priority:P0, risk:security, source:coderabbit, state:breakdown, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Security or secret-handling risk should be actively refined before implementation. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- open-hax/proxx#18 [issue] — [src/lib/db/sql-credential-store.ts] maskSecret leaks full value for short secrets
+  - labels: artifact:issue, kanban, kind:bug, priority:P0, risk:security, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Security or secret-handling risk should be actively refined before implementation.
+  - source repos: open-hax/proxx
+- open-hax/proxx#19 [issue] — [src/lib/key-pool.ts] File/env sources can resurrect stale credentials from account store
+  - labels: artifact:issue, kanban, kind:bug, priority:P0, risk:security, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Security or secret-handling risk should be actively refined before implementation.
+  - source repos: open-hax/proxx
+- open-hax/proxx#22 [issue] — [src/lib/provider-routing.ts] Disabled providers still leak into model discovery via buildOllamaCatalogRoutes
+  - labels: artifact:issue, kanban, kind:bug, priority:P0, risk:security, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Security or secret-handling risk should be actively refined before implementation.
+  - source repos: open-hax/proxx
+- open-hax/proxx#26 [issue] — [src/lib/provider-strategy.ts] CRITICAL: refreshExpiredToken can throw and abort entire fallback loop
+  - labels: artifact:issue, kanban, kind:bug, priority:P0, risk:security, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Security or secret-handling risk should be actively refined before implementation.
+  - source repos: open-hax/proxx
+- open-hax/proxx#29 [issue] — [src/lib/runtime-credential-store.ts] listProviders hides file/env providers when SQL is configured
+  - labels: artifact:issue, kanban, kind:bug, priority:P0, risk:security, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Security or secret-handling risk should be actively refined before implementation.
+  - source repos: open-hax/proxx
+- open-hax/proxx#31 [issue] — [src/tests/config.test.ts] env-mutating test must be marked non-concurrent to prevent env leakage
+  - labels: artifact:issue, kanban, kind:bug, priority:P0, risk:security, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Security or secret-handling risk should be actively refined before implementation.
+  - source repos: open-hax/proxx
+- open-hax/proxx#38 [issue] — [Dockerfile.fly] Container runs as root — add non-root user for security hardening
+  - labels: artifact:issue, kanban, kind:bug, priority:P0, risk:security, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Security or secret-handling risk should be actively refined before implementation.
+  - source repos: open-hax/proxx
+- open-hax/proxx#46 [issue] — [Major] src/lib/factory-auth.ts: Set restrictive permissions (0600) on auth.v2 file after writing tokens
+  - labels: artifact:issue, kanban, kind:bug, priority:P0, risk:security, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Security or secret-handling risk should be actively refined before implementation.
+  - source repos: open-hax/proxx
+- open-hax/proxx#52 [issue] — [Major] src/lib/runtime-credential-store.ts: Deleting only the SQL copy can resurrect seeded credentials
+  - labels: artifact:issue, kanban, kind:bug, priority:P0, risk:security, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Security or secret-handling risk should be actively refined before implementation.
+  - source repos: open-hax/proxx
+- open-hax/proxx#54 [issue] — [Minor] src/tests/factory-config.test.ts: Mark Factory fixtures as allowlisted test secrets
+  - labels: artifact:issue, kanban, kind:bug, priority:P0, risk:security, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Security or secret-handling risk should be actively refined before implementation.
+  - source repos: open-hax/proxx
+- open-hax/proxx#65 [issue] — [Critical] Keep `revealSecrets` ephemeral — do not persist in localStorage (CredentialsPage.tsx)
+  - labels: artifact:issue, kanban, kind:bug, priority:P0, risk:security, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Security or secret-handling risk should be actively refined before implementation.
+  - source repos: open-hax/proxx
+- open-hax/proxx#69 [issue] — [Major] Make `tenant_api_keys.token_hash` a UNIQUE index (multitenancy user model spec)
+  - labels: artifact:issue, kanban, kind:bug, priority:P0, risk:security, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Security or secret-handling risk should be actively refined before implementation.
+  - source repos: open-hax/proxx
+- octave-commons/promethean#1044 [issue] — Refactor changefeed test to comply with ESLint rules instead of disabling 9 rules
+  - labels: artifact:issue, kanban, kind:bug, priority:P1, risk:correctness, source:coderabbit, state:breakdown, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Critical correctness/availability issue warrants breakdown into a fix slice. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1158 [issue] — Automate board mirroring + docops + versioning (changesets/towncrier)
+  - labels: artifact:issue, kanban, kind:bug, priority:P1, risk:correctness, state:breakdown, triage:mirror-collapsed, triage:stale
+  - why: Critical correctness/availability issue warrants breakdown into a fix slice. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1458 [issue] — Follow-up: add ENSO handshake timeout knob
+  - labels: artifact:issue, kanban, kind:bug, priority:P1, risk:correctness, state:breakdown, triage:mirror-collapsed, triage:stale
+  - why: Critical correctness/availability issue warrants breakdown into a fix slice. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1611 [issue] — Fix hanging SmartGPT bridge tests /TASK-20250928-041600 /kanban /InProgress /err /p2 /EPC-000 :auto :ts
+  - labels: artifact:issue, kanban, kind:bug, priority:P1, risk:correctness, state:breakdown, triage:mirror-collapsed, triage:stale
+  - why: Critical correctness/availability issue warrants breakdown into a fix slice. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#1638 [issue] — Fix hanging SmartGPT bridge tests /TASK-20250928-041600 /kanban /InProgress /err /p2 /EPC-000 :auto :ts
+  - labels: artifact:issue, kanban, kind:bug, priority:P1, risk:correctness, state:breakdown, triage:mirror-collapsed, triage:stale
+  - why: Critical correctness/availability issue warrants breakdown into a fix slice. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#850 [issue] — Critical bug in semaphore implementation breaks mutual exclusion for runJSFunction
+  - labels: artifact:issue, kanban, kind:bug, priority:P1, risk:correctness, source:coderabbit, state:breakdown, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Critical correctness/availability issue warrants breakdown into a fix slice. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/promethean#957 [issue] — AVA MCP tool runTests has conflicting flags that cause parse errors and hanging
+  - labels: artifact:issue, kanban, kind:bug, priority:P1, risk:correctness, source:coderabbit, state:breakdown, triage:cluster-candidate, triage:mirror-collapsed, triage:stale
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Critical correctness/availability issue warrants breakdown into a fix slice. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- open-hax/proxx#13 [issue] — src/lib/telemetry/otel.ts: Fix potential data loss during concurrent flush() calls
+  - labels: artifact:issue, kanban, kind:bug, priority:P1, risk:correctness, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Critical correctness/availability issue warrants breakdown into a fix slice.
+  - source repos: open-hax/proxx
+- open-hax/proxx#45 [issue] — [Critical] src/lib/factory-auth.ts: Add a timeout to the WorkOS refresh call
+  - labels: artifact:issue, kanban, kind:bug, priority:P1, risk:correctness, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Critical correctness/availability issue warrants breakdown into a fix slice.
+  - source repos: open-hax/proxx
+- open-hax/proxx#48 [issue] — [Major] src/lib/factory-oauth.ts: Bound WorkOS calls with explicit timeouts
+  - labels: artifact:issue, kanban, kind:bug, priority:P1, risk:correctness, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Critical correctness/availability issue warrants breakdown into a fix slice.
+  - source repos: open-hax/proxx
+- open-hax/proxx#50 [issue] — [Major] src/lib/factory-oauth.ts: Keep the pending browser state until the code exchange succeeds
+  - labels: artifact:issue, kanban, kind:bug, priority:P1, risk:correctness, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Critical correctness/availability issue warrants breakdown into a fix slice.
+  - source repos: open-hax/proxx
+- open-hax/proxx#8 [issue] — src/lib/openai-quota.ts: Avoid full upsertOAuthAccount when only planType changed
+  - labels: artifact:issue, kanban, kind:bug, priority:P1, risk:correctness, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Critical correctness/availability issue warrants breakdown into a fix slice.
+  - source repos: open-hax/proxx
+- open-hax/proxx#49 [issue] — [Major] src/lib/factory-oauth.ts: Honor device authorization lifetime from WorkOS response instead of fixed TTL
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Major CodeRabbit finding should be refined into an explicit implementation slice.
+  - source repos: open-hax/proxx
+- open-hax/proxx#51 [issue] — [Major] src/lib/key-pool.ts: FACTORY_API_KEY is dropped in account-store mode
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Major CodeRabbit finding should be refined into an explicit implementation slice.
+  - source repos: open-hax/proxx
+- open-hax/proxx#53 [issue] — [Major] src/lib/ui-routes.ts: Keep the Factory auth.v2 source in sync on successful login
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Major CodeRabbit finding should be refined into an explicit implementation slice.
+  - source repos: open-hax/proxx
+- open-hax/proxx#63 [issue] — [Major] Daily history collapses to 8-day hourly horizon during migration (request-log-store.ts)
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Major CodeRabbit finding should be refined into an explicit implementation slice.
+  - source repos: open-hax/proxx
+- open-hax/proxx#64 [issue] — [Major] Clear bad stored session IDs when restore fails (ChatPage.tsx)
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Major CodeRabbit finding should be refined into an explicit implementation slice.
+  - source repos: open-hax/proxx
+- open-hax/proxx#66 [issue] — [Major] Avoid triggering data fetch on every keystroke in the model input field (ToolsPage.tsx)
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Major CodeRabbit finding should be refined into an explicit implementation slice.
+  - source repos: open-hax/proxx
+- open-hax/proxx#68 [issue] — [Major] Reconcile multi-tenant-proxy-foundation.md with the canonical tenant draft before implementation
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Major CodeRabbit finding should be refined into an explicit implementation slice.
+  - source repos: open-hax/proxx
+- open-hax/proxx#71 [issue] — [Major] Control-character sanitization is inconsistent and lossy (event-store.ts)
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Major CodeRabbit finding should be refined into an explicit implementation slice.
+  - source repos: open-hax/proxx
+- open-hax/proxx#73 [issue] — [Major] Derived-estimate repair can leave aggregate buckets stale (request-log-store.ts)
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Major CodeRabbit finding should be refined into an explicit implementation slice.
+  - source repos: open-hax/proxx
+- open-hax/proxx#75 [issue] — [Major] Weekly/monthly account aggregation overwrites instead of accumulates (ui-routes.ts)
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Major CodeRabbit finding should be refined into an explicit implementation slice.
+  - source repos: open-hax/proxx
+- open-hax/proxx#76 [issue] — [Major] Weekly-window test fixtures are hard-coded to March 17–18, 2026 and will go stale (proxy.test.ts)
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Major CodeRabbit finding should be refined into an explicit implementation slice.
+  - source repos: open-hax/proxx
+- open-hax/proxx#77 [issue] — [Major] Stored provider/model focus is erased on first mount before analytics loads (AnalyticsPage.tsx)
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Major CodeRabbit finding should be refined into an explicit implementation slice.
+  - source repos: open-hax/proxx
+- open-hax/proxx#79 [issue] — [Major] Persisted provider filters get wiped before the first overview payload arrives (DashboardPage.tsx)
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Major CodeRabbit finding should be refined into an explicit implementation slice.
+  - source repos: open-hax/proxx
+- open-hax/proxx#82 [issue] — [Major] Scope user identity uniqueness by provider in CREATE_USERS_TABLE (schema.ts)
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Major CodeRabbit finding should be refined into an explicit implementation slice.
+  - source repos: open-hax/proxx
+- open-hax/proxx#84 [issue] — [Major] Spec/implementation mismatch: ui_session auth kind and userId field not implemented (multitenancy-phase1 spec)
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Major CodeRabbit finding should be refined into an explicit implementation slice.
+  - source repos: open-hax/proxx
+- open-hax/proxx#85 [issue] — [Major] Use configured OAuth callback path instead of hardcoded "/auth/callback" in auth-bypass (app.ts)
+  - labels: artifact:issue, kanban, kind:bug, priority:P2, source:coderabbit, state:breakdown, triage:cluster-candidate
+  - why: Bot-generated review follow-up should be clustered with its source PR/date. Major CodeRabbit finding should be refined into an explicit implementation slice.
+  - source repos: open-hax/proxx
+
+### Blocked (7)
+
+- octave-commons/promethean#1710 [pr] — Conflicted/stealth - preserve nested submodule changes
+  - labels: artifact:pr, kanban, merge:dirty, priority:P1, state:blocked, triage:blocked, triage:mirror-aware, triage:mirror-collapsed
+  - why: PR has merge conflicts and is blocked until rebased or superseded. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- octave-commons/fork_tales#1 [pr] — Feature/eta mu tts fix
+  - labels: artifact:pr, checks:failing, kanban, priority:P2, state:blocked, triage:blocked
+  - why: PR is blocked by failing checks: frontend-test.
+  - source repos: octave-commons/fork_tales
+- octave-commons/promethean#1709 [pr] — Device/stealth
+  - labels: artifact:pr, kanban, merge:dirty, priority:P2, state:blocked, triage:blocked, triage:mirror-aware, triage:mirror-collapsed
+  - why: PR has merge conflicts and is blocked until rebased or superseded. Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean.
+  - source repos: octave-commons/promethean, riatzukiza/promethean
+- open-hax/codex#6 [issue] — Feature: richer Codex metrics and request inspection commands
+  - labels: artifact:issue, kanban, priority:P2, state:blocked, triage:stale
+  - why: Existing labels already mark this work as blocked.
+  - source repos: open-hax/codex
+- open-hax/openhax#2 [pr] — Sync device/stealth branch
+  - labels: artifact:pr, checks:failing, kanban, priority:P2, state:blocked, triage:blocked, triage:mirror-aware, triage:mirror-collapsed
+  - why: PR is blocked by failing checks: coverage. Mirror-collapsed across repos: open-hax/openhax, riatzukiza/openhax.
+  - source repos: open-hax/openhax, riatzukiza/openhax
+- open-hax/openhax#3 [pr] — @openhax/kanban: local web UI (serve)
+  - labels: artifact:pr, checks:failing, kanban, priority:P2, state:blocked, triage:blocked, triage:mirror-aware, triage:mirror-collapsed
+  - why: PR is blocked by failing checks: coverage. Mirror-collapsed across repos: open-hax/openhax, riatzukiza/openhax.
+  - source repos: open-hax/openhax, riatzukiza/openhax
+- octave-commons/gates-of-aker#140 [pr] — Π: snapshot 2026-03-21 — Fork Tales canonical path relocation
+  - labels: artifact:pr, kanban, merge:dirty, priority:P3, state:blocked, triage:blocked
+  - why: PR has merge conflicts and is blocked until rebased or superseded.
+  - source repos: octave-commons/gates-of-aker
+
+### In Progress (3)
+
+- riatzukiza/riatzukiza.github.io#29 [pr] — Fix typo in register.md
+  - labels: artifact:pr, kanban, pr:draft, priority:P3, state:in_progress, triage:stale
+  - why: Draft PR is active work, not review-ready.
+  - source repos: riatzukiza/riatzukiza.github.io
+- riatzukiza/riatzukiza.github.io#30 [pr] — Add doc macros
+  - labels: artifact:pr, kanban, pr:draft, priority:P3, state:in_progress, triage:stale
+  - why: Draft PR is active work, not review-ready.
+  - source repos: riatzukiza/riatzukiza.github.io
+- riatzukiza/riatzukiza.github.io#31 [pr] — Add doc macros for core util and repl modules
+  - labels: artifact:pr, kanban, pr:draft, priority:P3, state:in_progress, triage:stale
+  - why: Draft PR is active work, not review-ready.
+  - source repos: riatzukiza/riatzukiza.github.io
+
+### In Review (8)
+
+- open-hax/workbench#1 [pr] — chore: commit working tree changes to device/stealth
+  - labels: artifact:pr, kanban, priority:P1, state:in_review
+  - why: Reviewable PR belongs in the In Review lane.
+  - source repos: open-hax/workbench
+- octave-commons/pantheon#1 [pr] — Sync device/stealth branch
+  - labels: artifact:pr, kanban, priority:P3, state:in_review
+  - why: Reviewable PR belongs in the In Review lane.
+  - source repos: octave-commons/pantheon
+- octave-commons/shibboleth#1 [pr] — Π: snapshot 2026-03-21 — chat labeling lab slice
+  - labels: artifact:pr, kanban, priority:P3, state:in_review
+  - why: Reviewable PR belongs in the In Review lane.
+  - source repos: octave-commons/shibboleth
+- open-hax/clients#1 [pr] — Sync device/stealth branch
+  - labels: artifact:pr, kanban, priority:P3, state:in_review
+  - why: Reviewable PR belongs in the In Review lane.
+  - source repos: open-hax/clients
+- open-hax/proxx#15 [pr] — [codex] add ob1 provider
+  - labels: artifact:pr, kanban, priority:P3, state:in_review
+  - why: Reviewable PR belongs in the In Review lane.
+  - source repos: open-hax/proxx
+- open-hax/proxx#60 [pr] — Pi/fork tax 20260319
+  - labels: artifact:pr, kanban, priority:P3, state:in_review
+  - why: Reviewable PR belongs in the In Review lane.
+  - source repos: open-hax/proxx
+- open-hax/voxx#1 [pr] — Π: snapshot 2026-03-21 — Fork Tales lineage path retarget
+  - labels: artifact:pr, kanban, priority:P3, state:in_review
+  - why: Reviewable PR belongs in the In Review lane.
+  - source repos: open-hax/voxx
+- riatzukiza/agent-shell#1 [pr] — device/stealth updates
+  - labels: artifact:pr, kanban, priority:P3, state:in_review
+  - why: Reviewable PR belongs in the In Review lane.
+  - source repos: riatzukiza/agent-shell
+
+### Rejected (1)
+
+- open-hax/openhax#1 [issue] — testing
+  - labels: artifact:issue, kanban, priority:P3, state:rejected, triage:mirror-collapsed, triage:placeholder
+  - why: Placeholder/test issue does not describe a durable unit of work. OpenHax placeholder/testing issue should be closed or replaced with a real task. Mirror-collapsed across repos: open-hax/openhax, riatzukiza/openhax.
+  - source repos: open-hax/openhax, riatzukiza/openhax
+

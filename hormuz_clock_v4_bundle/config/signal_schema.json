@@ -22,7 +22,8 @@
         "type": "string"
       },
       "category": {
-        "type": "string"
+        "type": "string",
+        "description": "Examples: transit_flow, attack_tempo, insurance_availability, navigation_integrity, bypass_capacity, asia_buffer_stress, reopening_pressure, regional_escalation, meta"
       },
       "value": {},
       "confidence": {
@@ -36,6 +37,9 @@
       },
       "url": {
         "type": "string"
+      },
+      "experimental": {
+        "type": "boolean"
       }
     }
   }

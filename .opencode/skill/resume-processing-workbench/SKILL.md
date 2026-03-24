@@ -1,0 +1,1 @@
+/home/err/.agents/skills/resume-processing-workbench/SKILL.md
