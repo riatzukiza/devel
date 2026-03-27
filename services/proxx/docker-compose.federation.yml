@@ -1,5 +1,5 @@
 # Federation Peer - runs alongside the main proxx stack
-# Usage: docker compose -f docker-compose.yml -f docker-compose.federation.yml up -d
+# Usage: cd services/proxx && docker compose -f docker-compose.yml -f docker-compose.federation.yml up -d
 #
 # This creates a second peer (proxx-federation) that can federate with the main proxy.
 # Both must share the same Docker network (ai-infra).
@@ -9,26 +9,26 @@
 # - Peers register each other via /api/ui/federation/peers
 # - Projected accounts are synced from remote peers
 
-name: open-hax-federation-peer
+name: proxx-federation-peer
 
 services:
-  open-hax-federation-peer:
+  proxx-federation-peer:
     depends_on:
-      open-hax-federation-peer-db:
+      proxx-federation-peer-db:
         condition: service_healthy
     build:
       context: ../../orgs/open-hax/proxx
       dockerfile: Dockerfile
     ports:
-      - "${FEDERATION_PROXY_PORT:-8792}:8789"
-      - "${FEDERATION_OAUTH_CALLBACK_PORT:-1456}:8789"
-      - "${FEDERATION_WEB_PORT:-5175}:5174"
+      - "${FEDERATION_PROXY_PORT:-18792}:8789"
+      - "${FEDERATION_OAUTH_CALLBACK_PORT:-18756}:8789"
+      - "${FEDERATION_WEB_PORT:-15175}:5174"
     environment:
       NODE_ENV: production
       PROXY_HOST: 0.0.0.0
       PROXY_PORT: "8789"
       PORT: "8789"
-      OPENAI_OAUTH_CALLBACK_PORT: "${FEDERATION_OAUTH_CALLBACK_PORT:-1456}"
+      OPENAI_OAUTH_CALLBACK_PORT: "${FEDERATION_OAUTH_CALLBACK_PORT:-18756}"
       PROXY_AUTH_TOKEN: "${FEDERATION_PROXY_AUTH_TOKEN:-federation-peer-token}" # gitguardian: ignore secret
 
       # Keys and models - can share with main or have separate credentials
@@ -75,13 +75,13 @@ services:
       FEDERATION_SELF_GROUP_ID: "${FEDERATION_SELF_GROUP_ID:-local-test-group}"
       FEDERATION_SELF_CLUSTER_ID: "${FEDERATION_SELF_CLUSTER_ID:-local-test-cluster}"
       FEDERATION_SELF_PEER_DID: "${FEDERATION_SELF_PEER_DID:-}"
-      FEDERATION_SELF_PUBLIC_BASE_URL: "${FEDERATION_SELF_PUBLIC_BASE_URL:-http://open-hax-federation-peer:8789}"
+      FEDERATION_SELF_PUBLIC_BASE_URL: "${FEDERATION_SELF_PUBLIC_BASE_URL:-http://proxx-federation-peer:8789}"
       FEDERATION_REQUEST_TIMEOUT_MS: "${FEDERATION_REQUEST_TIMEOUT_MS:-30000}"
 
       PROXY_KEY_RELOAD_MS: "${PROXY_KEY_RELOAD_MS:-5000}"
       PROXY_KEY_COOLDOWN_MS: "${PROXY_KEY_COOLDOWN_MS:-30000}"
 
-      DATABASE_URL: "postgresql://federation_proxy:federation_proxy@open-hax-federation-peer-db:5432/federation_proxy" # gitguardian: ignore secret
+      DATABASE_URL: "postgresql://federation_proxy:federation_proxy@proxx-federation-peer-db:5432/federation_proxy" # gitguardian: ignore secret
 
       VITE_ALLOWED_HOSTS: "${VITE_ALLOWED_HOSTS:-}"
 
@@ -124,16 +124,16 @@ services:
     networks:
       ai-infra: {}
 
-  open-hax-federation-peer-db:
+  proxx-federation-peer-db:
     image: postgres:16-bookworm
     environment:
       POSTGRES_DB: federation_proxy
       POSTGRES_USER: federation_proxy
-      POSTGRES_PASSWORD: federation_proxy # gitguardian: ignore secret
+      POSTGRES_PASSWORD: federation_proxy
     ports:
-      - "${FEDERATION_DB_PORT:-5433}:5432"
+      - "${FEDERATION_DB_PORT:-15434}:5432"
     volumes:
-      - open-hax-federation-peer-db-data:/var/lib/postgresql/data
+      - proxx-federation-peer-db-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U federation_proxy -d federation_proxy"]
       interval: 10s
@@ -142,7 +142,7 @@ services:
       start_period: 10s
     restart: unless-stopped
     networks:
-      ai-infra: {}
+      - ai-infra
 
 networks:
   ai-infra:
@@ -150,4 +150,4 @@ networks:
     name: ai-infra
 
 volumes:
-  open-hax-federation-peer-db-data:
+  proxx-federation-peer-db-data:

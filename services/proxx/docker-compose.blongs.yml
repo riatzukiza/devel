@@ -1,27 +1,27 @@
-# Local development instance - use this as the primary proxx
-# Usage: cd services/proxx && docker compose up -d
+# Blongs instance - standalone proxx for separate testing/development
+# Usage: cd services/proxx && docker compose -f docker-compose.blongs.yml up -d
 
-name: proxx-local
+name: proxx-blongs
 
 services:
-  proxx:
+  proxx-blongs:
     depends_on:
-      open-hax-openai-proxy-db:
+      proxx-blongs-db:
         condition: service_healthy
     build:
       context: ../../orgs/open-hax/proxx
       dockerfile: Dockerfile
     ports:
-      - "${PROXY_PORT:-8789}:8789"
-      - "${OPENAI_OAUTH_CALLBACK_PORT:-1455}:8789"
-      - "${PROXY_WEB_PORT:-5174}:5174"
+      - "${BLONGS_PROXY_PORT:-5277}:8789"
+      - "${BLONGS_OAUTH_CALLBACK_PORT:-2456}:8789"
+      - "${BLONGS_WEB_PORT:-8793}:5174"
     environment:
       NODE_ENV: production
       PROXY_HOST: 0.0.0.0
       PROXY_PORT: "8789"
       PORT: "8789"
-      OPENAI_OAUTH_CALLBACK_PORT: "${OPENAI_OAUTH_CALLBACK_PORT:-1455}"
-      PROXY_AUTH_TOKEN: "${PROXY_AUTH_TOKEN:-change-me-open-hax-proxy-token}"
+      OPENAI_OAUTH_CALLBACK_PORT: "${BLONGS_OAUTH_CALLBACK_PORT:-2456}"
+      PROXY_AUTH_TOKEN: "${BLONGS_PROXY_AUTH_TOKEN:-blongs-token}"
       PROXY_KEYS_FILE: /workspace/service-config/keys.json
       PROXY_MODELS_FILE: /workspace/service-config/models.json
       PROXY_REQUEST_LOGS_FILE: /app/data/request-logs.jsonl
@@ -36,24 +36,13 @@ services:
       REQUESTY_API_TOKEN: "${REQUESTY_API_TOKEN:-}"
       OPENAI_PROVIDER_ID: "${OPENAI_PROVIDER_ID:-openai}"
       OPENAI_BASE_URL: "${OPENAI_BASE_URL:-https://chatgpt.com/backend-api}"
-      # Use the official OpenAI Platform API base URL for image generation (recommended).
       OPENAI_API_BASE_URL: "${OPENAI_API_BASE_URL:-https://api.openai.com}"
       GEMINI_API_KEY: "${GEMINI_API_KEY:-}"
-
-      # Where to send OpenAI image generation requests:
-      # - platform: api.openai.com (Images API; requires Platform scopes for OAuth)
-      # - chatgpt: chatgpt.com/backend-api (ChatGPT/Codex subscription surface)
-      # - auto: try platform, then fall back to chatgpt paths
       OPENAI_IMAGES_UPSTREAM_MODE: "${OPENAI_IMAGES_UPSTREAM_MODE:-auto}"
-
-      # OpenAI OAuth configuration (browser/device flows)
       OPENAI_OAUTH_CLIENT_ID: "${OPENAI_OAUTH_CLIENT_ID:-app_EMoamEEZ73f0CkXaXp7hrann}"
-      # Optional: only needed for confidential clients.
       OPENAI_OAUTH_CLIENT_SECRET: "${OPENAI_OAUTH_CLIENT_SECRET:-}"
       OPENAI_OAUTH_ISSUER: "${OPENAI_OAUTH_ISSUER:-https://auth.openai.com}"
       OPENAI_OAUTH_SCOPES: "${OPENAI_OAUTH_SCOPES:-openid profile email offline_access}"
-
-      # If still using ChatGPT backend APIs, these are alternate paths sometimes used for image generations.
       OPENAI_IMAGES_GENERATIONS_PATHS: "${OPENAI_IMAGES_GENERATIONS_PATHS:-}"
       IMAGE_COST_USD_DEFAULT: "${IMAGE_COST_USD_DEFAULT:-0}"
       IMAGE_COST_USD_BY_PROVIDER: "${IMAGE_COST_USD_BY_PROVIDER:-}"
@@ -80,7 +69,7 @@ services:
       UPSTREAM_REQUEST_TIMEOUT_MS: "${UPSTREAM_REQUEST_TIMEOUT_MS:-180000}"
       UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS: "${UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS:-180000}"
       PROXY_ALLOW_UNAUTHENTICATED: "${PROXY_ALLOW_UNAUTHENTICATED:-false}"
-      DATABASE_URL: "${DATABASE_URL:-postgresql://openai_proxy:openai_proxy@open-hax-openai-proxy-db:5432/openai_proxy}" # pragma: allowlist secret
+      DATABASE_URL: "${BLONGS_DATABASE_URL:-postgresql://blongs_proxy:blongs_proxy@proxx-blongs-db:5432/blongs_proxy}"
       VITE_ALLOWED_HOSTS: "${VITE_ALLOWED_HOSTS:-}"
       CHROMA_URL: "${CHROMA_URL:-http://host.docker.internal:8000}"
       CHROMA_COLLECTION: "${CHROMA_COLLECTION:-open_hax_proxy_sessions}"
@@ -92,24 +81,22 @@ services:
       HOST_DASHBOARD_REQUEST_TIMEOUT_MS: "${HOST_DASHBOARD_REQUEST_TIMEOUT_MS:-5000}"
       OTEL_EXPORTER_OTLP_ENDPOINT: "${OTEL_EXPORTER_OTLP_ENDPOINT:-}"
       OTEL_EXPORTER_OTLP_HEADERS: "${OTEL_EXPORTER_OTLP_HEADERS:-}"
-      OTEL_SERVICE_NAME: "${OTEL_SERVICE_NAME:-proxx-local}"
-      OTEL_RESOURCE_ATTRIBUTES: "${OTEL_RESOURCE_ATTRIBUTES:-service.name=proxx-local}"
+      OTEL_SERVICE_NAME: "proxx-blongs"
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=proxx-blongs"
 
-      # Federation identity for the primary node
-      FEDERATION_SELF_NODE_ID: "${FEDERATION_SELF_NODE_ID:-local-primary}"
-      FEDERATION_SELF_GROUP_ID: "${FEDERATION_SELF_GROUP_ID:-proxx-local}"
-      FEDERATION_SELF_CLUSTER_ID: "${FEDERATION_SELF_CLUSTER_ID:-proxx-local-cluster}"
+      FEDERATION_SELF_NODE_ID: "${FEDERATION_SELF_NODE_ID:-blongs}"
+      FEDERATION_SELF_GROUP_ID: "${FEDERATION_SELF_GROUP_ID:-proxx-blongs}"
+      FEDERATION_SELF_CLUSTER_ID: "${FEDERATION_SELF_CLUSTER_ID:-proxx-blongs-cluster}"
       FEDERATION_SELF_PEER_DID: "${FEDERATION_SELF_PEER_DID:-}"
-      FEDERATION_SELF_PUBLIC_BASE_URL: "${FEDERATION_SELF_PUBLIC_BASE_URL:-http://proxx:8789}"
-      FEDERATION_DEFAULT_OWNER_SUBJECT: "${FEDERATION_DEFAULT_OWNER_SUBJECT:-did:web:proxx.local}"
+      FEDERATION_SELF_PUBLIC_BASE_URL: "${FEDERATION_SELF_PUBLIC_BASE_URL:-http://proxx-blongs:8789}"
+      FEDERATION_DEFAULT_OWNER_SUBJECT: "${FEDERATION_DEFAULT_OWNER_SUBJECT:-did:web:proxx-blongs.local}"
       FEDERATION_REQUEST_TIMEOUT_MS: "${FEDERATION_REQUEST_TIMEOUT_MS:-30000}"
     volumes:
+      - ./keys.json:/workspace/service-config/keys.json
       - ./models.json:/workspace/service-config/models.json:ro
-      - ./data:/app/data
+      - ./data-blongs:/app/data
       - ./:/workspace/runtime-repo:ro
       - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - default
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
@@ -125,27 +112,33 @@ services:
       retries: 3
       start_period: 20s
     restart: unless-stopped
+    networks:
+      ai-infra: {}
 
-  open-hax-openai-proxy-db:
+  proxx-blongs-db:
     image: postgres:16-bookworm
     environment:
-      POSTGRES_DB: openai_proxy
-      POSTGRES_USER: openai_proxy
-      POSTGRES_PASSWORD: openai_proxy
+      POSTGRES_DB: blongs_proxy
+      POSTGRES_USER: blongs_proxy
+      POSTGRES_PASSWORD: blongs_proxy
     ports:
-      - "${PROXY_DB_PORT:-15432}:5432"
+      - "${BLONGS_DB_PORT:-15433}:5432"
     volumes:
-      - open-hax-openai-proxy_open-hax-openai-proxy-db-data:/var/lib/postgresql/data
+      - proxx-blongs-db-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U openai_proxy -d openai_proxy"]
+      test: ["CMD-SHELL", "pg_isready -U blongs_proxy -d blongs_proxy"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
     restart: unless-stopped
+    networks:
+      - ai-infra
+
+networks:
+  ai-infra:
+    external: true
+    name: ai-infra
 
 volumes:
-  open-hax-openai-proxy_open-hax-openai-proxy-db-data:
-    external: true
-
-
+  proxx-blongs-db-data:

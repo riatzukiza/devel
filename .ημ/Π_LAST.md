@@ -1,39 +1,50 @@
 # Π Last Snapshot
 
-**Time:** 2026-03-24T02:23:04Z
-**Branch:** feature/threat-radar-platform
-**Pre-commit HEAD:** 993ec69
+**Time:** 2026-03-27T05:00:34Z  
+**Branch:** feature/threat-radar-platform  
+**Pre-commit HEAD:** 0e4208a
 
 ## Summary
 
-Snapshot of working state on threat-radar-platform branch. Recent work includes:
+Snapshot of the current Proxx-related workspace state on `feature/threat-radar-platform`.
 
-- **fix: harden eta-mu workflow pinning and rollout safety** (993ec69)
-- **chore: update submodules** (eta-mu-github, proxx) (a0d8003)
-- **feat: configure eta-mu workflow** to use open-hax proxy and eta-mu-pi config (800b188)
+Recent preserved work includes:
+
+- advancing `orgs/open-hax/proxx` to clean pushed snapshot `78965f3` tagged `Π/2026-03-27/045911`
+- recording that the latest full-suite Proxx observation remains known-red at `Π/2026-03-27/045033` (`419/420`, prompt-cache audit grouping regression)
+- services-level Proxx compose/runtime identity audits and federation standup reports
+- local Big Ussy projection helper `services/proxx/bin/project-complete-devel-stack-to-big-ussy.sh`
+- canonical federation sync daemon `services/proxx/sync/canonical-federation-sync.mjs`
+- new `services/proxx/docker-compose.blongs.yml` and related request-log metadata snapshots
 
 ## Dirty Files
 
-- `.gitmodules` — submodule configuration
-- `.opencode/AGENTS.md` — agent instructions
-- `.opencode/skills/webring-site/SKILL.md` — webring skill
-- `AGENTS.md` — workspace AGENTS.md
-- `orgs/open-hax/eta-mu-github` — submodule
-- `orgs/open-hax/proxx` — submodule
-- `orgs/riatzukiza/promethean` — submodule
-- `pnpm-lock.yaml` / `pnpm-workspace.yaml`
-- `receipts.log` — receipt river
-- `scripts/codex-release-monitor.mjs`
-- `services/eta-mu-truth-workbench/*` — truth workbench updates
-- `services/proxx/Caddyfile`, `docker-compose.yml`
+- `orgs/open-hax/proxx` — submodule pointer advanced to `78965f3` (`Π/2026-03-27/045911`)
+- `services/proxx/data-federation/request-logs.meta.json`
+- `services/proxx/docker-compose.federation.yml`
+- `services/proxx/docker-compose.glm5.yml` — deleted
+- `services/proxx/docker-compose.yml`
+- `docs/manifests/proxx-compose-manifest-2026-03-26.md`
+- `docs/reports/inventory/proxx-compose-identity-audit-2026-03-26.md`
+- `docs/reports/inventory/proxx-federation-standup-2026-03-26.md`
+- `services/proxx/bin/project-complete-devel-stack-to-big-ussy.sh`
+- `services/proxx/data-blongs/request-logs.meta.json`
+- `services/proxx/data-quiet-openai/request-logs.meta.json`
+- `services/proxx/data-quiet/request-logs.meta.json`
+- `services/proxx/docker-compose.blongs.yml`
+- `services/proxx/sync/canonical-federation-sync.mjs`
 
 ## Verification
 
-- No blocking lint/test verification (fast path skipped due to dirty submodules)
-- State captured as-is for handoff
+- `python json.load` on the four `services/proxx/*/request-logs.meta.json` files ✅
+- `docker compose -f services/proxx/docker-compose.yml config -q` ✅
+- `docker compose -f services/proxx/docker-compose.yml -f services/proxx/docker-compose.federation.yml config -q` ✅
+- `docker compose -f services/proxx/docker-compose.blongs.yml config -q` ✅
+- `bash -n services/proxx/bin/project-complete-devel-stack-to-big-ussy.sh` ✅
+- `node --check services/proxx/sync/canonical-federation-sync.mjs` ✅
+- `orgs/open-hax/proxx` snapshot `Π/2026-03-27/045911` recorded `pnpm run typecheck` ✅
+- latest observed Proxx full suite remains known-red at `Π/2026-03-27/045033`: `pnpm test` ❌ (`419/420`, prompt-cache audit grouping regression)
 
 ## Tag
 
-```
-Π/2026-03-24/022304-993ec69
-```
+`Π/2026-03-27/050034-0e4208a`
