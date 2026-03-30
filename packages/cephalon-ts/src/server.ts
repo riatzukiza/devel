@@ -12,7 +12,6 @@ const __dirname = path.dirname(__filename)
 const app = Fastify({ logger: true })
 
 // Enable CORS for development
-// @ts-expect-error - fastify plugin type mismatch between @fastify/cors@9 and fastify@4.29
 app.register(fastifyCors, { origin: true })
 
 // API stubs (to be replaced with real logic later)
@@ -208,7 +207,6 @@ app.get('/peer/restart-requests', async () => {
 
 // UI build serving (static)
 const uiDist = path.join(__dirname, 'ui', 'dist')
-// @ts-expect-error - fastify plugin type mismatch between @fastify/static@7 and fastify@4.29
 app.register(fastifyStatic, {
   root: uiDist,
   prefix: '/ui/',

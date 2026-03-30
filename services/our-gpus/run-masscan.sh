@@ -84,6 +84,13 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
+if [[ "${OUR_GPUS_TOR_REQUIRED:-false}" == "true" || "${MASSCAN_ALLOW_DIRECT_EGRESS:-true}" == "false" ]]; then
+    echo "Error: raw masscan is blocked while Tor mode is required"
+    echo "Reason: masscan uses raw packet sockets and cannot be safely routed through the Tor relay stack"
+    echo "Use the Tor overlay for HTTP probing, or disable the masscan direct-egress guard explicitly if you really intend direct scans"
+    exit 1
+fi
+
 if ! command -v masscan &> /dev/null; then
     echo "Error: masscan not found"
     echo "Install: sudo apt install masscan or build from source"

@@ -12,6 +12,7 @@ import { loadDefaultPolicy } from "./config/policy.js";
 import { envInt } from "./config/env.js";
 import { InMemoryMemoryStore, type MemoryStore } from "./core/memory-store.js";
 import { MongoDBMemoryStore } from "./core/mongodb-memory-store.js";
+import { MemoryCompactor } from "./core/memory-compactor.js";
 import { DiscordIntegration } from "./discord/integration.js";
 import {
   SessionManager,
@@ -151,6 +152,22 @@ export async function createCephalonApp(
     await memoryStore.initialize();
   }
 
+  const memoryCompactor = new MemoryCompactor(
+    memoryStore,
+    policy,
+    {
+      cephalonId: cephalonName,
+      sessionId: `${bot.id}-memory-compactor`,
+      schemaVersion: 1,
+    },
+    {
+      threshold: envInt("CEPHALON_MEMORY_COMPACTION_THRESHOLD", 1000, {
+        min: 50,
+        max: 1_000_000,
+      }),
+    },
+  );
+
   const discordApiClient = new DiscordApiClient({ token: discordToken });
   let getRuntimeState: (() => unknown) | undefined;
   const ircEnabled = /^(1|true|yes|on)$/i.test(process.env.CEPHALON_ENABLE_IRC ?? "");
@@ -208,6 +225,7 @@ export async function createCephalonApp(
     eidolonSummary: eidolonField.summary(),
     promptFieldSummary: promptField.summary(),
     mindQueueSummary: mindQueue.summary(),
+    compactionSummary: memoryCompactor.summary(),
     browserState: await getBrowserSessionState(),
     channelTrails: toolExecutor.describeChannelTrails(8),
     sessions: sessionManager.getAllSessions().map((entry) => ({
@@ -292,6 +310,7 @@ export async function createCephalonApp(
   let creditInterval: NodeJS.Timeout | null = null;
   let statsInterval: NodeJS.Timeout | null = null;
   let promptFieldInterval: NodeJS.Timeout | null = null;
+  let memoryCompactionInterval: NodeJS.Timeout | null = null;
   let isRunning = false;
   const enableProactiveLoop = options.enableProactiveLoop ?? true;
   const startupTickJitterMs = envInt("CEPHALON_STARTUP_TICK_JITTER_MS", 30_000, {
@@ -577,6 +596,19 @@ export async function createCephalonApp(
       console.log(`[PromptField] ${promptField.summary()}`);
     }, Number(process.env.CEPHALON_PROMPT_FIELD_MS || 180000));
 
+    memoryCompactionInterval = setInterval(() => {
+      void memoryCompactor.runOnce()
+        .then(() => {
+          const summary = memoryCompactor.summary();
+          if (summary.lastSummaryCount > 0) {
+            console.log(`[Compaction] created ${summary.lastSummaryCount} summaries from ${summary.lastSourceCount} memories`);
+          }
+        })
+        .catch((error) => {
+          console.error("[Compaction] Error during memory compaction:", error);
+        });
+    }, policy.compaction.intervalMinutes * 60 * 1000);
+
     // Start credit refill loop
     creditInterval = setInterval(() => {
       sessionManager.refillCredits();
@@ -607,6 +639,7 @@ export async function createCephalonApp(
     if (creditInterval) clearInterval(creditInterval);
     if (statsInterval) clearInterval(statsInterval);
     if (promptFieldInterval) clearInterval(promptFieldInterval);
+    if (memoryCompactionInterval) clearInterval(memoryCompactionInterval);
 
     try {
       rssPoller.stop();

@@ -239,6 +239,7 @@ export class MemoryFactory {
     content: string,
     sourceMemoryIds: UUID[],
     options?: {
+      clusterId?: string;
       timestamp?: number;
     }
   ): Memory {
@@ -248,6 +249,7 @@ export class MemoryFactory {
       content: { text: content },
       source: { type: "system" },
       cluster: {
+        clusterId: options?.clusterId,
         threadId: sourceMemoryIds[0],
       },
       retrieval: {

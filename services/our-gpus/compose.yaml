@@ -15,14 +15,25 @@ services:
       - ./imports:/workspace/imports
       - ./masscan.conf:/app/masscan.conf:ro
       - ./excludes.conf:/app/excludes.conf:ro
+      - ./excludes.generated.conf:/app/excludes.generated.conf:ro
       - /usr/bin/masscan:/usr/bin/masscan:ro
     environment:
       APP_ENV: ${APP_ENV:-dev}
       DATABASE_URL: sqlite:////app/data/ollama.db
       REDIS_URL: redis://redis:6379/0
+      ADMIN_API_KEY: ${ADMIN_API_KEY:-}
+      OUR_GPUS_API_KEY: ${OUR_GPUS_API_KEY:-}
+      PROXX_API_KEY: ${PROXX_API_KEY:-}
+      SHODAN_API_KEY: ${SHODAN_API_KEY:-}
+      SHODAN_BASE_QUERY: ${SHODAN_BASE_QUERY:-}
+      SHODAN_PAGE_LIMIT: ${SHODAN_PAGE_LIMIT:-3}
+      SHODAN_MAX_MATCHES: ${SHODAN_MAX_MATCHES:-1000}
+      SHODAN_MAX_QUERIES: ${SHODAN_MAX_QUERIES:-24}
+      SHODAN_QUERY_MAX_LENGTH: ${SHODAN_QUERY_MAX_LENGTH:-900}
       PROBE_TIMEOUT_SECS: ${PROBE_TIMEOUT_SECS:-5}
       PROBE_CONCURRENCY: ${PROBE_CONCURRENCY:-200}
       PROBE_RETRIES: ${PROBE_RETRIES:-2}
+      OUR_GPUS_EXCLUDE_FILES: ${OUR_GPUS_EXCLUDE_FILES:-/app/excludes.conf,/app/excludes.generated.conf}
       UPLOAD_MAX_MB: ${UPLOAD_MAX_MB:-4096}
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://127.0.0.1:15173,http://localhost:15173}
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
@@ -31,6 +42,8 @@ services:
     depends_on:
       redis:
         condition: service_healthy
+      probe-sidecar:
+        condition: service_started
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/healthz"]
       interval: 30s
@@ -53,6 +66,10 @@ services:
       APP_ENV: ${APP_ENV:-dev}
       DATABASE_URL: sqlite:////app/data/ollama.db
       REDIS_URL: redis://redis:6379/0
+      ADMIN_API_KEY: ${ADMIN_API_KEY:-}
+      OUR_GPUS_API_KEY: ${OUR_GPUS_API_KEY:-}
+      PROXX_API_KEY: ${PROXX_API_KEY:-}
+      PROBE_SIDECAR_URL: ${PROBE_SIDECAR_URL:-http://probe-sidecar:4002}
       PROBE_TIMEOUT_SECS: ${PROBE_TIMEOUT_SECS:-5}
       PROBE_CONCURRENCY: ${PROBE_CONCURRENCY:-200}
       PROBE_RETRIES: ${PROBE_RETRIES:-2}
@@ -66,6 +83,16 @@ services:
         condition: service_healthy
       api:
         condition: service_healthy
+      probe-sidecar:
+        condition: service_started
+    restart: unless-stopped
+
+  probe-sidecar:
+    build:
+      context: ../../orgs/shuv/our-gpus/services/probe-sidecar
+      dockerfile: Dockerfile
+    environment:
+      PORT: ${PROBE_SIDECAR_PORT:-4002}
     restart: unless-stopped
 
   redis:
