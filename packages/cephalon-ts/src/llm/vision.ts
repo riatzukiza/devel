@@ -26,7 +26,7 @@ function getVisionConfig() {
   const config = createOllamaConfig("auto:cheapest");
   return {
     baseUrl: process.env.OLLAMA_BASE_URL || "http://127.0.0.1:8789",
-    model: config.model,
+    model: process.env.CEPHALON_VISION_MODEL || config.model,
     apiKey: config.apiKey,
     maxTokens: parseInt(process.env.CEPHALON_VISION_MAX_TOKENS || "1024", 10),
   };

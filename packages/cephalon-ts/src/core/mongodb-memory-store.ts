@@ -326,6 +326,23 @@ export class MongoDBMemoryStore implements MemoryStore {
     );
   }
 
+  async getBestSummaryForCluster(clusterId: UUID | string): Promise<Memory | null> {
+    if (!this.collection) {
+      throw new Error('MongoDBMemoryStore not initialized');
+    }
+
+    return this.collection.findOne(
+      {
+        kind: 'summary',
+        'cluster.clusterId': clusterId,
+        'lifecycle.deleted': false,
+      },
+      {
+        sort: { timestamp: -1 },
+      },
+    ) as unknown as Promise<Memory | null>;
+  }
+
   /**
    * Get all memories (for UI/debugging)
    * Note: This returns a Promise unlike InMemoryMemoryStore.sync version

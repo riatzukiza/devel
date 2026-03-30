@@ -108,7 +108,7 @@ const DISCORD_OUTPUT_TOOLS = [
   "discord.set_output_channel",
   "discord.speak",
 ] as const;
-const WEB_TOOLS = ["web.fetch", "web.search"] as const;
+const WEB_TOOLS = ["web.fetch", "web.search", "github.search", "wikipedia.search", "bluesky.search"] as const;
 const VISION_TOOLS = [
   "vision.inspect",
   "audio.spectrogram",

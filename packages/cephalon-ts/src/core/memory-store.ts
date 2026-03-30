@@ -54,6 +54,9 @@ export interface MemoryStore {
   // Access tracking
   updateAccessStats(memoryId: UUID, contextId: UUID): Promise<void>;
 
+  // Summary retrieval for compaction-aware context assembly
+  getBestSummaryForCluster?(clusterId: string): Promise<Memory | null>;
+
   // For UI - get all memories (sync for in-memory, async for others)
   getAllMemories?(): Memory[] | Promise<Memory[]>;
 
@@ -287,6 +290,17 @@ export class InMemoryMemoryStore implements MemoryStore {
     memory.usage.includedCountTotal += 1;
     memory.usage.includedCountDecay = decayed;
     memory.usage.lastIncludedAt = now;
+  }
+
+  async getBestSummaryForCluster(clusterId: string): Promise<Memory | null> {
+    return Array.from(this.memories.values())
+      .filter(
+        (memory) =>
+          !memory.lifecycle.deleted &&
+          memory.kind === "summary" &&
+          memory.cluster?.clusterId === clusterId,
+      )
+      .sort((left, right) => right.timestamp - left.timestamp)[0] ?? null;
   }
 
   getAllMemories(): Memory[] {

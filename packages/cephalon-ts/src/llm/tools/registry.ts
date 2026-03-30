@@ -2158,6 +2158,311 @@ export const TOOL_REGISTRY: Record<string, ToolRegistryEntry> = {
     },
   },
 
+  "github.search": {
+    schema: {
+      name: "github.search",
+      description:
+        "Search GitHub for repositories, issues, pull requests, or code. Use this when the user or the circuit needs live GitHub-specific results rather than a generic web search.",
+      parameters: {
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "The GitHub search query.",
+          },
+          kind: {
+            type: "string",
+            description: "Search kind: repositories, issues, pulls, or code. Default repositories.",
+          },
+          num_results: {
+            type: "number",
+            description: "Number of results to return (default: 5).",
+          },
+        },
+        required: ["query"],
+      },
+    },
+    handler: async (args) => {
+      const { query, kind = "repositories", num_results = 5 } = args as {
+        query: string;
+        kind?: "repositories" | "issues" | "pulls" | "code";
+        num_results?: number;
+      };
+
+      console.log(`[TOOL] github.search: Searching ${kind} for "${query}"`);
+
+      const endpoint = (() => {
+        if (kind === "issues" || kind === "pulls") {
+          const suffix = kind === "pulls" ? `${query} is:pr` : query;
+          return `https://api.github.com/search/issues?q=${encodeURIComponent(suffix)}&per_page=${num_results}`;
+        }
+        if (kind === "code") {
+          return `https://api.github.com/search/code?q=${encodeURIComponent(query)}&per_page=${num_results}`;
+        }
+        return `https://api.github.com/search/repositories?q=${encodeURIComponent(query)}&per_page=${num_results}`;
+      })();
+
+      try {
+        const response = await fetch(endpoint, {
+          headers: {
+            "User-Agent": "cephalon-ts/1.0",
+            Accept: "application/vnd.github+json",
+            ...(process.env.GITHUB_TOKEN ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` } : {}),
+          },
+        });
+
+        if (!response.ok) {
+          return {
+            toolName: "github.search",
+            success: false,
+            error: `GitHub search failed: ${response.status} ${response.statusText}`,
+          };
+        }
+
+        const payload = await response.json() as { items?: Array<Record<string, unknown>> };
+        const results = (payload.items ?? []).slice(0, num_results).map((item) => ({
+          title:
+            (typeof item.full_name === "string" && item.full_name) ||
+            (typeof item.title === "string" && item.title) ||
+            (typeof item.name === "string" && item.name) ||
+            "untitled",
+          url:
+            (typeof item.html_url === "string" && item.html_url) ||
+            (typeof item.url === "string" && item.url) ||
+            "",
+          snippet:
+            (typeof item.description === "string" && item.description) ||
+            (typeof item.body === "string" && item.body) ||
+            (typeof item.path === "string" && item.path) ||
+            "",
+          kind,
+        }));
+
+        return {
+          toolName: "github.search",
+          success: true,
+          result: {
+            query,
+            kind,
+            results,
+            totalResults: results.length,
+          },
+        };
+      } catch (error) {
+        console.error(`[TOOL] github.search: Error:`, error);
+        return {
+          toolName: "github.search",
+          success: false,
+          error: error instanceof Error ? error.message : String(error),
+        };
+      }
+    },
+  },
+
+  "wikipedia.search": {
+    schema: {
+      name: "wikipedia.search",
+      description:
+        "Search Wikipedia for encyclopedic background information and summaries.",
+      parameters: {
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "The Wikipedia search query.",
+          },
+          num_results: {
+            type: "number",
+            description: "Number of results to return (default: 5).",
+          },
+        },
+        required: ["query"],
+      },
+    },
+    handler: async (args) => {
+      const { query, num_results = 5 } = args as {
+        query: string;
+        num_results?: number;
+      };
+
+      console.log(`[TOOL] wikipedia.search: Searching for "${query}"`);
+
+      try {
+        const response = await fetch(
+          `https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&utf8=1&srlimit=${num_results}&srsearch=${encodeURIComponent(query)}`,
+          {
+            headers: {
+              "User-Agent": "cephalon-ts/1.0",
+              Accept: "application/json",
+            },
+          },
+        );
+
+        if (!response.ok) {
+          return {
+            toolName: "wikipedia.search",
+            success: false,
+            error: `Wikipedia search failed: ${response.status} ${response.statusText}`,
+          };
+        }
+
+        const payload = await response.json() as {
+          query?: {
+            search?: Array<{
+              title?: string;
+              snippet?: string;
+              pageid?: number;
+            }>;
+          };
+        };
+
+        const results = (payload.query?.search ?? []).map((item) => ({
+          title: item.title ?? "untitled",
+          url: item.pageid ? `https://en.wikipedia.org/?curid=${item.pageid}` : "",
+          snippet: (item.snippet ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim(),
+        }));
+
+        return {
+          toolName: "wikipedia.search",
+          success: true,
+          result: {
+            query,
+            results,
+            totalResults: results.length,
+          },
+        };
+      } catch (error) {
+        console.error(`[TOOL] wikipedia.search: Error:`, error);
+        return {
+          toolName: "wikipedia.search",
+          success: false,
+          error: error instanceof Error ? error.message : String(error),
+        };
+      }
+    },
+  },
+
+  "bluesky.search": {
+    schema: {
+      name: "bluesky.search",
+      description:
+        "Search Bluesky for live public posts or actors. Use this for fresh social signal without ingesting a full firehose.",
+      parameters: {
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "The Bluesky search query.",
+          },
+          kind: {
+            type: "string",
+            description: "Search kind: posts or actors. Default posts.",
+          },
+          num_results: {
+            type: "number",
+            description: "Number of results to return (default: 5).",
+          },
+        },
+        required: ["query"],
+      },
+    },
+    handler: async (args) => {
+      const { query, kind = "posts", num_results = 5 } = args as {
+        query: string;
+        kind?: "posts" | "actors";
+        num_results?: number;
+      };
+
+      console.log(`[TOOL] bluesky.search: Searching ${kind} for "${query}"`);
+
+      const endpoint = kind === "actors"
+        ? `https://public.api.bsky.app/xrpc/app.bsky.actor.searchActors?q=${encodeURIComponent(query)}&limit=${num_results}`
+        : `https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=${encodeURIComponent(query)}&limit=${num_results}`;
+
+      try {
+        const response = await fetch(endpoint, {
+          headers: {
+            "User-Agent": "cephalon-ts/1.0",
+            Accept: "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          return {
+            toolName: "bluesky.search",
+            success: false,
+            error: `Bluesky search failed: ${response.status} ${response.statusText}`,
+          };
+        }
+
+        if (kind === "actors") {
+          const payload = await response.json() as {
+            actors?: Array<{
+              handle?: string;
+              displayName?: string;
+              description?: string;
+              did?: string;
+            }>;
+          };
+
+          const results = (payload.actors ?? []).map((actor) => ({
+            title: actor.displayName || actor.handle || "unknown actor",
+            url: actor.handle ? `https://bsky.app/profile/${actor.handle}` : "",
+            snippet: actor.description || actor.did || "",
+          }));
+
+          return {
+            toolName: "bluesky.search",
+            success: true,
+            result: {
+              query,
+              kind,
+              results,
+              totalResults: results.length,
+            },
+          };
+        }
+
+        const payload = await response.json() as {
+          posts?: Array<{
+            uri?: string;
+            record?: { text?: string; createdAt?: string };
+            author?: { handle?: string; displayName?: string };
+          }>;
+        };
+
+        const results = (payload.posts ?? []).map((post) => {
+          const handle = post.author?.handle;
+          const uri = post.uri || "";
+          const postId = uri.split('/').pop();
+          return {
+            title: handle ? `${post.author?.displayName || handle} (@${handle})` : "unknown post",
+            url: handle && postId ? `https://bsky.app/profile/${handle}/post/${postId}` : "",
+            snippet: post.record?.text || post.record?.createdAt || "",
+          };
+        });
+
+        return {
+          toolName: "bluesky.search",
+          success: true,
+          result: {
+            query,
+            kind,
+            results,
+            totalResults: results.length,
+          },
+        };
+      } catch (error) {
+        console.error(`[TOOL] bluesky.search: Error:`, error);
+        return {
+          toolName: "bluesky.search",
+          success: false,
+          error: error instanceof Error ? error.message : String(error),
+        };
+      }
+    },
+  },
+
   // ========================================
   // AUDIO TOOLS - "See" sound
   // ========================================

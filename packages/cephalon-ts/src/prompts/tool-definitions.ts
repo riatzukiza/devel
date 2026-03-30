@@ -292,6 +292,139 @@ export const TOOL_DEFINITIONS: Record<string, ToolRegistryEntry> = {
     description: "List channels in a Discord server",
   },
 
+  "web.fetch": {
+    schema: {
+      name: "web.fetch",
+      description: "Fetch a URL and return the page content as text, titles, links, and metadata.",
+      parameters: {
+        type: "object",
+        properties: {
+          url: {
+            type: "string",
+            description: "The URL to fetch.",
+          },
+          extract_text: {
+            type: "boolean",
+            description: "If true, extract the main text content.",
+          },
+          max_length: {
+            type: "number",
+            description: "Maximum length of text to return.",
+          },
+        },
+        required: ["url"],
+      },
+    },
+    handlerName: "webFetch",
+    description: "Fetch and read a web page",
+  },
+
+  "web.search": {
+    schema: {
+      name: "web.search",
+      description: "Search the web for information and return titles, URLs, and snippets.",
+      parameters: {
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "The search query.",
+          },
+          num_results: {
+            type: "number",
+            description: "Number of results to return.",
+          },
+          timeout_ms: {
+            type: "number",
+            description: "HTTP timeout in milliseconds.",
+          },
+        },
+        required: ["query"],
+      },
+    },
+    handlerName: "webSearch",
+    description: "Search the general web",
+  },
+
+  "github.search": {
+    schema: {
+      name: "github.search",
+      description: "Search GitHub for repositories, issues, pull requests, or code.",
+      parameters: {
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "The GitHub search query.",
+          },
+          kind: {
+            type: "string",
+            description: "Search kind: repositories, issues, pulls, or code.",
+            enum: ["repositories", "issues", "pulls", "code"],
+          },
+          num_results: {
+            type: "number",
+            description: "Number of results to return.",
+          },
+        },
+        required: ["query"],
+      },
+    },
+    handlerName: "githubSearch",
+    description: "Search GitHub specifically",
+  },
+
+  "wikipedia.search": {
+    schema: {
+      name: "wikipedia.search",
+      description: "Search Wikipedia for encyclopedic summaries and references.",
+      parameters: {
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "The Wikipedia search query.",
+          },
+          num_results: {
+            type: "number",
+            description: "Number of results to return.",
+          },
+        },
+        required: ["query"],
+      },
+    },
+    handlerName: "wikipediaSearch",
+    description: "Search Wikipedia specifically",
+  },
+
+  "bluesky.search": {
+    schema: {
+      name: "bluesky.search",
+      description: "Search Bluesky for live public posts or actors.",
+      parameters: {
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "The Bluesky search query.",
+          },
+          kind: {
+            type: "string",
+            description: "Search kind: posts or actors.",
+            enum: ["posts", "actors"],
+          },
+          num_results: {
+            type: "number",
+            description: "Number of results to return.",
+          },
+        },
+        required: ["query"],
+      },
+    },
+    handlerName: "blueskySearch",
+    description: "Search Bluesky specifically",
+  },
+
   "get_current_time": {
     schema: {
       name: "get_current_time",

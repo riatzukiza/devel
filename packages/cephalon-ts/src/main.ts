@@ -8,6 +8,7 @@ import "dotenv/config";
 import { InMemoryEventBus } from "@promethean-os/event";
 import { loadDefaultPolicy } from "./config/policy.js";
 import { InMemoryMemoryStore } from "./core/memory-store.js";
+import { MemoryCompactor } from "./core/memory-compactor.js";
 import { DiscordIntegration } from "./discord/integration.js";
 import {
   SessionManager,
@@ -102,6 +103,19 @@ async function main(): Promise<void> {
   const memoryStore = new InMemoryMemoryStore(undefined, openPlannerClient);
   await memoryStore.initialize();
   console.log("[MemoryStore] Initialized");
+
+  const memoryCompactor = new MemoryCompactor(
+    memoryStore,
+    policy,
+    {
+      cephalonId: cephalonName,
+      sessionId: `${bot.id}-memory-compactor`,
+      schemaVersion: 1,
+    },
+    {
+      threshold: Number(process.env.CEPHALON_MEMORY_COMPACTION_THRESHOLD || 1000),
+    },
+  );
 
   // Initialize LLM provider (Ollama)
   const ollamaConfig = createOllamaConfig(policy.models.actor.name);
@@ -637,6 +651,19 @@ If you haven't set one, use discord.set_output_channel first.
     console.log("[Stats]", JSON.stringify(stats));
   }, 30000);
 
+  const memoryCompactionInterval = setInterval(() => {
+    void memoryCompactor.runOnce()
+      .then(() => {
+        const summary = memoryCompactor.summary();
+        if (summary.lastSummaryCount > 0) {
+          console.log(`[Compaction] created ${summary.lastSummaryCount} summaries from ${summary.lastSourceCount} memories`);
+        }
+      })
+      .catch((error) => {
+        console.error("[Compaction] Error during memory compaction:", error);
+      });
+  }, policy.compaction.intervalMinutes * 60 * 1000);
+
   console.log();
   console.log("✓ Cephalon is running");
   console.log("  Press Ctrl+C to stop");
@@ -650,6 +677,7 @@ If you haven't set one, use discord.set_output_channel first.
     if (loopTickTimeout) clearTimeout(loopTickTimeout);
     clearInterval(creditInterval);
     clearInterval(statsInterval);
+    clearInterval(memoryCompactionInterval);
 
     const forceExitTimeout = setTimeout(() => {
       console.error("[Shutdown] Force exit after timeout");

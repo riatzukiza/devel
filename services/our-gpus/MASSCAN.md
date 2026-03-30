@@ -2,6 +2,33 @@
 
 Masscan is an alternative to Shodan for discovering Ollama servers. It actively scans public IP ranges for open port 11434, offering fresh data at the cost of network egress and scan time.
 
+## Tor mode
+The `docker-compose.tor.yml` overlay routes HTTP probe traffic through `privoxy -> tor`, but raw `masscan` traffic is intentionally blocked in that mode.
+
+Reason: `masscan` uses raw packet sockets and cannot be honestly treated as Tor-relayed HTTP/TCP client traffic. The overlay prefers failing closed over silently leaking direct egress.
+
+## Scan strategies
+The API now supports two scan strategies on `POST /api/masscan`:
+
+- `masscan`: raw packet scan, requires direct egress, always passes `--exclude-file`
+- `tor`: HTTP/Tor discovery scan, expands the target into allowed hosts after exclusions and probes them through the Tor relay stack
+
+Both strategies refuse to run if the exclusion file is missing or empty.
+
+The runtime now supports layered exclusions via `OUR_GPUS_EXCLUDE_FILES`, which defaults to:
+
+```bash
+/app/excludes.conf,/app/excludes.generated.conf
+```
+
+Refresh the generated layer from AWS, GCP, and Cloudflare with:
+
+```bash
+cd /home/err/devel/orgs/shuv/our-gpus
+uv run python cli/refresh_dynamic_excludes.py \
+  --output /home/err/devel/services/our-gpus/excludes.generated.conf
+```
+
 ## Files
 
 | File | Purpose |

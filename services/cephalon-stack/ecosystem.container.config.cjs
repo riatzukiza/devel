@@ -27,6 +27,7 @@ module.exports = {
         CEPHALON_MODEL_C6: process.env.CEPHALON_MODEL_C6 || "",
         CEPHALON_MODEL_C7: process.env.CEPHALON_MODEL_C7 || "",
         CEPHALON_MODEL_C8: process.env.CEPHALON_MODEL_C8 || "",
+        CEPHALON_VISION_MODEL: process.env.CEPHALON_VISION_MODEL || "",
         MEMORY_UI_PORT: process.env.MEMORY_UI_PORT || "3000",
         OPENPLANNER_URL: process.env.OPENPLANNER_URL || "http://host.docker.internal:7777",
         OPENPLANNER_API_BASE_URL:

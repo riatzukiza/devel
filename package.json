@@ -90,6 +90,7 @@
     "@promethean-os/kanban": "workspace:*",
     "@promethean-os/opencode-openplanner-plugin-cljs": "workspace:*",
     "@types/node": "^20.11.30",
+    "ava": "^7.0.0",
     "c8": "^8.0.0",
     "dotenv": "^17.2.3",
     "markdownlint": "^0.39.0",
