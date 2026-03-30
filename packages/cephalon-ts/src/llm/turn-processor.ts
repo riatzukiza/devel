@@ -215,6 +215,7 @@ export class TurnProcessor {
             currentEvent: event,
             tokenizer,
             memoryStore: this.memoryStore,
+            getBestSummaryForCluster: this.memoryStore.getBestSummaryForCluster?.bind(this.memoryStore),
             retrieveRelated: async () => [], // TODO: Implement vector retrieval
           });
 
