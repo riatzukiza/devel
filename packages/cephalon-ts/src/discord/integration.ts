@@ -151,6 +151,10 @@ export class DiscordIntegration {
     // Ignore messages from channels we don't monitor
     if (!this.shouldProcessChannel(message.channelId)) return;
 
+    const selfId = this.client.user?.id;
+    const mentionUserIds = Array.from(message.mentions.users.keys());
+    const mentionsCephalon = selfId ? mentionUserIds.includes(selfId) : false;
+
     // Normalize message
     const normalized = normalizeDiscordMessage(
       {
@@ -185,8 +189,12 @@ export class DiscordIntegration {
       authorIsBot: message.author.bot,
       authorUsername: message.author.username,
       authorDiscriminator: message.author.discriminator,
+      guildName: message.guild?.name || '',
+      channelName: 'name' in message.channel ? (message.channel.name || '') : '',
       content: message.content || '',
       normalized,
+      mentionUserIds,
+      mentionsCephalon,
       embeds: message.embeds.map(e => ({
         title: e.title || '',
         description: e.description || '',

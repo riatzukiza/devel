@@ -5,6 +5,7 @@ import type {
   EmbeddingConfig,
   OllamaConfig,
 } from "../types/index.js";
+import { envInt } from "./env.js";
 
 export interface CephalonConfig {
   sessionManager: SessionManagerConfig;
@@ -15,8 +16,19 @@ export interface CephalonConfig {
 }
 
 export function createDefaultSessionManagerConfig(): SessionManagerConfig {
+  const concurrency = envInt("CEPHALON_SESSION_CONCURRENCY", 8, { min: 1, max: 64 });
+  const maxQueuePerSession = envInt("CEPHALON_SESSION_QUEUE_MAX_PER_SESSION", 2000, {
+    min: 1,
+    max: 100_000,
+  });
+
+  const dropPolicyRaw = (process.env.CEPHALON_SESSION_QUEUE_DROP_POLICY || "drop_oldest")
+    .trim()
+    .toLowerCase();
+  const dropPolicy = dropPolicyRaw === "drop_newest" ? "drop_newest" : "drop_oldest";
+
   return {
-    concurrency: 4,
+    concurrency,
     lanes: {
       interactive: { turns: 60, toolCalls: 120 },
       operational: { turns: 30, toolCalls: 60 },
@@ -32,8 +44,8 @@ export function createDefaultSessionManagerConfig(): SessionManagerConfig {
       },
     },
     queue: {
-      maxPerSession: 100,
-      dropPolicy: "drop_oldest",
+      maxPerSession: maxQueuePerSession,
+      dropPolicy,
     },
   };
 }
@@ -104,20 +116,31 @@ export function createDefaultChromaConfig(): ChromaConfig {
 }
 
 export function createDefaultEmbeddingConfig(): EmbeddingConfig {
+  const embeddingContextSize = envInt(
+    "CEPHALON_EMBEDDING_CONTEXT_SIZE",
+    envInt("CEPHALON_OLLAMA_EMBED_NUM_CTX", 0, { min: 0, max: 1_048_576 }),
+    { min: 0, max: 1_048_576 },
+  );
+
   return {
     baseUrl: process.env.OLLAMA_BASE_URL || "http://127.0.0.1:8789",
     model: "qwen3-embedding:0.6b",
-    contextSize: 0,
+    contextSize: embeddingContextSize,
     apiKey: process.env.OLLAMA_API_KEY || process.env.OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN || undefined,
   };
 }
 
 export function createOllamaConfig(modelName: string): OllamaConfig {
+  const maxTokens = envInt("CEPHALON_MAX_TOKENS", envInt("CEPHALON_MAX_COMPLETION_TOKENS", 16384, { min: 1 }), {
+    min: 1,
+    max: 1_048_576,
+  });
+
   return {
     baseUrl: process.env.OLLAMA_BASE_URL || "http://127.0.0.1:8789",
     model: modelName,
     temperature: 0.7,
-    maxTokens: 4096,
+    maxTokens,
     apiKey: process.env.OLLAMA_API_KEY || process.env.OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN || undefined,
   };
 }

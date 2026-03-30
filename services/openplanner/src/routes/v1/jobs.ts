@@ -67,4 +67,23 @@ export const jobRoutes: FastifyPluginAsync = async (app) => {
     const job = await (app as any).jobs.create("compile.pack", body);
     return { ok: true, job, note: "Queued. Worker not implemented in skeleton." };
   });
+
+  app.post("/jobs/compact/semantic", async (req) => {
+    const body = (req.body as any) ?? {};
+    const job = await (app as any).jobs.create("compact.semantic", body);
+
+    (async () => {
+      try {
+        await (app as any).jobs.update(job.id, { status: "running" });
+        const { runSemanticCompaction } = await import("../../lib/semantic-compaction.js");
+        const cfg = (app as any).openplannerConfig;
+        const output = await runSemanticCompaction(app.duck, app.chroma, cfg, body);
+        await (app as any).jobs.update(job.id, { status: "done", output });
+      } catch (err: any) {
+        await (app as any).jobs.update(job.id, { status: "error", error: err?.message ?? String(err) });
+      }
+    })();
+
+    return { ok: true, job, note: "Semantic compaction job started in background" };
+  });
 };

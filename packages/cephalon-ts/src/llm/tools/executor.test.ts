@@ -115,3 +115,112 @@ test("executes discord.send when handler registered", async (t) => {
   t.true(result.success);
   t.true(sendCalled, "handler should run for registered tools");
 });
+
+test("filters tool definitions by session permissions", async (t) => {
+  const executor = await createExecutor();
+
+  executor.setSessionResolver((sessionId) => {
+    if (sessionId !== "session-filtered") {
+      return undefined;
+    }
+
+    return {
+      id: sessionId,
+      cephalonId: "Duck",
+      priorityClass: "interactive",
+      credits: 1,
+      recentBuffer: [],
+      toolPermissions: new Set(["memory.lookup", "discord.search"]),
+    };
+  });
+
+  const tools = executor.getToolDefinitions("session-filtered");
+  const toolNames = tools.map((tool) => tool.name);
+
+  t.true(toolNames.includes("memory.lookup"));
+  t.true(toolNames.includes("discord.search"));
+  t.false(toolNames.includes("peer.write_file"));
+  t.false(toolNames.includes("browser.navigate"));
+});
+
+test("blocks execution of disallowed tools for a session", async (t) => {
+  const executor = await createExecutor();
+  let called = false;
+
+  executor.setSessionResolver((sessionId) => {
+    if (sessionId !== "session-guarded") {
+      return undefined;
+    }
+
+    return {
+      id: sessionId,
+      cephalonId: "Duck",
+      priorityClass: "interactive",
+      credits: 1,
+      recentBuffer: [],
+      toolPermissions: new Set(["memory.lookup"]),
+    };
+  });
+
+  executor.registerTool("peer.write_file", async (): Promise<ToolResult> => {
+    called = true;
+    return { toolName: "peer.write_file", success: true, result: { ok: true } };
+  });
+
+  const result = await executor.execute(
+    {
+      type: "tool_call",
+      name: "peer.write_file",
+      args: { peer: "openhax", path: "README.md", content: "hi" },
+      callId: "call-5",
+    },
+    "session-guarded",
+  );
+
+  t.false(result.success);
+  t.false(called, "handler should not run when tool is disallowed");
+  t.regex(result.error || "", /not allowed/);
+});
+
+test("ensureOutputChannel seeds IRC home channels immediately", async (t) => {
+  const { ToolExecutor } = await loadExecutorModule();
+  const eventBus = new InMemoryEventBus();
+
+  const discordApiClient = {
+    listChannels: async () => ({ channels: [], count: 0 }),
+  } as unknown as Awaited<ReturnType<typeof loadDiscordModule>>["DiscordApiClient"] extends new (...args: any[]) => infer T ? T : never;
+
+  const ircApiClient = {
+    listChannels: async () => ({
+      channels: [{ id: 'irc:ussy:%23ussycode', name: '#ussycode', guildId: 'irc:ussy', type: 'irc-channel' }],
+      count: 1,
+    }),
+  };
+
+  const executor = new ToolExecutor(eventBus, {
+    discordApiClient,
+    ircApiClient: ircApiClient as never,
+  });
+
+  executor.setSessionResolver((sessionId) => {
+    if (sessionId !== 'session-irc-home') {
+      return undefined;
+    }
+
+    return {
+      id: sessionId,
+      cephalonId: 'Duck',
+      priorityClass: 'interactive',
+      credits: 1,
+      recentBuffer: [],
+      toolPermissions: new Set(),
+      homeChannelId: 'irc:ussy:%23ussycode',
+    };
+  });
+
+  const selection = await executor.ensureOutputChannel('session-irc-home');
+
+  t.is(selection?.channelId, 'irc:ussy:%23ussycode');
+  t.is(selection?.channelName, '#ussycode');
+  t.is(selection?.reason, 'home channel seed');
+});

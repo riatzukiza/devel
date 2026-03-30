@@ -99,7 +99,8 @@ export const eventRoutes: FastifyPluginAsync = async (app) => {
               author: author ?? "",
               role: role ?? "",
               model: model ?? "",
-              embedding_model: embeddingModel ?? ""
+              embedding_model: embeddingModel ?? "",
+              search_tier: "hot"
             }] as any
           });
         } catch (err) {

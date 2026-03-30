@@ -1,0 +1,95 @@
+services:
+  api:
+    build:
+      context: ../../orgs/shuv/our-gpus
+      dockerfile: Dockerfile.api
+    working_dir: /app
+    cap_add:
+      - NET_RAW
+    ports:
+      - "${OUR_GPUS_BIND_HOST:-127.0.0.1}:${OUR_GPUS_API_PORT:-18000}:8000"
+    volumes:
+      - ../../orgs/shuv/our-gpus/app:/app/app
+      - ./data:/app/data
+      - ../../orgs/shuv/our-gpus:/workspace/source:ro
+      - ./imports:/workspace/imports
+      - ./masscan.conf:/app/masscan.conf:ro
+      - ./excludes.conf:/app/excludes.conf:ro
+      - /usr/bin/masscan:/usr/bin/masscan:ro
+    environment:
+      APP_ENV: ${APP_ENV:-dev}
+      DATABASE_URL: sqlite:////app/data/ollama.db
+      REDIS_URL: redis://redis:6379/0
+      PROBE_TIMEOUT_SECS: ${PROBE_TIMEOUT_SECS:-5}
+      PROBE_CONCURRENCY: ${PROBE_CONCURRENCY:-200}
+      PROBE_RETRIES: ${PROBE_RETRIES:-2}
+      UPLOAD_MAX_MB: ${UPLOAD_MAX_MB:-4096}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://127.0.0.1:15173,http://localhost:15173}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      BATCH_SIZE: ${BATCH_SIZE:-1000}
+      WORKERS: ${WORKERS:-4}
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: ../../orgs/shuv/our-gpus
+      dockerfile: Dockerfile.worker
+    working_dir: /app
+    volumes:
+      - ../../orgs/shuv/our-gpus/worker:/app/worker
+      - ../../orgs/shuv/our-gpus/app:/app/app
+      - ./data:/app/data
+      - ../../orgs/shuv/our-gpus:/workspace/source:ro
+    environment:
+      APP_ENV: ${APP_ENV:-dev}
+      DATABASE_URL: sqlite:////app/data/ollama.db
+      REDIS_URL: redis://redis:6379/0
+      PROBE_TIMEOUT_SECS: ${PROBE_TIMEOUT_SECS:-5}
+      PROBE_CONCURRENCY: ${PROBE_CONCURRENCY:-200}
+      PROBE_RETRIES: ${PROBE_RETRIES:-2}
+      UPLOAD_MAX_MB: ${UPLOAD_MAX_MB:-4096}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://127.0.0.1:15173,http://localhost:15173}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      BATCH_SIZE: ${BATCH_SIZE:-1000}
+      WORKERS: ${WORKERS:-4}
+    depends_on:
+      redis:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    volumes:
+      - our-gpus-redis-data:/data
+
+  web:
+    build:
+      context: ../../orgs/shuv/our-gpus/web
+      dockerfile: Dockerfile
+    ports:
+      - "${OUR_GPUS_BIND_HOST:-127.0.0.1}:${OUR_GPUS_WEB_PORT:-15173}:5173"
+    environment:
+      VITE_API_URL: http://api:8000
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  our-gpus-redis-data:

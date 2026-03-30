@@ -35,7 +35,26 @@ export async function openDuckDB(dbPath: string): Promise<Duck> {
     );
   `);
 
+  await run(conn, `
+    CREATE TABLE IF NOT EXISTS compacted_memories (
+      id TEXT PRIMARY KEY,
+      ts TIMESTAMP,
+      source TEXT,
+      kind TEXT,
+      project TEXT,
+      session TEXT,
+      seed_id TEXT,
+      member_count INTEGER,
+      char_count INTEGER,
+      embedding_model TEXT,
+      text TEXT,
+      members JSON,
+      extra JSON
+    );
+  `);
+
   await run(conn, "CREATE INDEX IF NOT EXISTS events_ts_idx ON events(ts)");
+  await run(conn, "CREATE INDEX IF NOT EXISTS compacted_memories_ts_idx ON compacted_memories(ts)");
 
   // Attempt to enable DuckDB FTS.
   // NOTE: On some systems `INSTALL fts` downloads the extension on first run.
@@ -43,10 +62,23 @@ export async function openDuckDB(dbPath: string): Promise<Duck> {
   try {
     await run(conn, "INSTALL fts");
     await run(conn, "LOAD fts");
-    await run(conn, "PRAGMA create_fts_index('events', 'id', 'text')");
     ftsEnabled = true;
   } catch {
     ftsEnabled = false;
+  }
+
+  if (ftsEnabled) {
+    try {
+      await run(conn, "PRAGMA create_fts_index('events', 'id', 'text')");
+    } catch {
+      // Existing indexes can throw on re-open; keep FTS enabled when load succeeded.
+    }
+
+    try {
+      await run(conn, "PRAGMA create_fts_index('compacted_memories', 'id', 'text')");
+    } catch {
+      // Existing indexes can throw on re-open; keep FTS enabled when load succeeded.
+    }
   }
 
   return { db, conn, ftsEnabled };

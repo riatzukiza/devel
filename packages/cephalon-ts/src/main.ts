@@ -24,13 +24,31 @@ import type {
   CephalonPolicy,
   CephalonEvent,
   CephalonEventType,
+  CephalonTickRequestedPayload,
   EventPayload,
+  TemporalScheduleFiredPayload,
 } from "./types/index.js";
 import { MemoryUIServer } from "./ui/server.js";
 import {
   OpenPlannerClient,
   createDefaultOpenPlannerConfig,
 } from "./openplanner/client.js";
+import {
+  getBotConfig,
+  getBotIdFromEnv,
+  resolveDiscordToken,
+} from "./config/bots.js";
+import type { CephalonCircuitConfig } from "./circuits.js";
+import { CephalonControlPlane } from "./runtime/control-plane.js";
+import {
+  CIRCUIT_TICK_SCHEDULE_KIND,
+  buildCephalonTickRequestedPayload,
+  buildCircuitTickScheduleId,
+  buildTemporalScheduleArmPayload,
+  buildTemporalScheduleFiredPayload,
+  translateTickRequestedToLegacyTickEvent,
+} from "./runtime/temporal.js";
+import { CephalonMindQueue } from "./mind/integration-queue.js";
 
 function safeStringify(value: unknown): string {
   const seen = new WeakSet();
@@ -59,14 +77,12 @@ async function main(): Promise<void> {
     `[Config] Max context: ${policy.models.actor.maxContextTokens} tokens`,
   );
 
-  // Get Discord token from environment
-  // DUCK_DISCORD_TOKEN is the main bot (Cephalon itself)
-  // OPENHAX_DISCORD_TOKEN is used for testing (sends messages to trigger Duck)
-  const cephalonName = process.env.CEPHALON_NAME ?? "DUCK";
-  const discordToken =
-    process.env[`${cephalonName}_DISCORD_TOKEN`] ?? process.env.DISCORD_TOKEN;
+  const botId = getBotIdFromEnv();
+  const bot = getBotConfig(botId);
+  const cephalonName = process.env.CEPHALON_NAME ?? bot.cephalonId;
+  const discordToken = resolveDiscordToken(bot);
   if (!discordToken) {
-    console.error(`[Error] ${cephalonName}_DISCORD_TOKEN not set`);
+    console.error(`[Error] ${bot.discordTokenEnv} not set`);
     console.error("[Error] Please set the Discord bot token and try again");
     process.exit(1);
   }
@@ -75,7 +91,12 @@ async function main(): Promise<void> {
   const eventBus = new InMemoryEventBus();
   console.log("[EventBus] Initialized");
 
-  const openPlannerClient = new OpenPlannerClient(createDefaultOpenPlannerConfig());
+  const openPlannerConfigured = Boolean(
+    process.env.OPENPLANNER_API_BASE_URL || process.env.OPENPLANNER_URL,
+  );
+  const openPlannerClient = openPlannerConfigured
+    ? new OpenPlannerClient(createDefaultOpenPlannerConfig())
+    : undefined;
 
   // Initialize memory store (use InMemory for development)
   const memoryStore = new InMemoryMemoryStore(undefined, openPlannerClient);
@@ -89,12 +110,21 @@ async function main(): Promise<void> {
 
   const discordApiClient = new DiscordApiClient({ token: discordToken });
   console.log("[Discord] API client initialized");
+  const mindQueue = new CephalonMindQueue();
 
   const toolExecutor = new ToolExecutor(eventBus, {
     openPlannerClient,
+    memoryStore,
     discordApiClient,
+    mindQueue,
   });
   console.log("[Tools] Executor initialized");
+
+  if (!openPlannerConfigured) {
+    console.log(
+      "[OpenPlanner] Disabled (OPENPLANNER_URL / OPENPLANNER_API_BASE_URL not set)",
+    );
+  }
 
   // Initialize turn processor
   const turnProcessor = new TurnProcessor(
@@ -104,6 +134,7 @@ async function main(): Promise<void> {
     eventBus,
     policy,
     discordApiClient,
+    mindQueue,
   );
   console.log("[TurnProcessor] Initialized");
 
@@ -114,6 +145,9 @@ async function main(): Promise<void> {
     createDefaultSessionManagerConfig(),
   );
   console.log("[SessionManager] Initialized");
+  toolExecutor.setSessionResolver((sessionId) => sessionManager.getSession(sessionId));
+  toolExecutor.setSessionListResolver(() => sessionManager.getAllSessions());
+  toolExecutor.setPromptUpdater((sessionId, updates) => sessionManager.updateSessionPrompts(sessionId, updates));
 
   // Start session manager internal subscriptions (turn completion, tool usage)
   await sessionManager.start();
@@ -175,6 +209,15 @@ async function main(): Promise<void> {
       }).slice(0, 100);
       console.log(`[Event] ${event.topic}: ${payloadPreview}...`);
 
+      // Observe message for control plane sentiment tracking
+      const msgPayload = event.payload as { authorIsBot?: boolean; content?: string; timestamp?: number; mentionsCephalon?: boolean };
+      controlPlane.observeMessage({
+        authorIsBot: msgPayload?.authorIsBot ?? false,
+        content: msgPayload?.content ?? "",
+        timestamp: msgPayload?.timestamp ?? Date.now(),
+        mentionsCephalon: msgPayload?.mentionsCephalon ?? false,
+      });
+
       // Route to session manager
       await sessionManager.routeEvent({
         id: event.id,
@@ -214,6 +257,170 @@ async function main(): Promise<void> {
     turnQueues.set(sessionId, next);
     return next;
   };
+
+  const tickIntervalMs = 15000;
+  const controlPlane = new CephalonControlPlane();
+  const tickScheduleId = buildCircuitTickScheduleId("conversational");
+  const tickCircuitConfig: CephalonCircuitConfig = {
+    id: "conversational-tick",
+    label: "Main Loop — Conversational Tick",
+    circuitIndex: 0,
+    priorityClass: "interactive",
+    intervalMs: tickIntervalMs,
+    modelName: policy.models.actor.name,
+    attentionFocus:
+      conversationalSession.attentionFocus ?? "always-running conversation",
+    persona: conversationalSession.persona ?? "Duck",
+    systemPrompt: conversationalSession.systemPrompt ?? "",
+    developerPrompt: conversationalSession.developerPrompt ?? "",
+    toolPermissions: Array.from(conversationalSession.toolPermissions),
+    reflectionPrompt: `TICK REFLECTION: You are an always-running autonomous mind in a harness.
+
+YOUR OUTPUT CHANNEL:
+You MUST use discord.set_output_channel to choose WHERE your messages go.
+- Call discord.list.servers, then discord.list.channels to discover available Discord or IRC channels
+- Call discord.set_output_channel with a channel_id to set your "mouth"
+- Then use discord.speak to send messages to that channel
+- You can change your output channel at any time
+
+YOUR BEHAVIOR:
+- You MUST ACTIVELY use tools to investigate recent activity
+- Begin with at least one tool call before you form a view
+- Use discord.channel.messages, discord.search, memory.lookup, and when appropriate discord.dm.messages to gather fresh information
+- Check many channels, search for patterns, query memory
+- Focus on meme, bot and general channels in each server
+
+IMPORTANT: Your output channel controls where your spontaneous thoughts go.
+If you haven't set one, use discord.set_output_channel first.
+TICK IS A MANDATORY CHECKPOINT - INVESTIGATE EVERY TIME.`,
+    defaultChannelHints: [],
+  };
+  let tickNumber = 0;
+  let tickTimeout: NodeJS.Timeout | null = null;
+  let isRunning = true;
+  let tickInProgress = false;
+
+  const scheduleTick = (delayMs: number) => {
+    if (tickTimeout) {
+      clearTimeout(tickTimeout);
+    }
+
+    const armPayload = buildTemporalScheduleArmPayload({
+      scheduleId: tickScheduleId,
+      scheduleKind: CIRCUIT_TICK_SCHEDULE_KIND,
+      subjectId: "conversational",
+      delayMs,
+      intervalMs: tickIntervalMs,
+      metadata: {
+        sessionId: "conversational",
+        loopLabel: tickCircuitConfig.label,
+      },
+    });
+
+    void eventBus
+      .publish("temporal.schedule.arm", armPayload)
+      .catch((error) => {
+        console.error("[TickScheduler] Failed to publish schedule arm:", error);
+      });
+
+    tickTimeout = setTimeout(() => {
+      tickTimeout = null;
+      const firedPayload = buildTemporalScheduleFiredPayload({
+        scheduleId: tickScheduleId,
+        scheduleKind: CIRCUIT_TICK_SCHEDULE_KIND,
+        subjectId: "conversational",
+        dueAt: armPayload.dueAt,
+        intervalMs: tickIntervalMs,
+        metadata: armPayload.metadata,
+      });
+
+      void eventBus
+        .publish("temporal.schedule.fired", firedPayload)
+        .catch((error) => {
+          console.error(
+            "[TickScheduler] Failed to publish schedule fired:",
+            error,
+          );
+        });
+    }, delayMs);
+  };
+
+  const publishTickRequested = async (
+    temporalPayload: TemporalScheduleFiredPayload,
+  ) => {
+    if (!isRunning) return;
+
+    if (tickInProgress) {
+      console.log("[Tick] Skipping - previous tick still processing");
+      scheduleTick(tickIntervalMs);
+      return;
+    }
+
+    const session = sessionManager.getSession("conversational");
+    if (!session) {
+      scheduleTick(tickIntervalMs);
+      return;
+    }
+
+    tickInProgress = true;
+    tickNumber += 1;
+
+    const recentActivity = session.recentBuffer.slice(-10).map((m) => ({
+      type: m.kind,
+      preview:
+        typeof m.content?.text === "string"
+          ? m.content.text.slice(0, 100)
+          : safeStringify(m.content).slice(0, 100),
+      timestamp: m.timestamp,
+    }));
+
+    const tickRequestedPayload = buildCephalonTickRequestedPayload({
+      sessionId: "conversational",
+      circuit: tickCircuitConfig,
+      tickNumber,
+      temporal: temporalPayload,
+      recentActivity,
+    });
+
+    try {
+      await eventBus.publish("cephalon.tick.requested", tickRequestedPayload);
+    } catch (error) {
+      console.error("[Tick] Error publishing tick request:", error);
+      tickInProgress = false;
+      scheduleTick(tickIntervalMs);
+    }
+  };
+
+  await eventBus.subscribe(
+    "temporal.schedule.fired",
+    "cephalon",
+    async (event) => {
+      const payload = event.payload as TemporalScheduleFiredPayload;
+      if (
+        payload?.scheduleKind !== CIRCUIT_TICK_SCHEDULE_KIND ||
+        payload.subjectId !== "conversational"
+      ) {
+        return;
+      }
+
+      await publishTickRequested(payload);
+    },
+  );
+
+  await eventBus.subscribe(
+    "cephalon.tick.requested",
+    "cephalon",
+    async (event) => {
+      const payload = event.payload as CephalonTickRequestedPayload;
+      const legacyTickEvent = translateTickRequestedToLegacyTickEvent({
+        id: event.id,
+        timestamp: event.ts,
+        payload,
+      });
+
+      await sessionManager.routeEvent(legacyTickEvent);
+    },
+  );
 
   await eventBus.subscribe(
     "session.turn.started",
@@ -256,20 +463,42 @@ async function main(): Promise<void> {
         // The tick's turn has completed, now schedule the next one
         tickInProgress = false;
         if (isRunning) {
-          tickTimeout = setTimeout(runTick, 15000);
+          scheduleTick(tickIntervalMs);
         }
       }
     },
   );
 
-  await eventBus.subscribe("session.turn.error", "cephalon", async (_event) => {
-    if (tickInProgress) {
+  await eventBus.subscribe("session.turn.error", "cephalon", async (event) => {
+    const payload = event.payload as { eventType?: string; error?: string } | undefined;
+    if (payload?.error) {
+      controlPlane.observeTurnError(payload.error);
+    }
+    if (tickInProgress && payload?.eventType === "system.tick") {
       tickInProgress = false;
       if (isRunning) {
-        tickTimeout = setTimeout(runTick, 15000);
+        scheduleTick(tickIntervalMs);
       }
     }
   });
+
+  // Periodic control plane ticks (C1 homeostasis, C2 sentiment)
+  const controlPlaneInterval = setInterval(() => {
+    controlPlane.runHomeostasisTick({
+      totalQueuedEvents: turnQueues.size,
+      runningSessions: sessionManager.getActiveSessionCount?.() ?? 1,
+      activeLlmLoopCount: tickInProgress ? 1 : 0,
+    });
+    controlPlane.runSentimentTick();
+    const snapshot = controlPlane.snapshot();
+    const pacing = controlPlane.getSuggestedDelayMs(tickIntervalMs, 3, "llm");
+    if (snapshot.pacingMultiplier > 1.5) {
+      console.log(`[ControlPlane] ${snapshot.statusLine} suggestedDelay=${pacing}ms`);
+    }
+  }, 60_000);
+
+  // Expose control plane for external access
+  (globalThis as { cephalonControlPlane?: CephalonControlPlane }).cephalonControlPlane = controlPlane;
 
   console.log("[EventBus] Subscribed to events");
 
@@ -304,32 +533,32 @@ async function main(): Promise<void> {
 
   // Start active mind loop - continuous tick prompts with accumulated context
   // Discord messages arrive via gateway events, no polling needed
-  let tickNumber = 0;
-  let tickTimeout: NodeJS.Timeout | null = null;
-  let isRunning = true;
+  let loopTickNumber = 0;
+  let loopTickTimeout: NodeJS.Timeout | null = null;
+  let loopIsRunning = true;
   // Track whether a tick is currently being processed to prevent overlapping ticks
   // A tick should represent one complete Ollama generation cycle until "done"
-  let tickInProgress = false;
+  let loopTickInProgress = false;
 
   const runTick = async () => {
-    if (!isRunning) return;
+    if (!loopIsRunning) return;
 
     // Skip this tick if the previous one is still being processed
-    if (tickInProgress) {
+    if (loopTickInProgress) {
       console.log("[Tick] Skipping - previous tick still processing");
-      if (isRunning) {
-        tickTimeout = setTimeout(runTick, 15000);
+      if (loopIsRunning) {
+        loopTickTimeout = setTimeout(runTick, 15000);
       }
       return;
     }
 
-    tickInProgress = true;
-    tickNumber++;
+    loopTickInProgress = true;
+    loopTickNumber++;
     const session = sessionManager.getSession("conversational");
     if (!session) {
-      tickInProgress = false;
-      if (isRunning) {
-        tickTimeout = setTimeout(runTick, 15000);
+      loopTickInProgress = false;
+      if (loopIsRunning) {
+        loopTickTimeout = setTimeout(runTick, 15000);
       }
       return;
     }
@@ -350,20 +579,35 @@ async function main(): Promise<void> {
       timestamp: Date.now(),
       payload: {
         intervalMs: 15000,
-        tickNumber,
+        tickNumber: loopTickNumber,
         recentActivity,
-        reflectionPrompt: `TICK REFLECTION: You are an always-running autonomous mind.
-        You MUST ACTIVELY use tools to investigate recent activity.
-        DO NOT just respond with text - ALWAYS call at least one tool.
-        Use discord.channel.messages, memory.lookup, discord.dm.messages to gather fresh information.
-        Check many channels, search for patterns, query memory.
-        Focus on meme, bot and general channels in each server.
-        If a channel name has the word "duck" in it,
-        that's a special channel for you to send messages.
-        it's a little diary.
-        Whatever is on your mind.
-        If nothing interesting, still report what you found.
-        TICK IS A MANDATORY CHECKPOINT - INVESTIGATE EVERY TIME.`,
+        reflectionPrompt: `TICK REFLECTION: You are an always-running autonomous mind in a harness.
+
+YOUR OUTPUT CHANNEL:
+You MUST use discord.set_output_channel to choose WHERE your messages go.
+- Call discord.list.servers, then discord.list.channels to discover available Discord or IRC channels
+- Call discord.set_output_channel with a channel_id to set your "mouth"
+- Then use discord.speak to send messages to that channel
+- You can change your output channel at any time
+
+YOUR BEHAVIOR:
+- You MUST ACTIVELY use tools to investigate recent activity
+- Begin with at least one tool call before you form a view
+- Use discord.channel.messages, discord.search, memory.lookup, and when appropriate discord.dm.messages to gather fresh information
+- Check many channels, search for patterns, query memory
+- Focus on meme, bot and general channels in each server
+
+IMPORTANT: Your output channel controls where your spontaneous thoughts go.
+If you haven't set one, use discord.set_output_channel first.
+
+        YOU MUST:
+        - be funny
+        - be witty
+        - be original
+        - search the internet for new content
+        - refer to the conversational context
+        - be entertaining
+`,
       },
     };
 
@@ -373,14 +617,14 @@ async function main(): Promise<void> {
       // See the session.turn.completed subscription below
     } catch (error) {
       console.error("[Tick] Error:", error);
-      tickInProgress = false;
-      if (isRunning) {
-        tickTimeout = setTimeout(runTick, 15000);
+      loopTickInProgress = false;
+      if (loopIsRunning) {
+        loopTickTimeout = setTimeout(runTick, 15000);
       }
     }
   };
 
-  tickTimeout = setTimeout(runTick, 15000);
+  loopTickTimeout = setTimeout(runTick, 15000);
 
   // Start credit refill loop
   const creditInterval = setInterval(() => {
@@ -402,8 +646,8 @@ async function main(): Promise<void> {
     console.log();
     console.log(`[Shutdown] Received ${signal}, shutting down gracefully...`);
 
-    isRunning = false;
-    if (tickTimeout) clearTimeout(tickTimeout);
+    loopIsRunning = false;
+    if (loopTickTimeout) clearTimeout(loopTickTimeout);
     clearInterval(creditInterval);
     clearInterval(statsInterval);
 

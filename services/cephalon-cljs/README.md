@@ -173,6 +173,30 @@ npm run build:prod
 node dist/cephalon.js
 ```
 
+## Running the TS bridge locally as OpenHax
+
+If you want the TypeScript Cephalon bridge to run all 8 circuits using the OpenHax bot identity locally, set:
+
+```bash
+CEPHALON_TS_BRIDGE=true CEPHALON_BOT_ID=openhax OPENHAX_DISCORD_TOKEN=xxx npm run build && node dist/cephalon.js
+```
+
+`CEPHALON_BOT_ID=openhax` switches token resolution to `OPENHAX_DISCORD_TOKEN` while keeping the shared eight-circuit runtime active.
+
+To run those same 8 circuits on the personal model routed through `proxx`, set:
+
+```bash
+CEPHALON_TS_BRIDGE=true \
+CEPHALON_BOT_ID=openhax \
+OPENHAX_DISCORD_TOKEN=xxx \
+CEPHALON_MODEL=blongs-definately-legit-model \
+OLLAMA_BASE_URL=http://127.0.0.1:8789 \
+OLLAMA_API_KEY=${OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN:-$PROXY_AUTH_TOKEN} \
+npm run build && node dist/cephalon.js
+```
+
+`CEPHALON_MODEL=blongs-definately-legit-model` forces the shared eight-circuit TS runtime to use the personal model alias for every circuit.
+
 ## Reference Implementation
 
 This implementation is based on the TypeScript prototype in `services/cephalon/` and follows the ClojureScript/Shadow-CLJS architecture from `docs/notes/cephalon/brain-daemon-skeleton.md`.

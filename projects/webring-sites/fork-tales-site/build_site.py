@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import shutil
 import unicodedata
@@ -20,8 +21,8 @@ DIST_ROOT = PROJECT_ROOT / "dist"
 CONTENT_ROOT = DIST_ROOT / "content"
 MEDIA_ROOT = DIST_ROOT / "media"
 
-FORK_ROOT = Path("/home/err/devel/orgs/octave-commons/fork_tales")
-MUSIC_ROOT = Path("/home/err/Music")
+FORK_ROOT = Path(os.getenv("FORK_TALES_SOURCE_ROOT", "/home/err/devel/orgs/octave-commons/fork_tales"))
+MUSIC_ROOT = Path(os.getenv("FORK_TALES_MUSIC_ROOT", "/home/err/Music"))
 
 RELEVANT_MUSIC_DIRS = [
     MUSIC_ROOT / "fork_tax",

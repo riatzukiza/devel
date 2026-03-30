@@ -10,6 +10,14 @@ type OllamaQueueOptions = {
   maxBacklog?: number;
 };
 
+function envInt(name: string, fallback: number, min = 1, max = 1_048_576): number {
+  const raw = process.env[name];
+  if (!raw) return fallback;
+  const parsed = Number.parseInt(raw, 10);
+  if (!Number.isFinite(parsed)) return fallback;
+  return Math.min(Math.max(parsed, min), max);
+}
+
 export class OllamaRequestQueue {
   private maxParallel: number;
   private maxBacklog: number;
@@ -18,8 +26,11 @@ export class OllamaRequestQueue {
   private queue: OllamaTask[] = [];
 
   constructor(options: OllamaQueueOptions = {}) {
-    this.maxParallel = options.maxParallel ?? 4;
-    this.maxBacklog = options.maxBacklog ?? 512;
+    const defaultMaxParallel = envInt("CEPHALON_OLLAMA_QUEUE_MAX_PARALLEL", 8, 1, 128);
+    const defaultMaxBacklog = envInt("CEPHALON_OLLAMA_QUEUE_MAX_BACKLOG", 8192, 1, 1_000_000);
+
+    this.maxParallel = options.maxParallel ?? defaultMaxParallel;
+    this.maxBacklog = options.maxBacklog ?? defaultMaxBacklog;
   }
 
   enqueue<T>(key: string, run: () => Promise<T>): Promise<T> {

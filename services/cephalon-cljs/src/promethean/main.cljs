@@ -1,6 +1,7 @@
 (ns promethean.main
   "Cephalon main entry point"
   (:require
+    [clojure.string :as str]
     [source-map-support :refer [install]]
     [promethean.ecs.world :as world]
     [promethean.ecs.tick :as tick]
@@ -29,22 +30,68 @@
 ;; Configuration
 ;; ============================================================================
 
+(defn- env [k]
+  (let [v (aget (.-env js/process) k)]
+    (when (and v (not= v "")) v)))
+
+(defn- normalize-bot-id [bot-id]
+  (let [normalized (-> (or bot-id "duck")
+                       str
+                       str/trim
+                       str/lower-case
+                       (str/replace #"[\s_]+" "-"))]
+    (case normalized
+      "open-hax" "openhax"
+      "openhax" "openhax"
+      "open-skull" "openskull"
+      "openskull" "openskull"
+      "error-bot" "error"
+      "discord-error-bot" "error"
+      "janitor-duck" "janitor"
+      "janitorduck" "janitor"
+      "" "duck"
+      normalized)))
+
+(defn- bot-token-env [bot-id]
+  (case (normalize-bot-id bot-id)
+    "duck" "DUCK_DISCORD_TOKEN"
+    "openhax" "OPENHAX_DISCORD_TOKEN"
+    "openskull" "OPEN_SKULL_DISCORD_TOKEN"
+    "error" "DISCORD_ERROR_BOT_TOKEN"
+    "janitor" "JANITOR_DISCORD_TOKEN"
+    (str (-> (normalize-bot-id bot-id)
+             (str/replace #"-" "_")
+             str/upper-case)
+         "_DISCORD_TOKEN")))
+
+(defn- resolve-bot-id []
+  (normalize-bot-id (or (env "CEPHALON_BOT_ID")
+                        (env "BOT_ID")
+                        (env "CEPHALON_NAME")
+                        "duck")))
+
+(defn- resolve-discord-token [bot-id]
+  (or (env "DISCORD_BOT_TOKEN")
+      (env (bot-token-env bot-id))
+      (env "DISCORD_TOKEN")
+      (env "DUCK_DISCORD_TOKEN")
+      ""))
+
 (defn make-config
   []
-  {:openai {:api-key (or (.-OPENAI_API_KEY js/process.env) "")
-            :base-url (or (.-OPENAI_BASE_URL js/process.env) "https://api.openai.com/v1")}
-   :discord {:bot-token (or (.-DISCORD_BOT_TOKEN js/process.env)
-                            (.-DISCORD_TOKEN js/process.env)
-                            (.-DUCK_DISCORD_TOKEN js/process.env)
-                            "")}
-   :runtime {:tick-ms 100
-             :start-ts-bridge (= "true" (or (.-CEPHALON_TS_BRIDGE js/process.env) "false"))
-             :effects {:max-inflight 8
-                       :timeout-ms 60000
-                       :retain-completed 600}}
-   :paths {:notes-dir "docs/notes"}
-   :models {:sentinel "qwen3-vl-2b"
-            :embedding "qwen3-embedding"}})
+  (let [bot-id (resolve-bot-id)]
+    {:openai {:api-key (or (.-OPENAI_API_KEY js/process.env) "")
+              :base-url (or (.-OPENAI_BASE_URL js/process.env) "https://api.openai.com/v1")}
+     :discord {:bot-id bot-id
+               :bot-token (resolve-discord-token bot-id)}
+     :runtime {:tick-ms 100
+               :start-ts-bridge (= "true" (or (.-CEPHALON_TS_BRIDGE js/process.env) "false"))
+               :effects {:max-inflight 8
+                         :timeout-ms 60000
+                         :retain-completed 600}}
+     :paths {:notes-dir "docs/notes"}
+     :models {:sentinel "qwen3-vl-2b"
+              :embedding "qwen3-embedding"}}))
 
 ;; ============================================================================
 ;; Environment
@@ -105,9 +152,11 @@
 (defn start-ts-bridge!
   [config]
   (when (true? (get-in config [:runtime :start-ts-bridge]))
-    (let [discord-token (get-in config [:discord :bot-token])]
+    (let [discord-token (get-in config [:discord :bot-token])
+          bot-id (get-in config [:discord :bot-id])]
       (-> (cephalon-ts/create-cephalon-app!
-            {:discordToken discord-token
+            {:botId bot-id
+             :discordToken (when (seq discord-token) discord-token)
              :enableProactiveLoop true
              :tickIntervalMs (get-in config [:runtime :tick-ms])})
           (.then (fn [app]
@@ -137,6 +186,7 @@
       (log/info "promethean brain starting"
                 {:tick-ms (get-in config [:runtime :tick-ms])
                  :notes-dir (get-in config [:paths :notes-dir])
+                 :bot-id (get-in config [:discord :bot-id])
                  :discord? (not= "" (get-in config [:discord :bot-token]))
                  :embedding-model (get-in config [:models :embedding])})
 

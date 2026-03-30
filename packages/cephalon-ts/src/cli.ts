@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
 import { createCephalonApp } from "./app.js";
+import { getBotConfig, getBotIdFromEnv } from "./config/bots.js";
 
 async function run(): Promise<void> {
-  const discordToken = process.env.DUCK_DISCORD_TOKEN;
-  if (!discordToken) {
-    console.error("[Error] DUCK_DISCORD_TOKEN not set");
-    process.exit(1);
-  }
+  const botId = getBotIdFromEnv();
+  const bot = getBotConfig(botId);
 
-  const app = await createCephalonApp({ discordToken });
+  console.log(`[CLI] Starting ${bot.cephalonId} cephalon (${botId})...`);
+
+  const app = await createCephalonApp({ botId });
   await app.start();
 
   const graceful = async (signal: string) => {
