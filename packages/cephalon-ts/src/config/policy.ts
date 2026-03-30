@@ -6,6 +6,7 @@
 
 import { readFile } from 'fs/promises';
 import { parseEDNString } from 'edn-data';
+import { envInt } from "./env.js";
 import type {
   CephalonPolicy,
   ModelConfig,
@@ -272,11 +273,18 @@ export async function loadPolicy(path: string): Promise<CephalonPolicy> {
  * Load default policy
  */
 export function loadDefaultPolicy(): CephalonPolicy {
+  // Check for GLM model override from environment
+  const glmModel = process.env.GLM_MODEL || process.env.ZAI_MODEL;
+  const maxContextTokens = envInt("CEPHALON_MAX_CONTEXT_TOKENS", 131072, {
+    min: 1024,
+    max: 10_000_000,
+  });
+
   return {
     models: {
       actor: {
-        name: 'qwen3.5:4b-q8_0',
-        maxContextTokens: 131072,
+        name: glmModel || 'qwen3.5:4b-q8_0',
+        maxContextTokens,
         toolCallStrict: true
       },
       fallbacks: []

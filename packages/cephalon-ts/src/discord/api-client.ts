@@ -1,3 +1,4 @@
+import { PermissionFlagsBits } from "discord.js";
 import type { Client, Guild, TextChannel, DMChannel, Message } from "discord.js";
 
 export interface DiscordApiConfig {
@@ -230,14 +231,7 @@ export class DiscordApiClient {
         throw new Error(`Guild ${guildId} not found`);
       }
 
-      const channels = (await guild.channels.fetch())
-        .filter((c) => c && c.isTextBased() && !c.isDMBased())
-        .map((c) => ({
-          id: c!.id,
-          name: c!.name,
-          guildId: guild.id,
-          type: c!.type.toString(),
-        }));
+      const channels = this.collectGuildChannels(guild, await guild.channels.fetch());
 
       return { channels, count: channels.length };
     }
@@ -245,23 +239,77 @@ export class DiscordApiClient {
     const allChannels: DiscordChannel[] = [];
     for (const guild of client.guilds.cache.values()) {
       try {
-        const guildChannels = await guild.channels.fetch();
-        for (const channel of guildChannels.values()) {
-          if (channel && channel.isTextBased() && !channel.isDMBased()) {
-            allChannels.push({
-              id: channel.id,
-              name: channel.name,
-              guildId: guild.id,
-              type: channel.type.toString(),
-            });
-          }
-        }
+        allChannels.push(...this.collectGuildChannels(guild, await guild.channels.fetch()));
       } catch {
         void 0;
       }
     }
 
     return { channels: allChannels, count: allChannels.length };
+  }
+
+  async listSendableChannels(guildId?: string): Promise<{ channels: DiscordChannel[]; count: number }> {
+    const client = this.ensureClient();
+
+    if (guildId) {
+      const guild = client.guilds.cache.get(guildId);
+      if (!guild) {
+        throw new Error(`Guild ${guildId} not found`);
+      }
+
+      const channels = this.collectGuildChannels(guild, await guild.channels.fetch(), { sendableOnly: true });
+      return { channels, count: channels.length };
+    }
+
+    const allChannels: DiscordChannel[] = [];
+    for (const guild of client.guilds.cache.values()) {
+      try {
+        allChannels.push(...this.collectGuildChannels(guild, await guild.channels.fetch(), { sendableOnly: true }));
+      } catch {
+        void 0;
+      }
+    }
+
+    return { channels: allChannels, count: allChannels.length };
+  }
+
+  private collectGuildChannels(
+    guild: Guild,
+    channels: Awaited<ReturnType<Guild["channels"]["fetch"]>>,
+    options: { sendableOnly?: boolean } = {},
+  ): DiscordChannel[] {
+    const client = this.ensureClient();
+    const selfId = client.user?.id;
+    if (!selfId) {
+      return [];
+    }
+
+    const result: DiscordChannel[] = [];
+    for (const channel of channels.values()) {
+      if (!channel || !channel.isTextBased() || channel.isDMBased()) {
+        continue;
+      }
+
+      if (options.sendableOnly) {
+        if (!("permissionsFor" in channel) || typeof channel.permissionsFor !== "function") {
+          continue;
+        }
+
+        const permissions = channel.permissionsFor(selfId);
+        if (!permissions?.has(PermissionFlagsBits.ViewChannel) || !permissions.has(PermissionFlagsBits.SendMessages)) {
+          continue;
+        }
+      }
+
+      result.push({
+        id: channel.id,
+        name: channel.name,
+        guildId: guild.id,
+        type: channel.type.toString(),
+      });
+    }
+
+    return result;
   }
 
   private mapMessage(message: Message): DiscordMessage {
