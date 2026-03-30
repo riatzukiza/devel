@@ -542,6 +542,22 @@ export class MemoryUIServer {
       }
     });
 
+    this.fastify.addHook("preHandler", async (request: FastifyRequest, reply: FastifyReply) => {
+      if (!request.url.startsWith("/api/peer/")) {
+        return;
+      }
+
+      const peerToken = process.env.CEPHALON_PEER_TOKEN;
+      if (!peerToken) {
+        return reply.status(503).send({ error: "CEPHALON_PEER_TOKEN not configured" });
+      }
+
+      const provided = request.headers["x-cephalon-peer-token"];
+      if (typeof provided !== "string" || provided !== peerToken) {
+        return reply.status(401).send({ error: "peer auth required" });
+      }
+    });
+
     this.fastify.get("/api/peer/meta", async () => {
       return {
         self: getSelfName(),
