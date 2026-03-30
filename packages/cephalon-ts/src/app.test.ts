@@ -58,7 +58,9 @@ interface TestContext {
   sandbox: sinon.SinonSandbox;
   env: {
     DUCK_DISCORD_TOKEN?: string;
+    OPENHAX_DISCORD_TOKEN?: string;
     DISCORD_TOKEN?: string;
+    CEPHALON_BOT_ID?: string;
     CEPHALON_NAME?: string;
   };
 }
@@ -69,23 +71,35 @@ test.beforeEach((t) => {
   t.context.sandbox = sinon.createSandbox();
   t.context.env = {
     DUCK_DISCORD_TOKEN: process.env.DUCK_DISCORD_TOKEN,
+    OPENHAX_DISCORD_TOKEN: process.env.OPENHAX_DISCORD_TOKEN,
     DISCORD_TOKEN: process.env.DISCORD_TOKEN,
+    CEPHALON_BOT_ID: process.env.CEPHALON_BOT_ID,
     CEPHALON_NAME: process.env.CEPHALON_NAME,
   };
 });
 
 test.afterEach.always((t) => {
   t.context.sandbox.restore();
-  const { DUCK_DISCORD_TOKEN, DISCORD_TOKEN, CEPHALON_NAME } = t.context.env;
+  const { DUCK_DISCORD_TOKEN, OPENHAX_DISCORD_TOKEN, DISCORD_TOKEN, CEPHALON_BOT_ID, CEPHALON_NAME } = t.context.env;
   if (DUCK_DISCORD_TOKEN === undefined) {
     delete process.env.DUCK_DISCORD_TOKEN;
   } else {
     process.env.DUCK_DISCORD_TOKEN = DUCK_DISCORD_TOKEN;
   }
+  if (OPENHAX_DISCORD_TOKEN === undefined) {
+    delete process.env.OPENHAX_DISCORD_TOKEN;
+  } else {
+    process.env.OPENHAX_DISCORD_TOKEN = OPENHAX_DISCORD_TOKEN;
+  }
   if (DISCORD_TOKEN === undefined) {
     delete process.env.DISCORD_TOKEN;
   } else {
     process.env.DISCORD_TOKEN = DISCORD_TOKEN;
+  }
+  if (CEPHALON_BOT_ID === undefined) {
+    delete process.env.CEPHALON_BOT_ID;
+  } else {
+    process.env.CEPHALON_BOT_ID = CEPHALON_BOT_ID;
   }
   if (CEPHALON_NAME === undefined) {
     delete process.env.CEPHALON_NAME;
@@ -165,6 +179,7 @@ test('createCephalonApp accepts discord token from options', async (t) => {
  * If no token in options, should check DUCK_DISCORD_TOKEN then DISCORD_TOKEN.
  */
 test.serial('createCephalonApp falls back to DUCK_DISCORD_TOKEN env var', async (t) => {
+  delete process.env.CEPHALON_BOT_ID;
   process.env.CEPHALON_NAME = 'DUCK';
   process.env.DUCK_DISCORD_TOKEN = 'env-token-456';
   delete process.env.DISCORD_TOKEN;
@@ -185,6 +200,7 @@ test.serial('createCephalonApp falls back to DUCK_DISCORD_TOKEN env var', async 
  * Test: createCephalonApp falls back to DISCORD_TOKEN env var
  */
 test.serial('createCephalonApp falls back to DISCORD_TOKEN env var', async (t) => {
+  delete process.env.CEPHALON_BOT_ID;
   process.env.CEPHALON_NAME = 'DUCK';
   delete process.env.DUCK_DISCORD_TOKEN;
   process.env.DISCORD_TOKEN = 'fallback-token-789';
@@ -198,6 +214,23 @@ test.serial('createCephalonApp falls back to DISCORD_TOKEN env var', async (t) =
     t.false((error as Error).message.includes('Discord token'));
   } finally {
     delete process.env.DISCORD_TOKEN;
+  }
+});
+
+test.serial('createCephalonApp resolves OPENHAX_DISCORD_TOKEN from CEPHALON_BOT_ID', async (t) => {
+  process.env.CEPHALON_BOT_ID = 'openhax';
+  delete process.env.CEPHALON_NAME;
+  delete process.env.DUCK_DISCORD_TOKEN;
+  delete process.env.DISCORD_TOKEN;
+  process.env.OPENHAX_DISCORD_TOKEN = 'openhax-token-123';
+
+  const { createCephalonApp } = await import('./app.js');
+
+  try {
+    const app = await createCephalonApp({});
+    t.truthy(app, 'app should be created when OPENHAX token is selected by bot id');
+  } catch (error) {
+    t.false((error as Error).message.includes('Discord token'));
   }
 });
 

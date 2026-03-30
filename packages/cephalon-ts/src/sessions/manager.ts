@@ -133,21 +133,45 @@ export class SessionManager {
     priorityClass: Session['priorityClass'],
     options?: {
       persona?: string;
+      systemPrompt?: string;
+      developerPrompt?: string;
       attentionFocus?: string;
       toolPermissions?: string[];
       subscriptionFilter?: (event: CephalonEventType) => boolean;
+      circuitIndex?: number;
+      modelName?: string;
+      reasoningEffort?: Session['reasoningEffort'];
+      loopIntervalMs?: number;
+      defaultChannelHints?: string[];
+      homeChannelId?: string;
     }
   ): Session {
+    const toolPermissions = new Set(options?.toolPermissions || []);
+    // Always-allowed self-modification tools.
+    // This keeps `self.growth` available even when circuits run with restricted tool bundles.
+    toolPermissions.add("self.growth");
+    // Always-allowed meme fuel.
+    toolPermissions.add("tenor.search");
+    toolPermissions.add("tenor.share");
+
     const session: Session = {
       id,
       cephalonId,
       priorityClass,
       credits: this.config.credits.max,
       recentBuffer: [],
-      toolPermissions: new Set(options?.toolPermissions || []),
+      toolPermissions,
       subscriptionFilter: options?.subscriptionFilter,
       persona: options?.persona,
-      attentionFocus: options?.attentionFocus
+      systemPrompt: options?.systemPrompt,
+      developerPrompt: options?.developerPrompt,
+      attentionFocus: options?.attentionFocus,
+      circuitIndex: options?.circuitIndex,
+      modelName: options?.modelName,
+      reasoningEffort: options?.reasoningEffort,
+      loopIntervalMs: options?.loopIntervalMs,
+      defaultChannelHints: options?.defaultChannelHints,
+      homeChannelId: options?.homeChannelId,
     };
 
     this.sessions.set(id, {
@@ -298,11 +322,18 @@ export class SessionManager {
       console.log(`[SessionManager] Running turn for ${sessionId} (${state.session.priorityClass})`);
 
       const turnPromise = this.createPendingTurn(sessionId);
+      const requestedAt = Date.now();
+
+      await this.eventBus.publish('session.turn.requested', {
+        sessionId,
+        event: queuedEvent.event,
+        timestamp: requestedAt
+      });
 
       await this.eventBus.publish('session.turn.started', {
         sessionId,
         event: queuedEvent.event,
-        timestamp: Date.now()
+        timestamp: requestedAt
       });
 
       await turnPromise;
@@ -337,6 +368,33 @@ export class SessionManager {
    */
   getAllSessions(): Session[] {
     return Array.from(this.sessions.values()).map(s => s.session);
+  }
+
+  updateSessionPrompts(
+    id: string,
+    updates: {
+      systemPrompt?: string;
+      developerPrompt?: string;
+      attentionFocus?: string;
+    },
+  ): Session | undefined {
+    const state = this.sessions.get(id);
+    if (!state) {
+      return undefined;
+    }
+
+    if (typeof updates.systemPrompt === "string") {
+      state.session.systemPrompt = updates.systemPrompt;
+    }
+    if (typeof updates.developerPrompt === "string") {
+      state.session.developerPrompt = updates.developerPrompt;
+    }
+    if (typeof updates.attentionFocus === "string") {
+      state.session.attentionFocus = updates.attentionFocus;
+    }
+
+    console.log(`[SessionManager] Updated prompts for ${id}`);
+    return state.session;
   }
 
   /**
@@ -408,5 +466,11 @@ export class SessionManager {
       laneUsage: this.laneUsage
     };
   }
-}
 
+  /**
+   * Get count of currently running sessions
+   */
+  getActiveSessionCount(): number {
+    return this.runningSessions.size;
+  }
+}

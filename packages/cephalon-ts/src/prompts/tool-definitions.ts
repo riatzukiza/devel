@@ -90,14 +90,14 @@ export const TOOL_DEFINITIONS: Record<string, ToolRegistryEntry> = {
     schema: {
       name: "discord.channel.messages",
       description:
-        "Fetch messages from a Discord channel. CRITICAL: You MUST use discord.list.channels FIRST to discover available channels. Do NOT guess channel IDs - you will get 'Missing Access' errors. If you receive 'Missing Access', use one of the channels returned in available_channels.",
+        "Fetch messages from a Discord channel. CRITICAL: Use discord.list.channels FIRST to discover available channels, then fetch with a real channel ID from available_channels.",
       parameters: {
         type: "object",
         properties: {
           channel_id: {
             type: "string",
             description:
-              "The Discord channel ID. CRITICAL: Call discord.list.channels FIRST to get valid IDs. Guessing will fail with 'Missing Access'.",
+              "The Discord channel ID. CRITICAL: Call discord.list.channels FIRST and choose a valid ID from the returned channel list.",
           },
           limit: {
             type: "number",
@@ -281,7 +281,7 @@ export const TOOL_DEFINITIONS: Record<string, ToolRegistryEntry> = {
           guild_id: {
             type: "string",
             description: `The Discord guild/server ID to list channels for (optional - if not provided, lists all accessible channels).
-              Don't guess, use discord.list.servers first.
+              Resolve the guild/server ID with discord.list.servers first.
             `,
           },
         },
