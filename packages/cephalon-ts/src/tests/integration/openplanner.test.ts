@@ -14,11 +14,14 @@ const test = ava.serial;
 // Global mock state
 let mockFetchImplementation: ((input: URL | string, options?: RequestInit) => Promise<Response>) | null = null;
 let lastFetchCall: { url: string; options: Record<string, unknown> } | null = null;
+let fetchCalls: Array<{ url: string; options: Record<string, unknown> }> = [];
 
 // Custom fetch that tracks calls and uses mock implementation
 const mockFetch = async (input: URL | string, options?: RequestInit): Promise<Response> => {
   const url = typeof input === "string" ? input : input.toString();
-  lastFetchCall = { url, options: options as Record<string, unknown> };
+  const tracked = { url, options: options as Record<string, unknown> };
+  lastFetchCall = tracked;
+  fetchCalls.push(tracked);
 
   if (mockFetchImplementation) {
     return mockFetchImplementation(input, options);
@@ -41,6 +44,7 @@ const { OpenPlannerClient, createDefaultOpenPlannerConfig } = await import(
 
 test.beforeEach(() => {
   lastFetchCall = null;
+  fetchCalls = [];
   mockFetchImplementation = null;
 });
 
@@ -61,11 +65,11 @@ test("createDefaultOpenPlannerConfig reads environment variables", (t) => {
 
   try {
     process.env.OPENPLANNER_API_BASE_URL = "http://test:8788/api/openplanner";
-    process.env.OPENPLANNER_API_KEY = "test-key";
+    process.env.OPENPLANNER_API_KEY = "fixture-openplanner-auth"; // pragma: allowlist secret
 
     const config = createDefaultOpenPlannerConfig();
     t.is(config.baseUrl, "http://test:8788/api/openplanner");
-    t.is(config.apiKey, "test-key");
+    t.is(config.apiKey, "fixture-openplanner-auth");
   } finally {
     process.env.OPENPLANNER_URL = originalUrl;
     process.env.OPENPLANNER_API_BASE_URL = originalApiBase;
@@ -73,9 +77,16 @@ test("createDefaultOpenPlannerConfig reads environment variables", (t) => {
   }
 });
 
-test("OpenPlannerClient.search calls correct endpoint", async (t) => {
+test("OpenPlannerClient.search calls both FTS and vector endpoints", async (t) => {
   const client = new OpenPlannerClient({ baseUrl: "http://test:7777" });
-  mockFetchImplementation = async () => {
+  mockFetchImplementation = async (input) => {
+    const url = typeof input === "string" ? input : input.toString();
+    if (url.includes("/v1/search/vector")) {
+      return new Response(JSON.stringify({ result: { ids: [[]], documents: [[]], metadatas: [[]], distances: [[]] } }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
     return new Response(JSON.stringify({ results: [] }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -84,15 +95,26 @@ test("OpenPlannerClient.search calls correct endpoint", async (t) => {
 
   await client.search("test query", { limit: 5 });
 
-  t.truthy(lastFetchCall);
-  t.true(lastFetchCall!.url.includes("/v1/search/fts"));
-  const body = JSON.parse(lastFetchCall?.options.body as string);
-  t.is(body.q, "test query");
+  t.true(fetchCalls.some((call) => call.url.includes("/v1/search/fts")));
+  t.true(fetchCalls.some((call) => call.url.includes("/v1/search/vector")));
+  const ftsCall = fetchCalls.find((call) => call.url.includes("/v1/search/fts"));
+  const vectorCall = fetchCalls.find((call) => call.url.includes("/v1/search/vector"));
+  t.truthy(ftsCall);
+  t.truthy(vectorCall);
+  t.is(JSON.parse(ftsCall?.options.body as string).q, "test query");
+  t.is(JSON.parse(vectorCall?.options.body as string).q, "test query");
 });
 
-test("OpenPlannerClient.search returns empty results when no matches", async (t) => {
+test("OpenPlannerClient.search returns empty results when neither FTS nor vector matches", async (t) => {
   const client = new OpenPlannerClient({ baseUrl: "http://test:7777" });
-  mockFetchImplementation = async () => {
+  mockFetchImplementation = async (input) => {
+    const url = typeof input === "string" ? input : input.toString();
+    if (url.includes("/v1/search/vector")) {
+      return new Response(JSON.stringify({ result: { ids: [[]], documents: [[]], metadatas: [[]], distances: [[]] } }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
     return new Response(JSON.stringify({ results: [] }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -104,9 +126,24 @@ test("OpenPlannerClient.search returns empty results when no matches", async (t)
   t.is(results.length, 0);
 });
 
-test("OpenPlannerClient.search maps response correctly", async (t) => {
+test("OpenPlannerClient.search maps hybrid FTS and vector responses correctly", async (t) => {
   const client = new OpenPlannerClient({ baseUrl: "http://test:7777" });
-  mockFetchImplementation = async () => {
+  mockFetchImplementation = async (input) => {
+    const url = typeof input === "string" ? input : input.toString();
+    if (url.includes("/v1/search/vector")) {
+      return new Response(JSON.stringify({
+        result: {
+          ids: [["vec-1"]],
+          documents: [["Semantic memory content"]],
+          metadatas: [[{ session: "conv-2", source: "openplanner.compaction", kind: "memory.compacted.semantic" }]],
+          distances: [[0.2]],
+        },
+      }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     return new Response(
       JSON.stringify({
         results: [
@@ -135,17 +172,26 @@ test("OpenPlannerClient.search maps response correctly", async (t) => {
 
   const results = await client.search("test", { limit: 10 });
 
-  t.is(results.length, 1);
-  t.is(results[0].id, "mem-123");
-  t.is(results[0].text, "Test memory content");
-  t.is(results[0].score, 0.95);
-  t.is(results[0].meta?.cephalonId, "duck");
-  t.is(results[0].source_ref?.session, "conv-1");
+  t.is(results.length, 2);
+  t.deepEqual(results.map((result) => result.id).sort(), ["mem-123", "vec-1"]);
+  const vectorHit = results.find((result) => result.id === "vec-1");
+  const ftsHit = results.find((result) => result.id === "mem-123");
+  t.is(vectorHit?.text, "Semantic memory content");
+  t.is(ftsHit?.text, "Test memory content");
+  t.is(ftsHit?.meta?.cephalonId, "duck");
+  t.is(ftsHit?.source_ref?.session, "conv-1");
 });
 
-test("OpenPlannerClient.search uses session filter when provided", async (t) => {
+test("OpenPlannerClient.search uses session filter for both FTS and vector calls when provided", async (t) => {
   const client = new OpenPlannerClient({ baseUrl: "http://test:7777" });
-  mockFetchImplementation = async () => {
+  mockFetchImplementation = async (input) => {
+    const url = typeof input === "string" ? input : input.toString();
+    if (url.includes("/v1/search/vector")) {
+      return new Response(JSON.stringify({ result: { ids: [[]], documents: [[]], metadatas: [[]], distances: [[]] } }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
     return new Response(JSON.stringify({ results: [] }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -154,13 +200,22 @@ test("OpenPlannerClient.search uses session filter when provided", async (t) => 
 
   await client.search("test", { session: "conv-1" });
 
-  const body = JSON.parse(lastFetchCall?.options.body as string);
-  t.is(body.session, "conv-1");
+  const ftsCall = fetchCalls.find((call) => call.url.includes("/v1/search/fts"));
+  const vectorCall = fetchCalls.find((call) => call.url.includes("/v1/search/vector"));
+  t.is(JSON.parse(ftsCall?.options.body as string).session, "conv-1");
+  t.is(JSON.parse(vectorCall?.options.body as string).where.session, "conv-1");
 });
 
-test("OpenPlannerClient.search uses limit option", async (t) => {
+test("OpenPlannerClient.search uses limit option for both FTS and vector calls", async (t) => {
   const client = new OpenPlannerClient({ baseUrl: "http://test:7777" });
-  mockFetchImplementation = async () => {
+  mockFetchImplementation = async (input) => {
+    const url = typeof input === "string" ? input : input.toString();
+    if (url.includes("/v1/search/vector")) {
+      return new Response(JSON.stringify({ result: { ids: [[]], documents: [[]], metadatas: [[]], distances: [[]] } }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
     return new Response(JSON.stringify({ results: [] }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -169,14 +224,16 @@ test("OpenPlannerClient.search uses limit option", async (t) => {
 
   await client.search("test", { limit: 20 });
 
-  const body = JSON.parse(lastFetchCall?.options.body as string);
-  t.is(body.limit, 20);
+  const ftsCall = fetchCalls.find((call) => call.url.includes("/v1/search/fts"));
+  const vectorCall = fetchCalls.find((call) => call.url.includes("/v1/search/vector"));
+  t.is(JSON.parse(ftsCall?.options.body as string).limit, 20);
+  t.is(JSON.parse(vectorCall?.options.body as string).k, 20);
 });
 
 test("OpenPlannerClient.search includes auth header when apiKey provided", async (t) => {
   const client = new OpenPlannerClient({
     baseUrl: "http://test:7777",
-    apiKey: "secret-token",
+    apiKey: "fixture-openplanner-auth-token", // pragma: allowlist secret
   });
   mockFetchImplementation = async () => {
     return new Response(JSON.stringify({ results: [] }), {
@@ -188,7 +245,7 @@ test("OpenPlannerClient.search includes auth header when apiKey provided", async
   await client.search("test");
 
   const headers = lastFetchCall?.options.headers as Record<string, string>;
-  t.is(headers?.Authorization, "Bearer secret-token");
+  t.is(headers?.Authorization, "Bearer fixture-openplanner-auth-token");
 });
 
 test("OpenPlannerClient.search throws on HTTP error", async (t) => {

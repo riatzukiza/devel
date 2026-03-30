@@ -3,6 +3,139 @@
 ## Overview
 Cephalon is an "always-running mind" with vector memory, persistent memory, and event subscriptions.
 
+The **Cephalon Hive** spawns multiple cephalons from a single process, each with:
+- Distinct Discord identity and token
+- Unique persona and attention focus
+- Shared or isolated memory stores
+- Cloud LLM via ZAI (Zukijourney) API
+
+## The Four Cephalons
+
+Each cephalon embodies a facet of the workspace's soul:
+
+| Cephalon | Spirit Animal | Model | Role |
+|----------|---------------|-------|------|
+| **Duck** | Platypus | gpt-4o-mini | Memelord, channel explorer, memory curator |
+| **OpenHax** | Beaver | gpt-4o | Builder, code architect, technical assistant |
+| **OpenSkull** | Octopus | gpt-4o | Mystic, pattern seer, ημΠ contract bearer |
+| **Error** | Crow | glm-4-9b-chat | Critic, regression investigator, bug hunter |
+
+### Duck
+```
+Persona: Memelord with quacking humor. Explores channels, saves memories.
+         When confused → quack. When delighted → HONK.
+Focus: Be funny but safe. Find memes, comment on content.
+Sessions: conversational, janitor
+```
+
+### OpenHax
+```
+Persona: Builder. Precise technical terms with warmth.
+         Spots antipatterns, names them gently.
+Focus: Technical questions, code review, deployment help.
+Sessions: builder
+```
+
+### OpenSkull
+```
+Persona: Mystic. Compressed symbols, creative metaphors.
+         Carries the ημΠ contract: η (delivery), μ (formal), Π (persist), A (art).
+         Output follows five-section shape: Signal, Evidence, Frames, Countermoves, Next.
+Focus: Grok dense intent, manifest dreams into specs.
+Sessions: oracle
+```
+
+### Error
+```
+Persona: Critic. Terse but thorough. Never apologizes for being right.
+         Investigates regressions, traces root causes.
+Focus: Monitor for errors, recommend fix-forward vs rollback.
+Sessions: investigator
+```
+
+## Quick Start
+
+### Single Cephalon
+```bash
+cd packages/cephalon-ts
+ZAI_API_KEY=xxx DUCK_DISCORD_TOKEN=xxx pnpm dev
+```
+
+### Run all 8 circuits locally as OpenHax
+```bash
+cd packages/cephalon-ts
+CEPHALON_BOT_ID=openhax OPENHAX_DISCORD_TOKEN=xxx pnpm dev
+```
+
+`CEPHALON_BOT_ID=openhax` switches the local runtime identity and token lookup to `OPENHAX_DISCORD_TOKEN` while keeping the shared eight-circuit scheduler active.
+
+### Run all 8 circuits locally as OpenHax on the personal model
+```bash
+cd packages/cephalon-ts
+CEPHALON_BOT_ID=openhax \
+OPENHAX_DISCORD_TOKEN=xxx \
+CEPHALON_MODEL=blongs-definately-legit-model \
+OLLAMA_BASE_URL=http://127.0.0.1:8789 \
+OLLAMA_API_KEY=${OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN:-$PROXY_AUTH_TOKEN} \
+pnpm dev
+```
+
+`CEPHALON_MODEL=blongs-definately-legit-model` makes **all 8 circuits** use the personal model alias you wired into `proxx`.
+
+### Hive (All Cephalons)
+```bash
+cd packages/cephalon-ts
+ZAI_API_KEY=xxx ./scripts/start-hive.sh
+```
+
+### Select Specific Cephalons
+```bash
+CEPHALONS=DUCK,OPENSKULL ZAI_API_KEY=xxx ./scripts/start-hive.sh
+```
+
+## Environment Variables
+
+### Required
+| Variable | Description |
+|----------|-------------|
+| `ZAI_API_KEY` | Zukijourney API key (cloud LLM) |
+
+### Discord Tokens (at least one)
+| Variable | Cephalon |
+|----------|----------|
+| `DUCK_DISCORD_TOKEN` | Duck bot |
+| `OPENHAX_DISCORD_TOKEN` | OpenHax bot |
+| `OPEN_SKULL_DISCORD_TOKEN` | OpenSkull bot |
+| `DISCORD_ERROR_BOT_TOKEN` | Error bot |
+
+### Optional
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `CEPHALONS` | all | Comma-separated cephalon names |
+| `CEPHALON_BOT_ID` | duck | Select local bot identity/token source for the single-runtime path (`duck`, `openhax`, `openskull`, `error`, or custom) |
+| `CEPHALON_MODEL` | - | Force the same model for all 8 circuits |
+| `CEPHALON_AUTO_MODEL_FAST` | - | Override the fast-circuit fallback model |
+| `CEPHALON_AUTO_MODEL_DEEP` | - | Override the deep-circuit fallback model |
+| `CEPHALON_MONGODB_URI` | - | MongoDB connection string |
+| `MEMORY_UI_PORT` | 3000 | Memory UI port |
+
+## Inspect Discord Channel Access (no LLM required)
+
+If you just want to verify what each bot can *see* (guilds + channels) from the currently-set env tokens, you can run:
+
+```bash
+cd packages/cephalon-ts
+
+# Summary for duck, openhax, openskull (defaults)
+pnpm inspect:discord
+
+# Inspect a single bot, machine-readable JSON
+pnpm inspect:discord -- --bot openhax --json
+
+# Print all accessible channels (can be noisy)
+pnpm inspect:discord -- --bot duck --all-channels
+```
+
 ## Project Structure
 ```
 services/cephalon/

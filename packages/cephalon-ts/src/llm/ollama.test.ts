@@ -6,6 +6,7 @@
 
 import anyTest, { type TestFn } from 'ava';
 import type { ChatMessage, ToolCall } from '../types/index.js';
+import { messageToOpenAIFormat } from './message.js';
 
 interface TestContext {}
 
@@ -141,6 +142,51 @@ test('multimodal content extracts text and images separately', (t) => {
 
   t.is(textParts.join(''), 'Hello world');
   t.is(images[0], '/path/to/img.jpg');
+});
+
+test('openai conversion preserves remote image URLs', (t) => {
+  const message: ChatMessage = {
+    role: 'user',
+    content: 'Describe this image',
+    images: ['https://example.com/cat.png'],
+  };
+
+  const converted = messageToOpenAIFormat(message);
+
+  t.deepEqual(converted.content, [
+    { type: 'text', text: 'Describe this image' },
+    { type: 'image_url', image_url: { url: 'https://example.com/cat.png' } },
+  ]);
+});
+
+test('openai conversion wraps raw base64 images as data URLs', (t) => {
+  const message: ChatMessage = {
+    role: 'user',
+    content: 'Describe this image',
+    images: ['AAAA'],
+  };
+
+  const converted = messageToOpenAIFormat(message);
+
+  t.deepEqual(converted.content, [
+    { type: 'text', text: 'Describe this image' },
+    { type: 'image_url', image_url: { url: 'data:image/png;base64,AAAA' } },
+  ]);
+});
+
+test('openai conversion preserves existing data URLs', (t) => {
+  const message: ChatMessage = {
+    role: 'user',
+    content: 'Describe this image',
+    images: ['data:image/png;base64,AAAA'],
+  };
+
+  const converted = messageToOpenAIFormat(message);
+
+  t.deepEqual(converted.content, [
+    { type: 'text', text: 'Describe this image' },
+    { type: 'image_url', image_url: { url: 'data:image/png;base64,AAAA' } },
+  ]);
 });
 
 // ============================================================================

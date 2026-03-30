@@ -36,13 +36,25 @@ Authorization: Bearer <OPENPLANNER_API_KEY>
 
 Embedding model selection knobs:
 
-- `OLLAMA_EMBED_MODEL`: default model (existing behavior)
-- `OLLAMA_EMBED_MODEL_BY_PROJECT`: per-project overrides
-- `OLLAMA_EMBED_MODEL_BY_SOURCE`: per-source overrides
-- `OLLAMA_EMBED_MODEL_BY_KIND`: per-kind overrides
+- `OLLAMA_EMBED_MODEL`: hot/raw collection model
+- `OLLAMA_EMBED_MODEL_BY_PROJECT`: per-project overrides for the hot/raw collection
+- `OLLAMA_EMBED_MODEL_BY_SOURCE`: per-source overrides for the hot/raw collection
+- `OLLAMA_EMBED_MODEL_BY_KIND`: per-kind overrides for the hot/raw collection
+- `CHROMA_COMPACT_COLLECTION`: secondary compacted semantic collection
+- `OLLAMA_COMPACT_EMBED_MODEL`: embedding model for compacted semantic packs
 
-Override precedence is `project -> source -> kind -> default`.
+Override precedence for the hot/raw collection is `project -> source -> kind -> default`.
 Override values accept either JSON (`{"chatgpt":"qwen3-embedding:4b"}`) or pair list (`chatgpt=qwen3-embedding:4b;discord=qwen3-embedding:0.6b`).
+
+Semantic compaction knobs:
+
+- `SEMANTIC_COMPACTION_ENABLED`
+- `SEMANTIC_COMPACTION_MIN_EVENTS`
+- `SEMANTIC_COMPACTION_MAX_NEIGHBORS`
+- `SEMANTIC_COMPACTION_CHAR_BUDGET`
+- `SEMANTIC_COMPACTION_DISTANCE_THRESHOLD`
+- `SEMANTIC_COMPACTION_MIN_CLUSTER_SIZE`
+- `SEMANTIC_COMPACTION_MAX_PACKS_PER_RUN`
 
 ## Endpoints (MVP)
 

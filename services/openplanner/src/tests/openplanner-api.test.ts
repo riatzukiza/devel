@@ -31,9 +31,10 @@ function testConfig(dataDir: string): OpenPlannerConfig {
     dataDir,
     host: "127.0.0.1",
     port: 0,
-    apiKey: "test-token",
+    apiKey: "fixture-openplanner-auth-token", // pragma: allowlist secret
     chromaUrl: "disabled",
     chromaCollection: "test_collection",
+    chromaCompactCollection: "test_collection_compact",
     ollamaBaseUrl: "http://localhost:11434",
     embeddingModels: {
       defaultModel: "qwen3-embedding:0.6b",
@@ -41,7 +42,17 @@ function testConfig(dataDir: string): OpenPlannerConfig {
       byKind: {},
       byProject: {}
     },
-    ollamaEmbedTruncate: true
+    compactEmbedModel: "qwen3-embedding:4b",
+    ollamaEmbedTruncate: true,
+    semanticCompaction: {
+      enabled: true,
+      minEventCount: 10,
+      maxNeighbors: 8,
+      maxChars: 4000,
+      distanceThreshold: 0.35,
+      minClusterSize: 3,
+      maxPacksPerRun: 32,
+    }
   };
 }
 
@@ -118,6 +129,8 @@ test("GET /v1/health is public and returns duckdb status", async () => {
       assert.equal(body.ok, true);
       assert.equal(typeof body.ftsEnabled, "boolean");
       assert.equal(typeof body.time, "string");
+      assert.equal(body.vectorCollections.hot, cfg.chromaCollection);
+      assert.equal(body.vectorCollections.compact, cfg.chromaCompactCollection);
     } finally {
       await app.close();
     }

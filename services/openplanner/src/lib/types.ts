@@ -27,6 +27,8 @@ export type EventEnvelopeV1 = {
 
 export type EventIngestRequest = { events: EventEnvelopeV1[] };
 
+export type SearchTier = "hot" | "compact" | "both";
+
 export type FtsSearchRequest = {
   q: string;
   limit?: number;
@@ -34,6 +36,7 @@ export type FtsSearchRequest = {
   kind?: string;
   project?: string;
   session?: string;
+  tier?: SearchTier;
 };
 
 export type VectorSearchRequest = {
@@ -43,4 +46,5 @@ export type VectorSearchRequest = {
   kind?: string;
   project?: string;
   where?: Record<string, unknown>;
+  tier?: SearchTier;
 };

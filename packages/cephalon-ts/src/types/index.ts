@@ -28,7 +28,7 @@ export type MemoryKind =
   | 'system'
   | 'developer';
 
-export type SourceType = 'discord' | 'cli' | 'timer' | 'system' | 'admin' | 'sensor';
+export type SourceType = 'discord' | 'irc' | 'cli' | 'timer' | 'system' | 'admin' | 'sensor';
 
 export interface MemoryContent {
   text: string;
@@ -118,12 +118,16 @@ export type CephalonEventType =
   | 'llm.assistant.message'
   | 'llm.think.trace'
   | 'system.tick'
+  | 'system.proactive'
+  | 'temporal.schedule.arm'
+  | 'temporal.schedule.fired'
+  | 'cephalon.tick.requested'
   | 'admin.command'
   | 'memory.summary.created'
-  | 'memory.compaction.deleted'
-  | 'system.proactive';
+  | 'memory.compaction.deleted';
 
 export interface DiscordMessagePayload {
+  platform?: 'discord' | 'irc';
   guildId: string;
   channelId: string;
   messageId: string;
@@ -132,6 +136,15 @@ export interface DiscordMessagePayload {
   content: string;
   embeds: unknown[];
   attachments: unknown[];
+  authorUsername?: string;
+  authorDiscriminator?: string;
+  normalized?: unknown;
+  timestamp?: number;
+  replyTo?: string | null;
+  channelName?: string;
+  guildName?: string;
+  mentionUserIds?: string[];
+  mentionsCephalon?: boolean;
 }
 
 export interface ToolCallPayload {
@@ -156,12 +169,58 @@ export interface LLMAssistantPayload {
 export interface SystemTickPayload {
   intervalMs: number;
   tickNumber: number;
+  loopId?: string;
+  loopLabel?: string;
+  circuitIndex?: number;
+  modelName?: string;
+  reasoningEffort?: Session['reasoningEffort'];
+  defaultChannelHints?: string[];
+  graphSummary?: string;
+  rssSummary?: string;
+  eidolonSummary?: string;
+  promptFieldSummary?: string;
+  promptFieldOverlay?: string;
+  suggestedChannel?: string;
   recentActivity?: Array<{
     type: string;
     preview: string;
     timestamp?: number;
   }>;
   reflectionPrompt?: string;
+  scheduleId?: string;
+  scheduleKind?: string;
+  dueAt?: number;
+  firedAt?: number;
+  compatibilityMode?: boolean;
+}
+
+export interface TemporalScheduleArmPayload {
+  scheduleId: string;
+  scheduleKind: string;
+  subjectId?: string;
+  armedAt: number;
+  dueAt: number;
+  delayMs: number;
+  intervalMs?: number;
+  metadata?: Record<string, unknown>;
+}
+
+export interface TemporalScheduleFiredPayload {
+  scheduleId: string;
+  scheduleKind: string;
+  subjectId?: string;
+  dueAt: number;
+  firedAt: number;
+  intervalMs?: number;
+  metadata?: Record<string, unknown>;
+}
+
+export interface CephalonTickRequestedPayload extends SystemTickPayload {
+  sessionId: string;
+  scheduleId: string;
+  scheduleKind: string;
+  dueAt: number;
+  firedAt: number;
 }
 
 export interface AdminCommandPayload {
@@ -183,6 +242,9 @@ export type EventPayload =
   | ToolResultPayload
   | LLMAssistantPayload
   | SystemTickPayload
+  | TemporalScheduleArmPayload
+  | TemporalScheduleFiredPayload
+  | CephalonTickRequestedPayload
   | AdminCommandPayload
   | ProactivePayload;
 
@@ -315,7 +377,17 @@ export interface Session {
   subscriptionFilter?: (event: CephalonEventType) => boolean;
   toolPermissions: Set<string>;
   persona?: string;
+  systemPrompt?: string;
+  developerPrompt?: string;
   attentionFocus?: string;
+  circuitIndex?: number;
+  modelName?: string;
+  reasoningEffort?: 'low' | 'medium' | 'high' | 'xhigh';
+  loopIntervalMs?: number;
+  defaultChannelHints?: string[];
+  homeChannelId?: string;
+  retrievalContextHint?: string;
+  retrievalKeywords?: string[];
 }
 
 export interface CephalonEvent {
@@ -394,6 +466,7 @@ export interface ScoringPolicy {
 // ============================================================================
 
 export interface OllamaToolCall {
+  id?: string;
   type: "function";
   function: { name: string; arguments: Record<string, unknown>; index?: number };
 }
@@ -416,7 +489,7 @@ export type OllamaMessageContent = string | Array<OllamaTextContent | OllamaImag
 // ChatMessage with optional images array for Ollama native API
 export type ChatMessage =
   | { role: "system" | "developer" | "user" | "assistant"; content?: OllamaMessageContent; tool_calls?: OllamaToolCall[]; images?: string[] }
-  | { role: "tool"; tool_name: string; content: string };
+  | { role: "tool"; tool_name: string; content: string; tool_call_id?: string; call_id?: string };
 
 // ============================================================================
 // Tool Types

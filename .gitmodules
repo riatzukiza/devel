@@ -226,3 +226,6 @@
 [submodule "orgs/open-hax/eta-mu-github"]
 	path = orgs/open-hax/eta-mu-github
 	url = https://github.com/open-hax/eta-mu-github.git
+[submodule "orgs/shuv/our-gpus"]
+	path = orgs/shuv/our-gpus
+	url = git@github.com:shuv1337/our-gpus.git

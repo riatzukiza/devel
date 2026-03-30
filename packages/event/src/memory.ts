@@ -12,7 +12,7 @@ import type {
   DeliveryContext,
   UUID,
 } from './types.js';
-import { v7 as uuidv7 } from 'uuid';
+import { randomUUID } from 'node:crypto';
 
 // Simple in-memory storage
 const events = new Map<string, EventRecord[]>();
@@ -35,7 +35,7 @@ export class InMemoryEventBus implements EventBus {
 
   async publish<T>(topic: string, payload: T, opts: PublishOptions = {}): Promise<EventRecord<T>> {
     const event: EventRecord<T> = {
-      id: opts.id || uuidv7(),
+      id: opts.id || randomUUID(),
       ts: opts.ts || Date.now(),
       topic,
       payload,

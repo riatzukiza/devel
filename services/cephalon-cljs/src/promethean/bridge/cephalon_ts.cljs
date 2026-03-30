@@ -1,10 +1,58 @@
-(ns promethean.bridge.cephalon-ts)
+(ns promethean.bridge.cephalon-ts
+  (:require [clojure.string :as str]))
 
 (defonce *app (atom nil))
 
 (defn- env [k]
   (let [v (aget (.-env js/process) k)]
     (when (and v (not= v "")) v)))
+
+(defn- normalize-bot-id [bot-id]
+  (let [normalized (-> (or bot-id "duck")
+                       str
+                       str/trim
+                       str/lower-case
+                       (str/replace #"[\s_]+" "-"))]
+    (case normalized
+      "open-hax" "openhax"
+      "openhax" "openhax"
+      "open-skull" "openskull"
+      "openskull" "openskull"
+      "error-bot" "error"
+      "discord-error-bot" "error"
+      "janitor-duck" "janitor"
+      "janitorduck" "janitor"
+      "" "duck"
+      normalized)))
+
+(defn- bot-token-env [bot-id]
+  (case (normalize-bot-id bot-id)
+    "duck" "DUCK_DISCORD_TOKEN"
+    "openhax" "OPENHAX_DISCORD_TOKEN"
+    "openskull" "OPEN_SKULL_DISCORD_TOKEN"
+    "error" "DISCORD_ERROR_BOT_TOKEN"
+    "janitor" "JANITOR_DISCORD_TOKEN"
+    (str (-> (normalize-bot-id bot-id)
+             (str/replace #"-" "_")
+             str/upper-case)
+         "_DISCORD_TOKEN")))
+
+(defn- resolve-bot-id [config]
+  (normalize-bot-id (or (:bot-id config)
+                        (:botId config)
+                        (:bot_id config)
+                        (env "CEPHALON_BOT_ID")
+                        (env "BOT_ID")
+                        (env "CEPHALON_NAME")
+                        "duck")))
+
+(defn- resolve-discord-token [config]
+  (or (:discord-token config)
+      (:discordToken config)
+      (env "DISCORD_BOT_TOKEN")
+      (env (bot-token-env (resolve-bot-id config)))
+      (env "DISCORD_TOKEN")
+      (env "DUCK_DISCORD_TOKEN")))
 
 (defn- ->js-opts [m]
   (let [m (or m {})
@@ -43,17 +91,14 @@
    (start! {}))
   ([config]
    (when-not @*app
-     (let [env-token (or (env "DUCK_DISCORD_TOKEN")
-                         (env "DISCORD_TOKEN"))
-           config (if (and env-token
-                           (nil? (:discord-token config))
-                           (nil? (:discordToken config)))
-                    (assoc config :discord-token env-token)
-                    config)
-           token (or (:discord-token config) (:discordToken config))]
+     (let [bot-id (resolve-bot-id config)
+           token (resolve-discord-token config)
+           config (cond-> config
+                    bot-id (assoc :bot-id bot-id)
+                    token (assoc :discord-token token))]
        (if (not token)
          (do
-           (js/console.warn "[cephalon-cljs] DUCK_DISCORD_TOKEN/DISCORD_TOKEN not set; TS Cephalon not started")
+           (js/console.warn (str "[cephalon-cljs] " (bot-token-env bot-id) "/DISCORD_TOKEN not set; TS Cephalon not started"))
            (js/Promise.resolve nil))
           (-> (create-cephalon-app! (->js-opts config))
               (.then (fn [app]

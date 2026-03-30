@@ -51,16 +51,17 @@ export async function mintFromDiscordEvent(
 ): Promise<Memory | null> {
   const factory = new MemoryFactory(config);
   const payload = event.payload as DiscordMessagePayload;
+  const platform = payload.platform === "irc" ? "irc" : "discord";
   const normalizedText = (
     payload as { normalized?: { normalizedText?: string } }
   )?.normalized?.normalizedText;
 
-  const messageExternalId = `discord:${payload.guildId}:${payload.channelId}:${payload.messageId}`;
+  const messageExternalId = `${platform}:${payload.guildId}:${payload.channelId}:${payload.messageId}`;
 
   const memory = factory.createUserMessageMemory(
     payload.content,
     {
-      type: "discord",
+      type: platform,
       guildId: payload.guildId,
       channelId: payload.channelId,
       authorId: payload.authorId,
@@ -91,7 +92,7 @@ export async function mintFromDiscordEvent(
       att.contentType?.startsWith("image/") ||
       att.filename?.match(/\.(jpg|jpeg|png|gif|webp|bmp)$/i);
 
-    const attachmentExternalId = `discord-attachment:${payload.messageId}:${att.id ?? i}`;
+    const attachmentExternalId = `${platform}-attachment:${payload.messageId}:${att.id ?? i}`;
 
     if (isImage && att.url) {
       const imageMemory = factory.createImageMemory(
@@ -99,7 +100,7 @@ export async function mintFromDiscordEvent(
         att.url,
         att.size,
         {
-          type: "discord",
+          type: platform,
           guildId: payload.guildId,
           channelId: payload.channelId,
           authorId: payload.authorId,

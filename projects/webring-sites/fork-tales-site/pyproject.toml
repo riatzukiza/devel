@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fork-tales-site"
+version = "0.1.0"
+description = "Fork Tales site backend and build tooling"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.116,<1.0",
+  "uvicorn[standard]>=0.35,<1.0",
+  "httpx>=0.28,<1.0",
+  "pydantic-settings>=2.10,<3.0",
+  "rank-bm25>=0.2.2,<1.0",
+  "markdown>=3.8,<4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3,<9.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["fork_tales_api*"]

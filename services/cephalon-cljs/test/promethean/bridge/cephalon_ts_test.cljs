@@ -230,6 +230,48 @@
                             (set! (.-DISCORD_TOKEN js/process.env) ""))
                           (done)))))))))
 
+(deftest token-selection-respects-cephalon-bot-id
+  "Test: CEPHALON_BOT_ID=openhax selects OPENHAX_DISCORD_TOKEN"
+
+  (async done
+    (testing "When CEPHALON_BOT_ID is openhax, OPENHAX_DISCORD_TOKEN is preferred"
+      (let [original-openhax (.-OPENHAX_DISCORD_TOKEN js/process.env)
+            original-duck (.-DUCK_DISCORD_TOKEN js/process.env)
+            original-discord (.-DISCORD_TOKEN js/process.env)
+            original-bot-id (.-CEPHALON_BOT_ID js/process.env)
+            captured (atom nil)]
+        (set! (.-CEPHALON_BOT_ID js/process.env) "openhax")
+        (set! (.-OPENHAX_DISCORD_TOKEN js/process.env) "openhax-token")
+        (set! (.-DUCK_DISCORD_TOKEN js/process.env) "duck-token")
+        (set! (.-DISCORD_TOKEN js/process.env) "discord-token")
+        (with-redefs [bridge/create-cephalon-app!
+                      (fn [opts]
+                        (reset! captured opts)
+                        (js/Promise.resolve (stub-app)))]
+          (-> (bridge/start! {})
+              (.then (fn [_]
+                       (is (= "openhax-token" (.-discordToken @captured))
+                           "OPENHAX_DISCORD_TOKEN should be used when CEPHALON_BOT_ID=openhax")
+                       (is (= "openhax" (.-botId @captured))
+                           "botId should be forwarded to the TS app")))
+              (.catch (fn [err]
+                        (is false (str "Unexpected error: " err))))
+              (.finally (fn []
+                          (if original-openhax
+                            (set! (.-OPENHAX_DISCORD_TOKEN js/process.env) original-openhax)
+                            (set! (.-OPENHAX_DISCORD_TOKEN js/process.env) ""))
+                          (if original-duck
+                            (set! (.-DUCK_DISCORD_TOKEN js/process.env) original-duck)
+                            (set! (.-DUCK_DISCORD_TOKEN js/process.env) ""))
+                          (if original-discord
+                            (set! (.-DISCORD_TOKEN js/process.env) original-discord)
+                            (set! (.-DISCORD_TOKEN js/process.env) ""))
+                          (if original-bot-id
+                            (set! (.-CEPHALON_BOT_ID js/process.env) original-bot-id)
+                            (set! (.-CEPHALON_BOT_ID js/process.env) ""))
+                          (reset! bridge/*app nil)
+                          (done)))))))))
+
 ;; ============================================================================
 ;; Tests: Module Interface
 ;; ============================================================================
