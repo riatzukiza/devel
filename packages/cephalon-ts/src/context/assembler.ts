@@ -22,10 +22,11 @@ import type {
 import {
   generateSystemPrompt,
   generateDeveloperPrompt,
-  getCyclingPrompt,
   getPromptName,
   formatRecentActivityForPrompt,
 } from '../prompts/index.js';
+import { envInt } from "../config/env.js";
+import { selectEntertainmentPersona } from "../prompts/entertainment-personas.js";
 import type { MemoryStore } from '../core/memory-store.js';
 import { cosineSimilarity } from '../utils/vector-math.js';
 import { randomUUID } from 'node:crypto';
@@ -228,7 +229,8 @@ export async function assembleContext({
   const persistentItems = fitByTokens(persistentItemsInput, budgets.persistent, tokenizer);
   
   // 4. Select recent (last N)
-  const recentMemories = await memoryStore.findRecent(session.id, 100);
+  const recentLimit = envInt("CEPHALON_CONTEXT_RECENT_LIMIT", 500, { min: 1, max: 50_000 });
+  const recentMemories = await memoryStore.findRecent(session.id, recentLimit);
   const recentItemsInput = recentMemories.map(m => ({
     memory: m,
     estimatedTokens: tokenizer.estimateTokens(m.content.text),
@@ -308,14 +310,28 @@ function buildHeaders(
     content: generateSystemPrompt(session.cephalonId, currentEvent)
   });
 
+  if (session.systemPrompt) {
+    headers.push({
+      role: 'system',
+      content: session.systemPrompt,
+    });
+  }
+
   // Developer header (contract / safety) - imported from prompts
   headers.push({
     role: 'developer',
     content: generateDeveloperPrompt()
   });
 
+  if (session.developerPrompt) {
+    headers.push({
+      role: 'developer',
+      content: session.developerPrompt,
+    });
+  }
+
   // Session personality (if configured)
-  if (session.persona) {
+  if (!session.systemPrompt && session.persona) {
     headers.push({
       role: 'system',
       content: session.persona
@@ -330,23 +346,70 @@ function buildHeaders(
  * Cycles through 34 different Duck personas based on tick number.
  */
 export function generatePersonaHeader(
+  cephalonId: string,
   tickNumber: number,
   recentActivity?: Array<{ type: string; preview: string; timestamp?: number }>
-): { role: 'system'; content: string } | null {
+): Promise<{ role: 'system'; content: string } | null> {
   // Skip if no tick number provided
   if (tickNumber < 0) {
-    return null;
+    return Promise.resolve(null);
   }
 
-  const personaPrompt = getCyclingPrompt(tickNumber);
-  const personaName = getPromptName(tickNumber);
-  const formattedActivity = formatRecentActivityForPrompt(recentActivity);
-  const content = personaPrompt.replace('{recentActivity}', formattedActivity);
+  const normalizedId = (cephalonId || "DUCK").trim().toUpperCase();
+  const botVariant = normalizedId === "OPENHAX"
+    ? { emoji: "🛠️", noun: "builder", flavor: "OpenHax remix: builder/hacker voice. Keep it playful, but default to constructive, shipping energy." }
+    : normalizedId === "OPENSKULL"
+      ? { emoji: "💀", noun: "mystic", flavor: "OpenSkull remix: mystic/contract-bearer voice. Poetic, slightly occult, but still clear and grounded." }
+    : normalizedId === "ERROR"
+        ? { emoji: "⚠️", noun: "critic", flavor: "Error remix: critic/QA voice. Sharp observations, witty, fair-minded, and constructive." }
+        : { emoji: "🦆", noun: "duck", flavor: "Duck mode: chaotic, meme-brained, affectionate." };
 
-  return {
-    role: 'system',
-    content: `=== ENTERTAINMENT PERSONA: ${personaName} ===\n\n${content}`
-  };
+  const replaceWordPreserveCase = (
+    input: string,
+    pattern: RegExp,
+    replacement: string,
+  ): string =>
+    input.replace(pattern, (match) => {
+      if (match.toUpperCase() === match) return replacement.toUpperCase();
+      if (match[0] && match[0].toUpperCase() === match[0]) {
+        return replacement[0]?.toUpperCase() + replacement.slice(1);
+      }
+      return replacement.toLowerCase();
+    });
+
+  return (async () => {
+    const selection = await selectEntertainmentPersona(tickNumber);
+    const personaPrompt = selection.prompt;
+    const personaNameRaw = selection.name;
+    const formattedActivity = formatRecentActivityForPrompt(recentActivity);
+
+    // Adapt entertainment prompts so they ADD to the existing system/developer prompts,
+    // rather than redefining the agent identity.
+    let content = personaPrompt.replaceAll('{recentActivity}', formattedActivity);
+    const personaName = normalizedId === "DUCK"
+      ? personaNameRaw
+      : personaNameRaw.replace(/\bDUCK\b/g, normalizedId);
+
+    // Light skinning for the other cephalons (3-bot variations).
+    if (normalizedId !== "DUCK") {
+      content = content
+        .replace(/#duck-bots/gi, "the current channel")
+        .replace(/🦆/g, botVariant.emoji)
+        .replace(/\bDUCK\b/g, normalizedId);
+      content = replaceWordPreserveCase(content, /\bduck\b/gi, botVariant.noun);
+    }
+
+    return {
+      role: 'system',
+      content:
+        `=== ENTERTAINMENT OVERLAY (additive): ${personaName} ===\n`
+        + `This is an additive style layer that works alongside other system/developer prompts, tool rules, and safety constraints.\n`
+        + `Growth: If you invent a genuinely new entertainment persona seed, save it via tool self.growth, keep the save action silent, and use <cephalon:silence/> whenever silence fits.\n`
+        + `GIFs: When it's actually funny and tied to recent human activity, you may use tenor.share to drop a Tenor gif reaction (it enforces cooldown + activity gating).\n`
+        + `Bot flavor: ${botVariant.flavor}\n\n`
+        + content,
+    };
+  })();
 }
 
 /**
@@ -547,15 +610,21 @@ function itemsToProviderMessages(
       const text = item.memory.content.text;
       const urlMatch = text.match(/URL:\s*([^\s\]]+)/);
       const imageUrl = urlMatch ? urlMatch[1] : '';
+      const providerImageUrl = imageUrl && !isExpiredDiscordCdnImageUrl(imageUrl)
+        ? imageUrl
+        : '';
       
       console.log(`[ImageLogger] Processing image memory: ${imageUrl}`);
+      if (imageUrl && !providerImageUrl) {
+        console.log(`[ImageLogger] Skipping expired Discord CDN image URL: ${imageUrl}`);
+      }
 
       // For now, add as text with URL reference (actual base64 loading would happen here)
       // The Ollama provider will handle fetching and encoding images
       messages.push({
         role,
         content: text,
-        images: imageUrl ? [imageUrl] : []
+        images: providerImageUrl ? [providerImageUrl] : []
       } as ChatMessage);
     } else {
       messages.push({
@@ -572,4 +641,28 @@ function itemsToProviderMessages(
   }
 
   return messages;
+}
+
+export function isExpiredDiscordCdnImageUrl(url: string, nowMs: number = Date.now()): boolean {
+  try {
+    const parsed = new URL(url);
+    const hostname = parsed.hostname.toLowerCase();
+    if (hostname !== 'cdn.discordapp.com' && hostname !== 'media.discordapp.net') {
+      return false;
+    }
+
+    const expiresAtHex = parsed.searchParams.get('ex');
+    if (!expiresAtHex) {
+      return false;
+    }
+
+    const expiresAtSeconds = Number.parseInt(expiresAtHex, 16);
+    if (!Number.isFinite(expiresAtSeconds) || expiresAtSeconds <= 0) {
+      return false;
+    }
+
+    return expiresAtSeconds * 1000 <= nowMs;
+  } catch {
+    return false;
+  }
 }

@@ -186,7 +186,10 @@ export class MemoryFactory {
     return this.createMemory({
       role: "tool",
       kind: "tool_result",
-      content: { text: contentText },
+      content: {
+        text: contentText,
+        normalizedText: `tool:${toolName}`,
+      },
       source: { type: "system" },
       eventId: options?.eventId ?? null,
       retrieval: {

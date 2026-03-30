@@ -30,7 +30,10 @@
   "scripts": {
     "dev": "tsx watch src/cli.ts",
     "start": "node dist/cli.cjs",
+    "hive": "tsx src/hive-cli.ts",
+    "inspect:discord": "tsx src/inspect-discord.ts",
     "build": "tsup && cp -r src/ui/public dist/",
+    "build:standalone": "tsup --config tsup.standalone.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "tsc -p tsconfig.test.json && ava",
     "test:watch": "tsc -p tsconfig.test.json --watch & ava --watch",
@@ -44,10 +47,12 @@
     "chromadb": "^1.8.1",
     "discord.js": "^14.18.0",
     "edn-data": "^1.0.2",
+    "execa": "^9.6.1",
     "fastify": "^4.28.1",
     "mongodb": "^6.12.0",
     "ollama": "^0.6.3",
     "pdf-to-img": "^5.0.0",
+    "playwright": "^1.58.2",
     "turndown": "^7.2.0",
     "uuid": "^11.1.0"
   },

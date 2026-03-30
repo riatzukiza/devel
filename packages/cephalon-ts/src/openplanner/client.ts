@@ -64,6 +64,31 @@ type SearchResponse = Partial<{
   results: OpenPlannerSearchResult[];
 }>;
 
+type VectorMetadata = Partial<{
+  source: string;
+  kind: string;
+  ts: string;
+  project: string;
+  session: string;
+  message: string;
+  search_tier: string;
+}> & Record<string, unknown>;
+
+type VectorResponse = Partial<{
+  result: Partial<{
+    ids: string[][];
+    documents: Array<Array<string | null> | null>;
+    metadatas: Array<Array<VectorMetadata | null> | null>;
+    distances: Array<Array<number | null> | null>;
+  }>;
+}>;
+
+function firstNestedArray<T>(value: unknown): T[] {
+  if (!Array.isArray(value) || value.length === 0) return [];
+  const first = value[0];
+  return Array.isArray(first) ? (first as T[]) : [];
+}
+
 export function createDefaultOpenPlannerConfig(): OpenPlannerConfig {
   const config = defaultOpenPlannerConfig();
   return {
@@ -120,7 +145,109 @@ const toSearchResult = (row: SearchRow): OpenPlannerSearchResult => ({
     session: row.session,
     message: row.message,
   },
+  meta: {
+    search_tier: "fts",
+  },
 });
+
+function toFtsResults(response: SearchResponse): OpenPlannerSearchResult[] {
+  if (Array.isArray(response.results)) {
+    return response.results.map((result) => ({
+      ...result,
+      meta: {
+        ...(result.meta ?? {}),
+        search_tier: "fts",
+      },
+    }));
+  }
+
+  if (Array.isArray(response.rows)) {
+    return response.rows.map(toSearchResult);
+  }
+
+  return [];
+}
+
+function toVectorResults(response: VectorResponse): OpenPlannerSearchResult[] {
+  const payload = response.result ?? {};
+  const ids = firstNestedArray<string>(payload.ids);
+  const documents = firstNestedArray<string | null>(payload.documents);
+  const metadatas = firstNestedArray<VectorMetadata | null>(payload.metadatas);
+  const distances = firstNestedArray<number | null>(payload.distances);
+
+  return ids.map((id, index) => {
+    const metadata = (metadatas[index] ?? {}) as VectorMetadata;
+    const distance = typeof distances[index] === "number" ? distances[index] ?? undefined : undefined;
+    const similarity = typeof distance === "number" ? 1 / (1 + Math.max(0, distance)) : 0.5;
+    return {
+      id,
+      text: documents[index] ?? undefined,
+      score: Number(similarity.toFixed(6)),
+      source: typeof metadata.source === "string" ? metadata.source : undefined,
+      kind: typeof metadata.kind === "string" ? metadata.kind : undefined,
+      ts: typeof metadata.ts === "string" ? metadata.ts : undefined,
+      source_ref: {
+        project: typeof metadata.project === "string" ? metadata.project : undefined,
+        session: typeof metadata.session === "string" ? metadata.session : undefined,
+        message: typeof metadata.message === "string" ? metadata.message : undefined,
+      },
+      meta: Object.assign({}, metadata, {
+        search_tier: "vector",
+      }),
+    };
+  });
+}
+
+function searchTierPriority(result: OpenPlannerSearchResult): number {
+  const tier = result.meta?.search_tier;
+  if (tier === "vector") return 0;
+  if (tier === "fts") return 1;
+  return 2;
+}
+
+function mergeHybridResults(
+  ftsResults: readonly OpenPlannerSearchResult[],
+  vectorResults: readonly OpenPlannerSearchResult[],
+  limit: number,
+): OpenPlannerSearchResult[] {
+  const rrfK = 60;
+  const merged = new Map<string, OpenPlannerSearchResult & { fusedScore: number }>();
+
+  const ingest = (items: readonly OpenPlannerSearchResult[]) => {
+    items.forEach((item, index) => {
+      const key = item.id || `${item.source ?? "unknown"}:${item.source_ref?.message ?? index}`;
+      const existing = merged.get(key);
+      const reciprocalRank = 1 / (rrfK + index + 1);
+      if (!existing) {
+        merged.set(key, {
+          ...item,
+          fusedScore: reciprocalRank,
+        });
+        return;
+      }
+
+      existing.fusedScore += reciprocalRank;
+      if ((item.score ?? 0) > (existing.score ?? 0)) existing.score = item.score;
+      if ((item.text?.length ?? 0) > (existing.text?.length ?? 0)) existing.text = item.text;
+      existing.meta = { ...(existing.meta ?? {}), ...(item.meta ?? {}) };
+      existing.source = existing.source ?? item.source;
+      existing.kind = existing.kind ?? item.kind;
+      existing.ts = existing.ts ?? item.ts;
+      existing.source_ref = {
+        ...(existing.source_ref ?? {}),
+        ...(item.source_ref ?? {}),
+      };
+    });
+  };
+
+  ingest(vectorResults);
+  ingest(ftsResults);
+
+  return [...merged.values()]
+    .sort((left, right) => right.fusedScore - left.fusedScore || searchTierPriority(left) - searchTierPriority(right) || right.score - left.score || left.id.localeCompare(right.id))
+    .slice(0, Math.max(1, limit))
+    .map(({ fusedScore: _fusedScore, ...rest }) => rest);
+}
 
 export class OpenPlannerClient {
   private readonly config: OpenPlannerConfig;
@@ -142,21 +269,30 @@ export class OpenPlannerClient {
     query: string,
     options: OpenPlannerSearchOptions = {},
   ): Promise<OpenPlannerSearchResult[]> {
-    const response = (await this.client.searchFts({
-      q: query,
-      limit: options.limit ?? 5,
-      session: options.session,
-    })) as SearchResponse;
+    const limit = options.limit ?? 5;
+    const [ftsResult, vectorResult] = await Promise.allSettled([
+      this.client.searchFts({
+        q: query,
+        limit,
+        session: options.session,
+      }) as Promise<SearchResponse>,
+      this.client.searchVector({
+        q: query,
+        k: limit,
+        ...(options.session ? { where: { session: options.session } } : {}),
+      }) as Promise<VectorResponse>,
+    ]);
 
-    if (Array.isArray(response.results)) {
-      return response.results;
+    if (ftsResult.status === "rejected" && vectorResult.status === "rejected") {
+      throw ftsResult.reason ?? vectorResult.reason;
     }
 
-    if (Array.isArray(response.rows)) {
-      return response.rows.map(toSearchResult);
-    }
+    const ftsResults = ftsResult.status === "fulfilled" ? toFtsResults(ftsResult.value) : [];
+    const vectorResults = vectorResult.status === "fulfilled" ? toVectorResults(vectorResult.value) : [];
 
-    return [];
+    if (ftsResults.length === 0) return vectorResults.slice(0, limit);
+    if (vectorResults.length === 0) return ftsResults.slice(0, limit);
+    return mergeHybridResults(ftsResults, vectorResults, limit);
   }
 
   async searchFts(
