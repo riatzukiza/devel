@@ -61,6 +61,8 @@
     "generate-ecosystem": "npx shadow-cljs release clobber",
     "docker:stack": "node scripts/docker-stack.mjs",
     "docker:stack:list": "node scripts/docker-stack.mjs list",
+<<<<<<< HEAD
+    "github:eta-mu:rollout": "tsx src/github/eta-mu-rollout.ts",
     "eta:truth:workbench": "pnpm --filter @workspace/eta-mu-truth test"
   },
   "bin": {
