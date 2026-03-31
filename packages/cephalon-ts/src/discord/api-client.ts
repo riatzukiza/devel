@@ -191,16 +191,59 @@ export class DiscordApiClient {
       throw new Error(`Channel not found or not text-based: ${channelId}`);
     }
 
-    const messageOptions: {
-      content: string;
-      reply?: { messageReference: string };
-    } = { content: text };
+    const MAX_CONTENT_LENGTH = 2000;
+    const splitMessage = (content: string): string[] => {
+      const normalized = content.trim();
+      if (normalized.length <= MAX_CONTENT_LENGTH) {
+        return [normalized];
+      }
 
-    if (replyTo) {
-      messageOptions.reply = { messageReference: replyTo };
+      const chunks: string[] = [];
+      let remaining = normalized;
+
+      while (remaining.length > MAX_CONTENT_LENGTH) {
+        let splitAt = remaining.lastIndexOf("\n\n", MAX_CONTENT_LENGTH);
+        if (splitAt < Math.floor(MAX_CONTENT_LENGTH * 0.5)) {
+          splitAt = remaining.lastIndexOf("\n", MAX_CONTENT_LENGTH);
+        }
+        if (splitAt < Math.floor(MAX_CONTENT_LENGTH * 0.5)) {
+          splitAt = remaining.lastIndexOf(" ", MAX_CONTENT_LENGTH);
+        }
+        if (splitAt <= 0) {
+          splitAt = MAX_CONTENT_LENGTH;
+        }
+
+        const chunk = remaining.slice(0, splitAt).trimEnd();
+        chunks.push(chunk.length > 0 ? chunk : remaining.slice(0, MAX_CONTENT_LENGTH));
+        remaining = remaining.slice(splitAt).trimStart();
+      }
+
+      if (remaining.length > 0) {
+        chunks.push(remaining);
+      }
+
+      return chunks;
+    };
+
+    const chunks = splitMessage(text);
+    let sentMessage;
+
+    for (const [index, chunk] of chunks.entries()) {
+      const messageOptions: {
+        content: string;
+        reply?: { messageReference: string };
+      } = { content: chunk };
+
+      if (index === 0 && replyTo) {
+        messageOptions.reply = { messageReference: replyTo };
+      }
+
+      sentMessage = await (channel as TextChannel).send(messageOptions);
     }
 
-    const sentMessage = await (channel as TextChannel).send(messageOptions);
+    if (!sentMessage) {
+      throw new Error("Failed to send Discord message");
+    }
 
     return {
       messageId: sentMessage.id,

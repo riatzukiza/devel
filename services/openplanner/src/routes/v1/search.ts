@@ -1,5 +1,6 @@
 import type { FastifyPluginAsync } from "fastify";
 import { all } from "../../lib/duckdb.js";
+import { ftsSearch as mongoFtsSearch, ilikeSearch as mongoIlikeSearch } from "../../lib/mongodb.js";
 import type { FtsSearchRequest, VectorSearchRequest } from "../../lib/types.js";
 import { extractTieredVectorHits, mergeTieredVectorHits } from "../../lib/vector-search.js";
 
@@ -31,6 +32,33 @@ export const searchRoutes: FastifyPluginAsync = async (app) => {
 
     const lim = Math.max(1, Math.min(200, Number(limit)));
     const tier = body.tier ?? "both";
+    const storageBackend = (app as any).storageBackend ?? "duckdb";
+
+    // MongoDB search
+    if (storageBackend === "mongodb") {
+      try {
+        const results = await mongoFtsSearch(app.mongo.events, q, {
+          limit: lim,
+          source: body.source,
+          kind: body.kind,
+          project: body.project,
+          session: body.session,
+        });
+        return { ok: true, ftsEnabled: true, count: results.length, rows: results, tier, storageBackend };
+      } catch {
+        // Fallback to $regex search if text search fails
+        const results = await mongoIlikeSearch(app.mongo.events, q, {
+          limit: lim,
+          source: body.source,
+          kind: body.kind,
+          project: body.project,
+          session: body.session,
+        });
+        return { ok: true, ftsEnabled: false, count: results.length, rows: results, tier, storageBackend };
+      }
+    }
+
+    // DuckDB search
     const includeHot = tier !== "compact";
     const includeCompact = tier !== "hot";
     const hotFilter = buildSqlFilter("e", body);
@@ -123,7 +151,7 @@ export const searchRoutes: FastifyPluginAsync = async (app) => {
       rows = await buildFallbackRows();
     }
 
-    return { ok: true, ftsEnabled: app.duck.ftsEnabled, count: rows.length, rows, tier };
+    return { ok: true, ftsEnabled: app.duck.ftsEnabled, count: rows.length, rows, tier, storageBackend };
   });
 
   app.post<{ Body: VectorSearchRequest }>("/search/vector", async (req, reply) => {
@@ -168,7 +196,7 @@ export const searchRoutes: FastifyPluginAsync = async (app) => {
     }
 
     if (includeCompact) {
-      const embeddingFunction = app.chroma.compactEmbeddingFunctionFor?.(embeddingScope) ?? app.chroma.compactEmbeddingFunction;
+      const embeddingFunction = app.chroma.embeddingFunctionFor?.(embeddingScope) ?? app.chroma.compactEmbeddingFunction;
       if (!embeddingFunction) return reply.status(500).send({ error: "compact embedding function unavailable" });
 
       const collection = await app.chroma.client.getCollection({
@@ -184,6 +212,7 @@ export const searchRoutes: FastifyPluginAsync = async (app) => {
     }
 
     const result = mergeTieredVectorHits(tieredHits, limit);
-    return { ok: true, result, tier };
+    const storageBackend = (app as any).storageBackend ?? "duckdb";
+    return { ok: true, result, tier, storageBackend };
   });
 };

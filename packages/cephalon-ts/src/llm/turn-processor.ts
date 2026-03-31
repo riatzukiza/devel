@@ -32,6 +32,12 @@ import {
   mintFromToolCall,
 } from "../core/minting.js";
 import type { CephalonMindQueue, MindMessageProposal, MindPromptProposal } from "../mind/integration-queue.js";
+import {
+  isContextOverflowError,
+  pruneContext,
+  heuristicTokenEstimate,
+  type ContextPruningConfig,
+} from "./context-pruning.js";
 
 /**
  * Turn processor that orchestrates LLM calls and tool execution
@@ -250,7 +256,33 @@ export class TurnProcessor {
 
       const isProceduralReport = (text: string): boolean => {
         const lowered = text.toLowerCase();
+        const internalOps =
+          lowered.includes("queued proposals") ||
+          lowered.includes("queued prompt suggestions") ||
+          lowered.includes("other circuits") ||
+          lowered.includes("governing prompts") ||
+          lowered.includes("proposal queued") ||
+          lowered.includes("queued for circuit") ||
+          lowered.includes("merged and consumed") ||
+          lowered.includes("integrated and consumed") ||
+          lowered.includes("loop interval") ||
+          lowered.includes("loopintervalms");
+
+        if (internalOps) return true;
+
         const statusy =
+          lowered.includes("gnostic tick") ||
+          lowered.includes("aionian tick") ||
+          lowered.includes("dorian tick") ||
+          lowered.includes("nemesian tick") ||
+          lowered.includes("integrated overview") ||
+          lowered.includes("unified action") ||
+          lowered.includes("social-weather estimates") ||
+          lowered.includes("current channel health") ||
+          lowered.includes("aggregated proposals") ||
+          lowered.includes("backlog pressure:") ||
+          lowered.includes("rate-limit pressure:") ||
+          lowered.includes("current channel pheromone") ||
           lowered.includes("emotional temperature") ||
           lowered.includes("trust / warmth") ||
           lowered.includes("warm signals") ||
@@ -380,17 +412,64 @@ export class TurnProcessor {
       // Tool-calling loop: continue until no more tool calls
       let maxIterations = 10; // Prevent infinite loops
       let finalContent: string | undefined;
+      
+      // Context overflow handling: prune and retry on context length errors
+      const maxPruningAttempts = 3;
+      let pruningAttempts = 0;
 
       while (maxIterations-- > 0) {
         console.log(
           `[TurnProcessor] LLM call (iteration ${10 - maxIterations})`,
         );
 
-        // Call LLM with current conversation history
-        const result = await provider.completeWithTools(messages, tools, {
-          queueKey: session.id,
-          reasoningEffort: session.reasoningEffort,
-        });
+        // Call LLM with current conversation history (with context overflow handling)
+        let result: { content?: string; toolCalls?: ToolCall[] };
+        
+        try {
+          result = await provider.completeWithTools(messages, tools, {
+            queueKey: session.id,
+            reasoningEffort: session.reasoningEffort,
+          });
+        } catch (llmError) {
+          // Check for context overflow
+          if (isContextOverflowError(llmError) && pruningAttempts < maxPruningAttempts) {
+            pruningAttempts++;
+            console.warn(
+              `[TurnProcessor] Context overflow detected (attempt ${pruningAttempts}/${maxPruningAttempts}), pruning...`
+            );
+            
+            // Calculate target tokens (80% of max context to leave room for response)
+            const targetTokens = Math.floor(this.policy.models.actor.maxContextTokens * 0.8);
+            const pruningConfig: ContextPruningConfig = {
+              targetTokens,
+              minRecentMessages: 4, // Keep at least 2 exchanges
+              keepSystemMessages: true,
+              estimateTokens: heuristicTokenEstimate,
+            };
+            
+            const pruneResult = pruneContext(messages, pruningConfig);
+            
+            if (pruneResult.pruned > 0) {
+              console.log(
+                `[TurnProcessor] Pruned ${pruneResult.pruned} messages ` +
+                `(strategy: ${pruneResult.strategy}, tokens: ${pruneResult.remainingTokens})`
+              );
+              // Mutate the messages array in place
+              messages.length = 0;
+              messages.push(...pruneResult.messages);
+              
+              // Reset iteration counter since we're retrying with fresh context
+              maxIterations = Math.max(maxIterations, 10 - pruningAttempts);
+              continue;
+            } else {
+              console.error(`[TurnProcessor] Cannot prune further, rethrowing context overflow`);
+              throw llmError;
+            }
+          } else {
+            // Not a context overflow error, or max pruning attempts reached
+            throw llmError;
+          }
+        }
 
         // If the model returned tool calls, execute them
         if (result.toolCalls && result.toolCalls.length > 0) {

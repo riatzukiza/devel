@@ -1,6 +1,8 @@
 import path from "node:path";
 import { parseModelMap, type EmbeddingModelConfig } from "./embedding-models.js";
 
+export type StorageBackend = "duckdb" | "mongodb";
+
 export type SemanticCompactionConfig = {
   enabled: boolean;
   minEventCount: number;
@@ -11,7 +13,15 @@ export type SemanticCompactionConfig = {
   maxPacksPerRun: number;
 };
 
+export type MongoConfig = {
+  uri: string;
+  dbName: string;
+  eventsCollection: string;
+  compactedCollection: string;
+};
+
 export type OpenPlannerConfig = {
+  storageBackend: StorageBackend;
   dataDir: string;
   host: string;
   port: number;
@@ -26,6 +36,7 @@ export type OpenPlannerConfig = {
   ollamaEmbedTruncate: boolean;
   ollamaEmbedNumCtx?: number;
   semanticCompaction: SemanticCompactionConfig;
+  mongodb: MongoConfig;
 };
 
 function mustGet(name: string, fallback?: string): string {
@@ -84,7 +95,22 @@ export function loadConfig(): OpenPlannerConfig {
     maxPacksPerRun: parsePositiveInt(process.env.SEMANTIC_COMPACTION_MAX_PACKS_PER_RUN, 256),
   };
 
+  // Storage backend selection
+  const storageBackend: StorageBackend = (process.env.OPENPLANNER_STORAGE_BACKEND ?? "duckdb") as StorageBackend;
+  if (storageBackend !== "duckdb" && storageBackend !== "mongodb") {
+    throw new Error(`Invalid OPENPLANNER_STORAGE_BACKEND: ${storageBackend}. Must be "duckdb" or "mongodb"`);
+  }
+
+  // MongoDB configuration
+  const mongodb: MongoConfig = {
+    uri: mustGet("MONGODB_URI", "mongodb://localhost:27017"),
+    dbName: mustGet("MONGODB_DB", "openplanner"),
+    eventsCollection: mustGet("MONGODB_EVENTS_COLLECTION", "events"),
+    compactedCollection: mustGet("MONGODB_COMPACTED_COLLECTION", "compacted_memories"),
+  };
+
   return {
+    storageBackend,
     dataDir: path.resolve(dataDir),
     host,
     port,
@@ -99,5 +125,6 @@ export function loadConfig(): OpenPlannerConfig {
     ollamaEmbedTruncate,
     ollamaEmbedNumCtx: finalOllamaEmbedNumCtx,
     semanticCompaction,
+    mongodb,
   };
 }

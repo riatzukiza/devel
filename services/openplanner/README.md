@@ -1,11 +1,35 @@
-# OpenPlanner (API-first skeleton)
+# OpenPlanner (API-first data lake)
 
 Local-first personal data lake for LLM session archives with:
 
-- DuckDB for storage + FTS search
-- ChromaDB for vector search
+- **DuckDB** (default) for storage + FTS search
+- **MongoDB** (optional) for scalable storage, shared with Cephalon Hive
+- **ChromaDB** for vector search
 
-This is a complete runnable **project skeleton**. See `spec/` for scope.
+This is a complete runnable **project skeleton**. See `specs/` for scope.
+
+## Storage Backends
+
+OpenPlanner supports two storage backends:
+
+### DuckDB (default)
+- File-based, embedded database
+- Automatic FTS (full-text search) index
+- Good for single-instance deployments
+- Data stored in `{OPENPLANNER_DATA_DIR}/openplanner.duckdb`
+
+### MongoDB
+- Scalable document store
+- Native text search with `$text` indexes
+- Share collections with Cephalon Hive for unified perception/intelligence
+- Better for distributed deployments
+
+To use MongoDB:
+```bash
+export OPENPLANNER_STORAGE_BACKEND=mongodb
+export MONGODB_URI=mongodb://localhost:27017
+export MONGODB_DB=openplanner
+```
 
 ## Quick start
 
@@ -13,6 +37,13 @@ This is a complete runnable **project skeleton**. See `spec/` for scope.
 npm install
 docker compose up -d
 cp .env.example .env
+npm run dev
+```
+
+With MongoDB backend:
+```bash
+docker compose --profile mongodb up -d
+export OPENPLANNER_STORAGE_BACKEND=mongodb
 npm run dev
 ```
 

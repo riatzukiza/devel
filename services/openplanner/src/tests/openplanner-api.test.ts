@@ -28,6 +28,7 @@ async function withTempDir<T>(fn: (dir: string) => Promise<T>): Promise<T> {
 
 function testConfig(dataDir: string): OpenPlannerConfig {
   return {
+    storageBackend: "duckdb",
     dataDir,
     host: "127.0.0.1",
     port: 0,
@@ -52,6 +53,12 @@ function testConfig(dataDir: string): OpenPlannerConfig {
       distanceThreshold: 0.35,
       minClusterSize: 3,
       maxPacksPerRun: 32,
+    },
+    mongodb: {
+      uri: "mongodb://localhost:27017",
+      dbName: "openplanner_test",
+      eventsCollection: "events",
+      compactedCollection: "compacted_memories",
     }
   };
 }

@@ -1,3 +1,11 @@
+# OpenPlanner - Personal Data Lake
+#
+# Storage backends:
+#   - DuckDB (default): file-based, embedded
+#   - MongoDB: scalable, shared with Cephalon Hive
+#
+# Set OPENPLANNER_STORAGE_BACKEND=mongodb to use MongoDB.
+
 services:
   openplanner:
     build:
@@ -6,6 +14,9 @@ services:
     depends_on:
       chroma:
         condition: service_started
+      mongodb:
+        condition: service_healthy
+        required: false
     ports:
       - "${OPENPLANNER_PORT:-7777}:7777"
     environment:
@@ -14,9 +25,18 @@ services:
       OPENPLANNER_PORT: "7777"
       OPENPLANNER_API_KEY: "${OPENPLANNER_API_KEY:-change-me}"
       OPENPLANNER_DATA_DIR: /app/openplanner-lake
+      # Storage backend: duckdb (default) or mongodb
+      OPENPLANNER_STORAGE_BACKEND: "${OPENPLANNER_STORAGE_BACKEND:-duckdb}"
+      # MongoDB configuration (used when STORAGE_BACKEND=mongodb)
+      MONGODB_URI: "${MONGODB_URI:-mongodb://mongodb:27017}"
+      MONGODB_DB: "${MONGODB_DB:-openplanner}"
+      MONGODB_EVENTS_COLLECTION: "${MONGODB_EVENTS_COLLECTION:-events}"
+      MONGODB_COMPACTED_COLLECTION: "${MONGODB_COMPACTED_COLLECTION:-compacted_memories}"
+      # ChromaDB for vector search
       CHROMA_URL: http://chroma:8000
       CHROMA_COLLECTION: "${OPENPLANNER_CHROMA_COLLECTION:-openplanner_events_v1}"
       CHROMA_COMPACT_COLLECTION: "${OPENPLANNER_CHROMA_COMPACT_COLLECTION:-openplanner_events_v1_compact}"
+      # Ollama embeddings
       OLLAMA_BASE_URL: "${OPENPLANNER_OLLAMA_BASE_URL:-http://host.docker.internal:8789}"
       OLLAMA_API_KEY: "${OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN:-change-me-open-hax-proxy-token}"
       OLLAMA_EMBED_MODEL: "${OPENPLANNER_OLLAMA_EMBED_MODEL:-qwen3-embedding:0.6b}"
@@ -57,6 +77,33 @@ services:
     volumes:
       - ./openplanner-lake/chroma:/chroma/chroma
     restart: unless-stopped
+
+  # MongoDB - shared with Cephalon Hive for unified perception storage
+  mongodb:
+    image: mongo:7
+    ports:
+      - "${OPENPLANNER_MONGODB_PORT:-27017}:27017"
+    environment:
+      MONGO_INITDB_DATABASE: openplanner
+    volumes:
+      - openplanner-mongodb-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+    profiles:
+      - mongodb
+    networks:
+      default: {}
+      ai-infra:
+        aliases:
+          - openplanner-mongodb
+
+volumes:
+  openplanner-mongodb-data:
 
 networks:
   ai-infra:

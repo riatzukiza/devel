@@ -21,11 +21,13 @@ packages:
   - packages/npu-top
   - packages/omni-top
   - packages/kanban
+  - packages/sintel
   - orgs/riatzukiza/hormuz-clock-mcp
   - orgs/riatzukiza/threat-radar-mcp
   - orgs/riatzukiza/threat-radar-web
   - services/*
   - orgs/open-hax/workbench
+  - orgs/open-hax/openhax/packages/*
   - orgs/riatzukiza/promethean/packages/*
   - orgs/riatzukiza/promethean/packages/*/*
   - orgs/riatzukiza/promethean/cli/*

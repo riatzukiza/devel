@@ -1,5 +1,6 @@
 import type { FastifyPluginAsync } from "fastify";
 import { run } from "../../lib/duckdb.js";
+import { upsertEvent, ilikeSearch } from "../../lib/mongodb.js";
 import type { EventIngestRequest, EventEnvelopeV1 } from "../../lib/types.js";
 
 function norm(v: any): string | null {
@@ -26,6 +27,7 @@ export const eventRoutes: FastifyPluginAsync = async (app) => {
     if (!body || !Array.isArray(body.events)) return reply.status(400).send({ error: "expected { events: [...] }" });
 
     const ids: string[] = [];
+    const storageBackend = (app as any).storageBackend ?? "duckdb";
 
     for (const ev of body.events) {
       validateEvent(ev);
@@ -37,40 +39,61 @@ export const eventRoutes: FastifyPluginAsync = async (app) => {
       const model = norm((meta as any).model);
       const tags = (meta as any).tags;
 
-      await run(app.duck.conn, `
-        INSERT INTO events (
-          id, ts, source, kind, project, session, message, role, author, model, tags, text, attachments, extra
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ON CONFLICT(id) DO UPDATE SET
-          ts=excluded.ts,
-          source=excluded.source,
-          kind=excluded.kind,
-          project=excluded.project,
-          session=excluded.session,
-          message=excluded.message,
-          role=excluded.role,
-          author=excluded.author,
-          model=excluded.model,
-          tags=excluded.tags,
-          text=excluded.text,
-          attachments=excluded.attachments,
-          extra=excluded.extra
-      `, [
-        ev.id,
-        ev.ts,
-        ev.source,
-        ev.kind,
-        norm((sr as any).project),
-        norm((sr as any).session),
-        norm((sr as any).message),
-        role,
-        author,
-        model,
-        toJson(tags),
-        norm(ev.text ?? ""),
-        toJson(ev.attachments ?? []),
-        toJson(ev.extra ?? {})
-      ]);
+      if (storageBackend === "mongodb") {
+        // MongoDB storage
+        await upsertEvent(app.mongo.events, {
+          id: ev.id,
+          ts: new Date(ev.ts),
+          source: ev.source,
+          kind: ev.kind,
+          project: norm((sr as any).project),
+          session: norm((sr as any).session),
+          message: norm((sr as any).message),
+          role,
+          author,
+          model,
+          tags: tags ?? null,
+          text: norm(ev.text ?? ""),
+          attachments: ev.attachments ?? null,
+          extra: ev.extra ?? null,
+        });
+      } else {
+        // DuckDB storage
+        await run(app.duck.conn, `
+          INSERT INTO events (
+            id, ts, source, kind, project, session, message, role, author, model, tags, text, attachments, extra
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          ON CONFLICT(id) DO UPDATE SET
+            ts=excluded.ts,
+            source=excluded.source,
+            kind=excluded.kind,
+            project=excluded.project,
+            session=excluded.session,
+            message=excluded.message,
+            role=excluded.role,
+            author=excluded.author,
+            model=excluded.model,
+            tags=excluded.tags,
+            text=excluded.text,
+            attachments=excluded.attachments,
+            extra=excluded.extra
+        `, [
+          ev.id,
+          ev.ts,
+          ev.source,
+          ev.kind,
+          norm((sr as any).project),
+          norm((sr as any).session),
+          norm((sr as any).message),
+          role,
+          author,
+          model,
+          toJson(tags),
+          norm(ev.text ?? ""),
+          toJson(ev.attachments ?? []),
+          toJson(ev.extra ?? {})
+        ]);
+      }
 
       ids.push(ev.id);
 
@@ -109,6 +132,7 @@ export const eventRoutes: FastifyPluginAsync = async (app) => {
       }
     }
 
-    return { ok: true, count: ids.length, ids, ftsEnabled: app.duck.ftsEnabled };
+    const ftsEnabled = storageBackend === "mongodb" ? true : app.duck?.ftsEnabled ?? false;
+    return { ok: true, count: ids.length, ids, ftsEnabled, storageBackend };
   });
 };
