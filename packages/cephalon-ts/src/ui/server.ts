@@ -4,11 +4,24 @@ import fastifyStatic from "@fastify/static";
 import fastifyCors from "@fastify/cors";
 import { fileURLToPath, pathToFileURL } from "url";
 import { dirname, join } from "path";
-import { readFileSync } from "fs";
+import { readFileSync, promises as fs } from "fs";
 import type { ChromaMemoryStore } from "../chroma/client.js";
 import type { MemoryStore } from "../core/memory-store.js";
 import type { Memory } from "../types/index.js";
 import type { OpenPlannerClient } from "../openplanner/client.js";
+import {
+  approveRestartRequest,
+  createRestartRequest,
+  getGitStatus,
+  getLogFilePath,
+  getRestartRequest,
+  getRuntimeSourceRoot,
+  getSelfName,
+  listRestartRequestsForTarget,
+  readLogTail,
+  runRepoCommand,
+  safeResolveWithinRoot,
+} from "../peer/runtime.js";
 
 // Handle both ESM (import.meta.url) and CJS (module.parent.filename or __dirname)
 function getDirname(): string {
@@ -124,7 +137,9 @@ function getCommonKeysFromArray(arr: unknown[]): string[] {
   
   for (const item of arr) {
     if (item && typeof item === 'object' && !Array.isArray(item)) {
-      Object.keys(item).forEach(key => keySet.add(key));
+      Object.keys(item).forEach((key) => {
+        keySet.add(key);
+      });
     }
   }
   
@@ -249,11 +264,25 @@ interface PinBody {
   priority?: number;
 }
 
+export interface RuntimeInspector {
+  getState?: () => unknown | Promise<unknown>;
+}
+
 export interface MemoryUIConfig {
   port: number;
   chromaStore?: ChromaMemoryStore;
   openPlannerClient?: OpenPlannerClient;
   memoryStore: MemoryStore;
+  runtimeInspector?: RuntimeInspector;
+}
+
+function getCaller(request: FastifyRequest): string {
+  const caller = request.headers["x-cephalon-caller"];
+  return Array.isArray(caller) ? caller[0] ?? "unknown" : caller ?? "unknown";
+}
+
+function truncateOutput(text: string, maxLength = 8000): string {
+  return text.length > maxLength ? `${text.slice(0, maxLength)}\n...[truncated]` : text;
 }
 
 export class MemoryUIServer {
@@ -262,12 +291,14 @@ export class MemoryUIServer {
   private openPlannerClient?: OpenPlannerClient;
   private memoryStore: MemoryStore;
   private port: number;
+  private runtimeInspector?: RuntimeInspector;
 
   constructor(config: MemoryUIConfig) {
     this.port = config.port;
     this.chromaStore = config.chromaStore;
     this.openPlannerClient = config.openPlannerClient;
     this.memoryStore = config.memoryStore;
+    this.runtimeInspector = config.runtimeInspector;
     this.fastify = Fastify({ logger: false });
   }
 
@@ -316,6 +347,22 @@ export class MemoryUIServer {
       const memories = await this.loadAllMemories();
       const count = memories.length;
       return { count };
+    });
+
+    this.fastify.get("/api/runtime/self", async () => {
+      const state = await this.runtimeInspector?.getState?.();
+      return {
+        runtime: state ?? null,
+      };
+    });
+
+    this.fastify.get("/api/runtime/handshake", async () => {
+      const state = await this.runtimeInspector?.getState?.();
+      return {
+        ok: true,
+        status: "ready",
+        runtime: state ?? null,
+      };
     });
 
     this.fastify.get("/api/memories/search", async (request: FastifyRequest<{ Querystring: SearchQuery }>) => {
@@ -432,7 +479,9 @@ export class MemoryUIServer {
       const allColumns = new Set(baseColumns);
       tableRows.forEach((row) => {
         if (row.dynamicColumnKeys) {
-          row.dynamicColumnKeys.forEach((col) => allColumns.add(col));
+          row.dynamicColumnKeys.forEach((col) => {
+            allColumns.add(col);
+          });
         }
       });
       const uniqueColumns = Array.from(allColumns);
@@ -495,6 +544,264 @@ export class MemoryUIServer {
             error instanceof Error ? error.message : "Failed to unpin memory",
         });
       }
+    });
+
+    this.fastify.addHook("preHandler", async (request: FastifyRequest, reply: FastifyReply) => {
+      if (!request.url.startsWith("/api/peer/")) {
+        return;
+      }
+
+      const peerToken = process.env.CEPHALON_PEER_TOKEN;
+      if (!peerToken) {
+        return reply.status(503).send({ error: "CEPHALON_PEER_TOKEN not configured" });
+      }
+
+      const provided = request.headers["x-cephalon-peer-token"];
+      if (typeof provided !== "string" || provided !== peerToken) {
+        return reply.status(401).send({ error: "peer auth required" });
+      }
+    });
+    this.fastify.get("/api/peer/meta", async () => {
+      return {
+        self: getSelfName(),
+        repoRoot: getRuntimeSourceRoot(),
+        logFile: getLogFilePath(),
+        gitStatus: await getGitStatus(),
+      };
+    });
+
+    this.fastify.get(
+      "/api/peer/files/*",
+      async (request: FastifyRequest<{ Params: { '*': string } }>, reply: FastifyReply) => {
+        const caller = getCaller(request);
+        const self = getSelfName();
+        if (caller.toLowerCase() === self) {
+          return reply.status(403).send({ error: "Cannot read own code via peer API" });
+        }
+
+        try {
+          const relativePath = request.params["*"];
+          const fullPath = safeResolveWithinRoot(getRuntimeSourceRoot(), relativePath);
+          const content = await fs.readFile(fullPath, "utf-8");
+          return {
+            peer: self,
+            caller,
+            path: relativePath,
+            content,
+            repoRoot: getRuntimeSourceRoot(),
+            gitStatus: await getGitStatus(),
+          };
+        } catch (error) {
+          return reply.status(404).send({
+            error: error instanceof Error ? error.message : "File not found",
+          });
+        }
+      },
+    );
+
+    this.fastify.put(
+      "/api/peer/files/*",
+      async (
+        request: FastifyRequest<{ Params: { '*': string }; Body: { content: string } }>,
+        reply: FastifyReply,
+      ) => {
+        const caller = getCaller(request);
+        const self = getSelfName();
+        if (caller.toLowerCase() === self) {
+          return reply.status(403).send({ error: "Cannot write own code via peer API" });
+        }
+
+        const relativePath = request.params["*"];
+        const content = request.body?.content ?? "";
+
+        try {
+          const fullPath = safeResolveWithinRoot(getRuntimeSourceRoot(), relativePath);
+          await fs.mkdir(dirname(fullPath), { recursive: true });
+          await fs.writeFile(fullPath, content, "utf-8");
+          return {
+            peer: self,
+            caller,
+            path: relativePath,
+            written: true,
+            repoRoot: getRuntimeSourceRoot(),
+            gitStatus: await getGitStatus(),
+          };
+        } catch (error) {
+          return reply.status(500).send({
+            error: error instanceof Error ? error.message : "Failed to write file",
+          });
+        }
+      },
+    );
+
+    this.fastify.post(
+      "/api/peer/edit-file",
+      async (
+        request: FastifyRequest<{
+          Body: { path: string; oldText: string; newText: string };
+        }>,
+        reply: FastifyReply,
+      ) => {
+        const caller = getCaller(request);
+        const self = getSelfName();
+        if (caller.toLowerCase() === self) {
+          return reply.status(403).send({ error: "Cannot edit own code via peer API" });
+        }
+
+        const relativePath = request.body?.path ?? "";
+        const { oldText, newText } = request.body ?? { oldText: "", newText: "" };
+
+        try {
+          const fullPath = safeResolveWithinRoot(getRuntimeSourceRoot(), relativePath);
+          const original = await fs.readFile(fullPath, "utf-8");
+          if (!original.includes(oldText)) {
+            return reply.status(400).send({ error: "oldText not found" });
+          }
+          const updated = original.replace(oldText, newText);
+          await fs.writeFile(fullPath, updated, "utf-8");
+          return {
+            peer: self,
+            caller,
+            path: relativePath,
+            edited: true,
+            repoRoot: getRuntimeSourceRoot(),
+            gitStatus: await getGitStatus(),
+          };
+        } catch (error) {
+          return reply.status(500).send({
+            error: error instanceof Error ? error.message : "Failed to edit file",
+          });
+        }
+      },
+    );
+
+    this.fastify.post(
+      "/api/peer/bash",
+      async (
+        request: FastifyRequest<{ Body: { command: string; timeoutMs?: number } }>,
+        reply: FastifyReply,
+      ) => {
+        const caller = getCaller(request);
+        const self = getSelfName();
+        if (caller.toLowerCase() === self) {
+          return reply.status(403).send({ error: "Cannot bash own code via peer API" });
+        }
+
+        const command = request.body?.command ?? "";
+        const timeoutMs = request.body?.timeoutMs ?? 30_000;
+        const result = await runRepoCommand(command, timeoutMs);
+
+        return {
+          peer: self,
+          caller,
+          command,
+          stdout: truncateOutput(result.stdout),
+          stderr: truncateOutput(result.stderr),
+          exitCode: result.exitCode,
+          repoRoot: getRuntimeSourceRoot(),
+          gitStatus: await getGitStatus(),
+        };
+      },
+    );
+
+    this.fastify.get(
+      "/api/peer/logs",
+      async (request: FastifyRequest<{ Querystring: { lines?: string } }>, reply: FastifyReply) => {
+        const caller = getCaller(request);
+        const self = getSelfName();
+        if (caller.toLowerCase() === self) {
+          return reply.status(403).send({ error: "Cannot read own logs via peer API" });
+        }
+
+        const lines = parseInt(request.query.lines ?? "50", 10);
+        return {
+          peer: self,
+          caller,
+          logs: await readLogTail(lines),
+          logFile: getLogFilePath(),
+        };
+      },
+    );
+
+    this.fastify.post(
+      "/api/peer/restart-request",
+      async (
+        request: FastifyRequest<{ Body: { reason?: string } }>,
+        reply: FastifyReply,
+      ) => {
+        const caller = getCaller(request);
+        const self = getSelfName();
+        if (caller.toLowerCase() === self) {
+          return reply.status(403).send({ error: "Cannot request restart for self" });
+        }
+
+        const record = await createRestartRequest(caller, self, request.body?.reason ?? "No reason provided");
+        return {
+          requestId: record.id,
+          target: record.target,
+          requester: record.requester,
+          approvals: record.approvals,
+          status: record.status,
+        };
+      },
+    );
+
+    this.fastify.post(
+      "/api/peer/restart-approve/:requestId",
+      async (
+        request: FastifyRequest<{ Params: { requestId: string } }>,
+        reply: FastifyReply,
+      ) => {
+        const caller = getCaller(request);
+        const self = getSelfName();
+        const record = await approveRestartRequest(request.params.requestId, caller);
+        if (!record) {
+          return reply.status(404).send({ error: "Restart request not found" });
+        }
+
+        const response = {
+          requestId: record.id,
+          target: record.target,
+          requester: record.requester,
+          approved: record.status === "approved",
+          approvers: record.approvals,
+        };
+
+        if (record.status === "approved" && record.target === self) {
+          setTimeout(() => {
+            process.kill(process.pid, "SIGTERM");
+          }, 750);
+        }
+
+        return response;
+      },
+    );
+
+    this.fastify.get(
+      "/api/peer/restart-status/:requestId",
+      async (
+        request: FastifyRequest<{ Params: { requestId: string } }>,
+        reply: FastifyReply,
+      ) => {
+        const record = await getRestartRequest(request.params.requestId);
+        if (!record) {
+          return reply.status(404).send({ error: "Restart request not found" });
+        }
+        return {
+          requestId: record.id,
+          target: record.target,
+          requester: record.requester,
+          approved: record.status === "approved",
+          approvers: record.approvals,
+          status: record.status,
+        };
+      },
+    );
+
+    this.fastify.get("/api/peer/restart-requests", async () => {
+      const self = getSelfName();
+      const requests = await listRestartRequestsForTarget(self);
+      return { requests };
     });
   }
 }

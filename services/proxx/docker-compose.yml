@@ -1,7 +1,10 @@
-name: open-hax-openai-proxy
+# Local development instance - use this as the primary proxx
+# Usage: cd services/proxx && docker compose up -d
+
+name: proxx-local
 
 services:
-  open-hax-openai-proxy:
+  proxx:
     depends_on:
       open-hax-openai-proxy-db:
         condition: service_healthy
@@ -9,9 +12,10 @@ services:
       context: ../../orgs/open-hax/proxx
       dockerfile: Dockerfile
     ports:
-      - "${PROXY_PORT:-8789}:8789"
-      - "${OPENAI_OAUTH_CALLBACK_PORT:-1455}:8789"
-      - "${PROXY_WEB_PORT:-5174}:5174"
+      # Bind to localhost only (no LAN exposure).
+      - "127.0.0.1:${PROXY_PORT:-8789}:8789"
+      - "127.0.0.1:${OPENAI_OAUTH_CALLBACK_PORT:-1455}:8789"
+      - "127.0.0.1:${PROXY_WEB_PORT:-5174}:5174"
     environment:
       NODE_ENV: production
       PROXY_HOST: 0.0.0.0
@@ -60,6 +64,7 @@ services:
       ZAI_PROVIDER_ID: "${ZAI_PROVIDER_ID:-zai}"
       ZHIPU_PROVIDER_ID: "${ZHIPU_PROVIDER_ID:-}"
       ZAI_BASE_URL: "${ZAI_BASE_URL:-https://api.z.ai/api/paas/v4}"
+      ZEN_API_KEY: "${ZEN_API_KEY:-}"
       ZHIPU_BASE_URL: "${ZHIPU_BASE_URL:-}"
       UPSTREAM_CHAT_COMPLETIONS_PATH: "${UPSTREAM_CHAT_COMPLETIONS_PATH:-/v1/chat/completions}"
       OPENAI_CHAT_COMPLETIONS_PATH: "${OPENAI_CHAT_COMPLETIONS_PATH:-/codex/responses/compact}"
@@ -89,22 +94,36 @@ services:
       HOST_DASHBOARD_REQUEST_TIMEOUT_MS: "${HOST_DASHBOARD_REQUEST_TIMEOUT_MS:-5000}"
       OTEL_EXPORTER_OTLP_ENDPOINT: "${OTEL_EXPORTER_OTLP_ENDPOINT:-}"
       OTEL_EXPORTER_OTLP_HEADERS: "${OTEL_EXPORTER_OTLP_HEADERS:-}"
-      OTEL_SERVICE_NAME: "${OTEL_SERVICE_NAME:-proxx}"
-      OTEL_RESOURCE_ATTRIBUTES: "${OTEL_RESOURCE_ATTRIBUTES:-service.name=proxx}"
+      OTEL_SERVICE_NAME: "${OTEL_SERVICE_NAME:-proxx-local}"
+      OTEL_RESOURCE_ATTRIBUTES: "${OTEL_RESOURCE_ATTRIBUTES:-service.name=proxx-local}"
 
       # Federation identity for the primary node
-      FEDERATION_SELF_NODE_ID: "${FEDERATION_SELF_NODE_ID:-primary}"
-      FEDERATION_SELF_GROUP_ID: "${FEDERATION_SELF_GROUP_ID:-local-test-group}"
-      FEDERATION_SELF_CLUSTER_ID: "${FEDERATION_SELF_CLUSTER_ID:-local-test-cluster}"
+      FEDERATION_SELF_NODE_ID: "${FEDERATION_SELF_NODE_ID:-local-primary}"
+      FEDERATION_SELF_GROUP_ID: "${FEDERATION_SELF_GROUP_ID:-proxx-local}"
+      FEDERATION_SELF_CLUSTER_ID: "${FEDERATION_SELF_CLUSTER_ID:-proxx-local-cluster}"
       FEDERATION_SELF_PEER_DID: "${FEDERATION_SELF_PEER_DID:-}"
-      FEDERATION_SELF_PUBLIC_BASE_URL: "${FEDERATION_SELF_PUBLIC_BASE_URL:-http://open-hax-openai-proxy:8789}"
+      FEDERATION_SELF_PUBLIC_BASE_URL: "${FEDERATION_SELF_PUBLIC_BASE_URL:-http://proxx:8789}"
+      FEDERATION_DEFAULT_OWNER_SUBJECT: "${FEDERATION_DEFAULT_OWNER_SUBJECT:-did:web:proxx.local}"
       FEDERATION_REQUEST_TIMEOUT_MS: "${FEDERATION_REQUEST_TIMEOUT_MS:-30000}"
+
+      # Federation bridge client (dial-out): connect this node to a remote relay over WebSocket.
+      # When connected, the remote relay can route /v1/* model API calls through this node
+      # without requiring any inbound access to this host.
+      FEDERATION_BRIDGE_RELAY_URL: "${FEDERATION_BRIDGE_RELAY_URL:-}"
+      FEDERATION_BRIDGE_AUTH_TOKEN: "${FEDERATION_BRIDGE_AUTH_TOKEN:-}"
+      FEDERATION_BRIDGE_AUTH_MODE: "${FEDERATION_BRIDGE_AUTH_MODE:-admin_key}"
+      FEDERATION_BRIDGE_OWNER_SUBJECT: "${FEDERATION_BRIDGE_OWNER_SUBJECT:-}"
+      FEDERATION_BRIDGE_AGENT_ID: "${FEDERATION_BRIDGE_AGENT_ID:-}"
+      FEDERATION_BRIDGE_LABELS: "${FEDERATION_BRIDGE_LABELS:-}"
+      FEDERATION_BRIDGE_NODE_LABELS: "${FEDERATION_BRIDGE_NODE_LABELS:-}"
+      FEDERATION_BRIDGE_DEFAULT_EXECUTION_POLICY: "${FEDERATION_BRIDGE_DEFAULT_EXECUTION_POLICY:-node_affinity}"
     volumes:
-      - ./keys.json:/workspace/service-config/keys.json
       - ./models.json:/workspace/service-config/models.json:ro
       - ./data:/app/data
       - ./:/workspace/runtime-repo:ro
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - default
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
@@ -120,8 +139,6 @@ services:
       retries: 3
       start_period: 20s
     restart: unless-stopped
-    networks:
-      ai-infra: {}
 
   open-hax-openai-proxy-db:
     image: postgres:16-bookworm
@@ -130,9 +147,9 @@ services:
       POSTGRES_USER: openai_proxy
       POSTGRES_PASSWORD: openai_proxy # pragma: allowlist secret
     ports:
-      - "${PROXY_DB_PORT:-5432}:5432"
+      - "${PROXY_DB_PORT:-15432}:5432"
     volumes:
-      - open-hax-openai-proxy-db-data:/var/lib/postgresql/data
+      - open-hax-openai-proxy_open-hax-openai-proxy-db-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U openai_proxy -d openai_proxy"]
       interval: 10s
@@ -140,13 +157,7 @@ services:
       retries: 5
       start_period: 10s
     restart: unless-stopped
-    networks:
-      ai-infra: {}
-
-networks:
-  ai-infra:
-    external: true
-    name: ai-infra
 
 volumes:
-  open-hax-openai-proxy-db-data:
+  open-hax-openai-proxy_open-hax-openai-proxy-db-data:
+    external: true

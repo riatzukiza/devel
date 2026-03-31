@@ -10,7 +10,8 @@ import { v1Routes } from "./routes/v1/index.js";
 export async function buildApp(cfg: OpenPlannerConfig): Promise<FastifyInstance> {
   const app = Fastify({
     logger: true,
-    bodyLimit: 50 * 1024 * 1024
+    bodyLimit: 50 * 1024 * 1024,
+    pluginTimeout: 120_000,
   });
 
   (app as any).openplannerConfig = cfg;

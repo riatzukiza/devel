@@ -171,6 +171,8 @@ orgs/private/
 orgs/snorkel-ai/
 .shadow-cljs
 .shadow-cljs/
+.tsbuildinfo
+*.tsbuildinfo
 .ημ/*
 !.ημ/registry.jsonl
 !.ημ/Π_STATE.sexp

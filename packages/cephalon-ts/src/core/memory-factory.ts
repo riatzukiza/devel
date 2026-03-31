@@ -186,7 +186,10 @@ export class MemoryFactory {
     return this.createMemory({
       role: "tool",
       kind: "tool_result",
-      content: { text: contentText },
+      content: {
+        text: contentText,
+        normalizedText: `tool:${toolName}`,
+      },
       source: { type: "system" },
       eventId: options?.eventId ?? null,
       retrieval: {
@@ -236,6 +239,7 @@ export class MemoryFactory {
     content: string,
     sourceMemoryIds: UUID[],
     options?: {
+      clusterId?: string;
       timestamp?: number;
     }
   ): Memory {
@@ -245,6 +249,7 @@ export class MemoryFactory {
       content: { text: content },
       source: { type: "system" },
       cluster: {
+        clusterId: options?.clusterId,
         threadId: sourceMemoryIds[0],
       },
       retrieval: {

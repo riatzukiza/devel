@@ -62,5 +62,66 @@ pnpm docker:stack use-container open-hax-openai-proxy -- --build
 pnpm docker:stack logs open-hax-openai-proxy -- -f
 ```
 
+## Big Ussy Path
+
+The canonical devel -> `big.ussy.promethean.rest` pathway is:
+
+1. Local canonical Proxx runs at `http://127.0.0.1:8789`
+2. Remote canonical Proxx runs at `http://big.ussy.promethean.rest:8789`
+3. Local -> remote sync uses peer id `big-ussy-canonical`
+4. Remote -> local sync uses peer id `local-core`
+5. Remote -> local reachability is through a reverse SSH tunnel and a remote host relay:
+   - reverse SSH forward on remote host: `127.0.0.1:18789 -> 127.0.0.1:8789` on the local workstation
+   - remote host relay exposed to containers: `0.0.0.0:18790 -> 127.0.0.1:18789`
+   - container-visible local canonical URL: `http://host.docker.internal:18790`
+
+The deployment/bootstrap entrypoint is:
+
+```bash
+services/proxx/bin/project-complete-devel-stack-to-big-ussy.sh --apply
+```
+
+What it is responsible for:
+
+- build and sync the local workspace artifacts required by the remote stack
+- write remote env files
+- ensure the remote `ai-infra` network exists
+- create the reverse SSH tunnel and durable remote `socat` relay
+- bring up the remote canonical and spoke stacks
+- register federation peers with the repaired ids and URLs
+- prime canonical sync once in both directions
+- start background canonical sync daemons
+
+Expected live peer shape on `big.ussy` for the local canonical peer:
+
+```json
+{
+  "id": "local-core",
+  "peerDid": "did:web:proxx.promethean.rest:err-local",
+  "baseUrl": "http://host.docker.internal:18790",
+  "controlBaseUrl": "http://host.docker.internal:18790"
+}
+```
+
+Health checks that matter after deploy:
+
+```bash
+curl -H "Authorization: Bearer $PROXY_AUTH_TOKEN" \
+  https://federation.big.ussy.promethean.rest/api/v1/credentials?reveal=false
+
+curl -H "Authorization: Bearer $PROXY_AUTH_TOKEN" \
+  https://federation.big.ussy.promethean.rest/api/v1/credentials/openai/quota
+
+curl -X POST -H "Authorization: Bearer $PROXY_AUTH_TOKEN" \
+  -H 'Content-Type: application/json' \
+  -d '{"peerId":"local-core","ownerSubject":"did:web:proxx.promethean.rest:brethren","pullUsage":false}' \
+  https://federation.big.ussy.promethean.rest/api/v1/federation/sync/pull
+```
+
+Notes:
+
+- The credentials and quota pages intentionally show all currently available accounts, not just accounts visible from one backing store. They merge runtime-visible key-pool accounts with credential-store metadata.
+- If remote sync regresses to `fetch failed`, verify both the live `local-core` peer URL and the remote relay listener on `18790` before changing Proxx code.
+
 ## Source workflows
 For source edits, work in `../../orgs/open-hax/proxx`.

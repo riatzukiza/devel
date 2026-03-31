@@ -1,0 +1,54 @@
+services:
+  tor:
+    build:
+      context: ./tor/tor
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 9050 || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  privoxy:
+    build:
+      context: ./tor/privoxy
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      tor:
+        condition: service_healthy
+
+  api:
+    environment:
+      OUR_GPUS_TOR_REQUIRED: ${OUR_GPUS_TOR_REQUIRED:-true}
+      MASSCAN_ALLOW_DIRECT_EGRESS: ${MASSCAN_ALLOW_DIRECT_EGRESS:-false}
+      HTTP_PROXY: ${OUR_GPUS_TOR_HTTP_PROXY:-http://privoxy:8118}
+      HTTPS_PROXY: ${OUR_GPUS_TOR_HTTP_PROXY:-http://privoxy:8118}
+      ALL_PROXY: ${OUR_GPUS_TOR_HTTP_PROXY:-http://privoxy:8118}
+      NO_PROXY: ${OUR_GPUS_TOR_NO_PROXY:-127.0.0.1,localhost,api,worker,redis,probe-sidecar,privoxy,tor}
+    depends_on:
+      privoxy:
+        condition: service_started
+
+  worker:
+    environment:
+      OUR_GPUS_TOR_REQUIRED: ${OUR_GPUS_TOR_REQUIRED:-true}
+      HTTP_PROXY: ${OUR_GPUS_TOR_HTTP_PROXY:-http://privoxy:8118}
+      HTTPS_PROXY: ${OUR_GPUS_TOR_HTTP_PROXY:-http://privoxy:8118}
+      ALL_PROXY: ${OUR_GPUS_TOR_HTTP_PROXY:-http://privoxy:8118}
+      NO_PROXY: ${OUR_GPUS_TOR_NO_PROXY:-127.0.0.1,localhost,api,worker,redis,probe-sidecar,privoxy,tor}
+    depends_on:
+      privoxy:
+        condition: service_started
+
+  probe-sidecar:
+    environment:
+      PROBE_SIDECAR_PROXY_URL: ${OUR_GPUS_TOR_HTTP_PROXY:-http://privoxy:8118}
+      HTTP_PROXY: ${OUR_GPUS_TOR_HTTP_PROXY:-http://privoxy:8118}
+      HTTPS_PROXY: ${OUR_GPUS_TOR_HTTP_PROXY:-http://privoxy:8118}
+      ALL_PROXY: ${OUR_GPUS_TOR_HTTP_PROXY:-http://privoxy:8118}
+      NO_PROXY: ${OUR_GPUS_TOR_NO_PROXY:-127.0.0.1,localhost,api,worker,redis,probe-sidecar,privoxy,tor}
+    depends_on:
+      privoxy:
+        condition: service_started

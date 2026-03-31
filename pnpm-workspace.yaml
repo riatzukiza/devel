@@ -1,5 +1,6 @@
 packages:
   - .
+  - packages/ollama-registry
   - packages/cephalon-ts
   - packages/openplanner-cljs-client
   - packages/opencode-cljs-client
@@ -10,6 +11,9 @@ packages:
   - packages/mcp-oauth
   - packages/mcp-foundation
   - packages/radar-core
+  - packages/webgl-graph-view
+  - packages/graph-weaver-aco
+  - packages/eros-eris-field
   - packages/eta-mu-docs
   - packages/eta-mu-truth
   - packages/output-contract-gate

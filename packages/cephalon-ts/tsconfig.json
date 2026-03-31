@@ -12,8 +12,9 @@
     "moduleResolution": "NodeNext",
     "target": "ES2022",
     "module": "NodeNext",
-    "lib": ["ES2022"]
+    "lib": ["ES2022"],
+    "jsx": "react-jsx"
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "tests"]
+  "exclude": ["node_modules", "dist", "tests", "src/ui/src", "src/ui/vite.config.ts"]
 }

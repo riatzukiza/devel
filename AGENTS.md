@@ -41,6 +41,14 @@ Multi-repository development workspace with git submodules organized under `orgs
 - Nx for affected detection and workspace automation.
 - Rust in `orgs/openai/codex`.
 
+## Proxx/OpenAI Accounts - CRITICAL
+- **JSON files (keys.json, etc.) are ONLY for seeding - ignore them for finding accounts**
+- Accounts are stored in PostgreSQL databases/volumes
+- Original volume with ~143 OpenAI accounts: `open-hax-openai-proxy_open-hax-openai-proxy-db-data`
+- **Never mount the same PostgreSQL volume to multiple containers simultaneously (causes corruption)**
+- If volume gets corrupted, try starting a fresh container on it - PostgreSQL may auto-recover
+- Each compose file in `services/proxx/` should have its own bridge network for independent operation
+
 ## Canonical Kanban Tooling
 - The workspace-canonical Kanban tool now lives in `packages/kanban`.
 - Access it through `bin/eta-mu-board` (chat shorthand: `@bin/eta-mu-board`).
