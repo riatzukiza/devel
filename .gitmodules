@@ -18,10 +18,6 @@
 	path = orgs/moofone/codex-ts-sdk
 	url = git@github.com:moofone/codex-ts-sdk.git
 	branch = device/stealth
-[submodule "riatzukiza/openhax"]
-	path = orgs/riatzukiza/openhax
-	url = git@github.com:riatzukiza/openhax.git
-	branch = device/stealth
 [submodule "riatzukiza/ollama-benchmarks"]
 	path = orgs/riatzukiza/ollama-benchmarks
 	url = git@github.com:riatzukiza/ollama-benchmarks.git
@@ -65,10 +61,6 @@
 [submodule "orgs/open-hax/cljs-plugin-template"]
 	path = orgs/open-hax/cljs-plugin-template
 	url = git@github.com:open-hax/cljs-plugin-template.git
-	branch = device/stealth
-[submodule "orgs/open-hax/openhax"]
-	path = orgs/open-hax/openhax
-	url = git@github.com:open-hax/openhax.git
 	branch = device/stealth
 [submodule "orgs/open-hax/plugins/codex"]
 	path = orgs/open-hax/plugins/codex
@@ -226,3 +218,7 @@
 [submodule "orgs/open-hax/eta-mu-github"]
 	path = orgs/open-hax/eta-mu-github
 	url = https://github.com/open-hax/eta-mu-github.git
+[submodule "orgs/open-hax/eta-mu"]
+	path = orgs/open-hax/eta-mu
+	url = https://github.com/open-hax/eta-mu.git
+	branch = main
