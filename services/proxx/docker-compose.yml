@@ -6,7 +6,7 @@ name: proxx-local
 services:
   proxx:
     depends_on:
-      open-hax-openai-proxy-db:
+      proxx-local-db:
         condition: service_healthy
     build:
       context: ../../orgs/open-hax/proxx
@@ -23,7 +23,9 @@ services:
       PORT: "8789"
       OPENAI_OAUTH_CALLBACK_PORT: "${OPENAI_OAUTH_CALLBACK_PORT:-1455}"
       PROXY_AUTH_TOKEN: "${PROXY_AUTH_TOKEN:-change-me-open-hax-proxy-token}"
-      PROXY_KEYS_FILE: /workspace/service-config/keys.json
+      # Seed credentials directory (keys.json here is for initial seeding only).
+      # See seeds/README.md for details.
+      PROXY_KEYS_FILE: /workspace/service-config/seeds/keys.json
       PROXY_MODELS_FILE: /workspace/service-config/models.json
       PROXY_REQUEST_LOGS_FILE: /app/data/request-logs.jsonl
       PROXY_REQUEST_LOGS_MAX_ENTRIES: "${PROXY_REQUEST_LOGS_MAX_ENTRIES:-100000}"
@@ -82,7 +84,7 @@ services:
       UPSTREAM_REQUEST_TIMEOUT_MS: "${UPSTREAM_REQUEST_TIMEOUT_MS:-180000}"
       UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS: "${UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS:-180000}"
       PROXY_ALLOW_UNAUTHENTICATED: "${PROXY_ALLOW_UNAUTHENTICATED:-false}"
-      DATABASE_URL: "${DATABASE_URL:-postgresql://openai_proxy:openai_proxy@open-hax-openai-proxy-db:5432/openai_proxy}" # pragma: allowlist secret
+      DATABASE_URL: "${DATABASE_URL:-postgresql://openai_proxy:openai_proxy@proxx-local-db:5432/openai_proxy}" # pragma: allowlist secret
       VITE_ALLOWED_HOSTS: "${VITE_ALLOWED_HOSTS:-}"
       CHROMA_URL: "${CHROMA_URL:-http://host.docker.internal:8000}"
       CHROMA_COLLECTION: "${CHROMA_COLLECTION:-open_hax_proxy_sessions}"
@@ -119,11 +121,16 @@ services:
       FEDERATION_BRIDGE_DEFAULT_EXECUTION_POLICY: "${FEDERATION_BRIDGE_DEFAULT_EXECUTION_POLICY:-node_affinity}"
     volumes:
       - ./models.json:/workspace/service-config/models.json:ro
+      - ./seeds:/workspace/service-config/seeds:ro
       - ./data:/app/data
       - ./:/workspace/runtime-repo:ro
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
-      - default
+      default: {}
+      ai-infra:
+        aliases:
+          - proxx
+          - proxx-local
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
@@ -140,7 +147,7 @@ services:
       start_period: 20s
     restart: unless-stopped
 
-  open-hax-openai-proxy-db:
+  proxx-local-db:
     image: postgres:16-bookworm
     environment:
       POSTGRES_DB: openai_proxy
@@ -157,7 +164,17 @@ services:
       retries: 5
       start_period: 10s
     restart: unless-stopped
+    networks:
+      default: {}
+      ai-infra:
+        aliases:
+          - proxx-local-db
 
 volumes:
   open-hax-openai-proxy_open-hax-openai-proxy-db-data:
     external: true
+
+networks:
+  ai-infra:
+    external: true
+    name: ai-infra
