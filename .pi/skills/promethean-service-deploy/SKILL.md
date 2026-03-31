@@ -1,0 +1,1 @@
+/home/err/.pi/agent/skills/promethean-service-deploy/SKILL.md

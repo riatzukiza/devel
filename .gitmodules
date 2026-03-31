@@ -54,6 +54,10 @@
 	path = orgs/open-hax/agent-actors
 	url = git@github.com:open-hax/agent-actors.git
 	branch = device/stealth
+[submodule "orgs/open-hax/opencode-skills"]
+	path = orgs/open-hax/opencode-skills
+	url = https://github.com/open-hax/opencode-skills.git
+	branch = main
 [submodule "orgs/open-hax/clients"]
 	path = orgs/open-hax/clients
 	url = git@github.com:open-hax/clients.git
@@ -113,8 +117,9 @@
 	path = orgs/open-hax/museeks
 	url = https://github.com/open-hax/museeks.git
 	branch = device/stealth
-[submodule "vaults/fork_tales"]
-	path = vaults/fork_tales
+
+[submodule "orgs/octave-commons/fork_tales"]
+	path = orgs/octave-commons/fork_tales
 	url = https://github.com/octave-commons/fork_tales.git
 	branch = device/stealth
 [submodule "vaults/static_man"]
@@ -132,13 +137,92 @@
 	path = orgs/ussyverse/openclawssy
 	url = git@github.com:mojomast/openclawssy.git
 	branch = main
-[submodule "services/open-hax-openai-proxy"]
-	path = services/open-hax-openai-proxy
-	url = https://github.com/open-hax/proxx.git
-	branch = main
 [submodule "orgs/ussyverse/kanban"]
 	path = orgs/ussyverse/kanban
 	url = https://github.com/open-hax/ussyverse-kanban.git
+[submodule "orgs/open-hax/privaxxy"]
+	path = orgs/open-hax/privaxxy
+	url = https://github.com/open-hax/privaxxy.git
+	branch = main
+[submodule "orgs/agustif/codex-linux"]
+	path = orgs/agustif/codex-linux
+	url = git@github.com:agustif/codex-linux.git
+	branch = main
+[submodule "orgs/shuv/codex-desktop-linux"]
+	path = orgs/shuv/codex-desktop-linux
+	url = git@github.com:shuv1337/codex-desktop-linux.git
+[submodule "orgs/openai/parameter-golf"]
+	path = orgs/openai/parameter-golf
+	url = org-14957082@github.com:openai/parameter-golf.git
+	branch = main
+[submodule "orgs/octave-commons/mythloom"]
+	path = orgs/octave-commons/mythloom
+	url = file:///home/err/devel/orgs/octave-commons/mythloom
+	branch = main
+[submodule "orgs/octave-commons/shibboleth"]
+	path = orgs/octave-commons/shibboleth
+	url = git@github.com:octave-commons/shibboleth.git
+	branch = main
+[submodule "orgs/open-hax/proxx"]
+	path = orgs/open-hax/proxx
+	url = https://github.com/open-hax/proxx.git
+	branch = main
+[submodule "orgs/open-hax/voxx"]
+	path = orgs/open-hax/voxx
+	url = git@github.com:open-hax/voxx.git
+	branch = main
+[submodule "orgs/riatzukiza/TANF-app"]
+	path = orgs/riatzukiza/TANF-app
+	url = git@github.com:riatzukiza/TANF-app.git
+	branch = main
+[submodule "orgs/riatzukiza/hormuz-clock-mcp"]
+	path = orgs/riatzukiza/hormuz-clock-mcp
+	url = file:///home/err/devel/orgs/riatzukiza/hormuz-clock-mcp
+	branch = main
+[submodule "threat-radar-deploy"]
+	path = threat-radar-deploy
+	url = https://github.com/riatzukiza/threat-radar.git
+	branch = main
+[submodule "bevy_replicon"]
+	path = bevy_replicon
+	url = https://github.com/simgine/bevy_replicon.git
+	branch = master
+[submodule "egregoria"]
+	path = egregoria
+	url = https://github.com/Uriopass/Egregoria.git
+	branch = master
+[submodule "game_network"]
+	path = game_network
+	url = https://github.com/jakalope/game_network.git
+	branch = master
+[submodule "gates-pr35-hardening-main"]
+	path = gates-pr35-hardening-main
+	url = git@github.com:octave-commons/gates-of-aker.git
+	branch = fix/colony-regression-hardening
+[submodule "ggrs"]
+	path = ggrs
+	url = https://github.com/gschup/ggrs.git
+	branch = main
+[submodule "lightyear"]
+	path = lightyear
+	url = https://github.com/cBournhonesque/lightyear.git
+	branch = main
+[submodule "mcp-social-publisher-live"]
+	path = mcp-social-publisher-live
+	url = https://github.com/riatzukiza/mcp-social-publisher
+	branch = main
+[submodule "orgs/anomalyco/opencode"]
+	path = orgs/anomalyco/opencode
+	url = git@github.com:riatzukiza/opencode.git
+	branch = feat/security-scans
+[submodule "orgs/badlogic/pi-mono"]
+	path = orgs/badlogic/pi-mono
+	url = git@github.com:badlogic/pi-mono.git
+	branch = main
+[submodule "verathar-server"]
+	path = verathar-server
+	url = https://github.com/isaacsaancheez/verathar-server.git
+	branch = master
 [submodule "orgs/open-hax/eta-mu-github"]
 	path = orgs/open-hax/eta-mu-github
 	url = https://github.com/open-hax/eta-mu-github.git

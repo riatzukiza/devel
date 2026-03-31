@@ -1,0 +1,1 @@
+/home/err/.pi/agent/skills/promethean-rest-dns/SKILL.md

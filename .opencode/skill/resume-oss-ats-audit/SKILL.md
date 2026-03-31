@@ -1,0 +1,1 @@
+/home/err/.agents/skills/resume-oss-ats-audit/SKILL.md

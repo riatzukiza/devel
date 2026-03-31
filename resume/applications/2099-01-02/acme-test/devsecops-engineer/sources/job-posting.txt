@@ -1,0 +1,6 @@
+Python RPA Developer at Jorie AI.
+
+Build intelligent, resilient automation solutions for Revenue Cycle Management (RCM).
+Move beyond simple web scraping to custom Python development using Selenium for browser interaction and OpenCV for visual data processing and OCR.
+Automate complex workflows involving EHRs, claims portals, and legacy systems.
+Desired strengths include Python-based automation, browser automation, OCR/vision, resilient workflow design, and production-grade reliability.

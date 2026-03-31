@@ -1,0 +1,10 @@
+[Unit]
+Description=Run pi auto fork-tax every 6 hours
+
+[Timer]
+OnCalendar=*-*-* 00/6:00:00
+Persistent=true
+Unit=auto-fork-tax.service
+
+[Install]
+WantedBy=timers.target

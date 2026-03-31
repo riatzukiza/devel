@@ -40,6 +40,7 @@ Thumbs.db
 *.pem
 *.key
 *.p12
+passwords.csv
 
 # Database files
 *.db
@@ -122,6 +123,12 @@ unique/
 .cpcache/
 .clj-kondo/
 
+# Large generated artifacts / runtime dumps
+services/*/db-backups/
+labs/*/runs/
+**/__pycache__/
+*.pyc
+
 # LSP / analysis caches
 .lsp/
 .scannerwork/
@@ -143,12 +150,32 @@ elgrep-data.el
 
 docs.github/**/.cache/
 
+# OpenCode local archives / work areas (never commit)
+.opencode/knowledge/
+.opencode/pr-*/
+.opencode/pr-*
+
+# Git worktrees / embedded local repos (local)
+.worktrees/
+mcp-social-publisher-live/
+orgs/badlogic/pi-mono/
+# orgs/octave-commons/mythloom/
+# orgs/octave-commons/shibboleth/
+# orgs/open-hax/proxx/
+# orgs/riatzukiza/TANF-app/
+# orgs/riatzukiza/hormuz-clock-mcp/
+# threat-radar-deploy/
+
 workspaces/
 orgs/private/
 orgs/snorkel-ai/
 .shadow-cljs
 .shadow-cljs/
-.ημ/
+.ημ/*
+!.ημ/registry.jsonl
+!.ημ/Π_STATE.sexp
+!.ημ/Π_MANIFEST.sha256
+!.ημ/Π_LAST.md
 .Π/
 services/open-hax-openai-proxy/data/
 
@@ -156,6 +183,7 @@ services/open-hax-openai-proxy/data/
 *.duckdb
 *.duckdb.wal
 *.jsonl
+!.ημ/registry.jsonl
 
 # Sisyphus session artifacts - plugin no longer used
 .sisyphus/

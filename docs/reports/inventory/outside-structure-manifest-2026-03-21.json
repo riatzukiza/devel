@@ -1,0 +1,713 @@
+{
+  "generatedAt": "2026-03-21T19:44:36Z",
+  "placementStructure": {
+    "allowed": [
+      "packages/*",
+      "services/*",
+      "orgs/riatzukiza/*",
+      "orgs/octave-commons/*",
+      "orgs/open-hax/*",
+      "orgs/ussyverse/*"
+    ],
+    "specialCase": "orgs/octave-commons/promethean is a corpus of living documentation, not a normal product repo"
+  },
+  "inclusionRule": "Project-like work or repo-like trees that currently live outside the allowed placement paths.",
+  "exclusions": [
+    "root workspace infrastructure directories such as docs/, tools/, src/, config/, system/, tests/, and similar non-project support trees",
+    "empty or logs-only directories without evidence of active project work"
+  ],
+  "counts": {
+    "topLevelAliases": 2,
+    "topLevelStandaloneRoots": 7,
+    "rootLevelVendorOrForkRepos": 6,
+    "foreignOrgRepos": 9,
+    "aggregationTrees": 3
+  },
+  "topLevelAliases": [
+    {
+      "path": "desktop",
+      "category": "top-level-alias-outside-structure",
+      "isSymlink": true,
+      "resolvedPath": "orgs/riatzukiza/desktop",
+      "gitTop": "/home/err/devel/orgs/riatzukiza/desktop",
+      "origin": "git@github.com:riatzukiza/desktop.git",
+      "hasPackageJson": true,
+      "hasCargoToml": false,
+      "hasDepsEdn": false,
+      "hasReadme": true,
+      "descriptor": "symlink -> /home/err/devel/orgs/riatzukiza/desktop",
+      "suggestedHandling": "document-or-retire-alias",
+      "notes": [
+        "This path resolves into an allowed structured home under orgs/riatzukiza.",
+        "It is outside the active placement structure by path, but not by canonical target."
+      ]
+    },
+    {
+      "path": "promethean",
+      "category": "top-level-alias-outside-structure",
+      "isSymlink": true,
+      "resolvedPath": "orgs/riatzukiza/promethean",
+      "gitTop": "/home/err/devel/orgs/riatzukiza/promethean",
+      "origin": "git@github.com:riatzukiza/promethean.git",
+      "hasPackageJson": true,
+      "hasCargoToml": false,
+      "hasDepsEdn": true,
+      "hasReadme": true,
+      "descriptor": "symlink -> /home/err/devel/orgs/riatzukiza/promethean",
+      "suggestedHandling": "document-or-retire-alias",
+      "notes": [
+        "This path resolves into an allowed structured home under orgs/riatzukiza.",
+        "It is outside the active placement structure by path, but not by canonical target."
+      ]
+    }
+  ],
+  "topLevelStandaloneRoots": [
+    {
+      "path": "pm2-clj-project",
+      "category": "top-level-standalone-root",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "hasPackageJson": true,
+      "hasCargoToml": false,
+      "hasDepsEdn": false,
+      "hasReadme": false,
+      "descriptor": "@your-scope/pm2-clj",
+      "suggestedHandling": "classify-or-explicit-exception",
+      "notes": [
+        "Root-owned project-like directory outside packages/services/orgs placement paths."
+      ]
+    },
+    {
+      "path": "reconstitute",
+      "category": "top-level-standalone-root",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "hasPackageJson": true,
+      "hasCargoToml": false,
+      "hasDepsEdn": false,
+      "hasReadme": false,
+      "descriptor": "reconstitute",
+      "suggestedHandling": "classify-or-explicit-exception",
+      "notes": [
+        "Root-owned package-like directory outside packages/services/orgs placement paths."
+      ]
+    },
+    {
+      "path": "reconstitute-mcp",
+      "category": "top-level-standalone-root",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "hasPackageJson": true,
+      "hasCargoToml": false,
+      "hasDepsEdn": false,
+      "hasReadme": false,
+      "descriptor": "reconstitute-mcp",
+      "suggestedHandling": "classify-or-explicit-exception",
+      "notes": [
+        "Root-owned package-like directory outside packages/services/orgs placement paths."
+      ]
+    },
+    {
+      "path": "mcp-social-publisher-live",
+      "category": "top-level-standalone-root",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel/mcp-social-publisher-live",
+      "origin": "https://github.com/riatzukiza/mcp-social-publisher",
+      "hasPackageJson": true,
+      "hasCargoToml": false,
+      "hasDepsEdn": false,
+      "hasReadme": true,
+      "descriptor": "@workspace/mcp-social-publisher",
+      "suggestedHandling": "classify-or-explicit-exception",
+      "notes": [
+        "Standalone repo at workspace root rather than under packages/services/orgs."
+      ]
+    },
+    {
+      "path": "threat-radar-deploy",
+      "category": "top-level-standalone-root",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel/threat-radar-deploy",
+      "origin": "https://github.com/riatzukiza/threat-radar.git",
+      "hasPackageJson": true,
+      "hasCargoToml": false,
+      "hasDepsEdn": false,
+      "hasReadme": false,
+      "descriptor": "Mission Control for the News \u2014 news intelligence dashboard",
+      "suggestedHandling": "classify-or-explicit-exception",
+      "notes": [
+        "Standalone repo at workspace root rather than under packages/services/orgs."
+      ]
+    },
+    {
+      "path": "verathar-server",
+      "category": "top-level-standalone-root",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel/verathar-server",
+      "origin": "https://github.com/riatzukiza/verathar-server.git",
+      "hasPackageJson": false,
+      "hasCargoToml": true,
+      "hasDepsEdn": false,
+      "hasReadme": true,
+      "descriptor": "# Verathar Server",
+      "suggestedHandling": "classify-or-explicit-exception",
+      "notes": [
+        "Standalone Rust repo at workspace root rather than under packages/services/orgs."
+      ]
+    },
+    {
+      "path": "threat-radar-next-step",
+      "category": "top-level-standalone-root",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "hasPackageJson": false,
+      "hasCargoToml": false,
+      "hasDepsEdn": false,
+      "hasReadme": true,
+      "descriptor": "# Threat Radar \u2014 Postgres + Wall Next Slice",
+      "suggestedHandling": "classify-or-explicit-exception",
+      "notes": [
+        "Appears to be a planning/staging work directory outside the active placement structure."
+      ]
+    }
+  ],
+  "rootLevelVendorOrForkRepos": [
+    {
+      "path": "bevy_replicon",
+      "category": "root-level-vendor-or-fork-repo",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel/bevy_replicon",
+      "origin": "https://github.com/riatzukiza/bevy_replicon.git",
+      "hasPackageJson": false,
+      "hasCargoToml": true,
+      "hasDepsEdn": false,
+      "hasReadme": true,
+      "descriptor": "# Bevy Replicon",
+      "suggestedHandling": "foreign-fork-exception-or-relocate",
+      "notes": [
+        "Top-level fork/vendor repo outside packages/services/orgs placement paths."
+      ]
+    },
+    {
+      "path": "egregoria",
+      "category": "root-level-vendor-or-fork-repo",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel/egregoria",
+      "origin": "https://github.com/riatzukiza/Egregoria.git",
+      "hasPackageJson": false,
+      "hasCargoToml": true,
+      "hasDepsEdn": false,
+      "hasReadme": true,
+      "descriptor": "![Screenshot of Egregoria 1](assets/screen2.jpg)",
+      "suggestedHandling": "foreign-fork-exception-or-relocate",
+      "notes": [
+        "Top-level fork/vendor repo outside packages/services/orgs placement paths."
+      ]
+    },
+    {
+      "path": "game_network",
+      "category": "root-level-vendor-or-fork-repo",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel/game_network",
+      "origin": "https://github.com/riatzukiza/game_network.git",
+      "hasPackageJson": false,
+      "hasCargoToml": true,
+      "hasDepsEdn": false,
+      "hasReadme": true,
+      "descriptor": "# Game Network",
+      "suggestedHandling": "foreign-fork-exception-or-relocate",
+      "notes": [
+        "Top-level fork/vendor repo outside packages/services/orgs placement paths."
+      ]
+    },
+    {
+      "path": "ggrs",
+      "category": "root-level-vendor-or-fork-repo",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel/ggrs",
+      "origin": "https://github.com/riatzukiza/ggrs.git",
+      "hasPackageJson": false,
+      "hasCargoToml": true,
+      "hasDepsEdn": false,
+      "hasReadme": true,
+      "descriptor": "# [![GGRS LOGO](./ggrs_logo.png)](https://github.com/gschup/ggrs)",
+      "suggestedHandling": "foreign-fork-exception-or-relocate",
+      "notes": [
+        "Top-level fork/vendor repo outside packages/services/orgs placement paths."
+      ]
+    },
+    {
+      "path": "lightyear",
+      "category": "root-level-vendor-or-fork-repo",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel/lightyear",
+      "origin": "https://github.com/riatzukiza/lightyear.git",
+      "hasPackageJson": false,
+      "hasCargoToml": true,
+      "hasDepsEdn": false,
+      "hasReadme": true,
+      "descriptor": "# Lightyear",
+      "suggestedHandling": "foreign-fork-exception-or-relocate",
+      "notes": [
+        "Top-level fork/vendor repo outside packages/services/orgs placement paths."
+      ]
+    },
+    {
+      "path": "gates-pr35-hardening-main",
+      "category": "root-level-worktree-or-fork-repo",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel/gates-pr35-hardening-main",
+      "origin": "git@github.com:octave-commons/gates-of-aker.git",
+      "hasPackageJson": true,
+      "hasCargoToml": false,
+      "hasDepsEdn": false,
+      "hasReadme": true,
+      "descriptor": "gates-of-aker",
+      "suggestedHandling": "worktree-exception-or-retire",
+      "notes": [
+        "Special-purpose checkout/worktree for a gates-of-aker hardening branch outside the active placement structure."
+      ]
+    }
+  ],
+  "foreignOrgRepos": [
+    {
+      "path": "orgs/agustif/codex-linux",
+      "category": "foreign-org-repo",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel/orgs/agustif/codex-linux",
+      "origin": "https://github.com/riatzukiza/codex-linux.git",
+      "hasPackageJson": false,
+      "hasCargoToml": false,
+      "hasDepsEdn": false,
+      "hasReadme": true,
+      "descriptor": "# Codex Linux Fork",
+      "suggestedHandling": "explicit-foreign-fork-exception",
+      "notes": [
+        "Repo sits under a foreign org namespace not covered by the active four-home placement model."
+      ]
+    },
+    {
+      "path": "orgs/anomalyco/opencode",
+      "category": "foreign-org-repo",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel/orgs/anomalyco/opencode",
+      "origin": "https://github.com/riatzukiza/opencode.git",
+      "hasPackageJson": true,
+      "hasCargoToml": false,
+      "hasDepsEdn": false,
+      "hasReadme": true,
+      "descriptor": "AI-powered development tool",
+      "suggestedHandling": "explicit-foreign-fork-exception",
+      "notes": [
+        "Repo sits under a foreign org namespace not covered by the active four-home placement model."
+      ]
+    },
+    {
+      "path": "orgs/badlogic/pi-mono",
+      "category": "foreign-org-repo",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel/orgs/badlogic/pi-mono",
+      "origin": "https://github.com/riatzukiza/pi-mono.git",
+      "hasPackageJson": true,
+      "hasCargoToml": false,
+      "hasDepsEdn": false,
+      "hasReadme": true,
+      "descriptor": "pi-monorepo",
+      "suggestedHandling": "explicit-foreign-fork-exception",
+      "notes": [
+        "Repo sits under a foreign org namespace not covered by the active four-home placement model."
+      ]
+    },
+    {
+      "path": "orgs/kcrommett/oc-manager",
+      "category": "foreign-org-repo",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel/orgs/kcrommett/oc-manager",
+      "origin": "https://github.com/riatzukiza/oc-manager.git",
+      "hasPackageJson": true,
+      "hasCargoToml": false,
+      "hasDepsEdn": false,
+      "hasReadme": true,
+      "descriptor": "Terminal UI for inspecting OpenCode metadata stores.",
+      "suggestedHandling": "explicit-foreign-fork-exception",
+      "notes": [
+        "Repo sits under a foreign org namespace not covered by the active four-home placement model."
+      ]
+    },
+    {
+      "path": "orgs/moofone/codex-ts-sdk",
+      "category": "foreign-org-repo",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel/orgs/moofone/codex-ts-sdk",
+      "origin": "https://github.com/riatzukiza/codex-ts-sdk.git",
+      "hasPackageJson": true,
+      "hasCargoToml": false,
+      "hasDepsEdn": false,
+      "hasReadme": true,
+      "descriptor": "TypeScript client for Codex native runtime",
+      "suggestedHandling": "explicit-foreign-fork-exception",
+      "notes": [
+        "Repo sits under a foreign org namespace not covered by the active four-home placement model."
+      ]
+    },
+    {
+      "path": "orgs/openai/codex",
+      "category": "foreign-org-repo",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel/orgs/openai/codex",
+      "origin": "https://github.com/riatzukiza/codex.git",
+      "hasPackageJson": true,
+      "hasCargoToml": false,
+      "hasDepsEdn": false,
+      "hasReadme": true,
+      "descriptor": "Tools for repo-wide maintenance.",
+      "suggestedHandling": "explicit-foreign-fork-exception",
+      "notes": [
+        "Repo sits under a foreign org namespace not covered by the active four-home placement model."
+      ]
+    },
+    {
+      "path": "orgs/openai/parameter-golf",
+      "category": "foreign-org-repo",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel/orgs/openai/parameter-golf",
+      "origin": "https://github.com/riatzukiza/parameter-golf.git",
+      "hasPackageJson": false,
+      "hasCargoToml": false,
+      "hasDepsEdn": false,
+      "hasReadme": true,
+      "descriptor": "<img width=\"3840\" height=\"1280\" alt=\"1920x640-discord\" src=\"https://github.com/user-attachments/assets/90607b26-171f-476a-90ae-69b9dbb7cb30\" />",
+      "suggestedHandling": "explicit-foreign-fork-exception",
+      "notes": [
+        "Repo sits under a foreign org namespace not covered by the active four-home placement model."
+      ]
+    },
+    {
+      "path": "orgs/shuv/codex-desktop-linux",
+      "category": "foreign-org-repo",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel/orgs/shuv/codex-desktop-linux",
+      "origin": "https://github.com/riatzukiza/codex-desktop-linux.git",
+      "hasPackageJson": true,
+      "hasCargoToml": false,
+      "hasDepsEdn": false,
+      "hasReadme": true,
+      "descriptor": "Codex",
+      "suggestedHandling": "explicit-foreign-fork-exception",
+      "notes": [
+        "Repo sits under a foreign org namespace not covered by the active four-home placement model."
+      ]
+    },
+    {
+      "path": "orgs/private/snorkel-ai",
+      "category": "private-org-work",
+      "isSymlink": false,
+      "resolvedPath": null,
+      "gitTop": "/home/err/devel",
+      "origin": "git@github.com:riatzukiza/devel.git",
+      "hasPackageJson": false,
+      "hasCargoToml": false,
+      "hasDepsEdn": true,
+      "hasReadme": true,
+      "descriptor": "# Clojure quality kit (tests + lint + fmt)",
+      "suggestedHandling": "classify-private-exception",
+      "notes": [
+        "Private work tree under orgs/private rather than one of the four active canonical homes."
+      ]
+    }
+  ],
+  "aggregationTrees": [
+    {
+      "path": "projects",
+      "category": "aggregation-tree-outside-structure",
+      "childCount": 196,
+      "sampleChildren": [
+        "projects/emacs-d",
+        "projects/giga",
+        "projects/orgs-bhauman-clojure-mcp",
+        "projects/orgs-kcrommett-oc-manager",
+        "projects/orgs-moazbuilds",
+        "projects/orgs-moofone-codex-ts-sdk",
+        "projects/orgs-octave-commons-gates-of-aker",
+        "projects/orgs-octave-commons-helm",
+        "projects/orgs-octave-commons-lineara-conversation-export",
+        "projects/orgs-octave-commons-pantheon",
+        "projects/orgs-octave-commons-promethean",
+        "projects/orgs-octave-commons-promethean-agent-system",
+        "projects/orgs-octave-commons-promethean-cli-apply-patch",
+        "projects/orgs-octave-commons-promethean-cli-compiler",
+        "projects/orgs-octave-commons-promethean-cli-ecosystem-dsl",
+        "projects/orgs-octave-commons-promethean-cli-kanban",
+        "projects/orgs-octave-commons-promethean-cli-obsidian-export",
+        "projects/orgs-octave-commons-promethean-cli-promethean",
+        "projects/orgs-octave-commons-promethean-experimental-agent-os-protocol",
+        "projects/orgs-octave-commons-promethean-experimental-ai-learning"
+      ],
+      "allChildren": [
+        "projects/emacs-d",
+        "projects/giga",
+        "projects/orgs-bhauman-clojure-mcp",
+        "projects/orgs-kcrommett-oc-manager",
+        "projects/orgs-moazbuilds",
+        "projects/orgs-moofone-codex-ts-sdk",
+        "projects/orgs-octave-commons-gates-of-aker",
+        "projects/orgs-octave-commons-helm",
+        "projects/orgs-octave-commons-lineara-conversation-export",
+        "projects/orgs-octave-commons-pantheon",
+        "projects/orgs-octave-commons-promethean",
+        "projects/orgs-octave-commons-promethean-agent-system",
+        "projects/orgs-octave-commons-promethean-cli-apply-patch",
+        "projects/orgs-octave-commons-promethean-cli-compiler",
+        "projects/orgs-octave-commons-promethean-cli-ecosystem-dsl",
+        "projects/orgs-octave-commons-promethean-cli-kanban",
+        "projects/orgs-octave-commons-promethean-cli-obsidian-export",
+        "projects/orgs-octave-commons-promethean-cli-promethean",
+        "projects/orgs-octave-commons-promethean-experimental-agent-os-protocol",
+        "projects/orgs-octave-commons-promethean-experimental-ai-learning",
+        "projects/orgs-octave-commons-promethean-experimental-auth-service",
+        "projects/orgs-octave-commons-promethean-experimental-compliance-monitor",
+        "projects/orgs-octave-commons-promethean-experimental-eidolon-field",
+        "projects/orgs-octave-commons-promethean-experimental-enso-agent-communication",
+        "projects/orgs-octave-commons-promethean-experimental-omni-tools",
+        "projects/orgs-octave-commons-promethean-experimental-pantheon",
+        "projects/orgs-octave-commons-promethean-experimental-plugin-hooks",
+        "projects/orgs-octave-commons-promethean-packages-benchmark",
+        "projects/orgs-octave-commons-promethean-packages-clj-hacks",
+        "projects/orgs-octave-commons-promethean-packages-discord",
+        "projects/orgs-octave-commons-promethean-packages-ds",
+        "projects/orgs-octave-commons-promethean-packages-effects",
+        "projects/orgs-octave-commons-promethean-packages-embedding",
+        "projects/orgs-octave-commons-promethean-packages-file-indexer",
+        "projects/orgs-octave-commons-promethean-packages-frontend",
+        "projects/orgs-octave-commons-promethean-packages-fs",
+        "projects/orgs-octave-commons-promethean-packages-fsm",
+        "projects/orgs-octave-commons-promethean-packages-github-sync",
+        "projects/orgs-octave-commons-promethean-packages-http",
+        "projects/orgs-octave-commons-promethean-packages-level-cache",
+        "projects/orgs-octave-commons-promethean-packages-lmdb-cache",
+        "projects/orgs-octave-commons-promethean-packages-logger",
+        "projects/orgs-octave-commons-promethean-packages-markdown",
+        "projects/orgs-octave-commons-promethean-packages-math-utils",
+        "projects/orgs-octave-commons-promethean-packages-messaging",
+        "projects/orgs-octave-commons-promethean-packages-migrations",
+        "projects/orgs-octave-commons-promethean-packages-persistence",
+        "projects/orgs-octave-commons-promethean-packages-platform",
+        "projects/orgs-octave-commons-promethean-packages-providers",
+        "projects/orgs-octave-commons-promethean-packages-report-forge",
+        "projects/orgs-octave-commons-promethean-packages-security",
+        "projects/orgs-octave-commons-promethean-packages-test-utils",
+        "projects/orgs-octave-commons-promethean-packages-trello",
+        "projects/orgs-octave-commons-promethean-packages-utils",
+        "projects/orgs-octave-commons-promethean-pipelines-boardrev",
+        "projects/orgs-octave-commons-promethean-pipelines-buildfix",
+        "projects/orgs-octave-commons-promethean-pipelines-codemods",
+        "projects/orgs-octave-commons-promethean-pipelines-codepack",
+        "projects/orgs-octave-commons-promethean-pipelines-cookbookflow",
+        "projects/orgs-octave-commons-promethean-pipelines-core",
+        "projects/orgs-octave-commons-promethean-pipelines-docops",
+        "projects/orgs-octave-commons-promethean-pipelines-lint-taskgen",
+        "projects/orgs-octave-commons-promethean-pipelines-piper",
+        "projects/orgs-octave-commons-promethean-pipelines-readmeflow",
+        "projects/orgs-octave-commons-promethean-pipelines-semverguard",
+        "projects/orgs-octave-commons-promethean-pipelines-simtask",
+        "projects/orgs-octave-commons-promethean-pipelines-sonarflow",
+        "projects/orgs-octave-commons-promethean-pipelines-symdocs",
+        "projects/orgs-octave-commons-promethean-pipelines-testgap",
+        "projects/orgs-octave-commons-promethean-services-autocommit",
+        "projects/orgs-octave-commons-promethean-services-file-indexer-service",
+        "projects/orgs-octave-commons-promethean-services-frontend-service",
+        "projects/orgs-octave-commons-promethean-services-knowledge-graph",
+        "projects/orgs-octave-commons-promethean-services-mcp",
+        "projects/orgs-octave-commons-promethean-services-mcp-dev-ui-frontend",
+        "projects/orgs-octave-commons-promethean-services-mcp-express-server",
+        "projects/orgs-octave-commons-promethean-services-mcp-kanban-bridge",
+        "projects/orgs-octave-commons-promethean-services-openai-server",
+        "projects/orgs-octave-commons-promethean-services-sentinel",
+        "projects/orgs-octave-commons-promethean-tools",
+        "projects/orgs-open-hax-agent-actors",
+        "projects/orgs-open-hax-clients",
+        "projects/orgs-open-hax-cljs-plugin-template",
+        "projects/orgs-open-hax-codex",
+        "projects/orgs-open-hax-electron-workbench",
+        "projects/orgs-open-hax-museeks",
+        "projects/orgs-open-hax-openhax",
+        "projects/orgs-open-hax-plugin-hub",
+        "projects/orgs-open-hax-plugins-codex",
+        "projects/orgs-open-hax-session-orchestrator",
+        "projects/orgs-open-hax-workbench",
+        "projects/orgs-openai-codex",
+        "projects/orgs-riatzukiza-agent-shell",
+        "projects/orgs-riatzukiza-book-of-shadows",
+        "projects/orgs-riatzukiza-desktop",
+        "projects/orgs-riatzukiza-dotfiles",
+        "projects/orgs-riatzukiza-goblin-lessons",
+        "projects/orgs-riatzukiza-ollama-benchmarks",
+        "projects/orgs-riatzukiza-openhax",
+        "projects/orgs-riatzukiza-promethean",
+        "projects/orgs-riatzukiza-promethean-cli-apply-patch",
+        "projects/orgs-riatzukiza-promethean-cli-compiler",
+        "projects/orgs-riatzukiza-promethean-cli-ecosystem-dsl",
+        "projects/orgs-riatzukiza-promethean-cli-kanban",
+        "projects/orgs-riatzukiza-promethean-cli-obsidian-export",
+        "projects/orgs-riatzukiza-promethean-experimental-agent-os-protocol",
+        "projects/orgs-riatzukiza-promethean-experimental-ai-learning",
+        "projects/orgs-riatzukiza-promethean-experimental-auth-service",
+        "projects/orgs-riatzukiza-promethean-experimental-compliance-monitor",
+        "projects/orgs-riatzukiza-promethean-experimental-eidolon-field",
+        "projects/orgs-riatzukiza-promethean-experimental-enso-agent-communication",
+        "projects/orgs-riatzukiza-promethean-experimental-omni-tools",
+        "projects/orgs-riatzukiza-promethean-experimental-pantheon",
+        "projects/orgs-riatzukiza-promethean-experimental-plugin-hooks",
+        "projects/orgs-riatzukiza-promethean-packages-agent-os-protocol",
+        "projects/orgs-riatzukiza-promethean-packages-ai-learning",
+        "projects/orgs-riatzukiza-promethean-packages-apply-patch",
+        "projects/orgs-riatzukiza-promethean-packages-auth-service",
+        "projects/orgs-riatzukiza-promethean-packages-autocommit",
+        "projects/orgs-riatzukiza-promethean-packages-benchmark",
+        "projects/orgs-riatzukiza-promethean-packages-build-monitoring",
+        "projects/orgs-riatzukiza-promethean-packages-cli",
+        "projects/orgs-riatzukiza-promethean-packages-clj-hacks",
+        "projects/orgs-riatzukiza-promethean-packages-compliance-monitor",
+        "projects/orgs-riatzukiza-promethean-packages-discord",
+        "projects/orgs-riatzukiza-promethean-packages-dlq",
+        "projects/orgs-riatzukiza-promethean-packages-ds",
+        "projects/orgs-riatzukiza-promethean-packages-effects",
+        "projects/orgs-riatzukiza-promethean-packages-eidolon-field",
+        "projects/orgs-riatzukiza-promethean-packages-embedding",
+        "projects/orgs-riatzukiza-promethean-packages-enso-agent-communication",
+        "projects/orgs-riatzukiza-promethean-packages-file-indexer",
+        "projects/orgs-riatzukiza-promethean-packages-frontend",
+        "projects/orgs-riatzukiza-promethean-packages-fs",
+        "projects/orgs-riatzukiza-promethean-packages-fsm",
+        "projects/orgs-riatzukiza-promethean-packages-github-sync",
+        "projects/orgs-riatzukiza-promethean-packages-http",
+        "projects/orgs-riatzukiza-promethean-packages-kanban",
+        "projects/orgs-riatzukiza-promethean-packages-level-cache",
+        "projects/orgs-riatzukiza-promethean-packages-lmdb-cache",
+        "projects/orgs-riatzukiza-promethean-packages-logger",
+        "projects/orgs-riatzukiza-promethean-packages-markdown",
+        "projects/orgs-riatzukiza-promethean-packages-math-utils",
+        "projects/orgs-riatzukiza-promethean-packages-mcp",
+        "projects/orgs-riatzukiza-promethean-packages-mcp-dev-ui-frontend",
+        "projects/orgs-riatzukiza-promethean-packages-messaging",
+        "projects/orgs-riatzukiza-promethean-packages-migrations",
+        "projects/orgs-riatzukiza-promethean-packages-naming",
+        "projects/orgs-riatzukiza-promethean-packages-obsidian-export",
+        "projects/orgs-riatzukiza-promethean-packages-omni-tools",
+        "projects/orgs-riatzukiza-promethean-packages-opencode-hub",
+        "projects/orgs-riatzukiza-promethean-packages-persistence",
+        "projects/orgs-riatzukiza-promethean-packages-platform",
+        "projects/orgs-riatzukiza-promethean-packages-plugin-hooks",
+        "projects/orgs-riatzukiza-promethean-packages-providers",
+        "projects/orgs-riatzukiza-promethean-packages-report-forge",
+        "projects/orgs-riatzukiza-promethean-packages-security",
+        "projects/orgs-riatzukiza-promethean-packages-shadow-conf",
+        "projects/orgs-riatzukiza-promethean-packages-snapshots",
+        "projects/orgs-riatzukiza-promethean-packages-test-classifier",
+        "projects/orgs-riatzukiza-promethean-packages-test-utils",
+        "projects/orgs-riatzukiza-promethean-packages-trello",
+        "projects/orgs-riatzukiza-promethean-packages-utils",
+        "projects/orgs-riatzukiza-promethean-packages-worker",
+        "projects/orgs-riatzukiza-promethean-pipelines-boardrev",
+        "projects/orgs-riatzukiza-promethean-pipelines-buildfix",
+        "projects/orgs-riatzukiza-promethean-pipelines-codemods",
+        "projects/orgs-riatzukiza-promethean-pipelines-codepack",
+        "projects/orgs-riatzukiza-promethean-pipelines-cookbookflow",
+        "projects/orgs-riatzukiza-promethean-pipelines-core",
+        "projects/orgs-riatzukiza-promethean-pipelines-docops",
+        "projects/orgs-riatzukiza-promethean-pipelines-lint-taskgen",
+        "projects/orgs-riatzukiza-promethean-pipelines-piper",
+        "projects/orgs-riatzukiza-promethean-pipelines-readmeflow",
+        "projects/orgs-riatzukiza-promethean-pipelines-semverguard",
+        "projects/orgs-riatzukiza-promethean-pipelines-simtask",
+        "projects/orgs-riatzukiza-promethean-pipelines-sonarflow",
+        "projects/orgs-riatzukiza-promethean-pipelines-symdocs",
+        "projects/orgs-riatzukiza-promethean-pipelines-testgap",
+        "projects/orgs-riatzukiza-promethean-services-autocommit",
+        "projects/orgs-riatzukiza-promethean-services-file-indexer-service",
+        "projects/orgs-riatzukiza-promethean-services-frontend-service",
+        "projects/orgs-riatzukiza-promethean-services-knowledge-graph",
+        "projects/orgs-riatzukiza-promethean-services-mcp",
+        "projects/orgs-riatzukiza-promethean-services-mcp-dev-ui-frontend",
+        "projects/orgs-riatzukiza-promethean-services-mcp-express-server",
+        "projects/orgs-riatzukiza-promethean-services-mcp-kanban-bridge",
+        "projects/orgs-riatzukiza-promethean-services-openai-server",
+        "projects/orgs-riatzukiza-promethean-services-sentinel",
+        "projects/orgs-riatzukiza-promethean-tools",
+        "projects/orgs-riatzukiza-riatzukiza-github-io",
+        "projects/orgs-riatzukiza-stt",
+        "projects/orgs-sst-opencode",
+        "projects/vaults-fork-tales",
+        "projects/vaults-static-man",
+        "projects/webring-sites"
+      ],
+      "suggestedHandling": "explicit-generated-or-staging-exception",
+      "notes": [
+        "This tree contains project-like work outside the active placement structure.",
+        "It looks more like an aggregation, staging, or generated projection area than a canonical project home."
+      ]
+    },
+    {
+      "path": "workspaces",
+      "category": "aggregation-tree-outside-structure",
+      "childCount": 1,
+      "sampleChildren": [
+        "workspaces/openhax-codex"
+      ],
+      "allChildren": [
+        "workspaces/openhax-codex"
+      ],
+      "suggestedHandling": "explicit-generated-or-staging-exception",
+      "notes": [
+        "This tree contains project-like work outside the active placement structure.",
+        "It looks more like an aggregation, staging, or generated projection area than a canonical project home."
+      ]
+    },
+    {
+      "path": "vaults",
+      "category": "aggregation-tree-outside-structure",
+      "childCount": 1,
+      "sampleChildren": [
+        "vaults/static_man"
+      ],
+      "allChildren": [
+        "vaults/static_man"
+      ],
+      "suggestedHandling": "explicit-generated-or-staging-exception",
+      "notes": [
+        "This tree contains project-like work outside the active placement structure.",
+        "It looks more like an aggregation, staging, or generated projection area than a canonical project home."
+      ]
+    }
+  ],
+  "globalNotes": [
+    "This manifest distinguishes outside-structure work from intentional aliases and foreign-fork exceptions.",
+    "Not every entry here should be migrated; some need explicit exception status instead.",
+    "The manifest is meant to expose remaining placement ambiguity after the new contract, not flatten all categories into one cleanup bucket."
+  ]
+}

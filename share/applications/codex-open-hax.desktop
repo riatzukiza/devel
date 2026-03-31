@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Codex (Open Hax)
+Comment=Launch Codex Desktop Linux against the local Open Hax proxy
+Exec=/home/err/devel/bin/codex-open-hax-desktop
+Icon=/home/err/devel/share/icons/codex-open-hax.png
+Terminal=false
+Categories=Development;IDE;Utility;
+StartupNotify=true
+StartupWMClass=Codex (Beta)
+Path=/home/err/devel
+Keywords=Codex;OpenAI;Open Hax;LLM;AI;Development;

@@ -1,0 +1,5 @@
+Selected targeted resume: resume/aaron-beavers-openai-parameter-golf-ats.pdf
+Fnord companion: resume/aaron-beavers-openai-parameter-golf-fnord.pdf
+Targeted cover letter: resume/cover-letter-openai-parameter-golf.pdf
+
+Copied bundle artifacts live in this directory alongside this note.

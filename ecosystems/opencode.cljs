@@ -35,13 +35,14 @@
             :OPENCODE_BASE_URL "http://localhost:4096"
             :OPENPLANNER_URL "http://127.0.0.1:7777"
             :OPENPLANNER_API_KEY "change-me"
-           :CHROMA_URL "http://localhost:8000"
-           :CHROMA_COLLECTION "opencode_messages_v1"
+            ;; State/cache for incremental backfill
            :LEVEL_DIR "./.reconstitute/level"
-           :OLLAMA_URL "http://127.0.0.1:8789"
-           :OLLAMA_EMBED_MODEL "qwen3-embedding:0.6b"
            :BATCH_SIZE "32"
-           :EMBED_TTL_MS "2592000000"}
+            ;; Optional tuning
+            :OPENCODE_THROTTLE_MS "200"
+            :OPENCODE_CHUNK_INDEXING "1"
+            :OPENCODE_CHUNK_TARGET_TOKENS "32000"
+            :OPENCODE_CHUNK_OVERLAP_MESSAGES "4"}
     :autorestart false
     :watch false
     :cron_restart "0 * * * *"

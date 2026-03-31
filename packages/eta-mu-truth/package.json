@@ -1,0 +1,28 @@
+{
+  "name": "@workspace/eta-mu-truth",
+  "version": "0.1.0",
+  "private": true,
+  "license": "GPL-3.0-only",
+  "type": "module",
+  "main": "./index.cjs",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js",
+      "require": "./index.cjs"
+    }
+  },
+  "files": [
+    "index.js",
+    "index.cjs",
+    "index.d.ts",
+    "README.md"
+  ],
+  "dependencies": {
+    "@workspace/eta-mu-docs": "workspace:*"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.cjs"
+  }
+}

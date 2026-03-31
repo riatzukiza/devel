@@ -7,7 +7,7 @@ The early clocks were good at showing **temporal relationships**, but they satur
 The system is explicitly layered:
 
 ```text
-raw signals -> normalized state variables -> branch priors -> rendered clock
+raw signals -> normalized state variables -> branch ranges/confidence -> rendered clock
 ```
 
 ### 1. Raw signals
@@ -20,6 +20,11 @@ Examples:
 - GNSS / AIS / comms disruption notes
 - oil output and export interruptions
 - strategic reserve preparation / release notices
+
+As of the 19 Mar 2026 refresh, the bundle also treats the following as explicit signal classes:
+- `insurance_availability` — cover capacity plus cost, not just a binary yes/no
+- `reopening_pressure` — public coalition / escort planning that could reopen protected transit lanes
+- `regional_escalation` — conflict spreading into Gulf energy infrastructure or adjacent civilian targets
 
 Each signal should include:
 - `id`
@@ -49,13 +54,36 @@ Each state is scored on a 0–4 scale:
 
 v4 treats these as *current conditions*, not future events.
 
-### 3. Branch priors
-The model tracks three branch priors:
+### 3. Branch scenarios
+The model tracks three branch scenarios:
 - `reopening`
 - `effective_closure`
 - `wider_escalation`
 
-These are not certainties. They are working estimates derived from state severity and trend.
+These are not certainties. They are working estimates derived from state severity, trend, and explicit modifier signals.
+
+Each branch now emits:
+- `center` — the midpoint of the current heuristic scenario share
+- `range.low` / `range.high` — a plausible interval around that midpoint
+- `confidence` — confidence in the branch estimate itself, not certainty that the scenario will happen
+
+#### Branch model (19 Mar 2026 evolution)
+v4 now supports an additive branch model:
+
+```text
+state pressure + explicit modifiers -> scenario midpoint + uncertainty band
+```
+
+The default bundle uses `weighted-state-ranges-v1`:
+- severe `transit_flow`, `attack_tempo`, `insurance_availability`, and `navigation_integrity` push toward `effective_closure`
+- `regional_escalation` modifiers push toward `wider_escalation`
+- `reopening_pressure` modifiers can raise `reopening`, but only as a model choice layered on top of observed state pressure
+
+The midpoint remains a heuristic scenario share. The range is intentionally wider than a pure evidence-confidence calculation because the model itself is also uncertain.
+
+Ranges overlap by design. They are uncertainty bands around each branch's current share, not a claim that the branches partition neatly into calibrated probabilities.
+
+This keeps branch outputs explicit, editable, and reversible while reducing false precision.
 
 ### 4. Temporal structure
 v4 uses **three horizons**:
@@ -93,11 +121,29 @@ Examples of rewind triggers:
 - tanker transits recover for several days
 - SPR releases and import stabilization reduce downstream stress
 
+## Current extraction posture
+Official pages remain preferred, but the practical bundle must survive source blocking and content drift.
+
+Current bundle strategy:
+- combine IEA's topic page with the 11 Mar 2026 emergency-release press note
+- use accessible JMIC PDFs when MARAD / UKMTO HTML endpoints block scraping
+- treat media reporting on insurance, escort planning, and Gulf energy-site attacks as explicit modifier inputs rather than hidden analyst intuition
+
+## Insurance nuance
+`insurance_availability` should not jump straight from "available" to "broken."
+
+Examples:
+- cover withdrawn / unobtainable -> score 4
+- cover technically available but repriced to ~1%+ of hull value, or surging >10x -> score 3
+- cover available with high but not extreme repricing -> score 2
+
+This preserves reversibility if cover returns before physical transit fully normalises.
+
 ## Confidence and evolution
 This model should evolve.
 Recommended additions over time:
 - trend arrows for each state variable
-- confidence intervals on branch priors
+- backtesting / calibration of branch ranges against later outcomes
 - source adapters for additional analysts / institutions
 - separate LNG overlay
 - importer-specific mini-clocks (Japan, India, Pakistan, etc.)

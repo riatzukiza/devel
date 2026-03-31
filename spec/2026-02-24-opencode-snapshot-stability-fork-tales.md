@@ -15,7 +15,7 @@ storyPoints: 5
 # Spec: OpenCode Snapshot Stability for fork_tales
 
 ## Summary
-- Stop runaway snapshot git state growth and lock contention in `vaults/fork_tales` usage.
+- Stop runaway snapshot git state growth and lock contention in `orgs/octave-commons/fork_tales` usage.
 - Make snapshot operations serialized per snapshot repo.
 - Reduce disk churn by preventing overlapping git operations as the first containment step.
 

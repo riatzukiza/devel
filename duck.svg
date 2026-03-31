@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Cartoon duck on water">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dff3ff"/>
+      <stop offset="100%" stop-color="#f7fcff"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#98d9ff"/>
+      <stop offset="100%" stop-color="#69c2f5"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="600" fill="url(#sky)"/>
+  <rect y="390" width="800" height="210" fill="url(#water)"/>
+
+  <!-- soft clouds -->
+  <g fill="#ffffff" opacity="0.8">
+    <ellipse cx="120" cy="90" rx="55" ry="28"/>
+    <ellipse cx="165" cy="95" rx="45" ry="24"/>
+    <ellipse cx="520" cy="80" rx="50" ry="25"/>
+    <ellipse cx="560" cy="85" rx="40" ry="20"/>
+  </g>
+
+  <!-- duck shadow -->
+  <ellipse cx="405" cy="430" rx="150" ry="25" fill="#4aa6d4" opacity="0.35"/>
+
+  <!-- duck body -->
+  <ellipse cx="390" cy="330" rx="170" ry="120" fill="#ffd95b"/>
+  <ellipse cx="320" cy="300" rx="70" ry="55" fill="#ffe479"/>
+
+  <!-- head -->
+  <circle cx="540" cy="255" r="78" fill="#ffd95b"/>
+
+  <!-- beak -->
+  <path d="M605 260 C655 250, 700 265, 705 285 C700 305, 655 320, 605 312 Z" fill="#ff9f3c"/>
+  <path d="M610 287 C650 280, 680 288, 698 298" stroke="#e27f21" stroke-width="5" fill="none" stroke-linecap="round"/>
+
+  <!-- eye -->
+  <circle cx="560" cy="240" r="10" fill="#2b2b2b"/>
+  <circle cx="564" cy="236" r="3" fill="#ffffff"/>
+
+  <!-- wing -->
+  <path d="M300 325 C330 265, 430 260, 475 315 C430 365, 345 370, 300 325 Z" fill="#f4c94a"/>
+
+  <!-- tail -->
+  <path d="M225 320 C195 300, 190 270, 215 250 C235 270, 250 295, 245 320 Z" fill="#ffd95b"/>
+
+  <!-- water ripples -->
+  <g stroke="#bde8ff" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.8">
+    <path d="M210 460 C270 445, 330 445, 390 460"/>
+    <path d="M300 485 C360 472, 450 472, 520 485"/>
+    <path d="M430 455 C490 442, 570 442, 640 455"/>
+  </g>
+</svg>

@@ -1,0 +1,530 @@
+{
+  "repo": "open-hax/proxx",
+  "selectedCount": 33,
+  "ensuredLabels": [
+    "artifact:issue",
+    "kanban",
+    "priority:P0",
+    "priority:P1",
+    "priority:P2",
+    "risk:correctness",
+    "risk:security",
+    "source:coderabbit",
+    "state:breakdown",
+    "triage:cluster-candidate"
+  ],
+  "updatedItems": [
+    {
+      "kind": "issue",
+      "number": 18,
+      "title": "[src/lib/db/sql-credential-store.ts] maskSecret leaks full value for short secrets",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 19,
+      "title": "[src/lib/key-pool.ts] File/env sources can resurrect stale credentials from account store",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 22,
+      "title": "[src/lib/provider-routing.ts] Disabled providers still leak into model discovery via buildOllamaCatalogRoutes",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 26,
+      "title": "[src/lib/provider-strategy.ts] CRITICAL: refreshExpiredToken can throw and abort entire fallback loop",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 29,
+      "title": "[src/lib/runtime-credential-store.ts] listProviders hides file/env providers when SQL is configured",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 31,
+      "title": "[src/tests/config.test.ts] env-mutating test must be marked non-concurrent to prevent env leakage",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 38,
+      "title": "[Dockerfile.fly] Container runs as root — add non-root user for security hardening",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 46,
+      "title": "[Major] src/lib/factory-auth.ts: Set restrictive permissions (0600) on auth.v2 file after writing tokens",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 52,
+      "title": "[Major] src/lib/runtime-credential-store.ts: Deleting only the SQL copy can resurrect seeded credentials",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 54,
+      "title": "[Minor] src/tests/factory-config.test.ts: Mark Factory fixtures as allowlisted test secrets",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 65,
+      "title": "[Critical] Keep `revealSecrets` ephemeral — do not persist in localStorage (CredentialsPage.tsx)",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 69,
+      "title": "[Major] Make `tenant_api_keys.token_hash` a UNIQUE index (multitenancy user model spec)",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 13,
+      "title": "src/lib/telemetry/otel.ts: Fix potential data loss during concurrent flush() calls",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P1",
+        "risk:correctness",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 45,
+      "title": "[Critical] src/lib/factory-auth.ts: Add a timeout to the WorkOS refresh call",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P1",
+        "risk:correctness",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 48,
+      "title": "[Major] src/lib/factory-oauth.ts: Bound WorkOS calls with explicit timeouts",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P1",
+        "risk:correctness",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 50,
+      "title": "[Major] src/lib/factory-oauth.ts: Keep the pending browser state until the code exchange succeeds",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P1",
+        "risk:correctness",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 8,
+      "title": "src/lib/openai-quota.ts: Avoid full upsertOAuthAccount when only planType changed",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P1",
+        "risk:correctness",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 49,
+      "title": "[Major] src/lib/factory-oauth.ts: Honor device authorization lifetime from WorkOS response instead of fixed TTL",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 51,
+      "title": "[Major] src/lib/key-pool.ts: FACTORY_API_KEY is dropped in account-store mode",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 53,
+      "title": "[Major] src/lib/ui-routes.ts: Keep the Factory auth.v2 source in sync on successful login",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 63,
+      "title": "[Major] Daily history collapses to 8-day hourly horizon during migration (request-log-store.ts)",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 64,
+      "title": "[Major] Clear bad stored session IDs when restore fails (ChatPage.tsx)",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 66,
+      "title": "[Major] Avoid triggering data fetch on every keystroke in the model input field (ToolsPage.tsx)",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 68,
+      "title": "[Major] Reconcile multi-tenant-proxy-foundation.md with the canonical tenant draft before implementation",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 71,
+      "title": "[Major] Control-character sanitization is inconsistent and lossy (event-store.ts)",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 73,
+      "title": "[Major] Derived-estimate repair can leave aggregate buckets stale (request-log-store.ts)",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 75,
+      "title": "[Major] Weekly/monthly account aggregation overwrites instead of accumulates (ui-routes.ts)",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 76,
+      "title": "[Major] Weekly-window test fixtures are hard-coded to March 17–18, 2026 and will go stale (proxy.test.ts)",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 77,
+      "title": "[Major] Stored provider/model focus is erased on first mount before analytics loads (AnalyticsPage.tsx)",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 79,
+      "title": "[Major] Persisted provider filters get wiped before the first overview payload arrives (DashboardPage.tsx)",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 82,
+      "title": "[Major] Scope user identity uniqueness by provider in CREATE_USERS_TABLE (schema.ts)",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 84,
+      "title": "[Major] Spec/implementation mismatch: ui_session auth kind and userId field not implemented (multitenancy-phase1 spec)",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 85,
+      "title": "[Major] Use configured OAuth callback path instead of hardcoded \"/auth/callback\" in auth-bypass (app.ts)",
+      "labels": [
+        "artifact:issue",
+        "bug",
+        "kanban",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "dryRun": false
+    }
+  ]
+}

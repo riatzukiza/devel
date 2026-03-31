@@ -1,0 +1,65 @@
+{
+  "repo": "open-hax/openhax",
+  "selectedCount": 3,
+  "ensuredLabels": [
+    "artifact:issue",
+    "artifact:pr",
+    "kanban",
+    "priority:P2",
+    "priority:P3",
+    "state:blocked",
+    "state:rejected",
+    "triage:blocked",
+    "triage:mirror-aware",
+    "triage:mirror-collapsed",
+    "triage:placeholder"
+  ],
+  "updatedItems": [
+    {
+      "kind": "pr",
+      "number": 2,
+      "title": "Sync device/stealth branch",
+      "labels": [
+        "artifact:pr",
+        "checks:failing",
+        "kanban",
+        "priority:P2",
+        "state:blocked",
+        "triage:blocked",
+        "triage:mirror-aware",
+        "triage:mirror-collapsed"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "pr",
+      "number": 3,
+      "title": "@openhax/kanban: local web UI (serve)",
+      "labels": [
+        "artifact:pr",
+        "checks:failing",
+        "kanban",
+        "priority:P2",
+        "state:blocked",
+        "triage:blocked",
+        "triage:mirror-aware",
+        "triage:mirror-collapsed"
+      ],
+      "dryRun": false
+    },
+    {
+      "kind": "issue",
+      "number": 1,
+      "title": "testing",
+      "labels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "state:rejected",
+        "triage:mirror-collapsed",
+        "triage:placeholder"
+      ],
+      "dryRun": false
+    }
+  ]
+}

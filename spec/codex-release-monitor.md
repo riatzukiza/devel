@@ -34,13 +34,13 @@ storyPoints: null
 ## Definition of Done
 - Scheduled/workflow-dispatch Action lives in `.github/workflows/` and runs without manual setup, installing pnpm dependencies, the OpenCode CLI, and the monitoring script.
 - New monitoring script plus configuration persist in the repo, including per-upstream state (JSON) and directory scaffolding for release artifacts.
-- `.opencode/agent/release-impact.md` (or equivalent) defines deterministic output schema so CI can parse agent conclusions.
+- `.opencode/agents/release-impact.md` (or equivalent) defines deterministic output schema so CI can parse agent conclusions.
 - Workflow successfully commits updated state (last reviewed version) and creates GitHub issues whenever the agent declares breaking change risk.
 - Documentation/spec updated (this file) plus README snippet (if needed) describing how to operate/configure the workflow.
 
 ## Plan
 ### Phase 1 – Tooling & Agent Definition
-- Create `.opencode/agent/release-impact.md` describing objectives, investigation rules, and machine-readable JSON output (impact level, issues array, evidence list).
+- Create `.opencode/agents/release-impact.md` describing objectives, investigation rules, and machine-readable JSON output (impact level, issues array, evidence list).
 - Add `.github/release-watch/state.json` seeded with null placeholders for both upstreams.
 
 ### Phase 2 – Monitoring Script
@@ -56,7 +56,7 @@ storyPoints: null
 - Verify workflow via dry-run (`workflow_dispatch` with noop) or local script invocation.
 
 ## Implementation Notes (2025-11-16)
-- `.opencode/agent/release-impact.md:1-42` formalizes the JSON-only schema and investigative priorities (OAuth/CLI hooks) for the OpenCode agent invoked by CI.
+- `.opencode/agents/release-impact.md:1-42` formalizes the JSON-only schema and investigative priorities (OAuth/CLI hooks) for the OpenCode agent invoked by CI.
 - `.github/release-watch/state.json:1-8` tracks the most recent reviewed tag per upstream so diffs always start from the last successful analysis.
 - `scripts/codex-release-monitor.mjs:1-392` orchestrates release polling (via Octokit), shallow clones, diff/context generation, OpenCode execution, JSON parsing, issue creation, and state persistence.
 - `.github/workflows/codex-release-watch.yml:1-64` schedules the automation daily + on-demand, installs pnpm/opencode, runs the monitor script, and commits state deltas.

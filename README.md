@@ -1,10 +1,10 @@
 # Devel Workspace
 
-A multi-repository development workspace with git submodules organized under `orgs/` and TypeScript/ESLint configuration. This workspace serves as the central development environment for multiple interconnected projects and tools.
+A multi-repository development workspace. Many repositories are tracked as git submodules under `orgs/`, with additional local clones and workspace-level packages/tools.
 
 ## Overview
 
-This workspace contains 19+ git repositories organized as submodules under the `orgs/` directory structure, providing a unified development environment for:
+This workspace contains **35+ git submodules** (see `.gitmodules`) plus a handful of **local clones** (see `.git/info/exclude`), organized primarily under the `orgs/` directory structure.
 
 - **Promethean OS**: A comprehensive operating system and development framework
 - **Opencode**: Development tools and AI-powered coding assistants  
@@ -16,7 +16,7 @@ This workspace contains 19+ git repositories organized as submodules under the `
 
 ### Organization-Based Structure
 
-All submodules are now organized under `orgs/` by their respective GitHub organizations:
+Most repos are organized under `orgs/` by their GitHub organizations (tracked either as submodules or local clones).
 
 | Organization | Repository | Purpose | Path |
 |--------------|------------|---------|------|
@@ -29,11 +29,12 @@ All submodules are now organized under `orgs/` by their respective GitHub organi
 | **riatzukiza** | `book-of-shadows` | Personal documentation | `orgs/riatzukiza/book-of-shadows` |
 | **riatzukiza** | `goblin-lessons` | Educational content | `orgs/riatzukiza/goblin-lessons` |
 | **riatzukiza** | `riatzukiza.github.io` | Personal website | `orgs/riatzukiza/riatzukiza.github.io` |
-| **anomalyco** | `opencode` | Opencode development tools | `orgs/anomalyco/opencode` |
-| **bhauman** | `clojure-mcp` | Clojure MCP integration | `orgs/bhauman/clojure-mcp` |
+| **anomalyco** | `opencode` | OpenCode development tools *(local clone; excluded from root git)* | `orgs/anomalyco/opencode` |
 | **open-hax** | `codex` | Authentication for Codex | `orgs/open-hax/codex` |
 | **moofone** | `codex-ts-sdk` | TypeScript SDK for Codex | `orgs/moofone/codex-ts-sdk` |
 | **openai** | `codex` | OpenAI Codex integration | `orgs/openai/codex` |
+
+> Note: the table above is intentionally non-exhaustive; this workspace also tracks submodules under `services/` and `vaults/`.
 
 ### Directory Structure
 
@@ -52,8 +53,7 @@ devel/
 │   │   └── riatzukiza.github.io/ # Personal site
 │   ├── anomalyco/                  # Anomaly Co organization  
 │   │   └── opencode/              # Main opencode repo
-│   ├── bhauman/                   # bhauman's repositories
-│   │   └── clojure-mcp/           # Clojure integration
+│   # (additional orgs omitted; see .gitmodules for the authoritative list)
 │   ├── open-hax/                  # open-hax organization
 │   │   └── codex/                 # Auth plugin
 │   ├── moofone/                   # moofone's repositories
@@ -69,7 +69,7 @@ devel/
 
 ### Prerequisites
 
-- **Node.js**: Latest LTS version
+- **Node.js**: 22+ recommended (CI uses Node 22)
 - **pnpm**: Package manager (v10.14.0)
 - **Bun**: Runtime for opencode development
 - **Git**: For submodule management
@@ -95,7 +95,7 @@ All processes are managed through the **ecosystem system**. Define apps in `ecos
 
 ```bash
 # Compile ecosystems to PM2 config
-npx shadow-cljs release clobber
+pnpm generate-ecosystem
 
 # Start all processes from compiled config
 pm2 start ecosystem.config.cjs
@@ -129,7 +129,7 @@ pm2 monit                   # Real-time monitoring dashboard
    :autorestart true})
 ```
 
-**See `.opencode/skills/pm2-process-management.md` for detailed PM2 workflows.**
+**See `.opencode/skills/pm2-process-management/SKILL.md` for detailed PM2 workflows.**
 
 ---
 
@@ -170,8 +170,10 @@ pnpm docker:stack up ollama
 pnpm docker:stack up opencode -- --build
 pnpm docker:stack show promethean
 pnpm docker:stack status open-hax-openai-proxy
+pnpm docker:stack status voxx
 pnpm docker:stack use-container open-hax-openai-proxy -- --build
 pnpm docker:stack use-host open-hax-openai-proxy
+pnpm docker:stack up voxx -- --build
 pnpm docker:stack up openplanner -- --build
 pnpm docker:stack up part64 -- --build
 pnpm docker:stack ps open-hax-openai-proxy
@@ -201,8 +203,8 @@ cd orgs/anomalyco/opencode && bun dev
 # Agent shell development (Emacs Lisp)
 cd orgs/riatzukiza/agent-shell && emacs agent-shell.el
 
-# Clojure MCP development
-cd orgs/bhauman/clojure-mcp && <clojure-command>
+# Clojure
+# Most Clojure/ClojureScript work lives in the Promethean submodule.
 
 # Codex TypeScript SDK development
 cd orgs/moofone/codex-ts-sdk && pnpm <command>
@@ -242,7 +244,7 @@ Each `thread.md` mirrors the GitHub conversation, every `reviews/<id>.md` interl
 
 The workspace enforces strict code quality through ESLint with the following rules:
 
-- **ESM modules only**: No `require`/`module.exports`
+- **ESM-first source**: write `import`/`export` in source; avoid `require`/`module.exports`
 - **Functional programming**: Prefer `const`, avoid `let`, no classes
 - **TypeScript strict**: No `any`, explicit types, readonly parameters
 - **Import order**: builtin → external → internal → sibling → index
@@ -251,7 +253,7 @@ The workspace enforces strict code quality through ESLint with the following rul
 ### TypeScript Configuration
 
 - **Target**: ES2022
-- **Module**: CommonJS (Node.js compatible)
+- **Module (build output)**: CommonJS (`tsconfig.json`), even though `package.json` is ESM (`"type": "module"`)
 - **Strict mode**: Enabled with all type-checking options
 - **Module resolution**: Node.js style
 
@@ -286,7 +288,7 @@ AI-powered development tools:
 
 - `.github/workflows/codex-release-watch.yml` polls `sst/opencode` (`v*`) and `openai/codex` (`rust-v*`) releases daily or on demand.
 - `scripts/codex-release-monitor.mjs` clones upstream tags, captures diffs, and drives the `release-impact` OpenCode agent with `release-context.md` + `release-diff.patch` attachments.
-- Agent guidance lives in `.opencode/agent/release-impact.md`, enforcing a strict JSON impact schema for automation.
+- Agent guidance lives in `.opencode/agents/release-impact.md`, enforcing a strict JSON impact schema for automation.
 - Findings auto-create GitHub issues labeled `codex-release-watch`; successful runs update `.github/release-watch/state.json` so the next diff always references the last reviewed tag.
 - Requires `OPENCODE_API_KEY` secret and (optionally) `RELEASE_WATCH_MODEL` repo var to select a model (defaults to `openai/gpt-5-codex-high`).
 
@@ -298,12 +300,10 @@ Emacs-based framework for AI agent integration:
 - Extensible agent architecture
 - **Location**: `orgs/riatzukiza/agent-shell/`
 
-### Clojure MCP Integration
+### Clojure
 
-MCP server for Clojure REPL-driven development:
-- Seamless REPL integration
-- Enhanced development experience
-- **Location**: `orgs/bhauman/clojure-mcp/`
+- Most Clojure/ClojureScript work is in `orgs/riatzukiza/promethean/` (and related submodules).
+- Useful MCP servers are primarily TypeScript services under `services/`.
 
 ## Working with Submodules
 
@@ -494,7 +494,7 @@ The workspace maintains comprehensive cross-reference documentation:
 
 ### Integration Patterns
 - **Authentication**: `orgs/open-hax/codex` ↔ `orgs/moofone/codex-ts-sdk` ↔ `orgs/openai/codex`
-- **Agent Development**: `orgs/riatzukiza/agent-shell` ↔ `orgs/bhauman/clojure-mcp` ↔ `orgs/riatzukiza/promethean`
+- **Agent Development**: `orgs/riatzukiza/agent-shell` ↔ `orgs/riatzukiza/promethean`
 - **Web Development**: `orgs/anomalyco/opencode` ↔ `orgs/riatzukiza/openhax`
 - **Environment Setup**: `orgs/riatzukiza/dotfiles` ↔ all development tools
 

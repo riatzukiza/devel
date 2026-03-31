@@ -1,0 +1,248 @@
+{
+  "generatedAt": "2026-03-20T02:29:24.738Z",
+  "profileId": "board",
+  "objective": "board",
+  "step": 2,
+  "candidates": [
+    {
+      "id": "2c7a25dca08b",
+      "createdAt": "2026-03-20T02:29:24.738Z",
+      "step": 2,
+      "choices": {
+        "num_layers": "9",
+        "model_dim": "512",
+        "num_kv_heads": "4",
+        "mlp_mult": "3",
+        "tied_embed_lr": "0.03",
+        "matrix_lr": "0.03",
+        "train_seq_len": "1536",
+        "train_batch_tokens": "524288"
+      },
+      "novelty": 0.25342261904761904,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.5014705357142858,
+      "priorScore": 0.682625,
+      "compositeScore": 0.5309217261904762,
+      "strategyId": null,
+      "strategyLabel": "free-ant≈MLP-heavy",
+      "hypothesis": "Explore an unseeded path suggested by current pheromones and under-covered values.",
+      "tags": [
+        "free-ant"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "DATA_PATH=./data/datasets/fineweb10B_sp1024 \\\nTOKENIZER_PATH=./data/tokenizers/fineweb_1024_bpe.model \\\nVOCAB_SIZE=1024 \\\nNUM_HEADS=8 \\\nTIE_EMBEDDINGS=1 \\\nVAL_LOSS_EVERY=200 \\\nMAX_WALLCLOCK_SECONDS=600 \\\nRUN_ID=board-2c7a25dca08b \\\nNUM_LAYERS=9 \\\nMODEL_DIM=512 \\\nNUM_KV_HEADS=4 \\\nMLP_MULT=3 \\\nTIED_EMBED_LR=0.03 \\\nMATRIX_LR=0.03 \\\nTRAIN_SEQ_LEN=1536 \\\nTRAIN_BATCH_TOKENS=524288",
+      "command": "torchrun --standalone --nproc_per_node=1 train_gpt.py",
+      "status": "proposed"
+    },
+    {
+      "id": "cc3fd087a4fc",
+      "createdAt": "2026-03-20T02:29:24.738Z",
+      "step": 2,
+      "choices": {
+        "num_layers": "7",
+        "model_dim": "448",
+        "num_kv_heads": "2",
+        "mlp_mult": "2",
+        "tied_embed_lr": "0.07",
+        "matrix_lr": "0.03",
+        "train_seq_len": "768",
+        "train_batch_tokens": "524288"
+      },
+      "novelty": 0.25555555555555554,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.47155104166666667,
+      "priorScore": 0.6270625,
+      "compositeScore": 0.4979041666666666,
+      "strategyId": null,
+      "strategyLabel": "free-ant≈Byte cautious",
+      "hypothesis": "Explore an unseeded path suggested by current pheromones and under-covered values.",
+      "tags": [
+        "free-ant"
+      ],
+      "riskLevel": "low",
+      "shellEnv": "DATA_PATH=./data/datasets/fineweb10B_sp1024 \\\nTOKENIZER_PATH=./data/tokenizers/fineweb_1024_bpe.model \\\nVOCAB_SIZE=1024 \\\nNUM_HEADS=8 \\\nTIE_EMBEDDINGS=1 \\\nVAL_LOSS_EVERY=200 \\\nMAX_WALLCLOCK_SECONDS=600 \\\nRUN_ID=board-cc3fd087a4fc \\\nNUM_LAYERS=7 \\\nMODEL_DIM=448 \\\nNUM_KV_HEADS=2 \\\nMLP_MULT=2 \\\nTIED_EMBED_LR=0.07 \\\nMATRIX_LR=0.03 \\\nTRAIN_SEQ_LEN=768 \\\nTRAIN_BATCH_TOKENS=524288",
+      "command": "torchrun --standalone --nproc_per_node=1 train_gpt.py",
+      "status": "proposed"
+    },
+    {
+      "id": "9a2442dde411",
+      "createdAt": "2026-03-20T02:29:24.738Z",
+      "step": 2,
+      "choices": {
+        "num_layers": "8",
+        "model_dim": "576",
+        "num_kv_heads": "2",
+        "mlp_mult": "2",
+        "tied_embed_lr": "0.07",
+        "matrix_lr": "0.04",
+        "train_seq_len": "1024",
+        "train_batch_tokens": "393216"
+      },
+      "novelty": 0.19504419191919192,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.45144479197069776,
+      "priorScore": 0.623511880718073,
+      "compositeScore": 0.48669709055205584,
+      "strategyId": null,
+      "strategyLabel": "free-ant≈Wide balance",
+      "hypothesis": "Explore an unseeded path suggested by current pheromones and under-covered values.",
+      "tags": [
+        "free-ant"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "DATA_PATH=./data/datasets/fineweb10B_sp1024 \\\nTOKENIZER_PATH=./data/tokenizers/fineweb_1024_bpe.model \\\nVOCAB_SIZE=1024 \\\nNUM_HEADS=8 \\\nTIE_EMBEDDINGS=1 \\\nVAL_LOSS_EVERY=200 \\\nMAX_WALLCLOCK_SECONDS=600 \\\nRUN_ID=board-9a2442dde411 \\\nNUM_LAYERS=8 \\\nMODEL_DIM=576 \\\nNUM_KV_HEADS=2 \\\nMLP_MULT=2 \\\nTIED_EMBED_LR=0.07 \\\nMATRIX_LR=0.04 \\\nTRAIN_SEQ_LEN=1024 \\\nTRAIN_BATCH_TOKENS=393216",
+      "command": "torchrun --standalone --nproc_per_node=1 train_gpt.py",
+      "status": "proposed"
+    },
+    {
+      "id": "77832808360e",
+      "createdAt": "2026-03-20T02:29:24.738Z",
+      "step": 2,
+      "choices": {
+        "num_layers": "9",
+        "model_dim": "576",
+        "num_kv_heads": "6",
+        "mlp_mult": "2",
+        "tied_embed_lr": "0.07",
+        "matrix_lr": "0.05",
+        "train_seq_len": "1024",
+        "train_batch_tokens": "393216"
+      },
+      "novelty": 0.2795138888888889,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.4607467320433101,
+      "priorScore": 0.5943501188666245,
+      "compositeScore": 0.48187048798664134,
+      "strategyId": null,
+      "strategyLabel": "free-ant≈Throughput push",
+      "hypothesis": "Explore an unseeded path suggested by current pheromones and under-covered values.",
+      "tags": [
+        "free-ant"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "DATA_PATH=./data/datasets/fineweb10B_sp1024 \\\nTOKENIZER_PATH=./data/tokenizers/fineweb_1024_bpe.model \\\nVOCAB_SIZE=1024 \\\nNUM_HEADS=8 \\\nTIE_EMBEDDINGS=1 \\\nVAL_LOSS_EVERY=200 \\\nMAX_WALLCLOCK_SECONDS=600 \\\nRUN_ID=board-77832808360e \\\nNUM_LAYERS=9 \\\nMODEL_DIM=576 \\\nNUM_KV_HEADS=6 \\\nMLP_MULT=2 \\\nTIED_EMBED_LR=0.07 \\\nMATRIX_LR=0.05 \\\nTRAIN_SEQ_LEN=1024 \\\nTRAIN_BATCH_TOKENS=393216",
+      "command": "torchrun --standalone --nproc_per_node=1 train_gpt.py",
+      "status": "proposed"
+    },
+    {
+      "id": "5a6a43708ca3",
+      "createdAt": "2026-03-20T02:29:24.738Z",
+      "step": 2,
+      "choices": {
+        "num_layers": "10",
+        "model_dim": "576",
+        "num_kv_heads": "2",
+        "mlp_mult": "3",
+        "tied_embed_lr": "0.07",
+        "matrix_lr": "0.04",
+        "train_seq_len": "768",
+        "train_batch_tokens": "524288"
+      },
+      "novelty": 0.3898809523809524,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.4773705357142857,
+      "priorScore": 0.5643750000000001,
+      "compositeScore": 0.4804404761904762,
+      "strategyId": null,
+      "strategyLabel": "free-ant≈MLP-heavy",
+      "hypothesis": "Explore an unseeded path suggested by current pheromones and under-covered values.",
+      "tags": [
+        "free-ant"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "DATA_PATH=./data/datasets/fineweb10B_sp1024 \\\nTOKENIZER_PATH=./data/tokenizers/fineweb_1024_bpe.model \\\nVOCAB_SIZE=1024 \\\nNUM_HEADS=8 \\\nTIE_EMBEDDINGS=1 \\\nVAL_LOSS_EVERY=200 \\\nMAX_WALLCLOCK_SECONDS=600 \\\nRUN_ID=board-5a6a43708ca3 \\\nNUM_LAYERS=10 \\\nMODEL_DIM=576 \\\nNUM_KV_HEADS=2 \\\nMLP_MULT=3 \\\nTIED_EMBED_LR=0.07 \\\nMATRIX_LR=0.04 \\\nTRAIN_SEQ_LEN=768 \\\nTRAIN_BATCH_TOKENS=524288",
+      "command": "torchrun --standalone --nproc_per_node=1 train_gpt.py",
+      "status": "proposed"
+    },
+    {
+      "id": "aba54b03347c",
+      "createdAt": "2026-03-20T02:29:24.738Z",
+      "step": 2,
+      "choices": {
+        "num_layers": "8",
+        "model_dim": "512",
+        "num_kv_heads": "6",
+        "mlp_mult": "3",
+        "tied_embed_lr": "0.03",
+        "matrix_lr": "0.05",
+        "train_seq_len": "1536",
+        "train_batch_tokens": "393216"
+      },
+      "novelty": 0.22604166666666664,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.44470506537664345,
+      "priorScore": 0.5943501188666245,
+      "compositeScore": 0.473849654653308,
+      "strategyId": null,
+      "strategyLabel": "free-ant≈Throughput push",
+      "hypothesis": "Explore an unseeded path suggested by current pheromones and under-covered values.",
+      "tags": [
+        "free-ant"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "DATA_PATH=./data/datasets/fineweb10B_sp1024 \\\nTOKENIZER_PATH=./data/tokenizers/fineweb_1024_bpe.model \\\nVOCAB_SIZE=1024 \\\nNUM_HEADS=8 \\\nTIE_EMBEDDINGS=1 \\\nVAL_LOSS_EVERY=200 \\\nMAX_WALLCLOCK_SECONDS=600 \\\nRUN_ID=board-aba54b03347c \\\nNUM_LAYERS=8 \\\nMODEL_DIM=512 \\\nNUM_KV_HEADS=6 \\\nMLP_MULT=3 \\\nTIED_EMBED_LR=0.03 \\\nMATRIX_LR=0.05 \\\nTRAIN_SEQ_LEN=1536 \\\nTRAIN_BATCH_TOKENS=393216",
+      "command": "torchrun --standalone --nproc_per_node=1 train_gpt.py",
+      "status": "proposed"
+    },
+    {
+      "id": "3a92c71d8f1b",
+      "createdAt": "2026-03-20T02:29:24.738Z",
+      "step": 2,
+      "choices": {
+        "num_layers": "10",
+        "model_dim": "576",
+        "num_kv_heads": "6",
+        "mlp_mult": "3",
+        "tied_embed_lr": "0.07",
+        "matrix_lr": "0.04",
+        "train_seq_len": "768",
+        "train_batch_tokens": "655360"
+      },
+      "novelty": 0.1859126984126984,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.43266637490045295,
+      "priorScore": 0.5943501188666245,
+      "compositeScore": 0.46783030941521275,
+      "strategyId": null,
+      "strategyLabel": "free-ant≈Throughput push",
+      "hypothesis": "Explore an unseeded path suggested by current pheromones and under-covered values.",
+      "tags": [
+        "free-ant"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "DATA_PATH=./data/datasets/fineweb10B_sp1024 \\\nTOKENIZER_PATH=./data/tokenizers/fineweb_1024_bpe.model \\\nVOCAB_SIZE=1024 \\\nNUM_HEADS=8 \\\nTIE_EMBEDDINGS=1 \\\nVAL_LOSS_EVERY=200 \\\nMAX_WALLCLOCK_SECONDS=600 \\\nRUN_ID=board-3a92c71d8f1b \\\nNUM_LAYERS=10 \\\nMODEL_DIM=576 \\\nNUM_KV_HEADS=6 \\\nMLP_MULT=3 \\\nTIED_EMBED_LR=0.07 \\\nMATRIX_LR=0.04 \\\nTRAIN_SEQ_LEN=768 \\\nTRAIN_BATCH_TOKENS=655360",
+      "command": "torchrun --standalone --nproc_per_node=1 train_gpt.py",
+      "status": "proposed"
+    },
+    {
+      "id": "e126793ec908",
+      "createdAt": "2026-03-20T02:29:24.738Z",
+      "step": 2,
+      "choices": {
+        "num_layers": "10",
+        "model_dim": "640",
+        "num_kv_heads": "6",
+        "mlp_mult": "3",
+        "tied_embed_lr": "0.03",
+        "matrix_lr": "0.05",
+        "train_seq_len": "1024",
+        "train_batch_tokens": "655360"
+      },
+      "novelty": 0.22291666666666665,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.40952167757528085,
+      "priorScore": 0.5320848683186924,
+      "compositeScore": 0.43602175432454876,
+      "strategyId": null,
+      "strategyLabel": "free-ant≈Throughput push",
+      "hypothesis": "Explore an unseeded path suggested by current pheromones and under-covered values.",
+      "tags": [
+        "free-ant"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "DATA_PATH=./data/datasets/fineweb10B_sp1024 \\\nTOKENIZER_PATH=./data/tokenizers/fineweb_1024_bpe.model \\\nVOCAB_SIZE=1024 \\\nNUM_HEADS=8 \\\nTIE_EMBEDDINGS=1 \\\nVAL_LOSS_EVERY=200 \\\nMAX_WALLCLOCK_SECONDS=600 \\\nRUN_ID=board-e126793ec908 \\\nNUM_LAYERS=10 \\\nMODEL_DIM=640 \\\nNUM_KV_HEADS=6 \\\nMLP_MULT=3 \\\nTIED_EMBED_LR=0.03 \\\nMATRIX_LR=0.05 \\\nTRAIN_SEQ_LEN=1024 \\\nTRAIN_BATCH_TOKENS=655360",
+      "command": "torchrun --standalone --nproc_per_node=1 train_gpt.py",
+      "status": "proposed"
+    }
+  ]
+}

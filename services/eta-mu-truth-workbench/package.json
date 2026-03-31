@@ -1,0 +1,14 @@
+{
+  "name": "@workspace/eta-mu-truth-workbench",
+  "version": "0.1.0",
+  "private": true,
+  "license": "GPL-3.0-only",
+  "type": "module",
+  "scripts": {
+    "dev": "node src/index.js",
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "fastify": "^5.6.1"
+  }
+}

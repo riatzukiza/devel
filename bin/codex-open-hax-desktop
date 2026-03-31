@@ -1,0 +1,160 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+APP_ROOT="$ROOT/orgs/shuv/codex-desktop-linux"
+APP_BIN="$APP_ROOT/codex-app/start-api.sh"
+INSTALL_SCRIPT="$APP_ROOT/install.sh"
+
+CONFIG_BASE="${XDG_CONFIG_HOME:-$HOME/.config}"
+STATE_BASE="${XDG_STATE_HOME:-$HOME/.local/state}"
+
+LAUNCHER_CONFIG_DIR="${CODEX_OPEN_HAX_CONFIG_DIR:-$CONFIG_BASE/codex-open-hax}"
+LAUNCHER_STATE_DIR="${CODEX_OPEN_HAX_STATE_DIR:-$STATE_BASE/codex-open-hax}"
+PROXY_ENV_FILE="${CODEX_PROXY_ENV_FILE:-$LAUNCHER_CONFIG_DIR/proxy.env}"
+AUTH_FILE="${CODEX_OPEN_HAX_AUTH_FILE:-$HOME/.codex/auth.json}"
+PROXY_BASE_URL="${CODEX_PROXY_BASE_URL:-http://127.0.0.1:8789/v1}"
+APP_SERVER_PORT="${CODEX_OPEN_HAX_APP_SERVER_PORT:-9238}"
+APP_SERVER_LISTEN_URL="${CODEX_APP_SERVER_LISTEN_URL:-ws://127.0.0.1:${APP_SERVER_PORT}}"
+APP_SERVER_WS_URL="${CODEX_APP_SERVER_WS_URL:-$APP_SERVER_LISTEN_URL}"
+USER_DATA_DIR="${CODEX_USER_DATA_DIR:-$LAUNCHER_STATE_DIR/profile}"
+APP_SERVER_STATE_DIR="${CODEX_APP_SERVER_STATE_DIR:-$LAUNCHER_STATE_DIR/app-server}"
+
+resolve_token() {
+  if [[ -n "${CODEX_PROXY_TOKEN:-}" ]]; then
+    printf '%s\n' "$CODEX_PROXY_TOKEN"
+    return 0
+  fi
+
+  if [[ -n "${OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN:-}" ]]; then
+    printf '%s\n' "$OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN"
+    return 0
+  fi
+
+  if [[ -n "${PROXY_AUTH_TOKEN:-}" ]]; then
+    printf '%s\n' "$PROXY_AUTH_TOKEN"
+    return 0
+  fi
+
+  if [[ -f "$PROXY_ENV_FILE" ]]; then
+    python3 - "$PROXY_ENV_FILE" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+for raw_line in path.read_text(errors='ignore').splitlines():
+    line = raw_line.strip()
+    if not line or line.startswith('#'):
+        continue
+    if line.startswith('export '):
+        line = line[len('export '):].strip()
+    if not line.startswith('PROXY_AUTH_TOKEN='):
+        continue
+    value = line.split('=', 1)[1].strip()
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in {'"', "'"}:
+        value = value[1:-1]
+    print(value)
+    break
+PY
+    return 0
+  fi
+
+  return 1
+}
+
+ensure_runtime_dirs() {
+  mkdir -p "$LAUNCHER_CONFIG_DIR" "$LAUNCHER_STATE_DIR" "$USER_DATA_DIR" "$APP_SERVER_STATE_DIR" "$(dirname "$AUTH_FILE")"
+}
+
+ensure_proxy_env_file() {
+  local token="$1"
+  umask 077
+  printf 'PROXY_AUTH_TOKEN=%s\n' "$token" > "$PROXY_ENV_FILE"
+}
+
+ensure_auth_file() {
+  local token="$1"
+  AUTH_FILE="$AUTH_FILE" TOKEN="$token" python3 - <<'PY'
+import json
+import os
+from pathlib import Path
+
+path = Path(os.environ['AUTH_FILE'])
+path.parent.mkdir(parents=True, exist_ok=True)
+current = None
+if path.exists():
+    try:
+        current = json.loads(path.read_text())
+    except Exception:
+        current = None
+next_value = {
+    'auth_mode': 'apikey',
+    'OPENAI_API_KEY': os.environ['TOKEN'],
+}
+if current != next_value:
+    path.write_text(json.dumps(next_value, indent=2) + '\n')
+PY
+  chmod 600 "$AUTH_FILE"
+}
+
+ensure_install() {
+  if [[ -x "$APP_BIN" ]]; then
+    return 0
+  fi
+
+  if [[ ! -x "$INSTALL_SCRIPT" ]]; then
+    echo "[codex-open-hax] missing installer: $INSTALL_SCRIPT" >&2
+    exit 1
+  fi
+
+  echo "[codex-open-hax] codex-app missing; running installer..." >&2
+  (
+    cd "$APP_ROOT"
+    "$INSTALL_SCRIPT"
+  )
+
+  if [[ ! -x "$APP_BIN" ]]; then
+    echo "[codex-open-hax] install completed but launcher still missing: $APP_BIN" >&2
+    exit 1
+  fi
+}
+
+main() {
+  ensure_runtime_dirs
+
+  local token
+  token="$(resolve_token || true)"
+  if [[ -z "$token" ]]; then
+    cat >&2 <<EOF
+[codex-open-hax] no proxy token found.
+
+Set one of:
+  - CODEX_PROXY_TOKEN
+  - OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN
+  - PROXY_AUTH_TOKEN
+
+Or create:
+  $PROXY_ENV_FILE
+with:
+  PROXY_AUTH_TOKEN=... 
+EOF
+    exit 1
+  fi
+
+  ensure_proxy_env_file "$token"
+  ensure_auth_file "$token"
+  ensure_install
+
+  export CODEX_DEFAULT_AUTH_MODE=api
+  export CODEX_PROXY_BASE_URL="$PROXY_BASE_URL"
+  export CODEX_PROXY_ENV_FILE="$PROXY_ENV_FILE"
+  export CODEX_DISABLE_GPU_COMPOSITING="${CODEX_DISABLE_GPU_COMPOSITING:-1}"
+  export CODEX_APP_SERVER_LISTEN_URL="$APP_SERVER_LISTEN_URL"
+  export CODEX_APP_SERVER_WS_URL="$APP_SERVER_WS_URL"
+  export CODEX_USER_DATA_DIR="$USER_DATA_DIR"
+  export CODEX_APP_SERVER_STATE_DIR="$APP_SERVER_STATE_DIR"
+
+  exec "$APP_BIN" "$@"
+}
+
+main "$@"
