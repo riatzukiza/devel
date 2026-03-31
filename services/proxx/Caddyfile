@@ -1,0 +1,79 @@
+ussy.promethean.rest {
+  encode gzip zstd
+
+  redir /fleet /fleet/ 308
+  handle_path /fleet/* {
+    reverse_proxy host-fleet-dashboard:8791
+  }
+
+  @api path /v1* /api* /auth* /health
+  reverse_proxy @api host.docker.internal:8789
+
+  header {
+    Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  }
+
+  reverse_proxy host.docker.internal:5174
+}
+
+radar.promethean.rest {
+  encode gzip zstd
+
+  @api path /api* /health /mcp*
+  reverse_proxy @api radar-mcp:10002
+
+  header {
+    Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  }
+
+  reverse_proxy radar-web:80
+}
+
+shibboleth.promethean.rest {
+  encode gzip zstd
+
+  @api path /api*
+  reverse_proxy @api host.docker.internal:8787
+
+  header {
+    Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  }
+
+  reverse_proxy host.docker.internal:5197
+}
+
+battlebussy.ussy.promethean.rest {
+  encode gzip zstd
+
+  @backend path /api* /ws*
+  reverse_proxy @backend battlebussy-backend:8080
+
+  header {
+    Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  }
+
+  reverse_proxy battlebussy-site:3000
+}
+
+voxx.ussy.promethean.rest {
+  encode gzip zstd
+
+  header {
+    Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  }
+
+  reverse_proxy openhax-voxx:8788
+}
+
+gates.ussy.promethean.rest {
+  encode gzip zstd
+
+  @api path /api*
+  reverse_proxy @api host.docker.internal:3300
+
+  header {
+    Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  }
+
+  reverse_proxy host.docker.internal:5175
+}

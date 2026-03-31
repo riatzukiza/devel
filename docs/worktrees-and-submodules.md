@@ -15,31 +15,38 @@ References (authoritative):
 
 - Naming
   - Branches: `wip/<feature-slug>` for in‑progress; `feat/<topic>` for feature; `fix/<topic>` for patches; `rel/<target>` for release.
-  - Directories: `<repo>/worktrees/<feature-slug>` (stable path; avoid spaces; kebab‑case only).
+  - Directories: `<repo>/.worktrees/<branch-name>` (stable path; avoid spaces).
   - One branch ↔ one worktree directory. Do not reuse a worktree dir for a new branch.
 
 - Layout Strategy
-  - Superproject under `/home/err/devel/sst/opencode`; feature worktrees under `sst/opencode/worktrees/`.
+  - Root workspace worktrees live under `/home/err/devel/.worktrees/<branch-name>`.
+  - Submodule worktrees live under `<submodule-path>/.worktrees/<branch-name>`.
   - Keep scripts worktree‑aware by using `git -C <path>`; never `cd` inside automation.
-  - Ignore worktree folders: prefer a global ignore to avoid repo‑level noise. Configure `core.excludesfile` and add `worktrees/`. Only add to repo `.gitignore` if the team adopts it repo‑wide.
+  - Ignore worktree folders: prefer a global ignore to avoid repo‑level noise. Configure `core.excludesfile` and add `.worktrees/`. (In this workspace repo, `.worktrees/` is also git-ignored.)
     ```bash
     mkdir -p ~/.config/git
     git config --global core.excludesfile "$HOME/.config/git/ignore"
-    echo 'worktrees/' >> "$HOME/.config/git/ignore"
+    echo '.worktrees/' >> "$HOME/.config/git/ignore"
     ```
+
+  - Never create worktrees under `.opencode/` (they can be misdetected/added as submodules if accidentally staged).
 
 - Lifecycle
   - Create:
     ```bash
-    git -C sst/opencode fetch --all --prune
-    git -C sst/opencode worktree add worktrees/<slug> -b wip/<slug> origin/dev
+    repo=/home/err/devel
+    branch=wip/<slug>
+    git -C "$repo" fetch --all --prune
+    git -C "$repo" worktree add "$repo/.worktrees/$branch" -b "$branch" origin/main
     ```
   - Switch (open shell in worktree path): use your editor/terminal integrations or `git worktree list` to copy the path; do not detach heads.
   - Sync (while developing):
     ```bash
-    git -C sst/opencode worktree list
-    git -C sst/opencode fetch --all --prune
-    git -C sst/opencode/worktrees/<slug> rebase origin/dev
+    repo=/home/err/devel
+    branch=wip/<slug>
+    git -C "$repo" worktree list
+    git -C "$repo" fetch --all --prune
+    git -C "$repo/.worktrees/$branch" rebase origin/main
     ```
   - Merge:
     ```bash

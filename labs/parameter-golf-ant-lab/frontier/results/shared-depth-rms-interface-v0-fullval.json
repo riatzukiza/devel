@@ -1,0 +1,27 @@
+{
+  "strategy": "Shared-depth RMS interface v0",
+  "branch": "frontier/shared-depth-rms-interface-v0",
+  "hardware": "1x NVIDIA GeForce RTX 4070 Laptop GPU",
+  "config": {
+    "NUM_LAYERS": 8,
+    "NUM_PHYSICAL_LAYERS": 4,
+    "MODEL_DIM": 512,
+    "NUM_HEADS": 8,
+    "NUM_KV_HEADS": 4,
+    "MLP_MULT": 2,
+    "TRAIN_SEQ_LEN": 1024,
+    "TRAIN_BATCH_TOKENS": 73728,
+    "PHASE_BUCKETS": 4,
+    "EXTRA_PROJ_RMSNORM": 1,
+    "PHASE_CONDITIONED_SCALES": 1
+  },
+  "metrics": {
+    "step_stop": 471,
+    "pre_quant_val_loss": 2.7975,
+    "pre_quant_val_bpb": 1.6568,
+    "val_loss": 2.79887294,
+    "val_bpb": 1.65765109,
+    "bytes_total": 5912023,
+    "train_time_ms": 908129
+  }
+}

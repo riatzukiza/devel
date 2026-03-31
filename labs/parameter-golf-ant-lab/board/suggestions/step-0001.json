@@ -1,0 +1,328 @@
+{
+  "generatedAt": "2026-03-19T16:01:10.356Z",
+  "profileId": "board",
+  "objective": "board",
+  "step": 1,
+  "candidates": [
+    {
+      "id": "5340081a0d53",
+      "createdAt": "2026-03-19T16:01:10.356Z",
+      "step": 1,
+      "choices": {
+        "num_layers": "8",
+        "model_dim": "640",
+        "num_kv_heads": "4",
+        "mlp_mult": "2",
+        "tied_embed_lr": "0.05",
+        "matrix_lr": "0.04",
+        "train_seq_len": "1024",
+        "train_batch_tokens": "524288"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.801,
+      "priorScore": 0.82,
+      "compositeScore": 0.7253333333333333,
+      "strategyId": "wide-balance",
+      "strategyLabel": "Wide balance",
+      "hypothesis": "A wider but slightly shallower model may preserve compression quality while staying quantization-friendly.",
+      "tags": [
+        "width",
+        "capacity",
+        "balanced"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "DATA_PATH=./data/datasets/fineweb10B_sp1024 \\\nTOKENIZER_PATH=./data/tokenizers/fineweb_1024_bpe.model \\\nVOCAB_SIZE=1024 \\\nNUM_HEADS=8 \\\nTIE_EMBEDDINGS=1 \\\nVAL_LOSS_EVERY=200 \\\nMAX_WALLCLOCK_SECONDS=600 \\\nRUN_ID=board-5340081a0d53 \\\nNUM_LAYERS=8 \\\nMODEL_DIM=640 \\\nNUM_KV_HEADS=4 \\\nMLP_MULT=2 \\\nTIED_EMBED_LR=0.05 \\\nMATRIX_LR=0.04 \\\nTRAIN_SEQ_LEN=1024 \\\nTRAIN_BATCH_TOKENS=524288",
+      "command": "torchrun --standalone --nproc_per_node=1 train_gpt.py",
+      "status": "proposed"
+    },
+    {
+      "id": "de7915d3d64c",
+      "createdAt": "2026-03-19T16:01:10.356Z",
+      "step": 1,
+      "choices": {
+        "num_layers": "8",
+        "model_dim": "512",
+        "num_kv_heads": "4",
+        "mlp_mult": "2",
+        "tied_embed_lr": "0.07",
+        "matrix_lr": "0.05",
+        "train_seq_len": "768",
+        "train_batch_tokens": "655360"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.7845000000000001,
+      "priorScore": 0.79,
+      "compositeScore": 0.7073333333333334,
+      "strategyId": "throughput-push",
+      "strategyLabel": "Throughput push",
+      "hypothesis": "Shorter sequences and hotter learning rates may let the run see more tokens and reach a better wallclock-constrained optimum.",
+      "tags": [
+        "throughput",
+        "hot-lr",
+        "short-seq"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "DATA_PATH=./data/datasets/fineweb10B_sp1024 \\\nTOKENIZER_PATH=./data/tokenizers/fineweb_1024_bpe.model \\\nVOCAB_SIZE=1024 \\\nNUM_HEADS=8 \\\nTIE_EMBEDDINGS=1 \\\nVAL_LOSS_EVERY=200 \\\nMAX_WALLCLOCK_SECONDS=600 \\\nRUN_ID=board-de7915d3d64c \\\nNUM_LAYERS=8 \\\nMODEL_DIM=512 \\\nNUM_KV_HEADS=4 \\\nMLP_MULT=2 \\\nTIED_EMBED_LR=0.07 \\\nMATRIX_LR=0.05 \\\nTRAIN_SEQ_LEN=768 \\\nTRAIN_BATCH_TOKENS=655360",
+      "command": "torchrun --standalone --nproc_per_node=1 train_gpt.py",
+      "status": "proposed"
+    },
+    {
+      "id": "f9d65cff70d6",
+      "createdAt": "2026-03-19T16:01:10.356Z",
+      "step": 1,
+      "choices": {
+        "num_layers": "9",
+        "model_dim": "512",
+        "num_kv_heads": "2",
+        "mlp_mult": "2",
+        "tied_embed_lr": "0.05",
+        "matrix_lr": "0.04",
+        "train_seq_len": "1024",
+        "train_batch_tokens": "524288"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.768,
+      "priorScore": 0.76,
+      "compositeScore": 0.6893333333333334,
+      "strategyId": "kv-thin",
+      "strategyLabel": "KV-thin attention",
+      "hypothesis": "Aggressively reducing KV heads may save representational bytes or runtime while preserving enough attention quality.",
+      "tags": [
+        "gqa",
+        "kv-slim",
+        "attention"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "DATA_PATH=./data/datasets/fineweb10B_sp1024 \\\nTOKENIZER_PATH=./data/tokenizers/fineweb_1024_bpe.model \\\nVOCAB_SIZE=1024 \\\nNUM_HEADS=8 \\\nTIE_EMBEDDINGS=1 \\\nVAL_LOSS_EVERY=200 \\\nMAX_WALLCLOCK_SECONDS=600 \\\nRUN_ID=board-f9d65cff70d6 \\\nNUM_LAYERS=9 \\\nMODEL_DIM=512 \\\nNUM_KV_HEADS=2 \\\nMLP_MULT=2 \\\nTIED_EMBED_LR=0.05 \\\nMATRIX_LR=0.04 \\\nTRAIN_SEQ_LEN=1024 \\\nTRAIN_BATCH_TOKENS=524288",
+      "command": "torchrun --standalone --nproc_per_node=1 train_gpt.py",
+      "status": "proposed"
+    },
+    {
+      "id": "29b0fcb6da31",
+      "createdAt": "2026-03-19T16:01:10.356Z",
+      "step": 1,
+      "choices": {
+        "num_layers": "9",
+        "model_dim": "512",
+        "num_kv_heads": "4",
+        "mlp_mult": "2",
+        "tied_embed_lr": "0.05",
+        "matrix_lr": "0.04",
+        "train_seq_len": "1024",
+        "train_batch_tokens": "524288"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.7570000000000001,
+      "priorScore": 0.74,
+      "compositeScore": 0.6773333333333333,
+      "strategyId": "baseline-anchor",
+      "strategyLabel": "Baseline anchor",
+      "hypothesis": "Anchor the search on something close to the published naive baseline so we can measure deltas honestly.",
+      "tags": [
+        "anchor",
+        "baseline",
+        "published-near"
+      ],
+      "riskLevel": "low",
+      "shellEnv": "DATA_PATH=./data/datasets/fineweb10B_sp1024 \\\nTOKENIZER_PATH=./data/tokenizers/fineweb_1024_bpe.model \\\nVOCAB_SIZE=1024 \\\nNUM_HEADS=8 \\\nTIE_EMBEDDINGS=1 \\\nVAL_LOSS_EVERY=200 \\\nMAX_WALLCLOCK_SECONDS=600 \\\nRUN_ID=board-29b0fcb6da31 \\\nNUM_LAYERS=9 \\\nMODEL_DIM=512 \\\nNUM_KV_HEADS=4 \\\nMLP_MULT=2 \\\nTIED_EMBED_LR=0.05 \\\nMATRIX_LR=0.04 \\\nTRAIN_SEQ_LEN=1024 \\\nTRAIN_BATCH_TOKENS=524288",
+      "command": "torchrun --standalone --nproc_per_node=1 train_gpt.py",
+      "status": "proposed"
+    },
+    {
+      "id": "95388c09ce24",
+      "createdAt": "2026-03-19T16:01:10.356Z",
+      "step": 1,
+      "choices": {
+        "num_layers": "10",
+        "model_dim": "448",
+        "num_kv_heads": "4",
+        "mlp_mult": "2",
+        "tied_embed_lr": "0.05",
+        "matrix_lr": "0.04",
+        "train_seq_len": "1024",
+        "train_batch_tokens": "524288"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.7405,
+      "priorScore": 0.71,
+      "compositeScore": 0.6593333333333333,
+      "strategyId": "deep-narrow",
+      "strategyLabel": "Deep narrow",
+      "hypothesis": "If depth matters more than width at this scale, a narrow-deep run might beat a width-heavy recipe under the byte cap.",
+      "tags": [
+        "depth",
+        "narrow",
+        "capacity-shift"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "DATA_PATH=./data/datasets/fineweb10B_sp1024 \\\nTOKENIZER_PATH=./data/tokenizers/fineweb_1024_bpe.model \\\nVOCAB_SIZE=1024 \\\nNUM_HEADS=8 \\\nTIE_EMBEDDINGS=1 \\\nVAL_LOSS_EVERY=200 \\\nMAX_WALLCLOCK_SECONDS=600 \\\nRUN_ID=board-95388c09ce24 \\\nNUM_LAYERS=10 \\\nMODEL_DIM=448 \\\nNUM_KV_HEADS=4 \\\nMLP_MULT=2 \\\nTIED_EMBED_LR=0.05 \\\nMATRIX_LR=0.04 \\\nTRAIN_SEQ_LEN=1024 \\\nTRAIN_BATCH_TOKENS=524288",
+      "command": "torchrun --standalone --nproc_per_node=1 train_gpt.py",
+      "status": "proposed"
+    },
+    {
+      "id": "0b28b8a98a4e",
+      "createdAt": "2026-03-19T16:01:10.356Z",
+      "step": 1,
+      "choices": {
+        "num_layers": "9",
+        "model_dim": "512",
+        "num_kv_heads": "4",
+        "mlp_mult": "3",
+        "tied_embed_lr": "0.05",
+        "matrix_lr": "0.04",
+        "train_seq_len": "1024",
+        "train_batch_tokens": "524288"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.7240000000000001,
+      "priorScore": 0.68,
+      "compositeScore": 0.6413333333333333,
+      "strategyId": "mlp-heavy",
+      "strategyLabel": "MLP-heavy",
+      "hypothesis": "A fatter feed-forward path may buy more compression power than additional attention structure at this size.",
+      "tags": [
+        "mlp",
+        "capacity",
+        "ffn"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "DATA_PATH=./data/datasets/fineweb10B_sp1024 \\\nTOKENIZER_PATH=./data/tokenizers/fineweb_1024_bpe.model \\\nVOCAB_SIZE=1024 \\\nNUM_HEADS=8 \\\nTIE_EMBEDDINGS=1 \\\nVAL_LOSS_EVERY=200 \\\nMAX_WALLCLOCK_SECONDS=600 \\\nRUN_ID=board-0b28b8a98a4e \\\nNUM_LAYERS=9 \\\nMODEL_DIM=512 \\\nNUM_KV_HEADS=4 \\\nMLP_MULT=3 \\\nTIED_EMBED_LR=0.05 \\\nMATRIX_LR=0.04 \\\nTRAIN_SEQ_LEN=1024 \\\nTRAIN_BATCH_TOKENS=524288",
+      "command": "torchrun --standalone --nproc_per_node=1 train_gpt.py",
+      "status": "proposed"
+    },
+    {
+      "id": "5a9221c08410",
+      "createdAt": "2026-03-19T16:01:10.356Z",
+      "step": 1,
+      "choices": {
+        "num_layers": "9",
+        "model_dim": "512",
+        "num_kv_heads": "6",
+        "mlp_mult": "2",
+        "tied_embed_lr": "0.05",
+        "matrix_lr": "0.04",
+        "train_seq_len": "1024",
+        "train_batch_tokens": "524288"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.6965000000000001,
+      "priorScore": 0.63,
+      "compositeScore": 0.6113333333333333,
+      "strategyId": "kv-fat",
+      "strategyLabel": "KV-fat attention",
+      "hypothesis": "If the bottleneck is attention expressivity rather than parameter count alone, extra KV heads may improve bpb enough to justify the cost.",
+      "tags": [
+        "gqa",
+        "kv-heavy",
+        "attention"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "DATA_PATH=./data/datasets/fineweb10B_sp1024 \\\nTOKENIZER_PATH=./data/tokenizers/fineweb_1024_bpe.model \\\nVOCAB_SIZE=1024 \\\nNUM_HEADS=8 \\\nTIE_EMBEDDINGS=1 \\\nVAL_LOSS_EVERY=200 \\\nMAX_WALLCLOCK_SECONDS=600 \\\nRUN_ID=board-5a9221c08410 \\\nNUM_LAYERS=9 \\\nMODEL_DIM=512 \\\nNUM_KV_HEADS=6 \\\nMLP_MULT=2 \\\nTIED_EMBED_LR=0.05 \\\nMATRIX_LR=0.04 \\\nTRAIN_SEQ_LEN=1024 \\\nTRAIN_BATCH_TOKENS=524288",
+      "command": "torchrun --standalone --nproc_per_node=1 train_gpt.py",
+      "status": "proposed"
+    },
+    {
+      "id": "8e8f5f0e96cf",
+      "createdAt": "2026-03-19T16:01:10.356Z",
+      "step": 1,
+      "choices": {
+        "num_layers": "7",
+        "model_dim": "448",
+        "num_kv_heads": "2",
+        "mlp_mult": "2",
+        "tied_embed_lr": "0.05",
+        "matrix_lr": "0.03",
+        "train_seq_len": "1024",
+        "train_batch_tokens": "393216"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.6855,
+      "priorScore": 0.61,
+      "compositeScore": 0.5993333333333333,
+      "strategyId": "byte-cautious",
+      "strategyLabel": "Byte cautious",
+      "hypothesis": "A more conservative recipe may leave headroom for later architecture edits or safer quantization without losing the board entirely.",
+      "tags": [
+        "bytes",
+        "conservative",
+        "quantization-headroom"
+      ],
+      "riskLevel": "low",
+      "shellEnv": "DATA_PATH=./data/datasets/fineweb10B_sp1024 \\\nTOKENIZER_PATH=./data/tokenizers/fineweb_1024_bpe.model \\\nVOCAB_SIZE=1024 \\\nNUM_HEADS=8 \\\nTIE_EMBEDDINGS=1 \\\nVAL_LOSS_EVERY=200 \\\nMAX_WALLCLOCK_SECONDS=600 \\\nRUN_ID=board-8e8f5f0e96cf \\\nNUM_LAYERS=7 \\\nMODEL_DIM=448 \\\nNUM_KV_HEADS=2 \\\nMLP_MULT=2 \\\nTIED_EMBED_LR=0.05 \\\nMATRIX_LR=0.03 \\\nTRAIN_SEQ_LEN=1024 \\\nTRAIN_BATCH_TOKENS=393216",
+      "command": "torchrun --standalone --nproc_per_node=1 train_gpt.py",
+      "status": "proposed"
+    },
+    {
+      "id": "369d3c3cbce3",
+      "createdAt": "2026-03-19T16:01:10.356Z",
+      "step": 1,
+      "choices": {
+        "num_layers": "8",
+        "model_dim": "512",
+        "num_kv_heads": "4",
+        "mlp_mult": "2",
+        "tied_embed_lr": "0.03",
+        "matrix_lr": "0.03",
+        "train_seq_len": "1536",
+        "train_batch_tokens": "393216"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.6580000000000001,
+      "priorScore": 0.56,
+      "compositeScore": 0.5693333333333334,
+      "strategyId": "long-context-budget",
+      "strategyLabel": "Long-context budget",
+      "hypothesis": "Longer contexts with a more conservative throughput budget may improve compression structure even if steps are fewer.",
+      "tags": [
+        "context",
+        "long-seq",
+        "budgeted"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "DATA_PATH=./data/datasets/fineweb10B_sp1024 \\\nTOKENIZER_PATH=./data/tokenizers/fineweb_1024_bpe.model \\\nVOCAB_SIZE=1024 \\\nNUM_HEADS=8 \\\nTIE_EMBEDDINGS=1 \\\nVAL_LOSS_EVERY=200 \\\nMAX_WALLCLOCK_SECONDS=600 \\\nRUN_ID=board-369d3c3cbce3 \\\nNUM_LAYERS=8 \\\nMODEL_DIM=512 \\\nNUM_KV_HEADS=4 \\\nMLP_MULT=2 \\\nTIED_EMBED_LR=0.03 \\\nMATRIX_LR=0.03 \\\nTRAIN_SEQ_LEN=1536 \\\nTRAIN_BATCH_TOKENS=393216",
+      "command": "torchrun --standalone --nproc_per_node=1 train_gpt.py",
+      "status": "proposed"
+    },
+    {
+      "id": "24b997afb362",
+      "createdAt": "2026-03-19T16:01:10.356Z",
+      "step": 1,
+      "choices": {
+        "num_layers": "10",
+        "model_dim": "640",
+        "num_kv_heads": "6",
+        "mlp_mult": "3",
+        "tied_embed_lr": "0.03",
+        "matrix_lr": "0.05",
+        "train_seq_len": "768",
+        "train_batch_tokens": "655360"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.537,
+      "priorScore": 0.34,
+      "compositeScore": 0.43733333333333335,
+      "strategyId": "capacity-stress",
+      "strategyLabel": "Capacity stress",
+      "hypothesis": "Intentionally push the supported upstream knobs toward the edge to learn where runtime or byte collapse begins.",
+      "tags": [
+        "stress",
+        "edge",
+        "capacity-max"
+      ],
+      "riskLevel": "high",
+      "shellEnv": "DATA_PATH=./data/datasets/fineweb10B_sp1024 \\\nTOKENIZER_PATH=./data/tokenizers/fineweb_1024_bpe.model \\\nVOCAB_SIZE=1024 \\\nNUM_HEADS=8 \\\nTIE_EMBEDDINGS=1 \\\nVAL_LOSS_EVERY=200 \\\nMAX_WALLCLOCK_SECONDS=600 \\\nRUN_ID=board-24b997afb362 \\\nNUM_LAYERS=10 \\\nMODEL_DIM=640 \\\nNUM_KV_HEADS=6 \\\nMLP_MULT=3 \\\nTIED_EMBED_LR=0.03 \\\nMATRIX_LR=0.05 \\\nTRAIN_SEQ_LEN=768 \\\nTRAIN_BATCH_TOKENS=655360",
+      "command": "torchrun --standalone --nproc_per_node=1 train_gpt.py",
+      "status": "proposed"
+    }
+  ]
+}

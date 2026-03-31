@@ -1,0 +1,8 @@
+{
+  "tasksDir": "../../../../../riatzukiza/promethean/docs/agile/tasks",
+  "boardFile": "../.kanban/ussyverse-board.json",
+  "trello": {
+    "boardUrl": "https://trello.com/b/Mu2BmeDE/ussyverse",
+    "archiveMissing": false
+  }
+}

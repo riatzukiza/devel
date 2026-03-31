@@ -1,0 +1,50 @@
+services:
+  voxx:
+    container_name: openhax-voxx
+    image: ${VOXX_IMAGE:-openhax/voxx:compose}
+    build:
+      context: ../..
+      dockerfile: services/voxx/Dockerfile.compose
+    env_file:
+      - .env.example
+    environment:
+      VOICE_GATEWAY_API_KEY: ${VOICE_GATEWAY_API_KEY:-dev-token}
+      VOICE_GATEWAY_DATA_DIR: /app/data
+      VOICE_GATEWAY_HOST: 0.0.0.0
+      VOICE_GATEWAY_PORT: 8788
+      VOICE_GATEWAY_TTS_BACKEND_ORDER: ${VOICE_GATEWAY_TTS_BACKEND_ORDER:-}
+      VOICE_GATEWAY_TTS_REMOTE_TIMEOUT_SECONDS: ${VOICE_GATEWAY_TTS_REMOTE_TIMEOUT_SECONDS:-45}
+      REQUESTY_API_TOKEN: ${REQUESTY_API_TOKEN:-}
+      REQUESTY_TTS_BASE_URL: ${REQUESTY_TTS_BASE_URL:-https://router.requesty.ai/v1/audio/speech}
+      REQUESTY_TTS_MODEL: ${REQUESTY_TTS_MODEL:-openai/gpt-4o-mini-tts}
+      REQUESTY_TTS_VOICE: ${REQUESTY_TTS_VOICE:-ash}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_TTS_BASE_URL: ${OPENAI_TTS_BASE_URL:-https://api.openai.com/v1/audio/speech}
+      OPENAI_TTS_MODEL: ${OPENAI_TTS_MODEL:-gpt-4o-mini-tts}
+      OPENAI_TTS_VOICE: ${OPENAI_TTS_VOICE:-ash}
+      ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY:-}
+      ELEVENLABS_TTS_BASE_URL: ${ELEVENLABS_TTS_BASE_URL:-https://api.elevenlabs.io/v1}
+      ELEVENLABS_TTS_MODEL: ${ELEVENLABS_TTS_MODEL:-eleven_turbo_v2_5}
+      ELEVENLABS_VOICE_ID: ${ELEVENLABS_VOICE_ID:-}
+      TTS_POSTPROCESS_ENABLED: ${TTS_POSTPROCESS_ENABLED:-1}
+      TTS_POSTPROCESS_PROFILE: ${TTS_POSTPROCESS_PROFILE:-sports-commentator-v1}
+    ports:
+      - "${VOXX_BIND_HOST:-127.0.0.1}:${VOXX_PORT:-8788}:8788"
+    volumes:
+      - voxx-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import json, urllib.request; data = json.load(urllib.request.urlopen('http://127.0.0.1:8788/healthz')); assert data['ok'] is True and data['service'] == 'voxx'",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  voxx-data:

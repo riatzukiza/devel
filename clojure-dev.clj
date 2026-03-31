@@ -9,7 +9,6 @@
 (def config
   {:jvm-repl-port 7888
    :cljs-repl-port 9000
-   :mcp-port 7888
    :shadow-port 9000
    :projects
    {:clojure-mcp {:type :jvm :path "clojure-mcp"}
@@ -31,13 +30,6 @@
   [port]
   (println (str "🌐 Starting ClojureScript REPL on port " port "..."))
   (p/process ["shadow-cljs" "cljs-repl" "--port" (str port)]
-             {:inherit true}))
-
-(defn start-mcp-server
-  "Start Clojure-MCP server"
-  []
-  (println "🔌 Starting Clojure-MCP server...")
-  (p/process ["clojure" "-X:mcp"]
              {:inherit true}))
 
 (defn start-shadow-watch
@@ -91,7 +83,6 @@
                    (start-jvm-repl (:jvm-repl-port config))
                    (Thread/sleep 2000)
                    (start-cljs-repl (:cljs-repl-port config)))
-      "mcp" (start-mcp-server)
       "shadow" (start-shadow-watch)
       "build" (build-all)
       "clean" (clean-all)
@@ -99,8 +90,6 @@
       "list" (list-projects)
       "dev-all" (do
                   (println "🚀 Starting full development environment...")
-                  (future (start-mcp-server))
-                  (Thread/sleep 2000)
                   (future (start-shadow-watch))
                   (Thread/sleep 2000)
                   (start-jvm-repl (:jvm-repl-port config)))
@@ -113,7 +102,6 @@
         (println "  repl-jvm    - Start JVM REPL")
         (println "  repl-cljs   - Start ClojureScript REPL") 
         (println "  repl-all    - Start both JVM and CLJS REPLs")
-        (println "  mcp         - Start Clojure-MCP server")
         (println "  shadow      - Start Shadow-CLJS watch")
         (println "  build       - Build all ClojureScript projects")
         (println "  clean       - Clean all build artifacts")
