@@ -1,0 +1,258 @@
+services:
+  radar-db:
+    image: postgres:16-bookworm
+    environment:
+      POSTGRES_DB: threat_radar
+      POSTGRES_USER: threat_radar
+      POSTGRES_PASSWORD: threat_radar
+    volumes:
+      - radar-db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - default
+
+  radar-mcp:
+    build:
+      context: ../../threat-radar-deploy
+      dockerfile: ../services/radar-stack/Dockerfile.threat-radar-mcp
+    depends_on:
+      - radar-db
+    environment:
+      NODE_ENV: production
+      PORT: "10002"
+      PUBLIC_BASE_URL: https://radar.promethean.rest
+      ADMIN_AUTH_KEY: ${RADAR_ADMIN_AUTH_KEY}
+      DATABASE_URL: postgresql://threat_radar:threat_radar@radar-db:5432/threat_radar
+      REDIS_URL: redis://redis:6379
+      JETSTREAM_ENABLED: ${JETSTREAM_ENABLED:-true}
+      JETSTREAM_URL: ${JETSTREAM_URL:-wss://jetstream2.us-east.bsky.network/subscribe}
+      ATPROTO_SERVICE: ${ATPROTO_SERVICE:-https://public.api.bsky.app}
+      ALLOW_UNAUTH_LOCAL: "true"
+      FEDERATION_INSTANCE_NAME: radar.promethean.rest
+    ports:
+      - "127.0.0.1:10002:10002"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    networks:
+      default: {}
+      ai-infra:
+        aliases:
+          - radar-mcp
+
+  radar-web:
+    build:
+      context: ../../threat-radar-deploy
+      dockerfile: ../services/radar-stack/Dockerfile.threat-radar-web
+      args:
+        VITE_API_URL: ""
+    depends_on:
+      - radar-mcp
+    ports:
+      - "127.0.0.1:10003:80"
+    restart: unless-stopped
+    networks:
+      default: {}
+      ai-infra:
+        aliases:
+          - radar-web
+
+  hormuz-clock-mcp:
+    image: node:22-bookworm-slim
+    working_dir: /workspace/orgs/riatzukiza/hormuz-clock-mcp
+    environment:
+      NODE_ENV: production
+      PORT: "10001"
+      PUBLIC_BASE_URL: http://127.0.0.1:10001
+      ADMIN_AUTH_KEY: ${HORMUZ_MCP_ADMIN_AUTH_KEY}
+      HORMUZ_THREAD_ID: hormuz
+      ALLOW_UNAUTH_LOCAL: "true"
+    command: >-
+      bash -lc "corepack enable && corepack prepare pnpm@10.14.0 --activate &&
+      pnpm --dir /workspace install --no-frozen-lockfile --filter @riatzukiza/hormuz-clock-mcp... &&
+      cd /workspace/orgs/riatzukiza/hormuz-clock-mcp &&
+      node --import tsx src/main.ts"
+    volumes:
+      - ../..:/workspace
+    ports:
+      - "127.0.0.1:10001:10001"
+    restart: unless-stopped
+    networks:
+      - default
+
+  chroma:
+    image: chromadb/chroma:latest
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      IS_PERSISTENT: "TRUE"
+      PERSIST_DIRECTORY: /chroma/chroma
+    volumes:
+      - ../openplanner/openplanner-lake/chroma:/chroma/chroma
+    restart: unless-stopped
+    networks:
+      - default
+      - ai-infra
+
+  openplanner:
+    build:
+      context: ../openplanner
+      dockerfile: Dockerfile
+    depends_on:
+      - chroma
+    environment:
+      NODE_ENV: production
+      OPENPLANNER_HOST: 0.0.0.0
+      OPENPLANNER_PORT: "7777"
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY}
+      OPENPLANNER_DATA_DIR: /app/openplanner-lake
+      CHROMA_URL: http://chroma:8000
+      CHROMA_COLLECTION: openplanner_events_v1
+      OLLAMA_BASE_URL: http://host.docker.internal:8789
+      OLLAMA_API_KEY: ${PROXY_AUTH_TOKEN}
+      OLLAMA_EMBED_MODEL: qwen3-embedding:0.6b
+    volumes:
+      - ../openplanner/openplanner-lake:/app/openplanner-lake
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "127.0.0.1:7777:7777"
+    restart: unless-stopped
+    networks:
+      default: {}
+      ai-infra:
+        aliases:
+          - openplanner
+
+  redis:
+    image: redislabs/redismod
+    restart: unless-stopped
+    networks:
+      - default
+
+  mcp-stack:
+    build:
+      context: ../mcp-stack
+      dockerfile: Dockerfile
+    depends_on:
+      - redis
+      - openplanner
+    environment:
+      WORKSPACE_ROOT: /workspace
+      MCP_ROOT_PATH: /workspace
+      LOCAL_ROOT: /workspace
+      API_GATEWAY_PORT: "8788"
+      OPENPLANNER_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY}
+      OPENPLANNER_API_BASE_URL: http://127.0.0.1:8788/api/openplanner
+      WORKSPACE_API_BASE_URL: http://127.0.0.1:8788/api/workspace
+      OPENCODE_API_BASE_URL: http://127.0.0.1:8788/api/opencode
+      OPENCODE_URL: http://host.docker.internal:4096
+      OPENCODE_USERNAME: opencode
+      OPENCODE_PASSWORD: ""
+      OPENCODE_API_KEY: ""
+      WORKSPACE_API_KEY: ""
+      GH_TOKEN: ${GH_TOKEN:-}
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      GITHUB_REPO_TOKEN: ${GITHUB_TOKEN:-}
+      MCP_INTERNAL_SHARED_SECRET: ${MCP_INTERNAL_SHARED_SECRET}
+      OAUTH_OPAQUE_SHARED_SECRET: ${MCP_INTERNAL_SHARED_SECRET}
+      REDIS_URL: redis://redis:6379
+      OAUTH_REDIS_URL: redis://redis:6379
+      OWNER_PASSWORD: ${OWNER_PASSWORD}
+      ALLOW_UNAUTH_LOCAL: "true"
+      AUTO_APPROVE: "true"
+      OAUTH_ENABLED: "false"
+      OAUTH_ISSUER: http://127.0.0.1:3001
+      OAUTH_AUDIENCE: api-gateway
+      OAUTH_TOKEN_STRATEGY: opaque
+      OAUTH_OPAQUE_VERIFIER: redis
+      OAUTH_OPAQUE_INTROSPECTION_URL: http://127.0.0.1:3001/internal/oauth/introspect
+      OAUTH_REDIS_PREFIX: oauth-stable
+      OAUTH_REDIS_PREFIX_DEV: oauth-dev
+      OAUTH_DUCKDB_OWNER: "true"
+      OAUTH_DUCKDB_OWNER_DEV: "false"
+      OAUTH_DUCKDB_LOCK_TTL_SECONDS: "30"
+      ALLOWED_HOSTS: localhost,127.0.0.1,host.docker.internal,mcp-stack,radar.promethean.rest
+      MCP_EXEC_CONFIG: /workspace/orgs/riatzukiza/promethean/promethean.mcp.exec.json
+      MCP_FS_OAUTH_URL: http://127.0.0.1:3001
+      MCP_FS_OAUTH_DEV_URL: http://127.0.0.1:3002
+      MCP_FS_OAUTH_PUBLIC_BASE_URL: http://127.0.0.1:3001
+      MCP_FS_OAUTH_DEV_PUBLIC_BASE_URL: http://127.0.0.1:3002
+      PART64_LITH_MCP_URL: http://host.docker.internal:8794
+    volumes:
+      - ../..:/workspace
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "127.0.0.1:8790:8788"
+      - "127.0.0.1:3001:3001"
+      - "127.0.0.1:3002:3002"
+      - "127.0.0.1:4011:4011"
+      - "127.0.0.1:4012:4012"
+      - "127.0.0.1:4013:4013"
+      - "127.0.0.1:4014:4014"
+      - "127.0.0.1:4015:4015"
+      - "127.0.0.1:4016:4016"
+      - "127.0.0.1:4017:4017"
+      - "127.0.0.1:4018:4018"
+      - "127.0.0.1:4020:4020"
+    restart: unless-stopped
+    networks:
+      default: {}
+      ai-infra:
+        aliases:
+          - mcp-stack
+
+  fork-tales-weaver:
+    image: node:22-bookworm-slim
+    working_dir: /workspace/orgs/octave-commons/fork_tales/part64/code
+    command: >-
+      bash -lc "npm install ../../../../orgs/open-hax/openhax/packages/signal-source-utils ../../../../orgs/open-hax/openhax/packages/signal-watchlists && npm install && node web_graph_weaver.js"
+    environment:
+      WEAVER_HOST: 0.0.0.0
+      WEAVER_PORT: "8793"
+      WEAVER_LLM_ENABLED: "0"
+      WEAVER_CONCURRENCY: "8"
+      WEAVER_ENTITY_COUNT: "8"
+      WEAVER_MAX_REQUESTS_PER_HOST: "8"
+      WEAVER_WORLD_WATCHLIST_PATH: /workspace/services/radar-stack/watchlists/hormuz-watchlist.json
+      WEAVER_CRAWL_AUTOSTART: "1"
+    volumes:
+      - ../..:/workspace
+    ports:
+      - "127.0.0.1:8793:8793"
+    restart: unless-stopped
+    networks:
+      default: {}
+      ai-infra:
+        aliases:
+          - fork-tales-weaver
+
+  hormuz-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile.hormuz-agent
+    depends_on:
+      - radar-mcp
+    environment:
+      WORKSPACE_ROOT: /workspace
+      RADAR_API_URL: http://radar-mcp:10002
+      RADAR_ADMIN_AUTH_KEY: ${RADAR_ADMIN_AUTH_KEY}
+      HORMUZ_RUN_INTERVAL_SECONDS: ${HORMUZ_RUN_INTERVAL_SECONDS:-3600}
+      HORMUZ_BLUESKY_QUERY: ${HORMUZ_BLUESKY_QUERY:-Hormuz}
+      HORMUZ_REDDIT_SUBREDDITS: ${HORMUZ_REDDIT_SUBREDDITS:-geopolitics,worldnews,oil,shipping,navy}
+      HORMUZ_SKIP_SOCIAL_COLLECTION: ${HORMUZ_SKIP_SOCIAL_COLLECTION:-false}
+    volumes:
+      - ../..:/workspace
+    restart: unless-stopped
+    networks:
+      - default
+
+volumes:
+  radar-db-data:
+
+networks:
+  ai-infra:
+    external: true
+    name: ai-infra

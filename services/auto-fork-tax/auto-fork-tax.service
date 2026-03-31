@@ -1,0 +1,10 @@
+[Unit]
+Description=Pi auto fork-tax cycle
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=%h/.config/auto-fork-tax/env
+WorkingDirectory=%h/devel
+ExecStart=/usr/bin/env bash -lc 'pnpm tsx src/auto-fork-tax/cli.ts cycle --root "$AUTO_FORK_TAX_ROOT" --apply --review --post-comment'

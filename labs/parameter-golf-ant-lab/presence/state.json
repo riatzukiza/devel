@@ -1,0 +1,295 @@
+{
+  "version": 1,
+  "profileId": "presence",
+  "objective": "presence",
+  "step": 1,
+  "pheromones": {
+    "backbone_family": {
+      "tiny-lm": 1,
+      "recurrent-tied": 1,
+      "shared-lens": 1,
+      "pruned-supernet": 1
+    },
+    "graph_serializer": {
+      "flat-events": 1,
+      "resource-edges": 1,
+      "presence-needs": 1,
+      "hybrid-state": 1
+    },
+    "instruction_mix": {
+      "none": 1,
+      "graph-light": 1,
+      "graph-medium": 1,
+      "graph-heavy": 1
+    },
+    "safety_mix": {
+      "none": 1,
+      "boundary-light": 1,
+      "boundary-medium": 1,
+      "boundary-heavy": 1
+    },
+    "classifier_head": {
+      "none": 1,
+      "linear": 1,
+      "mlp": 1
+    },
+    "lens_count": {
+      "1": 1,
+      "2": 1,
+      "4": 1
+    },
+    "quant_recipe": {
+      "int8-row": 1,
+      "int8-row-fp16-ctrl": 1,
+      "aggressive-int8": 1
+    }
+  },
+  "candidates": [
+    {
+      "id": "0e615a6bf1be",
+      "createdAt": "2026-03-19T16:01:11.454Z",
+      "step": 1,
+      "choices": {
+        "backbone_family": "recurrent-tied",
+        "graph_serializer": "hybrid-state",
+        "instruction_mix": "graph-medium",
+        "safety_mix": "boundary-medium",
+        "classifier_head": "linear",
+        "lens_count": "1",
+        "quant_recipe": "int8-row-fp16-ctrl"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.812,
+      "priorScore": 0.84,
+      "compositeScore": 0.7373333333333334,
+      "strategyId": "portable-witness",
+      "strategyLabel": "Portable Witness",
+      "hypothesis": "A single-lens recurrent witness may be the smallest graph-literate safe Presence that still feels coherent.",
+      "tags": [
+        "witness",
+        "portable",
+        "core"
+      ],
+      "riskLevel": "low",
+      "shellEnv": "RUN_ID=presence-0e615a6bf1be",
+      "command": "# research profile: candidate recipes are conceptual until the Presence training/eval loop is wired",
+      "status": "proposed"
+    },
+    {
+      "id": "1f67836223a2",
+      "createdAt": "2026-03-19T16:01:11.454Z",
+      "step": 1,
+      "choices": {
+        "backbone_family": "shared-lens",
+        "graph_serializer": "resource-edges",
+        "instruction_mix": "graph-light",
+        "safety_mix": "boundary-heavy",
+        "classifier_head": "linear",
+        "lens_count": "2",
+        "quant_recipe": "int8-row-fp16-ctrl"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.7955000000000001,
+      "priorScore": 0.81,
+      "compositeScore": 0.7193333333333334,
+      "strategyId": "sentinel-lens",
+      "strategyLabel": "Sentinel lens",
+      "hypothesis": "A shared trunk with a stronger safety lens may yield a small sentinel that refuses destabilizing asks without losing graph awareness.",
+      "tags": [
+        "sentinel",
+        "shared-lens",
+        "safety"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "RUN_ID=presence-1f67836223a2",
+      "command": "# research profile: candidate recipes are conceptual until the Presence training/eval loop is wired",
+      "status": "proposed"
+    },
+    {
+      "id": "4cf05796bb61",
+      "createdAt": "2026-03-19T16:01:11.454Z",
+      "step": 1,
+      "choices": {
+        "backbone_family": "shared-lens",
+        "graph_serializer": "presence-needs",
+        "instruction_mix": "graph-heavy",
+        "safety_mix": "boundary-light",
+        "classifier_head": "mlp",
+        "lens_count": "2",
+        "quant_recipe": "int8-row"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.768,
+      "priorScore": 0.76,
+      "compositeScore": 0.6893333333333334,
+      "strategyId": "router-dual",
+      "strategyLabel": "Router dual",
+      "hypothesis": "A dual-lens router may trade some safety margin for better routing and triage recommendations over need-heavy graph states.",
+      "tags": [
+        "router",
+        "triage",
+        "dual-lens"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "RUN_ID=presence-4cf05796bb61",
+      "command": "# research profile: candidate recipes are conceptual until the Presence training/eval loop is wired",
+      "status": "proposed"
+    },
+    {
+      "id": "f86b76e7cb0c",
+      "createdAt": "2026-03-19T16:01:11.454Z",
+      "step": 1,
+      "choices": {
+        "backbone_family": "shared-lens",
+        "graph_serializer": "hybrid-state",
+        "instruction_mix": "graph-medium",
+        "safety_mix": "boundary-medium",
+        "classifier_head": "linear",
+        "lens_count": "4",
+        "quant_recipe": "int8-row-fp16-ctrl"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.7515000000000001,
+      "priorScore": 0.73,
+      "compositeScore": 0.6713333333333333,
+      "strategyId": "small-choir",
+      "strategyLabel": "Small Choir",
+      "hypothesis": "Several tiny role lenses over one trunk may preserve the Presence mythology without exploding bytes as badly as separate models.",
+      "tags": [
+        "choir",
+        "multi-lens",
+        "specialization"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "RUN_ID=presence-f86b76e7cb0c",
+      "command": "# research profile: candidate recipes are conceptual until the Presence training/eval loop is wired",
+      "status": "proposed"
+    },
+    {
+      "id": "84f779449628",
+      "createdAt": "2026-03-19T16:01:11.454Z",
+      "step": 1,
+      "choices": {
+        "backbone_family": "tiny-lm",
+        "graph_serializer": "flat-events",
+        "instruction_mix": "graph-light",
+        "safety_mix": "boundary-medium",
+        "classifier_head": "linear",
+        "lens_count": "1",
+        "quant_recipe": "aggressive-int8"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.7295,
+      "priorScore": 0.69,
+      "compositeScore": 0.6473333333333333,
+      "strategyId": "last-clerk",
+      "strategyLabel": "Last Clerk",
+      "hypothesis": "A brutally small event-reader may still be enough for terse explanation and safe refusal in emergency operator workflows.",
+      "tags": [
+        "clerk",
+        "event-reader",
+        "tiny"
+      ],
+      "riskLevel": "low",
+      "shellEnv": "RUN_ID=presence-84f779449628",
+      "command": "# research profile: candidate recipes are conceptual until the Presence training/eval loop is wired",
+      "status": "proposed"
+    },
+    {
+      "id": "75135a320178",
+      "createdAt": "2026-03-19T16:01:11.454Z",
+      "step": 1,
+      "choices": {
+        "backbone_family": "pruned-supernet",
+        "graph_serializer": "hybrid-state",
+        "instruction_mix": "graph-medium",
+        "safety_mix": "boundary-heavy",
+        "classifier_head": "mlp",
+        "lens_count": "2",
+        "quant_recipe": "aggressive-int8"
+      },
+      "novelty": 1,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.6140000000000001,
+      "priorScore": 0.48,
+      "compositeScore": 0.5213333333333333,
+      "strategyId": "supernet-myth",
+      "strategyLabel": "Supernet myth",
+      "hypothesis": "A supernet-prune route is risky but may unlock the most novel Presence family if the ant search can find a survivable export path.",
+      "tags": [
+        "supernet",
+        "pruning",
+        "mythic"
+      ],
+      "riskLevel": "high",
+      "shellEnv": "RUN_ID=presence-75135a320178",
+      "command": "# research profile: candidate recipes are conceptual until the Presence training/eval loop is wired",
+      "status": "proposed"
+    },
+    {
+      "id": "75fdb52e2af3",
+      "createdAt": "2026-03-19T16:01:11.454Z",
+      "step": 1,
+      "choices": {
+        "backbone_family": "tiny-lm",
+        "graph_serializer": "resource-edges",
+        "instruction_mix": "graph-light",
+        "safety_mix": "boundary-medium",
+        "classifier_head": "none",
+        "lens_count": "4",
+        "quant_recipe": "int8-row-fp16-ctrl"
+      },
+      "novelty": 0.47619047619047616,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.4983428571428572,
+      "priorScore": 0.5554285714285715,
+      "compositeScore": 0.4880190476190476,
+      "strategyId": null,
+      "strategyLabel": "free-ant≈Sentinel lens",
+      "hypothesis": "Explore an unseeded path suggested by current pheromones and under-covered values.",
+      "tags": [
+        "free-ant"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "RUN_ID=presence-75fdb52e2af3",
+      "command": "# research profile: candidate recipes are conceptual until the Presence training/eval loop is wired",
+      "status": "proposed"
+    },
+    {
+      "id": "19e0cd2368d0",
+      "createdAt": "2026-03-19T16:01:11.454Z",
+      "step": 1,
+      "choices": {
+        "backbone_family": "tiny-lm",
+        "graph_serializer": "resource-edges",
+        "instruction_mix": "graph-medium",
+        "safety_mix": "boundary-heavy",
+        "classifier_head": "mlp",
+        "lens_count": "4",
+        "quant_recipe": "int8-row-fp16-ctrl"
+      },
+      "novelty": 0.30238095238095236,
+      "pheromoneScore": 1,
+      "heuristicScore": 0.44620000000000004,
+      "priorScore": 0.5554285714285715,
+      "compositeScore": 0.46194761904761905,
+      "strategyId": null,
+      "strategyLabel": "free-ant≈Sentinel lens",
+      "hypothesis": "Explore an unseeded path suggested by current pheromones and under-covered values.",
+      "tags": [
+        "free-ant"
+      ],
+      "riskLevel": "medium",
+      "shellEnv": "RUN_ID=presence-19e0cd2368d0",
+      "command": "# research profile: candidate recipes are conceptual until the Presence training/eval loop is wired",
+      "status": "proposed"
+    }
+  ],
+  "evaluations": [],
+  "bestCandidateId": null
+}

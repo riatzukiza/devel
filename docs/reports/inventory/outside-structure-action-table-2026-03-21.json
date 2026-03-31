@@ -1,0 +1,261 @@
+{
+  "generatedAt": "2026-03-21T21:29:45Z",
+  "policyRef": "docs/reference/outside-structure-exception-policy.md",
+  "records": [
+    {
+      "path": "desktop",
+      "group": "root-module",
+      "action": "keep",
+      "exceptionClass": "compatibility-alias",
+      "why": "Still actively referenced by launcher, desktop entry, and docs/manifests.",
+      "reevaluateWhen": "If launcher/docs migrate to orgs/riatzukiza/desktop and active references fall away.",
+      "notes": []
+    },
+    {
+      "path": "promethean",
+      "group": "root-module",
+      "action": "keep",
+      "exceptionClass": "compatibility-alias",
+      "why": "Heavy active dependency in shadow-cljs paths, PM2 parity tests, and docs.",
+      "reevaluateWhen": "If source-path/test/docs references are rewritten to orgs/riatzukiza/promethean.",
+      "notes": []
+    },
+    {
+      "path": "pm2-clj-project",
+      "group": "root-module",
+      "action": "explicit-exception",
+      "exceptionClass": "root-tooling-exception",
+      "why": "Active workspace tooling fixture but no agreed long-term structured home yet.",
+      "reevaluateWhen": "When its long-term home is chosen under packages/* or an org repo.",
+      "notes": []
+    },
+    {
+      "path": "reconstitute",
+      "group": "root-module",
+      "action": "explicit-exception",
+      "exceptionClass": "root-tooling-exception",
+      "why": "Active root CLI/tooling entrypoint referenced by scripts, commands, and skills.",
+      "reevaluateWhen": "When the tooling home is settled and compatibility command paths can be preserved elsewhere.",
+      "notes": []
+    },
+    {
+      "path": "reconstitute-mcp",
+      "group": "root-module",
+      "action": "normalize",
+      "exceptionClass": "planning-bundle",
+      "why": "Reads more like experimental/documented surface nested under reconstitute than a stable standalone root.",
+      "reevaluateWhen": "Once the MCP surface is either folded into reconstitute docs or promoted into a real package/service.",
+      "notes": []
+    },
+    {
+      "path": "mcp-social-publisher-live",
+      "group": "root-module",
+      "action": "normalize",
+      "exceptionClass": "standalone-source-deploy-root-pending-placement",
+      "why": "Active live deploy/source root should eventually get a canonical structured home.",
+      "reevaluateWhen": "When its placement under packages/services/orgs is decided and live deployment is repointed.",
+      "notes": []
+    },
+    {
+      "path": "threat-radar-deploy",
+      "group": "root-module",
+      "action": "normalize",
+      "exceptionClass": "standalone-source-deploy-root-pending-placement",
+      "why": "User explicitly directed that all threat-radar-related work normalize into orgs/open-hax/eta-mu-radar.",
+      "reevaluateWhen": "When canonical source is moved or mirrored into orgs/open-hax/eta-mu-radar and runtime/deploy references are updated.",
+      "notes": [
+        "Target canonical home: orgs/open-hax/eta-mu-radar",
+        "Product framing should remove threat-centric language and emphasize authorship/agency/mutual self-interest."
+      ]
+    },
+    {
+      "path": "verathar-server",
+      "group": "root-module",
+      "action": "explicit-exception",
+      "exceptionClass": "foreign-fork-vendor-mirror",
+      "why": "Currently mostly bookkeeping; no strong active integration pressure justifies a forced move.",
+      "reevaluateWhen": "If active product work resumes or the repo becomes more than a preserved absorbed root.",
+      "notes": []
+    },
+    {
+      "path": "threat-radar-next-step",
+      "group": "root-module",
+      "action": "normalize",
+      "exceptionClass": "planning-bundle",
+      "why": "User explicitly directed that all threat-radar-related work, including planning bundles, consolidate into orgs/open-hax/eta-mu-radar.",
+      "reevaluateWhen": "When the useful planning/spec content is folded into orgs/open-hax/eta-mu-radar docs/specs and the standalone bundle becomes redundant.",
+      "notes": [
+        "Fold into orgs/open-hax/eta-mu-radar as planning/docs material rather than leave as a separate root bundle."
+      ]
+    },
+    {
+      "path": "bevy_replicon",
+      "group": "root-module",
+      "action": "explicit-exception",
+      "exceptionClass": "foreign-fork-vendor-mirror",
+      "why": "Mostly preserved through bookkeeping artifacts, not active workspace integration.",
+      "reevaluateWhen": "If a dedicated vendor/forks area is created or the fork ceases to matter.",
+      "notes": []
+    },
+    {
+      "path": "egregoria",
+      "group": "root-module",
+      "action": "explicit-exception",
+      "exceptionClass": "foreign-fork-vendor-mirror",
+      "why": "Mostly preserved through bookkeeping artifacts, not active workspace integration.",
+      "reevaluateWhen": "If a dedicated vendor/forks area is created or the fork ceases to matter.",
+      "notes": []
+    },
+    {
+      "path": "game_network",
+      "group": "root-module",
+      "action": "explicit-exception",
+      "exceptionClass": "foreign-fork-vendor-mirror",
+      "why": "Mostly preserved through bookkeeping artifacts, not active workspace integration.",
+      "reevaluateWhen": "If a dedicated vendor/forks area is created or the fork ceases to matter.",
+      "notes": []
+    },
+    {
+      "path": "ggrs",
+      "group": "root-module",
+      "action": "explicit-exception",
+      "exceptionClass": "foreign-fork-vendor-mirror",
+      "why": "Mostly preserved through bookkeeping artifacts, not active workspace integration.",
+      "reevaluateWhen": "If a dedicated vendor/forks area is created or the fork ceases to matter.",
+      "notes": []
+    },
+    {
+      "path": "lightyear",
+      "group": "root-module",
+      "action": "explicit-exception",
+      "exceptionClass": "foreign-fork-vendor-mirror",
+      "why": "Mostly preserved through bookkeeping artifacts, not active workspace integration.",
+      "reevaluateWhen": "If a dedicated vendor/forks area is created or the fork ceases to matter.",
+      "notes": []
+    },
+    {
+      "path": "gates-pr35-hardening-main",
+      "group": "root-module",
+      "action": "explicit-exception",
+      "exceptionClass": "active-special-worktree",
+      "why": "Still referenced by an active skill/workflow as a work/spec source.",
+      "reevaluateWhen": "After the hardening branch merges, is abandoned, or the worktree-specific references are removed.",
+      "notes": []
+    },
+    {
+      "path": "orgs/agustif/codex-linux",
+      "group": "foreign-org",
+      "action": "explicit-exception",
+      "exceptionClass": "foreign-org-exception",
+      "why": "Outside the four-home model by design; reflects foreign upstream or private ownership rather than canonical internal placement.",
+      "reevaluateWhen": "If the repo stops being a foreign/private mirror and becomes a canonical home for your own work.",
+      "notes": []
+    },
+    {
+      "path": "orgs/anomalyco/opencode",
+      "group": "foreign-org",
+      "action": "explicit-exception",
+      "exceptionClass": "foreign-org-exception",
+      "why": "Outside the four-home model by design; reflects foreign upstream or private ownership rather than canonical internal placement.",
+      "reevaluateWhen": "If the repo stops being a foreign/private mirror and becomes a canonical home for your own work.",
+      "notes": []
+    },
+    {
+      "path": "orgs/badlogic/pi-mono",
+      "group": "foreign-org",
+      "action": "explicit-exception",
+      "exceptionClass": "foreign-org-exception",
+      "why": "Outside the four-home model by design; reflects foreign upstream or private ownership rather than canonical internal placement.",
+      "reevaluateWhen": "If the repo stops being a foreign/private mirror and becomes a canonical home for your own work.",
+      "notes": []
+    },
+    {
+      "path": "orgs/kcrommett/oc-manager",
+      "group": "foreign-org",
+      "action": "explicit-exception",
+      "exceptionClass": "foreign-org-exception",
+      "why": "Outside the four-home model by design; reflects foreign upstream or private ownership rather than canonical internal placement.",
+      "reevaluateWhen": "If the repo stops being a foreign/private mirror and becomes a canonical home for your own work.",
+      "notes": []
+    },
+    {
+      "path": "orgs/moofone/codex-ts-sdk",
+      "group": "foreign-org",
+      "action": "explicit-exception",
+      "exceptionClass": "foreign-org-exception",
+      "why": "Outside the four-home model by design; reflects foreign upstream or private ownership rather than canonical internal placement.",
+      "reevaluateWhen": "If the repo stops being a foreign/private mirror and becomes a canonical home for your own work.",
+      "notes": []
+    },
+    {
+      "path": "orgs/openai/codex",
+      "group": "foreign-org",
+      "action": "explicit-exception",
+      "exceptionClass": "foreign-org-exception",
+      "why": "Outside the four-home model by design; reflects foreign upstream or private ownership rather than canonical internal placement.",
+      "reevaluateWhen": "If the repo stops being a foreign/private mirror and becomes a canonical home for your own work.",
+      "notes": []
+    },
+    {
+      "path": "orgs/openai/parameter-golf",
+      "group": "foreign-org",
+      "action": "explicit-exception",
+      "exceptionClass": "foreign-org-exception",
+      "why": "Outside the four-home model by design; reflects foreign upstream or private ownership rather than canonical internal placement.",
+      "reevaluateWhen": "If the repo stops being a foreign/private mirror and becomes a canonical home for your own work.",
+      "notes": []
+    },
+    {
+      "path": "orgs/shuv/codex-desktop-linux",
+      "group": "foreign-org",
+      "action": "explicit-exception",
+      "exceptionClass": "foreign-org-exception",
+      "why": "Outside the four-home model by design; reflects foreign upstream or private ownership rather than canonical internal placement.",
+      "reevaluateWhen": "If the repo stops being a foreign/private mirror and becomes a canonical home for your own work.",
+      "notes": []
+    },
+    {
+      "path": "orgs/private/snorkel-ai",
+      "group": "foreign-org",
+      "action": "explicit-exception",
+      "exceptionClass": "private-org-exception",
+      "why": "Outside the four-home model by design; reflects foreign upstream or private ownership rather than canonical internal placement.",
+      "reevaluateWhen": "If the repo stops being a foreign/private mirror and becomes a canonical home for your own work.",
+      "notes": []
+    },
+    {
+      "path": "projects",
+      "group": "aggregation-tree",
+      "action": "explicit-exception",
+      "exceptionClass": "aggregation-projection-tree",
+      "why": "Appears to be a generated/staging/projection area rather than a canonical project home.",
+      "reevaluateWhen": "If the tree becomes obsolete or gets replaced by a more formal workflow area.",
+      "notes": []
+    },
+    {
+      "path": "workspaces",
+      "group": "aggregation-tree",
+      "action": "explicit-exception",
+      "exceptionClass": "aggregation-projection-tree",
+      "why": "Appears to be a generated/staging/projection area rather than a canonical project home.",
+      "reevaluateWhen": "If the tree becomes obsolete or gets replaced by a more formal workflow area.",
+      "notes": []
+    },
+    {
+      "path": "vaults",
+      "group": "aggregation-tree",
+      "action": "explicit-exception",
+      "exceptionClass": "aggregation-projection-tree",
+      "why": "Appears to be a generated/staging/projection area rather than a canonical project home.",
+      "reevaluateWhen": "If the tree becomes obsolete or gets replaced by a more formal workflow area.",
+      "notes": []
+    }
+  ],
+  "counts": {
+    "keep": 2,
+    "normalize": 4,
+    "retire": 0,
+    "explicitException": 21,
+    "total": 27
+  }
+}

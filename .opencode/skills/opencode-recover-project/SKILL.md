@@ -28,6 +28,8 @@ Recover a project or feature by locating OpenCode session artifacts and reconstr
 1. Identify the target scope (feature name, timeframe, repo path).
 2. Use session search to find relevant conversations:
    `pnpm -C packages/reconstituter opencode-sessions search "<query>"`.
+   - This uses OpenPlanner FTS (keyword search). If you need semantic similarity, try:
+     `pnpm -C packages/reconstituter reconstitute search "<query>"`.
 3. Filter to specific sessions with `--session` and inspect message excerpts.
 4. Locate snapshot or diff artifacts referenced by those sessions.
 5. Export or copy diff files into a staging directory.
