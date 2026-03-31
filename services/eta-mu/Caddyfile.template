@@ -1,0 +1,3 @@
+__PUBLIC_HOST__ {
+    reverse_proxy 127.0.0.1:__UPSTREAM_PORT__
+}

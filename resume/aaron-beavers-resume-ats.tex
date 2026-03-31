@@ -1,0 +1,76 @@
+\documentclass[10pt]{article}
+\pagestyle{empty}
+
+% --- tight margins (no geometry dependency)
+\setlength{\topmargin}{-0.6in}
+\setlength{\textheight}{10.3in}
+\setlength{\oddsidemargin}{-0.25in}
+\setlength{\evensidemargin}{-0.25in}
+\setlength{\textwidth}{7.0in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\renewcommand\labelitemi{-}
+
+% (No external LaTeX packages: keep this file buildable on minimal TeX installs)
+
+\begin{document}
+
+{\LARGE \textbf{Aaron Beavers}}\\
+Python Automation / RPA Engineer (Browser Automation + OCR Integration)\\
+
+\vspace{2pt}
+\textbf{CONTACT}\\
+West Des Moines, IA 50265 \;\;\textbar\;\; 515-388-0539 \;\;\textbar\;\; foamy125@gmail.com\\
+GitHub: github.com/riatzukiza
+
+\vspace{6pt}
+\textbf{SUMMARY}\\
+Automation-focused engineer building resilient, production-grade workflows: browser automation, background processing, retries/timeouts, secure file handling, and repeatable pipelines. Integrated a proprietary OCR system into a screenshot product (bounding boxes + click-to-extract text). Extensive recent experience with Playwright/Cypress-style E2E workflows and CI-driven regression prevention. Comfortable with Selenium-era patterns; prefer modern tooling for reliability and debuggability.
+
+\vspace{2pt}
+\textbf{SKILLS}\\
+\textbf{Python}: Django, DRF, Celery, pytest, requests (Retry/backoff), file processing.\\
+\textbf{Browser automation}: Playwright (strong), Cypress (federal/DoD context), Puppeteer (personal), Selenium (legacy).\\
+\textbf{OCR / vision}: OCR feature integration (proprietary engine), bounding boxes, text extraction UX.\\
+\textbf{Reliability}: timeouts, retries/backoff, queue-based async processing, idempotent job design, structured logging/audit trails.\\
+\textbf{DevOps / CI}: Docker Compose, CircleCI, cloud.gov / Cloud Foundry workflows.
+
+\vspace{6pt}
+\textbf{WORK EXPERIENCE}\\
+
+\textbf{Raft Technologies} --- Full Stack Engineer (Python/Django + React) \hfill \textit{Jul 2020 -- Sep 2023}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Built and maintained a 5-stage Celery-based automation pipeline for uploaded-file processing: parse $\rightarrow$ validate $\rightarrow$ summarize $\rightarrow$ generate error reports $\rightarrow$ notify stakeholders; designed for safe failure modes and operational visibility.
+  \item Implemented robust file type + encoding detection (extension fallback, charset detection, magic-based sniffing) to route inputs to correct decoders and reduce manual support burden.
+  \item Developed case-level consistency validation with caching and explicit guardrails to prevent pathological inputs from causing OOM; produced structured validation errors for end users and analysts.
+  \item Integrated anti-malware scanning automation via ClamAV REST using a retrying HTTP session (Retry/backoff + timeouts) and persisted scan outcomes for auditability.
+  \item Supported end-to-end browser automation practice: Cypress E2E (Gherkin feature files + step definitions) and CI execution against deployed environments.
+\end{itemize}
+
+\textbf{CloudApp} --- Full Stack Engineer (Ruby on Rails) \hfill \textit{Sep 2018 -- Feb 2019}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Integrated a proprietary OCR system (Java-based service maintained by an internal team) into a screenshot/screengrab platform.
+  \item Implemented UI workflows to render OCR bounding boxes over screenshots and return recognized text on click, enabling interactive ``text in screenshot'' functionality.
+  \item Applied Selenium-era browser automation patterns to validate user flows and reduce manual regression effort.
+\end{itemize}
+
+\textbf{Additional experience}: 1brand (Full Stack Engineer, 2019--2020); Birdseed (Full Stack Engineer, 2019); Freelance Software Engineer (2014--Present).
+
+\vspace{6pt}
+\textbf{EDUCATION}\\
+Valley Springs High School --- Diploma (2012)
+
+\vspace{2pt}
+\textbf{WORK AUTHORIZATION}\\
+Authorized to work in the U.S. for any employer. Willing to relocate.
+
+
+\end{document}

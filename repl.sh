@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Unified Clojure REPL Launcher
-# Usage: ./repl.sh [jvm|cljs|all] [port]
+# Usage: ./repl.sh [jvm|cljs|all|shadow] [jvm_port] [cljs_port]
 
 set -e
 
@@ -30,14 +30,6 @@ start_cljs_repl() {
     echo "CLJS REPL started with PID: $CLJS_PID"
 }
 
-# Function to start MCP server
-start_mcp() {
-    echo "🔌 Starting Clojure-MCP server..."
-    clojure -X:mcp &
-    MCP_PID=$!
-    echo "MCP server started with PID: $MCP_PID"
-}
-
 # Function to start Shadow-CLJS watch
 start_shadow_watch() {
     echo "👀 Starting Shadow-CLJS watch..."
@@ -64,19 +56,12 @@ case $RUNTIME in
         sleep 2
         start_cljs_repl
         sleep 2
-        start_mcp
-        sleep 2
         start_shadow_watch
         
         echo "✅ All services started!"
         echo "JVM REPL: port $JVM_PORT"
         echo "CLJS REPL: port $CLJS_PORT"
-        echo "MCP Server: port 7888"
         echo "Shadow-CLJS: watching all builds"
-        ;;
-    "mcp")
-        start_mcp
-        echo "✅ MCP server running on port 7888"
         ;;
     "shadow")
         start_shadow_watch
@@ -84,7 +69,7 @@ case $RUNTIME in
         ;;
     *)
         echo "❌ Unknown runtime: $RUNTIME"
-        echo "Usage: $0 [jvm|cljs|all|mcp|shadow] [jvm_port] [cljs_port]"
+        echo "Usage: $0 [jvm|cljs|all|shadow] [jvm_port] [cljs_port]"
         exit 1
         ;;
 esac

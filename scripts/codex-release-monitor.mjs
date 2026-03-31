@@ -111,7 +111,7 @@ async function processWatcher({ watcher, stateEntry, octokit, targetRepo }) {
   const diffPaths = buildDiffArtifacts({ repoDir, baseTag, latestTag, release: latest, watcher });
   const agentResult = runReleaseAgent({ repoDir, watcher, baseTag, latestTag, diffPaths });
 
-  console.log(`[${watcher.id}] Agent impact: ${agentResult.impact}`);
+  console.log(`[${watcher.id}] Agent impact: ${normalizeImpact(agentResult)}`);
   await maybeCreateIssues({
     watcher,
     targetRepo,
@@ -225,6 +225,53 @@ function runReleaseAgent({ repoDir, watcher, baseTag, latestTag, diffPaths }) {
   return parseAgentJson(result.stdout);
 }
 
+function normalizeImpact(agentResult) {
+  if (typeof agentResult?.impact === "string" && agentResult.impact.length > 0) {
+    return agentResult.impact;
+  }
+  if (typeof agentResult?.impactLevel === "string" && agentResult.impactLevel.length > 0) {
+    return agentResult.impactLevel;
+  }
+  return "none";
+}
+
+function normalizeEvidence(agentResult) {
+  const normalized = [];
+  const provided = Array.isArray(agentResult?.evidence) ? agentResult.evidence : [];
+
+  for (const item of provided) {
+    if (typeof item === "string" && item.trim()) {
+      normalized.push({ description: item.trim() });
+    } else if (item?.path || item?.description) {
+      normalized.push({
+        path: item.path || "",
+        description: item.description || item.path || "evidence"
+      });
+    }
+  }
+
+  if (normalized.length > 0) {
+    return normalized;
+  }
+
+  const findings = Array.isArray(agentResult?.findings) ? agentResult.findings : [];
+  for (const finding of findings) {
+    const evidence = Array.isArray(finding?.evidence) ? finding.evidence : [];
+    for (const entry of evidence) {
+      if (typeof entry === "string" && entry.trim()) {
+        normalized.push({ description: entry.trim() });
+      } else if (entry?.path || entry?.description) {
+        normalized.push({
+          path: entry.path || "",
+          description: entry.description || entry.path || "evidence"
+        });
+      }
+    }
+  }
+
+  return normalized;
+}
+
 async function maybeCreateIssues({ watcher, targetRepo, release, baseTag, agentResult, octokit }) {
   const issues = normalizeIssues(agentResult);
   if (issues.length === 0) {
@@ -232,7 +279,8 @@ async function maybeCreateIssues({ watcher, targetRepo, release, baseTag, agentR
   }
 
   const workflowUrl = buildWorkflowUrl();
-  const evidenceSection = buildEvidenceSection(agentResult.evidence ?? []);
+  const normalizedImpact = normalizeImpact(agentResult);
+  const evidenceSection = buildEvidenceSection(normalizeEvidence(agentResult));
 
   for (const issue of issues) {
     const titlePrefix = watcher.issueTitlePrefix ?? `[${watcher.repo.owner}/${watcher.repo.name}]`;
@@ -255,7 +303,7 @@ async function maybeCreateIssues({ watcher, targetRepo, release, baseTag, agentR
       repo: targetRepo.name,
       title,
       body: bodyParts.join("\n\n"),
-      labels: [ISSUE_LABEL, `upstream:${watcher.id}`, `impact:${agentResult.impact}`]
+      labels: [ISSUE_LABEL, `upstream:${watcher.id}`, `impact:${normalizedImpact}`]
     });
   }
 }
@@ -266,7 +314,40 @@ function normalizeIssues(agentResult) {
   if (sanitized.length > 0) {
     return sanitized;
   }
-  if (agentResult.impact && agentResult.impact !== "none") {
+
+  const findings = Array.isArray(agentResult.findings) ? agentResult.findings : [];
+  const findingIssues = findings
+    .filter((item) => typeof item?.title === "string" && item.title.trim().length > 0)
+    .map((item) => {
+      const sections = [];
+      if (typeof item.severity === "string" && item.severity.trim()) {
+        sections.push(`Severity: ${item.severity.trim()}`);
+      }
+      if (typeof item.notes === "string" && item.notes.trim()) {
+        sections.push(item.notes.trim());
+      }
+      const evidence = Array.isArray(item.evidence) ? item.evidence.filter((entry) => typeof entry === "string" && entry.trim()) : [];
+      if (evidence.length > 0) {
+        sections.push("## Evidence");
+        sections.push(...evidence.map((entry) => `- ${entry}`));
+      }
+      const suggested = Array.isArray(item.suggestedActions) ? item.suggestedActions.filter((entry) => typeof entry === "string" && entry.trim()) : [];
+      if (suggested.length > 0) {
+        sections.push("## Suggested actions");
+        sections.push(...suggested.map((entry) => `- ${entry}`));
+      }
+      return {
+        title: item.title.trim(),
+        body: sections.join("\n")
+      };
+    })
+    .filter((item) => item.body.trim().length > 0);
+  if (findingIssues.length > 0) {
+    return findingIssues;
+  }
+
+  const impact = normalizeImpact(agentResult);
+  if (impact !== "none") {
     const summaryText = typeof agentResult.summary === "string" && agentResult.summary.trim().length > 0
       ? agentResult.summary.trim()
       : "Potential impact";
@@ -285,8 +366,18 @@ function buildEvidenceSection(evidence) {
     return "";
   }
   const lines = evidence
-    .filter((item) => item?.path && item?.description)
-    .map((item) => `- \\`${item.path}\\` – ${item.description}`);
+    .flatMap((item) => {
+      if (typeof item === "string" && item.trim()) {
+        return [`- ${item.trim()}`];
+      }
+      if (item?.path && item?.description) {
+        return [`- \`${item.path}\` – ${item.description}`];
+      }
+      if (item?.description) {
+        return [`- ${item.description}`];
+      }
+      return [];
+    });
   if (!lines.length) {
     return "";
   }

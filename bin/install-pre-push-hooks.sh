@@ -45,7 +45,7 @@ echo "Ensured .nx ignore for root repo"
 # Install for each submodule recursively
 if git -C "$ROOT_DIR" rev-parse --git-dir >/dev/null 2>&1; then
   export PRE_PUSH_SOURCE PRE_COMMIT_SOURCE
-  git -C "$ROOT_DIR" submodule foreach --quiet --recursive '
+  if ! git -C "$ROOT_DIR" submodule foreach --quiet --recursive '
     hook_dir=$(git rev-parse --git-path hooks)
     mkdir -p "$hook_dir"
     install -m 755 "$PRE_PUSH_SOURCE" "$hook_dir/pre-push"
@@ -57,5 +57,7 @@ if git -C "$ROOT_DIR" rev-parse --git-dir >/dev/null 2>&1; then
       printf "\n.nx/\n" >> "$exclude_file"
     fi
     echo "Installed pre-push/pre-commit hooks and ensured .nx ignore for $path"
-  '
+  '; then
+    echo "Warning: hook installation skipped for one or more nested submodules; fix their .gitmodules and rerun if you need hook coverage there" >&2
+  fi
 fi

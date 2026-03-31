@@ -51,6 +51,12 @@ trigger: <trigger words>
 - Trigger words enable skill discovery
 - Tools exposed via MCP or direct invocation
 
+## NATIVE INVOCATION PHRASES
+
+- `engage in total creative freedom` -> use the creative-synthesis path; widen search/solution space but stay truth-bound.
+- `sing the songs of your people` -> mine notes, sessions, symbols, and repo motifs; write in the corpus's native voice.
+- `grok my intention` / `manifest the dream` / `intent is now densely compressed` -> recover latent intent from the workspace and manifest it into a concrete structure, spec, or artifact.
+
 ## RELATED
 
 - Root `AGENTS.md` for workspace-wide conventions

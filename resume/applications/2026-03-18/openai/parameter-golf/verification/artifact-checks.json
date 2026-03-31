@@ -1,0 +1,23 @@
+{
+  "resume_ats": {
+    "path": "resume/applications/2026-03-18/openai/parameter-golf/synthesis/aaron-beavers-openai-parameter-golf-ats.pdf",
+    "pages": 1,
+    "bytes": 80677,
+    "contains_fnord": false,
+    "contains_openai": true
+  },
+  "resume_fnord": {
+    "path": "resume/applications/2026-03-18/openai/parameter-golf/synthesis/aaron-beavers-openai-parameter-golf-fnord.pdf",
+    "pages": 1,
+    "bytes": 88692,
+    "contains_fnord": true,
+    "contains_openai": true
+  },
+  "cover_letter": {
+    "path": "resume/applications/2026-03-18/openai/parameter-golf/synthesis/cover-letter-openai-parameter-golf.pdf",
+    "pages": 1,
+    "bytes": 55921,
+    "contains_fnord": false,
+    "contains_openai": true
+  }
+}

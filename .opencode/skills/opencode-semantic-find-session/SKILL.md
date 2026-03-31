@@ -1,6 +1,6 @@
 ---
 name: opencode-semantic-find-session
-description: "Find relevant OpenCode sessions using semantic search and filtering"
+description: "Find relevant OpenCode sessions using semantic (embedding-based) search via the reconstitute CLI"
 ---
 
 # Skill: OpenCode Semantic Find Session
@@ -24,9 +24,9 @@ Locate the most relevant OpenCode sessions for a topic using semantic search and
 
 ## Steps
 1. Run semantic search:
-   `pnpm -C packages/reconstituter opencode-sessions search "<query>" --k 10`.
+   `pnpm -C packages/reconstituter reconstitute search "<query>"`.
 2. Inspect the highest-scoring results for session IDs and paths.
-3. If needed, re-run search with a narrower query or `--session` filter.
+3. If needed, re-run with a narrower query.
 4. Record the sessions to review or recover.
 
 ## Output

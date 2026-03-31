@@ -1,0 +1,200 @@
+{
+  "branch": "eta-mu-rollout-20260321",
+  "results": [
+    {
+      "repo": "riatzukiza/devel",
+      "status": "created",
+      "url": "https://github.com/riatzukiza/devel/pull/29"
+    },
+    {
+      "repo": "riatzukiza/promethean",
+      "status": "created",
+      "url": "https://github.com/octave-commons/promethean/pull/1711"
+    },
+    {
+      "repo": "riatzukiza/dotfiles",
+      "status": "created",
+      "url": "https://github.com/riatzukiza/dotfiles/pull/3"
+    },
+    {
+      "repo": "riatzukiza/agent-shell",
+      "status": "created",
+      "url": "https://github.com/riatzukiza/agent-shell/pull/2"
+    },
+    {
+      "repo": "riatzukiza/openhax",
+      "status": "created",
+      "url": "https://github.com/open-hax/openhax/pull/4"
+    },
+    {
+      "repo": "riatzukiza/ollama-benchmarks",
+      "status": "created",
+      "url": "https://github.com/riatzukiza/ollama-benchmarks/pull/1"
+    },
+    {
+      "repo": "riatzukiza/riatzukiza.github.io",
+      "status": "created",
+      "url": "https://github.com/riatzukiza/riatzukiza.github.io/pull/34"
+    },
+    {
+      "repo": "riatzukiza/desktop",
+      "status": "created",
+      "url": "https://github.com/riatzukiza/desktop/pull/1"
+    },
+    {
+      "repo": "riatzukiza/book-of-shadows",
+      "status": "created",
+      "url": "https://github.com/riatzukiza/book-of-shadows/pull/2"
+    },
+    {
+      "repo": "riatzukiza/goblin-lessons",
+      "status": "created",
+      "url": "https://github.com/riatzukiza/goblin-lessons/pull/2"
+    },
+    {
+      "repo": "riatzukiza/stt",
+      "status": "created",
+      "url": "https://github.com/riatzukiza/stt/pull/2"
+    },
+    {
+      "repo": "open-hax/codex",
+      "status": "created",
+      "url": "https://github.com/open-hax/codex/pull/83"
+    },
+    {
+      "repo": "open-hax/agent-actors",
+      "status": "created",
+      "url": "https://github.com/open-hax/agent-actors/pull/1"
+    },
+    {
+      "repo": "open-hax/opencode-skills",
+      "status": "created",
+      "url": "https://github.com/open-hax/opencode-skills/pull/1"
+    },
+    {
+      "repo": "open-hax/clients",
+      "status": "created",
+      "url": "https://github.com/open-hax/clients/pull/2"
+    },
+    {
+      "repo": "open-hax/cljs-plugin-template",
+      "status": "created",
+      "url": "https://github.com/open-hax/cljs-plugin-template/pull/1"
+    },
+    {
+      "repo": "open-hax/openhax",
+      "status": "exists",
+      "url": "https://github.com/open-hax/openhax/pull/4"
+    },
+    {
+      "repo": "open-hax/codex",
+      "status": "exists",
+      "url": "https://github.com/open-hax/codex/pull/83"
+    },
+    {
+      "repo": "open-hax/workbench",
+      "status": "created",
+      "url": "https://github.com/open-hax/workbench/pull/2"
+    },
+    {
+      "repo": "octave-commons/helm",
+      "status": "created",
+      "url": "https://github.com/octave-commons/helm/pull/1"
+    },
+    {
+      "repo": "octave-commons/pantheon",
+      "status": "created",
+      "url": "https://github.com/octave-commons/pantheon/pull/2"
+    },
+    {
+      "repo": "octave-commons/promethean",
+      "status": "exists",
+      "url": "https://github.com/octave-commons/promethean/pull/1711"
+    },
+    {
+      "repo": "octave-commons/gates-of-aker",
+      "status": "created",
+      "url": "https://github.com/octave-commons/gates-of-aker/pull/141"
+    },
+    {
+      "repo": "octave-commons/promethean-agent-system",
+      "status": "created",
+      "url": "https://github.com/octave-commons/promethean-agent-system/pull/1"
+    },
+    {
+      "repo": "open-hax/museeks",
+      "status": "created",
+      "url": "https://github.com/open-hax/museeks/pull/1"
+    },
+    {
+      "repo": "octave-commons/fork_tales",
+      "status": "created",
+      "url": "https://github.com/octave-commons/fork_tales/pull/2"
+    },
+    {
+      "repo": "octave-commons/static_man",
+      "status": "created",
+      "url": "https://github.com/octave-commons/static_man/pull/1"
+    },
+    {
+      "repo": "open-hax/vivgrid-openai-proxy",
+      "status": "created",
+      "url": "https://github.com/open-hax/vivgrid-openai-proxy/pull/1"
+    },
+    {
+      "repo": "open-hax/ussyverse-kanban",
+      "status": "created",
+      "url": "https://github.com/open-hax/ussyverse-kanban/pull/5"
+    },
+    {
+      "repo": "open-hax/privaxxy",
+      "status": "created",
+      "url": "https://github.com/open-hax/privaxxy/pull/1"
+    },
+    {
+      "repo": "octave-commons/shibboleth",
+      "status": "created",
+      "url": "https://github.com/octave-commons/shibboleth/pull/2"
+    },
+    {
+      "repo": "open-hax/proxx",
+      "status": "created",
+      "url": "https://github.com/open-hax/proxx/pull/100"
+    },
+    {
+      "repo": "open-hax/voxx",
+      "status": "created",
+      "url": "https://github.com/open-hax/voxx/pull/2"
+    },
+    {
+      "repo": "riatzukiza/TANF-app",
+      "status": "created",
+      "url": "https://github.com/riatzukiza/TANF-app/pull/26"
+    },
+    {
+      "repo": "riatzukiza/threat-radar",
+      "status": "created",
+      "url": "https://github.com/riatzukiza/threat-radar/pull/2"
+    },
+    {
+      "repo": "octave-commons/gates-of-aker",
+      "status": "exists",
+      "url": "https://github.com/octave-commons/gates-of-aker/pull/141"
+    },
+    {
+      "repo": "riatzukiza/mcp-social-publisher",
+      "status": "created",
+      "url": "https://github.com/riatzukiza/mcp-social-publisher/pull/1"
+    },
+    {
+      "repo": "riatzukiza/opencode",
+      "status": "created",
+      "url": "https://github.com/riatzukiza/opencode/pull/83"
+    },
+    {
+      "repo": "open-hax/eta-mu-github",
+      "status": "created",
+      "url": "https://github.com/open-hax/eta-mu-github/pull/1"
+    }
+  ]
+}

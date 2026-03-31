@@ -1,0 +1,29 @@
+{
+  "generatedAt": "2026-03-20",
+  "runs": [
+    {
+      "label": "v0 full (4 physical, RMS + phase scales)",
+      "step_stop": 471,
+      "val_bpb": 1.65765109,
+      "bytes_total": 5912023,
+      "train_time_ms": 908129,
+      "notes": "Best shared-depth family result so far."
+    },
+    {
+      "label": "v0 full (6 physical, RMS + phase scales)",
+      "step_stop": 500,
+      "val_bpb": 1.67741083,
+      "bytes_total": 8910213,
+      "train_time_ms": 257236,
+      "notes": "More physical layers hurt both score and bytes relative to 4-physical variant."
+    },
+    {
+      "label": "v0 full (4 physical, RMS only)",
+      "step_stop": 500,
+      "val_bpb": 1.70216889,
+      "bytes_total": 6092264,
+      "train_time_ms": 257219,
+      "notes": "Removing phase-conditioned scales worsened score despite similar bytes."
+    }
+  ]
+}

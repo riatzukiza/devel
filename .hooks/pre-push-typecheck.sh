@@ -13,6 +13,21 @@ log() {
   printf "[pre-push:typecheck] %s\n" "$1"
 }
 
+format_mib() {
+  awk -v bytes="$1" 'BEGIN { printf "%.2f MiB", bytes / 1048576 }'
+}
+
+matches_blocked_generated_path() {
+  case "$1" in
+    services/*/db-backups/*|labs/*/runs/*|*__pycache__/*|*.pyc)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
 remote_name="${1:-origin}"
 _remote_url="${2:-}"
 head_sha=$(git rev-parse HEAD)
@@ -73,11 +88,105 @@ else
   NX_BASE_SELECTION_MSG="Using Nx base default ${NX_RESOLVED_BASE}"
 fi
 
+MAX_GIT_PUSH_BLOB_BYTES=${MAX_GIT_PUSH_BLOB_BYTES:-104857600}
+PUSH_BASE_SHA=""
+PUSH_HEAD_REF=""
+PUSH_BASE_SELECTION_MSG=""
+
 ORG_PREFIXES=(
   "orgs-riatzukiza-"
   "orgs-open-hax-"
   "orgs-octave-commons-"
 )
+
+resolve_push_base() {
+  local head_ref="${NX_HEAD_REF:-HEAD}"
+  local desired_base="${NX_RESOLVED_BASE:-origin/main}"
+  local base_sha=""
+
+  if ! git rev-parse --verify "$head_ref" >/dev/null 2>&1; then
+    head_ref="HEAD"
+  fi
+
+  if git rev-parse --verify "$desired_base" >/dev/null 2>&1; then
+    if base_sha=$(git merge-base "$head_ref" "$desired_base" 2>/dev/null); then
+      :
+    else
+      base_sha=$(git rev-parse "$desired_base" 2>/dev/null || true)
+    fi
+  fi
+
+  if [[ -z "$base_sha" ]]; then
+    if base_sha=$(git rev-parse "${head_ref}~1" 2>/dev/null); then
+      PUSH_BASE_SELECTION_MSG="Falling back to ${head_ref}~1 for Nx base"
+    else
+      log "Unable to determine push base reference (tried ${desired_base} and ${head_ref}~1)"
+      return 1
+    fi
+  else
+    PUSH_BASE_SELECTION_MSG="$NX_BASE_SELECTION_MSG (merge-base ${base_sha})"
+  fi
+
+  PUSH_BASE_SHA="$base_sha"
+  PUSH_HEAD_REF="$head_ref"
+  return 0
+}
+
+run_push_artifact_guard() {
+  local base_sha=$1
+  local head_ref=$2
+
+  if [[ "${SKIP_GIT_ARTIFACT_GUARD:-0}" == "1" ]]; then
+    log "Skipping generated artifact guard because SKIP_GIT_ARTIFACT_GUARD=1"
+    return 0
+  fi
+
+  declare -A seen_oids=()
+  local -a blocked_paths=()
+  local -a oversized_paths=()
+  local oid=""
+  local object_type=""
+  local object_size=""
+  local path=""
+
+  while IFS=' ' read -r oid object_type object_size path; do
+    if [[ "$object_type" != "blob" || -z "$path" ]]; then
+      continue
+    fi
+
+    if [[ -n "${seen_oids[$oid]:-}" ]]; then
+      continue
+    fi
+    seen_oids[$oid]=1
+
+    if matches_blocked_generated_path "$path"; then
+      blocked_paths+=("$path")
+    fi
+
+    if (( object_size > MAX_GIT_PUSH_BLOB_BYTES )); then
+      oversized_paths+=("$(format_mib "$object_size")  $path")
+    fi
+  done < <(
+    git rev-list --objects "${base_sha}..${head_ref}" \
+      | git cat-file --batch-check='%(objectname) %(objecttype) %(objectsize) %(rest)'
+  )
+
+  if [[ ${#blocked_paths[@]} -gt 0 ]]; then
+    log "Push range ${base_sha}..${head_ref} contains blocked generated/runtime artifacts:"
+    printf '  %s\n' "${blocked_paths[@]}"
+    log "Remove them from history or set SKIP_GIT_ARTIFACT_GUARD=1 for an explicit one-off override"
+    return 1
+  fi
+
+  if [[ ${#oversized_paths[@]} -gt 0 ]]; then
+    log "Push range ${base_sha}..${head_ref} contains blob(s) exceeding MAX_GIT_PUSH_BLOB_BYTES=$(format_mib "$MAX_GIT_PUSH_BLOB_BYTES"):"
+    printf '  %s\n' "${oversized_paths[@]}"
+    log "Rewrite them out of history or set SKIP_GIT_ARTIFACT_GUARD=1 for an explicit one-off override"
+    return 1
+  fi
+
+  return 0
+}
 
 run_changed_package_typecheck() {
   local base_sha=$1
@@ -122,9 +231,9 @@ run_changed_package_typecheck() {
 }
 
 run_nx_affected_typecheck() {
-  local head_ref="${NX_HEAD_REF:-HEAD}"
+  local head_ref="${PUSH_HEAD_REF:-${NX_HEAD_REF:-HEAD}}"
   local desired_base="${NX_RESOLVED_BASE:-origin/main}"
-  local base_sha=""
+  local base_sha="${PUSH_BASE_SHA:-}"
   local affected_projects_raw=""
   local affected_projects=()
   local filtered_projects=()
@@ -149,7 +258,7 @@ run_nx_affected_typecheck() {
       return 1
     fi
   else
-    log "$NX_BASE_SELECTION_MSG (merge-base ${base_sha})"
+    log "$PUSH_BASE_SELECTION_MSG"
   fi
 
   if ! affected_projects_raw=$(pnpm nx show projects --affected --base "$base_sha" --head "$head_ref"); then
@@ -185,6 +294,14 @@ run_nx_affected_typecheck() {
   log "Running pnpm nx run-many -t typecheck --projects ${filtered_projects[*]}"
   pnpm nx run-many -t typecheck --projects "$(IFS=,; echo "${filtered_projects[*]}")"
 }
+
+if ! resolve_push_base; then
+  exit 1
+fi
+
+if ! run_push_artifact_guard "$PUSH_BASE_SHA" "$PUSH_HEAD_REF"; then
+  exit 1
+fi
 
 if command -v pnpm >/dev/null 2>&1 && [[ -f nx.json ]]; then
   run_nx_affected_typecheck

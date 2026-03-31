@@ -1,0 +1,1 @@
+/home/err/.agents/skills/resume-ats-optimize/SKILL.md

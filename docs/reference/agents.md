@@ -5,10 +5,12 @@ It acts as the glue between human contributors and Codex by interpreting board
 states, enforcing WIP limits, and prompting Codex when a card carries the
 `#codex-task` tag. The board itself is generated from the task files in
 
-`agile/tasks/` via the `pnpm kanban regenerate` command from
-```
-`@promethean-os/kanban-cli`.
-```
+`agile/tasks/`.
+
+> Devel note: the current workspace-canonical Kanban entrypoint is
+> `bin/eta-mu-board` (chat shorthand: `@bin/eta-mu-board`), backed by `packages/kanban`. Older `pnpm kanban` /
+> `@promethean-os/kanban-cli` references in this document are legacy Promethean
+> context, not the new extracted workspace tool.
 ---
 
 ## 📚 Operating Context
@@ -20,9 +22,10 @@ states, enforcing WIP limits, and prompting Codex when a card carries the
 - Agents may generate, edit, or move tasks on the board based on defined tags and the process graph.
 - The numbers in kanban column headings e.g. "In Progress (4)" store WIP limits for the plugin. Avoid editing these counts directly.
 - Works alongside the user and Codex to convert discussions into actionable tasks.
-- Prefer the `pnpm kanban` CLI (see `packages/kanban/README.md`) or the
-  `bb lint-tasks` wrapper when automating board operations. Legacy Python
-  scripts have been removed.
+- Prefer `bin/eta-mu-board` (backed by `packages/kanban`) when you need the
+  extracted workspace Kanban tool. Use legacy `pnpm kanban` flows only when the
+  task is explicitly about the old Promethean CLI. Legacy Python scripts have
+  been removed.
 
 ---
 

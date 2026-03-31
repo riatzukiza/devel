@@ -1,0 +1,51 @@
+\documentclass[10pt]{article}
+\pagestyle{empty}
+
+% --- tight margins (no geometry dependency)
+\setlength{\topmargin}{-0.6in}
+\setlength{\textheight}{10.3in}
+\setlength{\oddsidemargin}{-0.25in}
+\setlength{\evensidemargin}{-0.25in}
+\setlength{\textwidth}{7.0in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+\begin{document}
+
+{\LARGE \textbf{Aaron Beavers}}\\
+West Des Moines, IA 50265 \;\;\textbar\;\; 515-388-0539 \;\;\textbar\;\; foamy125@gmail.com\\
+GitHub: github.com/riatzukiza
+
+\vspace{10pt}
+To the Open Hax maintainers,
+
+I'm applying for the role of "make it shippable." Not a demo. Not a one-off. The version that other people can run on the first try, upgrade safely, and build on without learning the author's private cosmology.
+
+Open Hax is where I want the production-grade AI toolchain to live: OpenAI-compatible surfaces, multi-provider routing, credential hygiene, observability hooks, and the unglamorous reliability work that makes an OSS suite feel like a product.
+
+What I bring (and want to keep compounding here):
+\begin{itemize}
+  \item \textbf{LLM gateway architecture}: model-aware routing across OpenAI Responses, Anthropic Messages, and Ollama under one OpenAI-compatible interface.
+  \item \textbf{Auth + operational safety}: OAuth/PKCE flows, token-gated APIs, provider-scoped account rotation on rate limits, and pragmatic fallback strategies.
+  \item \textbf{UX that earns trust}: consoles/dashboards that make it obvious what the system is doing, with history/search that makes debugging feasible.
+  \item \textbf{Shipping discipline}: docs, deterministic configuration, sensible defaults, and build/test loops that keep the repo green.
+\end{itemize}
+
+What I want to do next inside Open Hax:
+\begin{itemize}
+  \item Keep tightening the "one endpoint, many providers" story without leaking provider-specific quirks into user code.
+  \item Make upgrade paths boring (migrations, compatibility layers, explicit deprecations).
+  \item Build for mass adoption: clear install paths, env-driven configuration, and guardrails that prevent foot-guns.
+\end{itemize}
+
+If you'll have me, I'll keep turning sharp prototypes into stable interfaces --- and stable interfaces into an ecosystem.
+
+--- Aaron
+
+\vspace{8pt}
+{\scriptsize\ttfamily
+fnord:v1\; proof=gh(open-hax/proxx open-hax/codex open-hax/opencode-skills octave-commons/shibboleth shuv1337/battlebussy)\; caps=llm-gw(r->chat m->chat ollama oauth-pkce sse-synth reasoning-content rot429 chroma)\\
+eval(sbert hdbscan parquet sha256)\; ops(docker compose oci-tf ghcr-multiarch jetstream)
+}
+
+\end{document}

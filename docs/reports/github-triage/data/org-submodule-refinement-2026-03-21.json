@@ -1,0 +1,5909 @@
+{
+  "generatedAt": "2026-03-21T20:41:55.265Z",
+  "inputGeneratedAt": "2026-03-21T20:09:13Z",
+  "excludedRepos": [
+    "riatzukiza/TANF-app"
+  ],
+  "collapsedMirrorGroups": {
+    "octave-commons/promethean": "octave-commons/promethean",
+    "riatzukiza/promethean": "octave-commons/promethean",
+    "open-hax/openhax": "open-hax/openhax",
+    "riatzukiza/openhax": "open-hax/openhax"
+  },
+  "repoSummaries": [
+    {
+      "repo": "octave-commons/promethean",
+      "itemCount": 83,
+      "issueCount": 81,
+      "prCount": 2,
+      "byStatus": {
+        "icebox": 20,
+        "incoming": 45,
+        "accepted": 4,
+        "breakdown": 12,
+        "blocked": 2
+      }
+    },
+    {
+      "repo": "open-hax/proxx",
+      "itemCount": 69,
+      "issueCount": 67,
+      "prCount": 2,
+      "byStatus": {
+        "incoming": 33,
+        "accepted": 1,
+        "breakdown": 33,
+        "in_review": 2
+      }
+    },
+    {
+      "repo": "riatzukiza/riatzukiza.github.io",
+      "itemCount": 6,
+      "issueCount": 0,
+      "prCount": 6,
+      "byStatus": {
+        "icebox": 3,
+        "in_progress": 3
+      }
+    },
+    {
+      "repo": "open-hax/codex",
+      "itemCount": 4,
+      "issueCount": 4,
+      "prCount": 0,
+      "byStatus": {
+        "icebox": 2,
+        "accepted": 1,
+        "blocked": 1
+      }
+    },
+    {
+      "repo": "open-hax/openhax",
+      "itemCount": 3,
+      "issueCount": 1,
+      "prCount": 2,
+      "byStatus": {
+        "blocked": 2,
+        "rejected": 1
+      }
+    },
+    {
+      "repo": "octave-commons/fork_tales",
+      "itemCount": 1,
+      "issueCount": 0,
+      "prCount": 1,
+      "byStatus": {
+        "blocked": 1
+      }
+    },
+    {
+      "repo": "octave-commons/gates-of-aker",
+      "itemCount": 1,
+      "issueCount": 0,
+      "prCount": 1,
+      "byStatus": {
+        "blocked": 1
+      }
+    },
+    {
+      "repo": "octave-commons/pantheon",
+      "itemCount": 1,
+      "issueCount": 0,
+      "prCount": 1,
+      "byStatus": {
+        "in_review": 1
+      }
+    },
+    {
+      "repo": "octave-commons/shibboleth",
+      "itemCount": 1,
+      "issueCount": 0,
+      "prCount": 1,
+      "byStatus": {
+        "in_review": 1
+      }
+    },
+    {
+      "repo": "open-hax/clients",
+      "itemCount": 1,
+      "issueCount": 0,
+      "prCount": 1,
+      "byStatus": {
+        "in_review": 1
+      }
+    },
+    {
+      "repo": "open-hax/voxx",
+      "itemCount": 1,
+      "issueCount": 0,
+      "prCount": 1,
+      "byStatus": {
+        "in_review": 1
+      }
+    },
+    {
+      "repo": "open-hax/workbench",
+      "itemCount": 1,
+      "issueCount": 0,
+      "prCount": 1,
+      "byStatus": {
+        "in_review": 1
+      }
+    },
+    {
+      "repo": "riatzukiza/agent-shell",
+      "itemCount": 1,
+      "issueCount": 0,
+      "prCount": 1,
+      "byStatus": {
+        "in_review": 1
+      }
+    },
+    {
+      "repo": "riatzukiza/book-of-shadows",
+      "itemCount": 1,
+      "issueCount": 0,
+      "prCount": 1,
+      "byStatus": {
+        "icebox": 1
+      }
+    },
+    {
+      "repo": "riatzukiza/dotfiles",
+      "itemCount": 1,
+      "issueCount": 0,
+      "prCount": 1,
+      "byStatus": {
+        "icebox": 1
+      }
+    },
+    {
+      "repo": "riatzukiza/goblin-lessons",
+      "itemCount": 1,
+      "issueCount": 0,
+      "prCount": 1,
+      "byStatus": {
+        "icebox": 1
+      }
+    },
+    {
+      "repo": "riatzukiza/stt",
+      "itemCount": 1,
+      "issueCount": 0,
+      "prCount": 1,
+      "byStatus": {
+        "icebox": 1
+      }
+    }
+  ],
+  "items": [
+    {
+      "kind": "issue",
+      "number": 1627,
+      "title": "Implement kanban dev command with real-time sync and UI hosting  -experience -watching -time-sync -hosting -enhancement",
+      "url": "https://github.com/octave-commons/promethean/issues/1627",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P1",
+      "currentLabels": [
+        "kanban",
+        "kanban-sync",
+        "todo",
+        "priority-P1",
+        "automated-sync",
+        "dev-experience",
+        "file-watching",
+        "real-time-sync",
+        "ui-hosting",
+        "cli-enhancement",
+        "project-generated"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P1",
+        "state:icebox",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle enhancement request is better deferred to icebox.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1627|Implement kanban dev command with real-time sync and UI hosting  -experience -watching -time-sync -hosting -enhancement",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1596,
+      "title": "Add CRUD subcommands to kanban CLI",
+      "url": "https://github.com/octave-commons/promethean/issues/1596",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P2",
+      "currentLabels": [
+        "enhancement",
+        "kanban",
+        "kanban-sync",
+        "automated-sync",
+        "icebox",
+        "priority-P2",
+        "cli",
+        "crud"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P2",
+        "state:icebox",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle enhancement request is better deferred to icebox.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1596|Add CRUD subcommands to kanban CLI",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1606,
+      "title": "Add CRUD subcommands to kanban CLI",
+      "url": "https://github.com/octave-commons/promethean/issues/1606",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P2",
+      "currentLabels": [
+        "enhancement",
+        "kanban",
+        "kanban-sync",
+        "automated-sync",
+        "icebox",
+        "priority-P2",
+        "cli",
+        "crud",
+        "project-generated"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P2",
+        "state:icebox",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle enhancement request is better deferred to icebox.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1606|Add CRUD subcommands to kanban CLI",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1621,
+      "title": "Add CRUD subcommands to kanban CLI",
+      "url": "https://github.com/octave-commons/promethean/issues/1621",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P2",
+      "currentLabels": [
+        "enhancement",
+        "kanban",
+        "kanban-sync",
+        "automated-sync",
+        "icebox",
+        "priority-P2",
+        "cli",
+        "crud",
+        "project-generated"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P2",
+        "state:icebox",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle enhancement request is better deferred to icebox.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1621|Add CRUD subcommands to kanban CLI",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1633,
+      "title": "Add CRUD subcommands to kanban CLI",
+      "url": "https://github.com/octave-commons/promethean/issues/1633",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P2",
+      "currentLabels": [
+        "enhancement",
+        "kanban",
+        "kanban-sync",
+        "automated-sync",
+        "icebox",
+        "priority-P2",
+        "cli",
+        "crud",
+        "project-generated"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P2",
+        "state:icebox",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle enhancement request is better deferred to icebox.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1633|Add CRUD subcommands to kanban CLI",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1129,
+      "title": "Remove all CommonJS references and require() usage from repository",
+      "url": "https://github.com/octave-commons/promethean/issues/1129",
+      "author": "app/coderabbitai",
+      "ageDays": 182,
+      "idleDays": 182,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "enhancement"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P3",
+        "source:coderabbit",
+        "state:icebox",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Long-idle enhancement request is better deferred to icebox.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1129|Remove all CommonJS references and require() usage from repository",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1461,
+      "title": "DUCK feature flags: rewrite web module + fix docs",
+      "url": "https://github.com/octave-commons/promethean/issues/1461",
+      "author": "riatzukiza",
+      "ageDays": 169,
+      "idleDays": 169,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "follow-up",
+        "duck-web",
+        "blocking"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P3",
+        "state:icebox",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle enhancement request is better deferred to icebox.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1461|DUCK feature flags: rewrite web module + fix docs",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1482,
+      "title": "Rulesets: tighten PR reviews + add CODEOWNERS follow-up",
+      "url": "https://github.com/octave-commons/promethean/issues/1482",
+      "author": "riatzukiza",
+      "ageDays": 169,
+      "idleDays": 169,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P3",
+        "state:icebox",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle enhancement request is better deferred to icebox.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1482|Rulesets: tighten PR reviews + add CODEOWNERS follow-up",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1579,
+      "title": "add-tsdoc-support|Add TSDoc support to the project",
+      "url": "https://github.com/octave-commons/promethean/issues/1579",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "documentation",
+        "typescript",
+        "build-system",
+        "priority: p2",
+        "kanban-sync"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P3",
+        "state:icebox",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle enhancement request is better deferred to icebox.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1579|add-tsdoc-support|Add TSDoc support to the project",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1582,
+      "title": "boardrev-vector-db|Add confidence calibration and historical accuracy tracking",
+      "url": "https://github.com/octave-commons/promethean/issues/1582",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "enhancement",
+        "boardrev",
+        "priority: p2",
+        "kanban-sync",
+        "accuracy",
+        "metrics"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P3",
+        "state:icebox",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle enhancement request is better deferred to icebox.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1582|boardrev-vector-db|Add confidence calibration and historical accuracy tracking",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1583,
+      "title": "boardrev-vector-db|Add continuous monitoring and real-time updates to boardrev",
+      "url": "https://github.com/octave-commons/promethean/issues/1583",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 163,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "enhancement",
+        "boardrev",
+        "automation",
+        "kanban-sync",
+        "monitoring",
+        "priority: p1"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P3",
+        "state:icebox",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle enhancement request is better deferred to icebox.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1583|boardrev-vector-db|Add continuous monitoring and real-time updates to boardrev",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1584,
+      "title": "boardrev-vector-db|Enhance boardrev context analysis with weighted factors",
+      "url": "https://github.com/octave-commons/promethean/issues/1584",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "enhancement",
+        "boardrev",
+        "priority: p2",
+        "kanban-sync",
+        "accuracy",
+        "analysis"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P3",
+        "state:icebox",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle enhancement request is better deferred to icebox.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1584|boardrev-vector-db|Enhance boardrev context analysis with weighted factors",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1585,
+      "title": "boardrev-vector-db|Add incremental updates to boardrev indexing",
+      "url": "https://github.com/octave-commons/promethean/issues/1585",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 163,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "enhancement",
+        "boardrev",
+        "kanban-sync",
+        "priority: p1",
+        "performance"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P3",
+        "state:icebox",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle enhancement request is better deferred to icebox.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1585|boardrev-vector-db|Add incremental updates to boardrev indexing",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1586,
+      "title": "boardrev-vector-db|Add interactive task management and auto-updates to boardrev",
+      "url": "https://github.com/octave-commons/promethean/issues/1586",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "enhancement",
+        "boardrev",
+        "automation",
+        "priority: p2",
+        "kanban-sync",
+        "management"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P3",
+        "state:icebox",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle enhancement request is better deferred to icebox.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1586|boardrev-vector-db|Add interactive task management and auto-updates to boardrev",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1587,
+      "title": "boardrev-vector-db|Implement multi-model evaluation for boardrev",
+      "url": "https://github.com/octave-commons/promethean/issues/1587",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "enhancement",
+        "boardrev",
+        "priority: p2",
+        "kanban-sync",
+        "ai",
+        "evaluation"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P3",
+        "state:icebox",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle enhancement request is better deferred to icebox.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1587|boardrev-vector-db|Implement multi-model evaluation for boardrev",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 766,
+      "title": "Add Nx workspace configuration to the project",
+      "url": "https://github.com/octave-commons/promethean/issues/766",
+      "author": "app/coderabbitai",
+      "ageDays": 197,
+      "idleDays": 197,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P3",
+        "source:coderabbit",
+        "state:icebox",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Long-idle enhancement request is better deferred to icebox.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|766|Add Nx workspace configuration to the project",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 767,
+      "title": "Add Nx configuration to the project",
+      "url": "https://github.com/octave-commons/promethean/issues/767",
+      "author": "app/coderabbitai",
+      "ageDays": 197,
+      "idleDays": 197,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P3",
+        "source:coderabbit",
+        "state:icebox",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Long-idle enhancement request is better deferred to icebox.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|767|Add Nx configuration to the project",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 800,
+      "title": "Add proofreader step to docops pipeline",
+      "url": "https://github.com/octave-commons/promethean/issues/800",
+      "author": "app/coderabbitai",
+      "ageDays": 195,
+      "idleDays": 195,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P3",
+        "source:coderabbit",
+        "state:icebox",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Long-idle enhancement request is better deferred to icebox.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|800|Add proofreader step to docops pipeline",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 801,
+      "title": "Fix docops pipeline to add blank lines around headings and lists in generated sections",
+      "url": "https://github.com/octave-commons/promethean/issues/801",
+      "author": "app/coderabbitai",
+      "ageDays": 195,
+      "idleDays": 195,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P3",
+        "source:coderabbit",
+        "state:icebox",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Long-idle enhancement request is better deferred to icebox.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|801|Fix docops pipeline to add blank lines around headings and lists in generated sections",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 955,
+      "title": "Add validation to ChromaWrapper upsert method",
+      "url": "https://github.com/octave-commons/promethean/issues/955",
+      "author": "app/coderabbitai",
+      "ageDays": 189,
+      "idleDays": 189,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P3",
+        "source:coderabbit",
+        "state:icebox",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Long-idle enhancement request is better deferred to icebox.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|955|Add validation to ChromaWrapper upsert method",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 40,
+      "title": "[FEATURE] Model stats html dashboard server",
+      "url": "https://github.com/open-hax/codex/issues/40",
+      "author": "riatzukiza",
+      "ageDays": 121,
+      "idleDays": 116,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "enhancement"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P3",
+        "state:icebox",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle enhancement request is better deferred to icebox."
+      ],
+      "id": "open-hax/codex|issue|40|[FEATURE] Model stats html dashboard server",
+      "canonicalRepo": "open-hax/codex",
+      "repos": [
+        "open-hax/codex"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 67,
+      "title": "Auto-update: check npm latest, clear old install, toast user",
+      "url": "https://github.com/open-hax/codex/issues/67",
+      "author": "riatzukiza",
+      "ageDays": 120,
+      "idleDays": 120,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P3",
+        "state:icebox",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle enhancement request is better deferred to icebox."
+      ],
+      "id": "open-hax/codex|issue|67|Auto-update: check npm latest, clear old install, toast user",
+      "canonicalRepo": "open-hax/codex",
+      "repos": [
+        "open-hax/codex"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 1,
+      "title": "device/stealth updates",
+      "url": "https://github.com/riatzukiza/book-of-shadows/pull/1",
+      "author": "riatzukiza",
+      "ageDays": 125,
+      "idleDays": 125,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "priority:P3",
+        "state:icebox",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle PR should be explicitly revived or deferred instead of lingering in active review."
+      ],
+      "id": "riatzukiza/book-of-shadows|pr|1|device/stealth updates",
+      "canonicalRepo": "riatzukiza/book-of-shadows",
+      "repos": [
+        "riatzukiza/book-of-shadows"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 2,
+      "title": "device/stealth updates",
+      "url": "https://github.com/riatzukiza/dotfiles/pull/2",
+      "author": "riatzukiza",
+      "ageDays": 125,
+      "idleDays": 125,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "priority:P3",
+        "state:icebox",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle PR should be explicitly revived or deferred instead of lingering in active review."
+      ],
+      "id": "riatzukiza/dotfiles|pr|2|device/stealth updates",
+      "canonicalRepo": "riatzukiza/dotfiles",
+      "repos": [
+        "riatzukiza/dotfiles"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 1,
+      "title": "device/stealth updates",
+      "url": "https://github.com/riatzukiza/goblin-lessons/pull/1",
+      "author": "riatzukiza",
+      "ageDays": 125,
+      "idleDays": 125,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "priority:P3",
+        "state:icebox",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle PR should be explicitly revived or deferred instead of lingering in active review."
+      ],
+      "id": "riatzukiza/goblin-lessons|pr|1|device/stealth updates",
+      "canonicalRepo": "riatzukiza/goblin-lessons",
+      "repos": [
+        "riatzukiza/goblin-lessons"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 24,
+      "title": "Add game saves",
+      "url": "https://github.com/riatzukiza/riatzukiza.github.io/pull/24",
+      "author": "riatzukiza",
+      "ageDays": 403,
+      "idleDays": 138,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "priority:P3",
+        "state:icebox",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle PR should be explicitly revived or deferred instead of lingering in active review."
+      ],
+      "id": "riatzukiza/riatzukiza.github.io|pr|24|Add game saves",
+      "canonicalRepo": "riatzukiza/riatzukiza.github.io",
+      "repos": [
+        "riatzukiza/riatzukiza.github.io"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 27,
+      "title": "Fix removal logic in binary search tree implementations",
+      "url": "https://github.com/riatzukiza/riatzukiza.github.io/pull/27",
+      "author": "riatzukiza",
+      "ageDays": 237,
+      "idleDays": 138,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "codex"
+      ],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "priority:P3",
+        "state:icebox",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle PR should be explicitly revived or deferred instead of lingering in active review."
+      ],
+      "id": "riatzukiza/riatzukiza.github.io|pr|27|Fix removal logic in binary search tree implementations",
+      "canonicalRepo": "riatzukiza/riatzukiza.github.io",
+      "repos": [
+        "riatzukiza/riatzukiza.github.io"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 32,
+      "title": "Improve project readme",
+      "url": "https://github.com/riatzukiza/riatzukiza.github.io/pull/32",
+      "author": "riatzukiza",
+      "ageDays": 237,
+      "idleDays": 138,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "codex"
+      ],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "priority:P3",
+        "state:icebox",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle PR should be explicitly revived or deferred instead of lingering in active review."
+      ],
+      "id": "riatzukiza/riatzukiza.github.io|pr|32|Improve project readme",
+      "canonicalRepo": "riatzukiza/riatzukiza.github.io",
+      "repos": [
+        "riatzukiza/riatzukiza.github.io"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 1,
+      "title": "device/stealth updates",
+      "url": "https://github.com/riatzukiza/stt/pull/1",
+      "author": "riatzukiza",
+      "ageDays": 125,
+      "idleDays": 125,
+      "proposedStatus": "icebox",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "priority:P3",
+        "state:icebox",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Long-idle PR should be explicitly revived or deferred instead of lingering in active review."
+      ],
+      "id": "riatzukiza/stt|pr|1|device/stealth updates",
+      "canonicalRepo": "riatzukiza/stt",
+      "repos": [
+        "riatzukiza/stt"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1591,
+      "title": "Migrate kanban system from JSONL to level-cache for memory efficiency    -cache -optimization    -cache -optimization    -cache -optimization    -cache -optimization    -cache -optimization    -cache -optimization",
+      "url": "https://github.com/octave-commons/promethean/issues/1591",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P1",
+      "currentLabels": [
+        "kanban",
+        "kanban-sync",
+        "performance",
+        "priority-P1",
+        "automated-sync",
+        "done",
+        "architecture",
+        "level-cache",
+        "memory-optimization"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P1",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1591|Migrate kanban system from JSONL to level-cache for memory efficiency    -cache -optimization    -cache -optimization    -cache -optimization    -cache -optimization    -cache -optimization    -cache -optimization",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1601,
+      "title": "Migrate kanban system from JSONL to level-cache for memory efficiency    -cache -optimization    -cache -optimization    -cache -optimization",
+      "url": "https://github.com/octave-commons/promethean/issues/1601",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P1",
+      "currentLabels": [
+        "kanban",
+        "kanban-sync",
+        "performance",
+        "priority-P1",
+        "automated-sync",
+        "done",
+        "architecture",
+        "level-cache",
+        "memory-optimization",
+        "project-generated"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P1",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1601|Migrate kanban system from JSONL to level-cache for memory efficiency    -cache -optimization    -cache -optimization    -cache -optimization",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1616,
+      "title": "Migrate kanban system from JSONL to level-cache for memory efficiency    -cache -optimization    -cache -optimization    -cache -optimization",
+      "url": "https://github.com/octave-commons/promethean/issues/1616",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P1",
+      "currentLabels": [
+        "kanban",
+        "kanban-sync",
+        "performance",
+        "priority-P1",
+        "automated-sync",
+        "done",
+        "architecture",
+        "level-cache",
+        "memory-optimization",
+        "project-generated"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P1",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1616|Migrate kanban system from JSONL to level-cache for memory efficiency    -cache -optimization    -cache -optimization    -cache -optimization",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1628,
+      "title": "Migrate kanban system from JSONL to level-cache for memory efficiency    -cache -optimization    -cache -optimization    -cache -optimization",
+      "url": "https://github.com/octave-commons/promethean/issues/1628",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P1",
+      "currentLabels": [
+        "kanban",
+        "kanban-sync",
+        "performance",
+        "priority-P1",
+        "automated-sync",
+        "done",
+        "architecture",
+        "level-cache",
+        "memory-optimization",
+        "project-generated"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P1",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1628|Migrate kanban system from JSONL to level-cache for memory efficiency    -cache -optimization    -cache -optimization    -cache -optimization",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1630,
+      "title": "Implement WIP limit enforcement and address current violations",
+      "url": "https://github.com/octave-commons/promethean/issues/1630",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P1",
+      "currentLabels": [
+        "WIP",
+        "kanban",
+        "kanban-sync",
+        "priority-P1",
+        "automated-sync",
+        "incoming",
+        "limits",
+        "enforcement",
+        "process",
+        "fsm",
+        "project-generated"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P1",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1630|Implement WIP limit enforcement and address current violations",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1597,
+      "title": "Fix SmartGPT Bridge grep parity with ripgrep /TASK-20241120-grepfix /kanban /InProgress /gpt /p2 /EPC-000 :auto :ts",
+      "url": "https://github.com/octave-commons/promethean/issues/1597",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P2",
+      "currentLabels": [
+        "kanban-sync",
+        "automated-sync",
+        "priority-P2",
+        "breakdown",
+        "task",
+        "board",
+        "state",
+        "owner",
+        "priority",
+        "epic",
+        "lang"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P2",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1597|Fix SmartGPT Bridge grep parity with ripgrep /TASK-20241120-grepfix /kanban /InProgress /gpt /p2 /EPC-000 :auto :ts",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1598,
+      "title": "Enforce /auth/me rate limiting in SmartGPT Bridge /TASK-20250307-0001 /kanban /InProgress /err /p2 /EPC-000 :auto :ts :smartgpt-bridge",
+      "url": "https://github.com/octave-commons/promethean/issues/1598",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P2",
+      "currentLabels": [
+        "ready",
+        "kanban-sync",
+        "automated-sync",
+        "priority-P2",
+        "task",
+        "board",
+        "state",
+        "owner",
+        "priority",
+        "epic",
+        "lang",
+        "package"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P2",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1598|Enforce /auth/me rate limiting in SmartGPT Bridge /TASK-20250307-0001 /kanban /InProgress /err /p2 /EPC-000 :auto :ts :smartgpt-bridge",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1607,
+      "title": "Fix SmartGPT Bridge grep parity with ripgrep /TASK-20241120-grepfix /kanban /InProgress /gpt /p2 /EPC-000 :auto :ts",
+      "url": "https://github.com/octave-commons/promethean/issues/1607",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P2",
+      "currentLabels": [
+        "kanban-sync",
+        "automated-sync",
+        "priority-P2",
+        "breakdown",
+        "task",
+        "board",
+        "state",
+        "owner",
+        "priority",
+        "epic",
+        "lang",
+        "project-generated"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P2",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1607|Fix SmartGPT Bridge grep parity with ripgrep /TASK-20241120-grepfix /kanban /InProgress /gpt /p2 /EPC-000 :auto :ts",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1608,
+      "title": "Enforce /auth/me rate limiting in SmartGPT Bridge /TASK-20250307-0001 /kanban /InProgress /err /p2 /EPC-000 :auto :ts :smartgpt-bridge",
+      "url": "https://github.com/octave-commons/promethean/issues/1608",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P2",
+      "currentLabels": [
+        "ready",
+        "kanban-sync",
+        "automated-sync",
+        "priority-P2",
+        "task",
+        "board",
+        "state",
+        "owner",
+        "priority",
+        "epic",
+        "lang",
+        "package",
+        "project-generated"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P2",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1608|Enforce /auth/me rate limiting in SmartGPT Bridge /TASK-20250307-0001 /kanban /InProgress /err /p2 /EPC-000 :auto :ts :smartgpt-bridge",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1622,
+      "title": "Fix SmartGPT Bridge grep parity with ripgrep /TASK-20241120-grepfix /kanban /InProgress /gpt /p2 /EPC-000 :auto :ts",
+      "url": "https://github.com/octave-commons/promethean/issues/1622",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P2",
+      "currentLabels": [
+        "kanban-sync",
+        "automated-sync",
+        "priority-P2",
+        "breakdown",
+        "task",
+        "board",
+        "state",
+        "owner",
+        "priority",
+        "epic",
+        "lang",
+        "project-generated"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P2",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1622|Fix SmartGPT Bridge grep parity with ripgrep /TASK-20241120-grepfix /kanban /InProgress /gpt /p2 /EPC-000 :auto :ts",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1623,
+      "title": "Enforce /auth/me rate limiting in SmartGPT Bridge /TASK-20250307-0001 /kanban /InProgress /err /p2 /EPC-000 :auto :ts :smartgpt-bridge",
+      "url": "https://github.com/octave-commons/promethean/issues/1623",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P2",
+      "currentLabels": [
+        "ready",
+        "kanban-sync",
+        "automated-sync",
+        "priority-P2",
+        "task",
+        "board",
+        "state",
+        "owner",
+        "priority",
+        "epic",
+        "lang",
+        "package",
+        "project-generated"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P2",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1623|Enforce /auth/me rate limiting in SmartGPT Bridge /TASK-20250307-0001 /kanban /InProgress /err /p2 /EPC-000 :auto :ts :smartgpt-bridge",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1634,
+      "title": "Fix SmartGPT Bridge grep parity with ripgrep /TASK-20241120-grepfix /kanban /InProgress /gpt /p2 /EPC-000 :auto :ts",
+      "url": "https://github.com/octave-commons/promethean/issues/1634",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P2",
+      "currentLabels": [
+        "kanban-sync",
+        "automated-sync",
+        "priority-P2",
+        "breakdown",
+        "task",
+        "board",
+        "state",
+        "owner",
+        "priority",
+        "epic",
+        "lang",
+        "project-generated"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P2",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1634|Fix SmartGPT Bridge grep parity with ripgrep /TASK-20241120-grepfix /kanban /InProgress /gpt /p2 /EPC-000 :auto :ts",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1635,
+      "title": "Enforce /auth/me rate limiting in SmartGPT Bridge /TASK-20250307-0001 /kanban /InProgress /err /p2 /EPC-000 :auto :ts :smartgpt-bridge",
+      "url": "https://github.com/octave-commons/promethean/issues/1635",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P2",
+      "currentLabels": [
+        "ready",
+        "kanban-sync",
+        "automated-sync",
+        "priority-P2",
+        "task",
+        "board",
+        "state",
+        "owner",
+        "priority",
+        "epic",
+        "lang",
+        "package",
+        "project-generated"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P2",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1635|Enforce /auth/me rate limiting in SmartGPT Bridge /TASK-20250307-0001 /kanban /InProgress /err /p2 /EPC-000 :auto :ts :smartgpt-bridge",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1637,
+      "title": "Update existing kanban tasks to use FSM statuses",
+      "url": "https://github.com/octave-commons/promethean/issues/1637",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 163,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P2",
+      "currentLabels": [
+        "ready",
+        "kanban",
+        "cleanup",
+        "kanban-sync",
+        "automated-sync",
+        "process",
+        "fsm",
+        "priority-P2",
+        "project-generated"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P2",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1637|Update existing kanban tasks to use FSM statuses",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1640,
+      "title": "Setup MCP server endpoint for kanban tooling",
+      "url": "https://github.com/octave-commons/promethean/issues/1640",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P2",
+      "currentLabels": [
+        "kanban",
+        "mcp",
+        "automation",
+        "kanban-sync",
+        "automated-sync",
+        "priority-P2",
+        "project-generated",
+        "review"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P2",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1640|Setup MCP server endpoint for kanban tooling",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 56,
+      "title": "[Minor] src/tests/factory-strategy.test.ts: Always tear down the temp upstream even if createApp() fails",
+      "url": "https://github.com/open-hax/proxx/issues/56",
+      "author": "app/coderabbitai",
+      "ageDays": 7,
+      "idleDays": 7,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P2",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Minor CodeRabbit note should remain in triage until clustered or batched."
+      ],
+      "id": "open-hax/proxx|issue|56|[Minor] src/tests/factory-strategy.test.ts: Always tear down the temp upstream even if createApp() fails",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1112,
+      "title": "Create markdown templater package in Clojure",
+      "url": "https://github.com/octave-commons/promethean/issues/1112",
+      "author": "app/coderabbitai",
+      "ageDays": 183,
+      "idleDays": 169,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1112|Create markdown templater package in Clojure",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1153,
+      "title": "Automate board/project + docops workflows",
+      "url": "https://github.com/octave-commons/promethean/issues/1153",
+      "author": "riatzukiza",
+      "ageDays": 181,
+      "idleDays": 181,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "docops",
+        "automation",
+        "boards"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1153|Automate board/project + docops workflows",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1454,
+      "title": "Enable line-by-line review comments in github.review tool",
+      "url": "https://github.com/octave-commons/promethean/issues/1454",
+      "author": "riatzukiza",
+      "ageDays": 170,
+      "idleDays": 163,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "duplicate",
+        "tooling",
+        "github",
+        "code-review"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1454|Enable line-by-line review comments in github.review tool",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1456,
+      "title": "Enhance github/review tool to support line-by-line review comments",
+      "url": "https://github.com/octave-commons/promethean/issues/1456",
+      "author": "riatzukiza",
+      "ageDays": 170,
+      "idleDays": 163,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "duplicate",
+        "devtools",
+        "prio:medium"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1456|Enhance github/review tool to support line-by-line review comments",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1459,
+      "title": "Follow-up: rationale payload typing + event alias",
+      "url": "https://github.com/octave-commons/promethean/issues/1459",
+      "author": "riatzukiza",
+      "ageDays": 169,
+      "idleDays": 169,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "follow-up",
+        "protocol"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1459|Follow-up: rationale payload typing + event alias",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1460,
+      "title": "Voice forwarder: document protocol + clamp frameDurationMs",
+      "url": "https://github.com/octave-commons/promethean/issues/1460",
+      "author": "riatzukiza",
+      "ageDays": 169,
+      "idleDays": 169,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "gateway",
+        "follow-up"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1460|Voice forwarder: document protocol + clamp frameDurationMs",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1463,
+      "title": "WebSocket helper: DI factory + bearer guard",
+      "url": "https://github.com/octave-commons/promethean/issues/1463",
+      "author": "riatzukiza",
+      "ageDays": 169,
+      "idleDays": 169,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "follow-up",
+        "duck-web"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1463|WebSocket helper: DI factory + bearer guard",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1464,
+      "title": "RTC DataChannel: throttled sender factory + tests",
+      "url": "https://github.com/octave-commons/promethean/issues/1464",
+      "author": "riatzukiza",
+      "ageDays": 169,
+      "idleDays": 169,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "follow-up",
+        "duck-web",
+        "blocking"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1464|RTC DataChannel: throttled sender factory + tests",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1466,
+      "title": "Enable line-by-line comments in github/review tool",
+      "url": "https://github.com/octave-commons/promethean/issues/1466",
+      "author": "riatzukiza",
+      "ageDays": 169,
+      "idleDays": 169,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "code-review",
+        "devtools"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1466|Enable line-by-line comments in github/review tool",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1468,
+      "title": "Duck Revival integration plan: dependency order + cross-PR checklist",
+      "url": "https://github.com/octave-commons/promethean/issues/1468",
+      "author": "riatzukiza",
+      "ageDays": 169,
+      "idleDays": 169,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "prio:medium",
+        "tracking",
+        "duck-revival"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1468|Duck Revival integration plan: dependency order + cross-PR checklist",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1580,
+      "title": "allow_old_unnessisary_messages_to_decay_from_database_while_retaining_index_entries_ids|allow old unnessisary messages to decay from database while retaining index entries ids md md",
+      "url": "https://github.com/octave-commons/promethean/issues/1580",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "kanban-sync",
+        "allow",
+        "old",
+        "unnessisary",
+        "messages",
+        "priority: p3"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1580|allow_old_unnessisary_messages_to_decay_from_database_while_retaining_index_entries_ids|allow old unnessisary messages to decay from database while retaining index entries ids md md",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1581,
+      "title": "annotate_legacy_code_with_migration_tags|annotate legacy code with migration tags md",
+      "url": "https://github.com/octave-commons/promethean/issues/1581",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "kanban-sync",
+        "priority: p3",
+        "tags",
+        "legacy",
+        "migration",
+        "annotate"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1581|annotate_legacy_code_with_migration_tags|annotate legacy code with migration tags md",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1668,
+      "title": "Guard MCP JSON adapter against nil server specs",
+      "url": "https://github.com/octave-commons/promethean/issues/1668",
+      "author": "riatzukiza",
+      "ageDays": 163,
+      "idleDays": 163,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1668|Guard MCP JSON adapter against nil server specs",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1670,
+      "title": "Guard MCP JSON adapter against nil server specs",
+      "url": "https://github.com/octave-commons/promethean/issues/1670",
+      "author": "riatzukiza",
+      "ageDays": 163,
+      "idleDays": 163,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1670|Guard MCP JSON adapter against nil server specs",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1671,
+      "title": "Fix DocOps pipeline rename step persistence to handle file reference management and sequencing",
+      "url": "https://github.com/octave-commons/promethean/issues/1671",
+      "author": "riatzukiza",
+      "ageDays": 163,
+      "idleDays": 163,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1671|Fix DocOps pipeline rename step persistence to handle file reference management and sequencing",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1672,
+      "title": "Document Piper environment defaults and provide configuration templates",
+      "url": "https://github.com/octave-commons/promethean/issues/1672",
+      "author": "riatzukiza",
+      "ageDays": 163,
+      "idleDays": 163,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1672|Document Piper environment defaults and provide configuration templates",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1673,
+      "title": "Improve Kanban task complexity typing and validation",
+      "url": "https://github.com/octave-commons/promethean/issues/1673",
+      "author": "riatzukiza",
+      "ageDays": 163,
+      "idleDays": 163,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1673|Improve Kanban task complexity typing and validation",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1707,
+      "title": "Restore Pantheon builds (currently skipped)",
+      "url": "https://github.com/octave-commons/promethean/issues/1707",
+      "author": "riatzukiza",
+      "ageDays": 121,
+      "idleDays": 121,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1707|Restore Pantheon builds (currently skipped)",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1708,
+      "title": "Unskip cephalon build (placeholder)",
+      "url": "https://github.com/octave-commons/promethean/issues/1708",
+      "author": "riatzukiza",
+      "ageDays": 121,
+      "idleDays": 110,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "state:incoming",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1708|Unskip cephalon build (placeholder)",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 802,
+      "title": "Fix generated sections to use Obsidian wikilinks and proper spacing",
+      "url": "https://github.com/octave-commons/promethean/issues/802",
+      "author": "app/coderabbitai",
+      "ageDays": 195,
+      "idleDays": 195,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "documentation"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|802|Fix generated sections to use Obsidian wikilinks and proper spacing",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 803,
+      "title": "Recover lost created_at timestamps from Git history in documentation pipeline",
+      "url": "https://github.com/octave-commons/promethean/issues/803",
+      "author": "app/coderabbitai",
+      "ageDays": 195,
+      "idleDays": 195,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|803|Recover lost created_at timestamps from Git history in documentation pipeline",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 809,
+      "title": "Exclude compiled test files from published npm packages across all packages",
+      "url": "https://github.com/octave-commons/promethean/issues/809",
+      "author": "app/coderabbitai",
+      "ageDays": 195,
+      "idleDays": 195,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|809|Exclude compiled test files from published npm packages across all packages",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 817,
+      "title": "Enhance MCP CLI to automatically resolve executable paths",
+      "url": "https://github.com/octave-commons/promethean/issues/817",
+      "author": "app/coderabbitai",
+      "ageDays": 195,
+      "idleDays": 195,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|817|Enhance MCP CLI to automatically resolve executable paths",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 854,
+      "title": "Multiple AI assistants creating conflicting code review suggestions",
+      "url": "https://github.com/octave-commons/promethean/issues/854",
+      "author": "app/coderabbitai",
+      "ageDays": 194,
+      "idleDays": 194,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|854|Multiple AI assistants creating conflicting code review suggestions",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 904,
+      "title": "Improve SSE streaming robustness in v1 agent logs endpoint",
+      "url": "https://github.com/octave-commons/promethean/issues/904",
+      "author": "app/coderabbitai",
+      "ageDays": 192,
+      "idleDays": 169,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|904|Improve SSE streaming robustness in v1 agent logs endpoint",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 954,
+      "title": "Schema registry compatibility checks fail for non-object schemas",
+      "url": "https://github.com/octave-commons/promethean/issues/954",
+      "author": "app/coderabbitai",
+      "ageDays": 189,
+      "idleDays": 189,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|954|Schema registry compatibility checks fail for non-object schemas",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 956,
+      "title": "semverguard: Parameter tightening under-reported when parameter counts differ",
+      "url": "https://github.com/octave-commons/promethean/issues/956",
+      "author": "app/coderabbitai",
+      "ageDays": 189,
+      "idleDays": 189,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|956|semverguard: Parameter tightening under-reported when parameter counts differ",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 959,
+      "title": "Update @fastify/* plugins for Fastify v5 compatibility in smartgpt-bridge",
+      "url": "https://github.com/octave-commons/promethean/issues/959",
+      "author": "app/coderabbitai",
+      "ageDays": 189,
+      "idleDays": 189,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|959|Update @fastify/* plugins for Fastify v5 compatibility in smartgpt-bridge",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 960,
+      "title": "Fix fragile JSON parsing in voice transcriber streaming response",
+      "url": "https://github.com/octave-commons/promethean/issues/960",
+      "author": "app/coderabbitai",
+      "ageDays": 189,
+      "idleDays": 189,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|960|Fix fragile JSON parsing in voice transcriber streaming response",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 978,
+      "title": "AVA watcher missing central config in ava-mcp package",
+      "url": "https://github.com/octave-commons/promethean/issues/978",
+      "author": "app/coderabbitai",
+      "ageDays": 188,
+      "idleDays": 188,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|978|AVA watcher missing central config in ava-mcp package",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 10,
+      "title": "web/src/App.tsx: Auto-clear fastModeMessage status after toggle",
+      "url": "https://github.com/open-hax/proxx/issues/10",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date."
+      ],
+      "id": "open-hax/proxx|issue|10|web/src/App.tsx: Auto-clear fastModeMessage status after toggle",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 11,
+      "title": "src/lib/proxy-settings-store.ts: Add mutex to prevent lost updates on concurrent set() calls",
+      "url": "https://github.com/open-hax/proxx/issues/11",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Enhancement request still needs intake triage."
+      ],
+      "id": "open-hax/proxx|issue|11|src/lib/proxy-settings-store.ts: Add mutex to prevent lost updates on concurrent set() calls",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 12,
+      "title": "web/src/pages/DashboardPage.tsx: Remove redundant total > 0 guard in serviceTierShareBars",
+      "url": "https://github.com/open-hax/proxx/issues/12",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:enhancement",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Enhancement request still needs intake triage."
+      ],
+      "id": "open-hax/proxx|issue|12|web/src/pages/DashboardPage.tsx: Remove redundant total > 0 guard in serviceTierShareBars",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 14,
+      "title": "web/src/pages: Extract shared formatServiceTier utility to eliminate duplication",
+      "url": "https://github.com/open-hax/proxx/issues/14",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date."
+      ],
+      "id": "open-hax/proxx|issue|14|web/src/pages: Extract shared formatServiceTier utility to eliminate duplication",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 16,
+      "title": "[DEVEL.md] Document DATABASE_URL in the environment variables reference",
+      "url": "https://github.com/open-hax/proxx/issues/16",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date."
+      ],
+      "id": "open-hax/proxx|issue|16|[DEVEL.md] Document DATABASE_URL in the environment variables reference",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 17,
+      "title": "[src/lib/config.ts] Avoid binding server host from generic HOST env var",
+      "url": "https://github.com/open-hax/proxx/issues/17",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date."
+      ],
+      "id": "open-hax/proxx|issue|17|[src/lib/config.ts] Avoid binding server host from generic HOST env var",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 20,
+      "title": "[src/lib/policy/engine.ts] Apply exclusions before single-provider fast path in orderProvidersByRule",
+      "url": "https://github.com/open-hax/proxx/issues/20",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date."
+      ],
+      "id": "open-hax/proxx|issue|20|[src/lib/policy/engine.ts] Apply exclusions before single-provider fast path in orderProvidersByRule",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 21,
+      "title": "[src/lib/provider-policy.ts] Provider exclusions neutralized in orderProviderRoutesByPolicy",
+      "url": "https://github.com/open-hax/proxx/issues/21",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date."
+      ],
+      "id": "open-hax/proxx|issue|21|[src/lib/provider-policy.ts] Provider exclusions neutralized in orderProviderRoutesByPolicy",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 27,
+      "title": "[src/lib/provider-strategy.ts] Refreshed retry path missing cooldown/affinity-reassignment logic",
+      "url": "https://github.com/open-hax/proxx/issues/27",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date."
+      ],
+      "id": "open-hax/proxx|issue|27|[src/lib/provider-strategy.ts] Refreshed retry path missing cooldown/affinity-reassignment logic",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 33,
+      "title": "[src/lib/policy/loader.ts] fallbackModels entries not validated as strings",
+      "url": "https://github.com/open-hax/proxx/issues/33",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date."
+      ],
+      "id": "open-hax/proxx|issue|33|[src/lib/policy/loader.ts] fallbackModels entries not validated as strings",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 36,
+      "title": "[render.yaml] UPSTREAM_BASE_URL and OPENAI_BASE_URL point to ChatGPT internal API, not official OpenAI API",
+      "url": "https://github.com/open-hax/proxx/issues/36",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date."
+      ],
+      "id": "open-hax/proxx|issue|36|[render.yaml] UPSTREAM_BASE_URL and OPENAI_BASE_URL point to ChatGPT internal API, not official OpenAI API",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 37,
+      "title": "[docker-compose.yml] Default DB port 5432 collides with local Postgres installations",
+      "url": "https://github.com/open-hax/proxx/issues/37",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date."
+      ],
+      "id": "open-hax/proxx|issue|37|[docker-compose.yml] Default DB port 5432 collides with local Postgres installations",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 39,
+      "title": "[Dockerfile.fly] Missing pnpm-lock.yaml prevents reproducible Docker builds",
+      "url": "https://github.com/open-hax/proxx/issues/39",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date."
+      ],
+      "id": "open-hax/proxx|issue|39|[Dockerfile.fly] Missing pnpm-lock.yaml prevents reproducible Docker builds",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 4,
+      "title": "src/tests/proxy.test.ts: Global fetch mock is race-prone in quota test",
+      "url": "https://github.com/open-hax/proxx/issues/4",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date."
+      ],
+      "id": "open-hax/proxx|issue|4|src/tests/proxy.test.ts: Global fetch mock is race-prone in quota test",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 40,
+      "title": "[fly.toml] Invalid memory format in [[vm]] block — must include units or be an integer",
+      "url": "https://github.com/open-hax/proxx/issues/40",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date."
+      ],
+      "id": "open-hax/proxx|issue|40|[fly.toml] Invalid memory format in [[vm]] block — must include units or be an integer",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 47,
+      "title": "[Minor] src/lib/factory-compat.ts: Don't drop top-level system text when messages is empty",
+      "url": "https://github.com/open-hax/proxx/issues/47",
+      "author": "app/coderabbitai",
+      "ageDays": 7,
+      "idleDays": 7,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Minor CodeRabbit note should remain in triage until clustered or batched."
+      ],
+      "id": "open-hax/proxx|issue|47|[Minor] src/lib/factory-compat.ts: Don't drop top-level system text when messages is empty",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 55,
+      "title": "[Minor] src/tests/factory-oauth-refresh.test.ts: Make the exact-threshold case deterministic",
+      "url": "https://github.com/open-hax/proxx/issues/55",
+      "author": "app/coderabbitai",
+      "ageDays": 7,
+      "idleDays": 7,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Minor CodeRabbit note should remain in triage until clustered or batched."
+      ],
+      "id": "open-hax/proxx|issue|55|[Minor] src/tests/factory-oauth-refresh.test.ts: Make the exact-threshold case deterministic",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 57,
+      "title": "[Minor] src/tests/factory-strategy.test.ts: Assert the documented 503 status exactly",
+      "url": "https://github.com/open-hax/proxx/issues/57",
+      "author": "app/coderabbitai",
+      "ageDays": 7,
+      "idleDays": 7,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Minor CodeRabbit note should remain in triage until clustered or batched."
+      ],
+      "id": "open-hax/proxx|issue|57|[Minor] src/tests/factory-strategy.test.ts: Assert the documented 503 status exactly",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 6,
+      "title": "src/main.ts: Call app.close() before shutdownTelemetry() in signal handlers",
+      "url": "https://github.com/open-hax/proxx/issues/6",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date."
+      ],
+      "id": "open-hax/proxx|issue|6|src/main.ts: Call app.close() before shutdownTelemetry() in signal handlers",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 61,
+      "title": "[Minor] Update verification receipt to reflect the actual successful run (.ημ/registry.jsonl)",
+      "url": "https://github.com/open-hax/proxx/issues/61",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Minor CodeRabbit note should remain in triage until clustered or batched."
+      ],
+      "id": "open-hax/proxx|issue|61|[Minor] Update verification receipt to reflect the actual successful run (.ημ/registry.jsonl)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 62,
+      "title": "[Minor] Fix incorrect hook location in ui-preferences-localstorage spec draft",
+      "url": "https://github.com/open-hax/proxx/issues/62",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Minor CodeRabbit note should remain in triage until clustered or batched."
+      ],
+      "id": "open-hax/proxx|issue|62|[Minor] Fix incorrect hook location in ui-preferences-localstorage spec draft",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 67,
+      "title": "[Minor] Test count mismatch between PR description and state file (.ημ/Π_STATE.sexp)",
+      "url": "https://github.com/open-hax/proxx/issues/67",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Minor CodeRabbit note should remain in triage until clustered or batched."
+      ],
+      "id": "open-hax/proxx|issue|67|[Minor] Test count mismatch between PR description and state file (.ημ/Π_STATE.sexp)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 7,
+      "title": "src/main.ts: Remove unused `telemetry` variable from initTelemetry() call",
+      "url": "https://github.com/open-hax/proxx/issues/7",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date."
+      ],
+      "id": "open-hax/proxx|issue|7|src/main.ts: Remove unused `telemetry` variable from initTelemetry() call",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 70,
+      "title": "[Minor] Refresh the retention baseline in weekly-cost-water-validation.md spec draft",
+      "url": "https://github.com/open-hax/proxx/issues/70",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Minor CodeRabbit note should remain in triage until clustered or batched."
+      ],
+      "id": "open-hax/proxx|issue|70|[Minor] Refresh the retention baseline in weekly-cost-water-validation.md spec draft",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 72,
+      "title": "[Minor] Recursive object branch in stripInvalidJsonChars silently corrupts non-plain objects (event-store.ts)",
+      "url": "https://github.com/open-hax/proxx/issues/72",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Minor CodeRabbit note should remain in triage until clustered or batched."
+      ],
+      "id": "open-hax/proxx|issue|72|[Minor] Recursive object branch in stripInvalidJsonChars silently corrupts non-plain objects (event-store.ts)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 74,
+      "title": "[Minor] `toUsageWindow` misses normalized \"weekly\" input (ui-routes.ts)",
+      "url": "https://github.com/open-hax/proxx/issues/74",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Minor CodeRabbit note should remain in triage until clustered or batched."
+      ],
+      "id": "open-hax/proxx|issue|74|[Minor] `toUsageWindow` misses normalized \"weekly\" input (ui-routes.ts)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 78,
+      "title": "[Minor] Add accessible names (aria-label) to search inputs in AnalyticsPage (AnalyticsPage.tsx)",
+      "url": "https://github.com/open-hax/proxx/issues/78",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Minor CodeRabbit note should remain in triage until clustered or batched."
+      ],
+      "id": "open-hax/proxx|issue|78|[Minor] Add accessible names (aria-label) to search inputs in AnalyticsPage (AnalyticsPage.tsx)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 80,
+      "title": "[Minor] Use overflow-x: auto; overflow-y: visible for .analytics-table-wrap (styles.css)",
+      "url": "https://github.com/open-hax/proxx/issues/80",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Minor CodeRabbit note should remain in triage until clustered or batched."
+      ],
+      "id": "open-hax/proxx|issue|80|[Minor] Use overflow-x: auto; overflow-y: visible for .analytics-table-wrap (styles.css)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 81,
+      "title": "[Minor] Reword repeated \"No … yet\" bullets to satisfy markdown style lint (multitenancy-phase1 spec)",
+      "url": "https://github.com/open-hax/proxx/issues/81",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Minor CodeRabbit note should remain in triage until clustered or batched."
+      ],
+      "id": "open-hax/proxx|issue|81|[Minor] Reword repeated \"No … yet\" bullets to satisfy markdown style lint (multitenancy-phase1 spec)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 83,
+      "title": "[Minor] Add workspace lint verification to the handoff checks (.ημ/Π_LAST.md)",
+      "url": "https://github.com/open-hax/proxx/issues/83",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Minor CodeRabbit note should remain in triage until clustered or batched."
+      ],
+      "id": "open-hax/proxx|issue|83|[Minor] Add workspace lint verification to the handoff checks (.ημ/Π_LAST.md)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 86,
+      "title": "[Minor] \"Coverage starts Never\" message is confusing when coverageStart is null (DashboardPage.tsx)",
+      "url": "https://github.com/open-hax/proxx/issues/86",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Minor CodeRabbit note should remain in triage until clustered or batched."
+      ],
+      "id": "open-hax/proxx|issue|86|[Minor] \"Coverage starts Never\" message is confusing when coverageStart is null (DashboardPage.tsx)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 9,
+      "title": "Refactor: Extract shared JWT/helper utilities to eliminate code duplication",
+      "url": "https://github.com/open-hax/proxx/issues/9",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "incoming",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "source:coderabbit",
+        "state:incoming",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date."
+      ],
+      "id": "open-hax/proxx|issue|9|Refactor: Extract shared JWT/helper utilities to eliminate code duplication",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1632,
+      "title": "Fix regenerateBoard to show all configured columns even when empty",
+      "url": "https://github.com/octave-commons/promethean/issues/1632",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "accepted",
+      "proposedPriority": "P1",
+      "currentLabels": [
+        "bug",
+        "kanban",
+        "config",
+        "kanban-sync",
+        "priority-P1",
+        "automated-sync",
+        "done",
+        "fsm",
+        "columns",
+        "project-generated"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P1",
+        "state:accepted",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Concrete bug report is worth keeping in the active queue.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1632|Fix regenerateBoard to show all configured columns even when empty",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1612,
+      "title": "Fix TypeScript build errors across key packages /TASK-20240921-buildfix /kanban /InProgress /codex-cloud /p2 /EPC-000 :auto :ts",
+      "url": "https://github.com/octave-commons/promethean/issues/1612",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "accepted",
+      "proposedPriority": "P2",
+      "currentLabels": [
+        "kanban-sync",
+        "automated-sync",
+        "priority-P2",
+        "task",
+        "board",
+        "state",
+        "owner",
+        "priority",
+        "epic",
+        "lang",
+        "project-generated",
+        "review"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "state:accepted",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Concrete bug report is worth keeping in the active queue.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1612|Fix TypeScript build errors across key packages /TASK-20240921-buildfix /kanban /InProgress /codex-cloud /p2 /EPC-000 :auto :ts",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1639,
+      "title": "Fix TypeScript build errors across key packages /TASK-20240921-buildfix /kanban /InProgress /codex-cloud /p2 /EPC-000 :auto :ts",
+      "url": "https://github.com/octave-commons/promethean/issues/1639",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "accepted",
+      "proposedPriority": "P2",
+      "currentLabels": [
+        "kanban-sync",
+        "automated-sync",
+        "priority-P2",
+        "task",
+        "board",
+        "state",
+        "owner",
+        "priority",
+        "epic",
+        "lang",
+        "project-generated",
+        "review"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "state:accepted",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Concrete bug report is worth keeping in the active queue.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1639|Fix TypeScript build errors across key packages /TASK-20240921-buildfix /kanban /InProgress /codex-cloud /p2 /EPC-000 :auto :ts",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 958,
+      "title": "Fix parseArgs index advance bug when flag value is literal 'true'",
+      "url": "https://github.com/octave-commons/promethean/issues/958",
+      "author": "app/coderabbitai",
+      "ageDays": 189,
+      "idleDays": 189,
+      "proposedStatus": "accepted",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "source:coderabbit",
+        "state:accepted",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Concrete bug report is worth keeping in the active queue.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|958|Fix parseArgs index advance bug when flag value is literal 'true'",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 82,
+      "title": "[BUG] Failure to get openhax/codex error openhax/codex: Failed to fetch OpenCode codex.txt from GitHub",
+      "url": "https://github.com/open-hax/codex/issues/82",
+      "author": "TheAllSeeingPie",
+      "ageDays": 39,
+      "idleDays": 39,
+      "proposedStatus": "accepted",
+      "proposedPriority": "P2",
+      "currentLabels": [
+        "bug"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "state:accepted"
+      ],
+      "reasoning": [
+        "Concrete bug report is worth keeping in the active queue."
+      ],
+      "id": "open-hax/codex|issue|82|[BUG] Failure to get openhax/codex error openhax/codex: Failed to fetch OpenCode codex.txt from GitHub",
+      "canonicalRepo": "open-hax/codex",
+      "repos": [
+        "open-hax/codex"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 25,
+      "title": "[src/lib/provider-strategy.ts] Throwing error in refreshed fetch catch block breaks fallback pattern",
+      "url": "https://github.com/open-hax/proxx/issues/25",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "accepted",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "source:coderabbit",
+        "state:accepted",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Concrete bug report is worth keeping in the active queue."
+      ],
+      "id": "open-hax/proxx|issue|25|[src/lib/provider-strategy.ts] Throwing error in refreshed fetch catch block breaks fallback pattern",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1143,
+      "title": "Security: treeDirectory vulnerable to symlink escapes outside sandbox",
+      "url": "https://github.com/octave-commons/promethean/issues/1143",
+      "author": "app/coderabbitai",
+      "ageDays": 181,
+      "idleDays": 181,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P0",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Security or secret-handling risk should be actively refined before implementation.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1143|Security: treeDirectory vulnerable to symlink escapes outside sandbox",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1144,
+      "title": "Security: writeFileContent allows sandbox escape via symlinks",
+      "url": "https://github.com/octave-commons/promethean/issues/1144",
+      "author": "app/coderabbitai",
+      "ageDays": 181,
+      "idleDays": 163,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P0",
+      "currentLabels": [
+        "bug",
+        "security",
+        "prio:high"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Security or secret-handling risk should be actively refined before implementation.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1144|Security: writeFileContent allows sandbox escape via symlinks",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1145,
+      "title": "Apply symlink-safe write protections to writeFileLines function",
+      "url": "https://github.com/octave-commons/promethean/issues/1145",
+      "author": "app/coderabbitai",
+      "ageDays": 181,
+      "idleDays": 181,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P0",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Security or secret-handling risk should be actively refined before implementation.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1145|Apply symlink-safe write protections to writeFileLines function",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 791,
+      "title": "Improve secret scanning with detect-secrets tool",
+      "url": "https://github.com/octave-commons/promethean/issues/791",
+      "author": "app/coderabbitai",
+      "ageDays": 196,
+      "idleDays": 196,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P0",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Security or secret-handling risk should be actively refined before implementation.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|791|Improve secret scanning with detect-secrets tool",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 905,
+      "title": "SSE endpoint vulnerable to write-after-end crashes in agent streaming",
+      "url": "https://github.com/octave-commons/promethean/issues/905",
+      "author": "app/coderabbitai",
+      "ageDays": 192,
+      "idleDays": 192,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P0",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Security or secret-handling risk should be actively refined before implementation.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|905|SSE endpoint vulnerable to write-after-end crashes in agent streaming",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 18,
+      "title": "[src/lib/db/sql-credential-store.ts] maskSecret leaks full value for short secrets",
+      "url": "https://github.com/open-hax/proxx/issues/18",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P0",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Security or secret-handling risk should be actively refined before implementation."
+      ],
+      "id": "open-hax/proxx|issue|18|[src/lib/db/sql-credential-store.ts] maskSecret leaks full value for short secrets",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 19,
+      "title": "[src/lib/key-pool.ts] File/env sources can resurrect stale credentials from account store",
+      "url": "https://github.com/open-hax/proxx/issues/19",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P0",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Security or secret-handling risk should be actively refined before implementation."
+      ],
+      "id": "open-hax/proxx|issue|19|[src/lib/key-pool.ts] File/env sources can resurrect stale credentials from account store",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 22,
+      "title": "[src/lib/provider-routing.ts] Disabled providers still leak into model discovery via buildOllamaCatalogRoutes",
+      "url": "https://github.com/open-hax/proxx/issues/22",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P0",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Security or secret-handling risk should be actively refined before implementation."
+      ],
+      "id": "open-hax/proxx|issue|22|[src/lib/provider-routing.ts] Disabled providers still leak into model discovery via buildOllamaCatalogRoutes",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 26,
+      "title": "[src/lib/provider-strategy.ts] CRITICAL: refreshExpiredToken can throw and abort entire fallback loop",
+      "url": "https://github.com/open-hax/proxx/issues/26",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P0",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Security or secret-handling risk should be actively refined before implementation."
+      ],
+      "id": "open-hax/proxx|issue|26|[src/lib/provider-strategy.ts] CRITICAL: refreshExpiredToken can throw and abort entire fallback loop",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 29,
+      "title": "[src/lib/runtime-credential-store.ts] listProviders hides file/env providers when SQL is configured",
+      "url": "https://github.com/open-hax/proxx/issues/29",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P0",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Security or secret-handling risk should be actively refined before implementation."
+      ],
+      "id": "open-hax/proxx|issue|29|[src/lib/runtime-credential-store.ts] listProviders hides file/env providers when SQL is configured",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 31,
+      "title": "[src/tests/config.test.ts] env-mutating test must be marked non-concurrent to prevent env leakage",
+      "url": "https://github.com/open-hax/proxx/issues/31",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P0",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Security or secret-handling risk should be actively refined before implementation."
+      ],
+      "id": "open-hax/proxx|issue|31|[src/tests/config.test.ts] env-mutating test must be marked non-concurrent to prevent env leakage",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 38,
+      "title": "[Dockerfile.fly] Container runs as root — add non-root user for security hardening",
+      "url": "https://github.com/open-hax/proxx/issues/38",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P0",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Security or secret-handling risk should be actively refined before implementation."
+      ],
+      "id": "open-hax/proxx|issue|38|[Dockerfile.fly] Container runs as root — add non-root user for security hardening",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 46,
+      "title": "[Major] src/lib/factory-auth.ts: Set restrictive permissions (0600) on auth.v2 file after writing tokens",
+      "url": "https://github.com/open-hax/proxx/issues/46",
+      "author": "app/coderabbitai",
+      "ageDays": 7,
+      "idleDays": 7,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P0",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Security or secret-handling risk should be actively refined before implementation."
+      ],
+      "id": "open-hax/proxx|issue|46|[Major] src/lib/factory-auth.ts: Set restrictive permissions (0600) on auth.v2 file after writing tokens",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 52,
+      "title": "[Major] src/lib/runtime-credential-store.ts: Deleting only the SQL copy can resurrect seeded credentials",
+      "url": "https://github.com/open-hax/proxx/issues/52",
+      "author": "app/coderabbitai",
+      "ageDays": 7,
+      "idleDays": 7,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P0",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Security or secret-handling risk should be actively refined before implementation."
+      ],
+      "id": "open-hax/proxx|issue|52|[Major] src/lib/runtime-credential-store.ts: Deleting only the SQL copy can resurrect seeded credentials",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 54,
+      "title": "[Minor] src/tests/factory-config.test.ts: Mark Factory fixtures as allowlisted test secrets",
+      "url": "https://github.com/open-hax/proxx/issues/54",
+      "author": "app/coderabbitai",
+      "ageDays": 7,
+      "idleDays": 7,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P0",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Security or secret-handling risk should be actively refined before implementation."
+      ],
+      "id": "open-hax/proxx|issue|54|[Minor] src/tests/factory-config.test.ts: Mark Factory fixtures as allowlisted test secrets",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 65,
+      "title": "[Critical] Keep `revealSecrets` ephemeral — do not persist in localStorage (CredentialsPage.tsx)",
+      "url": "https://github.com/open-hax/proxx/issues/65",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P0",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Security or secret-handling risk should be actively refined before implementation."
+      ],
+      "id": "open-hax/proxx|issue|65|[Critical] Keep `revealSecrets` ephemeral — do not persist in localStorage (CredentialsPage.tsx)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 69,
+      "title": "[Major] Make `tenant_api_keys.token_hash` a UNIQUE index (multitenancy user model spec)",
+      "url": "https://github.com/open-hax/proxx/issues/69",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P0",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P0",
+        "risk:security",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Security or secret-handling risk should be actively refined before implementation."
+      ],
+      "id": "open-hax/proxx|issue|69|[Major] Make `tenant_api_keys.token_hash` a UNIQUE index (multitenancy user model spec)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1044,
+      "title": "Refactor changefeed test to comply with ESLint rules instead of disabling 9 rules",
+      "url": "https://github.com/octave-commons/promethean/issues/1044",
+      "author": "app/coderabbitai",
+      "ageDays": 187,
+      "idleDays": 187,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P1",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P1",
+        "risk:correctness",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Critical correctness/availability issue warrants breakdown into a fix slice.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1044|Refactor changefeed test to comply with ESLint rules instead of disabling 9 rules",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1158,
+      "title": "Automate board mirroring + docops + versioning (changesets/towncrier)",
+      "url": "https://github.com/octave-commons/promethean/issues/1158",
+      "author": "riatzukiza",
+      "ageDays": 181,
+      "idleDays": 181,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P1",
+      "currentLabels": [
+        "docops",
+        "automation",
+        "boards",
+        "infra"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P1",
+        "risk:correctness",
+        "state:breakdown",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Critical correctness/availability issue warrants breakdown into a fix slice.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1158|Automate board mirroring + docops + versioning (changesets/towncrier)",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1458,
+      "title": "Follow-up: add ENSO handshake timeout knob",
+      "url": "https://github.com/octave-commons/promethean/issues/1458",
+      "author": "riatzukiza",
+      "ageDays": 169,
+      "idleDays": 169,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P1",
+      "currentLabels": [
+        "good first issue",
+        "gateway",
+        "follow-up"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P1",
+        "risk:correctness",
+        "state:breakdown",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Critical correctness/availability issue warrants breakdown into a fix slice.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1458|Follow-up: add ENSO handshake timeout knob",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1611,
+      "title": "Fix hanging SmartGPT bridge tests /TASK-20250928-041600 /kanban /InProgress /err /p2 /EPC-000 :auto :ts",
+      "url": "https://github.com/octave-commons/promethean/issues/1611",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P1",
+      "currentLabels": [
+        "kanban-sync",
+        "automated-sync",
+        "priority-P2",
+        "task",
+        "board",
+        "state",
+        "owner",
+        "priority",
+        "epic",
+        "lang",
+        "project-generated",
+        "in_progress"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P1",
+        "risk:correctness",
+        "state:breakdown",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Critical correctness/availability issue warrants breakdown into a fix slice.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1611|Fix hanging SmartGPT bridge tests /TASK-20250928-041600 /kanban /InProgress /err /p2 /EPC-000 :auto :ts",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1638,
+      "title": "Fix hanging SmartGPT bridge tests /TASK-20250928-041600 /kanban /InProgress /err /p2 /EPC-000 :auto :ts",
+      "url": "https://github.com/octave-commons/promethean/issues/1638",
+      "author": "riatzukiza",
+      "ageDays": 164,
+      "idleDays": 164,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P1",
+      "currentLabels": [
+        "kanban-sync",
+        "automated-sync",
+        "priority-P2",
+        "task",
+        "board",
+        "state",
+        "owner",
+        "priority",
+        "epic",
+        "lang",
+        "project-generated",
+        "in_progress"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P1",
+        "risk:correctness",
+        "state:breakdown",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Critical correctness/availability issue warrants breakdown into a fix slice.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|1638|Fix hanging SmartGPT bridge tests /TASK-20250928-041600 /kanban /InProgress /err /p2 /EPC-000 :auto :ts",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 850,
+      "title": "Critical bug in semaphore implementation breaks mutual exclusion for runJSFunction",
+      "url": "https://github.com/octave-commons/promethean/issues/850",
+      "author": "app/coderabbitai",
+      "ageDays": 194,
+      "idleDays": 194,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P1",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P1",
+        "risk:correctness",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Critical correctness/availability issue warrants breakdown into a fix slice.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|850|Critical bug in semaphore implementation breaks mutual exclusion for runJSFunction",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 957,
+      "title": "AVA MCP tool runTests has conflicting flags that cause parse errors and hanging",
+      "url": "https://github.com/octave-commons/promethean/issues/957",
+      "author": "app/coderabbitai",
+      "ageDays": 189,
+      "idleDays": 189,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P1",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P1",
+        "risk:correctness",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate",
+        "triage:mirror-collapsed",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Critical correctness/availability issue warrants breakdown into a fix slice.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|issue|957|AVA MCP tool runTests has conflicting flags that cause parse errors and hanging",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 13,
+      "title": "src/lib/telemetry/otel.ts: Fix potential data loss during concurrent flush() calls",
+      "url": "https://github.com/open-hax/proxx/issues/13",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P1",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P1",
+        "risk:correctness",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Critical correctness/availability issue warrants breakdown into a fix slice."
+      ],
+      "id": "open-hax/proxx|issue|13|src/lib/telemetry/otel.ts: Fix potential data loss during concurrent flush() calls",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 45,
+      "title": "[Critical] src/lib/factory-auth.ts: Add a timeout to the WorkOS refresh call",
+      "url": "https://github.com/open-hax/proxx/issues/45",
+      "author": "app/coderabbitai",
+      "ageDays": 7,
+      "idleDays": 7,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P1",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P1",
+        "risk:correctness",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Critical correctness/availability issue warrants breakdown into a fix slice."
+      ],
+      "id": "open-hax/proxx|issue|45|[Critical] src/lib/factory-auth.ts: Add a timeout to the WorkOS refresh call",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 48,
+      "title": "[Major] src/lib/factory-oauth.ts: Bound WorkOS calls with explicit timeouts",
+      "url": "https://github.com/open-hax/proxx/issues/48",
+      "author": "app/coderabbitai",
+      "ageDays": 7,
+      "idleDays": 7,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P1",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P1",
+        "risk:correctness",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Critical correctness/availability issue warrants breakdown into a fix slice."
+      ],
+      "id": "open-hax/proxx|issue|48|[Major] src/lib/factory-oauth.ts: Bound WorkOS calls with explicit timeouts",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 50,
+      "title": "[Major] src/lib/factory-oauth.ts: Keep the pending browser state until the code exchange succeeds",
+      "url": "https://github.com/open-hax/proxx/issues/50",
+      "author": "app/coderabbitai",
+      "ageDays": 7,
+      "idleDays": 7,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P1",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P1",
+        "risk:correctness",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Critical correctness/availability issue warrants breakdown into a fix slice."
+      ],
+      "id": "open-hax/proxx|issue|50|[Major] src/lib/factory-oauth.ts: Keep the pending browser state until the code exchange succeeds",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 8,
+      "title": "src/lib/openai-quota.ts: Avoid full upsertOAuthAccount when only planType changed",
+      "url": "https://github.com/open-hax/proxx/issues/8",
+      "author": "app/coderabbitai",
+      "ageDays": 9,
+      "idleDays": 9,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P1",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P1",
+        "risk:correctness",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Critical correctness/availability issue warrants breakdown into a fix slice."
+      ],
+      "id": "open-hax/proxx|issue|8|src/lib/openai-quota.ts: Avoid full upsertOAuthAccount when only planType changed",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 49,
+      "title": "[Major] src/lib/factory-oauth.ts: Honor device authorization lifetime from WorkOS response instead of fixed TTL",
+      "url": "https://github.com/open-hax/proxx/issues/49",
+      "author": "app/coderabbitai",
+      "ageDays": 7,
+      "idleDays": 7,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Major CodeRabbit finding should be refined into an explicit implementation slice."
+      ],
+      "id": "open-hax/proxx|issue|49|[Major] src/lib/factory-oauth.ts: Honor device authorization lifetime from WorkOS response instead of fixed TTL",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 51,
+      "title": "[Major] src/lib/key-pool.ts: FACTORY_API_KEY is dropped in account-store mode",
+      "url": "https://github.com/open-hax/proxx/issues/51",
+      "author": "app/coderabbitai",
+      "ageDays": 7,
+      "idleDays": 7,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Major CodeRabbit finding should be refined into an explicit implementation slice."
+      ],
+      "id": "open-hax/proxx|issue|51|[Major] src/lib/key-pool.ts: FACTORY_API_KEY is dropped in account-store mode",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 53,
+      "title": "[Major] src/lib/ui-routes.ts: Keep the Factory auth.v2 source in sync on successful login",
+      "url": "https://github.com/open-hax/proxx/issues/53",
+      "author": "app/coderabbitai",
+      "ageDays": 7,
+      "idleDays": 7,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Major CodeRabbit finding should be refined into an explicit implementation slice."
+      ],
+      "id": "open-hax/proxx|issue|53|[Major] src/lib/ui-routes.ts: Keep the Factory auth.v2 source in sync on successful login",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 63,
+      "title": "[Major] Daily history collapses to 8-day hourly horizon during migration (request-log-store.ts)",
+      "url": "https://github.com/open-hax/proxx/issues/63",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Major CodeRabbit finding should be refined into an explicit implementation slice."
+      ],
+      "id": "open-hax/proxx|issue|63|[Major] Daily history collapses to 8-day hourly horizon during migration (request-log-store.ts)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 64,
+      "title": "[Major] Clear bad stored session IDs when restore fails (ChatPage.tsx)",
+      "url": "https://github.com/open-hax/proxx/issues/64",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Major CodeRabbit finding should be refined into an explicit implementation slice."
+      ],
+      "id": "open-hax/proxx|issue|64|[Major] Clear bad stored session IDs when restore fails (ChatPage.tsx)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 66,
+      "title": "[Major] Avoid triggering data fetch on every keystroke in the model input field (ToolsPage.tsx)",
+      "url": "https://github.com/open-hax/proxx/issues/66",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Major CodeRabbit finding should be refined into an explicit implementation slice."
+      ],
+      "id": "open-hax/proxx|issue|66|[Major] Avoid triggering data fetch on every keystroke in the model input field (ToolsPage.tsx)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 68,
+      "title": "[Major] Reconcile multi-tenant-proxy-foundation.md with the canonical tenant draft before implementation",
+      "url": "https://github.com/open-hax/proxx/issues/68",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Major CodeRabbit finding should be refined into an explicit implementation slice."
+      ],
+      "id": "open-hax/proxx|issue|68|[Major] Reconcile multi-tenant-proxy-foundation.md with the canonical tenant draft before implementation",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 71,
+      "title": "[Major] Control-character sanitization is inconsistent and lossy (event-store.ts)",
+      "url": "https://github.com/open-hax/proxx/issues/71",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Major CodeRabbit finding should be refined into an explicit implementation slice."
+      ],
+      "id": "open-hax/proxx|issue|71|[Major] Control-character sanitization is inconsistent and lossy (event-store.ts)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 73,
+      "title": "[Major] Derived-estimate repair can leave aggregate buckets stale (request-log-store.ts)",
+      "url": "https://github.com/open-hax/proxx/issues/73",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Major CodeRabbit finding should be refined into an explicit implementation slice."
+      ],
+      "id": "open-hax/proxx|issue|73|[Major] Derived-estimate repair can leave aggregate buckets stale (request-log-store.ts)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 75,
+      "title": "[Major] Weekly/monthly account aggregation overwrites instead of accumulates (ui-routes.ts)",
+      "url": "https://github.com/open-hax/proxx/issues/75",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Major CodeRabbit finding should be refined into an explicit implementation slice."
+      ],
+      "id": "open-hax/proxx|issue|75|[Major] Weekly/monthly account aggregation overwrites instead of accumulates (ui-routes.ts)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 76,
+      "title": "[Major] Weekly-window test fixtures are hard-coded to March 17–18, 2026 and will go stale (proxy.test.ts)",
+      "url": "https://github.com/open-hax/proxx/issues/76",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Major CodeRabbit finding should be refined into an explicit implementation slice."
+      ],
+      "id": "open-hax/proxx|issue|76|[Major] Weekly-window test fixtures are hard-coded to March 17–18, 2026 and will go stale (proxy.test.ts)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 77,
+      "title": "[Major] Stored provider/model focus is erased on first mount before analytics loads (AnalyticsPage.tsx)",
+      "url": "https://github.com/open-hax/proxx/issues/77",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Major CodeRabbit finding should be refined into an explicit implementation slice."
+      ],
+      "id": "open-hax/proxx|issue|77|[Major] Stored provider/model focus is erased on first mount before analytics loads (AnalyticsPage.tsx)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 79,
+      "title": "[Major] Persisted provider filters get wiped before the first overview payload arrives (DashboardPage.tsx)",
+      "url": "https://github.com/open-hax/proxx/issues/79",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Major CodeRabbit finding should be refined into an explicit implementation slice."
+      ],
+      "id": "open-hax/proxx|issue|79|[Major] Persisted provider filters get wiped before the first overview payload arrives (DashboardPage.tsx)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 82,
+      "title": "[Major] Scope user identity uniqueness by provider in CREATE_USERS_TABLE (schema.ts)",
+      "url": "https://github.com/open-hax/proxx/issues/82",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Major CodeRabbit finding should be refined into an explicit implementation slice."
+      ],
+      "id": "open-hax/proxx|issue|82|[Major] Scope user identity uniqueness by provider in CREATE_USERS_TABLE (schema.ts)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 84,
+      "title": "[Major] Spec/implementation mismatch: ui_session auth kind and userId field not implemented (multitenancy-phase1 spec)",
+      "url": "https://github.com/open-hax/proxx/issues/84",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Major CodeRabbit finding should be refined into an explicit implementation slice."
+      ],
+      "id": "open-hax/proxx|issue|84|[Major] Spec/implementation mismatch: ui_session auth kind and userId field not implemented (multitenancy-phase1 spec)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 85,
+      "title": "[Major] Use configured OAuth callback path instead of hardcoded \"/auth/callback\" in auth-bypass (app.ts)",
+      "url": "https://github.com/open-hax/proxx/issues/85",
+      "author": "app/coderabbitai",
+      "ageDays": 1,
+      "idleDays": 1,
+      "proposedStatus": "breakdown",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "kind:bug",
+        "priority:P2",
+        "source:coderabbit",
+        "state:breakdown",
+        "triage:cluster-candidate"
+      ],
+      "reasoning": [
+        "Bot-generated review follow-up should be clustered with its source PR/date.",
+        "Major CodeRabbit finding should be refined into an explicit implementation slice."
+      ],
+      "id": "open-hax/proxx|issue|85|[Major] Use configured OAuth callback path instead of hardcoded \"/auth/callback\" in auth-bypass (app.ts)",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 1710,
+      "title": "Conflicted/stealth - preserve nested submodule changes",
+      "url": "https://github.com/octave-commons/promethean/pull/1710",
+      "author": "riatzukiza",
+      "ageDays": 46,
+      "idleDays": 46,
+      "proposedStatus": "blocked",
+      "proposedPriority": "P1",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "merge:dirty",
+        "priority:P1",
+        "state:blocked",
+        "triage:blocked",
+        "triage:mirror-aware",
+        "triage:mirror-collapsed"
+      ],
+      "reasoning": [
+        "PR has merge conflicts and is blocked until rebased or superseded.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|pr|1710|Conflicted/stealth - preserve nested submodule changes",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 1,
+      "title": "Feature/eta mu tts fix",
+      "url": "https://github.com/octave-commons/fork_tales/pull/1",
+      "author": "riatzukiza",
+      "ageDays": 9,
+      "idleDays": 6,
+      "proposedStatus": "blocked",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:pr",
+        "checks:failing",
+        "kanban",
+        "priority:P2",
+        "state:blocked",
+        "triage:blocked"
+      ],
+      "reasoning": [
+        "PR is blocked by failing checks: frontend-test."
+      ],
+      "id": "octave-commons/fork_tales|pr|1|Feature/eta mu tts fix",
+      "canonicalRepo": "octave-commons/fork_tales",
+      "repos": [
+        "octave-commons/fork_tales"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 1709,
+      "title": "Device/stealth",
+      "url": "https://github.com/octave-commons/promethean/pull/1709",
+      "author": "riatzukiza",
+      "ageDays": 46,
+      "idleDays": 3,
+      "proposedStatus": "blocked",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "merge:dirty",
+        "priority:P2",
+        "state:blocked",
+        "triage:blocked",
+        "triage:mirror-aware",
+        "triage:mirror-collapsed"
+      ],
+      "reasoning": [
+        "PR has merge conflicts and is blocked until rebased or superseded.",
+        "Mirror-collapsed across repos: octave-commons/promethean, riatzukiza/promethean."
+      ],
+      "id": "octave-commons/promethean|pr|1709|Device/stealth",
+      "canonicalRepo": "octave-commons/promethean",
+      "repos": [
+        "octave-commons/promethean",
+        "riatzukiza/promethean"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 6,
+      "title": "Feature: richer Codex metrics and request inspection commands",
+      "url": "https://github.com/open-hax/codex/issues/6",
+      "author": "riatzukiza",
+      "ageDays": 127,
+      "idleDays": 116,
+      "proposedStatus": "blocked",
+      "proposedPriority": "P2",
+      "currentLabels": [
+        "metrics",
+        "priority-medium",
+        "effort-large",
+        "blocked"
+      ],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P2",
+        "state:blocked",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Existing labels already mark this work as blocked."
+      ],
+      "id": "open-hax/codex|issue|6|Feature: richer Codex metrics and request inspection commands",
+      "canonicalRepo": "open-hax/codex",
+      "repos": [
+        "open-hax/codex"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 2,
+      "title": "Sync device/stealth branch",
+      "url": "https://github.com/open-hax/openhax/pull/2",
+      "author": "riatzukiza",
+      "ageDays": 46,
+      "idleDays": 4,
+      "proposedStatus": "blocked",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:pr",
+        "checks:failing",
+        "kanban",
+        "priority:P2",
+        "state:blocked",
+        "triage:blocked",
+        "triage:mirror-aware",
+        "triage:mirror-collapsed"
+      ],
+      "reasoning": [
+        "PR is blocked by failing checks: coverage.",
+        "Mirror-collapsed across repos: open-hax/openhax, riatzukiza/openhax."
+      ],
+      "id": "open-hax/openhax|pr|2|Sync device/stealth branch",
+      "canonicalRepo": "open-hax/openhax",
+      "repos": [
+        "open-hax/openhax",
+        "riatzukiza/openhax"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 3,
+      "title": "@openhax/kanban: local web UI (serve)",
+      "url": "https://github.com/open-hax/openhax/pull/3",
+      "author": "riatzukiza",
+      "ageDays": 7,
+      "idleDays": 6,
+      "proposedStatus": "blocked",
+      "proposedPriority": "P2",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:pr",
+        "checks:failing",
+        "kanban",
+        "priority:P2",
+        "state:blocked",
+        "triage:blocked",
+        "triage:mirror-aware",
+        "triage:mirror-collapsed"
+      ],
+      "reasoning": [
+        "PR is blocked by failing checks: coverage.",
+        "Mirror-collapsed across repos: open-hax/openhax, riatzukiza/openhax."
+      ],
+      "id": "open-hax/openhax|pr|3|@openhax/kanban: local web UI (serve)",
+      "canonicalRepo": "open-hax/openhax",
+      "repos": [
+        "open-hax/openhax",
+        "riatzukiza/openhax"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 140,
+      "title": "Π: snapshot 2026-03-21 — Fork Tales canonical path relocation",
+      "url": "https://github.com/octave-commons/gates-of-aker/pull/140",
+      "author": "riatzukiza",
+      "ageDays": 0,
+      "idleDays": 0,
+      "proposedStatus": "blocked",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "merge:dirty",
+        "priority:P3",
+        "state:blocked",
+        "triage:blocked"
+      ],
+      "reasoning": [
+        "PR has merge conflicts and is blocked until rebased or superseded."
+      ],
+      "id": "octave-commons/gates-of-aker|pr|140|Π: snapshot 2026-03-21 — Fork Tales canonical path relocation",
+      "canonicalRepo": "octave-commons/gates-of-aker",
+      "repos": [
+        "octave-commons/gates-of-aker"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 29,
+      "title": "Fix typo in register.md",
+      "url": "https://github.com/riatzukiza/riatzukiza.github.io/pull/29",
+      "author": "riatzukiza",
+      "ageDays": 237,
+      "idleDays": 138,
+      "proposedStatus": "in_progress",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "codex"
+      ],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "pr:draft",
+        "priority:P3",
+        "state:in_progress",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Draft PR is active work, not review-ready."
+      ],
+      "id": "riatzukiza/riatzukiza.github.io|pr|29|Fix typo in register.md",
+      "canonicalRepo": "riatzukiza/riatzukiza.github.io",
+      "repos": [
+        "riatzukiza/riatzukiza.github.io"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 30,
+      "title": "Add doc macros",
+      "url": "https://github.com/riatzukiza/riatzukiza.github.io/pull/30",
+      "author": "riatzukiza",
+      "ageDays": 237,
+      "idleDays": 138,
+      "proposedStatus": "in_progress",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "codex"
+      ],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "pr:draft",
+        "priority:P3",
+        "state:in_progress",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Draft PR is active work, not review-ready."
+      ],
+      "id": "riatzukiza/riatzukiza.github.io|pr|30|Add doc macros",
+      "canonicalRepo": "riatzukiza/riatzukiza.github.io",
+      "repos": [
+        "riatzukiza/riatzukiza.github.io"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 31,
+      "title": "Add doc macros for core util and repl modules",
+      "url": "https://github.com/riatzukiza/riatzukiza.github.io/pull/31",
+      "author": "riatzukiza",
+      "ageDays": 237,
+      "idleDays": 138,
+      "proposedStatus": "in_progress",
+      "proposedPriority": "P3",
+      "currentLabels": [
+        "codex"
+      ],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "pr:draft",
+        "priority:P3",
+        "state:in_progress",
+        "triage:stale"
+      ],
+      "reasoning": [
+        "Draft PR is active work, not review-ready."
+      ],
+      "id": "riatzukiza/riatzukiza.github.io|pr|31|Add doc macros for core util and repl modules",
+      "canonicalRepo": "riatzukiza/riatzukiza.github.io",
+      "repos": [
+        "riatzukiza/riatzukiza.github.io"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 1,
+      "title": "chore: commit working tree changes to device/stealth",
+      "url": "https://github.com/open-hax/workbench/pull/1",
+      "author": "riatzukiza",
+      "ageDays": 46,
+      "idleDays": 11,
+      "proposedStatus": "in_review",
+      "proposedPriority": "P1",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "priority:P1",
+        "state:in_review"
+      ],
+      "reasoning": [
+        "Reviewable PR belongs in the In Review lane."
+      ],
+      "id": "open-hax/workbench|pr|1|chore: commit working tree changes to device/stealth",
+      "canonicalRepo": "open-hax/workbench",
+      "repos": [
+        "open-hax/workbench"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 1,
+      "title": "Sync device/stealth branch",
+      "url": "https://github.com/octave-commons/pantheon/pull/1",
+      "author": "riatzukiza",
+      "ageDays": 46,
+      "idleDays": 6,
+      "proposedStatus": "in_review",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "priority:P3",
+        "state:in_review"
+      ],
+      "reasoning": [
+        "Reviewable PR belongs in the In Review lane."
+      ],
+      "id": "octave-commons/pantheon|pr|1|Sync device/stealth branch",
+      "canonicalRepo": "octave-commons/pantheon",
+      "repos": [
+        "octave-commons/pantheon"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 1,
+      "title": "Π: snapshot 2026-03-21 — chat labeling lab slice",
+      "url": "https://github.com/octave-commons/shibboleth/pull/1",
+      "author": "riatzukiza",
+      "ageDays": 0,
+      "idleDays": 0,
+      "proposedStatus": "in_review",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "priority:P3",
+        "state:in_review"
+      ],
+      "reasoning": [
+        "Reviewable PR belongs in the In Review lane."
+      ],
+      "id": "octave-commons/shibboleth|pr|1|Π: snapshot 2026-03-21 — chat labeling lab slice",
+      "canonicalRepo": "octave-commons/shibboleth",
+      "repos": [
+        "octave-commons/shibboleth"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 1,
+      "title": "Sync device/stealth branch",
+      "url": "https://github.com/open-hax/clients/pull/1",
+      "author": "riatzukiza",
+      "ageDays": 46,
+      "idleDays": 43,
+      "proposedStatus": "in_review",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "priority:P3",
+        "state:in_review"
+      ],
+      "reasoning": [
+        "Reviewable PR belongs in the In Review lane."
+      ],
+      "id": "open-hax/clients|pr|1|Sync device/stealth branch",
+      "canonicalRepo": "open-hax/clients",
+      "repos": [
+        "open-hax/clients"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 15,
+      "title": "[codex] add ob1 provider",
+      "url": "https://github.com/open-hax/proxx/pull/15",
+      "author": "agustif",
+      "ageDays": 9,
+      "idleDays": 6,
+      "proposedStatus": "in_review",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "priority:P3",
+        "state:in_review"
+      ],
+      "reasoning": [
+        "Reviewable PR belongs in the In Review lane."
+      ],
+      "id": "open-hax/proxx|pr|15|[codex] add ob1 provider",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 60,
+      "title": "Pi/fork tax 20260319",
+      "url": "https://github.com/open-hax/proxx/pull/60",
+      "author": "riatzukiza",
+      "ageDays": 2,
+      "idleDays": 2,
+      "proposedStatus": "in_review",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "priority:P3",
+        "state:in_review"
+      ],
+      "reasoning": [
+        "Reviewable PR belongs in the In Review lane."
+      ],
+      "id": "open-hax/proxx|pr|60|Pi/fork tax 20260319",
+      "canonicalRepo": "open-hax/proxx",
+      "repos": [
+        "open-hax/proxx"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 1,
+      "title": "Π: snapshot 2026-03-21 — Fork Tales lineage path retarget",
+      "url": "https://github.com/open-hax/voxx/pull/1",
+      "author": "riatzukiza",
+      "ageDays": 0,
+      "idleDays": 0,
+      "proposedStatus": "in_review",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "priority:P3",
+        "state:in_review"
+      ],
+      "reasoning": [
+        "Reviewable PR belongs in the In Review lane."
+      ],
+      "id": "open-hax/voxx|pr|1|Π: snapshot 2026-03-21 — Fork Tales lineage path retarget",
+      "canonicalRepo": "open-hax/voxx",
+      "repos": [
+        "open-hax/voxx"
+      ]
+    },
+    {
+      "kind": "pr",
+      "number": 1,
+      "title": "device/stealth updates",
+      "url": "https://github.com/riatzukiza/agent-shell/pull/1",
+      "author": "riatzukiza",
+      "ageDays": 125,
+      "idleDays": 4,
+      "proposedStatus": "in_review",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:pr",
+        "kanban",
+        "priority:P3",
+        "state:in_review"
+      ],
+      "reasoning": [
+        "Reviewable PR belongs in the In Review lane."
+      ],
+      "id": "riatzukiza/agent-shell|pr|1|device/stealth updates",
+      "canonicalRepo": "riatzukiza/agent-shell",
+      "repos": [
+        "riatzukiza/agent-shell"
+      ]
+    },
+    {
+      "kind": "issue",
+      "number": 1,
+      "title": "testing",
+      "url": "https://github.com/open-hax/openhax/issues/1",
+      "author": "riatzukiza",
+      "ageDays": 110,
+      "idleDays": 110,
+      "proposedStatus": "rejected",
+      "proposedPriority": "P3",
+      "currentLabels": [],
+      "proposedLabels": [
+        "artifact:issue",
+        "kanban",
+        "priority:P3",
+        "state:rejected",
+        "triage:mirror-collapsed",
+        "triage:placeholder"
+      ],
+      "reasoning": [
+        "Placeholder/test issue does not describe a durable unit of work.",
+        "OpenHax placeholder/testing issue should be closed or replaced with a real task.",
+        "Mirror-collapsed across repos: open-hax/openhax, riatzukiza/openhax."
+      ],
+      "id": "open-hax/openhax|issue|1|testing",
+      "canonicalRepo": "open-hax/openhax",
+      "repos": [
+        "open-hax/openhax",
+        "riatzukiza/openhax"
+      ]
+    }
+  ]
+}

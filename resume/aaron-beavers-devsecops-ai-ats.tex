@@ -1,0 +1,112 @@
+\documentclass[10pt]{article}
+\pagestyle{empty}
+
+% --- tight margins (no geometry dependency)
+\setlength{\topmargin}{-0.6in}
+\setlength{\textheight}{10.3in}
+\setlength{\oddsidemargin}{-0.25in}
+\setlength{\evensidemargin}{-0.25in}
+\setlength{\textwidth}{7.0in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1pt}
+\renewcommand\labelitemi{-}
+
+% (No external LaTeX packages: keep this file buildable on minimal TeX installs)
+
+\begin{document}
+
+{\LARGE \textbf{Aaron Beavers}}\\
+DevSecOps Engineer (AI Systems / LLM Infrastructure / Secure Automation)\\
+
+\vspace{2pt}
+\textbf{CONTACT}\\
+West Des Moines, IA 50265 \;\;\textbar\;\; 515-388-0539 \;\;\textbar\;\; foamy125@gmail.com\\
+GitHub: github.com/riatzukiza
+
+\vspace{4pt}
+\textbf{SUMMARY}\\
+DevSecOps / platform engineer focused on AI systems: secure LLM gateways, credential/OAuth workflows, and reproducible evaluation pipelines. ML-fluent (embeddings/clustering, eval design). 10+ years building production software pre-agentic-AI; now use agentic tooling to accelerate delivery with verification (tests, manifests, audit trails).
+
+\vspace{2pt}
+\textbf{SKILLS}\\
+\textbf{DevSecOps}: Docker/Compose, Postgres, CI (CircleCI), cloud.gov / Cloud Foundry.\\
+\textbf{Security \& reliability}: OAuth PKCE, token auth, key rotation on rate limits, retries/timeouts, audit logs.\\
+\textbf{AI systems}: OpenAI-compatible APIs, model-aware routing (Responses/Messages/chat), reasoning traces, embeddings + clustering, Chroma semantic recall.\\
+\textbf{Languages}: TypeScript/Node.js, Python, Clojure, SQL, Ruby.
+
+\vspace{4pt}
+\textbf{OPEN SOURCE EXPERIENCE}\\
+
+\textbf{Open Hax Proxy} --- OpenAI-compatible multi-provider LLM gateway \hfill \textit{github.com/open-hax/proxx}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Built a 3-provider token-authenticated proxy with provider-scoped API-key/OAuth rotation on rate limits and cross-provider fallback for operational continuity.
+  \item Implemented model-aware routing + payload translation between OpenAI Responses, Anthropic Messages, and Ollama; preserved reasoning traces; shipped a web console and Chroma-backed session recall.
+  \item Reused the proxy + report stack in Mythloom, a worker-side anti-extractive resume analysis workbench.
+\end{itemize}
+
+\textbf{Ussyverse / Battlebussy (contributor)} --- AI CTF platform \hfill \textit{github.com/shuv1337/battlebussy}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Shipped production deployment/hardening for Go + NATS JetStream control plane: multi-arch Docker builds, GHCR publish scripts, docker-compose prod stack, and OCI Terraform workflow/docs.
+\end{itemize}
+
+\textbf{Shibboleth} --- Reproducible adversarial prompt-eval dataset pipeline \hfill \textit{github.com/octave-commons/shibboleth}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Authored a generative DSL + 7-stage pipeline with deterministic seeds, full provenance, leakage-proof splits (sentence-transformers + HDBSCAN), and SHA-256 manifests/datasheets.
+\end{itemize}
+
+\textbf{Gates of Aker / Fantasia} --- Simulation backend + observability UI \hfill \textit{github.com/octave-commons/gates-of-aker}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Maintained a tick-based Clojure simulation with WebSocket control plane + React UI; added WS E2E tests and gate runtime modes (shadow/enforce/off).
+\end{itemize}
+
+\vspace{4pt}
+\textbf{WORK EXPERIENCE}\\
+
+\textbf{Raft Technologies} --- Full Stack Engineer (Python/Django + React) \hfill \textit{Jul 2020 -- Sep 2023}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Built 5-stage Celery pipelines for file ingestion (parse $\rightarrow$ validate $\rightarrow$ summarize $\rightarrow$ report $\rightarrow$ notify) with safe failure modes and operational visibility.
+  \item Integrated ClamAV REST scanning with retry/backoff + timeouts and persisted outcomes for auditability; implemented robust file type + encoding detection.
+  \item Supported Cypress E2E automation in CI to prevent regressions.
+\end{itemize}
+
+\textbf{CloudApp} --- Full Stack Engineer (Ruby on Rails) \hfill \textit{Sep 2018 -- Feb 2019}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Integrated a proprietary OCR service into a screenshot platform; implemented interactive OCR UX and hardened key flows with automated tests.
+\end{itemize}
+
+\textbf{Additional experience}: 1brand (Full Stack Engineer, 2019--2020); Birdseed (Full Stack Engineer, 2019); Freelance Software Engineer (2014--Present).
+
+\vspace{4pt}
+\textbf{EDUCATION}\\
+Valley Springs High School --- Diploma (2012)
+
+\vspace{2pt}
+\textbf{WORK AUTHORIZATION}\\
+Authorized to work in the U.S. for any employer. Willing to relocate.
+
+
+\end{document}

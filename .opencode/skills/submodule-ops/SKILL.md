@@ -65,3 +65,4 @@ submodule smart commit "message" [--dry-run] [--recursive]
 ## Troubleshooting References
 - Nested submodule failures: `spec/submodules-update.md`
 - Worktree conflicts: `docs/worktrees-and-submodules.md`
+- Worktree creation/lifecycle: `.opencode/skills/worktree-ops/SKILL.md`

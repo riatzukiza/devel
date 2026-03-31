@@ -1,32 +1,7 @@
 [
   {
-    "id": "marad_fetch_error",
-    "timestamp_utc": "2026-03-11T18:35:57Z",
-    "source": "marad",
-    "category": "meta",
-    "value": "error",
-    "confidence": 0.0,
-    "direction": "neutral",
-    "notes": "403 Client Error: Forbidden for url: https://www.maritime.dot.gov/msci/2026-001a-strait-hormuz-persian-gulf-gulf-oman-and-arabian-sea-military-operations-and",
-    "url": "https://www.maritime.dot.gov/msci/2026-001a-strait-hormuz-persian-gulf-gulf-oman-and-arabian-sea-military-operations-and"
-  },
-  {
-    "id": "iea_transit_flow_below_10pct",
-    "timestamp_utc": "2026-03-11T18:35:57Z",
-    "source": "IEA",
-    "category": "transit_flow",
-    "value": {
-      "current": 9,
-      "baseline": 100
-    },
-    "confidence": 0.95,
-    "direction": "destabilizing",
-    "notes": "IEA says export volumes of crude oil and refined products are currently at less than 10% of pre-conflict levels",
-    "url": "https://www.iea.org/topics/the-middle-east-and-global-energy-markets"
-  },
-  {
     "id": "iea_bypass_capacity_range",
-    "timestamp_utc": "2026-03-11T18:35:57Z",
+    "timestamp_utc": "2026-03-19T18:44:12Z",
     "source": "IEA",
     "category": "bypass_capacity",
     "value": {
@@ -36,12 +11,28 @@
     },
     "confidence": 0.95,
     "direction": "neutral",
-    "notes": "IEA cites 3.5-5.5 mb/d of bypass capacity versus about 20 mb/d normal Hormuz flow",
-    "url": "https://www.iea.org/topics/the-middle-east-and-global-energy-markets"
+    "notes": "IEA cites 3.5-5.5 mb/d of available bypass capacity versus roughly 20 mb/d normal Hormuz flow",
+    "url": "https://www.iea.org/topics/the-middle-east-and-global-energy-markets",
+    "experimental": false
+  },
+  {
+    "id": "iea_transit_flow_below_10pct",
+    "timestamp_utc": "2026-03-19T18:44:14Z",
+    "source": "IEA",
+    "category": "transit_flow",
+    "value": {
+      "current": 9,
+      "baseline": 100
+    },
+    "confidence": 0.95,
+    "direction": "destabilizing",
+    "notes": "IEA says export volumes of crude and refined products are currently at less than 10% of pre-conflict levels",
+    "url": "https://www.iea.org/news/iea-member-countries-to-carry-out-largest-ever-oil-stock-release-amid-market-disruptions-from-middle-east-conflict",
+    "experimental": false
   },
   {
     "id": "iea_emergency_stock_release",
-    "timestamp_utc": "2026-03-11T18:35:57Z",
+    "timestamp_utc": "2026-03-19T18:44:14Z",
     "source": "IEA",
     "category": "asia_buffer_stress",
     "value": {
@@ -50,17 +41,101 @@
     "confidence": 0.95,
     "direction": "stabilizing",
     "notes": "IEA members approved a 400 million barrel emergency stock release to cushion market disruptions",
-    "url": "https://www.iea.org/news/iea-member-countries-to-carry-out-largest-ever-oil-stock-release-amid-market-disruptions-from-middle-east-conflict"
+    "url": "https://www.iea.org/news/iea-member-countries-to-carry-out-largest-ever-oil-stock-release-amid-market-disruptions-from-middle-east-conflict",
+    "experimental": false
   },
   {
-    "id": "ukmto_or_jmic_fetch_error",
-    "timestamp_utc": "2026-03-11T18:35:57Z",
-    "source": "ukmto_or_jmic",
-    "category": "meta",
-    "value": "error",
-    "confidence": 0.0,
-    "direction": "neutral",
-    "notes": "403 Client Error: Forbidden for url: https://www.ukmto.org/ukmto-products/advisories/2026",
-    "url": "https://www.ukmto.org/ukmto-products/advisories/2026"
+    "id": "jmic_threat_critical",
+    "timestamp_utc": "2026-03-19T18:44:18Z",
+    "source": "JMIC",
+    "category": "attack_tempo",
+    "value": {
+      "ordinal": 4,
+      "threat_level": "critical"
+    },
+    "confidence": 0.9,
+    "direction": "destabilizing",
+    "notes": "JMIC Update 006 says the threat remains CRITICAL and attacks are likely for commercial shipping",
+    "url": "https://mscio.eu/media/documents/Update_006_JMIC_Advisory_Note_06_MAR_2026_FINAL.pdf",
+    "experimental": false
+  },
+  {
+    "id": "jmic_single_digit_transits",
+    "timestamp_utc": "2026-03-19T18:44:18Z",
+    "source": "JMIC",
+    "category": "transit_flow",
+    "value": {
+      "current": 4.0,
+      "baseline": 138.0
+    },
+    "confidence": 0.9,
+    "direction": "destabilizing",
+    "notes": "JMIC Update 006 reports only 04 confirmed commercial transits in the past 24 hours versus a historical average of about 138 vessels",
+    "url": "https://mscio.eu/media/documents/Update_006_JMIC_Advisory_Note_06_MAR_2026_FINAL.pdf",
+    "experimental": false
+  },
+  {
+    "id": "jmic_gnss_interference_persistent",
+    "timestamp_utc": "2026-03-19T18:44:18Z",
+    "source": "JMIC",
+    "category": "navigation_integrity",
+    "value": {
+      "ordinal": 3,
+      "issues": [
+        "gnss_interference",
+        "ais_anomalies"
+      ]
+    },
+    "confidence": 0.88,
+    "direction": "destabilizing",
+    "notes": "JMIC Update 006 says significant GNSS interference continues, with positional offsets, AIS anomalies, and intermittent signal degradation",
+    "url": "https://mscio.eu/media/documents/Update_006_JMIC_Advisory_Note_06_MAR_2026_FINAL.pdf",
+    "experimental": false
+  },
+  {
+    "id": "insurance_war_risk_spike",
+    "timestamp_utc": "2026-03-19T18:44:18Z",
+    "source": "Insurance Journal / Reuters",
+    "category": "insurance_availability",
+    "value": {
+      "premium_pct_of_value_low": 1.0,
+      "premium_pct_of_value_high": 1.5,
+      "surge_percent": 1000.0,
+      "cover_available": true
+    },
+    "confidence": 0.85,
+    "direction": "destabilizing",
+    "notes": "War-risk cover remains available but premiums surged more than 1000%, with reported rates around 1% to 1.5% of vessel value",
+    "url": "https://www.insurancejournal.com/news/international/2026/03/06/860842.htm",
+    "experimental": false
+  },
+  {
+    "id": "ap_gulf_energy_sites_escalation",
+    "timestamp_utc": "2026-03-19T18:44:19Z",
+    "source": "AP",
+    "category": "regional_escalation",
+    "value": {
+      "strength": 0.9,
+      "ordinal": 4
+    },
+    "confidence": 0.8,
+    "direction": "destabilizing",
+    "notes": "AP reports Iranian attacks on Gulf energy sites, additional vessel damage off the UAE and Qatar, and regional officials calling it a dangerous escalation",
+    "url": "https://apnews.com/article/52e94398f2432b3aba9b02b51fbe5000",
+    "experimental": true
+  },
+  {
+    "id": "escort_mission_reopening_pressure",
+    "timestamp_utc": "2026-03-19T18:44:20Z",
+    "source": "ABC11 / AP",
+    "category": "reopening_pressure",
+    "value": {
+      "strength": 0.55
+    },
+    "confidence": 0.72,
+    "direction": "stabilizing",
+    "notes": "Officials describe a coalition-backed defensive escort mission intended to gradually reopen Hormuz for container ships and tankers after the most intense phase of the conflict",
+    "url": "https://abc11.com/live-updates/iran-war-news-live-updates-mojtaba-khamenei-chosen-irans-supreme-leader/18696218/entry/18696260",
+    "experimental": true
   }
 ]

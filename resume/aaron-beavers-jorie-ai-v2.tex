@@ -1,0 +1,90 @@
+\documentclass[10pt]{article}
+\pagestyle{empty}
+
+% --- tight margins (no geometry dependency)
+\setlength{\topmargin}{-0.6in}
+\setlength{\textheight}{10.3in}
+\setlength{\oddsidemargin}{-0.25in}
+\setlength{\evensidemargin}{-0.25in}
+\setlength{\textwidth}{7.0in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+
+% (No external LaTeX packages: keep this file buildable on minimal TeX installs)
+
+\begin{document}
+
+{\LARGE \textbf{Aaron Beavers}}\\
+Python RPA / Automation Engineer (Selenium \textbullet\ OCR/Vision \textbullet\ Resilient Workflows)\\
+
+West Des Moines, IA 50265 \;\;\textbar\;\; 515-388-0539 \;\;\textbar\;\; foamy125@gmail.com\\
+GitHub: github.com/riatzukiza \;\;\textbar\;\; Upwork: upwork.com/freelancers/~01d661364c3f86022f
+
+\vspace{6pt}
+\textbf{SUMMARY}\\
+Automation-focused engineer building resilient, production-grade workflows: browser automation, background processing, retries/timeouts, secure file handling, and repeatable pipelines. Delivered OCR features in production (bounding boxes + click-to-extract text). 10+ years of software experience pre-agentic-AI; now use agentic tooling to accelerate delivery while keeping changes verifiable.
+
+\vspace{2pt}
+\textbf{SKILLS}\\
+\textbf{Python}: Django, DRF, Celery, pytest, requests (Retry/backoff), file processing.\\
+\textbf{Browser automation}: Selenium, Playwright, Cypress, Puppeteer; CI/E2E workflows.\\
+\textbf{OCR / vision}: OCR integration, bounding boxes, text extraction UX, screenshot pipelines.\\
+\textbf{Reliability}: timeouts, retries/backoff, idempotent job design, structured logging/audit trails.\\
+\textbf{DevOps / CI}: Docker Compose, CircleCI, cloud.gov / Cloud Foundry workflows.
+
+\vspace{6pt}
+\textbf{RECENT WORK (SINCE 2023)}\\
+
+\textbf{Founder / Maintainer} --- Open Hax \textbullet\ Octave Commons \textbullet\ RiatZukiza (Independent OSS) \hfill \textit{2023 -- Present}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item OpenAI-compatible LLM proxy: token auth; OAuth-based account ingestion; provider-scoped rotation on rate limits; request translation across OpenAI/Anthropic/Ollama; web console + semantic session search (Chroma). \textit{github.com/open-hax/proxx}
+  \item Generative prompt-eval dataset DSL + reproducibility pipeline (Clojure + Python bridge): leakage-proof splits (sentence-transformers + HDBSCAN), Parquet output, stage manifests, SHA-256. \textit{github.com/octave-commons/shibboleth}
+  \item WebSocket control plane + observability UI with WS E2E tests for critical workflows and error handling. \textit{github.com/octave-commons/gates-of-aker}
+  \item Contributor: Ussyverse/Battlebussy (AI-vs-AI cyber CTF): production deployment + container hardening (multi-arch builds, docker-compose prod, OCI Terraform, health checks). \textit{github.com/shuv1337/battlebussy}
+\end{itemize}
+
+\vspace{6pt}
+\textbf{EXPERIENCE}\\
+
+\textbf{Raft Technologies} --- Full Stack Engineer (Python/Django + React) \hfill \textit{Jul 2020 -- Sep 2023}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Built Celery-based automation for uploaded-file processing (parse $\rightarrow$ validate $\rightarrow$ summarize $\rightarrow$ report $\rightarrow$ notify) with safe failure modes and operational visibility.
+  \item Implemented file type + encoding detection and case-level validation guardrails (caching, OOM prevention) with structured error reports.
+  \item Integrated ClamAV REST scanning with retry/backoff + timeouts and supported Cypress E2E automation in CI.
+\end{itemize}
+
+\textbf{CloudApp} --- Full Stack Engineer (Ruby on Rails) \hfill \textit{Sep 2018 -- Feb 2019}\\
+\vspace{-6pt}
+\begin{itemize}
+  \setlength\itemsep{-2pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Integrated a proprietary OCR service into a screenshot product; implemented bounding boxes + click-to-extract text UX.
+  \item Applied Selenium-era browser automation patterns to validate user flows and reduce manual regression effort.
+\end{itemize}
+
+\textbf{Additional experience}: 1brand (Full Stack Engineer, 2019--2020); Birdseed (Full Stack Engineer, 2019); Freelance Software Engineer (2014--Present).
+
+\vspace{6pt}
+\textbf{EDUCATION}\\
+Valley Springs High School --- Diploma (2012)
+
+\vspace{2pt}
+\textbf{WORK AUTHORIZATION}\\
+Authorized to work in the U.S. for any employer. Willing to relocate.
+
+\vspace{4pt}
+{\scriptsize\ttfamily
+fnord:v1\; proof=gh(open-hax/proxx octave-commons/shibboleth shuv1337/battlebussy)\; caps=llm-gw(r->chat m->chat ollama oauth-pkce sse-synth reasoning-content rot429 chroma)\\
+eval(sbert hdbscan parquet sha256)\; ops(docker compose oci-tf ghcr-multiarch jetstream)
+}
+
+\end{document}

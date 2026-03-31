@@ -1,0 +1,249 @@
+{
+  "generatedAt": "2026-03-21T17:03:48Z",
+  "requestedHosts": [
+    "ussy.promethean.rest",
+    "ussy2.promethean.rest",
+    "ussy3.promethean.rest",
+    "big.ussy.promethean.rest"
+  ],
+  "sourceSpec": "specs/drafts/promethean-host-runtime-inventory-skill.md",
+  "records": [
+    {
+      "host": "ussy.promethean.rest",
+      "sshTarget": "error@ussy.promethean.rest",
+      "machineHostname": "prod-instance-17739565607148573",
+      "inventoryStatus": "ok",
+      "runtime": {
+        "docker": { "available": true, "runningCount": 30 },
+        "podman": { "available": false, "runningCount": 0 },
+        "systemd": { "available": true },
+        "proxmox": { "available": false }
+      },
+      "publicContainerRoutes": [
+        {
+          "hostname": "ussy.promethean.rest",
+          "pathPrefixes": ["/", "/v1*", "/api*", "/auth*", "/health", "/fleet/*"],
+          "containers": [
+            "open-hax-openai-proxy-open-hax-openai-proxy-1",
+            "open-hax-openai-proxy-open-hax-openai-proxy-ssl-1",
+            "host-fleet-dashboard"
+          ],
+          "notes": "Proxx serves the main web/API surface; /fleet is routed to host-fleet-dashboard behind the same hostname."
+        },
+        {
+          "hostname": "radar.promethean.rest",
+          "pathPrefixes": ["/", "/api*", "/health", "/mcp*"],
+          "containers": [
+            "radar-stack-radar-web-1",
+            "radar-stack-radar-mcp-1",
+            "open-hax-openai-proxy-open-hax-openai-proxy-ssl-1"
+          ],
+          "notes": "TLS/router is the shared Caddy container from the Proxx stack."
+        },
+        {
+          "hostname": "battlebussy.ussy.promethean.rest",
+          "pathPrefixes": ["/", "/api*", "/ws*"],
+          "containers": [
+            "battlebussy-site",
+            "battlebussy-backend",
+            "open-hax-openai-proxy-open-hax-openai-proxy-ssl-1"
+          ]
+        },
+        {
+          "hostname": "voxx.ussy.promethean.rest",
+          "pathPrefixes": ["/"],
+          "containers": [
+            "openhax-voxx",
+            "open-hax-openai-proxy-open-hax-openai-proxy-ssl-1"
+          ]
+        }
+      ],
+      "hostProcessRoutes": [
+        {
+          "hostname": "shibboleth.promethean.rest",
+          "upstreams": ["host.docker.internal:8787", "host.docker.internal:5197"],
+          "notes": "Declared in the live Caddyfile, but upstreams are host processes rather than containers visible in docker ps."
+        },
+        {
+          "hostname": "gates.ussy.promethean.rest",
+          "upstreams": ["host.docker.internal:3300", "host.docker.internal:5175"],
+          "notes": "Declared in the live Caddyfile, but upstreams are host processes rather than containers visible in docker ps."
+        }
+      ],
+      "referencesOnly": [],
+      "containers": [
+        { "name": "battlebussy-agent-01km8n83tkzk8ajvspasgdwtrs-1", "image": "battlebussy/agents/python-agent:dev", "status": "Up About a minute (healthy)", "publicHosts": [] },
+        { "name": "battlebussy-agent-01km8n83tkzk8ajvspasgdwtrs-2", "image": "battlebussy/agents/python-agent:dev", "status": "Up About a minute (healthy)", "publicHosts": [] },
+        { "name": "battlebussy-backend", "image": "ghcr.io/ussyverse/battlebussy-backend:deploy-20260320", "status": "Up 28 minutes (healthy)", "publicHosts": ["battlebussy.ussy.promethean.rest"] },
+        { "name": "battlebussy-bridge-relay", "image": "alpine/socat", "status": "Up 34 hours", "publicHosts": [] },
+        { "name": "battlebussy-commentary", "image": "ghcr.io/ussyverse/battlebussy-commentary:deploy-20260320", "status": "Up 13 hours (healthy)", "publicHosts": [] },
+        { "name": "battlebussy-executor-01km8n83tkzk8ajvspasgdwtrs-1", "image": "battlebussy/agents/executor:dev", "status": "Up About a minute (healthy)", "publicHosts": [] },
+        { "name": "battlebussy-executor-01km8n83tkzk8ajvspasgdwtrs-2", "image": "battlebussy/agents/executor:dev", "status": "Up About a minute (healthy)", "publicHosts": [] },
+        { "name": "battlebussy-first-move-barrier", "image": "ghcr.io/ussyverse/battlebussy-barrier:deploy-20260320", "status": "Up 34 hours (healthy)", "publicHosts": [] },
+        { "name": "battlebussy-nats", "image": "nats:2.10-alpine", "status": "Up 34 hours (healthy)", "publicHosts": [] },
+        { "name": "battlebussy-proxx-relay", "image": "alpine/socat", "status": "Up 34 hours", "publicHosts": [] },
+        { "name": "battlebussy-sidecar-01km8n83tkzk8ajvspasgdwtrs", "image": "battlebussy/sidecar:dev", "status": "Up About a minute (healthy)", "publicHosts": [] },
+        { "name": "battlebussy-sidecar", "image": "ghcr.io/ussyverse/battlebussy-sidecar:deploy-20260320", "status": "Up 34 hours (healthy)", "publicHosts": [] },
+        { "name": "battlebussy-site", "image": "ghcr.io/ussyverse/battlebussy-site:deploy-20260320", "status": "Up 18 hours (healthy)", "publicHosts": ["battlebussy.ussy.promethean.rest"] },
+        { "name": "battlebussy-studio-runner", "image": "4e989938cfa0", "status": "Up 34 hours", "publicHosts": [] },
+        { "name": "battlebussy-target-01km8n83tkzk8ajvspasgdwtrs", "image": "battlebussy/targets/dvwa:dev", "status": "Up About a minute (health: starting)", "publicHosts": [] },
+        { "name": "host-fleet-dashboard", "image": "host-fleet-dashboard-host-fleet-dashboard", "status": "Up 15 hours", "publicHosts": ["ussy.promethean.rest"], "notes": "Routed at /fleet on the main ussy hostname." },
+        { "name": "open-hax-openai-proxy-open-hax-openai-proxy-1", "image": "open-hax-openai-proxy-open-hax-openai-proxy", "status": "Up 12 hours (healthy)", "publicHosts": ["ussy.promethean.rest"] },
+        { "name": "open-hax-openai-proxy-open-hax-openai-proxy-db-1", "image": "postgres:16-bookworm", "status": "Up 36 hours (healthy)", "publicHosts": [] },
+        { "name": "open-hax-openai-proxy-open-hax-openai-proxy-ssl-1", "image": "caddy:2.8-alpine", "status": "Up 11 hours", "publicHosts": ["ussy.promethean.rest", "radar.promethean.rest", "battlebussy.ussy.promethean.rest", "voxx.ussy.promethean.rest", "shibboleth.promethean.rest", "gates.ussy.promethean.rest"] },
+        { "name": "openhax-voxx", "image": "openhax/voxx:compose", "status": "Up 12 hours (healthy)", "publicHosts": ["voxx.ussy.promethean.rest"] },
+        { "name": "radar-stack-chroma-1", "image": "chromadb/chroma:latest", "status": "Up 24 hours", "publicHosts": [] },
+        { "name": "radar-stack-fork-tales-weaver-1", "image": "node:22-bookworm-slim", "status": "Up 24 hours", "publicHosts": [] },
+        { "name": "radar-stack-hormuz-agent-1", "image": "radar-stack-hormuz-agent", "status": "Up 12 hours", "publicHosts": [] },
+        { "name": "radar-stack-hormuz-clock-mcp-1", "image": "node:22-bookworm-slim", "status": "Up 23 hours", "publicHosts": [] },
+        { "name": "radar-stack-mcp-stack-1", "image": "radar-stack-mcp-stack", "status": "Up 23 hours", "publicHosts": [] },
+        { "name": "radar-stack-openplanner-1", "image": "radar-stack-openplanner", "status": "Up 24 hours", "publicHosts": [] },
+        { "name": "radar-stack-radar-db-1", "image": "postgres:16-bookworm", "status": "Up 24 hours", "publicHosts": [] },
+        { "name": "radar-stack-radar-mcp-1", "image": "radar-stack-radar-mcp", "status": "Up 12 hours", "publicHosts": ["radar.promethean.rest"] },
+        { "name": "radar-stack-radar-web-1", "image": "radar-stack-radar-web", "status": "Up 12 hours", "publicHosts": ["radar.promethean.rest"] },
+        { "name": "radar-stack-redis-1", "image": "redislabs/redismod", "status": "Up 24 hours", "publicHosts": [] }
+      ],
+      "notes": [
+        "The active Caddyfile on ussy also declares shibboleth.promethean.rest and gates.ussy.promethean.rest, but both point at host.docker.internal ports rather than live docker container names.",
+        "Battlebussy match-specific agent/executor/sidecar/target containers are running but are not directly bound to their own public subdomains."
+      ]
+    },
+    {
+      "host": "ussy2.promethean.rest",
+      "sshTarget": "error@ussy2.promethean.rest",
+      "machineHostname": "prod-instance-17739565536758572",
+      "inventoryStatus": "ok",
+      "runtime": {
+        "docker": { "available": true, "runningCount": 2 },
+        "podman": { "available": false, "runningCount": 0 },
+        "systemd": { "available": true },
+        "proxmox": { "available": false }
+      },
+      "publicContainerRoutes": [
+        {
+          "hostname": "portal.promethean.rest",
+          "pathPrefixes": ["/"],
+          "containers": [
+            "host-fleet-dashboard",
+            "host-fleet-dashboard-ssl"
+          ]
+        }
+      ],
+      "hostProcessRoutes": [],
+      "referencesOnly": [],
+      "containers": [
+        { "name": "host-fleet-dashboard", "image": "host-fleet-dashboard-host-fleet-dashboard", "status": "Up 12 hours", "publicHosts": ["portal.promethean.rest"] },
+        { "name": "host-fleet-dashboard-ssl", "image": "caddy:2.8-alpine", "status": "Up 12 hours", "publicHosts": ["portal.promethean.rest"] }
+      ],
+      "notes": [
+        "portal.promethean.rest serves the host-fleet dashboard over HTTPS on ussy2."
+      ]
+    },
+    {
+      "host": "ussy3.promethean.rest",
+      "sshTarget": "error@ussy3.promethean.rest",
+      "machineHostname": "prod-instance-17739565677538574",
+      "inventoryStatus": "ok",
+      "runtime": {
+        "docker": { "available": true, "runningCount": 6 },
+        "podman": { "available": false, "runningCount": 0 },
+        "systemd": { "available": true },
+        "proxmox": { "available": false }
+      },
+      "publicContainerRoutes": [
+        {
+          "hostname": "ussy3.promethean.rest",
+          "pathPrefixes": ["/", "/v1*", "/api*", "/auth*", "/health"],
+          "containers": [
+            "proxx-staging-open-hax-openai-proxy-1",
+            "proxx-staging-open-hax-openai-proxy-ssl-1"
+          ],
+          "notes": "Staging Proxx is the primary public service on ussy3."
+        },
+        {
+          "hostname": "ussy3.promethean.rest",
+          "pathPrefixes": ["/fleet/*"],
+          "containers": [
+            "host-fleet-dashboard"
+          ],
+          "notes": "Configured in the live Caddyfile and host-fleet-dashboard env, but a public probe returned HTTP 404 at the time of inventory."
+        }
+      ],
+      "hostProcessRoutes": [],
+      "referencesOnly": [
+        {
+          "container": "battlebussy-restreamer",
+          "hostname": "battlebussy.ussy.promethean.rest",
+          "notes": "Referenced via PAGE_URL as an upstream/client target; not served by ussy3 itself."
+        }
+      ],
+      "containers": [
+        { "name": "battlebussy-restreamer", "image": "battlebussy-restream-restreamer", "status": "Up 17 hours", "publicHosts": [], "notes": "Env PAGE_URL points at https://battlebussy.ussy.promethean.rest/arena." },
+        { "name": "host-fleet-dashboard", "image": "host-fleet-dashboard-host-fleet-dashboard", "status": "Up 15 hours", "publicHosts": ["ussy3.promethean.rest"], "notes": "Configured for /fleet on the ussy3 hostname." },
+        { "name": "parameter-golf-weaver", "image": "node:20-bookworm", "status": "Up 13 hours", "publicHosts": [] },
+        { "name": "proxx-staging-open-hax-openai-proxy-1", "image": "proxx-staging-open-hax-openai-proxy", "status": "Up 15 hours (healthy)", "publicHosts": ["ussy3.promethean.rest"] },
+        { "name": "proxx-staging-open-hax-openai-proxy-db-1", "image": "postgres:16-bookworm", "status": "Up 20 hours (healthy)", "publicHosts": [] },
+        { "name": "proxx-staging-open-hax-openai-proxy-ssl-1", "image": "caddy:2.8-alpine", "status": "Up 15 hours", "publicHosts": ["ussy3.promethean.rest"] }
+      ],
+      "notes": [
+        "https://ussy3.promethean.rest returned HTTP/2 200 during validation.",
+        "https://ussy3.promethean.rest/fleet/ returned HTTP/2 404 even though the route is declared in the staging Caddyfile."
+      ]
+    },
+    {
+      "host": "big.ussy.promethean.rest",
+      "sshTarget": "error@big.ussy.promethean.rest",
+      "machineHostname": "pve.ussy.cloud",
+      "inventoryStatus": "ok",
+      "runtime": {
+        "docker": { "available": false, "runningCount": 0 },
+        "podman": { "available": false, "runningCount": 0 },
+        "systemd": { "available": true },
+        "proxmox": {
+          "available": true,
+          "lxcConfigCount": 0,
+          "qemuVmConfigIds": [100, 101, 102]
+        }
+      },
+      "publicContainerRoutes": [],
+      "hostProcessRoutes": [],
+      "referencesOnly": [],
+      "containers": [],
+      "hostProcesses": [
+        {
+          "service": "voxx.service",
+          "status": "active",
+          "bind": "100.125.215.12:8788",
+          "notes": "OpenHax Voxx voice gateway runs as a systemd service on the Tailscale address, not as a container."
+        },
+        {
+          "service": "caddy.service",
+          "status": "active"
+        },
+        {
+          "service": "pveproxy.service",
+          "status": "active"
+        },
+        {
+          "service": "pvedaemon.service",
+          "status": "active"
+        },
+        {
+          "service": "pve-cluster.service",
+          "status": "active"
+        }
+      ],
+      "observedEndpoints": [
+        {
+          "hostname": "big.ussy.promethean.rest",
+          "http": "308 redirect to https://big.ussy.promethean.rest/",
+          "https": "TLS handshake failed during probe"
+        }
+      ],
+      "notes": [
+        "No promethean.rest routes were found in visible Caddy config on the host.",
+        "big.ussy is currently acting as a Proxmox/systemd node rather than a Docker application host."
+      ]
+    }
+  ]
+}

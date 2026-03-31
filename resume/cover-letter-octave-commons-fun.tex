@@ -1,0 +1,51 @@
+\documentclass[10pt]{article}
+\pagestyle{empty}
+
+% --- tight margins (no geometry dependency)
+\setlength{\topmargin}{-0.6in}
+\setlength{\textheight}{10.3in}
+\setlength{\oddsidemargin}{-0.25in}
+\setlength{\evensidemargin}{-0.25in}
+\setlength{\textwidth}{7.0in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+\begin{document}
+
+{\LARGE \textbf{Aaron Beavers}}\\
+West Des Moines, IA 50265 \;\;\textbar\;\; 515-388-0539 \;\;\textbar\;\; foamy125@gmail.com\\
+GitHub: github.com/riatzukiza
+
+\vspace{10pt}
+To the Octave Commons maintainers,
+
+I'm applying for the job I've been doing in public: building the weird, rigorous, dual-use edge of evaluation and agent systems --- the part where research turns into artifacts other people can actually run, reproduce, and cite.
+
+Octave Commons is where I want the sharp work to live: adversarial taxonomies, generative datasets, leakage-proof splits, and pipelines that ship with provenance instead of vibes. If the outside world calls it "AI safety," "red teaming," or "benchmarking," fine --- I'm interested in the craft underneath: designing evaluation systems that remain meaningful as models evolve.
+
+What I bring (and want to keep evolving here):
+\begin{itemize}
+  \item \textbf{Generative evaluation infrastructure}: a Clojure DSL + multi-stage pipeline that regenerates datasets from first principles (deterministic seeds, transform provenance, Parquet output, SHA-256 manifests, datasheets).
+  \item \textbf{Leakage resistance by construction}: cluster-disjoint splits driven by sentence-transformers embeddings + HDBSCAN.
+  \item \textbf{A taste for adversarial realism}: transforms that pressure tokenization, multilingual stability, and "policy surface area," without pretending the world is a static CSV.
+  \item \textbf{Operational discipline}: tests, manifests, and receipts --- a bias toward systems that can be audited, replayed, and maintained.
+\end{itemize}
+
+What I want to do next inside Octave Commons:
+\begin{itemize}
+  \item Expand the attack taxonomy and transform library without breaking reproducibility.
+  \item Build evaluation "gates" that measure not just pass/fail, but brittleness under perturbation.
+  \item Treat dual-use honestly: publish what's useful for science, but encode constraints so the toolchain doesn't become an accident.
+\end{itemize}
+
+If you'll have me, I'll keep turning myth into mechanisms and mechanisms into datasets --- and I'll keep the artifacts sharp enough that future-me can't hand-wave them.
+
+--- Aaron
+
+\vspace{8pt}
+{\scriptsize\ttfamily
+fnord:v1\; proof=gh(octave-commons/shibboleth octave-commons/gates-of-aker open-hax/proxx shuv1337/battlebussy)\; caps=llm-gw(r->chat m->chat ollama oauth-pkce sse-synth reasoning-content rot429 chroma)\\
+eval(sbert hdbscan parquet sha256)\; ops(docker compose oci-tf ghcr-multiarch jetstream)
+}
+
+\end{document}
