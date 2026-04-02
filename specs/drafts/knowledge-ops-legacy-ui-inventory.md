@@ -25,23 +25,25 @@ Any existing UI that still uses custom HTML/Tailwind/CSS directly must be listed
 
 ## Inventory
 
-### Ragussy frontend pages
+### Knoxx frontend pages
 
 | File | Current state | Migration note |
 |------|---------------|----------------|
-| `orgs/mojomast/ragussy/frontend/src/pages/ChatLabPage.tsx` | legacy custom UI | migrate to `@workspace/chat-ui` + `@devel/ui-react` |
-| `orgs/mojomast/ragussy/frontend/src/pages/CmsPage.tsx` | legacy custom UI | migrate cards, inputs, buttons, badges to `@devel/ui-react` |
-| `orgs/mojomast/ragussy/frontend/src/pages/IngestionPage.tsx` | mostly legacy, except new browser panel | migrate shell/layout + forms gradually |
-| `orgs/mojomast/ragussy/frontend/src/pages/QueryPage.tsx` | legacy custom UI | migrate shell/cards/buttons to `@devel/ui-react` |
-| `orgs/mojomast/ragussy/frontend/src/pages/GardensPage.tsx` | legacy custom UI | migrate shell/cards/buttons to `@devel/ui-react` |
-| `orgs/mojomast/ragussy/frontend/src/pages/RunsPage.tsx` | legacy custom UI | migrate tables/cards/buttons |
-| `orgs/mojomast/ragussy/frontend/src/pages-next/*` | legacy Next-style UI | evaluate selectively |
+| `orgs/open-hax/knoxx/frontend/src/pages/ChatLabPage.tsx` | legacy custom UI | migrate to `@workspace/chat-ui` + `@devel/ui-react` |
+| `orgs/open-hax/knoxx/frontend/src/pages/CmsPage.tsx` | ✅ **Migrated** (2026-04-02) | uses `@devel/ui-react` Button, Card, Badge |
+| `orgs/open-hax/knoxx/frontend/src/pages/IngestionPage.tsx` | mostly legacy, except new browser panel | migrate shell/layout + forms gradually |
+| `orgs/open-hax/knoxx/frontend/src/pages/QueryPage.tsx` | partial migration | uses `@devel/ui-react` for some components |
+| `orgs/open-hax/knoxx/frontend/src/pages/GardensPage.tsx` | partial migration | uses `@devel/ui-react` for some components |
+| `orgs/open-hax/knoxx/frontend/src/pages/RunsPage.tsx` | legacy custom UI | migrate tables/cards/buttons |
+| `orgs/open-hax/knoxx/frontend/src/pages-next/*` | legacy Next-style UI | evaluate selectively |
 
 ### Partially migrated
 
 | File | Uses `packages/ui/`? | Note |
 |------|----------------------|------|
-| `orgs/mojomast/ragussy/frontend/src/components/WorkspaceBrowserCard.tsx` | **Yes** | New feature built on `Card`, `Button`, `Input`, `Spinner` |
+| `orgs/open-hax/knoxx/frontend/src/components/WorkspaceBrowserCard.tsx` | **Yes** | New feature built on `Card`, `Button`, `Input`, `Spinner` |
+| `orgs/open-hax/knoxx/frontend/src/pages/QueryPage.tsx` | **Partial** | Uses some `@devel/ui-react` components |
+| `orgs/open-hax/knoxx/frontend/src/pages/GardensPage.tsx` | **Partial** | Uses some `@devel/ui-react` components |
 | `packages/ui/react/src/primitives/ModeIndicator.tsx` | canonical | use in status bars |
 | `packages/ui/react/src/composites/ChordOverlay.tsx` | canonical | integrate into workbench shell |
 
@@ -58,15 +60,15 @@ Any existing UI that still uses custom HTML/Tailwind/CSS directly must be listed
 ## Priority Order
 
 ### P0
+- ~~`CmsPage.tsx`~~ ✅ **Done** (2026-04-02)
 - `IngestionPage.tsx`
-- `CmsPage.tsx`
 - `QueryPage.tsx`
 
 These are the core workbench surfaces.
 
 ### P1
 - `ChatLabPage.tsx`
-- `GardensPage.tsx`
+- `GardensPage.tsx` (already partial)
 - `RunsPage.tsx`
 
 ### P2
@@ -87,4 +89,4 @@ This spec is complete when:
 
 ## Status
 
-Specified 2026-04-02. Tracks non-library UI debt explicitly.
+Specified 2026-04-02. Updated 2026-04-02 (CmsPage migrated). Tracks non-library UI debt explicitly.
