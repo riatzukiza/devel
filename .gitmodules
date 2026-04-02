@@ -1,0 +1,3 @@
+[submodule "orgs/open-hax/knoxx"]
+	path = orgs/open-hax/knoxx
+	url = https://github.com/open-hax/knoxx
