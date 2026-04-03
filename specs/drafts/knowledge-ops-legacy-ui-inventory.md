@@ -61,7 +61,7 @@ Any existing UI that still uses custom HTML/Tailwind/CSS directly must be listed
 
 ### P0
 - ~~`CmsPage.tsx`~~ ✅ **Done** (2026-04-02)
-- `IngestionPage.tsx`
+- ~~`IngestionPage.tsx`~~ ✅ **Done** (2026-04-02)
 - `QueryPage.tsx`
 
 These are the core workbench surfaces.
