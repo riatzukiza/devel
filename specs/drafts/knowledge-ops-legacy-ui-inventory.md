@@ -67,7 +67,7 @@ Any existing UI that still uses custom HTML/Tailwind/CSS directly must be listed
 These are the core workbench surfaces.
 
 ### P1
-- `ChatLabPage.tsx`
+- ~~`ChatLabPage.tsx`~~ ✅ **Done** (2026-04-02)
 - `GardensPage.tsx` (already partial)
 - `RunsPage.tsx`
 
