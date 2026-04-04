@@ -4,3 +4,36 @@
 [submodule "orgs/open-hax/openplanner"]
 	path = orgs/open-hax/openplanner
 	url = https://github.com/open-hax/openplanner
+[submodule "orgs/open-hax/depenoxx"]
+	path = orgs/open-hax/depenoxx
+	url = git@github.com:open-hax/depenoxx.git
+[submodule "orgs/open-hax/uxx"]
+	path = orgs/open-hax/uxx
+	url = https://github.com/open-hax/uxx.git
+[submodule "orgs/octave-commons/graph-weaver"]
+	path = orgs/octave-commons/graph-weaver
+	url = git@github.com:octave-commons/graph-weaver.git
+[submodule "orgs/octave-commons/graph-weaver-aco"]
+	path = orgs/octave-commons/graph-weaver-aco
+	url = git@github.com:octave-commons/graph-weaver-aco.git
+[submodule "orgs/octave-commons/graph-runtime"]
+	path = orgs/octave-commons/graph-runtime
+	url = git@github.com:octave-commons/graph-runtime.git
+[submodule "orgs/octave-commons/simulacron"]
+	path = orgs/octave-commons/simulacron
+	url = git@github.com:octave-commons/simulacron.git
+[submodule "orgs/octave-commons/daimoi"]
+	path = orgs/octave-commons/daimoi
+	url = git@github.com:octave-commons/daimoi.git
+[submodule "orgs/octave-commons/myrmex"]
+	path = orgs/octave-commons/myrmex
+	url = git@github.com:octave-commons/myrmex.git
+[submodule "orgs/octave-commons/cephalon"]
+	path = orgs/octave-commons/cephalon
+	url = git@github.com:octave-commons/cephalon.git
+[submodule "orgs/ussyverse/routussy"]
+	path = orgs/ussyverse/routussy
+	url = https://github.com/riatzukiza/routussy.git
+[submodule "orgs/shuv/shuvcrawl"]
+	path = orgs/shuv/shuvcrawl
+	url = git@github.com:shuv1337/shuvcrawl.git
