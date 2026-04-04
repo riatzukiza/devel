@@ -108,7 +108,7 @@ export async function indexEvents(events: EventEnvelopeV1[]): Promise<void> {
  * Convert a message to an OpenPlanner event.
  * Preserves the flattened text content from the original Chroma embedding flow.
  */
-export function messageToEvent(params: {
+export async function messageToEvent(params: {
   sessionId: string;
   messageId: string;
   messageIndex: number;
@@ -117,9 +117,9 @@ export function messageToEvent(params: {
   role: string;
   sessionTitle?: string;
   paths?: string[];
-}): EventEnvelopeV1 {
+}): Promise<EventEnvelopeV1> {
   // Single source of truth for event envelope creation.
-  return createOpenPlannerEvent({
+  return await createOpenPlannerEvent({
     sessionId: params.sessionId,
     messageId: params.messageId,
     messageIndex: params.messageIndex,
@@ -136,7 +136,7 @@ export function messageToEvent(params: {
  * This is the desired indexing unit for long coding sessions: a cohesive block
  * containing multiple messages/events, rather than per-message events.
  */
-export function chunkToEvent(params: {
+export async function chunkToEvent(params: {
   sessionId: string;
   sessionTitle?: string;
   chunkIndex: number;
@@ -148,8 +148,8 @@ export function chunkToEvent(params: {
   text: string;
   approxTokens?: number;
   paths?: string[];
-}): EventEnvelopeV1 {
-  return createOpenPlannerChunkEvent({
+}): Promise<EventEnvelopeV1> {
+  return await createOpenPlannerChunkEvent({
     sessionId: params.sessionId,
     sessionTitle: params.sessionTitle,
     chunkIndex: params.chunkIndex,

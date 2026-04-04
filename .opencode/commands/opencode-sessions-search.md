@@ -2,7 +2,7 @@
 
 ```yaml
 name: opencode-sessions-search
-description: Search indexed OpenCode sessions using semantic similarity
+description: Search indexed OpenCode sessions using OpenPlanner FTS
 usage: |
   ## Usage
   pnpm -C packages/reconstituter opencode-sessions search "<query>" [options]
@@ -12,7 +12,7 @@ usage: |
   --session, -s <id> (optional): Filter results to a specific session ID
 
   ## Notes
-  CHROMA_COLLECTION uses a base name and appends the embedding model suffix.
+  This command uses OpenPlanner full-text search, not ChromaDB embeddings.
 
   ## Examples
   pnpm -C packages/reconstituter opencode-sessions search "authentication flow"

@@ -41,6 +41,12 @@ Multi-repository development workspace with git submodules organized under `orgs
 - Nx for affected detection and workspace automation.
 - Rust in `orgs/openai/codex`.
 
+## Publishing Rule
+- When the user says `publish the npm package` or similar, use the `npm-publish-env-auth` skill.
+- Treat `NPM_TOKEN` from the environment as the canonical auth source.
+- Keep `~/.npmrc` env-based rather than storing a literal token there.
+- Publish first; only then update downstream consumers.
+
 ## Proxx/OpenAI Accounts - CRITICAL
 - **JSON files (keys.json, etc.) are ONLY for seeding - ignore them for finding accounts**
 - Accounts are stored in PostgreSQL databases/volumes

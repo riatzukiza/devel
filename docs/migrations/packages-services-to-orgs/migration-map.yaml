@@ -41,7 +41,7 @@ services/open-hax-openai-proxy:
     to: services/proxx
   notes: "Legacy operator alias; source truth lives in orgs/open-hax/proxx while workspace runtime truth lives in services/proxx."
 
-packages/cephalon-clj:
+orgs/octave-commons/cephalon/packages/cephalon-clj:
   kind: package
   status: candidate-promote
   target_org: riatzukiza
@@ -56,7 +56,7 @@ packages/cephalon-clj:
   inventory_ref: docs/reports/inventory/packages-org-placement-inventory-2026-03-21.json
   notes: "Internal cognitive-system architecture with reproducible run docs; strongest current fit is a mature devel-only integration with its own timeline."
 
-packages/cephalon-ts:
+orgs/octave-commons/cephalon/packages/cephalon-ts:
   kind: package
   status: candidate-promote
   target_org: riatzukiza

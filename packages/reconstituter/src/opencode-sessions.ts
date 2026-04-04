@@ -292,7 +292,7 @@ export async function indexSessions(): Promise<void> {
 
       if (!E.OPENCODE_CHUNK_INDEXING && prevHash !== docHash) {
         eventsToIndex.push(
-          messageToEvent({
+          await messageToEvent({
             sessionId,
             messageId: msgId,
             messageIndex: i,
@@ -319,7 +319,7 @@ export async function indexSessions(): Promise<void> {
       let buf: Array<{ messageIndex: number; messageId: string; createdAt: number; doc: string; paths: string[]; role: string }> = [];
       let bufTokens = 0;
 
-      const flush = () => {
+      const flush = async () => {
         if (buf.length === 0) return;
         const text = joinDocs(buf);
         const allPaths = Array.from(new Set(buf.flatMap((d) => d.paths ?? [])));
@@ -327,7 +327,7 @@ export async function indexSessions(): Promise<void> {
         const last = buf[buf.length - 1];
 
         eventsToIndex.push(
-          chunkToEvent({
+          await chunkToEvent({
             sessionId,
             sessionTitle,
             chunkIndex,
@@ -355,7 +355,7 @@ export async function indexSessions(): Promise<void> {
       for (const d of docs) {
         const nextTokens = approxTokens(d.doc);
         if (buf.length > 0 && bufTokens + nextTokens > targetTokens) {
-          flush();
+          await flush();
         }
         buf.push({
           messageIndex: d.messageIndex,
@@ -367,7 +367,7 @@ export async function indexSessions(): Promise<void> {
         });
         bufTokens += nextTokens;
       }
-      flush();
+      await flush();
     }
 
     await db.put(`sess:${sessionId}:order`, idsInOrder);
@@ -393,15 +393,13 @@ export async function searchSessions(args: SearchArgs): Promise<void> {
   console.log(`Query: "${args.query}"`);
   if (args.session) console.log(`Session: ${args.session}`);
 
-  const resp = await searchFts({
-    q: args.query,
+  const results = await searchFts(args.query, {
     limit: args.k,
-    source: "opencode-sessions",
     session: args.session,
   });
 
   // eslint-disable-next-line no-console
-  console.log(formatSearchResults(resp.results));
+  console.log(formatSearchResults(results));
 }
 
 // ============================================================================

@@ -54,14 +54,14 @@
     "ecosystem:generate": "pnpm --dir orgs/riatzukiza/promethean --filter @promethean-os/ecosystem-dsl run generate -- --dir ../../../../../system/daemons --output ../../../../../ecosystem.config.enhanced.mjs",
     "ecosystem:watch": "pnpm --dir orgs/riatzukiza/promethean --filter @promethean-os/ecosystem-dsl run generate:watch -- --dir ../../../../../system/daemons --output ../../../../../ecosystem.config.enhanced.mjs",
     "ecosystem:validate": "pnpm --dir orgs/riatzukiza/promethean --filter @promethean-os/ecosystem-dsl run validate -- --dir ../../../../../system/daemons",
-    "index-opencode-sessions": "tsx index_opencode_sessions.ts",
-    "search-opencode-sessions": "tsx search_opencode_sessions.ts",
+    "index-opencode-sessions": "pnpm -C packages/reconstituter opencode-sessions index",
+    "search-opencode-sessions": "pnpm -C packages/reconstituter opencode-sessions search",
     "cleanup-empty-opencode-sessions": "node cleanup-empty-opencode-sessions.mjs",
     "reconstitute": "tsx reconstitute.ts",
     "generate-ecosystem": "npx shadow-cljs release clobber",
     "docker:stack": "node scripts/docker-stack.mjs",
     "docker:stack:list": "node scripts/docker-stack.mjs list",
-    "eta:truth:workbench": "pnpm --filter @workspace/eta-mu-truth test"
+    "eta:truth:workbench": "node --test orgs/open-hax/eta-mu/packages/eta-mu-truth/tests/*.test.cjs"
   },
   "bin": {
     "octavia": "dist/octavia/index.js"
@@ -86,8 +86,6 @@
     "@nx/devkit": "^20.0.0",
     "@nx/js": "^20.0.0",
     "@openai/agents": "^0.2.1",
-    "@promethean-os/ecosystem-dsl": "workspace:*",
-    "@promethean-os/kanban": "workspace:*",
     "@promethean-os/opencode-openplanner-plugin-cljs": "workspace:*",
     "@types/node": "^20.11.30",
     "ava": "^7.0.0",

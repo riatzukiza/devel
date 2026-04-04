@@ -20,11 +20,11 @@ Implement a Duck Context protocol with explicit pruning rules, memory tiers, and
 
 ## Current State (Relevant Files)
 
-- `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/agent.clj#L6-L78`
+- `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/agent.clj#L6-L78`
   - Duck agent registration, tool list, and message handling (single-turn call to `agents/run!`).
-- `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/context.clj#L4-L27`
+- `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/context.clj#L4-L27`
   - Current context builder: concatenates history into a single user message.
-- `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/remote.clj#L5-L20`
+- `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/remote.clj#L5-L20`
   - `def-remote-tool` macro (Discord tool call RPC wrapper).
 - `orgs/octave-commons/promethean-agent-system/src/promethean/ollama/agents.clj#L88-L176`
   - Tool-call loop for OpenAI/Ollama-style tool calls (`run!`).
@@ -112,17 +112,17 @@ Implement or model these tools in the Promethean tool registry and ensure schema
 
 ## Proposed Files (Initial Targets)
 
-- `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/context.clj`
+- `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/context.clj`
   - Add pruning policy and memory tiers.
-- `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/agent.clj`
+- `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/agent.clj`
   - Add loop toggle and context compilation integration.
 - `orgs/octave-commons/promethean-agent-system/src/promethean/ollama/agents.clj`
   - Hook loop policy (on/off), track tool calls for pruning.
-- `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/tools/*.clj`
+- `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/tools/*.clj`
   - Add new tool definitions.
-- `orgs/octave-commons/cephalon-clj/cephalon-clj-discord-io/src/cephalon/discord_io/tools.cljs`
+- `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-discord-io/src/cephalon/discord_io/tools.cljs`
   - Add the social.discord tool implementations.
-- `orgs/octave-commons/cephalon-clj/cephalon-clj-discord-io/src/cephalon/discord_io/rpc.cljs`
+- `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-discord-io/src/cephalon/discord_io/rpc.cljs`
   - Register new RPC methods (tool endpoints).
 
 ## Definition of Done

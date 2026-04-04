@@ -19,7 +19,7 @@ Consolidate all CLJS/TS functionality into `services/cephalon-cljs/` using TDD, 
 
 ## Scope
 - Migrate modules from the legacy CLJS package into `services/cephalon-cljs/`.
-- Remove `packages/cephalon-cljs/` after the merge.
+- Remove `orgs/octave-commons/cephalon/packages/cephalon-cljs/` after the merge.
 - Define Redis RPC envelope schema (CLJS only) for future microservices.
 - Add unit, integration, and E2E workflow tests for migrated modules.
 

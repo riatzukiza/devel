@@ -1,5 +1,6 @@
 import test from "ava";
 import {
+  chunkToEvent,
   indexEvents,
   messageToEvent,
   openPlannerEnv,
@@ -36,7 +37,7 @@ test("openPlannerEnv returns defaults when env vars not set", (t) => {
 
 test("openPlannerEnv reads env vars when set", (t) => {
   process.env.OPENPLANNER_URL = "http://custom:9999";
-  process.env.OPENPLANNER_API_KEY = "test-key-123";
+  process.env.OPENPLANNER_API_KEY = "test-key-123"; // pragma: allowlist secret
 
   const env = openPlannerEnv();
   t.is(env.OPENPLANNER_URL, "http://custom:9999");
@@ -50,8 +51,8 @@ test("openPlannerEnv reads env vars when set", (t) => {
 // messageToEvent tests
 // ============================================================================
 
-test("messageToEvent creates valid EventEnvelopeV1", (t) => {
-  const event = messageToEvent({
+test("messageToEvent creates valid EventEnvelopeV1", async (t) => {
+  const event = await messageToEvent({
     sessionId: "ses_abc123",
     messageId: "msg_456",
     messageIndex: 3,
@@ -77,8 +78,8 @@ test("messageToEvent creates valid EventEnvelopeV1", (t) => {
   t.truthy(event.ts);
 });
 
-test("messageToEvent handles optional fields", (t) => {
-  const event = messageToEvent({
+test("messageToEvent handles optional fields", async (t) => {
+  const event = await messageToEvent({
     sessionId: "ses_x",
     messageId: "msg_y",
     messageIndex: 0,
@@ -89,8 +90,34 @@ test("messageToEvent handles optional fields", (t) => {
 
   t.is(event.schema, "openplanner.event.v1");
   t.is(event.text, "simple message");
-  t.is(event.meta?.session_title, undefined);
-  t.is(event.meta?.paths, undefined);
+  t.true(event.meta?.session_title == null);
+  t.true(event.meta?.paths == null);
+});
+
+test("chunkToEvent creates valid chunk EventEnvelopeV1", async (t) => {
+  const event = await chunkToEvent({
+    sessionId: "ses_chunk",
+    sessionTitle: "Chunk Session",
+    chunkIndex: 2,
+    messageIdStart: "msg_1",
+    messageIdEnd: "msg_9",
+    messageIndexStart: 1,
+    messageIndexEnd: 9,
+    createdAt: 1704067200000,
+    text: "chunk body",
+    approxTokens: 123,
+    paths: ["src/chunk.ts"],
+  });
+
+  t.is(event.schema, "openplanner.event.v1");
+  t.is(event.kind, "chunk");
+  t.is(event.source_ref?.session, "ses_chunk");
+  t.is(event.source_ref?.message, "msg_1..msg_9");
+  t.is(event.meta?.chunk_index, 2);
+  t.is(event.meta?.message_id_start, "msg_1");
+  t.is(event.meta?.message_id_end, "msg_9");
+  t.is(event.meta?.approx_tokens, 123);
+  t.is(event.meta?.paths, "src/chunk.ts");
 });
 
 // ============================================================================
@@ -142,7 +169,7 @@ test("indexEvents posts events successfully (200)", async (t) => {
 });
 
 test("indexEvents includes Bearer token when API key set", async (t) => {
-  process.env.OPENPLANNER_API_KEY = "secret-token";
+  process.env.OPENPLANNER_API_KEY = "secret-token"; // pragma: allowlist secret
 
   let capturedHeaders: Record<string, string> = {};
 

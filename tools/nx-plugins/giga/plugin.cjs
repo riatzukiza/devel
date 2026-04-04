@@ -113,8 +113,7 @@ var createNodesV2 = [
             command: "bun test ./.opencode/tools/tests/fix_clojure_delimiters.test.js"
           }
         }
-      },
-      implicitDependencies: projectNames
+      }
     };
     const result = { projects };
     return configFiles.map((file) => [file, result]);

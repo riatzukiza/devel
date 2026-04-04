@@ -14,7 +14,7 @@ This covers the eta-mu system components currently split across the devel worksp
 - runtime/devops home: `services/eta-mu`
 - service implementation: `services/eta-mu-truth-workbench`
 - shared runtime packages: `packages/eta-mu-docs`, `packages/eta-mu-truth`
-- GitHub automation logic: `orgs/open-hax/eta-mu-github`
+- GitHub automation logic: `orgs/open-hax/eta-mu/packages/eta-mu-github`
 - repo-local eta-mu wrapper workflows that must select the correct staged logic ref
 
 ## Constraints
@@ -39,7 +39,7 @@ This covers the eta-mu system components currently split across the devel worksp
 1. Parameterize the runtime/devops home so staging and production can coexist on one host.
 2. Add a service-specific remote deploy script plus operator documentation.
 3. Add devel-root workflows for eta-mu staging PRs, staging deploys, main PR gates, and production deploys.
-4. Add staged promotion workflows to `open-hax/eta-mu-github` and make wrapper workflows branch-aware when selecting eta-mu logic refs.
+4. Keep staged promotion/workflow templates inside the eta-mu monorepo and make wrapper workflows branch-aware when selecting eta-mu refs.
 5. Verify locally with compose config, package tests, eta-mu-github tests/build, and shell syntax checks.
 6. Call out the remaining GitHub/environment/Caddy follow-through honestly.
 
@@ -48,7 +48,7 @@ This covers the eta-mu system components currently split across the devel worksp
 - `node --test packages/eta-mu-docs/tests/*.test.cjs`
 - `node --test packages/eta-mu-truth/tests/*.test.cjs`
 - `bash -n services/eta-mu/scripts/deploy-remote.sh`
-- `pnpm test && pnpm build` in `orgs/open-hax/eta-mu-github`
+- `pnpm test && pnpm build` in `orgs/open-hax/eta-mu`
 
 ## Definition of done
 - eta-mu runtime can be deployed as separate staging and production compose projects.

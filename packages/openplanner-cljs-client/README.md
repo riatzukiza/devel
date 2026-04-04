@@ -7,6 +7,7 @@ ClojureScript OpenPlanner client for Node/Bun/ESM consumers.
 - `createOpenPlannerClient(opts?)`
 - `defaultOpenPlannerConfig(opts?)`
 - `createOpenPlannerEvent(input)`
+- `createOpenPlannerChunkEvent(input)`
 
 The client targets OpenPlanner through the API gateway by default:
 

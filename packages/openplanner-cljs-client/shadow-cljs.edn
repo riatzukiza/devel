@@ -9,7 +9,8 @@
    :modules {:index {:entries [promethean.openplanner.client]
                      :exports {:createOpenPlannerClient promethean.openplanner.client/create-openplanner-client
                                :defaultOpenPlannerConfig promethean.openplanner.client/default-config
-                               :createOpenPlannerEvent promethean.openplanner.client/create-openplanner-event}}}
+                               :createOpenPlannerEvent promethean.openplanner.client/create-openplanner-event
+                               :createOpenPlannerChunkEvent promethean.openplanner.client/create-openplanner-chunk-event}}}
    :compiler-options {:output-feature-set :es-next}}
 
   :test

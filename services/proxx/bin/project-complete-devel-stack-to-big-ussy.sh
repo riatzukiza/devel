@@ -183,10 +183,10 @@ OPENROUTER_API_KEY_VALUE="${OPENROUTER_API_KEY:-$(read_local_env_value "$LOCAL_P
 
 SYNC_PATHS=(
   services/proxx
-  services/openplanner
+  orgs/riatzukiza/openplanner
   services/cephalon-hive
   orgs/open-hax/proxx
-  packages/cephalon-ts
+  orgs/octave-commons/cephalon/packages/cephalon-ts
   packages/event
   packages/openplanner-cljs-client
 )
@@ -206,9 +206,9 @@ RSYNC_EXCLUDES=(
 )
 
 build_local_artifacts() {
-  run "cd ${WORKSPACE_ROOT@Q}/packages/cephalon-ts && ./node_modules/.bin/tsup --config tsup.standalone.ts"
+  run "cd ${WORKSPACE_ROOT@Q}/orgs/octave-commons/cephalon/packages/cephalon-ts && ./node_modules/.bin/tsup --config tsup.standalone.ts"
   run "mkdir -p ${WORKSPACE_ROOT@Q}/services/cephalon-hive/dist"
-  run "rsync -a ${WORKSPACE_ROOT@Q}/packages/cephalon-ts/dist/ ${WORKSPACE_ROOT@Q}/services/cephalon-hive/dist/"
+  run "rsync -a ${WORKSPACE_ROOT@Q}/orgs/octave-commons/cephalon/packages/cephalon-ts/dist/ ${WORKSPACE_ROOT@Q}/services/cephalon-hive/dist/"
 }
 
 sync_workspace_tree() {

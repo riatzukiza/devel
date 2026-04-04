@@ -15,6 +15,8 @@ services:
     build:
       context: ../../threat-radar-deploy
       dockerfile: ../services/radar-stack/Dockerfile.threat-radar-mcp
+      additional_contexts:
+        tooloxx_root: ../../orgs/open-hax/tooloxx
     depends_on:
       - radar-db
     environment:
@@ -59,7 +61,7 @@ services:
 
   hormuz-clock-mcp:
     image: node:22-bookworm-slim
-    working_dir: /workspace/orgs/riatzukiza/hormuz-clock-mcp
+    working_dir: /workspace/orgs/open-hax/tooloxx/services/hormuz-clock-mcp
     environment:
       NODE_ENV: production
       PORT: "10001"
@@ -70,7 +72,7 @@ services:
     command: >-
       bash -lc "corepack enable && corepack prepare pnpm@10.14.0 --activate &&
       pnpm --dir /workspace install --no-frozen-lockfile --filter @riatzukiza/hormuz-clock-mcp... &&
-      cd /workspace/orgs/riatzukiza/hormuz-clock-mcp &&
+      cd /workspace/orgs/open-hax/tooloxx/services/hormuz-clock-mcp &&
       node --import tsx src/main.ts"
     volumes:
       - ../..:/workspace
@@ -96,7 +98,7 @@ services:
 
   openplanner:
     build:
-      context: ../openplanner
+      context: ../../orgs/riatzukiza/openplanner
       dockerfile: Dockerfile
     depends_on:
       - chroma
@@ -112,7 +114,7 @@ services:
       OLLAMA_API_KEY: ${PROXY_AUTH_TOKEN}
       OLLAMA_EMBED_MODEL: qwen3-embedding:0.6b
     volumes:
-      - ../openplanner/openplanner-lake:/app/openplanner-lake
+      - ../../orgs/riatzukiza/openplanner/openplanner-lake:/app/openplanner-lake
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:

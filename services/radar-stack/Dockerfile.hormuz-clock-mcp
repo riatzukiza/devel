@@ -13,24 +13,24 @@ WORKDIR /workspace
 
 COPY pnpm-lock.yaml ./pnpm-lock.yaml
 RUN printf '{"name":"hormuz-clock-mcp-image","private":true}\n' > package.json
-RUN printf 'packages:\n  - packages/mcp-oauth\n  - threat-radar-deploy/packages/thread-assessment\n  - orgs/riatzukiza/hormuz-clock-mcp\n' > pnpm-workspace.yaml
+RUN printf 'packages:\n  - orgs/open-hax/tooloxx/packages/mcp-oauth\n  - threat-radar-deploy/packages/thread-assessment\n  - orgs/open-hax/tooloxx/services/hormuz-clock-mcp\n' > pnpm-workspace.yaml
 
-COPY packages/mcp-oauth/package.json packages/mcp-oauth/
+COPY orgs/open-hax/tooloxx/packages/mcp-oauth/package.json orgs/open-hax/tooloxx/packages/mcp-oauth/
 COPY threat-radar-deploy/packages/thread-assessment/package.json threat-radar-deploy/packages/thread-assessment/
-COPY orgs/riatzukiza/hormuz-clock-mcp/package.json orgs/riatzukiza/hormuz-clock-mcp/
+COPY orgs/open-hax/tooloxx/services/hormuz-clock-mcp/package.json orgs/open-hax/tooloxx/services/hormuz-clock-mcp/
 
 RUN --mount=type=cache,id=pnpm-hormuz-clock-mcp,target=/pnpm/store \
     pnpm install --no-frozen-lockfile
 
-COPY packages/mcp-oauth packages/mcp-oauth
+COPY orgs/open-hax/tooloxx/packages/mcp-oauth orgs/open-hax/tooloxx/packages/mcp-oauth
 COPY threat-radar-deploy/packages/thread-assessment threat-radar-deploy/packages/thread-assessment
-COPY orgs/riatzukiza/hormuz-clock-mcp orgs/riatzukiza/hormuz-clock-mcp
+COPY orgs/open-hax/tooloxx/services/hormuz-clock-mcp orgs/open-hax/tooloxx/services/hormuz-clock-mcp
 
 RUN pnpm --filter @workspace/mcp-oauth build \
   && pnpm --filter @workspace/thread-assessment build \
   && pnpm --filter @riatzukiza/hormuz-clock-mcp build
 
-WORKDIR /workspace/orgs/riatzukiza/hormuz-clock-mcp
+WORKDIR /workspace/orgs/open-hax/tooloxx/services/hormuz-clock-mcp
 ENV NODE_ENV=production
 ENV PORT=10001
 EXPOSE 10001

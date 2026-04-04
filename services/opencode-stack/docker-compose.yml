@@ -13,6 +13,7 @@ services:
     working_dir: /workspace
     environment:
       NODE_ENV: production
+      WORKSPACE_ROOT: /workspace
       HOME: /home/err
       XDG_CONFIG_HOME: /home/err/.config
       XDG_DATA_HOME: /home/err/.local/share
@@ -23,7 +24,7 @@ services:
       OPENCODE_GATEWAY_PUBLIC_PORT: "4180"
       OPENCODE_GATEWAY_ADMIN_PORT: "4181"
       OPENCODE_UPSTREAM_URL: http://127.0.0.1:4096
-      OPENCODE_GATEWAY_JANUS_URL: http://mcp-stack:8788
+      OPENCODE_GATEWAY_JANUS_URL: "${OPENCODE_GATEWAY_JANUS_URL:-http://mcp-stack:8788}"
       ETA_MU_UPSTREAM_URL: "${ETA_MU_UPSTREAM_URL:-http://host.docker.internal:8787}"
       ETA_MU_BASE_PATH: "${ETA_MU_BASE_PATH:-/eta-mu}"
       OPENCODE_CONFIG_DIR: /workspace/.opencode
@@ -34,12 +35,24 @@ services:
       OLLAMA_BASE_URL: "${OLLAMA_BASE_URL:-http://host.docker.internal:8789}"
     user: "1000:1000"
     volumes:
-      - ../..:/workspace
-      - ./data:/srv/opencode-stack-data
-      - /home/err/.config/opencode:/home/err/.config/opencode
-      - /home/err/.local/share/opencode:/home/err/.local/share/opencode
-      - /home/err/.cache/opencode:/home/err/.cache/opencode
-      - /home/err/.local/state/opencode:/home/err/.local/state/opencode
+      - type: bind
+        source: "${WORKSPACE_ROOT:-/home/err/devel}"
+        target: /workspace
+      - type: bind
+        source: ./data
+        target: /srv/opencode-stack-data
+      - type: bind
+        source: "${HOST_OPENCODE_CONFIG_DIR:-/home/err/.config/opencode}"
+        target: /home/err/.config/opencode
+      - type: bind
+        source: "${HOST_OPENCODE_DATA_DIR:-/home/err/.local/share/opencode}"
+        target: /home/err/.local/share/opencode
+      - type: bind
+        source: "${HOST_OPENCODE_CACHE_DIR:-/home/err/.cache/opencode}"
+        target: /home/err/.cache/opencode
+      - type: bind
+        source: "${HOST_OPENCODE_STATE_DIR:-/home/err/.local/state/opencode}"
+        target: /home/err/.local/state/opencode
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:
@@ -60,5 +73,4 @@ services:
 
 networks:
   mcp_stack:
-    external: true
     name: mcp-stack_default

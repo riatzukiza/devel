@@ -5,7 +5,8 @@ Container-first deployment stack for the live Hormuz / threat-radar system on `u
 This is the **canonical** live deployment surface for `https://radar.promethean.rest`.
 
 - edge routing is provided by `services/proxx/Caddyfile`
-- application source lives in `threat-radar-deploy/`
+- canonical MCP source now lives under `orgs/open-hax/tooloxx/`
+- `threat-radar-deploy/` remains a deployment-oriented bundle surface
 - Render deployment is retired for Threat Radar
 
 ## Services

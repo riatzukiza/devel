@@ -11,7 +11,7 @@ type Target = {
 };
 
 const root = process.cwd();
-const templatesDir = path.join(root, "orgs/open-hax/eta-mu-github/templates/workflows");
+const templatesDir = path.join(root, "orgs/open-hax/eta-mu/packages/eta-mu-github/templates/workflows");
 const allowedCommands = new Set(["inventory", "install"]);
 
 const ensureSafeTargetPath = (targetPath: string): string => {

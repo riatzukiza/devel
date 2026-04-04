@@ -5,13 +5,9 @@ on:
     branches:
       - main
     paths:
-      - 'packages/eta-mu-docs/**'
-      - 'packages/eta-mu-truth/**'
-      - 'services/eta-mu/**'
-      - 'services/eta-mu-truth-workbench/**'
+      - 'orgs/open-hax/eta-mu/**'
       - '.github/workflows/eta-mu*.yml'
       - 'src/github/eta-mu-rollout.ts'
-      - 'orgs/open-hax/eta-mu-github/**'
   workflow_dispatch:
 
 concurrency:
@@ -30,12 +26,12 @@ jobs:
           node-version: 22
           package-manager-cache: false
       - run: sudo apt-get update && sudo apt-get install -y shellcheck
-      - run: bash -n services/eta-mu/scripts/deploy-remote.sh
-      - run: shellcheck services/eta-mu/scripts/deploy-remote.sh
-      - run: node --test packages/eta-mu-docs/tests/*.test.cjs
-      - run: node --test packages/eta-mu-truth/tests/*.test.cjs
-      - run: docker compose --project-name eta-mu-production-ci -f services/eta-mu/compose.yaml config >/tmp/eta-mu-compose.txt
-      - run: docker build -f services/eta-mu-truth-workbench/Dockerfile .
+      - run: bash -n orgs/open-hax/eta-mu/services/eta-mu/scripts/deploy-remote.sh
+      - run: shellcheck orgs/open-hax/eta-mu/services/eta-mu/scripts/deploy-remote.sh
+      - run: node --test orgs/open-hax/eta-mu/packages/eta-mu-docs/tests/*.test.cjs
+      - run: node --test orgs/open-hax/eta-mu/packages/eta-mu-truth/tests/*.test.cjs
+      - run: docker compose --project-name eta-mu-production-ci -f orgs/open-hax/eta-mu/services/eta-mu/compose.yaml config >/tmp/eta-mu-compose.txt
+      - run: docker build -f orgs/open-hax/eta-mu/services/eta-mu-truth-workbench/Dockerfile orgs/open-hax/eta-mu
 
   deploy-production:
     name: deploy-production
@@ -58,9 +54,9 @@ jobs:
         env:
           ETA_MU_PRODUCTION_SSH_HOST: ${{ vars.ETA_MU_PRODUCTION_SSH_HOST || 'big.ussy.promethean.rest' }}
           ETA_MU_PRODUCTION_SSH_PRIVATE_KEY: ${{ secrets.ETA_MU_PRODUCTION_SSH_PRIVATE_KEY }}
-      - run: chmod +x services/eta-mu/scripts/deploy-remote.sh
+      - run: chmod +x orgs/open-hax/eta-mu/services/eta-mu/scripts/deploy-remote.sh
       - name: deploy eta-mu production runtime
-        run: services/eta-mu/scripts/deploy-remote.sh
+        run: orgs/open-hax/eta-mu/services/eta-mu/scripts/deploy-remote.sh
         env:
           DEPLOY_HOST: ${{ vars.ETA_MU_PRODUCTION_SSH_HOST || 'big.ussy.promethean.rest' }}
           DEPLOY_USER: ${{ vars.ETA_MU_PRODUCTION_SSH_USER || 'error' }}

@@ -1,9 +1,9 @@
 # Reconstituter
 
-Tools for indexing OpenCode sessions into ChromaDB and reconstituting project context from those sessions.
+Tools for indexing OpenCode sessions into OpenPlanner or ChromaDB and reconstituting project context from those sessions.
 
 ## What It Provides
-- `opencode-sessions` CLI for indexing and searching session embeddings.
+- `opencode-sessions` CLI for indexing OpenCode sessions into OpenPlanner and searching them via FTS.
 - `reconstitute` CLI for indexing, search, and run-based reconstruction.
 - Reusable helpers exported from `@promethean-os/reconstituter`.
 
@@ -31,18 +31,14 @@ pnpm -C packages/reconstituter reconstitute run orgs/octave-commons/cephalon-clj
 
 ### OpenCode Sessions CLI
 - `OPENCODE_BASE_URL` (default: `http://localhost:4096`)
-- `CHROMA_URL` (default: `http://localhost:8000`)
-- `CHROMA_COLLECTION` base name (default: `opencode_messages_v1`, salted with `OLLAMA_EMBED_MODEL`)
-- `CHROMA_TENANT` (optional)
-- `CHROMA_DATABASE` (optional)
-- `CHROMA_TOKEN` (optional)
+- `OPENPLANNER_URL` (default from `@promethean-os/openplanner-cljs-client`)
+- `OPENPLANNER_API_KEY` (optional)
 - `OPENCODE_THROTTLE_MS` (default: `200`)
 - `LEVEL_DIR` (default: `.reconstitute/level`)
-- `OLLAMA_URL` (default: `http://127.0.0.1:8789`)
-- `OLLAMA_EMBED_MODEL` (default: `qwen3-embedding:0.6b`)
-- `OLLAMA_NUM_CTX` (optional; omit to let the upstream model decide)
 - `BATCH_SIZE` (default: `32`)
-- `EMBED_TTL_MS` (default: 30 days)
+- `OPENCODE_CHUNK_INDEXING` (default: `1`)
+- `OPENCODE_CHUNK_TARGET_TOKENS` (default: `32000`)
+- `OPENCODE_CHUNK_OVERLAP_MESSAGES` (default: `4`)
 
 ### Reconstitute CLI
 - `LEVEL_DIR` (default: `.reconstitute/level`)

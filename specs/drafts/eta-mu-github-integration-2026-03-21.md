@@ -6,7 +6,7 @@ Implement a pi-based GitHub automation surface named **eta-mu** for `devel` and 
 The user wants:
 - merge protection that requires CodeRabbit review comments to be resolved before merge acceptance
 - a pi-based GitHub integration with its own bot-style identity (`eta-mu`)
-- a canonical source repo/submodule at `orgs/open-hax/eta-mu-github`
+- a canonical source home at `orgs/open-hax/eta-mu/packages/eta-mu-github`
 - triggers on PR changes, issue creation, and explicit mentions, with debounce
 - the ability for eta-mu to interact with CodeRabbit, other review agents, and humans
 - the existing `orgs/open-hax/codex/.github/` workflows/ruleset patterns used as inspiration
@@ -39,7 +39,7 @@ The user wants:
 
 ## Phases
 1. Investigate current patterns in `devel`, `orgs/open-hax/codex/.github/`, and pi SDK/examples; inventory admin-capable submodules.
-2. Create the canonical `open-hax/eta-mu-github` repo and add it as `orgs/open-hax/eta-mu-github` submodule.
+2. Consolidate the canonical eta-mu automation into the eta-mu monorepo at `orgs/open-hax/eta-mu/packages/eta-mu-github`.
 3. Implement eta-mu GitHub automation foundation:
    - pi SDK-driven event runner
    - review-gate checker for unresolved review threads/comments
@@ -52,7 +52,7 @@ The user wants:
 ## Affected artifacts
 - `specs/drafts/eta-mu-github-integration-2026-03-21.md`
 - `.gitmodules`
-- `orgs/open-hax/eta-mu-github/**`
+- `orgs/open-hax/eta-mu/**`
 - `.github/workflows/eta-mu.yml`
 - `.github/workflows/eta-mu-review-gate.yml`
 - `src/github/eta-mu-rollout.ts`
@@ -64,7 +64,7 @@ The user wants:
 - `receipts.log`
 
 ## Definition of done
-- `open-hax/eta-mu-github` exists and is tracked as `orgs/open-hax/eta-mu-github`.
+- `open-hax/eta-mu` is the canonical eta-mu repo, with automation living at `orgs/open-hax/eta-mu/packages/eta-mu-github`.
 - Eta-mu repo contains a pi-based GitHub runner and review gate foundation.
 - `devel` has eta-mu workflow wiring and documented credential/ruleset expectations.
 - Workspace tooling can identify/admin-roll out eta-mu integration to writable submodules.
@@ -73,7 +73,7 @@ The user wants:
 ## Execution log
 - 2026-03-21T00:00:00Z Draft created to track eta-mu GitHub integration planning and implementation.
 - 2026-03-21T19:00:00Z Investigated pi SDK/examples plus `orgs/open-hax/codex/.github/` workflows/rulesets to anchor the eta-mu design on the existing Codex promotion and review-response model.
-- 2026-03-21T19:10:00Z Scaffolded `open-hax/eta-mu-github` as a new Open Hax repo with a pi SDK-driven event runner, a review-gate command for unresolved review threads, workflow templates, tests, and GitHub App credential docs; pushed it to GitHub and added it back into `devel` as `orgs/open-hax/eta-mu-github`.
+- 2026-03-21T19:10:00Z Scaffolded the standalone `open-hax/eta-mu-github` automation surface before later consolidating it into the eta-mu monorepo at `orgs/open-hax/eta-mu/packages/eta-mu-github`.
 - 2026-03-21T19:20:00Z Wired `devel` itself with `eta-mu` and `eta-mu-review-gate` GitHub workflows and added root docs for secrets, branch-protection expectations, and rollout commands.
 - 2026-03-21T19:25:00Z Added `src/github/eta-mu-rollout.ts` to inventory/install eta-mu workflow wrappers across admin-capable submodules and generated the first inventory report showing eligible rollout targets.
 - 2026-03-21T19:30:00Z Reworked `bin/setup-branch-protection` so it can include the root repo, skip non-admin repos, and preserve/merge existing required checks while keeping review-thread resolution enabled.
