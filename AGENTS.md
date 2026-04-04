@@ -47,6 +47,11 @@ Multi-repository development workspace with git submodules organized under `orgs
 - Keep `~/.npmrc` env-based rather than storing a literal token there.
 - Publish first; only then update downstream consumers.
 
+## Fork Tax Concurrency Rule
+- When the user says `Π`, `pay the fork tax`, or requests a handoff snapshot in this workspace, assume other agents may also be modifying the tree unless the user explicitly grants exclusivity.
+- In shared dirt, do **not** use repo-wide `git reset`, `git restore`, `git clean`, checkout rewinds, or blanket `git add -A` against unrelated paths.
+- Prefer explicit path-scoped staging and record concurrent dirt/blockers in `.ημ` artifacts instead of clearing or silently overwriting them.
+
 ## Proxx/OpenAI Accounts - CRITICAL
 - **JSON files (keys.json, etc.) are ONLY for seeding - ignore them for finding accounts**
 - Accounts are stored in PostgreSQL databases/volumes
