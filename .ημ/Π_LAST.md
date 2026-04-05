@@ -1,6 +1,6 @@
 # Π Last Snapshot
 
-**Time:** 2026-04-05T21:15:00Z
+**Time:** 2026-04-05T21:21:30Z
 **Branch:** staging
 **Pre-commit HEAD:** 2c9641b
 **Snapshot branch:** `fork-tax/20260405-recursive-root-staging-211500-pr-roster`
@@ -12,6 +12,7 @@ Concurrent-safe recursive fork-tax preserved the publishable submodule heads, op
 - Opened 13 new submodule PRs and retained 3 already-open PRs.
 - Captured 16 pushed submodule heads into the root snapshot branch.
 - Recorded 2 publish blockers (`opencode`, `knoxx`) plus residual local dirt that was intentionally left in place.
+- Observed additional concurrent root dirt in `services/cephalon-stack`, `services/mcp-stack`, and `services/opencode-stack` while publishing; left untouched and recorded.
 - Wrote run artifacts to `.ημ/Π_SUBMODULE_RECURSION_2026-04-05.md`, `.ημ/recursive-submodule-pr-roster-2026-04-05.json`, `.ημ/03_ARTIFACTS/promethean-mind-fork-tax-2026-04-05.md`, and `.ημ/Π_MANIFEST_2026-04-05.sha256`.
 - Used an alternate git index because `.git/index.lock` already existed; the live `staging` branch and shared index were left untouched.
 
@@ -23,4 +24,4 @@ Concurrent-safe recursive fork-tax preserved the publishable submodule heads, op
 
 ## Tag
 
-`Π/2026-04-05/211500-2c9641b`
+`Π/2026-04-05/212130-2c9641b`

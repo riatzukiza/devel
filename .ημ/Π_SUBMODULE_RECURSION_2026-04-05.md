@@ -1,6 +1,6 @@
 # Π Recursive Submodule Snapshot
 
-**Time:** 2026-04-05T21:15:00Z
+**Time:** 2026-04-05T21:21:30Z
 **Root branch:** staging
 **Root pre-head:** 2c9641b
 **Root snapshot branch:** `fork-tax/20260405-recursive-root-staging-211500-pr-roster`
@@ -43,7 +43,7 @@
 ## Root concurrent dirt left untouched
 
 - `.git/index.lock` forced the root snapshot onto an alternate index and a dedicated branch
-- `.gitmodules`, `.opencode/package.json`, `.opencode/skill/fork-tax/SKILL.md`, `.ημ/Π_SUBMODULE_RECURSION_2026-04-04.md`, `AGENTS.md`, `config/docker-stacks.json`, `docs/docker-stacks.md`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `receipts.log`, and `services/ollama-stack/docker-compose.yml` remained intentionally untouched
+- `.gitmodules`, `.opencode/package.json`, `.opencode/skill/fork-tax/SKILL.md`, `.ημ/Π_SUBMODULE_RECURSION_2026-04-04.md`, `AGENTS.md`, `config/docker-stacks.json`, `docs/docker-stacks.md`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `receipts.log`, `services/cephalon-stack/docker-compose.yml`, `services/cephalon-stack/ecosystem.container.config.cjs`, `services/mcp-stack/docker-compose.yml`, `services/mcp-stack/ecosystem.container.config.cjs`, `services/ollama-stack/docker-compose.yml`, `services/opencode-stack/docker-compose.yml`, and `services/opencode-stack/ecosystem.container.config.cjs` remained intentionally untouched
 
 ## Fork Tax Canticle
 

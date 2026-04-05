@@ -1,5 +1,5 @@
 (Π_STATE
-  (time "2026-04-05T21:15:00Z")
+  (time "2026-04-05T21:21:30Z")
   (branch "staging")
   (pre_head "2c9641b")
   (snapshot_branch "fork-tax/20260405-recursive-root-staging-211500-pr-roster")
@@ -18,7 +18,7 @@
       (reason "Recursive fork-tax prioritized low-interference publication and blocker accounting over a full multi-repo revalidation sweep.")))
   (repo_notes
     (mode "recursive-submodule-pr-publication-concurrent-safe")
-    (tag "Π/2026-04-05/211500-2c9641b")
+    (tag "Π/2026-04-05/212130-2c9641b")
     (artifact_json ".ημ/recursive-submodule-pr-roster-2026-04-05.json")
     (artifact_md ".ημ/Π_SUBMODULE_RECURSION_2026-04-05.md")
     (artifact_song ".ημ/03_ARTIFACTS/promethean-mind-fork-tax-2026-04-05.md")
@@ -58,4 +58,10 @@
     (blocker (path "pnpm-lock.yaml") (reason "root concurrent dirt intentionally left untouched"))
     (blocker (path "pnpm-workspace.yaml") (reason "root concurrent dirt intentionally left untouched"))
     (blocker (path "receipts.log") (reason "root concurrent dirt intentionally left untouched"))
-    (blocker (path "services/ollama-stack/docker-compose.yml") (reason "root concurrent dirt intentionally left untouched"))))
+    (blocker (path "services/cephalon-stack/docker-compose.yml") (reason "root concurrent dirt intentionally left untouched"))
+    (blocker (path "services/cephalon-stack/ecosystem.container.config.cjs") (reason "root concurrent dirt intentionally left untouched"))
+    (blocker (path "services/mcp-stack/docker-compose.yml") (reason "root concurrent dirt intentionally left untouched"))
+    (blocker (path "services/mcp-stack/ecosystem.container.config.cjs") (reason "root concurrent dirt intentionally left untouched"))
+    (blocker (path "services/ollama-stack/docker-compose.yml") (reason "root concurrent dirt intentionally left untouched"))
+    (blocker (path "services/opencode-stack/docker-compose.yml") (reason "root concurrent dirt intentionally left untouched"))
+    (blocker (path "services/opencode-stack/ecosystem.container.config.cjs") (reason "root concurrent dirt intentionally left untouched"))))

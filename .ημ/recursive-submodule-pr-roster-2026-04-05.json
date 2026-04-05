@@ -1,5 +1,5 @@
 {
-  "time": "2026-04-05T21:15:00Z",
+  "time": "2026-04-05T21:21:30Z",
   "rootBranch": "staging",
   "rootPreHead": "2c9641b",
   "rootSnapshotBranch": "fork-tax/20260405-recursive-root-staging-211500-pr-roster",
@@ -167,6 +167,9 @@
     "orgs/open-hax/knoxx: generated cache directories left local",
     "orgs/open-hax/openplanner: DuckDB, dist, and node_modules left local",
     "orgs/open-hax/workbench: tracked node_modules churn left local",
-    ".git/index.lock: alternate index required at root"
+    ".git/index.lock: alternate index required at root",
+    "services/cephalon-stack/*: concurrent root dirt left untouched",
+    "services/mcp-stack/*: concurrent root dirt left untouched",
+    "services/opencode-stack/*: concurrent root dirt left untouched"
   ]
 }
