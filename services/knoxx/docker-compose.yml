@@ -58,6 +58,7 @@ services:
     build:
       context: ${KNOXX_BACKEND_PATH:-../../orgs/open-hax/knoxx/backend}
       dockerfile: ${KNOXX_BACKEND_DOCKERFILE:-Dockerfile}
+    user: ${DOCKER_USER:-1000:1000}
     cpus: 2
     cpuset: "2-21"
     working_dir: ${KNOXX_BACKEND_WORKDIR:-/app}
@@ -160,6 +161,7 @@ services:
   knoxx-frontend-dev:
     profiles: ["dev"]
     image: node:22-bookworm-slim
+    user: ${DOCKER_USER:-1000:1000}
     cpus: 1
     cpuset: "2-21"
     working_dir: /app/workspace/devel/orgs/open-hax/knoxx
