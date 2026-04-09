@@ -15,7 +15,6 @@ packages:
   - packages/fsm
   - orgs/open-hax/tooloxx/packages/*
   - packages/radar-core
-  - packages/webgl-graph-view
   - packages/output-contract-gate
   - packages/thread-assessment
   - packages/npu-top
@@ -32,6 +31,12 @@ packages:
   - orgs/anomalyco/opencode-indexer
   - orgs/riatzukiza/kronos
   - orgs/open-hax/openplanner
+  - orgs/open-hax/openplanner/packages/uxx
+  - orgs/open-hax/openplanner/packages/reconstituter
+  - orgs/open-hax/openplanner/packages/webgl-graph-view
+  - orgs/open-hax/openplanner/packages/opencode-openplanner-plugin-cljs
+  - orgs/open-hax/openplanner/packages/openplanner-cljs-client
+  - orgs/open-hax/eta-mu/packages/*
   - orgs/riatzukiza/ourllamas
   - orgs/open-hax/vivgrid-openai-proxy
   - orgs/riatzukiza/futuresight-kms

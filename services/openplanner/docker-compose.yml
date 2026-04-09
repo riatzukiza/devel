@@ -1,77 +1,54 @@
-# OpenPlanner devel-local runtime wrapper
-#
-# Canonical source code lives in ../../orgs/open-hax/openplanner.
-# This stack is the workspace-local runtime/devops home and keeps mutable
-# runtime state out of the source repository.
-#
-# MONGODB-ONLY: DuckDB and ChromaDB have been removed.
-# All structured data and vectors now live in MongoDB.
-
 services:
   secrets-init:
     image: python:3.12-alpine
     command:
-      - /bin/sh
-      - -lc
-      - |
-        set -eu
-        mkdir -p /runtime-secrets
-        python - <<'PY'
-        import base64, os, pathlib
-        root = pathlib.Path('/runtime-secrets')
-        root.mkdir(parents=True, exist_ok=True)
-        keyfile = root / 'mongodb-keyfile'
-        password_file = root / 'mongot-password'
-        if not keyfile.exists():
-            keyfile.write_text(base64.b64encode(os.urandom(756)).decode('ascii'))
-        if not password_file.exists():
-            password_file.write_text(os.environ.get('MONGOT_SYNC_PASSWORD', 'change-me-mongot-password'))
-        os.chmod(keyfile, 0o400)
-        os.chmod(password_file, 0o400)
-        try:
-            os.chown(keyfile, 998, 998)
-        except PermissionError:
-            pass
-        PY
+    - /bin/sh
+    - -lc
+    - "set -eu\nmkdir -p /runtime-secrets\npython - <<'PY'\nimport base64, os, pathlib\n\
+      root = pathlib.Path('/runtime-secrets')\nroot.mkdir(parents=True, exist_ok=True)\n\
+      keyfile = root / 'mongodb-keyfile'\npassword_file = root / 'mongot-password'\n\
+      if not keyfile.exists():\n    keyfile.write_text(base64.b64encode(os.urandom(756)).decode('ascii'))\n\
+      if not password_file.exists():\n    password_file.write_text(os.environ.get('MONGOT_SYNC_PASSWORD',\
+      \ '<password>'))\nos.chmod(keyfile, 0o400)\nos.chmod(password_file,\
+      \ 0o400)\ntry:\n    os.chown(keyfile, 998, 998)\nexcept PermissionError:\n \
+      \   pass\nPY\n"
     environment:
-      MONGOT_SYNC_PASSWORD: "${MONGOT_SYNC_PASSWORD:-change-me-mongot-password}"
+      MONGOT_SYNC_PASSWORD: ${MONGOT_SYNC_PASSWORD:-<password>}
     volumes:
-      - ./runtime-secrets:/runtime-secrets
-
+    - ./runtime-secrets:/runtime-secrets
+    user: 0:0
   vexx:
     profiles:
-      - container-vexx
+    - container-vexx
     build:
       context: ../../orgs/open-hax/openplanner/packages/vexx
       dockerfile: Dockerfile
     cpus: 1
-    cpuset: "2-21"
+    cpuset: 2-21
     ports:
-      - "127.0.0.1:${VEXX_HOST_PORT:-8787}:8788"
+    - 127.0.0.1:${VEXX_HOST_PORT:-8787}:8788
     environment:
       VEXX_HOST: 0.0.0.0
-      VEXX_PORT: "8788"
-      VEXX_DEVICE: "${VEXX_DEVICE:-NPU}"
-      VEXX_AUTO_ORDER: "${VEXX_AUTO_ORDER:-NPU,GPU,CPU}"
-      VEXX_REQUIRE_ACCEL: "${VEXX_REQUIRE_ACCEL:-true}"
-      VEXX_PAIR_CACHE_MAX_ENTRIES: "${VEXX_PAIR_CACHE_MAX_ENTRIES:-250000}"
+      VEXX_PORT: '8788'
+      VEXX_DEVICE: ${VEXX_DEVICE:-NPU}
+      VEXX_AUTO_ORDER: ${VEXX_AUTO_ORDER:-NPU,GPU,CPU}
+      VEXX_REQUIRE_ACCEL: ${VEXX_REQUIRE_ACCEL:-true}
+      VEXX_PAIR_CACHE_MAX_ENTRIES: ${VEXX_PAIR_CACHE_MAX_ENTRIES:-250000}
     devices:
-      - /dev/accel:/dev/accel
-      - /dev/dri:/dev/dri
+    - /dev/accel:/dev/accel
+    - /dev/dri:/dev/dri
     volumes:
-      - /lib/x86_64-linux-gnu/libze_loader.so.1.24.2:/lib/x86_64-linux-gnu/libze_loader.so.1.8.0:ro
-      - /lib/x86_64-linux-gnu/libze_intel_npu.so:/lib/x86_64-linux-gnu/libze_intel_npu.so:ro
-      - /lib/x86_64-linux-gnu/libze_intel_npu.so.1:/lib/x86_64-linux-gnu/libze_intel_npu.so.1:ro
-      - /lib/x86_64-linux-gnu/libze_intel_npu.so.1.28.0:/lib/x86_64-linux-gnu/libze_intel_npu.so.1.28.0:ro
-      - /lib/x86_64-linux-gnu/libstdc++.so.6.0.33:/lib/x86_64-linux-gnu/libstdc++.so.6.0.30:ro
+    - /lib/x86_64-linux-gnu/libze_loader.so.1.24.2:/lib/x86_64-linux-gnu/libze_loader.so.1.8.0:ro
+    - /lib/x86_64-linux-gnu/libze_intel_npu.so:/lib/x86_64-linux-gnu/libze_intel_npu.so:ro
+    - /lib/x86_64-linux-gnu/libze_intel_npu.so.1:/lib/x86_64-linux-gnu/libze_intel_npu.so.1:ro
+    - /lib/x86_64-linux-gnu/libze_intel_npu.so.1.28.0:/lib/x86_64-linux-gnu/libze_intel_npu.so.1.28.0:ro
+    - /lib/x86_64-linux-gnu/libstdc++.so.6.0.33:/lib/x86_64-linux-gnu/libstdc++.so.6.0.30:ro
     healthcheck:
       test:
-        [
-          "CMD",
-          "curl",
-          "-fsS",
-          "http://127.0.0.1:8788/v1/health"
-        ]
+      - CMD
+      - curl
+      - -fsS
+      - http://127.0.0.1:8788/v1/health
       interval: 30s
       timeout: 10s
       retries: 5
@@ -81,24 +58,31 @@ services:
       default: {}
       ai-infra:
         aliases:
-          - vexx
-
+        - vexx
+    user: ${DOCKER_USER:-1000:1000}
   mongodb:
     image: mongodb/mongodb-community-server:8.2.0-ubi9
-    command: ["mongod", "--config", "/etc/mongod.conf"]
+    command:
+    - mongod
+    - --config
+    - /etc/mongod.conf
     cpus: 1
-    cpuset: "2-21"
+    cpuset: 2-21
     ports:
-      - "127.0.0.1:${OPENPLANNER_MONGODB_PORT:-27017}:27017"
+    - 127.0.0.1:${OPENPLANNER_MONGODB_PORT:-27017}:27017
     environment:
-      MONGODB_INITDB_ROOT_USERNAME: "${MONGODB_ROOT_USERNAME:-openplannerRoot}"
-      MONGODB_INITDB_ROOT_PASSWORD: "${MONGODB_ROOT_PASSWORD:-change-me-root-password}"
+      MONGODB_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USERNAME:-openplannerRoot}
+      MONGODB_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD:-<password>}
     volumes:
-      - openplanner-mongodb-data:/data/db
-      - ./config/mongod.conf:/etc/mongod.conf:ro
-      - ./runtime-secrets:/etc/mongodb-secrets:ro
+    - openplanner-mongodb-data:/data/db
+    - ./config/mongod.conf:/etc/mongod.conf:ro
+    - ./runtime-secrets:/etc/mongodb-secrets:ro
     healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      test:
+      - CMD
+      - mongosh
+      - --eval
+      - db.adminCommand('ping')
       interval: 30s
       timeout: 10s
       retries: 5
@@ -108,12 +92,11 @@ services:
       default: {}
       ai-infra:
         aliases:
-          - openplanner-mongodb
-
+        - openplanner-mongodb
   mongot:
     image: mongodb/mongodb-community-search:0.55.0
     cpus: 1
-    cpuset: "2-21"
+    cpuset: 2-21
     depends_on:
       secrets-init:
         condition: service_completed_successfully
@@ -121,19 +104,21 @@ services:
         condition: service_healthy
       mongo-init:
         condition: service_completed_successfully
-    entrypoint: ["/mongot-community/mongot", "--config", "/etc/mongot/mongot.yml"]
+    entrypoint:
+    - /mongot-community/mongot
+    - --config
+    - /etc/mongot/mongot.yml
     ports:
-      - "127.0.0.1:${OPENPLANNER_MONGOT_PORT:-27028}:27028"
+    - 127.0.0.1:${OPENPLANNER_MONGOT_PORT:-27028}:27028
     volumes:
-      - ./config/mongot.yml:/etc/mongot/mongot.yml:ro
-      - ./runtime-secrets:/etc/mongot/secrets:ro
+    - ./config/mongot.yml:/etc/mongot/mongot.yml:ro
+    - ./runtime-secrets:/etc/mongot/secrets:ro
     tmpfs:
-      - /var/lib/mongot:size=4g,uid=998,gid=998,mode=0755
+    - /var/lib/mongot:size=4g,uid=998,gid=998,mode=0755
     restart: unless-stopped
     networks:
       default: {}
       ai-infra: {}
-
   mongo-init:
     image: mongodb/mongodb-community-server:8.2.0-ubi9
     depends_on:
@@ -142,64 +127,43 @@ services:
       mongodb:
         condition: service_healthy
     entrypoint:
-      - /bin/sh
-      - -lc
-      - |
-        set -eu
-        until mongosh --host mongodb -u "${MONGODB_ROOT_USERNAME:-openplannerRoot}" -p "${MONGODB_ROOT_PASSWORD:-change-me-root-password}" --authenticationDatabase admin --quiet --eval 'db.adminCommand({ ping: 1 })' >/dev/null 2>&1; do
-          sleep 2
-        done
-        mongosh --host mongodb -u "${MONGODB_ROOT_USERNAME:-openplannerRoot}" -p "${MONGODB_ROOT_PASSWORD:-change-me-root-password}" --authenticationDatabase admin --quiet <<EOF
-        try {
-          rs.status();
-        } catch (e) {
-          rs.initiate({ _id: "rs0", members: [{ _id: 0, host: "mongodb:27017" }] });
-        }
-
-        for (let i = 0; i < 30; i += 1) {
-          const hello = db.adminCommand({ hello: 1 });
-          if (hello.isWritablePrimary === true) break;
-          sleep(1000);
-        }
-
-        const admin = db.getSiblingDB('admin');
-        const existing = admin.getUser('mongotUser');
-        if (!existing) {
-          admin.createUser({
-            user: 'mongotUser',
-            pwd: '${MONGOT_SYNC_PASSWORD:-change-me-mongot-password}',
-            roles: [{ role: 'searchCoordinator', db: 'admin' }]
-          });
-        }
-
-        const appDb = db.getSiblingDB('${MONGODB_DB:-openplanner}');
-        const appExisting = appDb.getUser('${OPENPLANNER_MONGO_APP_USERNAME:-openplanner}');
-        if (!appExisting) {
-          appDb.createUser({
-            user: '${OPENPLANNER_MONGO_APP_USERNAME:-openplanner}',
-            pwd: '${OPENPLANNER_MONGO_APP_PASSWORD:-change-me-openplanner-password}',
-            roles: [{ role: 'readWrite', db: '${MONGODB_DB:-openplanner}' }]
-          });
-        }
-        EOF
+    - /bin/sh
+    - -lc
+    - "set -eu\nuntil mongosh --host mongodb -u \"${MONGODB_ROOT_USERNAME:-openplannerRoot}\"\
+      \ -p \"${MONGODB_ROOT_PASSWORD:-<password>}\" --authenticationDatabase\
+      \ admin --quiet --eval 'db.adminCommand({ ping: 1 })' >/dev/null 2>&1; do\n\
+      \  sleep 2\ndone\nmongosh --host mongodb -u \"${MONGODB_ROOT_USERNAME:-openplannerRoot}\"\
+      \ -p \"${MONGODB_ROOT_PASSWORD:-<password>}\" --authenticationDatabase\
+      \ admin --quiet <<EOF\ntry {\n  rs.status();\n} catch (e) {\n  rs.initiate({\
+      \ _id: \"rs0\", members: [{ _id: 0, host: \"mongodb:27017\" }] });\n}\n\nfor\
+      \ (let i = 0; i < 30; i += 1) {\n  const hello = db.adminCommand({ hello: 1\
+      \ });\n  if (hello.isWritablePrimary === true) break;\n  sleep(1000);\n}\n\n\
+      const admin = db.getSiblingDB('admin');\nconst existing = admin.getUser('mongotUser');\n\
+      if (!existing) {\n  admin.createUser({\n    user: 'mongotUser',\n    pwd: '${MONGOT_SYNC_PASSWORD:-<password>}',\n\
+      \    roles: [{ role: 'searchCoordinator', db: 'admin' }]\n  });\n}\n\nconst\
+      \ appDb = db.getSiblingDB('${MONGODB_DB:-openplanner}');\nconst appExisting\
+      \ = appDb.getUser('${OPENPLANNER_MONGO_APP_USERNAME:-openplanner}');\nif (!appExisting)\
+      \ {\n  appDb.createUser({\n    user: '${OPENPLANNER_MONGO_APP_USERNAME:-openplanner}',\n\
+      \    pwd: '${OPENPLANNER_MONGO_APP_PASSWORD:-<password>}',\n\
+      \    roles: [{ role: 'readWrite', db: '${MONGODB_DB:-openplanner}' }]\n  });\n\
+      }\nEOF\n"
     environment:
-      MONGODB_ROOT_USERNAME: "${MONGODB_ROOT_USERNAME:-openplannerRoot}"
-      MONGODB_ROOT_PASSWORD: "${MONGODB_ROOT_PASSWORD:-change-me-root-password}"
-      MONGODB_DB: "${MONGODB_DB:-openplanner}"
-      OPENPLANNER_MONGO_APP_USERNAME: "${OPENPLANNER_MONGO_APP_USERNAME:-openplanner}"
-      OPENPLANNER_MONGO_APP_PASSWORD: "${OPENPLANNER_MONGO_APP_PASSWORD:-change-me-openplanner-password}"
-      MONGOT_SYNC_PASSWORD: "${MONGOT_SYNC_PASSWORD:-change-me-mongot-password}"
-    restart: "no"
+      MONGODB_ROOT_USERNAME: ${MONGODB_ROOT_USERNAME:-openplannerRoot}
+      MONGODB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD:-<password>}
+      MONGODB_DB: ${MONGODB_DB:-openplanner}
+      OPENPLANNER_MONGO_APP_USERNAME: ${OPENPLANNER_MONGO_APP_USERNAME:-openplanner}
+      OPENPLANNER_MONGO_APP_PASSWORD: ${OPENPLANNER_MONGO_APP_PASSWORD:-<password>}
+      MONGOT_SYNC_PASSWORD: ${MONGOT_SYNC_PASSWORD:-<password>}
+    restart: 'no'
     networks:
       default: {}
       ai-infra: {}
-
   openplanner:
     build:
       context: ../../orgs/open-hax/openplanner
       dockerfile: Dockerfile
     cpus: 2
-    cpuset: "2-21"
+    cpuset: 2-21
     depends_on:
       secrets-init:
         condition: service_completed_successfully
@@ -210,53 +174,52 @@ services:
       mongo-init:
         condition: service_completed_successfully
     ports:
-      - "127.0.0.1:${OPENPLANNER_PORT:-7777}:7777"
+    - 127.0.0.1:${OPENPLANNER_PORT:-7777}:7777
     environment:
       NODE_ENV: production
       OPENPLANNER_HOST: 0.0.0.0
-      OPENPLANNER_PORT: "7777"
-      OPENPLANNER_API_KEY: "${OPENPLANNER_API_KEY:-change-me}"
+      OPENPLANNER_PORT: '7777'
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
       OPENPLANNER_DATA_DIR: /app/openplanner-lake
       OPENPLANNER_STORAGE_BACKEND: mongodb
-      MONGODB_URI: "${MONGODB_URI:-mongodb://openplanner:change-me-openplanner-password@mongodb:27017/openplanner?replicaSet=rs0&authSource=openplanner}" # pragma: allowlist secret
-      MONGODB_DB: "${MONGODB_DB:-openplanner}"
-      MONGODB_EVENTS_COLLECTION: "${MONGODB_EVENTS_COLLECTION:-events}"
-      MONGODB_COMPACTED_COLLECTION: "${MONGODB_COMPACTED_COLLECTION:-compacted_memories}"
-      MONGODB_VECTOR_HOT_COLLECTION: "${MONGODB_VECTOR_HOT_COLLECTION:-event_chunks}"
-      MONGODB_VECTOR_COMPACT_COLLECTION: "${MONGODB_VECTOR_COMPACT_COLLECTION:-compacted_vectors}"
-      MONGODB_GRAPH_LAYOUT_COLLECTION: "${MONGODB_GRAPH_LAYOUT_COLLECTION:-graph_layout_overrides}"
-      MONGODB_GRAPH_NODE_EMBEDDING_COLLECTION: "${MONGODB_GRAPH_NODE_EMBEDDING_COLLECTION:-graph_node_embeddings}"
-      MONGODB_EVENTS_TTL_SECONDS: "${MONGODB_EVENTS_TTL_SECONDS:-0}"
-      MONGODB_COMPACTED_TTL_SECONDS: "${MONGODB_COMPACTED_TTL_SECONDS:-0}"
-      EMBED_PROVIDER_BASE_URL: "${EMBED_PROVIDER_BASE_URL:-http://host.docker.internal:8789}"
-      EMBED_PROVIDER_API_KEY: "${EMBED_PROVIDER_API_KEY:-${OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN:-}}"
-      EMBED_PROVIDER_MODEL: "${EMBED_PROVIDER_MODEL:-qwen3-embedding:0.6b}"
-      EMBED_PROVIDER_COMPACT_MODEL: "${EMBED_PROVIDER_COMPACT_MODEL:-qwen3-embedding:4b}"
-      EMBED_PROVIDER_MODEL_BY_SOURCE: "${EMBED_PROVIDER_MODEL_BY_SOURCE:-}"
-      EMBED_PROVIDER_MODEL_BY_KIND: "${EMBED_PROVIDER_MODEL_BY_KIND:-}"
-      EMBED_PROVIDER_MODEL_BY_PROJECT: "${EMBED_PROVIDER_MODEL_BY_PROJECT:-}"
-      EMBED_PROVIDER_BATCH_WINDOW_MS: "${EMBED_PROVIDER_BATCH_WINDOW_MS:-5}"
-      EMBED_PROVIDER_MAX_BATCH_ITEMS: "${EMBED_PROVIDER_MAX_BATCH_ITEMS:-32}"
-      EMBED_PROVIDER_CACHE_PATH: "${EMBED_PROVIDER_CACHE_PATH:-/app/openplanner-lake/cache/embed-provider-cache.jsonl}"
-      VEXX_BASE_URL: "${VEXX_BASE_URL:-http://host.docker.internal:8787}"
-      VEXX_API_KEY: "${VEXX_API_KEY:-}"
-      VEXX_DEVICE: "${VEXX_DEVICE:-NPU}"
-      VEXX_REQUIRE_ACCEL: "${VEXX_REQUIRE_ACCEL:-true}"
-      VEXX_ENFORCE: "${VEXX_ENFORCE:-true}"
-      VEXX_MIN_CANDIDATES: "${VEXX_MIN_CANDIDATES:-1}"
-      VEXX_TIMEOUT_MS: "${VEXX_TIMEOUT_MS:-30000}"
+      MONGODB_URI: ${MONGODB_URI:-mongodb://openplanner:<password>@mongodb:27017/openplanner?replicaSet=rs0&authSource=openplanner}
+      MONGODB_DB: ${MONGODB_DB:-openplanner}
+      MONGODB_EVENTS_COLLECTION: ${MONGODB_EVENTS_COLLECTION:-events}
+      MONGODB_COMPACTED_COLLECTION: ${MONGODB_COMPACTED_COLLECTION:-compacted_memories}
+      MONGODB_VECTOR_HOT_COLLECTION: ${MONGODB_VECTOR_HOT_COLLECTION:-event_chunks}
+      MONGODB_VECTOR_COMPACT_COLLECTION: ${MONGODB_VECTOR_COMPACT_COLLECTION:-compacted_vectors}
+      MONGODB_GRAPH_LAYOUT_COLLECTION: ${MONGODB_GRAPH_LAYOUT_COLLECTION:-graph_layout_overrides}
+      MONGODB_GRAPH_NODE_EMBEDDING_COLLECTION: ${MONGODB_GRAPH_NODE_EMBEDDING_COLLECTION:-graph_node_embeddings}
+      MONGODB_EVENTS_TTL_SECONDS: ${MONGODB_EVENTS_TTL_SECONDS:-0}
+      MONGODB_COMPACTED_TTL_SECONDS: ${MONGODB_COMPACTED_TTL_SECONDS:-0}
+      EMBED_PROVIDER_BASE_URL: ${EMBED_PROVIDER_BASE_URL:-http://host.docker.internal:8789}
+      EMBED_PROVIDER_API_KEY: ${EMBED_PROVIDER_API_KEY:-${OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN:-}}
+      EMBED_PROVIDER_MODEL: ${EMBED_PROVIDER_MODEL:-qwen3-embedding:0.6b}
+      EMBED_PROVIDER_COMPACT_MODEL: ${EMBED_PROVIDER_COMPACT_MODEL:-qwen3-embedding:4b}
+      EMBED_PROVIDER_MODEL_BY_SOURCE: ${EMBED_PROVIDER_MODEL_BY_SOURCE:-}
+      EMBED_PROVIDER_MODEL_BY_KIND: ${EMBED_PROVIDER_MODEL_BY_KIND:-}
+      EMBED_PROVIDER_MODEL_BY_PROJECT: ${EMBED_PROVIDER_MODEL_BY_PROJECT:-}
+      EMBED_PROVIDER_BATCH_WINDOW_MS: ${EMBED_PROVIDER_BATCH_WINDOW_MS:-5}
+      EMBED_PROVIDER_MAX_BATCH_ITEMS: ${EMBED_PROVIDER_MAX_BATCH_ITEMS:-32}
+      EMBED_PROVIDER_CACHE_PATH: ${EMBED_PROVIDER_CACHE_PATH:-/app/openplanner-lake/cache/embed-provider-cache.jsonl}
+      VEXX_BASE_URL: ${VEXX_BASE_URL:-http://host.docker.internal:8787}
+      VEXX_API_KEY: ${VEXX_API_KEY:-}
+      VEXX_DEVICE: ${VEXX_DEVICE:-NPU}
+      VEXX_REQUIRE_ACCEL: ${VEXX_REQUIRE_ACCEL:-true}
+      VEXX_ENFORCE: ${VEXX_ENFORCE:-true}
+      VEXX_MIN_CANDIDATES: ${VEXX_MIN_CANDIDATES:-1}
+      VEXX_TIMEOUT_MS: ${VEXX_TIMEOUT_MS:-30000}
     volumes:
-      - ./openplanner-lake:/app/openplanner-lake
+    - ./openplanner-lake:/app/openplanner-lake
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+    - host.docker.internal:host-gateway
     healthcheck:
       test:
-        [
-          "CMD",
-          "node",
-          "-e",
-          "fetch('http://127.0.0.1:7777/v1/health').then((response) => { if (!response.ok) { process.exit(1); } }).catch(() => process.exit(1))"
-        ]
+      - CMD
+      - node
+      - -e
+      - fetch('http://127.0.0.1:7777/v1/health').then((response) => { if (!response.ok)
+        { process.exit(1); } }).catch(() => process.exit(1))
       interval: 30s
       timeout: 10s
       retries: 3
@@ -266,25 +229,24 @@ services:
       default: {}
       ai-infra:
         aliases:
-          - openplanner
-
+        - openplanner
   graph-weaver:
     profiles:
-      - graph
-      - graph-2
-      - graph-3
+    - graph
+    - graph-2
+    - graph-3
     image: node:22-bookworm
     cpus: 2
-    cpuset: "2-21"
+    cpuset: 2-21
     working_dir: /app/workspace/devel/orgs/open-hax/openplanner/packages/graph-weaver
     command: bash -lc "corepack enable && pnpm install && npx tsx src/server.ts"
     expose:
-      - "8796"
+    - '8796'
     ports:
-      - "127.0.0.1:${GRAPH_WEAVER_PORT:-8796}:8796"
+    - 127.0.0.1:${GRAPH_WEAVER_PORT:-8796}:8796
     environment:
-      HOST: "0.0.0.0"
-      PORT: "8796"
+      HOST: 0.0.0.0
+      PORT: '8796'
       REPO_ROOT: /app/workspace/devel
       GRAPH_WEAVER_LOCAL_SOURCE: ${GRAPH_WEAVER_LOCAL_SOURCE:-openplanner-graph}
       GRAPH_WEAVER_PERSISTENCE_MODE: ${GRAPH_WEAVER_PERSISTENCE_MODE:-openplanner}
@@ -294,7 +256,7 @@ services:
       GRAPH_WEAVER_OPENPLANNER_PROJECTS: ${GRAPH_WEAVER_OPENPLANNER_PROJECTS:-devel,web,bluesky,knoxx-session}
       WEBGL_GRAPH_VIEW_DIST: /app/workspace/devel/packages/webgl-graph-view/dist
       STATE_DIR: /app/workspace/devel/services/openplanner/openplanner-lake/graph-weaver
-      MONGODB_URI: ${MONGODB_URI:-mongodb://openplanner:change-me-openplanner-password@mongodb:27017/openplanner?replicaSet=rs0&authSource=openplanner}authSource=openplanner}  # pragma: allowlist secret
+      MONGODB_URI: ${MONGODB_URI:-mongodb://openplanner:<password>@mongodb:27017/openplanner?replicaSet=rs0&authSource=openplanner}authSource=openplanner}
       MONGODB_DB: ${MONGODB_DB:-openplanner}
       MONGODB_NODE_COLLECTION: ${GRAPH_WEAVER_NODE_COLLECTION:-graph_weaver_nodes}
       MONGODB_EDGE_COLLECTION: ${GRAPH_WEAVER_EDGE_COLLECTION:-graph_weaver_edges}
@@ -306,16 +268,20 @@ services:
       SCAN_MAX_FILE_BYTES: ${GRAPH_WEAVER_SCAN_MAX_FILE_BYTES:-512000}
       SCAN_RESCAN_INTERVAL_MS: ${GRAPH_WEAVER_SCAN_RESCAN_INTERVAL_MS:-30000}
     volumes:
-      - ${DEVEL_ROOT_PATH:-../..}:/app/workspace/devel
+    - ${DEVEL_ROOT_PATH:-../..}:/app/workspace/devel
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+    - host.docker.internal:host-gateway
     depends_on:
       openplanner:
         condition: service_started
       mongo-init:
         condition: service_completed_successfully
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8796/api/status').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      test:
+      - CMD
+      - node
+      - -e
+      - fetch('http://127.0.0.1:8796/api/status').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))
       interval: 30s
       timeout: 10s
       retries: 5
@@ -324,20 +290,20 @@ services:
     networks:
       default: {}
       ai-infra: {}
-
-  eros-eris-field-app: &eros_eris_field_app_base
+    user: ${DOCKER_USER:-1000:1000}
+  eros-eris-field-app:
     profiles:
-      - graph
+    - graph
     image: node:22-bookworm
     cpus: 1.5
-    cpuset: "2-21"
+    cpuset: 2-21
     working_dir: /app/workspace/devel
-    command: >-
-      bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/eros-eris-field-app dev"
-    environment: &eros_eris_field_app_env
-      CI: "true"
-      NPM_CONFIG_CONFIRM_MODULES_PURGE: "false"
-      NODE_OPTIONS: "--use-openssl-ca"
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/eros-eris-field-app
+      dev"
+    environment:
+      CI: 'true'
+      NPM_CONFIG_CONFIRM_MODULES_PURGE: 'false'
+      NODE_OPTIONS: --use-openssl-ca
       EROS_ERIS_WORKER_ROLE: ${EROS_ERIS_WORKER_ROLE:-hybrid}
       GRAPHQL_URL: http://graph-weaver:8796/graphql
       OPENPLANNER_BASE_URL: http://openplanner:7777
@@ -392,106 +358,480 @@ services:
       BOUNDARY_THICKNESS: ${EROS_ERIS_BOUNDARY_THICKNESS:-650}
       BOUNDARY_PRESSURE: ${EROS_ERIS_BOUNDARY_PRESSURE:-60}
       BOUNDARY_EDGE_FRACTION: ${EROS_ERIS_BOUNDARY_EDGE_FRACTION:-0.04}
-    volumes:
-      - ${DEVEL_ROOT_PATH:-../..}:/app/workspace/devel
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    depends_on:
+    volumes: &id001
+    - ${DEVEL_ROOT_PATH:-../..}:/app/workspace/devel
+    extra_hosts: &id002
+    - host.docker.internal:host-gateway
+    depends_on: &id003
       graph-weaver:
         condition: service_healthy
     restart: unless-stopped
-    networks:
+    networks: &id004
       default: {}
       ai-infra: {}
-
+    user: ${DOCKER_USER:-1000:1000}
   eros-eris-field-app-shard0of2:
-    # Declarative 2-worker topology.
-    # Start with: docker compose --profile graph-2 up -d graph-weaver eros-eris-field-app-shard0of2 eros-eris-field-app-shard1of2
-    <<: *eros_eris_field_app_base
     profiles:
-      - graph-2
+    - graph-2
+    image: node:22-bookworm
+    cpus: 1.5
+    cpuset: 2-21
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/eros-eris-field-app
+      dev"
     environment:
-      <<: *eros_eris_field_app_env
-      EROS_ERIS_WORKER_ROLE: "structural"
-      SIM_SHARD_INDEX: "0"
-      SIM_SHARD_COUNT: "2"
-
+      CI: 'true'
+      NPM_CONFIG_CONFIRM_MODULES_PURGE: 'false'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      EMBED_PROVIDER_MODEL: ${EROS_ERIS_EMBED_PROVIDER_MODEL:-qwen3-embedding:0.6b}
+      VEXX_BASE_URL: ${VEXX_BASE_URL:-http://host.docker.internal:8787}
+      VEXX_API_KEY: ${VEXX_API_KEY:-}
+      VEXX_DEVICE: ${VEXX_DEVICE:-NPU}
+      VEXX_REQUIRE_ACCEL: ${VEXX_REQUIRE_ACCEL:-true}
+      VEXX_ENFORCE: ${VEXX_ENFORCE:-false}
+      VEXX_MIN_CANDIDATES: ${VEXX_MIN_CANDIDATES:-32}
+      VEXX_TIMEOUT_MS: ${VEXX_TIMEOUT_MS:-60000}
+      VEXX_OPTIMAL_BATCH_SIZE: ${VEXX_OPTIMAL_BATCH_SIZE:-128}
+      VEXX_MAX_CANDIDATES_PER_CALL: ${VEXX_MAX_CANDIDATES_PER_CALL:-256}
+      USE_CANONICAL_GRAPH: ${EROS_ERIS_USE_CANONICAL_GRAPH:-true}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-6000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-12000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-3}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.22}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-10000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-15000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-1000}
+      SIM_WRITE_PAUSE_MS: ${EROS_ERIS_SIM_WRITE_PAUSE_MS:-25}
+      EMBED_EVERY_MS: ${EROS_ERIS_EMBED_EVERY_MS:-2000}
+      EMBED_BATCH_SIZE: ${EROS_ERIS_EMBED_BATCH_SIZE:-128}
+      EMBED_MAX_IN_FLIGHT: ${EROS_ERIS_EMBED_MAX_IN_FLIGHT:-2}
+      EMBED_CONTENT_MODE: ${EROS_ERIS_EMBED_CONTENT_MODE:-full}
+      EMBED_PREVIEW_MAX_BYTES: ${EROS_ERIS_EMBED_PREVIEW_MAX_BYTES:-40000}
+      EMBED_MAX_CHARS: ${EROS_ERIS_EMBED_MAX_CHARS:-6000}
+      SEMANTIC_TOP_K: ${EROS_ERIS_SEMANTIC_TOP_K:-32}
+      SEMANTIC_BOTTOM_K: ${EROS_ERIS_SEMANTIC_BOTTOM_K:-4}
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-18}
+      LOCAL_REPULSION_RADIUS: ${EROS_ERIS_LOCAL_REPULSION_RADIUS:-90}
+      LOCAL_REPULSION: ${EROS_ERIS_LOCAL_REPULSION:-3600}
+      LOCAL_REPULSION_POWER: ${EROS_ERIS_LOCAL_REPULSION_POWER:-4}
+      MIN_SEPARATION: ${EROS_ERIS_MIN_SEPARATION:-18}
+      SEPARATION: ${EROS_ERIS_SEPARATION:-2600}
+      EDGE_PULL_SCALE: ${EROS_ERIS_EDGE_PULL_SCALE:-3.2}
+      EDGE_REST_SCALE: ${EROS_ERIS_EDGE_REST_SCALE:-0.84}
+      SEMANTIC_ATTRACT_ABOVE: ${EROS_ERIS_SEMANTIC_ATTRACT_ABOVE:-0.72}
+      SEMANTIC_REPEL_BELOW: ${EROS_ERIS_SEMANTIC_REPEL_BELOW:-0.08}
+      SEMANTIC_ATTRACT: ${EROS_ERIS_SEMANTIC_ATTRACT:-0.11}
+      SEMANTIC_REPEL: ${EROS_ERIS_SEMANTIC_REPEL:-1200}
+      SEMANTIC_REPEL_RADIUS: ${EROS_ERIS_SEMANTIC_REPEL_RADIUS:-150}
+      SEMANTIC_REST: ${EROS_ERIS_SEMANTIC_REST:-56}
+      GRAPH_VIEW_COMPONENT_COUNT: ${EROS_ERIS_GRAPH_VIEW_COMPONENT_COUNT:-6}
+      SIM_SHARD_INDEX: '0'
+      SIM_SHARD_COUNT: '2'
+      GRAPH_VIEW_ROTATION_EVERY: ${EROS_ERIS_GRAPH_VIEW_ROTATION_EVERY:-2}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+      BOUNDARY_THICKNESS: ${EROS_ERIS_BOUNDARY_THICKNESS:-650}
+      BOUNDARY_PRESSURE: ${EROS_ERIS_BOUNDARY_PRESSURE:-60}
+      BOUNDARY_EDGE_FRACTION: ${EROS_ERIS_BOUNDARY_EDGE_FRACTION:-0.04}
+    volumes: *id001
+    extra_hosts: *id002
+    depends_on: *id003
+    restart: unless-stopped
+    networks: *id004
+    user: ${DOCKER_USER:-1000:1000}
   eros-eris-field-app-shard1of2:
-    <<: *eros_eris_field_app_base
     profiles:
-      - graph-2
+    - graph-2
+    image: node:22-bookworm
+    cpus: 1.5
+    cpuset: 2-21
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/eros-eris-field-app
+      dev"
     environment:
-      <<: *eros_eris_field_app_env
-      EROS_ERIS_WORKER_ROLE: "structural"
-      SIM_SHARD_INDEX: "1"
-      SIM_SHARD_COUNT: "2"
-
+      CI: 'true'
+      NPM_CONFIG_CONFIRM_MODULES_PURGE: 'false'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      EMBED_PROVIDER_MODEL: ${EROS_ERIS_EMBED_PROVIDER_MODEL:-qwen3-embedding:0.6b}
+      VEXX_BASE_URL: ${VEXX_BASE_URL:-http://host.docker.internal:8787}
+      VEXX_API_KEY: ${VEXX_API_KEY:-}
+      VEXX_DEVICE: ${VEXX_DEVICE:-NPU}
+      VEXX_REQUIRE_ACCEL: ${VEXX_REQUIRE_ACCEL:-true}
+      VEXX_ENFORCE: ${VEXX_ENFORCE:-false}
+      VEXX_MIN_CANDIDATES: ${VEXX_MIN_CANDIDATES:-32}
+      VEXX_TIMEOUT_MS: ${VEXX_TIMEOUT_MS:-60000}
+      VEXX_OPTIMAL_BATCH_SIZE: ${VEXX_OPTIMAL_BATCH_SIZE:-128}
+      VEXX_MAX_CANDIDATES_PER_CALL: ${VEXX_MAX_CANDIDATES_PER_CALL:-256}
+      USE_CANONICAL_GRAPH: ${EROS_ERIS_USE_CANONICAL_GRAPH:-true}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-6000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-12000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-3}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.22}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-10000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-15000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-1000}
+      SIM_WRITE_PAUSE_MS: ${EROS_ERIS_SIM_WRITE_PAUSE_MS:-25}
+      EMBED_EVERY_MS: ${EROS_ERIS_EMBED_EVERY_MS:-2000}
+      EMBED_BATCH_SIZE: ${EROS_ERIS_EMBED_BATCH_SIZE:-128}
+      EMBED_MAX_IN_FLIGHT: ${EROS_ERIS_EMBED_MAX_IN_FLIGHT:-2}
+      EMBED_CONTENT_MODE: ${EROS_ERIS_EMBED_CONTENT_MODE:-full}
+      EMBED_PREVIEW_MAX_BYTES: ${EROS_ERIS_EMBED_PREVIEW_MAX_BYTES:-40000}
+      EMBED_MAX_CHARS: ${EROS_ERIS_EMBED_MAX_CHARS:-6000}
+      SEMANTIC_TOP_K: ${EROS_ERIS_SEMANTIC_TOP_K:-32}
+      SEMANTIC_BOTTOM_K: ${EROS_ERIS_SEMANTIC_BOTTOM_K:-4}
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-18}
+      LOCAL_REPULSION_RADIUS: ${EROS_ERIS_LOCAL_REPULSION_RADIUS:-90}
+      LOCAL_REPULSION: ${EROS_ERIS_LOCAL_REPULSION:-3600}
+      LOCAL_REPULSION_POWER: ${EROS_ERIS_LOCAL_REPULSION_POWER:-4}
+      MIN_SEPARATION: ${EROS_ERIS_MIN_SEPARATION:-18}
+      SEPARATION: ${EROS_ERIS_SEPARATION:-2600}
+      EDGE_PULL_SCALE: ${EROS_ERIS_EDGE_PULL_SCALE:-3.2}
+      EDGE_REST_SCALE: ${EROS_ERIS_EDGE_REST_SCALE:-0.84}
+      SEMANTIC_ATTRACT_ABOVE: ${EROS_ERIS_SEMANTIC_ATTRACT_ABOVE:-0.72}
+      SEMANTIC_REPEL_BELOW: ${EROS_ERIS_SEMANTIC_REPEL_BELOW:-0.08}
+      SEMANTIC_ATTRACT: ${EROS_ERIS_SEMANTIC_ATTRACT:-0.11}
+      SEMANTIC_REPEL: ${EROS_ERIS_SEMANTIC_REPEL:-1200}
+      SEMANTIC_REPEL_RADIUS: ${EROS_ERIS_SEMANTIC_REPEL_RADIUS:-150}
+      SEMANTIC_REST: ${EROS_ERIS_SEMANTIC_REST:-56}
+      GRAPH_VIEW_COMPONENT_COUNT: ${EROS_ERIS_GRAPH_VIEW_COMPONENT_COUNT:-6}
+      SIM_SHARD_INDEX: '1'
+      SIM_SHARD_COUNT: '2'
+      GRAPH_VIEW_ROTATION_EVERY: ${EROS_ERIS_GRAPH_VIEW_ROTATION_EVERY:-2}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+      BOUNDARY_THICKNESS: ${EROS_ERIS_BOUNDARY_THICKNESS:-650}
+      BOUNDARY_PRESSURE: ${EROS_ERIS_BOUNDARY_PRESSURE:-60}
+      BOUNDARY_EDGE_FRACTION: ${EROS_ERIS_BOUNDARY_EDGE_FRACTION:-0.04}
+    volumes: *id001
+    extra_hosts: *id002
+    depends_on: *id003
+    restart: unless-stopped
+    networks: *id004
+    user: ${DOCKER_USER:-1000:1000}
   eros-eris-field-app-semantic:
-    <<: *eros_eris_field_app_base
     profiles:
-      - graph-2
-      - graph-3
+    - graph-2
+    - graph-3
+    image: node:22-bookworm
+    cpus: 1.5
+    cpuset: 2-21
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/eros-eris-field-app
+      dev"
     environment:
-      <<: *eros_eris_field_app_env
-      EROS_ERIS_WORKER_ROLE: "semantic"
-      HYDRATE_VISIBLE_EMBEDDINGS: "true"
-      EROS_ERIS_USE_CANONICAL_GRAPH: "false"
-      EROS_ERIS_SIM_MAX_NODES: "2500"
-      EROS_ERIS_SIM_MAX_EDGES: "5000"
-      EROS_ERIS_SIM_REFRESH_MS: "5000"
-      EROS_ERIS_GRAPH_VIEW_COMPONENT_COUNT: "10"
-      EROS_ERIS_EMBED_BATCH_SIZE: "128"
-      EROS_ERIS_EMBED_MAX_IN_FLIGHT: "4"
-      SIM_SHARD_INDEX: "0"
-      SIM_SHARD_COUNT: "1"
-
+      CI: 'true'
+      NPM_CONFIG_CONFIRM_MODULES_PURGE: 'false'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: semantic
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      EMBED_PROVIDER_MODEL: ${EROS_ERIS_EMBED_PROVIDER_MODEL:-qwen3-embedding:0.6b}
+      VEXX_BASE_URL: ${VEXX_BASE_URL:-http://host.docker.internal:8787}
+      VEXX_API_KEY: ${VEXX_API_KEY:-}
+      VEXX_DEVICE: ${VEXX_DEVICE:-NPU}
+      VEXX_REQUIRE_ACCEL: ${VEXX_REQUIRE_ACCEL:-true}
+      VEXX_ENFORCE: ${VEXX_ENFORCE:-false}
+      VEXX_MIN_CANDIDATES: ${VEXX_MIN_CANDIDATES:-32}
+      VEXX_TIMEOUT_MS: ${VEXX_TIMEOUT_MS:-60000}
+      VEXX_OPTIMAL_BATCH_SIZE: ${VEXX_OPTIMAL_BATCH_SIZE:-128}
+      VEXX_MAX_CANDIDATES_PER_CALL: ${VEXX_MAX_CANDIDATES_PER_CALL:-256}
+      USE_CANONICAL_GRAPH: ${EROS_ERIS_USE_CANONICAL_GRAPH:-true}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-6000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-12000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-3}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.22}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-10000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-15000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-1000}
+      SIM_WRITE_PAUSE_MS: ${EROS_ERIS_SIM_WRITE_PAUSE_MS:-25}
+      EMBED_EVERY_MS: ${EROS_ERIS_EMBED_EVERY_MS:-2000}
+      EMBED_BATCH_SIZE: ${EROS_ERIS_EMBED_BATCH_SIZE:-128}
+      EMBED_MAX_IN_FLIGHT: ${EROS_ERIS_EMBED_MAX_IN_FLIGHT:-2}
+      EMBED_CONTENT_MODE: ${EROS_ERIS_EMBED_CONTENT_MODE:-full}
+      EMBED_PREVIEW_MAX_BYTES: ${EROS_ERIS_EMBED_PREVIEW_MAX_BYTES:-40000}
+      EMBED_MAX_CHARS: ${EROS_ERIS_EMBED_MAX_CHARS:-6000}
+      SEMANTIC_TOP_K: ${EROS_ERIS_SEMANTIC_TOP_K:-32}
+      SEMANTIC_BOTTOM_K: ${EROS_ERIS_SEMANTIC_BOTTOM_K:-4}
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-18}
+      LOCAL_REPULSION_RADIUS: ${EROS_ERIS_LOCAL_REPULSION_RADIUS:-90}
+      LOCAL_REPULSION: ${EROS_ERIS_LOCAL_REPULSION:-3600}
+      LOCAL_REPULSION_POWER: ${EROS_ERIS_LOCAL_REPULSION_POWER:-4}
+      MIN_SEPARATION: ${EROS_ERIS_MIN_SEPARATION:-18}
+      SEPARATION: ${EROS_ERIS_SEPARATION:-2600}
+      EDGE_PULL_SCALE: ${EROS_ERIS_EDGE_PULL_SCALE:-3.2}
+      EDGE_REST_SCALE: ${EROS_ERIS_EDGE_REST_SCALE:-0.84}
+      SEMANTIC_ATTRACT_ABOVE: ${EROS_ERIS_SEMANTIC_ATTRACT_ABOVE:-0.72}
+      SEMANTIC_REPEL_BELOW: ${EROS_ERIS_SEMANTIC_REPEL_BELOW:-0.08}
+      SEMANTIC_ATTRACT: ${EROS_ERIS_SEMANTIC_ATTRACT:-0.11}
+      SEMANTIC_REPEL: ${EROS_ERIS_SEMANTIC_REPEL:-1200}
+      SEMANTIC_REPEL_RADIUS: ${EROS_ERIS_SEMANTIC_REPEL_RADIUS:-150}
+      SEMANTIC_REST: ${EROS_ERIS_SEMANTIC_REST:-56}
+      GRAPH_VIEW_COMPONENT_COUNT: ${EROS_ERIS_GRAPH_VIEW_COMPONENT_COUNT:-6}
+      SIM_SHARD_INDEX: '0'
+      SIM_SHARD_COUNT: '1'
+      GRAPH_VIEW_ROTATION_EVERY: ${EROS_ERIS_GRAPH_VIEW_ROTATION_EVERY:-2}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+      BOUNDARY_THICKNESS: ${EROS_ERIS_BOUNDARY_THICKNESS:-650}
+      BOUNDARY_PRESSURE: ${EROS_ERIS_BOUNDARY_PRESSURE:-60}
+      BOUNDARY_EDGE_FRACTION: ${EROS_ERIS_BOUNDARY_EDGE_FRACTION:-0.04}
+      HYDRATE_VISIBLE_EMBEDDINGS: 'true'
+      EROS_ERIS_USE_CANONICAL_GRAPH: 'false'
+      EROS_ERIS_SIM_MAX_NODES: '2500'
+      EROS_ERIS_SIM_MAX_EDGES: '5000'
+      EROS_ERIS_SIM_REFRESH_MS: '5000'
+      EROS_ERIS_GRAPH_VIEW_COMPONENT_COUNT: '10'
+      EROS_ERIS_EMBED_BATCH_SIZE: '128'
+      EROS_ERIS_EMBED_MAX_IN_FLIGHT: '4'
+    volumes: *id001
+    extra_hosts: *id002
+    depends_on: *id003
+    restart: unless-stopped
+    networks: *id004
+    user: ${DOCKER_USER:-1000:1000}
   eros-eris-field-app-shard0of3:
-    # Declarative 3-worker topology.
-    # Start with: docker compose --profile graph-3 up -d graph-weaver eros-eris-field-app-shard0of3 eros-eris-field-app-shard1of3 eros-eris-field-app-shard2of3
-    <<: *eros_eris_field_app_base
     profiles:
-      - graph-3
+    - graph-3
+    image: node:22-bookworm
+    cpus: 1.5
+    cpuset: 2-21
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/eros-eris-field-app
+      dev"
     environment:
-      <<: *eros_eris_field_app_env
-      EROS_ERIS_WORKER_ROLE: "structural"
-      SIM_SHARD_INDEX: "0"
-      SIM_SHARD_COUNT: "3"
-
+      CI: 'true'
+      NPM_CONFIG_CONFIRM_MODULES_PURGE: 'false'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      EMBED_PROVIDER_MODEL: ${EROS_ERIS_EMBED_PROVIDER_MODEL:-qwen3-embedding:0.6b}
+      VEXX_BASE_URL: ${VEXX_BASE_URL:-http://host.docker.internal:8787}
+      VEXX_API_KEY: ${VEXX_API_KEY:-}
+      VEXX_DEVICE: ${VEXX_DEVICE:-NPU}
+      VEXX_REQUIRE_ACCEL: ${VEXX_REQUIRE_ACCEL:-true}
+      VEXX_ENFORCE: ${VEXX_ENFORCE:-false}
+      VEXX_MIN_CANDIDATES: ${VEXX_MIN_CANDIDATES:-32}
+      VEXX_TIMEOUT_MS: ${VEXX_TIMEOUT_MS:-60000}
+      VEXX_OPTIMAL_BATCH_SIZE: ${VEXX_OPTIMAL_BATCH_SIZE:-128}
+      VEXX_MAX_CANDIDATES_PER_CALL: ${VEXX_MAX_CANDIDATES_PER_CALL:-256}
+      USE_CANONICAL_GRAPH: ${EROS_ERIS_USE_CANONICAL_GRAPH:-true}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-6000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-12000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-3}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.22}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-10000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-15000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-1000}
+      SIM_WRITE_PAUSE_MS: ${EROS_ERIS_SIM_WRITE_PAUSE_MS:-25}
+      EMBED_EVERY_MS: ${EROS_ERIS_EMBED_EVERY_MS:-2000}
+      EMBED_BATCH_SIZE: ${EROS_ERIS_EMBED_BATCH_SIZE:-128}
+      EMBED_MAX_IN_FLIGHT: ${EROS_ERIS_EMBED_MAX_IN_FLIGHT:-2}
+      EMBED_CONTENT_MODE: ${EROS_ERIS_EMBED_CONTENT_MODE:-full}
+      EMBED_PREVIEW_MAX_BYTES: ${EROS_ERIS_EMBED_PREVIEW_MAX_BYTES:-40000}
+      EMBED_MAX_CHARS: ${EROS_ERIS_EMBED_MAX_CHARS:-6000}
+      SEMANTIC_TOP_K: ${EROS_ERIS_SEMANTIC_TOP_K:-32}
+      SEMANTIC_BOTTOM_K: ${EROS_ERIS_SEMANTIC_BOTTOM_K:-4}
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-18}
+      LOCAL_REPULSION_RADIUS: ${EROS_ERIS_LOCAL_REPULSION_RADIUS:-90}
+      LOCAL_REPULSION: ${EROS_ERIS_LOCAL_REPULSION:-3600}
+      LOCAL_REPULSION_POWER: ${EROS_ERIS_LOCAL_REPULSION_POWER:-4}
+      MIN_SEPARATION: ${EROS_ERIS_MIN_SEPARATION:-18}
+      SEPARATION: ${EROS_ERIS_SEPARATION:-2600}
+      EDGE_PULL_SCALE: ${EROS_ERIS_EDGE_PULL_SCALE:-3.2}
+      EDGE_REST_SCALE: ${EROS_ERIS_EDGE_REST_SCALE:-0.84}
+      SEMANTIC_ATTRACT_ABOVE: ${EROS_ERIS_SEMANTIC_ATTRACT_ABOVE:-0.72}
+      SEMANTIC_REPEL_BELOW: ${EROS_ERIS_SEMANTIC_REPEL_BELOW:-0.08}
+      SEMANTIC_ATTRACT: ${EROS_ERIS_SEMANTIC_ATTRACT:-0.11}
+      SEMANTIC_REPEL: ${EROS_ERIS_SEMANTIC_REPEL:-1200}
+      SEMANTIC_REPEL_RADIUS: ${EROS_ERIS_SEMANTIC_REPEL_RADIUS:-150}
+      SEMANTIC_REST: ${EROS_ERIS_SEMANTIC_REST:-56}
+      GRAPH_VIEW_COMPONENT_COUNT: ${EROS_ERIS_GRAPH_VIEW_COMPONENT_COUNT:-6}
+      SIM_SHARD_INDEX: '0'
+      SIM_SHARD_COUNT: '3'
+      GRAPH_VIEW_ROTATION_EVERY: ${EROS_ERIS_GRAPH_VIEW_ROTATION_EVERY:-2}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+      BOUNDARY_THICKNESS: ${EROS_ERIS_BOUNDARY_THICKNESS:-650}
+      BOUNDARY_PRESSURE: ${EROS_ERIS_BOUNDARY_PRESSURE:-60}
+      BOUNDARY_EDGE_FRACTION: ${EROS_ERIS_BOUNDARY_EDGE_FRACTION:-0.04}
+    volumes: *id001
+    extra_hosts: *id002
+    depends_on: *id003
+    restart: unless-stopped
+    networks: *id004
+    user: ${DOCKER_USER:-1000:1000}
   eros-eris-field-app-shard1of3:
-    <<: *eros_eris_field_app_base
     profiles:
-      - graph-3
+    - graph-3
+    image: node:22-bookworm
+    cpus: 1.5
+    cpuset: 2-21
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/eros-eris-field-app
+      dev"
     environment:
-      <<: *eros_eris_field_app_env
-      EROS_ERIS_WORKER_ROLE: "structural"
-      SIM_SHARD_INDEX: "1"
-      SIM_SHARD_COUNT: "3"
-
+      CI: 'true'
+      NPM_CONFIG_CONFIRM_MODULES_PURGE: 'false'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      EMBED_PROVIDER_MODEL: ${EROS_ERIS_EMBED_PROVIDER_MODEL:-qwen3-embedding:0.6b}
+      VEXX_BASE_URL: ${VEXX_BASE_URL:-http://host.docker.internal:8787}
+      VEXX_API_KEY: ${VEXX_API_KEY:-}
+      VEXX_DEVICE: ${VEXX_DEVICE:-NPU}
+      VEXX_REQUIRE_ACCEL: ${VEXX_REQUIRE_ACCEL:-true}
+      VEXX_ENFORCE: ${VEXX_ENFORCE:-false}
+      VEXX_MIN_CANDIDATES: ${VEXX_MIN_CANDIDATES:-32}
+      VEXX_TIMEOUT_MS: ${VEXX_TIMEOUT_MS:-60000}
+      VEXX_OPTIMAL_BATCH_SIZE: ${VEXX_OPTIMAL_BATCH_SIZE:-128}
+      VEXX_MAX_CANDIDATES_PER_CALL: ${VEXX_MAX_CANDIDATES_PER_CALL:-256}
+      USE_CANONICAL_GRAPH: ${EROS_ERIS_USE_CANONICAL_GRAPH:-true}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-6000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-12000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-3}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.22}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-10000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-15000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-1000}
+      SIM_WRITE_PAUSE_MS: ${EROS_ERIS_SIM_WRITE_PAUSE_MS:-25}
+      EMBED_EVERY_MS: ${EROS_ERIS_EMBED_EVERY_MS:-2000}
+      EMBED_BATCH_SIZE: ${EROS_ERIS_EMBED_BATCH_SIZE:-128}
+      EMBED_MAX_IN_FLIGHT: ${EROS_ERIS_EMBED_MAX_IN_FLIGHT:-2}
+      EMBED_CONTENT_MODE: ${EROS_ERIS_EMBED_CONTENT_MODE:-full}
+      EMBED_PREVIEW_MAX_BYTES: ${EROS_ERIS_EMBED_PREVIEW_MAX_BYTES:-40000}
+      EMBED_MAX_CHARS: ${EROS_ERIS_EMBED_MAX_CHARS:-6000}
+      SEMANTIC_TOP_K: ${EROS_ERIS_SEMANTIC_TOP_K:-32}
+      SEMANTIC_BOTTOM_K: ${EROS_ERIS_SEMANTIC_BOTTOM_K:-4}
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-18}
+      LOCAL_REPULSION_RADIUS: ${EROS_ERIS_LOCAL_REPULSION_RADIUS:-90}
+      LOCAL_REPULSION: ${EROS_ERIS_LOCAL_REPULSION:-3600}
+      LOCAL_REPULSION_POWER: ${EROS_ERIS_LOCAL_REPULSION_POWER:-4}
+      MIN_SEPARATION: ${EROS_ERIS_MIN_SEPARATION:-18}
+      SEPARATION: ${EROS_ERIS_SEPARATION:-2600}
+      EDGE_PULL_SCALE: ${EROS_ERIS_EDGE_PULL_SCALE:-3.2}
+      EDGE_REST_SCALE: ${EROS_ERIS_EDGE_REST_SCALE:-0.84}
+      SEMANTIC_ATTRACT_ABOVE: ${EROS_ERIS_SEMANTIC_ATTRACT_ABOVE:-0.72}
+      SEMANTIC_REPEL_BELOW: ${EROS_ERIS_SEMANTIC_REPEL_BELOW:-0.08}
+      SEMANTIC_ATTRACT: ${EROS_ERIS_SEMANTIC_ATTRACT:-0.11}
+      SEMANTIC_REPEL: ${EROS_ERIS_SEMANTIC_REPEL:-1200}
+      SEMANTIC_REPEL_RADIUS: ${EROS_ERIS_SEMANTIC_REPEL_RADIUS:-150}
+      SEMANTIC_REST: ${EROS_ERIS_SEMANTIC_REST:-56}
+      GRAPH_VIEW_COMPONENT_COUNT: ${EROS_ERIS_GRAPH_VIEW_COMPONENT_COUNT:-6}
+      SIM_SHARD_INDEX: '1'
+      SIM_SHARD_COUNT: '3'
+      GRAPH_VIEW_ROTATION_EVERY: ${EROS_ERIS_GRAPH_VIEW_ROTATION_EVERY:-2}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+      BOUNDARY_THICKNESS: ${EROS_ERIS_BOUNDARY_THICKNESS:-650}
+      BOUNDARY_PRESSURE: ${EROS_ERIS_BOUNDARY_PRESSURE:-60}
+      BOUNDARY_EDGE_FRACTION: ${EROS_ERIS_BOUNDARY_EDGE_FRACTION:-0.04}
+    volumes: *id001
+    extra_hosts: *id002
+    depends_on: *id003
+    restart: unless-stopped
+    networks: *id004
+    user: ${DOCKER_USER:-1000:1000}
   eros-eris-field-app-shard2of3:
-    <<: *eros_eris_field_app_base
     profiles:
-      - graph-3
+    - graph-3
+    image: node:22-bookworm
+    cpus: 1.5
+    cpuset: 2-21
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/eros-eris-field-app
+      dev"
     environment:
-      <<: *eros_eris_field_app_env
-      EROS_ERIS_WORKER_ROLE: "structural"
-      SIM_SHARD_INDEX: "2"
-      SIM_SHARD_COUNT: "3"
-
+      CI: 'true'
+      NPM_CONFIG_CONFIRM_MODULES_PURGE: 'false'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      EMBED_PROVIDER_MODEL: ${EROS_ERIS_EMBED_PROVIDER_MODEL:-qwen3-embedding:0.6b}
+      VEXX_BASE_URL: ${VEXX_BASE_URL:-http://host.docker.internal:8787}
+      VEXX_API_KEY: ${VEXX_API_KEY:-}
+      VEXX_DEVICE: ${VEXX_DEVICE:-NPU}
+      VEXX_REQUIRE_ACCEL: ${VEXX_REQUIRE_ACCEL:-true}
+      VEXX_ENFORCE: ${VEXX_ENFORCE:-false}
+      VEXX_MIN_CANDIDATES: ${VEXX_MIN_CANDIDATES:-32}
+      VEXX_TIMEOUT_MS: ${VEXX_TIMEOUT_MS:-60000}
+      VEXX_OPTIMAL_BATCH_SIZE: ${VEXX_OPTIMAL_BATCH_SIZE:-128}
+      VEXX_MAX_CANDIDATES_PER_CALL: ${VEXX_MAX_CANDIDATES_PER_CALL:-256}
+      USE_CANONICAL_GRAPH: ${EROS_ERIS_USE_CANONICAL_GRAPH:-true}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-6000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-12000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-3}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.22}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-10000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-15000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-1000}
+      SIM_WRITE_PAUSE_MS: ${EROS_ERIS_SIM_WRITE_PAUSE_MS:-25}
+      EMBED_EVERY_MS: ${EROS_ERIS_EMBED_EVERY_MS:-2000}
+      EMBED_BATCH_SIZE: ${EROS_ERIS_EMBED_BATCH_SIZE:-128}
+      EMBED_MAX_IN_FLIGHT: ${EROS_ERIS_EMBED_MAX_IN_FLIGHT:-2}
+      EMBED_CONTENT_MODE: ${EROS_ERIS_EMBED_CONTENT_MODE:-full}
+      EMBED_PREVIEW_MAX_BYTES: ${EROS_ERIS_EMBED_PREVIEW_MAX_BYTES:-40000}
+      EMBED_MAX_CHARS: ${EROS_ERIS_EMBED_MAX_CHARS:-6000}
+      SEMANTIC_TOP_K: ${EROS_ERIS_SEMANTIC_TOP_K:-32}
+      SEMANTIC_BOTTOM_K: ${EROS_ERIS_SEMANTIC_BOTTOM_K:-4}
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-18}
+      LOCAL_REPULSION_RADIUS: ${EROS_ERIS_LOCAL_REPULSION_RADIUS:-90}
+      LOCAL_REPULSION: ${EROS_ERIS_LOCAL_REPULSION:-3600}
+      LOCAL_REPULSION_POWER: ${EROS_ERIS_LOCAL_REPULSION_POWER:-4}
+      MIN_SEPARATION: ${EROS_ERIS_MIN_SEPARATION:-18}
+      SEPARATION: ${EROS_ERIS_SEPARATION:-2600}
+      EDGE_PULL_SCALE: ${EROS_ERIS_EDGE_PULL_SCALE:-3.2}
+      EDGE_REST_SCALE: ${EROS_ERIS_EDGE_REST_SCALE:-0.84}
+      SEMANTIC_ATTRACT_ABOVE: ${EROS_ERIS_SEMANTIC_ATTRACT_ABOVE:-0.72}
+      SEMANTIC_REPEL_BELOW: ${EROS_ERIS_SEMANTIC_REPEL_BELOW:-0.08}
+      SEMANTIC_ATTRACT: ${EROS_ERIS_SEMANTIC_ATTRACT:-0.11}
+      SEMANTIC_REPEL: ${EROS_ERIS_SEMANTIC_REPEL:-1200}
+      SEMANTIC_REPEL_RADIUS: ${EROS_ERIS_SEMANTIC_REPEL_RADIUS:-150}
+      SEMANTIC_REST: ${EROS_ERIS_SEMANTIC_REST:-56}
+      GRAPH_VIEW_COMPONENT_COUNT: ${EROS_ERIS_GRAPH_VIEW_COMPONENT_COUNT:-6}
+      SIM_SHARD_INDEX: '2'
+      SIM_SHARD_COUNT: '3'
+      GRAPH_VIEW_ROTATION_EVERY: ${EROS_ERIS_GRAPH_VIEW_ROTATION_EVERY:-2}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+      BOUNDARY_THICKNESS: ${EROS_ERIS_BOUNDARY_THICKNESS:-650}
+      BOUNDARY_PRESSURE: ${EROS_ERIS_BOUNDARY_PRESSURE:-60}
+      BOUNDARY_EDGE_FRACTION: ${EROS_ERIS_BOUNDARY_EDGE_FRACTION:-0.04}
+    volumes: *id001
+    extra_hosts: *id002
+    depends_on: *id003
+    restart: unless-stopped
+    networks: *id004
+    user: ${DOCKER_USER:-1000:1000}
   shuvcrawl:
     profiles:
-      - graph
+    - graph
     build:
       context: ${SHUVCRAWL_PATH:-../../orgs/shuv/shuvcrawl}
       dockerfile: Dockerfile
     cpus: 1
-    cpuset: "2-21"
+    cpuset: 2-21
     expose:
-      - "3777"
+    - '3777'
     ports:
-      - "127.0.0.1:${SHUVCRAWL_PORT:-3777}:3777"
+    - 127.0.0.1:${SHUVCRAWL_PORT:-3777}:3777
     volumes:
-      - shuvcrawl-output:/app/output
-      - shuvcrawl-data:/root/.shuvcrawl
+    - shuvcrawl-output:/app/output
+    - shuvcrawl-data:/root/.shuvcrawl
     environment:
       SHUVCRAWL_API_TOKEN: ${SHUVCRAWL_API_TOKEN:-}
       SHUVCRAWL_TELEMETRY_OTLPHTTPENDPOINT: ${SHUVCRAWL_TELEMETRY_OTLPHTTPENDPOINT:-}
@@ -504,15 +844,15 @@ services:
       SHUVCRAWL_CACHE_ENABLED: ${SHUVCRAWL_CACHE_ENABLED:-true}
     shm_size: 2gb
     security_opt:
-      - seccomp:unconfined
+    - seccomp:unconfined
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+    - host.docker.internal:host-gateway
     healthcheck:
       test:
-        [
-          "CMD-SHELL",
-          "if [ -n \"$SHUVCRAWL_API_TOKEN\" ]; then curl -fsS -H \"Authorization: Bearer $SHUVCRAWL_API_TOKEN\" http://127.0.0.1:3777/health >/dev/null; else curl -fsS http://127.0.0.1:3777/health >/dev/null; fi"
-        ]
+      - CMD-SHELL
+      - 'if [ -n "$SHUVCRAWL_API_TOKEN" ]; then curl -fsS -H "Authorization: Bearer
+        $SHUVCRAWL_API_TOKEN" http://127.0.0.1:3777/health >/dev/null; else curl -fsS
+        http://127.0.0.1:3777/health >/dev/null; fi'
       interval: 30s
       timeout: 10s
       retries: 5
@@ -521,13 +861,13 @@ services:
     networks:
       default: {}
       ai-infra: {}
-
+    user: ${DOCKER_USER:-1000:1000}
   myrmex:
     profiles:
-      - graph
+    - graph
     image: node:22-bookworm-slim
     cpus: 1
-    cpuset: "2-21"
+    cpuset: 2-21
     working_dir: /app/workspace/devel/orgs/open-hax/openplanner/packages/myrmex
     command: bash -lc "node --loader ts-node/esm src/main.ts"
     environment:
@@ -562,9 +902,9 @@ services:
       MYRMEX_OPENPLANNER_BACKOFF_BASE_MS: ${MYRMEX_OPENPLANNER_BACKOFF_BASE_MS:-2000}
       MYRMEX_OPENPLANNER_BACKOFF_MAX_MS: ${MYRMEX_OPENPLANNER_BACKOFF_MAX_MS:-60000}
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+    - host.docker.internal:host-gateway
     volumes:
-      - ${DEVEL_ROOT_PATH:-../..}:/app/workspace/devel:ro
+    - ${DEVEL_ROOT_PATH:-../..}:/app/workspace/devel:ro
     depends_on:
       openplanner:
         condition: service_started
@@ -574,18 +914,22 @@ services:
     networks:
       default: {}
       ai-infra: {}
-
+    user: ${DOCKER_USER:-1000:1000}
   semantic-graph-builder:
     profiles:
-      - jobs
+    - jobs
     image: node:22-bookworm
     cpus: 2
-    cpuset: "2-21"
+    cpuset: 2-21
     working_dir: /app/workspace/devel
-    command: >-
-      bash -lc "if ! command -v g++ >/dev/null 2>&1; then apt-get update && apt-get install -y --no-install-recommends build-essential python3; fi && if ! command -v node-gyp >/dev/null 2>&1; then npm install -g node-gyp; fi && corepack enable && cd /app/workspace/devel/orgs/open-hax/openplanner/node_modules/.pnpm/hnswlib-node@3.0.0/node_modules/hnswlib-node && node-gyp rebuild && cd /app/workspace/devel && pnpm -C orgs/open-hax/openplanner/packages/semantic-graph-builder dev run"
+    command: bash -lc "if ! command -v g++ >/dev/null 2>&1; then apt-get update &&
+      apt-get install -y --no-install-recommends build-essential python3; fi && if
+      ! command -v node-gyp >/dev/null 2>&1; then npm install -g node-gyp; fi && corepack
+      enable && cd /app/workspace/devel/orgs/open-hax/openplanner/node_modules/.pnpm/hnswlib-node@3.0.0/node_modules/hnswlib-node
+      && node-gyp rebuild && cd /app/workspace/devel && pnpm -C orgs/open-hax/openplanner/packages/semantic-graph-builder
+      dev run"
     environment:
-      MONGODB_URI: ${MONGODB_URI:-mongodb://openplanner:change-me-openplanner-password@mongodb:27017/openplanner?replicaSet=rs0&authSource=openplanner}authSource=openplanner}  # pragma: allowlist secret
+      MONGODB_URI: ${MONGODB_URI:-mongodb://openplanner:<password>@mongodb:27017/openplanner?replicaSet=rs0&authSource=openplanner}authSource=openplanner}
       MONGODB_DB_NAME: ${MONGODB_DB:-openplanner}
       OPENPLANNER_LAKE_DIR: /app/workspace/devel/services/openplanner/openplanner-lake
       EMBEDDING_MODEL: ${SEMANTIC_GRAPH_EMBEDDING_MODEL:-qwen3-embedding:0.6b}
@@ -593,31 +937,27 @@ services:
       K_OUT: ${SEMANTIC_GRAPH_K_OUT:-64}
       CANDIDATE_FACTOR: ${SEMANTIC_GRAPH_CANDIDATE_FACTOR:-8}
     volumes:
-      - ${DEVEL_ROOT_PATH:-../..}:/app/workspace/devel
+    - ${DEVEL_ROOT_PATH:-../..}:/app/workspace/devel
     depends_on:
       mongo-init:
         condition: service_completed_successfully
       mongodb:
         condition: service_healthy
-    restart: "no"
+    restart: 'no'
     networks:
       default: {}
-
-  # ============================================================
-  # KNOXX SERVICES (merged from services/knoxx)
-  # ============================================================
-
+    user: ${DOCKER_USER:-1000:1000}
   knoxx-nginx:
     image: futuresight-kms-nginx
     cpus: 0.5
-    cpuset: "2-21"
+    cpuset: 2-21
     environment:
       KNOXX_FRONTEND_UPSTREAM_HOST: ${KNOXX_FRONTEND_UPSTREAM_HOST:-knoxx-frontend}
       KNOXX_FRONTEND_UPSTREAM_PORT: ${KNOXX_FRONTEND_UPSTREAM_PORT:-80}
       SHUVCRAWL_API_TOKEN: ${SHUVCRAWL_API_TOKEN:-}
     ports:
-      - "${KNOXX_NGINX_HTTP_PORT:-80}:80"
-      - "${SHIBBOLETH_HTTP_PORT:-8097}:8088"
+    - ${KNOXX_NGINX_HTTP_PORT:-80}:80
+    - ${SHIBBOLETH_HTTP_PORT:-8097}:8088
     depends_on:
       knoxx-backend:
         condition: service_healthy
@@ -626,29 +966,35 @@ services:
       km-labels:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "nginx", "-t"]
+      test:
+      - CMD
+      - nginx
+      - -t
       interval: 30s
       timeout: 10s
       retries: 3
     restart: unless-stopped
     networks:
-      - knoxx-internal
-      - ai-infra
-
+    - knoxx-internal
+    - ai-infra
+    user: ${DOCKER_USER:-1000:1000}
   knoxx-backend:
     image: knoxx-knoxx-backend:latest
     user: ${DOCKER_USER:-1000:1000}
     cpus: 2
-    cpuset: "2-21"
+    cpuset: 2-21
     working_dir: ${KNOXX_BACKEND_WORKDIR:-/app}
-    command: ["bash", "-lc", "${KNOXX_BACKEND_COMMAND:-node src/server.mjs}"]
+    command:
+    - bash
+    - -lc
+    - ${KNOXX_BACKEND_COMMAND:-node src/server.mjs}
     expose:
-      - "8000"
+    - '8000'
     environment:
       NODE_ENV: ${KNOXX_BACKEND_NODE_ENV:-production}
-      APP_NAME: "Knoxx Backend CLJS"
-      HOST: "0.0.0.0"
-      PORT: "8000"
+      APP_NAME: Knoxx Backend CLJS
+      HOST: 0.0.0.0
+      PORT: '8000'
       WORKSPACE_PROJECT_NAME: ${WORKSPACE_PROJECT_NAME:-devel}
       KNOXX_SESSION_PROJECT_NAME: ${KNOXX_SESSION_PROJECT_NAME:-knoxx-session}
       KNOXX_COLLECTION_NAME: ${KNOXX_COLLECTION_NAME:-devel_docs}
@@ -671,7 +1017,8 @@ services:
       KNOXX_PRIMARY_ORG_NAME: ${KNOXX_PRIMARY_ORG_NAME:-Open Hax}
       KNOXX_PRIMARY_ORG_KIND: ${KNOXX_PRIMARY_ORG_KIND:-platform_owner}
       KNOXX_BOOTSTRAP_SYSTEM_ADMIN_EMAIL: ${KNOXX_BOOTSTRAP_SYSTEM_ADMIN_EMAIL:-system-admin@open-hax.local}
-      KNOXX_BOOTSTRAP_SYSTEM_ADMIN_NAME: ${KNOXX_BOOTSTRAP_SYSTEM_ADMIN_NAME:-Knoxx System Admin}
+      KNOXX_BOOTSTRAP_SYSTEM_ADMIN_NAME: ${KNOXX_BOOTSTRAP_SYSTEM_ADMIN_NAME:-Knoxx
+        System Admin}
       GMAIL_APP_EMAIL: ${GMAIL_APP_EMAIL:-}
       GMAIL_APP_PASSWORD: ${GMAIL_APP_PASSWORD:-}
       REDIS_URL: redis://knoxx-redis:6379
@@ -680,20 +1027,24 @@ services:
       SHIBBOLETH_UI_URL: ${SHIBBOLETH_UI_URL:-http://localhost:8097}
     gpus: all
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+    - host.docker.internal:host-gateway
     volumes:
-      - knoxx-models:/models
-      - knoxx-runs:/runs
-      - ${DEVEL_ROOT_PATH:-../..}:/app/workspace/devel
-      - knoxx-backend-node-modules:/app/workspace/devel/orgs/open-hax/openplanner/packages/knoxx/backend/node_modules
-      - knoxx-backend-shadow-cljs:/app/workspace/devel/orgs/open-hax/openplanner/packages/knoxx/backend/.shadow-cljs
-      - knoxx-backend-dist:/app/workspace/devel/orgs/open-hax/openplanner/packages/knoxx/backend/dist
-      - knoxx-backend-m2:/root/.m2
+    - knoxx-models:/models
+    - knoxx-runs:/runs
+    - ${DEVEL_ROOT_PATH:-../..}:/app/workspace/devel
+    - knoxx-backend-node-modules:/app/workspace/devel/orgs/open-hax/openplanner/packages/knoxx/backend/node_modules
+    - knoxx-backend-shadow-cljs:/app/workspace/devel/orgs/open-hax/openplanner/packages/knoxx/backend/.shadow-cljs
+    - knoxx-backend-dist:/app/workspace/devel/orgs/open-hax/openplanner/packages/knoxx/backend/dist
+    - knoxx-backend-m2:/root/.m2
     depends_on:
       knoxx-redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8000/health').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      test:
+      - CMD
+      - node
+      - -e
+      - fetch('http://127.0.0.1:8000/health').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))
       interval: 30s
       timeout: 10s
       retries: 3
@@ -702,45 +1053,50 @@ services:
     networks:
       knoxx-internal:
         aliases:
-          - backend
+        - backend
       ai-infra: {}
-
   knoxx-frontend:
-    profiles: ["production"]
+    profiles:
+    - production
     build:
       context: ${DEVEL_ROOT_PATH:-../..}
       dockerfile: orgs/open-hax/openplanner/packages/knoxx/frontend/Dockerfile.workspace
     cpus: 1
-    cpuset: "2-21"
+    cpuset: 2-21
     expose:
-      - "80"
+    - '80'
     depends_on:
       knoxx-backend:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "test -f /usr/share/nginx/html/index.html"]
+      test:
+      - CMD-SHELL
+      - test -f /usr/share/nginx/html/index.html
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 10s
     restart: unless-stopped
     networks:
-      - knoxx-internal
-      - ai-infra
-
+    - knoxx-internal
+    - ai-infra
   knoxx-frontend-dev:
-    profiles: ["dev"]
-    image: node:22-bookworm-slim
-    user: "0:0"
+    profiles:
+    - dev
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend-dev
     cpus: 1
-    cpuset: "2-21"
+    cpuset: 2-21
     working_dir: /app/workspace/devel
-    command: >
-      bash -lc "corepack enable pnpm && pnpm install --filter @open-hax/knoxx-frontend --no-frozen-lockfile 2>/dev/null; cd orgs/open-hax/openplanner/packages/knoxx/frontend && npx vite --host 0.0.0.0 --port 5173 --strictPort"
+    command: 'bash -lc "cd orgs/open-hax/openplanner && pnpm install --filter @open-hax/knoxx-frontend...
+      && cd packages/knoxx/frontend && npx vite --host 0.0.0.0 --port 5173 --strictPort"
+
+      '
     expose:
-      - "5173"
+    - '5173'
     ports:
-      - "${KNOXX_FRONTEND_DEV_PORT:-5173}:5173"
+    - ${KNOXX_FRONTEND_DEV_PORT:-5173}:5173
     environment:
       CHOKIDAR_USEPOLLING: ${KNOXX_FRONTEND_CHOKIDAR_USEPOLLING:-true}
       WATCHPACK_POLLING: ${KNOXX_FRONTEND_WATCHPACK_POLLING:-true}
@@ -748,59 +1104,64 @@ services:
       VITE_KNOXX_DEV_USER_EMAIL: ${KNOXX_DEV_USER_EMAIL:-system-admin@open-hax.local}
       VITE_KNOXX_DEV_ORG_SLUG: ${KNOXX_DEV_ORG_SLUG:-open-hax}
     volumes:
-      - ${DEVEL_ROOT_PATH:-../..}:/app/workspace/devel
+    - ${DEVEL_ROOT_PATH:-../..}:/app/workspace/devel
     depends_on:
       knoxx-backend:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:5173').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      test:
+      - CMD
+      - node
+      - -e
+      - fetch('http://127.0.0.1:5173').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))
       interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 60s
+      start_period: 120s
     restart: unless-stopped
     networks:
-      - knoxx-internal
-
+    - knoxx-internal
   shibboleth-backend:
     image: knoxx-shibboleth-backend:latest
     cpus: 1
-    cpuset: "2-21"
+    cpuset: 2-21
     expose:
-      - "8788"
+    - '8788'
     environment:
-      PORT: "8788"
+      PORT: '8788'
       PROXY_AUTH_TOKEN: ${PROXY_AUTH_TOKEN:-}
       HF_TOKEN: ${HF_TOKEN:-}
       HUGGINGFACE_TOKEN: ${HUGGINGFACE_TOKEN:-}
       PROMPTBENCH_PROXY_URL: ${PROMPTBENCH_PROXY_URL:-http://host.docker.internal:8789/v1/chat/completions}
       PROMPTBENCH_RUNS_DIR: /app/data/control-plane/runs
     extra_hosts:
-      - host.docker.internal:host-gateway
+    - host.docker.internal:host-gateway
     volumes:
-      - shibboleth-data:/app/data
+    - shibboleth-data:/app/data
     healthcheck:
-      test: ["CMD-SHELL", "bash -lc 'echo > /dev/tcp/127.0.0.1/8788'"]
+      test:
+      - CMD-SHELL
+      - bash -lc 'echo > /dev/tcp/127.0.0.1/8788'
       interval: 30s
       timeout: 10s
       retries: 5
       start_period: 40s
     restart: unless-stopped
     networks:
-      - knoxx-internal
-      - ai-infra
-
+    - knoxx-internal
+    - ai-infra
+    user: ${DOCKER_USER:-1000:1000}
   km-labels:
     image: knoxx-km-labels:latest
     cpus: 1
-    cpuset: "2-21"
+    cpuset: 2-21
     expose:
-      - "3002"
+    - '3002'
     environment:
       KNOXX_BASE_URL: ${KNOXX_BASE_URL:-http://knoxx-backend:8000}
       SHIBBOLETH_BASE_URL: ${SHIBBOLETH_BASE_URL:-http://shibboleth-backend:8788}
       KM_LABELS_BASE_URL: http://km-labels:3002
-      KM_LABELS_API_KEY: ${KM_LABELS_API_KEY:-change-me-km-labels}
+      KM_LABELS_API_KEY: ${KM_LABELS_API_KEY:-<password>}
       DATABASE_URL: postgresql://${POSTGRES_USER:-kms}:${POSTGRES_PASSWORD:-kms}@knoxx-postgres:5432/${POSTGRES_DB:-futuresight_kms}
       REDIS_URL: redis://knoxx-redis:6379
       RAGUSSY_BASE_URL: http://knoxx-backend:8000
@@ -808,34 +1169,38 @@ services:
       OPENPLANNER_BASE_URL: ${KNOXX_OPENPLANNER_BASE_URL:-http://openplanner:7777}
       OPENPLANNER_API_KEY: ${KNOXX_OPENPLANNER_API_KEY:-change-me}
     volumes:
-      - km-labels-data:/data
-      - ${WORKSPACE_PATH:-../../..}:/app/workspace:ro
+    - km-labels-data:/data
+    - ${WORKSPACE_PATH:-../../..}:/app/workspace:ro
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+    - host.docker.internal:host-gateway
     depends_on:
       knoxx-postgres:
         condition: service_healthy
       knoxx-redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3002/health"]
+      test:
+      - CMD
+      - curl
+      - -f
+      - http://localhost:3002/health
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 20s
     restart: unless-stopped
     networks:
-      - knoxx-internal
-      - ai-infra
-
+    - knoxx-internal
+    - ai-infra
+    user: ${DOCKER_USER:-1000:1000}
   kms-ingestion:
     image: knoxx-kms-ingestion:latest
     cpus: 2
-    cpuset: "2-21"
+    cpuset: 2-21
     expose:
-      - "3003"
+    - '3003'
     environment:
-      PORT: "3003"
+      PORT: '3003'
       DATABASE_URL: postgresql://${POSTGRES_USER:-kms}:${POSTGRES_PASSWORD:-kms}@knoxx-postgres:5432/${POSTGRES_DB:-futuresight_kms}
       REDIS_URL: redis://knoxx-redis:6379
       RAGUSSY_BASE_URL: http://knoxx-backend:8000
@@ -858,82 +1223,88 @@ services:
       INGEST_THROTTLE_SLEEP_MS: ${INGEST_THROTTLE_SLEEP_MS:-500}
       INGEST_BATCH_DELAY_MS: ${INGEST_BATCH_DELAY_MS:-1000}
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+    - host.docker.internal:host-gateway
     volumes:
-      - ${WORKSPACE_PATH:-../../..}:/app/workspace:ro
+    - ${WORKSPACE_PATH:-../../..}:/app/workspace:ro
     depends_on:
       knoxx-postgres:
         condition: service_healthy
       knoxx-redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3003/health"]
+      test:
+      - CMD
+      - curl
+      - -f
+      - http://localhost:3003/health
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 30s
     restart: unless-stopped
     networks:
-      - knoxx-internal
-      - ai-infra
-
+    - knoxx-internal
+    - ai-infra
+    user: ${DOCKER_USER:-1000:1000}
   knoxx-postgres:
     image: postgres:16-alpine
     cpus: 1
-    cpuset: "2-21"
+    cpuset: 2-21
     expose:
-      - "5432"
+    - '5432'
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-kms}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-kms}
       POSTGRES_DB: ${POSTGRES_DB:-futuresight_kms}
     volumes:
-      - knoxx-postgres-data:/var/lib/postgresql/data
+    - knoxx-postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-kms} -d ${POSTGRES_DB:-futuresight_kms}"]
+      test:
+      - CMD-SHELL
+      - pg_isready -U ${POSTGRES_USER:-kms} -d ${POSTGRES_DB:-futuresight_kms}
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
     restart: unless-stopped
     networks:
-      - knoxx-internal
-
+    - knoxx-internal
   knoxx-redis:
     image: redis:7-alpine
     cpus: 0.5
-    cpuset: "2-21"
+    cpuset: 2-21
     expose:
-      - "6379"
+    - '6379'
     volumes:
-      - knoxx-redis-data:/data
+    - knoxx-redis-data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test:
+      - CMD
+      - redis-cli
+      - ping
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
     restart: unless-stopped
     networks:
-      - knoxx-internal
-
+    - knoxx-internal
 volumes:
-  openplanner-mongodb-data:
-  shuvcrawl-data:
-  shuvcrawl-output:
-  knoxx-postgres-data:
-  knoxx-redis-data:
-  knoxx-models:
-  knoxx-runs:
-  knoxx-backend-node-modules:
-  knoxx-backend-shadow-cljs:
-  knoxx-backend-dist:
-  knoxx-backend-m2:
-  knoxx-frontend-node-modules:
-  knoxx-knoxx-node-modules:
-  shibboleth-data:
-  km-labels-data:
-
+  openplanner-mongodb-data: null
+  shuvcrawl-data: null
+  shuvcrawl-output: null
+  knoxx-postgres-data: null
+  knoxx-redis-data: null
+  knoxx-models: null
+  knoxx-runs: null
+  knoxx-backend-node-modules: null
+  knoxx-backend-shadow-cljs: null
+  knoxx-backend-dist: null
+  knoxx-backend-m2: null
+  knoxx-frontend-node-modules: null
+  knoxx-knoxx-node-modules: null
+  shibboleth-data: null
+  km-labels-data: null
 networks:
   ai-infra:
     external: true
