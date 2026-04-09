@@ -1089,8 +1089,7 @@ services:
     cpus: 1
     cpuset: 2-21
     working_dir: /app/workspace/devel
-    command: 'bash -lc "cd orgs/open-hax/openplanner && pnpm install --filter @open-hax/knoxx-frontend...
-      && cd packages/knoxx/frontend && npx vite --host 0.0.0.0 --port 5173 --strictPort"
+    command: 'bash -lc "cd orgs/open-hax/openplanner && pnpm install --filter @open-hax/knoxx-frontend --config.node-linker=hoisted --store-dir=/tmp/pnpm-store --no-frozen-lockfile && pnpm --filter @open-hax/uxx build && pnpm exec tsc -p packages/webgl-graph-view/tsconfig.json && cd packages/knoxx/frontend && npx vite --host 0.0.0.0 --port 5173 --strictPort"
 
       '
     expose:
