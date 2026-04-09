@@ -61,7 +61,6 @@
     "generate-ecosystem": "npx shadow-cljs release clobber",
     "docker:stack": "node scripts/docker-stack.mjs",
     "docker:stack:list": "node scripts/docker-stack.mjs list",
-    "eta:truth:workbench": "node --test orgs/open-hax/eta-mu/packages/eta-mu-truth/tests/*.test.cjs"
   },
   "bin": {
     "octavia": "dist/octavia/index.js"
