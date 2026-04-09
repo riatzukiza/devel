@@ -4,7 +4,7 @@ module.exports = {
       name: "duck-cephalon",
       script: "node",
       args: ["dist/cephalon.js"],
-      cwd: "/workspace/services/cephalon-cljs",
+      cwd: "/workspace/orgs/octave-commons/cephalon/packages/cephalon-cljs",
       env: {
         NODE_ENV: "production",
         NODE_OPTIONS: "--enable-source-maps",

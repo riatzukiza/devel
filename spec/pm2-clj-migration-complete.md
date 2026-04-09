@@ -10,10 +10,10 @@ estimates:
   complexity: ""
   scale: ""
   time_to_completion: ""
-lastCommitSha: "4824c99a944c3ef473167b7326337eaac48c7911"
+lastCommitSha: "4824c99a944c3ef473167b7326337eaac48c7911" # pragma: allowlist secret
 commitHistory:
   -
-    sha: "4824c99a944c3ef473167b7326337eaac48c7911"
+    sha: "4824c99a944c3ef473167b7326337eaac48c7911" # pragma: allowlist secret
     timestamp: "2026-02-04 19:48:00 -0600\n\ndiff --git a/spec/pm2-clj-migration-complete.md b/spec/pm2-clj-migration-complete.md\nindex d0e5192..7331e5a 100644\n--- a/spec/pm2-clj-migration-complete.md\n+++ b/spec/pm2-clj-migration-complete.md\n@@ -1,3 +1,17 @@\n+---\n+uuid: \"a12b9875-3c70-42ba-a5fe-66c8f245580c\"\n+title: \"PM2 Ecosystem → pm2-clj Migration - COMPLETE\"\n+slug: \"pm2-clj-migration-complete\"\n+status: \"done\"\n+priority: \"P2\"\n+labels: [\"pm2\", \"ecosystem\", \"clj\", \"complete\"]\n+created_at: \"2026-02-04T20:15:32.027168Z\"\n+estimates:\n+  complexity: \"\"\n+  scale: \"\"\n+  time_to_completion: \"\"\n+---\n+\n # PM2 Ecosystem → pm2-clj Migration - COMPLETE\n \n ## 2026-02-03 Update"
     message: "Change task status: a12b9875-3c70-42ba-a5fe-66c8f245580c - PM2 Ecosystem → pm2-clj Migration - COMPLETE - incoming → done"
     author: "Error"
@@ -68,7 +68,7 @@ Successfully migrated all PM2 ecosystem configuration files to pm2-clj DSL forma
 - `orgs/riatzukiza/riatzukiza.github.io/ecosystem.pm2.edn`
 - `orgs/octave-commons/gates-of-aker/ecosystem.pm2.edn`
 - `orgs/octave-commons/promethean-agent-system/ecosystem.pm2.edn`
-- `orgs/octave-commons/cephalon-clj/ecosystem.pm2.edn`
+- `orgs/octave-commons/cephalon/recovered/cephalon-clj/ecosystem.pm2.edn`
 - `orgs/riatzukiza/promethean/packages/frontend/ecosystem.pm2.edn`
 - `orgs/riatzukiza/promethean/services/sentinel/ecosystem.pm2.edn`
 

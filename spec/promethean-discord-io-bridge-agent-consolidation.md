@@ -15,26 +15,26 @@ storyPoints: null
 # Promethean Discord IO Bridge → agent-system consolidation
 
 ## Scope
-Target repo: `orgs/octave-commons/cephalon-clj`
+Target repo: `orgs/octave-commons/cephalon/recovered/cephalon-clj`
 
 ## Current agent-related structure (code references)
-- Agent wiring + prompt policy: `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/agent.clj` (lines 1-149)
-- Tool loop tick runner: `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/loop.clj` (lines 1-47)
-- Remote tool macro: `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/remote.clj` (lines 1-21)
-- Discord tools list: `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/tools/discord.clj` (lines 1-66)
-- System + memory + social + web tools: `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/tools/{system,memory,social_discord,social_graph,web}.clj`
-- Context assembly: `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/context.clj` (lines 1-36)
-- Wire protocol + RPC specs: `orgs/octave-commons/cephalon-clj/cephalon-clj-shared/src/cephalon/proto/wire.cljc` (lines 1-31) and `orgs/octave-commons/cephalon-clj/cephalon-clj-shared/src/cephalon/transport/transit.cljc` (lines 1-16)
-- Architecture notes: `orgs/octave-commons/cephalon-clj/spec/architecture.md` (lines 5-30)
+- Agent wiring + prompt policy: `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/agent.clj` (lines 1-149)
+- Tool loop tick runner: `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/loop.clj` (lines 1-47)
+- Remote tool macro: `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/remote.clj` (lines 1-21)
+- Discord tools list: `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/tools/discord.clj` (lines 1-66)
+- System + memory + social + web tools: `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/tools/{system,memory,social_discord,social_graph,web}.clj`
+- Context assembly: `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/context.clj` (lines 1-36)
+- Wire protocol + RPC specs: `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-shared/src/cephalon/proto/wire.cljc` (lines 1-31) and `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-shared/src/cephalon/transport/transit.cljc` (lines 1-16)
+- Architecture notes: `orgs/octave-commons/cephalon/recovered/cephalon-clj/spec/architecture.md` (lines 5-30)
 
 ## Goal
 Consolidate agent runtime, tool DSL, and tool-loop logic into `promethean-agent-system`, leaving Discord IO Bridge as a thin adapter that defines Discord tools and wires RPC transport.
 
 ## Current Duck implementation notes
-- Duck agent registration and prompt loading live in `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/agent.clj`.
+- Duck agent registration and prompt loading live in `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/agent.clj`.
   - Prompt file path is hardwired to `promethean/experimental/cephalon/defaultPrompt.txt`.
   - Duck tools are declared as string names and run through `promethean.ollama.agents/run!` when loop is enabled.
-- The autonomous loop tick is in `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/loop.clj` and calls `agents/run!` with a synthetic “Autonomous loop tick” user message.
+- The autonomous loop tick is in `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/loop.clj` and calls `agents/run!` with a synthetic “Autonomous loop tick” user message.
 - Tool registration currently uses the shared registry in `promethean.ollama.bench-tools` (not a local DSL):
 - `cephalon-clj-brain/src/cephalon/brain/remote.clj` wraps RPC calls with `def-tool` from the bench-tools DSL.
 - `cephalon-clj-brain/src/cephalon/brain/tools/*` register system/memory/social/web tools via `register-tool!`.
@@ -79,7 +79,7 @@ Consolidate agent runtime, tool DSL, and tool-loop logic into `promethean-agent-
 - Shared DSL examples: `spec/agent-dsl-real-world-examples.md` (benchcase + scenario templates for Discord tools).
 - Lineara event/trace alignment: `spec/lineara-conversation-export-agent-consolidation.md` (capability policy + event log compatibility).
 - Promethean agent DSL draft: `orgs/octave-commons/promethean/docs/notes/promethean-agent-config-dsl.md` (agent config surface + example Duck agent).
-- Discord IO bridge architecture: `orgs/octave-commons/cephalon-clj/spec/architecture.md` (two-process layout + RPC envelope).
+- Discord IO bridge architecture: `orgs/octave-commons/cephalon/recovered/cephalon-clj/spec/architecture.md` (two-process layout + RPC envelope).
 
 ## DSL examples (real-world Discord scenarios)
 ### Tool definition + benchcase (shared DSL)

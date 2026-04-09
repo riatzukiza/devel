@@ -35,20 +35,22 @@ jobs:
         id: eta_mu_refs
         shell: bash
         env:
-          ETA_MU_PI_REF_MAIN: ${{ vars.ETA_MU_PI_REF_MAIN }}
-          ETA_MU_PI_REF_STAGING: ${{ vars.ETA_MU_PI_REF_STAGING }}
+          ETA_MU_REF_MAIN: ${{ vars.ETA_MU_REF_MAIN }}
+          ETA_MU_REF_STAGING: ${{ vars.ETA_MU_REF_STAGING }}
+          ETA_MU_GITHUB_REF_MAIN: ${{ vars.ETA_MU_GITHUB_REF_MAIN }}
+          ETA_MU_GITHUB_REF_STAGING: ${{ vars.ETA_MU_GITHUB_REF_STAGING }}
         run: |
           target_branch="${GITHUB_REF_NAME}"
           if [[ "${GITHUB_EVENT_NAME}" == pull_request* ]]; then
             target_branch="${GITHUB_BASE_REF}"
           fi
 
-          pi_ref="${ETA_MU_PI_REF_MAIN:-main}"
+          eta_mu_ref="${ETA_MU_REF_MAIN:-${ETA_MU_GITHUB_REF_MAIN:-main}}"
           if [[ "$target_branch" == "staging" ]]; then
-            pi_ref="${ETA_MU_PI_REF_STAGING:-${ETA_MU_PI_REF_MAIN:-main}}"
+            eta_mu_ref="${ETA_MU_REF_STAGING:-${ETA_MU_GITHUB_REF_STAGING:-staging}}"
           fi
 
-          echo "pi_ref=${pi_ref}" >> "$GITHUB_OUTPUT"
+          echo "eta_mu_ref=${eta_mu_ref}" >> "$GITHUB_OUTPUT"
 
       - name: Checkout target repository
         uses: actions/checkout@v4
@@ -58,16 +60,9 @@ jobs:
       - name: Checkout eta-mu logic
         uses: actions/checkout@v4
         with:
-          repository: open-hax/eta-mu-github
+          repository: open-hax/eta-mu
           path: .eta-mu
-          ref: cbb54f11a690af4d7ed4c4cebc79dbeba6a1a337 # pragma: allowlist secret
-
-      - name: Checkout eta-mu-pi (skills, extensions, settings)
-        uses: actions/checkout@v4
-        with:
-          repository: open-hax/eta-mu-pi
-          path: .pi
-          ref: ${{ steps.eta_mu_refs.outputs.pi_ref }}
+          ref: ${{ steps.eta_mu_refs.outputs.eta_mu_ref }}
 
       - name: Create eta-mu app token
         id: eta_mu_token
@@ -87,10 +82,10 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
-          cache-dependency-path: .eta-mu/pnpm-lock.yaml
+          cache-dependency-path: .eta-mu/packages/eta-mu-github/pnpm-lock.yaml
 
       - name: Install eta-mu dependencies
-        run: pnpm --dir .eta-mu --ignore-workspace install --frozen-lockfile
+        run: pnpm --dir .eta-mu/packages/eta-mu-github install --frozen-lockfile
 
       - name: Detect eta-mu model auth
         id: eta_mu_model_auth
@@ -128,10 +123,9 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # Point pi to the checked-out eta-mu-pi config
-          PI_CODING_AGENT_DIR: ${{ github.workspace }}/.pi/agent
+          PI_CODING_AGENT_DIR: ${{ github.workspace }}/.eta-mu/.pi/agent
         run: >-
-          pnpm --dir .eta-mu --ignore-workspace dev run-event
+          pnpm --dir .eta-mu/packages/eta-mu-github dev run-event
           --repo "${GITHUB_REPOSITORY}"
           --event-name "${GITHUB_EVENT_NAME}"
           --event-path "${GITHUB_EVENT_PATH}"

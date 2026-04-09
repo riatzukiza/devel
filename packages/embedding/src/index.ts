@@ -1,6 +1,6 @@
 export type RemoteEmbeddingConfig = {
   /** Base URL for an embedding HTTP service (your own or a wrapper). */
-  baseUrl: string;
+  baseUrl?: string;
   /** Model name / identifier understood by the remote service. */
   model?: string;
   /** Optional auth header value (e.g. Bearer ...). */
@@ -9,6 +9,10 @@ export type RemoteEmbeddingConfig = {
   path?: string;
   /** Request timeout in ms (default: 30s). */
   timeoutMs?: number;
+  /** Legacy: driver name (e.g., 'ollama', 'openai'). Used with fn to derive baseUrl. */
+  driver?: string;
+  /** Legacy: function/model name. Used with driver to derive baseUrl. */
+  fn?: string;
 };
 
 /**
@@ -28,7 +32,28 @@ export class RemoteEmbeddingFunction {
   }
 
   async generate(texts: string[]): Promise<number[][]> {
-    const { baseUrl, model, authorization, path = "/embed", timeoutMs = 30_000 } = this.cfg;
+    let { baseUrl, model, authorization, path = "/embed", timeoutMs = 30_000, driver, fn } = this.cfg;
+
+    // Handle legacy driver/fn fields
+    if (!baseUrl && driver && fn) {
+      if (driver === 'ollama') {
+        baseUrl = 'http://127.0.0.1:11434/api';
+        if (!model) model = fn;
+        path = '/embeddings';
+      } else if (driver === 'openai') {
+        baseUrl = 'https://api.openai.com/v1';
+        if (!model) model = fn;
+        path = '/embeddings';
+      } else {
+        baseUrl = `http://127.0.0.1:11434/api`;
+        if (!model) model = fn;
+        path = '/embeddings';
+      }
+    }
+
+    if (!baseUrl) {
+      return texts.map(() => []);
+    }
 
     const controller = new AbortController();
     const t = setTimeout(() => controller.abort(), timeoutMs);

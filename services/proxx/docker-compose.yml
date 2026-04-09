@@ -6,14 +6,14 @@ name: proxx-local
 services:
   proxx:
     depends_on:
-      open-hax-openai-proxy-db:
+      proxx-local-db:
         condition: service_healthy
     build:
-      context: ../../orgs/open-hax/proxx
-      dockerfile: Dockerfile
+      context: ../..
+      dockerfile: orgs/open-hax/proxx/Dockerfile
     ports:
-      # Bind to localhost only (no LAN exposure).
-      - "127.0.0.1:${PROXY_PORT:-8789}:8789"
+      # Bind to all interfaces so containers can reach Proxx for embeddings
+      - "0.0.0.0:${PROXY_PORT:-8789}:8789"
       - "127.0.0.1:${OPENAI_OAUTH_CALLBACK_PORT:-1455}:8789"
       - "127.0.0.1:${PROXY_WEB_PORT:-5174}:5174"
     environment:
@@ -23,14 +23,16 @@ services:
       PORT: "8789"
       OPENAI_OAUTH_CALLBACK_PORT: "${OPENAI_OAUTH_CALLBACK_PORT:-1455}"
       PROXY_AUTH_TOKEN: "${PROXY_AUTH_TOKEN:-change-me-open-hax-proxy-token}"
-      PROXY_KEYS_FILE: /workspace/service-config/keys.json
+      # Seed credentials directory (keys.json here is for initial seeding only).
+      # See seeds/README.md for details.
+      PROXY_KEYS_FILE: /workspace/service-config/seeds/keys.json
       PROXY_MODELS_FILE: /workspace/service-config/models.json
       PROXY_REQUEST_LOGS_FILE: /app/data/request-logs.jsonl
       PROXY_REQUEST_LOGS_MAX_ENTRIES: "${PROXY_REQUEST_LOGS_MAX_ENTRIES:-100000}"
       PROXY_REQUEST_LOGS_FLUSH_MS: "${PROXY_REQUEST_LOGS_FLUSH_MS:-1000}"
       PROXY_PROMPT_AFFINITY_FLUSH_MS: "${PROXY_PROMPT_AFFINITY_FLUSH_MS:-250}"
       UPSTREAM_PROVIDER_ID: "${UPSTREAM_PROVIDER_ID:-openai}"
-      UPSTREAM_FALLBACK_PROVIDER_IDS: "${UPSTREAM_FALLBACK_PROVIDER_IDS:-ollama-cloud,requesty}"
+      UPSTREAM_FALLBACK_PROVIDER_IDS: "${UPSTREAM_FALLBACK_PROVIDER_IDS:-ollama-cloud,rotussy,zai,requesty}"
       DISABLED_PROVIDER_IDS: "${DISABLED_PROVIDER_IDS:-}"
       UPSTREAM_BASE_URL: "${UPSTREAM_BASE_URL:-https://chatgpt.com/backend-api}"
       UPSTREAM_PROVIDER_BASE_URLS: "${UPSTREAM_PROVIDER_BASE_URLS:-ollama-cloud=https://ollama.com,openai=https://chatgpt.com/backend-api,vivgrid=https://api.vivgrid.com,requesty=https://router.requesty.ai/v1}"
@@ -65,6 +67,9 @@ services:
       ZHIPU_PROVIDER_ID: "${ZHIPU_PROVIDER_ID:-}"
       ZAI_BASE_URL: "${ZAI_BASE_URL:-https://api.z.ai/api/paas/v4}"
       ZEN_API_KEY: "${ZEN_API_KEY:-}"
+      ROTUSSY_API_KEY: "${ROTUSSY_API_KEY:-}"
+      ROTUSSY_PROVIDER_ID: "${ROTUSSY_PROVIDER_ID:-rotussy}"
+      ROTUSSY_BASE_URL: "${ROTUSSY_BASE_URL:-https://api.ussyco.de/v1}"
       ZHIPU_BASE_URL: "${ZHIPU_BASE_URL:-}"
       UPSTREAM_CHAT_COMPLETIONS_PATH: "${UPSTREAM_CHAT_COMPLETIONS_PATH:-/v1/chat/completions}"
       OPENAI_CHAT_COMPLETIONS_PATH: "${OPENAI_CHAT_COMPLETIONS_PATH:-/codex/responses/compact}"
@@ -79,10 +84,10 @@ services:
       OLLAMA_MODEL_PREFIXES: "${OLLAMA_MODEL_PREFIXES:-ollama/,ollama:}"
       PROXY_KEY_RELOAD_MS: "${PROXY_KEY_RELOAD_MS:-5000}"
       PROXY_KEY_COOLDOWN_MS: "${PROXY_KEY_COOLDOWN_MS:-30000}"
-      UPSTREAM_REQUEST_TIMEOUT_MS: "${UPSTREAM_REQUEST_TIMEOUT_MS:-180000}"
-      UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS: "${UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS:-180000}"
+      UPSTREAM_REQUEST_TIMEOUT_MS: "${UPSTREAM_REQUEST_TIMEOUT_MS:-900000}"
+      UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS: "${UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS:-900000}"
       PROXY_ALLOW_UNAUTHENTICATED: "${PROXY_ALLOW_UNAUTHENTICATED:-false}"
-      DATABASE_URL: "${DATABASE_URL:-postgresql://openai_proxy:openai_proxy@open-hax-openai-proxy-db:5432/openai_proxy}" # pragma: allowlist secret
+      DATABASE_URL: "${DATABASE_URL:-postgresql://openai_proxy:openai_proxy@proxx-local-db:5432/openai_proxy}" # pragma: allowlist secret
       VITE_ALLOWED_HOSTS: "${VITE_ALLOWED_HOSTS:-}"
       CHROMA_URL: "${CHROMA_URL:-http://host.docker.internal:8000}"
       CHROMA_COLLECTION: "${CHROMA_COLLECTION:-open_hax_proxy_sessions}"
@@ -119,11 +124,16 @@ services:
       FEDERATION_BRIDGE_DEFAULT_EXECUTION_POLICY: "${FEDERATION_BRIDGE_DEFAULT_EXECUTION_POLICY:-node_affinity}"
     volumes:
       - ./models.json:/workspace/service-config/models.json:ro
+      - ./seeds:/workspace/service-config/seeds:ro
       - ./data:/app/data
       - ./:/workspace/runtime-repo:ro
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
-      - default
+      default: {}
+      ai-infra:
+        aliases:
+          - proxx
+          - proxx-local
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
@@ -140,7 +150,7 @@ services:
       start_period: 20s
     restart: unless-stopped
 
-  open-hax-openai-proxy-db:
+  proxx-local-db:
     image: postgres:16-bookworm
     environment:
       POSTGRES_DB: openai_proxy
@@ -157,7 +167,17 @@ services:
       retries: 5
       start_period: 10s
     restart: unless-stopped
+    networks:
+      default: {}
+      ai-infra:
+        aliases:
+          - proxx-local-db
 
 volumes:
   open-hax-openai-proxy_open-hax-openai-proxy-db-data:
     external: true
+
+networks:
+  ai-infra:
+    external: true
+    name: ai-infra

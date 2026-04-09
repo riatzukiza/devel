@@ -25,12 +25,12 @@ Add `cephalon mcp` subcommands to serve an MCP server and expose the same toolse
 
 ## Planned Files
 - `bin/cephalon` (command dispatch + usage + env wiring)
-- `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/deps.edn` (add MCP dependency)
-- `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/toolset.clj` (shared tool lists)
-- `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/agent.clj` (use shared toolset)
-- `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/mcp.clj` (config/tools output)
-- `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/mcp_server.clj` (MCP server)
-- `orgs/octave-commons/cephalon-clj/cephalon-clj-brain/mcp/cephalon.mcp.json` (config file)
+- `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-brain/deps.edn` (add MCP dependency)
+- `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/toolset.clj` (shared tool lists)
+- `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/agent.clj` (use shared toolset)
+- `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/mcp.clj` (config/tools output)
+- `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-brain/src/cephalon/brain/mcp_server.clj` (MCP server)
+- `orgs/octave-commons/cephalon/recovered/cephalon-clj/cephalon-clj-brain/mcp/cephalon.mcp.json` (config file)
 
 ## Existing Issues / PRs
 - None referenced.

@@ -32,7 +32,7 @@ services:
       PROXY_AUTH_TOKEN: "${FEDERATION_PROXY_AUTH_TOKEN:-federation-peer-token}" # gitguardian: ignore secret
 
       # Keys and models - can share with main or have separate credentials
-      PROXY_KEYS_FILE: /workspace/service-config/keys.json
+      PROXY_KEYS_FILE: /workspace/service-config/seeds/keys.json
       PROXY_MODELS_FILE: /workspace/service-config/models.json
       PROXY_REQUEST_LOGS_FILE: /app/data/request-logs.jsonl
       PROXY_REQUEST_LOGS_MAX_ENTRIES: "${PROXY_REQUEST_LOGS_MAX_ENTRIES:-100000}"
@@ -81,7 +81,7 @@ services:
       PROXY_KEY_RELOAD_MS: "${PROXY_KEY_RELOAD_MS:-5000}"
       PROXY_KEY_COOLDOWN_MS: "${PROXY_KEY_COOLDOWN_MS:-30000}"
 
-      DATABASE_URL: "postgresql://federation_proxy:federation_proxy@proxx-federation-peer-db:5432/federation_proxy" # gitguardian: ignore secret
+      DATABASE_URL: "postgresql://federation_proxy:federation_proxy@proxx-federation-peer-db:5432/federation_proxy" # pragma: allowlist secret
 
       VITE_ALLOWED_HOSTS: "${VITE_ALLOWED_HOSTS:-}"
 
@@ -129,7 +129,7 @@ services:
     environment:
       POSTGRES_DB: federation_proxy
       POSTGRES_USER: federation_proxy
-      POSTGRES_PASSWORD: federation_proxy
+      POSTGRES_PASSWORD: federation_proxy # pragma: allowlist secret
     ports:
       - "${FEDERATION_DB_PORT:-15434}:5432"
     volumes:

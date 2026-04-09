@@ -2,9 +2,9 @@
 
 Containerized OpenCode runtime with an internal raw server, a GitHub OAuth gateway, and a localhost-only admin UI.
 
-- mounts the entire workspace at `/workspace`
+- bind-mounts the real host workspace at `/workspace`
 - uses `/workspace/.opencode` as the active config/plugin directory
-- shares the host OpenCode XDG config/data/cache/state paths, including the live session database
+- bind-mounts the host OpenCode XDG config/data/cache/state paths, including the live session database
 - keeps raw OpenCode private inside the container and places the public UI behind the gateway
 - keeps Tailscale/Funnel on the host instead of inside the container
 - exposes the single browser-facing OpenCode gateway on `127.0.0.1:${OPENCODE_PORT:-8789}`
@@ -18,7 +18,7 @@ Containerized OpenCode runtime with an internal raw server, a GitHub OAuth gatew
 - GitHub OAuth access is checked against a persistent allowlist.
 - The allowlist is editable from a separate admin UI that only accepts `localhost` and `127.0.0.1` hostnames.
 - Host-owned `tailscaled` and host Funnel should proxy to the existing host gateway on `127.0.0.1:8788`, which then fronts Janus and OpenCode together.
-- The OpenCode container also joins `mcp-stack_default` so Janus can reach raw OpenCode directly without exposing it publicly.
+- The OpenCode container joins a bridge network named `mcp-stack_default` so Janus can reach raw OpenCode directly without exposing it publicly.
 
 ## Required Setup
 
@@ -29,6 +29,16 @@ Create `services/opencode-stack/.env` from `services/opencode-stack/.env.example
 - `OAUTH_GITHUB_REDIRECT_URI` to the exact callback URL registered in your GitHub OAuth app
 
 `GITHUB_ALLOWED_USERS` is only used to seed the allowlist the first time the stack creates `services/opencode-stack/data/allowlist.json`.
+
+The important host bind mounts are:
+
+- `WORKSPACE_ROOT=/home/err/devel`
+- `HOST_OPENCODE_CONFIG_DIR=/home/err/.config/opencode`
+- `HOST_OPENCODE_DATA_DIR=/home/err/.local/share/opencode`
+- `HOST_OPENCODE_CACHE_DIR=/home/err/.cache/opencode`
+- `HOST_OPENCODE_STATE_DIR=/home/err/.local/state/opencode`
+
+That keeps the container attached to the current devel checkout and the live host `opencode.db` instead of a separate container-only state directory.
 
 ## Password Files
 

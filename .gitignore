@@ -189,3 +189,4 @@ services/open-hax-openai-proxy/data/
 
 # Sisyphus session artifacts - plugin no longer used
 .sisyphus/
+services/routussy/.env

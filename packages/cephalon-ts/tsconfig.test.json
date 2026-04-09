@@ -1,9 +1,0 @@
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "build",
-    "sourceMap": true
-  },
-  "include": ["src/**/*.ts"],
-  "exclude": ["src/ui/vite.config.ts", "src/server.ts"]
-}

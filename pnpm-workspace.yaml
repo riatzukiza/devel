@@ -1,31 +1,42 @@
 packages:
   - .
+  - packages/embedding
+  - packages/persistence
+  - orgs/open-hax/uxx
+  - packages/futuresight-kms
   - packages/ollama-registry
-  - packages/cephalon-ts
-  - packages/openplanner-cljs-client
   - packages/opencode-cljs-client
-  - packages/opencode-openplanner-plugin-cljs
   - packages/aether
   - packages/hermes
-  - packages/reconstituter
-  - packages/mcp-oauth
-  - packages/mcp-foundation
+  - packages/event
+  - packages/test-utils
+  - packages/logger
+  - packages/utils
+  - packages/fsm
+  - orgs/open-hax/tooloxx/packages/*
   - packages/radar-core
   - packages/webgl-graph-view
-  - packages/graph-weaver-aco
-  - packages/eros-eris-field
-  - packages/eta-mu-docs
-  - packages/eta-mu-truth
   - packages/output-contract-gate
   - packages/thread-assessment
   - packages/npu-top
   - packages/omni-top
   - packages/kanban
-  - orgs/riatzukiza/hormuz-clock-mcp
-  - orgs/riatzukiza/threat-radar-mcp
+  - packages/sintel
+  - packages/portal
+  - packages/host-fleet-dashboard
+  - orgs/riatzukiza/portfolio
   - orgs/riatzukiza/threat-radar-web
+  - orgs/riatzukiza/mnemosyne
+  - orgs/open-hax/depenoxx
+  - orgs/anomalyco/opencode-compat
+  - orgs/anomalyco/opencode-indexer
+  - orgs/riatzukiza/kronos
+  - orgs/open-hax/openplanner
+  - orgs/riatzukiza/ourllamas
+  - orgs/open-hax/vivgrid-openai-proxy
+  - orgs/riatzukiza/futuresight-kms
   - services/*
-  - orgs/open-hax/workbench
+  - orgs/open-hax/openhax/packages/*
   - orgs/riatzukiza/promethean/packages/*
   - orgs/riatzukiza/promethean/packages/*/*
   - orgs/riatzukiza/promethean/cli/*
@@ -42,6 +53,8 @@ packages:
   - orgs/riatzukiza/promethean/tools/*
   - orgs/riatzukiza/promethean/.opencode/*
   - orgs/riatzukiza/promethean/scripts
+  - '!orgs/octave-commons/promethean/cli'
+  - '!orgs/octave-commons/promethean/packages'
   - '!orgs/riatzukiza/promethean/packages/discord'
   - '!**/stryker-tmp/**'
 

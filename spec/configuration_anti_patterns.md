@@ -23,7 +23,7 @@ This document outlines systemic configuration issues identified in the codebase,
 **Risk:** The code is not portable. It will fail on any other machine or CI environment that doesn't match this specific directory structure.
 
 **Identified Instances:**
-- `packages/cephalon-ts/ecosystem.cljs`: `:cwd "/home/err/devel/services/cephalon"`
+- `orgs/octave-commons/cephalon/packages/cephalon-ts/ecosystem.cljs`: `:cwd "/home/err/devel/services/cephalon"`
 - `ecosystem.opencode-indexer.json`: `"cwd": "/home/err/devel"`
 - `tests/pm2-clj.parity.test.ts`: Hardcoded paths in test expectations.
 - `update-package-versions.mjs`: `execSync('grep -rl ... /home/err/devel ...')`

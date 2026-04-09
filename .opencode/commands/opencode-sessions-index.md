@@ -2,24 +2,23 @@
 
 ```yaml
 name: opencode-sessions-index
-description: Index OpenCode sessions into ChromaDB
+description: Index OpenCode sessions into OpenPlanner
 usage: |
   ## Usage
   pnpm -C packages/reconstituter opencode-sessions index
 
   ## Environment
   OPENCODE_BASE_URL (default: http://localhost:4096)
-  CHROMA_URL (default: http://localhost:8000)
-  CHROMA_COLLECTION (base name, model suffix appended; default: opencode_messages_v1)
+  OPENPLANNER_URL (default from @promethean-os/openplanner-cljs-client)
+  OPENPLANNER_API_KEY (optional bearer token)
   OPENCODE_THROTTLE_MS (default: 200)
   LEVEL_DIR (default: .reconstitute/level)
-  OLLAMA_URL (default: http://localhost:11434)
-  OLLAMA_EMBED_MODEL (default: qwen3-embedding:8b)
-  OLLAMA_NUM_CTX (default: 32768)
   BATCH_SIZE (default: 32)
-  EMBED_TTL_MS (default: 2592000000)
+  OPENCODE_CHUNK_INDEXING (default: 1)
+  OPENCODE_CHUNK_TARGET_TOKENS (default: 32000)
+  OPENCODE_CHUNK_OVERLAP_MESSAGES (default: 4)
 
   ## Examples
   pnpm -C packages/reconstituter opencode-sessions index
-  CHROMA_COLLECTION=opencode_messages_v2 pnpm -C packages/reconstituter opencode-sessions index
+  OPENCODE_CHUNK_INDEXING=0 pnpm -C packages/reconstituter opencode-sessions index
 ```
