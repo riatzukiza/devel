@@ -192,8 +192,8 @@ services:
       MONGODB_GRAPH_NODE_EMBEDDING_COLLECTION: ${MONGODB_GRAPH_NODE_EMBEDDING_COLLECTION:-graph_node_embeddings}
       MONGODB_EVENTS_TTL_SECONDS: ${MONGODB_EVENTS_TTL_SECONDS:-0}
       MONGODB_COMPACTED_TTL_SECONDS: ${MONGODB_COMPACTED_TTL_SECONDS:-0}
-      EMBED_PROVIDER_BASE_URL: ${EMBED_PROVIDER_BASE_URL:-http://host.docker.internal:8789}
-      EMBED_PROVIDER_API_KEY: ${EMBED_PROVIDER_API_KEY:-${OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN:-}}
+      EMBED_PROVIDER_BASE_URL: ${OPENPLANNER_PROXX_BASE_URL:-http://openplanner-proxx:8789}
+      EMBED_PROVIDER_API_KEY: ${OPENPLANNER_PROXX_AUTH_TOKEN:-change-me-openplanner-proxx-token}
       EMBED_PROVIDER_MODEL: ${EMBED_PROVIDER_MODEL:-qwen3-embedding:0.6b}
       EMBED_PROVIDER_COMPACT_MODEL: ${EMBED_PROVIDER_COMPACT_MODEL:-qwen3-embedding:4b}
       EMBED_PROVIDER_MODEL_BY_SOURCE: ${EMBED_PROVIDER_MODEL_BY_SOURCE:-}
@@ -230,6 +230,227 @@ services:
       ai-infra:
         aliases:
         - openplanner
+  openplanner-proxx-db:
+    image: postgres:16-bookworm
+    cpus: 1
+    cpuset: 2-21
+    expose:
+    - '5432'
+    environment:
+      POSTGRES_DB: ${OPENPLANNER_PROXX_DB_NAME:-openai_proxy}
+      POSTGRES_USER: ${OPENPLANNER_PROXX_DB_USER:-openai_proxy}
+      POSTGRES_PASSWORD: ${OPENPLANNER_PROXX_DB_PASSWORD:-openai_proxy}
+    volumes:
+    - openplanner-proxx-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - pg_isready -U ${OPENPLANNER_PROXX_DB_USER:-openai_proxy} -d ${OPENPLANNER_PROXX_DB_NAME:-openai_proxy}
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      default: {}
+  openplanner-proxx:
+    build:
+      context: ../..
+      dockerfile: orgs/open-hax/proxx/Dockerfile
+    cpus: 1.5
+    cpuset: 2-21
+    depends_on:
+      openplanner-proxx-db:
+        condition: service_healthy
+    ports:
+    - 127.0.0.1:${OPENPLANNER_PROXX_HOST_PORT:-8790}:8789
+    - 127.0.0.1:${OPENPLANNER_PROXX_WEB_PORT:-5176}:5174
+    environment:
+      PM2_HOME: /app/data/.pm2
+      NODE_ENV: production
+      PROXY_HOST: 0.0.0.0
+      PROXY_PORT: '8789'
+      PORT: '8789'
+      PROXY_AUTH_TOKEN: ${OPENPLANNER_PROXX_AUTH_TOKEN:-change-me-openplanner-proxx-token}
+      PROXY_KEYS_FILE: /workspace/service-config/seeds/keys.json
+      PROXY_MODELS_FILE: /workspace/service-config/models.json
+      PROXY_REQUEST_LOGS_FILE: /app/data/request-logs.jsonl
+      PROXY_REQUEST_LOGS_MAX_ENTRIES: ${OPENPLANNER_PROXX_REQUEST_LOGS_MAX_ENTRIES:-25000}
+      PROXY_REQUEST_LOGS_FLUSH_MS: ${OPENPLANNER_PROXX_REQUEST_LOGS_FLUSH_MS:-1000}
+      PROXY_PROMPT_AFFINITY_FLUSH_MS: ${OPENPLANNER_PROXX_PROMPT_AFFINITY_FLUSH_MS:-250}
+      PROXY_KEY_RELOAD_MS: ${OPENPLANNER_PROXX_KEY_RELOAD_MS:-5000}
+      PROXY_KEY_COOLDOWN_MS: ${OPENPLANNER_PROXX_KEY_COOLDOWN_MS:-30000}
+      PROXY_ALLOW_UNAUTHENTICATED: 'false'
+      DATABASE_URL: postgresql://${OPENPLANNER_PROXX_DB_USER:-openai_proxy}:${OPENPLANNER_PROXX_DB_PASSWORD:-openai_proxy}@openplanner-proxx-db:5432/${OPENPLANNER_PROXX_DB_NAME:-openai_proxy}
+      UPSTREAM_PROVIDER_ID: ${OPENPLANNER_PROXX_UPSTREAM_PROVIDER_ID:-zai}
+      UPSTREAM_FALLBACK_PROVIDER_IDS: ${OPENPLANNER_PROXX_UPSTREAM_FALLBACK_PROVIDER_IDS:-rotussy,ollama-cloud,requesty}
+      UPSTREAM_BASE_URL: ${OPENPLANNER_PROXX_UPSTREAM_BASE_URL:-https://chatgpt.com/backend-api}
+      UPSTREAM_PROVIDER_BASE_URLS: ${OPENPLANNER_PROXX_UPSTREAM_PROVIDER_BASE_URLS:-ollama-cloud=https://ollama.com,openai=https://chatgpt.com/backend-api,vivgrid=https://api.vivgrid.com,requesty=https://router.requesty.ai/v1,zai=https://api.z.ai/api/paas/v4}
+      REQUESTY_API_TOKEN: ${REQUESTY_API_TOKEN:-}
+      OPENAI_PROVIDER_ID: ${OPENAI_PROVIDER_ID:-openai}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-https://chatgpt.com/backend-api}
+      OPENAI_API_BASE_URL: ${OPENAI_API_BASE_URL:-https://api.openai.com}
+      OPENAI_IMAGES_UPSTREAM_MODE: ${OPENAI_IMAGES_UPSTREAM_MODE:-auto}
+      OPENAI_OAUTH_CLIENT_ID: ${OPENAI_OAUTH_CLIENT_ID:-app_EMoamEEZ73f0CkXaXp7hrann}
+      OPENAI_OAUTH_CLIENT_SECRET: ${OPENAI_OAUTH_CLIENT_SECRET:-}
+      OPENAI_OAUTH_ISSUER: ${OPENAI_OAUTH_ISSUER:-https://auth.openai.com}
+      OPENAI_OAUTH_SCOPES: ${OPENAI_OAUTH_SCOPES:-openid profile email offline_access}
+      OPENAI_IMAGES_GENERATIONS_PATHS: ${OPENAI_IMAGES_GENERATIONS_PATHS:-}
+      IMAGE_COST_USD_DEFAULT: ${IMAGE_COST_USD_DEFAULT:-0}
+      IMAGE_COST_USD_BY_PROVIDER: ${IMAGE_COST_USD_BY_PROVIDER:-}
+      OLLAMA_BASE_URL: ${OPENPLANNER_PROXX_OLLAMA_BASE_URL:-http://ollama:11434}
+      ZAI_API_KEY: ${OPENPLANNER_PROXX_ZAI_API_KEY:-}
+      ZHIPU_API_KEY: ${ZHIPU_API_KEY:-}
+      ZAI_PROVIDER_ID: ${ZAI_PROVIDER_ID:-zai}
+      ZHIPU_PROVIDER_ID: ${ZHIPU_PROVIDER_ID:-}
+      ZAI_BASE_URL: ${ZAI_BASE_URL:-https://api.z.ai/api/paas/v4}
+      ROTUSSY_API_KEY: ${ROTUSSY_API_KEY:-}
+      ROTUSSY_PROVIDER_ID: ${ROTUSSY_PROVIDER_ID:-rotussy}
+      ROTUSSY_BASE_URL: ${ROTUSSY_BASE_URL:-https://api.ussyco.de/v1}
+      ZHIPU_BASE_URL: ${ZHIPU_BASE_URL:-}
+      UPSTREAM_CHAT_COMPLETIONS_PATH: ${UPSTREAM_CHAT_COMPLETIONS_PATH:-/v1/chat/completions}
+      OPENAI_CHAT_COMPLETIONS_PATH: ${OPENAI_CHAT_COMPLETIONS_PATH:-/codex/responses/compact}
+      UPSTREAM_MESSAGES_PATH: ${UPSTREAM_MESSAGES_PATH:-/v1/messages}
+      UPSTREAM_MESSAGES_MODEL_PREFIXES: ${UPSTREAM_MESSAGES_MODEL_PREFIXES:-claude-}
+      UPSTREAM_MESSAGES_INTERLEAVED_THINKING_BETA: ${UPSTREAM_MESSAGES_INTERLEAVED_THINKING_BETA:-interleaved-thinking-2025-05-14}
+      UPSTREAM_RESPONSES_PATH: ${UPSTREAM_RESPONSES_PATH:-/v1/responses}
+      OPENAI_RESPONSES_PATH: ${OPENAI_RESPONSES_PATH:-/codex/responses}
+      UPSTREAM_RESPONSES_MODEL_PREFIXES: ${UPSTREAM_RESPONSES_MODEL_PREFIXES:-gpt-}
+      OPENAI_MODEL_PREFIXES: ${OPENAI_MODEL_PREFIXES:-openai/,openai:}
+      OLLAMA_CHAT_PATH: ${OLLAMA_CHAT_PATH:-/api/chat}
+      OLLAMA_MODEL_PREFIXES: ${OLLAMA_MODEL_PREFIXES:-ollama/,ollama:}
+      UPSTREAM_REQUEST_TIMEOUT_MS: ${OPENPLANNER_PROXX_UPSTREAM_REQUEST_TIMEOUT_MS:-900000}
+      UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS: ${OPENPLANNER_PROXX_UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS:-900000}
+      NODE_OPTIONS: ${OPENPLANNER_PROXX_NODE_OPTIONS:---max-old-space-size=4096}
+      EMBED_MAX_BATCH_ITEMS: ${OPENPLANNER_PROXX_EMBED_MAX_BATCH_ITEMS:-64}
+      EMBED_MAX_INPUT_CHARS: ${OPENPLANNER_PROXX_EMBED_MAX_INPUT_CHARS:-200000}
+      CHROMA_URL: ${CHROMA_URL:-http://host.docker.internal:8000}
+      CHROMA_COLLECTION: ${OPENPLANNER_PROXX_CHROMA_COLLECTION:-openplanner_proxy_sessions}
+      CHROMA_EMBED_MODEL: ${CHROMA_EMBED_MODEL:-nomic-embed-text:latest}
+      OTEL_SERVICE_NAME: ${OPENPLANNER_PROXX_OTEL_SERVICE_NAME:-openplanner-proxx}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-}
+      OTEL_EXPORTER_OTLP_HEADERS: ${OTEL_EXPORTER_OTLP_HEADERS:-}
+      OTEL_RESOURCE_ATTRIBUTES: ${OPENPLANNER_PROXX_OTEL_RESOURCE_ATTRIBUTES:-service.name=openplanner-proxx}
+      FEDERATION_SELF_NODE_ID: ${OPENPLANNER_PROXX_FEDERATION_SELF_NODE_ID:-openplanner-proxx}
+      FEDERATION_SELF_GROUP_ID: ${OPENPLANNER_PROXX_FEDERATION_SELF_GROUP_ID:-openplanner}
+      FEDERATION_SELF_CLUSTER_ID: ${OPENPLANNER_PROXX_FEDERATION_SELF_CLUSTER_ID:-openplanner-local}
+      FEDERATION_SELF_PEER_DID: ${OPENPLANNER_PROXX_FEDERATION_SELF_PEER_DID:-did:web:openplanner.proxx.local}
+      FEDERATION_SELF_PUBLIC_BASE_URL: ${OPENPLANNER_PROXX_FEDERATION_SELF_PUBLIC_BASE_URL:-http://openplanner-proxx:8789}
+      FEDERATION_DEFAULT_OWNER_SUBJECT: ${OPENPLANNER_PROXX_FEDERATION_DEFAULT_OWNER_SUBJECT:-did:web:openplanner.proxx.local}
+      FEDERATION_REQUEST_TIMEOUT_MS: ${OPENPLANNER_PROXX_FEDERATION_REQUEST_TIMEOUT_MS:-30000}
+    volumes:
+    - ../proxx/models.json:/workspace/service-config/models.json:ro
+    - ./openplanner-proxx-seeds:/workspace/service-config/seeds:ro
+    - ./openplanner-proxx-data:/app/data
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    healthcheck:
+      test:
+      - CMD
+      - node
+      - -e
+      - fetch('http://127.0.0.1:8789/health',{headers:{Authorization:'Bearer '+(process.env.PROXY_AUTH_TOKEN||'')}}).then((response)=>{if(!response.ok){process.exit(1);}}).catch(()=>process.exit(1))
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+    networks:
+      default: {}
+      ai-infra:
+        aliases:
+        - openplanner-proxx
+    user: ${DOCKER_USER:-1000:1000}
+  openplanner-proxx-federation-sync:
+    image: python:3.12-alpine
+    cpus: 0.25
+    cpuset: 2-21
+    depends_on:
+      openplanner-proxx:
+        condition: service_healthy
+    environment:
+      LOCAL_PROXX_BASE_URL: ${OPENPLANNER_PROXX_BASE_URL:-http://openplanner-proxx:8789}
+      LOCAL_PROXX_AUTH_TOKEN: ${OPENPLANNER_PROXX_AUTH_TOKEN:-change-me-openplanner-proxx-token}
+      CANONICAL_PROXX_BASE_URL: ${OPENPLANNER_CANONICAL_PROXX_BASE_URL:-http://proxx:8789}
+      CANONICAL_PROXX_AUTH_TOKEN: ${OPENPLANNER_CANONICAL_PROXX_AUTH_TOKEN:-${OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN:-${PROXY_AUTH_TOKEN:-}}}
+      PROJECTED_IMPORT_PROVIDER_IDS: ${OPENPLANNER_PROXX_PROJECTED_IMPORT_PROVIDER_IDS:-zai}
+      SYNC_INTERVAL_SECONDS: ${OPENPLANNER_PROXX_SYNC_INTERVAL_SECONDS:-300}
+    command:
+    - /bin/sh
+    - -lc
+    - |
+      python - <<'PY'
+      import json, os, sys, time, urllib.error, urllib.request
+
+      local_base = os.environ["LOCAL_PROXX_BASE_URL"].rstrip("/")
+      local_token = os.environ["LOCAL_PROXX_AUTH_TOKEN"]
+      canonical_base = os.environ["CANONICAL_PROXX_BASE_URL"].rstrip("/")
+      canonical_token = os.environ.get("CANONICAL_PROXX_AUTH_TOKEN", "").strip()
+      provider_ids = [entry.strip() for entry in os.environ.get("PROJECTED_IMPORT_PROVIDER_IDS", "zai").split(",") if entry.strip()]
+      interval = max(30, int(os.environ.get("SYNC_INTERVAL_SECONDS", "300")))
+
+      if not canonical_token:
+        print("openplanner-proxx-federation-sync: missing CANONICAL_PROXX_AUTH_TOKEN", file=sys.stderr)
+        sys.exit(1)
+
+      def request(url: str, token: str, body: dict | None = None) -> dict:
+        data = None if body is None else json.dumps(body).encode("utf-8")
+        req = urllib.request.Request(url, data=data, method="POST" if body is not None else "GET")
+        req.add_header("Authorization", f"Bearer {token}")
+        if data is not None:
+          req.add_header("Content-Type", "application/json")
+        with urllib.request.urlopen(req, timeout=15) as response:
+          payload = response.read().decode("utf-8")
+          return json.loads(payload) if payload else {}
+
+      def wait_for_health(url: str, token: str) -> None:
+        health_url = f"{url}/health"
+        while True:
+          try:
+            request(health_url, token)
+            return
+          except Exception as error:  # noqa: BLE001
+            print(f"waiting for {health_url}: {error}", file=sys.stderr)
+            time.sleep(5)
+
+      peer_payload = {
+        "id": "canonical-proxx",
+        "ownerCredential": local_token,
+        "label": "Canonical Proxx",
+        "baseUrl": canonical_base,
+        "controlBaseUrl": canonical_base,
+        "auth": {"credential": canonical_token},
+        "status": "active",
+      }
+
+      while True:
+        try:
+          wait_for_health(local_base, local_token)
+          wait_for_health(canonical_base, canonical_token)
+          request(f"{local_base}/api/v1/federation/peers", local_token, peer_payload)
+          request(
+            f"{local_base}/api/v1/federation/sync/pull",
+            local_token,
+            {"peerId": "canonical-proxx", "pullUsage": False},
+          )
+          for provider_id in provider_ids:
+            request(
+              f"{local_base}/api/v1/federation/projected-accounts/import-all",
+              local_token,
+              {"sourcePeerId": "canonical-proxx", "providerId": provider_id},
+            )
+        except urllib.error.HTTPError as error:
+          detail = error.read().decode("utf-8", errors="replace")
+          print(f"openplanner-proxx-federation-sync http error: {error.code} {detail}", file=sys.stderr)
+        except Exception as error:  # noqa: BLE001
+          print(f"openplanner-proxx-federation-sync error: {error}", file=sys.stderr)
+        time.sleep(interval)
+      PY
+    restart: unless-stopped
+    networks:
+      default: {}
+      ai-infra: {}
+    user: ${DOCKER_USER:-1000:1000}
   graph-weaver:
     profiles:
     - graph
@@ -876,8 +1097,8 @@ services:
       SHUVCRAWL_TOKEN: ${SHUVCRAWL_API_TOKEN:-}
       OPENPLANNER_BASE_URL: http://openplanner:7777
       OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
-      PROXX_BASE_URL: ${PROXX_BASE_URL:-}
-      PROXX_AUTH_TOKEN: ${PROXY_AUTH_TOKEN:-}
+      PROXX_BASE_URL: ${OPENPLANNER_PROXX_BASE_URL:-http://openplanner-proxx:8789}
+      PROXX_AUTH_TOKEN: ${OPENPLANNER_PROXX_AUTH_TOKEN:-change-me-openplanner-proxx-token}
       MYRMEX_PROJECT: ${MYRMEX_PROJECT:-web}
       MYRMEX_SOURCE: ${MYRMEX_SOURCE:-openplanner.myrmex}
       MYRMEX_INCLUDE_PATTERNS: ${MYRMEX_INCLUDE_PATTERNS:-}
@@ -1004,8 +1225,8 @@ services:
       KNOXX_API_KEY: ${KNOXX_API_KEY:-}
       MODEL_LAB_OPENAI_API_KEY: ${MODEL_LAB_OPENAI_API_KEY:-}
       KNOXX_DEFAULT_ROLE: ${KNOXX_DEFAULT_ROLE:-executive}
-      PROXX_BASE_URL: ${PROXX_BASE_URL:-http://host.docker.internal:8789}
-      PROXX_AUTH_TOKEN: ${PROXY_AUTH_TOKEN:-}
+      PROXX_BASE_URL: ${OPENPLANNER_PROXX_BASE_URL:-http://openplanner-proxx:8789}
+      PROXX_AUTH_TOKEN: ${OPENPLANNER_PROXX_AUTH_TOKEN:-change-me-openplanner-proxx-token}
       PROXX_DEFAULT_MODEL: ${PROXX_DEFAULT_MODEL:-glm-5}
       KNOXX_THINKING_LEVEL: ${KNOXX_THINKING_LEVEL:-off}
       KNOXX_REASONING_MODEL_PREFIXES: ${KNOXX_REASONING_MODEL_PREFIXES:-glm-}
@@ -1128,10 +1349,11 @@ services:
     - '8788'
     environment:
       PORT: '8788'
-      PROXY_AUTH_TOKEN: ${PROXY_AUTH_TOKEN:-}
+      HOME: /tmp
+      PROXY_AUTH_TOKEN: ${OPENPLANNER_PROXX_AUTH_TOKEN:-change-me-openplanner-proxx-token}
       HF_TOKEN: ${HF_TOKEN:-}
       HUGGINGFACE_TOKEN: ${HUGGINGFACE_TOKEN:-}
-      PROMPTBENCH_PROXY_URL: ${PROMPTBENCH_PROXY_URL:-http://host.docker.internal:8789/v1/chat/completions}
+      PROMPTBENCH_PROXY_URL: ${OPENPLANNER_PROXX_BASE_URL:-http://openplanner-proxx:8789}/v1/chat/completions
       PROMPTBENCH_RUNS_DIR: /app/data/control-plane/runs
     extra_hosts:
     - host.docker.internal:host-gateway
@@ -1203,8 +1425,8 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-kms}:${POSTGRES_PASSWORD:-kms}@knoxx-postgres:5432/${POSTGRES_DB:-futuresight_kms}
       REDIS_URL: redis://knoxx-redis:6379
       RAGUSSY_BASE_URL: http://knoxx-backend:8000
-      PROXX_BASE_URL: ${PROXX_BASE_URL:-http://host.docker.internal:8789}
-      PROXX_AUTH_TOKEN: ${PROXY_AUTH_TOKEN:-}
+      PROXX_BASE_URL: ${OPENPLANNER_PROXX_BASE_URL:-http://openplanner-proxx:8789}
+      PROXX_AUTH_TOKEN: ${OPENPLANNER_PROXX_AUTH_TOKEN:-change-me-openplanner-proxx-token}
       PROXX_DEFAULT_MODEL: ${PROXX_DEFAULT_MODEL:-glm-5}
       PROXX_CONNECTION_TIMEOUT_MS: ${PROXX_CONNECTION_TIMEOUT_MS:-15000}
       PROXX_SOCKET_TIMEOUT_MS: ${PROXX_SOCKET_TIMEOUT_MS:-180000}
@@ -1290,6 +1512,7 @@ services:
     - knoxx-internal
 volumes:
   openplanner-mongodb-data: null
+  openplanner-proxx-db-data: null
   shuvcrawl-data: null
   shuvcrawl-output: null
   knoxx-postgres-data: null
