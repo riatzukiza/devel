@@ -998,7 +998,7 @@ services:
       WORKSPACE_PROJECT_NAME: ${WORKSPACE_PROJECT_NAME:-devel}
       KNOXX_SESSION_PROJECT_NAME: ${KNOXX_SESSION_PROJECT_NAME:-knoxx-session}
       KNOXX_COLLECTION_NAME: ${KNOXX_COLLECTION_NAME:-devel_docs}
-      KNOXX_AGENT_DIR: /runs/knoxx-agent
+      KNOXX_AGENT_DIR: /tmp/knoxx-agent
       KNOXX_ADMIN_URL: http://localhost
       KNOXX_BASE_URL: http://localhost:8000
       KNOXX_API_KEY: ${KNOXX_API_KEY:-}
