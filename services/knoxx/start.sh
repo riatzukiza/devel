@@ -18,8 +18,8 @@ DEV_COMPOSE_FILE="$SCRIPT_DIR/docker-compose.dev.yml"
 DEVEL_ROOT_DEFAULT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 export DEVEL_ROOT_PATH="${DEVEL_ROOT_PATH:-$DEVEL_ROOT_DEFAULT}"
-export KNOXX_BACKEND_PATH="${KNOXX_BACKEND_PATH:-$DEVEL_ROOT_PATH/orgs/open-hax/knoxx/backend}"
-export KMS_INGESTION_PATH="${KMS_INGESTION_PATH:-$DEVEL_ROOT_PATH/orgs/open-hax/knoxx/ingestion}"
+export KNOXX_BACKEND_PATH="${KNOXX_BACKEND_PATH:-$DEVEL_ROOT_PATH/orgs/open-hax/openplanner/packages/knoxx/backend}"
+export KMS_INGESTION_PATH="${KMS_INGESTION_PATH:-$DEVEL_ROOT_PATH/orgs/open-hax/openplanner/packages/knoxx/ingestion}"
 export WORKSPACE_PATH="${WORKSPACE_PATH:-$HOME}"
 
 # Colors for output
