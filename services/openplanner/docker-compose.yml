@@ -284,7 +284,7 @@ services:
       DATABASE_URL: postgresql://${OPENPLANNER_PROXX_DB_USER:-openai_proxy}:${OPENPLANNER_PROXX_DB_PASSWORD:-openai_proxy}@openplanner-proxx-db:5432/${OPENPLANNER_PROXX_DB_NAME:-openai_proxy}
       UPSTREAM_PROVIDER_ID: ${OPENPLANNER_PROXX_UPSTREAM_PROVIDER_ID:-zai}
       UPSTREAM_FALLBACK_PROVIDER_IDS: ${OPENPLANNER_PROXX_UPSTREAM_FALLBACK_PROVIDER_IDS:-rotussy,ollama-cloud,requesty}
-      UPSTREAM_BASE_URL: ${OPENPLANNER_PROXX_UPSTREAM_BASE_URL:-https://chatgpt.com/backend-api}
+      UPSTREAM_BASE_URL: ${OPENPLANNER_PROXX_UPSTREAM_BASE_URL:-https://api.z.ai/api/paas/v4}
       UPSTREAM_PROVIDER_BASE_URLS: ${OPENPLANNER_PROXX_UPSTREAM_PROVIDER_BASE_URLS:-ollama-cloud=https://ollama.com,openai=https://chatgpt.com/backend-api,vivgrid=https://api.vivgrid.com,requesty=https://router.requesty.ai/v1,zai=https://api.z.ai/api/paas/v4}
       REQUESTY_API_TOKEN: ${REQUESTY_API_TOKEN:-}
       OPENAI_PROVIDER_ID: ${OPENAI_PROVIDER_ID:-openai}
