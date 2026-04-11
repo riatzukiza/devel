@@ -34,32 +34,37 @@ server {
     }
 
     # ============================================================
-    # KM Labels API (specific routes before generic /api/)
+    # Tenants API (native OpenPlanner, replacing Python km_labels)
     # ============================================================
     location /api/tenants {
         limit_req zone=api burst=20 nodelay;
-        proxy_pass http://km_labels/api/tenants;
+        proxy_pass http://openplanner_api/v1/tenants;
         proxy_http_version 1.1;
+        proxy_set_header Authorization "Bearer ${OPENPLANNER_API_KEY}";
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
+    # Labels API (native OpenPlanner, replacing Python km_labels)
     location /api/km-labels/ {
         limit_req zone=api burst=20 nodelay;
-        proxy_pass http://km_labels/api/km-labels/;
+        proxy_pass http://openplanner_api/v1/labels/;
         proxy_http_version 1.1;
+        proxy_set_header Authorization "Bearer ${OPENPLANNER_API_KEY}";
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
+    # Export API (native OpenPlanner, replacing Python km_labels)
     location /api/export/ {
         limit_req zone=api burst=20 nodelay;
-        proxy_pass http://km_labels/api/export/;
+        proxy_pass http://openplanner_api/v1/export/;
         proxy_http_version 1.1;
+        proxy_set_header Authorization "Bearer ${OPENPLANNER_API_KEY}";
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -213,7 +218,7 @@ server {
 
     location = /health/km-labels {
         access_log off;
-        proxy_pass http://km_labels/health;
+        proxy_pass http://openplanner_api/v1/health;
         proxy_http_version 1.1;
         proxy_set_header Connection "";
     }
