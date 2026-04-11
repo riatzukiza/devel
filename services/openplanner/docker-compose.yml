@@ -1175,8 +1175,8 @@ services:
     cpus: 0.5
     cpuset: 2-21
     environment:
-      KNOXX_FRONTEND_UPSTREAM_HOST: ${KNOXX_FRONTEND_UPSTREAM_HOST:-knoxx-frontend}
-      KNOXX_FRONTEND_UPSTREAM_PORT: ${KNOXX_FRONTEND_UPSTREAM_PORT:-80}
+      KNOXX_FRONTEND_UPSTREAM_HOST: ${KNOXX_FRONTEND_UPSTREAM_HOST:-knoxx-frontend-dev}
+      KNOXX_FRONTEND_UPSTREAM_PORT: ${KNOXX_FRONTEND_UPSTREAM_PORT:-5173}
       SHUVCRAWL_API_TOKEN: ${SHUVCRAWL_API_TOKEN:-}
       OPENPLANNER_API_KEY: ${KNOXX_OPENPLANNER_API_KEY:-change-me}
     ports:
@@ -1198,6 +1198,9 @@ services:
       timeout: 10s
       retries: 3
     restart: unless-stopped
+    tmpfs:
+    - /var/cache/nginx:size=64m,mode=1777
+    - /var/run:size=1m,mode=1777
     networks:
     - knoxx-internal
     - ai-infra
@@ -1323,7 +1326,7 @@ services:
     environment:
       CHOKIDAR_USEPOLLING: ${KNOXX_FRONTEND_CHOKIDAR_USEPOLLING:-true}
       WATCHPACK_POLLING: ${KNOXX_FRONTEND_WATCHPACK_POLLING:-true}
-      VITE_KNOXX_BACKEND_URL: ${VITE_KNOXX_BACKEND_URL:-http://localhost:8000}
+      VITE_KNOXX_BACKEND_URL: ${VITE_KNOXX_BACKEND_URL:-http://knoxx-backend:8000}
       VITE_KNOXX_DEV_USER_EMAIL: ${KNOXX_DEV_USER_EMAIL:-system-admin@open-hax.local}
       VITE_KNOXX_DEV_ORG_SLUG: ${KNOXX_DEV_ORG_SLUG:-open-hax}
     volumes:
