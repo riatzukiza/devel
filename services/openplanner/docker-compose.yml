@@ -1187,7 +1187,7 @@ services:
         condition: service_healthy
       shibboleth-backend:
         condition: service_healthy
-      km-labels:
+      openplanner:
         condition: service_healthy
     healthcheck:
       test:
@@ -1375,48 +1375,9 @@ services:
     - knoxx-internal
     - ai-infra
     user: ${DOCKER_USER:-1000:1000}
-  km-labels:
-    image: knoxx-km-labels:latest
-    cpus: 1
-    cpuset: 2-21
-    expose:
-    - '3002'
-    environment:
-      KNOXX_BASE_URL: ${KNOXX_BASE_URL:-http://knoxx-backend:8000}
-      SHIBBOLETH_BASE_URL: ${SHIBBOLETH_BASE_URL:-http://shibboleth-backend:8788}
-      KM_LABELS_BASE_URL: http://km-labels:3002
-      KM_LABELS_API_KEY: ${KM_LABELS_API_KEY:-<password>}
-      DATABASE_URL: postgresql://${POSTGRES_USER:-kms}:${POSTGRES_PASSWORD:-kms}@knoxx-postgres:5432/${POSTGRES_DB:-futuresight_kms}
-      REDIS_URL: redis://knoxx-redis:6379
-      RAGUSSY_BASE_URL: http://knoxx-backend:8000
-      RAGUSSY_API_KEY: ${RAGUSSY_API_KEY:-}
-      OPENPLANNER_BASE_URL: ${KNOXX_OPENPLANNER_BASE_URL:-http://openplanner:7777}
-      OPENPLANNER_API_KEY: ${KNOXX_OPENPLANNER_API_KEY:-change-me}
-    volumes:
-    - km-labels-data:/data
-    - ${WORKSPACE_PATH:-../../..}:/app/workspace:ro
-    extra_hosts:
-    - host.docker.internal:host-gateway
-    depends_on:
-      knoxx-postgres:
-        condition: service_healthy
-      knoxx-redis:
-        condition: service_healthy
-    healthcheck:
-      test:
-      - CMD
-      - curl
-      - -f
-      - http://localhost:3002/health
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 20s
-    restart: unless-stopped
-    networks:
-    - knoxx-internal
-    - ai-infra
-    user: ${DOCKER_USER:-1000:1000}
+  # km-labels: REMOVED - replaced by native OpenPlanner /v1/labels, /v1/tenants, /v1/export routes
+  # The Python FastAPI service is no longer needed. All label/tenant/export traffic
+  # now routes through openplanner_api via nginx.
   kms-ingestion:
     image: knoxx-kms-ingestion:latest
     cpus: 2
@@ -1529,7 +1490,7 @@ volumes:
   knoxx-frontend-node-modules: null
   knoxx-knoxx-node-modules: null
   shibboleth-data: null
-  km-labels-data: null
+  # km-labels-data: removed with km-labels service
 networks:
   ai-infra:
     external: true
