@@ -91,22 +91,27 @@
     (template
       (id :repair/missing-section)
       (when :rule/required-section)
-      (text "Add the missing section `{{heading}}` in position {{order}}. Preserve all other sections."))
+      (text "Add the missing section `{{heading}}` as a level-2 markdown header (`## {{heading}}`) in position {{order}}. Preserve all other sections. Do not use bold or emphasis in place of headers."))
 
     (template
       (id :repair/reorder-sections)
       (when :rule/section-order)
-      (text "Reorder the existing sections to exactly: Signal, Evidence, Frames, Countermoves, Next. Preserve content."))
+      (text "Reorder the existing sections to exactly: ## Signal, ## Evidence, ## Frames, ## Countermoves, ## Next. Each section must use a level-2 markdown header (`##`). Preserve content."))
 
     (template
       (id :repair/rewrite-next)
       (when :rule/next-exactly-one-action)
-      (text "Rewrite `Next` so it contains exactly one concrete next action."))
+      (text "Rewrite `## Next` so it contains exactly one concrete next action."))
 
     (template
       (id :repair/frames-cardinality)
       (when :rule/frames-cardinality)
-      (text "Rewrite `Frames` so it contains 2–3 plausible interpretations.")))
+      (text "Rewrite `## Frames` so it contains 2–3 plausible interpretations."))
+
+    (template
+      (id :repair/disallowed-node-type)
+      (when :rule/allowed-node-types)
+      (text "Section `{{heading}}` contains `{{nodeType}}` nodes which are not allowed. Use `## {{heading}}` as a level-2 markdown header for section headings. Do not use bold (`**...**`), emphasis, or deeper heading levels (`###`, `####`) inside sections. Flatten sub-section content into paragraphs, lists, or blockquotes.")))
 
   (review
     (enabled true)

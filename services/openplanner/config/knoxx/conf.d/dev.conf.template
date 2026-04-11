@@ -1,7 +1,7 @@
-# FutureSight KMS - Site Configuration
+# FutureSight KMS - Dev Mode Configuration
 #
-# Main UI is Knoxx frontend at /
-# Stack landing page remains available at /stack/
+# This config is used when COMPOSE_PROFILES=dev is enabled.
+# It routes to the Vite dev server with WebSocket support for HMR.
 
 upstream knoxx_frontend {
     server ${KNOXX_FRONTEND_UPSTREAM_HOST}:${KNOXX_FRONTEND_UPSTREAM_PORT};
@@ -34,32 +34,37 @@ server {
     }
 
     # ============================================================
-    # KM Labels API (specific routes before generic /api/)
+    # Tenants API (native OpenPlanner, replacing Python km_labels)
     # ============================================================
     location /api/tenants {
         limit_req zone=api burst=20 nodelay;
-        proxy_pass http://km_labels/api/tenants;
+        proxy_pass http://openplanner_api/v1/tenants;
         proxy_http_version 1.1;
+        proxy_set_header Authorization "Bearer ${OPENPLANNER_API_KEY}";
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
+    # Labels API (native OpenPlanner, replacing Python km_labels)
     location /api/km-labels/ {
         limit_req zone=api burst=20 nodelay;
-        proxy_pass http://km_labels/api/km-labels/;
+        proxy_pass http://openplanner_api/v1/labels/;
         proxy_http_version 1.1;
+        proxy_set_header Authorization "Bearer ${OPENPLANNER_API_KEY}";
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
+    # Export API (native OpenPlanner, replacing Python km_labels)
     location /api/export/ {
         limit_req zone=api burst=20 nodelay;
-        proxy_pass http://km_labels/api/export/;
+        proxy_pass http://openplanner_api/v1/export/;
         proxy_http_version 1.1;
+        proxy_set_header Authorization "Bearer ${OPENPLANNER_API_KEY}";
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -67,12 +72,13 @@ server {
     }
 
     # ============================================================
-    # CMS API (document management)
+    # CMS API (document management via native OpenPlanner CMS surface)
     # ============================================================
     location /api/cms/ {
         limit_req zone=api burst=20 nodelay;
-        proxy_pass http://km_labels/api/cms/;
+        proxy_pass http://openplanner_api/v1/cms/;
         proxy_http_version 1.1;
+        proxy_set_header Authorization "Bearer ${OPENPLANNER_API_KEY}";
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -129,6 +135,7 @@ server {
         limit_req zone=api burst=20 nodelay;
         proxy_pass http://openplanner_api/;
         proxy_http_version 1.1;
+        proxy_set_header Authorization "Bearer ${OPENPLANNER_API_KEY}";
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -192,7 +199,7 @@ server {
     location = /health {
         access_log off;
         default_type application/json;
-        return 200 '{"status":"ok","service":"nginx","note":"This endpoint reports nginx self-health only. Check /health/knoxx, /health/shibboleth, /health/km-labels, and /health/openplanner for dependency health."}';
+        return 200 '{"status":"ok","service":"nginx","mode":"dev","note":"This endpoint reports nginx self-health only. Check /health/knoxx, /health/shibboleth, and /health/openplanner for dependency health."}';
     }
 
     location = /health/knoxx {
@@ -211,7 +218,7 @@ server {
 
     location = /health/km-labels {
         access_log off;
-        proxy_pass http://km_labels/health;
+        proxy_pass http://openplanner_api/v1/health;
         proxy_http_version 1.1;
         proxy_set_header Connection "";
     }
@@ -238,11 +245,49 @@ server {
     location = /ready {
         access_log off;
         default_type application/json;
-        return 200 '{"status":"ready","service":"nginx","note":"This endpoint reports nginx readiness only. Dependency health is exposed on the explicit /health/* endpoints."}';
+        return 200 '{"status":"ready","service":"nginx","mode":"dev"}';
     }
 
     # ============================================================
-    # Main app UI - Knoxx frontend
+    # Vite HMR WebSocket - must be before main location /
+    # ============================================================
+    location /__vite_hmr {
+        proxy_pass http://knoxx_frontend;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_read_timeout 86400;
+    }
+
+    # Vite dev server source requests
+    location /@vite {
+        proxy_pass http://knoxx_frontend;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_buffering off;
+        proxy_cache off;
+    }
+
+    location /@fs {
+        proxy_pass http://knoxx_frontend;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_buffering off;
+        proxy_cache off;
+    }
+
+    # ============================================================
+    # Main app UI - Vite dev server with HMR support
     # ============================================================
     location / {
         proxy_pass http://knoxx_frontend;
