@@ -35,9 +35,9 @@ All services are proxied through a custom baked nginx image on port 80:
 | `/v1/*` | Ragussy Backend | OpenAI-compatible |
 | `http://localhost:8097/` | Shibboleth UI | Promptbench control plane + labeling |
 | `http://localhost:8097/api/*` | Shibboleth API | Control-plane API |
-| `/api/km-labels/*` | KM Labels | Label CRUD |
-| `/api/tenants/*` | KM Labels | Tenant management |
-| `/api/export/*` | KM Labels | SFT/RLHF export |
+| `/api/km-labels/*` | OpenPlanner | Label CRUD (native, replaces Python) |
+| `/api/tenants/*` | OpenPlanner | Tenant management (native) |
+| `/api/export/*` | OpenPlanner | SFT/RLHF export (native) |
 | `/api/openplanner/*` | OpenPlanner API | Lake, graph, and embedding API behind nginx |
 | `/ws/stream` | Ragussy | WebSocket streaming |
 | `http://localhost:8796/` | Graph Weaver | Local graph workbench UI |
@@ -146,7 +146,7 @@ docker compose ps
 curl http://localhost/health
 curl http://localhost/api/ragussy/../health
 curl http://localhost/api/shibboleth/../health
-curl http://localhost/api/km-labels/../health
+curl http://localhost/health/openplanner
 curl http://localhost/health/openplanner
 curl http://localhost:8796/api/status
 curl http://localhost:3777/health
@@ -158,7 +158,7 @@ Volumes are created automatically:
 - `ragussy-models` - Model files
 - `ragussy-runs` - Inference runs
 - `shibboleth-data` - DSL datasets and chat-lab session data
-- `km-labels-data` - Label exports
+- `knoxx-models` - Model cache
 - `shuvcrawl-data` - Browser profiles, cache, crawl state
 - `shuvcrawl-output` - Extracted markdown/artifacts
 - `qdrant-storage` - Vector index

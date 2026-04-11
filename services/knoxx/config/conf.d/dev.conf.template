@@ -199,7 +199,7 @@ server {
     location = /health {
         access_log off;
         default_type application/json;
-        return 200 '{"status":"ok","service":"nginx","mode":"dev","note":"This endpoint reports nginx self-health only. Check /health/knoxx, /health/shibboleth, /health/km-labels, and /health/openplanner for dependency health."}';
+        return 200 '{"status":"ok","service":"nginx","mode":"dev","note":"This endpoint reports nginx self-health only. Check /health/knoxx, /health/shibboleth, and /health/openplanner for dependency health."}';
     }
 
     location = /health/knoxx {
