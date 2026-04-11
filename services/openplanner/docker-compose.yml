@@ -1236,7 +1236,7 @@ services:
       PROXX_EMBED_MODEL: ${PROXX_EMBED_MODEL:-nomic-embed-text:latest}
       OPENPLANNER_BASE_URL: ${KNOXX_OPENPLANNER_BASE_URL:-http://openplanner:7777}
       OPENPLANNER_API_KEY: ${KNOXX_OPENPLANNER_API_KEY:-change-me}
-      KNOXX_POLICY_DATABASE_URL: ${KNOXX_POLICY_DATABASE_URL:-postgresql://${POSTGRES_USER:-kms}:${POSTGRES_PASSWORD:-kms}@knoxx-postgres:5432/${POSTGRES_DB:-futuresight_kms}}
+      KNOXX_POLICY_DATABASE_URL: ${KNOXX_POLICY_DATABASE_URL:-postgresql://${POSTGRES_USER:-kms}:${POSTGRES_PASSWORD:-kms}@knoxx-postgres:5432/${POSTGRES_DB:-knoxx}}
       KNOXX_PRIMARY_ORG_SLUG: ${KNOXX_PRIMARY_ORG_SLUG:-open-hax}
       KNOXX_PRIMARY_ORG_NAME: ${KNOXX_PRIMARY_ORG_NAME:-Open Hax}
       KNOXX_PRIMARY_ORG_KIND: ${KNOXX_PRIMARY_ORG_KIND:-platform_owner}
@@ -1386,7 +1386,7 @@ services:
     - '3003'
     environment:
       PORT: '3003'
-      DATABASE_URL: postgresql://${POSTGRES_USER:-kms}:${POSTGRES_PASSWORD:-kms}@knoxx-postgres:5432/${POSTGRES_DB:-futuresight_kms}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-kms}:${POSTGRES_PASSWORD:-kms}@knoxx-postgres:5432/${POSTGRES_DB:-knoxx}
       REDIS_URL: redis://knoxx-redis:6379
       RAGUSSY_BASE_URL: http://knoxx-backend:8000
       PROXX_BASE_URL: ${OPENPLANNER_PROXX_BASE_URL:-http://openplanner-proxx:8789}
@@ -1440,13 +1440,13 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-kms}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-kms}
-      POSTGRES_DB: ${POSTGRES_DB:-futuresight_kms}
+      POSTGRES_DB: ${POSTGRES_DB:-knoxx}
     volumes:
     - knoxx-postgres-data:/var/lib/postgresql/data
     healthcheck:
       test:
       - CMD-SHELL
-      - pg_isready -U ${POSTGRES_USER:-kms} -d ${POSTGRES_DB:-futuresight_kms}
+      - pg_isready -U ${POSTGRES_USER:-kms} -d ${POSTGRES_DB:-knoxx}
       interval: 10s
       timeout: 5s
       retries: 5
