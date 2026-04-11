@@ -478,7 +478,7 @@ services:
       GRAPH_WEAVER_INCLUDE_SEMANTIC_EDGES: ${GRAPH_WEAVER_INCLUDE_SEMANTIC_EDGES:-true}
       GRAPH_WEAVER_SEMANTIC_MIN_SIMILARITY: ${GRAPH_WEAVER_SEMANTIC_MIN_SIMILARITY:-0.8}
       GRAPH_WEAVER_OPENPLANNER_PROJECTS: ${GRAPH_WEAVER_OPENPLANNER_PROJECTS:-devel,web,bluesky,knoxx-session}
-      WEBGL_GRAPH_VIEW_DIST: /app/workspace/devel/packages/webgl-graph-view/dist
+      WEBGL_GRAPH_VIEW_DIST: /app/workspace/devel/orgs/open-hax/openplanner/packages/webgl-graph-view/dist
       STATE_DIR: /app/workspace/devel/services/openplanner/openplanner-lake/graph-weaver
       MONGODB_URI: ${MONGODB_URI:-mongodb://openplanner:<password>@mongodb:27017/openplanner?replicaSet=rs0&authSource=openplanner}authSource=openplanner}
       MONGODB_DB: ${MONGODB_DB:-openplanner}
