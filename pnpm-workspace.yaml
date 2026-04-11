@@ -3,7 +3,6 @@ packages:
   - packages/embedding
   - packages/persistence
   - orgs/open-hax/uxx
-  - packages/futuresight-kms
   - packages/ollama-registry
   - packages/opencode-cljs-client
   - packages/aether
@@ -39,7 +38,6 @@ packages:
   - orgs/open-hax/eta-mu/packages/*
   - orgs/riatzukiza/ourllamas
   - orgs/open-hax/vivgrid-openai-proxy
-  - orgs/riatzukiza/futuresight-kms
   - services/*
   - orgs/open-hax/openhax/packages/*
   - orgs/riatzukiza/promethean/packages/*
