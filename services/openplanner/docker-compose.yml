@@ -1171,6 +1171,9 @@ services:
       default: {}
     user: ${DOCKER_USER:-1000:1000}
   knoxx-nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
     image: futuresight-kms-nginx
     cpus: 0.5
     cpuset: 2-21
