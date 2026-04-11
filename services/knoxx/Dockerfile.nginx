@@ -7,6 +7,7 @@ RUN apk add --no-cache gettext
 # These will be used when rendering the templates at build time
 ENV KNOXX_FRONTEND_UPSTREAM_HOST=knoxx-frontend
 ENV KNOXX_FRONTEND_UPSTREAM_PORT=80
+ENV OPENPLANNER_API_KEY=change-me
 ENV KNOXX_BACKEND_HOST=knoxx-backend
 ENV KNOXX_BACKEND_PORT=8000
 ENV SHIBBOLETH_HOST=shibboleth-backend
