@@ -39,8 +39,7 @@ services:
         condition: service_healthy
       shibboleth-backend:
         condition: service_healthy
-      openplanner:
-        condition: service_started
+      # openplanner is external (ai-infra network)
     healthcheck:
       test: ["CMD", "nginx", "-t"]
       interval: 30s
@@ -111,6 +110,8 @@ services:
       - knoxx-backend-dist:/app/workspace/devel/orgs/open-hax/knoxx/backend/dist
       - knoxx-backend-m2:/root/.m2
     depends_on:
+      postgres:
+        condition: service_healthy
       redis:
         condition: service_healthy
     healthcheck:
