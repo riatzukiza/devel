@@ -459,13 +459,16 @@ services:
     image: node:22-bookworm
     cpus: 2
     cpuset: 2-21
-    working_dir: /app/workspace/devel/orgs/open-hax/openplanner/packages/graph-weaver
-    command: bash -lc "corepack enable && pnpm install && npx tsx src/server.ts"
+    user: ${DOCKER_USER:-1000:1000}
+    working_dir: /app/workspace/devel/orgs/open-hax/openplanner
+    command: bash -lc "npx pnpm install --no-frozen-lockfile && npx pnpm -C packages/graph-weaver-aco build && cd packages/graph-weaver && npx tsx src/server.ts"
     expose:
     - '8796'
     ports:
     - 127.0.0.1:${GRAPH_WEAVER_PORT:-8796}:8796
     environment:
+      CI: 'true'
+      NPM_CONFIG_CONFIRM_MODULES_PURGE: 'false'
       HOST: 0.0.0.0
       PORT: '8796'
       REPO_ROOT: /app/workspace/devel
@@ -511,7 +514,6 @@ services:
     networks:
       default: {}
       ai-infra: {}
-    user: ${DOCKER_USER:-1000:1000}
   eros-eris-field-app:
     profiles:
     - graph
@@ -1176,6 +1178,7 @@ services:
       KNOXX_FRONTEND_UPSTREAM_HOST: ${KNOXX_FRONTEND_UPSTREAM_HOST:-knoxx-frontend}
       KNOXX_FRONTEND_UPSTREAM_PORT: ${KNOXX_FRONTEND_UPSTREAM_PORT:-80}
       SHUVCRAWL_API_TOKEN: ${SHUVCRAWL_API_TOKEN:-}
+      OPENPLANNER_API_KEY: ${KNOXX_OPENPLANNER_API_KEY:-change-me}
     ports:
     - ${KNOXX_NGINX_HTTP_PORT:-80}:80
     - ${SHIBBOLETH_HTTP_PORT:-8097}:8088
