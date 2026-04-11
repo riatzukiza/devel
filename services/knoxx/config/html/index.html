@@ -80,8 +80,8 @@
             <code>http://localhost:8097/</code>
         </div>
         <div class="service">
-            <h3>KM Labels</h3>
-            <p>Label Bridge API</p>
+            <h3>Labels</h3>
+            <p>Native OpenPlanner Label API</p>
             <code>/api/km-labels/*</code>
         </div>
         <div class="service">
@@ -113,7 +113,7 @@ async function checkHealth() {
     const services = [
         { name: 'Ragussy', url: '/health/ragussy' },
         { name: 'Shibboleth', url: '/health/shibboleth' },
-        { name: 'KM Labels', url: '/health/km-labels' },
+        { name: 'Labels', url: '/health/km-labels' },
         { name: 'Qdrant', url: '/health/qdrant' },
     ];
     const results = await Promise.allSettled(services.map(async (s) => {

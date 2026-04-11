@@ -13,8 +13,7 @@
 x-shared-env: &shared-env
   KNOXX_BASE_URL: ${KNOXX_BASE_URL:-http://knoxx-backend:8000}
   SHIBBOLETH_BASE_URL: ${SHIBBOLETH_BASE_URL:-http://shibboleth:3001}
-  KM_LABELS_BASE_URL: http://km-labels:3002
-  KM_LABELS_API_KEY: ${KM_LABELS_API_KEY:-change-me-km-labels}
+  OPENPLANNER_API_KEY: ${KNOXX_OPENPLANNER_API_KEY:-change-me-openplanner}
 
 services:
   # ============================================================
@@ -40,8 +39,8 @@ services:
         condition: service_healthy
       shibboleth-backend:
         condition: service_healthy
-      km-labels:
-        condition: service_healthy
+      openplanner:
+        condition: service_started
     healthcheck:
       test: ["CMD", "nginx", "-t"]
       interval: 30s
@@ -228,46 +227,7 @@ services:
       - kms-internal
       - ai-infra
 
-  # ============================================================
-  # KM-LABELS - Corporate KM Label Bridge API
-  # ============================================================
-  km-labels:
-    build:
-      context: ${KM_LABELS_PATH:-../../packages/futuresight-kms}
-      dockerfile: Dockerfile
-    cpus: 1
-    cpuset: "2-21"
-    expose:
-      - "3002"
-    environment:
-      <<: *shared-env
-      DATABASE_URL: postgresql://${POSTGRES_USER:-kms}:${POSTGRES_PASSWORD:-kms}@postgres:5432/${POSTGRES_DB:-futuresight_kms}
-      REDIS_URL: redis://redis:6379
-      KM_LABELS_API_KEY: ${KM_LABELS_API_KEY:-change-me-km-labels}
-      RAGUSSY_BASE_URL: http://knoxx-backend:8000
-      RAGUSSY_API_KEY: ${RAGUSSY_API_KEY:-}
-      OPENPLANNER_BASE_URL: ${KNOXX_OPENPLANNER_BASE_URL:-http://nginx/api/openplanner}
-      OPENPLANNER_API_KEY: ${KNOXX_OPENPLANNER_API_KEY:-change-me-openplanner}
-    volumes:
-      - km-labels-data:/data
-      - ${WORKSPACE_PATH:-../../..}:/app/workspace:ro
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3002/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 20s
-    restart: unless-stopped
-    networks:
-      - kms-internal
-      - ai-infra
+  # km-labels: REMOVED - replaced by native OpenPlanner /v1/labels, /v1/tenants, /v1/export routes
 
   # ============================================================
   # KMS INGESTION - Clojure ingestion engine (replacing km-labels)
@@ -399,7 +359,7 @@ services:
   #     - kms-internal
 
 volumes:
-  km-labels-data:
+  # km-labels-data: removed with km-labels service
   knoxx-models:
   knoxx-runs:
   knoxx-backend-node-modules:
