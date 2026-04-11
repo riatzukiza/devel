@@ -17,12 +17,11 @@ ENV OPENPLANNER_PORT=7777
 ENV KMS_INGESTION_HOST=kms-ingestion
 ENV KMS_INGESTION_PORT=3003
 
-COPY config/nginx.conf /etc/nginx/nginx.conf
-COPY config/conf.d/default.conf /etc/nginx/templates/default.conf.template
-COPY config/conf.d/dev.conf.template /etc/nginx/templates/dev.conf.template
-COPY config/conf.d/ssl.conf.example /etc/nginx/conf.d/ssl.conf.example
-COPY config/html /usr/share/nginx/html
-COPY vendor/shibboleth-ui-dist /usr/share/nginx/shibboleth
+COPY config/knoxx/nginx.conf /etc/nginx/nginx.conf
+COPY config/knoxx/conf.d/default.conf /etc/nginx/templates/default.conf.template
+COPY config/knoxx/conf.d/dev.conf.template /etc/nginx/templates/dev.conf.template
+COPY config/knoxx/conf.d/ssl.conf.example /etc/nginx/conf.d/ssl.conf.example
+COPY config/knoxx/html /usr/share/nginx/html
 
 # Render production config with default values
 # Only substitute specific env vars, leave nginx $variables intact
