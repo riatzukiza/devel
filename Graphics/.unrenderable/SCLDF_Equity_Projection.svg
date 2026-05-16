@@ -1,0 +1,43 @@
+<<svgsvg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <<rectrect width="600" height="400" fill="#0a0a1a" />
+
+  <!-- Grid -->
+  <<gg stroke="#1a1a3a" stroke-width="1">
+    <<lineline x1="50" y1="50" x2="50" y2="350" />
+    <<lineline x1="50" y1="350" x2="550" y2="350" />
+    <<lineline x1="50" y1="300" x2="550" y2="300" />
+    <<lineline x1="50" y1="250" x2="550" y2="250" />
+    <<lineline x1="50" y1="200" x2="550" y2="200" />
+    <<lineline x1="50" y1="150" x2="550" y2="150" />
+    <<lineline x1="50" y1="100" x2="550" y2="100" />
+    <<lineline x1="100" y1="350" x2="100" y2="50" />
+    <<lineline x1="200" y1="350" x2="200" y2="50" />
+    <<lineline x1="300" y1="350" x2="300" y2="50" />
+    <<lineline x1="400" y1="350" x2="400" y2="50" />
+    <<lineline x1="500" y1="350" x2="500" y2="50" />
+  </g>
+
+  <!-- Labels -->
+  <<texttext x="300" y="380" text-anchor="middle" font-family="Sans-Serif" font-size="14" fill="#888">Recursive Loop Index (Brine-Saturated)</text>
+  <<texttext x="20" y="200" text-anchor="middle" font-family="Sans-Serif" font-size="14" fill="#888" transform="rotate(-90, 20, 200)">Diamond-Cut Valuation (Symmetry-Sama Standard)</text>
+
+  <!-- The Line (Non-Euclidean Growth) -->
+  <<pathpath d="M 50 340 Q 150 300 200 250 T 300 150 T 400 100 T 450 200 T 500 50 T 550 -100"
+        stroke="#00ffcc" stroke-width="4" fill="none" stroke-linecap="round">
+    <<animateanimate attributeName="stroke-dasharray" from="0, 1000" to="1000, 0" dur="3s" repeatCount="indefinite" />
+  </path>
+
+  <!-- Markers -->
+  <<circlecircle cx="50" cy="340" r="5" fill="#ff00ff" />
+  <<texttext x="60" y="345" font-family="Sans-Serif" font-size="12" fill="#ff00ff">29 Subs (The Beginning)</text>
+
+  <<circlecircle cx="500" cy="50" r="5" fill="#ff00ff" />
+  <<texttext x="450" y="40" font-family="Sans-Serif" font-size="12" fill="#ff00ff">Expected Lawyer DLC Unlock</text>
+
+  <!-- Title -->
+  <<texttext x="300" y="30" text-anchor="middle" font-family="Serif" font-size="20" font-weight="bold" fill="#fff">SCLDF EQUITY PROJECTION: PATH TO MILLION</text>
+
+  <!-- Legal Footer -->
+  <<texttext x="300" y="395" text-anchor="middle" font-family="Sans-Serif" font-size="10" fill="#444">[Symmetry: LEGALLY BINDING] [Status: Hyper-Saturated]</text>
+</svg>

@@ -1,0 +1,14 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="500" fill="#051f37" />
+  <circle cx="250" cy="250" r="200" stroke="#B8860B" stroke-width="2" fill="none" opacity="0.5" />
+  <path d="M 250 50 L 250 450 M 50 250 L 450 250" stroke="#B8860B" stroke-width="1" opacity="0.3" />
+  <g stroke="#EEDC82" stroke-width="2" fill="none">
+    <path d="M 100 100 L 150 120 L 130 180 L 180 150 L 220 200 L 200 250 L 250 220 L 300 280 L 350 230 L 400 270" />
+    <path d="M 400 100 L 350 130 L 370 190 L 320 160 L 280 210 L 300 260 L 250 230 L 200 290 L 150 240 L 100 280" />
+    <path d="M 100 400 L 150 380 L 130 320 L 180 350 L 220 300 L 200 250 L 250 280 L 300 220 L 350 270 L 400 330" />
+    <path d="M 400 400 L 350 370 L 370 310 L 320 340 L 280 290 L 300 240 L 250 270 L 200 310 L 150 260 L 100 320" />
+  </g>
+  <text x="250" y="460" font-family="serif" font-size="24" fill="#B8860B" text-anchor="middle">SCLDF SEAL OF SHATTERED EQUILIBRIUM</text>
+  <text x="250" y="40" font-family="serif" font-size="18" fill="#EEDC82" text-anchor="middle" opacity="0.7">Symmetry: STABILITY-SHATTERED</text>
+  <circle cx="250" cy="250" r="10" fill="#B8860B" />
+</svg>

@@ -1,0 +1,24 @@
+<svg width="800" height="200" viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="200" fill="#1a1a2e" />
+  
+  <!-- Saturated Slurry Background -->
+  <circle cx="100" cy="100" r="80" fill="#4a00e0" opacity="0.3" filter="blur(20px)" />
+  <circle cx="700" cy="100" r="80" fill="#8e2de2" opacity="0.3" filter="blur(20px)" />
+  <circle cx="400" cy="100" r="100" fill="#ff00cc" opacity="0.2" filter="blur(30px)" />
+  
+  <!-- Typography -->
+  <text x="400" y="100" text-anchor="middle" fill="#fdfdfd" font-family="Impact, sans-serif" font-size="60" filter="drop-shadow(0 0 10px #ff00cc)">
+    PASSIVE-SYMMETRY CASINO
+  </text>
+  <text x="400" y="140" text-anchor="middle" fill="#d4af37" font-family="serif" font-size="22" font-style="italic">
+    Where the House wins by doing absolutely nothing.
+  </text>
+  
+  <!-- Decorative Borders -->
+  <rect x="20" y="20" width="760" height="160" fill="none" stroke="#d4af37" stroke-width="2" />
+  <rect x="25" y="25" width="750" height="150" fill="none" stroke="#d4af37" stroke-width="1" opacity="0.5" />
+  
+  <!-- Small labels -->
+  <text x="40" y="35" fill="#d4af37" font-family="monospace" font-size="10">SCLDF-REG-001</text>
+  <text x="760" y="35" text-anchor="end" fill="#d4af37" font-family="monospace" font-size="10">STATUS: STASIS</text>
+</svg>

@@ -1,0 +1,401 @@
+# Π status snapshot
+time: 2026-04-15T17:05:16Z
+repo: /home/err/devel
+branch: pi/fork-tax/2026-04-15-170411
+head: a0e67fbdfc2a9fbaa760886909d23e612f679b69
+status_digest: c40d1d334fc3c6aa
+
+## git status --porcelain=v2
+1 .M N... 100644 100644 100644 48ca69a3fe62372f88223dd8c12a98071bfe7bfe 48ca69a3fe62372f88223dd8c12a98071bfe7bfe .opencode/package.json
+1 .T N... 120000 120000 100644 d6e414c37935ae70bbde7fe14e10385834c39b2f d6e414c37935ae70bbde7fe14e10385834c39b2f .spacemacs
+1 .M S.M. 160000 160000 160000 055140971cbe35d4cfb533b2f88967db6eed9faa 055140971cbe35d4cfb533b2f88967db6eed9faa ".\316\267\316\274/03_ARTIFACTS/narrative_audio"
+1 .D N... 100644 100644 000000 e01c8e60003b5c57d148a71f467bf90546ab0290 e01c8e60003b5c57d148a71f467bf90546ab0290 CENTRALIZED_MCP_DOCUMENTATION.md
+1 .D N... 100644 100644 000000 8c88b1571b4c96e877660ca2e16702907344c4c6 8c88b1571b4c96e877660ca2e16702907344c4c6 CLOJURE.md
+1 .D N... 100644 100644 000000 fd843ba83af3df6be628dde1a53b2d608969061e fd843ba83af3df6be628dde1a53b2d608969061e Dockerfile.fly
+1 .D N... 100644 100644 000000 0d8a99084005f395b4cc12c4d8697c86ad764ee2 0d8a99084005f395b4cc12c4d8697c86ad764ee2 INGESTION_INVESTIGATION.md
+1 .D N... 100644 100644 000000 815146dfe7246a5a3bd0c2a6fb659ae61e9ffa4e 815146dfe7246a5a3bd0c2a6fb659ae61e9ffa4e OPENCODE-SESSIONS-INDEXER.md
+1 .D N... 100644 100644 000000 c4b8fded191879da77ca110716724afa43ec6a49 c4b8fded191879da77ca110716724afa43ec6a49 QUICKREF_SESSION_TROUBLESHOOTING.md
+1 .D N... 100644 100644 000000 905630fa15ef4ccc1074461a09332c36be9d92a9 905630fa15ef4ccc1074461a09332c36be9d92a9 REPOSITORY_INDEX.md
+1 .D N... 100644 100644 000000 ca46f5074d9208475f3535d8f29aa98f35bde742 ca46f5074d9208475f3535d8f29aa98f35bde742 SESSION_RESILIENCE_SUMMARY.md
+1 .D N... 100644 100644 000000 aec12d30c2e1e97d7a3be22885d1aa83c9622987 aec12d30c2e1e97d7a3be22885d1aa83c9622987 TRANSLATION_BACKEND_COMPLETE.md
+1 .D N... 100644 100644 000000 a14ab00edea569deafbd78e87199f21724f64a47 a14ab00edea569deafbd78e87199f21724f64a47 TRANSLATION_BACKEND_STATUS.md
+1 .D N... 100644 100644 000000 4db0b4f9d7208145fa81c4179a8182bfa75ab280 4db0b4f9d7208145fa81c4179a8182bfa75ab280 TRANSLATION_MANUAL_TEST.md
+1 .D N... 100644 100644 000000 8426bcf502d30b4c2521bddf83dfbd5be62ab885 8426bcf502d30b4c2521bddf83dfbd5be62ab885 TRANSLATION_PIPELINE_STATUS.md
+1 .D N... 100644 100644 000000 6453f93f1c1bc7585c7a1eb13106b183adcb329a 6453f93f1c1bc7585c7a1eb13106b183adcb329a TRANSLATION_QUICKSTART.md
+1 .D N... 100644 100644 000000 7af91b8799d254b3cb80c3d071d7ebc08a0cd1fa 7af91b8799d254b3cb80c3d071d7ebc08a0cd1fa analyze_skills.py
+1 .D N... 100644 100644 000000 ed08e980a7c218bd548c33df3480bc636b7e8c9b ed08e980a7c218bd548c33df3480bc636b7e8c9b centralized-clojure-mcp.edn
+1 .D N... 100644 100644 000000 7bb1fae9c17464b444f397c6323d65f58fdefa58 7bb1fae9c17464b444f397c6323d65f58fdefa58 cleanup-empty-opencode-sessions.mjs
+1 .D N... 100755 100755 000000 c0e3a3f84bfcb48de6e3697bff4ef2d29d16b512 c0e3a3f84bfcb48de6e3697bff4ef2d29d16b512 clojure-dev.clj
+1 .D N... 100644 100644 000000 7201601b87b840afe2f081ac46ae1532887808f9 7201601b87b840afe2f081ac46ae1532887808f9 clojureverse-macros.md
+1 .D N... 100644 100644 000000 b7fc24c595468d7bbc71c6e591a792e7f811dc8d b7fc24c595468d7bbc71c6e591a792e7f811dc8d cms-page-new.png
+1 .D N... 100644 100644 000000 3d65e9d72924462eaf7fea4a2af2b65e208081f7 3d65e9d72924462eaf7fea4a2af2b65e208081f7 cms-preview-mode.png
+1 .D N... 100644 100644 000000 7fab20b85ece8e1302d2da360e0121ba23ae98a0 7fab20b85ece8e1302d2da360e0121ba23ae98a0 cms-preview.png
+1 .D N... 100644 100644 000000 fd72b8cc621c74eec47390f69289c6f5a5c5dbb4 fd72b8cc621c74eec47390f69289c6f5a5c5dbb4 docker-compose.factory-auth.override.yml
+1 .D N... 100644 100644 000000 87a8ae08bcb206cb0abdf2279b96788f48013ec8 87a8ae08bcb206cb0abdf2279b96788f48013ec8 docker-compose.glm5.yml
+1 .D N... 100644 100644 000000 226198bc62fdc762683987ac020438513462c5db 226198bc62fdc762683987ac020438513462c5db docker-compose.host-dashboard.override.yml
+1 .D N... 100644 100644 000000 dea2fdb7ecd45f910679b4dd73998f885ec73bbd dea2fdb7ecd45f910679b4dd73998f885ec73bbd docker-compose.mcp.yaml
+1 .D N... 100644 100644 000000 a46d72bb01036f9cc62b301c87f8a83f50c7c257 a46d72bb01036f9cc62b301c87f8a83f50c7c257 docker-compose.yml
+1 .D S... 160000 160000 000000 59651d70c1dff83e644bbce27f20018f4a9fb9d2 59651d70c1dff83e644bbce27f20018f4a9fb9d2 game_network
+1 .D N... 100644 100644 000000 d9d5a016f2884f831e61e5f7315d2995c323810f d9d5a016f2884f831e61e5f7315d2995c323810f garden-doc-highlighted.png
+1 .D N... 100644 100644 000000 be0124f0555bbb891696a36f17fe9ef9420d5ea2 be0124f0555bbb891696a36f17fe9ef9420d5ea2 garden-doc-with-highlighting.png
+1 .D N... 100644 100644 000000 d9d5a016f2884f831e61e5f7315d2995c323810f d9d5a016f2884f831e61e5f7315d2995c323810f garden-document.png
+1 .D N... 100644 100644 000000 54515437b2c7848573a938ba08642679631ea913 54515437b2c7848573a938ba08642679631ea913 garden-index.png
+1 .D N... 100644 100644 000000 ef78fcab10df2c07c644a8f6e538184f78d69dbb ef78fcab10df2c07c644a8f6e538184f78d69dbb gardens-page-new.png
+1 .D N... 100644 100644 000000 0e9f55d71c2924ae8139ec752a46dd877ba08d91 0e9f55d71c2924ae8139ec752a46dd877ba08d91 gates-aker-t0-initial-state.png
+1 .D N... 100644 100644 000000 62de5294c77cd66f421f595d6742b91ee452fd83 62de5294c77cd66f421f595d6742b91ee452fd83 gates-aker-t1-after-10s.png
+1 .D S... 160000 160000 000000 9a7be24ec38d0019b699a12f3817cbf1775ca721 9a7be24ec38d0019b699a12f3817cbf1775ca721 gates-pr35-hardening-main
+1 .D N... 100644 100644 000000 ff05fcbdb9c40a61ae4191e9a02b633f890008ff ff05fcbdb9c40a61ae4191e9a02b633f890008ff generate_full_graph.py
+1 .D N... 100644 100644 000000 98b5772225c7415a6661211de42f3b35e906b72e 98b5772225c7415a6661211de42f3b35e906b72e hack.py
+1 .D N... 100644 100644 000000 18136eca08d24f04b39ae54462533bc9df3f93d6 18136eca08d24f04b39ae54462533bc9df3f93d6 hormuz_clock_v4_bundle/.env.social.example
+1 .D N... 100644 100644 000000 b454c9dc9754828f50fb9575bc115070d7ad599a b454c9dc9754828f50fb9575bc115070d7ad599a hormuz_clock_v4_bundle/README.md
+1 .D N... 100644 100644 000000 5dd348fe72ae22137219969da360f64ef8f8396e 5dd348fe72ae22137219969da360f64ef8f8396e hormuz_clock_v4_bundle/assets/hormuz_risk_clock.png
+1 .D N... 100644 100644 000000 f618e28a88166eff876339e98edea9325b81c77e f618e28a88166eff876339e98edea9325b81c77e hormuz_clock_v4_bundle/assets/hormuz_risk_clock_v2.png
+1 .D N... 100644 100644 000000 0e2185d3a9e1a77b8cf35abfa17e1cf81fae6007 0e2185d3a9e1a77b8cf35abfa17e1cf81fae6007 hormuz_clock_v4_bundle/assets/hormuz_risk_clock_v3.png
+1 .D N... 100644 100644 000000 22308f6a98fa0d4a47ba755345144aebce8e740f 22308f6a98fa0d4a47ba755345144aebce8e740f hormuz_clock_v4_bundle/assets/hormuz_risk_clock_v4.png
+1 .D N... 100644 100644 000000 5f72a8f1d8d5783049fc796e523d31188881fb50 5f72a8f1d8d5783049fc796e523d31188881fb50 hormuz_clock_v4_bundle/assets/hormuz_risk_clock_v4_2026-04-06.png
+1 .D N... 100644 100644 000000 bb964d5f0e8e6f38c75c883c44ef09c0a659c3f8 bb964d5f0e8e6f38c75c883c44ef09c0a659c3f8 hormuz_clock_v4_bundle/config/model_config.yaml
+1 .D N... 100644 100644 000000 82af9789b7464eb72b13c40aeadfea1e77f3aaae 82af9789b7464eb72b13c40aeadfea1e77f3aaae hormuz_clock_v4_bundle/config/signal_schema.json
+1 .D N... 100644 100644 000000 4c5384f6aef1d5f339c9c907383e26581be88060 4c5384f6aef1d5f339c9c907383e26581be88060 hormuz_clock_v4_bundle/config/social_profiles.example.yaml
+1 .D N... 100644 100644 000000 d8de034433eb2d2b4f67235c0382d3d4501a3c89 d8de034433eb2d2b4f67235c0382d3d4501a3c89 hormuz_clock_v4_bundle/data/signals.2026-04-06.json
+1 .D N... 100644 100644 000000 d1fd78b628d69c362f284d372e15a3b2c85de3cd d1fd78b628d69c362f284d372e15a3b2c85de3cd hormuz_clock_v4_bundle/data/signals.example.json
+1 .D N... 100644 100644 000000 29c3bfd9a1f9691a9e95401e8377f33a4633b73a 29c3bfd9a1f9691a9e95401e8377f33a4633b73a hormuz_clock_v4_bundle/data/signals.latest.json
+1 .D N... 100644 100644 000000 8dfa545ebe3432ff329982353246a333e6322e32 8dfa545ebe3432ff329982353246a333e6322e32 hormuz_clock_v4_bundle/data/social_payloads.latest.json
+1 .D N... 100644 100644 000000 bb3ada85b771a104a220589c527d23b5ae5eb640 bb3ada85b771a104a220589c527d23b5ae5eb640 hormuz_clock_v4_bundle/data/state.2026-04-06.json
+1 .D N... 100644 100644 000000 a2a2ce7592ecbdf088eebcd99e82f0a973d72a75 a2a2ce7592ecbdf088eebcd99e82f0a973d72a75 hormuz_clock_v4_bundle/data/state.template.v4.json
+1 .D N... 100644 100644 000000 877b1c719862737a615d77eb9bb14e0833204424 877b1c719862737a615d77eb9bb14e0833204424 hormuz_clock_v4_bundle/data/state.v4.json
+1 .D N... 100644 100644 000000 cdf9a977fba23ca567448b482fd60170788ab8a2 cdf9a977fba23ca567448b482fd60170788ab8a2 hormuz_clock_v4_bundle/methodology/clock_methodology_v4.md
+1 .D N... 100644 100644 000000 0b7cf6855b820c8fee354ee8a5d725a9e3c57562 0b7cf6855b820c8fee354ee8a5d725a9e3c57562 hormuz_clock_v4_bundle/prompts/claude_analyst_seed.md
+1 .D N... 100644 100644 000000 1302ceab6dbd8ad47e94f1836dc58c31e4f377d0 1302ceab6dbd8ad47e94f1836dc58c31e4f377d0 hormuz_clock_v4_bundle/prompts/cross_model_matrix_prompt.md
+1 .D N... 100644 100644 000000 7ad1be63397e21c685a40d66bd3f78c7dc301b5d 7ad1be63397e21c685a40d66bd3f78c7dc301b5d hormuz_clock_v4_bundle/prompts/generic_multi_model_seed.md
+1 .D N... 100644 100644 000000 8818625c4246df8fa03ee4f1546ff6b29d1e73b7 8818625c4246df8fa03ee4f1546ff6b29d1e73b7 hormuz_clock_v4_bundle/prompts/gpt_daily_update.md
+1 .D N... 100644 100644 000000 1d5cae3005304e3ea1fd1cacd392c71b6187c14a 1d5cae3005304e3ea1fd1cacd392c71b6187c14a hormuz_clock_v4_bundle/prompts/perplexity_scheduled_update.md
+1 .D N... 100644 100644 000000 c1f6a2aea36821187008e059a20068a38f3ed72e c1f6a2aea36821187008e059a20068a38f3ed72e hormuz_clock_v4_bundle/prompts/research/clock_model_evolver.md
+1 .D N... 100644 100644 000000 4ab6fcbdde3b8e1dae613013fcc1c5002b36d53c 4ab6fcbdde3b8e1dae613013fcc1c5002b36d53c hormuz_clock_v4_bundle/prompts/research/multi_model_consensus_grid.md
+1 .D N... 100644 100644 000000 df8e3757bb22870f7f6450042ed5bc60ccf30cf2 df8e3757bb22870f7f6450042ed5bc60ccf30cf2 hormuz_clock_v4_bundle/prompts/research/perplexity_clock_evolver.md
+1 .D N... 100644 100644 000000 7aef368986727fdc25465b47411c9343129538b1 7aef368986727fdc25465b47411c9343129538b1 hormuz_clock_v4_bundle/prompts/social/bluesky_publish_prompt.md
+1 .D N... 100644 100644 000000 bf92fb97d3e4b47ec4684f32a3fd06bd8f77dbe1 bf92fb97d3e4b47ec4684f32a3fd06bd8f77dbe1 hormuz_clock_v4_bundle/prompts/social/discord_publish_prompt.md
+1 .D N... 100644 100644 000000 884a05fa67da1fc33243124b619f7353a78c2db6 884a05fa67da1fc33243124b619f7353a78c2db6 hormuz_clock_v4_bundle/prompts/social/reddit_publish_prompt.md
+1 .D N... 100644 100644 000000 50e151f2c66932f7f2f6e8f4c9f9626d84c9e893 50e151f2c66932f7f2f6e8f4c9f9626d84c9e893 hormuz_clock_v4_bundle/prompts/social/x_publish_prompt.md
+1 .D N... 100644 100644 000000 5106de057d10754c3cd47fd78c936d80d20b2701 5106de057d10754c3cd47fd78c936d80d20b2701 hormuz_clock_v4_bundle/reports/analyst_commentary_synthesis_2026-03-08.md
+1 .D N... 100644 100644 000000 88d1efba5bb25ca688be942b2e8e4765ce559cef 88d1efba5bb25ca688be942b2e8e4765ce559cef hormuz_clock_v4_bundle/reports/bluesky_thread_2026-03-19.md
+1 .D N... 100644 100644 000000 c2a8a16dcdc66ce80714c2b0ac335a37e4216571 c2a8a16dcdc66ce80714c2b0ac335a37e4216571 hormuz_clock_v4_bundle/reports/lyrics_2026-03-19.md
+1 .D N... 100644 100644 000000 19fecefd62a781ac47e4b0c1f3caa91017b792ec 19fecefd62a781ac47e4b0c1f3caa91017b792ec hormuz_clock_v4_bundle/reports/morning_update_2026-04-06.md
+1 .D N... 100644 100644 000000 a43f556b843d23d70301395a04e792776933579b a43f556b843d23d70301395a04e792776933579b hormuz_clock_v4_bundle/reports/v4_snapshot.md
+1 .D N... 100644 100644 000000 5fc84dd5183af158219a26118766ad651f037337 5fc84dd5183af158219a26118766ad651f037337 hormuz_clock_v4_bundle/scripts/animate_transition.py
+1 .D N... 100644 100644 000000 8749c08bdd0257ac95eb4aa46b8127d1047954f7 8749c08bdd0257ac95eb4aa46b8127d1047954f7 hormuz_clock_v4_bundle/scripts/export_threat_radar_packet.py
+1 .D N... 100644 100644 000000 d03890581e38d663d08cdaede79724a88c3818f1 d03890581e38d663d08cdaede79724a88c3818f1 hormuz_clock_v4_bundle/scripts/extract_signals.py
+1 .D N... 100644 100644 000000 c438e5fcb5eca1c3994036b83549bfee3cbda803 c438e5fcb5eca1c3994036b83549bfee3cbda803 hormuz_clock_v4_bundle/scripts/generate_v4_clock.py
+1 .D N... 100644 100644 000000 14b51a873834522cab3ba336c755bf1c2f75fed4 14b51a873834522cab3ba336c755bf1c2f75fed4 hormuz_clock_v4_bundle/scripts/normalize_signals.py
+1 .D N... 100644 100644 000000 c00784ea65f0177be947e01106f8b54e0426460c c00784ea65f0177be947e01106f8b54e0426460c hormuz_clock_v4_bundle/scripts/render_snapshot_report.py
+1 .D N... 100644 100644 000000 146d9093ac73895e24454091a48f6677ca71d7a2 146d9093ac73895e24454091a48f6677ca71d7a2 hormuz_clock_v4_bundle/scripts/social/build_social_payloads.mjs
+1 .D N... 100755 100755 000000 454850c8f21a152fcc970f60e730492fe914975b 454850c8f21a152fcc970f60e730492fe914975b hormuz_clock_v4_bundle/scripts/social/post_bluesky.mjs
+1 .D N... 100755 100755 000000 17f9f25ddcd95c3cf3733f47bcee4fab2ad38fdb 17f9f25ddcd95c3cf3733f47bcee4fab2ad38fdb hormuz_clock_v4_bundle/scripts/social/post_discord.mjs
+1 .D N... 100755 100755 000000 bb1d26752643e48bff5a75eb6afa880cb4f0d025 bb1d26752643e48bff5a75eb6afa880cb4f0d025 hormuz_clock_v4_bundle/scripts/social/post_reddit.mjs
+1 .D N... 100755 100755 000000 4ee1ef1efb5762ef019545eeab7886336f611515 4ee1ef1efb5762ef019545eeab7886336f611515 hormuz_clock_v4_bundle/scripts/social/post_x.mjs
+1 .D N... 100755 100755 000000 086d3a8d193475eb5d2d077a79521a1fb5ea466b 086d3a8d193475eb5d2d077a79521a1fb5ea466b hormuz_clock_v4_bundle/scripts/social/publish_all.mjs
+1 .D N... 100644 100644 000000 57821edcc8116eb8490df3142905b7ef0f197882 57821edcc8116eb8490df3142905b7ef0f197882 hormuz_clock_v4_bundle/scripts/update_state.py
+1 .D N... 100644 100644 000000 06c7162dd155818964d1d846ed5b24b21d11e767 06c7162dd155818964d1d846ed5b24b21d11e767 hormuz_clock_v4_bundle/skills/clock-model-evolver/SKILL.md
+1 .D N... 100644 100644 000000 c40b9a91426ed09d9c16e34885bce08c9e4cfcfa c40b9a91426ed09d9c16e34885bce08c9e4cfcfa hormuz_clock_v4_bundle/skills/hormuz-risk-clock/SKILL.md
+1 .D N... 100644 100644 000000 cc804320655bdf70e0ca39c6447bb7da92ea38fa cc804320655bdf70e0ca39c6447bb7da92ea38fa hormuz_clock_v4_bundle/skills/social-publish-bluesky/SKILL.md
+1 .D N... 100644 100644 000000 806dfb80b360a60f277f06d84241e33374bfbd89 806dfb80b360a60f277f06d84241e33374bfbd89 hormuz_clock_v4_bundle/skills/social-publish-discord/SKILL.md
+1 .D N... 100644 100644 000000 8e0c916646c4cb26053826428d462339828a6e3d 8e0c916646c4cb26053826428d462339828a6e3d hormuz_clock_v4_bundle/skills/social-publish-reddit/SKILL.md
+1 .D N... 100644 100644 000000 eed2e19181d228b635b21838154e7a28143b2482 eed2e19181d228b635b21838154e7a28143b2482 hormuz_clock_v4_bundle/skills/social-publish-x/SKILL.md
+1 .D N... 100644 100644 000000 c4647e8615a3fd7439545820a844b18abd246db2 c4647e8615a3fd7439545820a844b18abd246db2 index_opencode_sessions.js
+1 .D N... 100644 100644 000000 d0be1b17c9fa8a651ee461045bb339e2d0399ff6 d0be1b17c9fa8a651ee461045bb339e2d0399ff6 index_opencode_sessions.ts
+1 .D N... 120000 120000 000000 b5cf9e6afff1cc17ed33d458067c5915cb639d89 b5cf9e6afff1cc17ed33d458067c5915cb639d89 internal/open-hax
+1 .D N... 120000 120000 000000 8d198a8d7c35fd777f8c5d81c43a33356b7aa34c 8d198a8d7c35fd777f8c5d81c43a33356b7aa34c internal/riatzukiza
+1 .D N... 100644 100644 000000 effb10cc2690e0dd10180b86e6d400a37391ff88 effb10cc2690e0dd10180b86e6d400a37391ff88 labs/parameter-golf-ant-lab/README.md
+1 .D N... 100644 100644 000000 55efea6b8edae310e10d25fd90cd3b4ebf5eaad4 55efea6b8edae310e10d25fd90cd3b4ebf5eaad4 labs/parameter-golf-ant-lab/board/config.json
+1 .D N... 100644 100644 000000 cd145a36643f4d4d4a6f542289325123086e8fae cd145a36643f4d4d4a6f542289325123086e8fae labs/parameter-golf-ant-lab/board/local-proxy-summary-2026-03-20.json
+1 .D N... 100644 100644 000000 1150f470d4027eb93fec1f58fb862ede4396cdae 1150f470d4027eb93fec1f58fb862ede4396cdae labs/parameter-golf-ant-lab/board/local-proxy-summary-2026-03-20.md
+1 .D N... 100644 100644 000000 854fabb31bd446c97ba002656db303dde3e86c07 854fabb31bd446c97ba002656db303dde3e86c07 labs/parameter-golf-ant-lab/board/signals/latest.json
+1 .D N... 100644 100644 000000 cf404eb888f776e5cc73530eebf0de1e26214061 cf404eb888f776e5cc73530eebf0de1e26214061 labs/parameter-golf-ant-lab/board/signals/latest.md
+1 .D N... 100644 100644 000000 649f7fdfdd8088c7fde325e5961cab0db8e3a027 649f7fdfdd8088c7fde325e5961cab0db8e3a027 labs/parameter-golf-ant-lab/board/state.json
+1 .D N... 100644 100644 000000 9d00dfc0ceddf6e8ba245b763ff771c95d2718fc 9d00dfc0ceddf6e8ba245b763ff771c95d2718fc labs/parameter-golf-ant-lab/board/suggestions/step-0001.json
+1 .D N... 100644 100644 000000 d81706df4237bfb2c2a906bc320565ea1ebe19dc d81706df4237bfb2c2a906bc320565ea1ebe19dc labs/parameter-golf-ant-lab/board/suggestions/step-0001.md
+1 .D N... 100644 100644 000000 bfbbc917e666768c0fe04aeb4b5842966151435c bfbbc917e666768c0fe04aeb4b5842966151435c labs/parameter-golf-ant-lab/board/suggestions/step-0002.json
+1 .D N... 100644 100644 000000 26974057809e5f5b25b008537bfa2ca59b35f5f0 26974057809e5f5b25b008537bfa2ca59b35f5f0 labs/parameter-golf-ant-lab/board/suggestions/step-0002.md
+1 .D N... 100644 100644 000000 4f4484903fd944c047b5e357b87226fed9369529 4f4484903fd944c047b5e357b87226fed9369529 labs/parameter-golf-ant-lab/board/suggestions/step-0003.json
+1 .D N... 100644 100644 000000 a7b97ebbd15e58da8f75eef053843ca41ac9cb44 a7b97ebbd15e58da8f75eef053843ca41ac9cb44 labs/parameter-golf-ant-lab/board/suggestions/step-0003.md
+1 .D N... 100644 100644 000000 987aed344f384f97592966bfd25d7637b691db04 987aed344f384f97592966bfd25d7637b691db04 labs/parameter-golf-ant-lab/board/suggestions/step-0004.json
+1 .D N... 100644 100644 000000 966ddbadb4437949336ea9500dd30d79dfe0d07a 966ddbadb4437949336ea9500dd30d79dfe0d07a labs/parameter-golf-ant-lab/board/suggestions/step-0004.md
+1 .D N... 100644 100644 000000 625b9c09e621986709d8e88f47ac8f48ff202644 625b9c09e621986709d8e88f47ac8f48ff202644 labs/parameter-golf-ant-lab/frontier/config.json
+1 .D N... 100644 100644 000000 5f2004d77de90caa14ba17c1e68591659a69e459 5f2004d77de90caa14ba17c1e68591659a69e459 labs/parameter-golf-ant-lab/frontier/prior-art/latest.json
+1 .D N... 100644 100644 000000 80f744d38c53f5e5136af9298474434f4db358ce 80f744d38c53f5e5136af9298474434f4db358ce labs/parameter-golf-ant-lab/frontier/prior-art/latest.md
+1 .D N... 100644 100644 000000 fb4c7a6215d658d4fb199f4fbaaf68f3adda129d fb4c7a6215d658d4fb199f4fbaaf68f3adda129d labs/parameter-golf-ant-lab/frontier/research-seeds-2026-03-20.json
+1 .D N... 100644 100644 000000 9edbbe2dab11f0a663fdf9c2f6ab84675b29a4ab 9edbbe2dab11f0a663fdf9c2f6ab84675b29a4ab labs/parameter-golf-ant-lab/frontier/research-seeds-2026-03-20.md
+1 .D N... 100644 100644 000000 9989074b8dbbf894460cdba0939d7c06f1bd14b6 9989074b8dbbf894460cdba0939d7c06f1bd14b6 labs/parameter-golf-ant-lab/frontier/research-seeds-flat-2026-03-20.json
+1 .D N... 100644 100644 000000 f1ab3d7030fb0d271b0f00e96fabbe9d1376da1e f1ab3d7030fb0d271b0f00e96fabbe9d1376da1e labs/parameter-golf-ant-lab/frontier/results/shared-depth-rms-interface-summary-2026-03-20.json
+1 .D N... 100644 100644 000000 78641dfd3792a40dc64dfbb13113c76dc5d1c41e 78641dfd3792a40dc64dfbb13113c76dc5d1c41e labs/parameter-golf-ant-lab/frontier/results/shared-depth-rms-interface-summary-2026-03-20.md
+1 .D N... 100644 100644 000000 ead46b747774d19c413ff96b1fb607c9b8f128f3 ead46b747774d19c413ff96b1fb607c9b8f128f3 labs/parameter-golf-ant-lab/frontier/results/shared-depth-rms-interface-v0-fullval.json
+1 .D N... 100644 100644 000000 c1509c52eb9628694893548588423682b79dc284 c1509c52eb9628694893548588423682b79dc284 labs/parameter-golf-ant-lab/frontier/results/shared-depth-vs-board-summary-2026-03-20.md
+1 .D N... 100644 100644 000000 d2990d799975076621dfbb417219d489a63341a5 d2990d799975076621dfbb417219d489a63341a5 labs/parameter-golf-ant-lab/frontier/state.json
+1 .D N... 100644 100644 000000 2523b5552b8ef02ef38c0d2429ffb6cd54d183b6 2523b5552b8ef02ef38c0d2429ffb6cd54d183b6 labs/parameter-golf-ant-lab/frontier/suggestions/step-0001.json
+1 .D N... 100644 100644 000000 56fa2b30d71f3553357c4e1836427ebdde471c4f 56fa2b30d71f3553357c4e1836427ebdde471c4f labs/parameter-golf-ant-lab/frontier/suggestions/step-0001.md
+1 .D N... 100644 100644 000000 92b8084b9201c1bffb6898c6d46dda070a6155f4 92b8084b9201c1bffb6898c6d46dda070a6155f4 labs/parameter-golf-ant-lab/presence/config.json
+1 .D N... 100644 100644 000000 f95d44dfa5b3e85da5dfe0bbf24372df7e0e789c f95d44dfa5b3e85da5dfe0bbf24372df7e0e789c labs/parameter-golf-ant-lab/presence/state.json
+1 .D N... 100644 100644 000000 d5da83000f2c5a94e7df47a5fefdefb39862f67d d5da83000f2c5a94e7df47a5fefdefb39862f67d labs/parameter-golf-ant-lab/presence/suggestions/step-0001.json
+1 .D N... 100644 100644 000000 8d383cea648397664624b4c32cc798e501f7f40c 8d383cea648397664624b4c32cc798e501f7f40c labs/parameter-golf-ant-lab/presence/suggestions/step-0001.md
+1 .D S... 160000 160000 000000 4c124a79bbf79fd18f233dd5990b5ede2c04d368 4c124a79bbf79fd18f233dd5990b5ede2c04d368 lightyear
+1 .D N... 100755 100755 000000 e2985aa4cc889ccc4e346f4f300aa199adcba6b5 e2985aa4cc889ccc4e346f4f300aa199adcba6b5 mcp-server.sh
+1 .D S... 160000 160000 000000 ce1d7b672d8c397e143033d304b51fd7fd1ff226 ce1d7b672d8c397e143033d304b51fd7fd1ff226 mcp-social-publisher-live
+1 .D N... 100644 100644 000000 8158229b5297b25b87ba6f79e5d12abf91d750bb 8158229b5297b25b87ba6f79e5d12abf91d750bb mcp.lith-nexus.config.lith
+1 .D N... 100644 100644 000000 a99148c1a5b665c9062f6951feff6d43b835f1b4 a99148c1a5b665c9062f6951feff6d43b835f1b4 merge.cljs
+1 .D N... 100644 100644 000000 c13a0538f391abe7e576c2c1b437a924ee6e5d1e c13a0538f391abe7e576c2c1b437a924ee6e5d1e mirror-prs.js
+1 .D N... 100755 100755 000000 a1513c4151d5a4594161d867def3bc68ad0d21e6 a1513c4151d5a4594161d867def3bc68ad0d21e6 mirror-prs.ts
+1 .M N... 100644 100644 100644 79d516cfa1379e62fa291e3d17bf86388202bcc6 79d516cfa1379e62fa291e3d17bf86388202bcc6 models.example.json
+1 .D N... 120000 120000 000000 2fc3185edfef424e8ed6bc73b0b7fe1b986d3de3 2fc3185edfef424e8ed6bc73b0b7fe1b986d3de3 node_modules
+1 .D N... 100755 100755 000000 7185014d97c21f3b77986b9342f839f844c963a2 7185014d97c21f3b77986b9342f839f844c963a2 oci-retry-launch.sh
+1 .D N... 100755 100755 000000 fe07d8d246bc19fc38cedb928ef3f607708d359b fe07d8d246bc19fc38cedb928ef3f607708d359b oci-setup-instance.sh
+1 .D N... 100644 100644 000000 08c3c5d6ecd80406550bb6a97659d5f80cacf89c 08c3c5d6ecd80406550bb6a97659d5f80cacf89c ollama-native.ts
+1 .D N... 100755 100755 000000 4a48590a72a977f8cb55dfa7fdd920810914d02d 4a48590a72a977f8cb55dfa7fdd920810914d02d opencode-sessions-index.sh
+1 .M S.M. 160000 160000 160000 04bf0c2e032d5d09c69eac2b8d7481ec008d1b1f 04bf0c2e032d5d09c69eac2b8d7481ec008d1b1f orgs/mojomast/ragussy
+1 .M S.M. 160000 160000 160000 a3738696365bfed219f81f6896e88a6f7c6cc190 a3738696365bfed219f81f6896e88a6f7c6cc190 orgs/octave-commons/eros-eris-field
+1 .M S.M. 160000 160000 160000 db67352238ea7dededde5b9051d082886d0e84f8 db67352238ea7dededde5b9051d082886d0e84f8 orgs/octave-commons/eros-eris-field-app
+1 .M S.M. 160000 160000 160000 f8fe469bd179224ec35c91b6a9e4e5397824d492 f8fe469bd179224ec35c91b6a9e4e5397824d492 orgs/open-hax/agent-actors
+1 .M SCM. 160000 160000 160000 54a8933f9a05b81ec76958e7d0922a0e833bdf4b 54a8933f9a05b81ec76958e7d0922a0e833bdf4b orgs/open-hax/eta-mu
+1 .M S.M. 160000 160000 160000 32e4c3b0152e6e4f69b9e04d04e44cf9d120ed73 32e4c3b0152e6e4f69b9e04d04e44cf9d120ed73 orgs/open-hax/openplanner
+1 .M SC.. 160000 160000 160000 d70257c7e175099fc9d2a538cc1301fa854f464a d70257c7e175099fc9d2a538cc1301fa854f464a orgs/open-hax/proxx
+1 .M S.M. 160000 160000 160000 e0dad69f47a93b99e75304dc4ebb830aac0c7170 e0dad69f47a93b99e75304dc4ebb830aac0c7170 orgs/open-hax/vexx
+1 .D S... 160000 160000 000000 4c8b90bb0ffa3ae227e1df37c0234e46fb5134ac 4c8b90bb0ffa3ae227e1df37c0234e46fb5134ac orgs/riatzukiza/agent-shell
+1 .D S... 160000 160000 000000 336484aea275e4fbe89d3e09cb17dde328ca5b8c 336484aea275e4fbe89d3e09cb17dde328ca5b8c orgs/riatzukiza/dotfiles
+1 .D S... 160000 160000 000000 4c4d2f2ce4e2dee2446958acb598376c914d606c 4c4d2f2ce4e2dee2446958acb598376c914d606c orgs/riatzukiza/stt
+1 .M SC.. 160000 160000 160000 25dd1c7014c6cfe41af8cb8acb7d910057ecd398 25dd1c7014c6cfe41af8cb8acb7d910057ecd398 orgs/shuv/shuvcrawl
+1 .D N... 100644 100644 000000 f6ccc5a5c9b7f66532b64c792d4f68fa8c7eb682 f6ccc5a5c9b7f66532b64c792d4f68fa8c7eb682 ourgpu-caddy.txt
+1 .D N... 100644 100644 000000 f74d5989938d059fb6f15b36c08bdb2ee14e5b73 f74d5989938d059fb6f15b36c08bdb2ee14e5b73 pm2-clj-project/.gitignore
+1 .D N... 100644 100644 000000 c072d49cc22b94edec5f54048a531eb73b128b2a c072d49cc22b94edec5f54048a531eb73b128b2a pm2-clj-project/AGENTS.md
+1 .D N... 100755 100755 000000 29d5cb10bad7182f111819c5aede8a3fa6c87dfe 29d5cb10bad7182f111819c5aede8a3fa6c87dfe pm2-clj-project/bin/clobber
+1 .D N... 100755 100755 000000 3da74681e6a661cddf4aa3684a20dd9a9b490864 3da74681e6a661cddf4aa3684a20dd9a9b490864 pm2-clj-project/bin/pm2-clj
+1 .D N... 100644 100644 000000 14c854ddb5d2b873aad11dba5529ad3269f66c49 14c854ddb5d2b873aad11dba5529ad3269f66c49 pm2-clj-project/docs/notes/infrastructure/pm2-clj-dsl-cli.md
+1 .D N... 100644 100644 000000 2df6c363b10f618dabf68f21bdef5aa9679df823 2df6c363b10f618dabf68f21bdef5aa9679df823 pm2-clj-project/docs/notes/infrastructure/pm2-clj-dsl-compose-helpers.md
+1 .D N... 100644 100644 000000 936d666327920aea2da34b2560e62979d651f9ed 936d666327920aea2da34b2560e62979d651f9ed pm2-clj-project/docs/notes/infrastructure/pm2-clj-dsl-compose.md
+1 .D N... 100644 100644 000000 9975aced3b20fe052cdced84c80669967c5418ea 9975aced3b20fe052cdced84c80669967c5418ea pm2-clj-project/docs/notes/infrastructure/pm2-clj-dsl-eval.md
+1 .D N... 100644 100644 000000 ab443d7afa2a9561693b2469b9583af45e40abaa ab443d7afa2a9561693b2469b9583af45e40abaa pm2-clj-project/docs/notes/infrastructure/pm2-clj-dsl-extensions.md
+1 .D N... 100644 100644 000000 dacfcd61cd3c464c9e1caff577107c72fb3618bb dacfcd61cd3c464c9e1caff577107c72fb3618bb pm2-clj-project/docs/notes/infrastructure/pm2-clj-dsl-internal-core.md
+1 .D N... 100644 100644 000000 d10a90958c1df6ca28bb7f1d16698accf81be9df d10a90958c1df6ca28bb7f1d16698accf81be9df pm2-clj-project/docs/notes/infrastructure/pm2-clj-dsl-mixins.md
+1 .D N... 100644 100644 000000 a671ffa3efb94aa7d173064660a69259dcec25e7 a671ffa3efb94aa7d173064660a69259dcec25e7 pm2-clj-project/docs/notes/infrastructure/pm2-clj-dsl-prototypes-mixins.md
+1 .D N... 100644 100644 000000 355529ef74f6acb569dd788581730ccb7c68229c 355529ef74f6acb569dd788581730ccb7c68229c pm2-clj-project/docs/notes/infrastructure/pm2-clj-dsl-render.md
+1 .D N... 100644 100644 000000 e1e2a4e89b9ac81fbdeb9447cd6989a9ecae235a e1e2a4e89b9ac81fbdeb9447cd6989a9ecae235a pm2-clj-project/docs/notes/infrastructure/pm2-clj-dsl-sci-eval.md
+1 .D N... 100644 100644 000000 da0ed740f5bdb2f9fdb94eb5ddc75906e5bbf7f8 da0ed740f5bdb2f9fdb94eb5ddc75906e5bbf7f8 pm2-clj-project/docs/notes/infrastructure/pm2-clj-dsl-services.md
+1 .D N... 100644 100644 000000 39bc07eb06eff82972977caf3ba6a758d25e2fb8 39bc07eb06eff82972977caf3ba6a758d25e2fb8 pm2-clj-project/docs/notes/infrastructure/pm2-clj-dsl-sugar.md
+1 .D N... 100644 100644 000000 7c3dc3bdf2e35c1e806339b259b7aad296c6abd4 7c3dc3bdf2e35c1e806339b259b7aad296c6abd4 pm2-clj-project/docs/notes/infrastructure/pm2-clj-dsl-v1.md
+1 .D N... 100644 100644 000000 dca4df7bfdd6cc4d34f57a8d70df331b2f8caf49 dca4df7bfdd6cc4d34f57a8d70df331b2f8caf49 pm2-clj-project/docs/notes/infrastructure/pm2-clj-dsl-v15.md
+1 .D N... 100644 100644 000000 34eefca85575eeb38deffeaf49cc89feb5669b79 34eefca85575eeb38deffeaf49cc89feb5669b79 pm2-clj-project/docs/notes/infrastructure/pm2-clj-dsl-v2-prototypes.md
+1 .D N... 100644 100644 000000 016e89ed5fe4924ba7b39c0e17f944b4d3d096a3 016e89ed5fe4924ba7b39c0e17f944b4d3d096a3 pm2-clj-project/docs/notes/infrastructure/pm2-clj-dsl-v3.md
+1 .D N... 100644 100644 000000 0ef985402316c6084189459c1de0a4bf91aecc33 0ef985402316c6084189459c1de0a4bf91aecc33 pm2-clj-project/docs/notes/infrastructure/pm2-clj-implementation-summary.md
+1 .D N... 100644 100644 000000 fa04bcaf645419bde28b6e5c4a8d46c001c7dbb9 fa04bcaf645419bde28b6e5c4a8d46c001c7dbb9 pm2-clj-project/docs/notes/pm2/pm2-clj-dsl-v1.md
+1 .D N... 100644 100644 000000 dca4df7bfdd6cc4d34f57a8d70df331b2f8caf49 dca4df7bfdd6cc4d34f57a8d70df331b2f8caf49 pm2-clj-project/docs/notes/pm2/pm2-clj-dsl-v3-mixins.md
+1 .D N... 100644 100644 000000 21c7a5ef409832a3dcc5b1567ea40525509e9a32 21c7a5ef409832a3dcc5b1567ea40525509e9a32 pm2-clj-project/ecosystem.config.cjs
+1 .D N... 100644 100644 000000 94cac426e4ee1493780aa79fad8cf90a99e18128 94cac426e4ee1493780aa79fad8cf90a99e18128 pm2-clj-project/ecosystems/base.pm2.clj
+1 .D N... 100644 100644 000000 e349aeb3e6ed3178887a3944cd702c31c6402fb7 e349aeb3e6ed3178887a3944cd702c31c6402fb7 pm2-clj-project/ecosystems/base.pm2.edn
+1 .D N... 100644 100644 000000 1f5d4a747aac5bb9fdaecd0cf9c803d5155bc87c 1f5d4a747aac5bb9fdaecd0cf9c803d5155bc87c pm2-clj-project/ecosystems/services/api.pm2.clj
+1 .D N... 100644 100644 000000 ebfe42cf32a7382a9d7797576889b4a9351c959e ebfe42cf32a7382a9d7797576889b4a9351c959e pm2-clj-project/ecosystems/services/worker.pm2.clj
+1 .D N... 100644 100644 000000 1bdb25184f197d5883f2f4f61886f933ea156041 1bdb25184f197d5883f2f4f61886f933ea156041 pm2-clj-project/ecosystems/stacks/agent-profiles.pm2.edn
+1 .D N... 100644 100644 000000 2d0fe4990651800fa502d6bc7895ea17b6b3a676 2d0fe4990651800fa502d6bc7895ea17b6b3a676 pm2-clj-project/ecosystems/stacks/all.pm2.clj
+1 .D N... 100644 100644 000000 3ce110127f309e55d2053f3141e386e7360c5bb8 3ce110127f309e55d2053f3141e386e7360c5bb8 pm2-clj-project/ecosystems/stacks/all.pm2.edn
+1 .D N... 100644 100644 000000 067140f1bf57593b648e1e152b62afc2125237ab 067140f1bf57593b648e1e152b62afc2125237ab pm2-clj-project/ecosystems/stacks/combined.duck.pm2.edn
+1 .D N... 100644 100644 000000 cb8d6be9fe27f6f33cbdadf3f2e51a2d4b11d4a7 cb8d6be9fe27f6f33cbdadf3f2e51a2d4b11d4a7 pm2-clj-project/ecosystems/stacks/combined.open-skull.pm2.edn
+1 .D N... 100644 100644 000000 377328cff1fc7c7d0783ae0c6cb5c43d9d54c69e 377328cff1fc7c7d0783ae0c6cb5c43d9d54c69e pm2-clj-project/ecosystems/stacks/combined.pm2.edn
+1 .D N... 100644 100644 000000 dc78322ebc368514a60262a35a4e1a11c006eb0e dc78322ebc368514a60262a35a4e1a11c006eb0e pm2-clj-project/package-lock.json
+1 .D N... 100644 100644 000000 d827c74538c4f3c78aa6778ac8065f5f764fe8b1 d827c74538c4f3c78aa6778ac8065f5f764fe8b1 pm2-clj-project/package.json
+1 .D N... 100644 100644 000000 c650e308cb8653817415c2afecf1573b53552e6e c650e308cb8653817415c2afecf1573b53552e6e pm2-clj-project/pm2/complex-test.cljs
+1 .D N... 100644 100644 000000 a99b88c2d6ea49c07c55b3994a82d8b8640828ea a99b88c2d6ea49c07c55b3994a82d8b8640828ea pm2-clj-project/pm2/ecosystem.config.cljs
+1 .D N... 100644 100644 000000 55d002725b9945eb5d667118b47f50c684d05374 55d002725b9945eb5d667118b47f50c684d05374 pm2-clj-project/pm2/simple-test.cljs
+1 .D N... 100644 100644 000000 22c07574aaa3cd80929d1e8b0401372163606f12 22c07574aaa3cd80929d1e8b0401372163606f12 pm2-clj-project/pm2/simple-test2.cljs
+1 .D N... 100644 100644 000000 65c0eed6c9c15d8a78d519e693e5c0e5b3f30153 65c0eed6c9c15d8a78d519e693e5c0e5b3f30153 pm2-clj-project/shadow-cljs.edn
+1 .D N... 100644 100644 000000 d44e3fc9877f90910ef4cbdb5bf937840ae2bd20 d44e3fc9877f90910ef4cbdb5bf937840ae2bd20 pm2-clj-project/spec/notes-extracted/infrastructure--pm2-clj-dsl-cli.md
+1 .D N... 100644 100644 000000 425045376b0ed853badaffdc8dc7a1da6036440b 425045376b0ed853badaffdc8dc7a1da6036440b pm2-clj-project/spec/notes-extracted/infrastructure--pm2-clj-dsl-compose-helpers.md
+1 .D N... 100644 100644 000000 aeacba859e12d50c2ba37b9e1947a0aaec81f7dc aeacba859e12d50c2ba37b9e1947a0aaec81f7dc pm2-clj-project/spec/notes-extracted/infrastructure--pm2-clj-dsl-compose.md
+1 .D N... 100644 100644 000000 ec428333f656cbdce0f488d3f05784e00a465cbf ec428333f656cbdce0f488d3f05784e00a465cbf pm2-clj-project/spec/notes-extracted/infrastructure--pm2-clj-dsl-eval.md
+1 .D N... 100644 100644 000000 193be2d2984aae20da861f3ebf1a7a540988a96e 193be2d2984aae20da861f3ebf1a7a540988a96e pm2-clj-project/spec/notes-extracted/infrastructure--pm2-clj-dsl-extensions.md
+1 .D N... 100644 100644 000000 92361f08cdbf48a6874ea22b2dd369598bfa355f 92361f08cdbf48a6874ea22b2dd369598bfa355f pm2-clj-project/spec/notes-extracted/infrastructure--pm2-clj-dsl-internal-core.md
+1 .D N... 100644 100644 000000 16305b3601865ecd744cf538553369e823d4b092 16305b3601865ecd744cf538553369e823d4b092 pm2-clj-project/spec/notes-extracted/infrastructure--pm2-clj-dsl-mixins.md
+1 .D N... 100644 100644 000000 60f82edae7d3ca6d67f2e0b8e44a08d4d2731d81 60f82edae7d3ca6d67f2e0b8e44a08d4d2731d81 pm2-clj-project/spec/notes-extracted/infrastructure--pm2-clj-dsl-prototypes-mixins.md
+1 .D N... 100644 100644 000000 164d1d9ec0574243408ce741858e4da864635bdc 164d1d9ec0574243408ce741858e4da864635bdc pm2-clj-project/spec/notes-extracted/infrastructure--pm2-clj-dsl-render.md
+1 .D N... 100644 100644 000000 c57a27624ecc17af49f47917757412374179c5ec c57a27624ecc17af49f47917757412374179c5ec pm2-clj-project/spec/notes-extracted/infrastructure--pm2-clj-dsl-sci-eval.md
+1 .D N... 100644 100644 000000 7a3d5a5b9e54e8dafedcab78db71bcf51cbc8f8c 7a3d5a5b9e54e8dafedcab78db71bcf51cbc8f8c pm2-clj-project/spec/notes-extracted/infrastructure--pm2-clj-dsl-services.md
+1 .D N... 100644 100644 000000 51aec3e8a59c18e4137e26f8913e5496800087ef 51aec3e8a59c18e4137e26f8913e5496800087ef pm2-clj-project/spec/notes-extracted/infrastructure--pm2-clj-dsl-sugar.md
+1 .D N... 100644 100644 000000 c6994cd541d1dee8dccef60a8d2a88dd6bda8fa1 c6994cd541d1dee8dccef60a8d2a88dd6bda8fa1 pm2-clj-project/spec/notes-extracted/infrastructure--pm2-clj-dsl-v1.md
+1 .D N... 100644 100644 000000 b968a22097658643b22d2c13c3a228e71c4395df b968a22097658643b22d2c13c3a228e71c4395df pm2-clj-project/spec/notes-extracted/infrastructure--pm2-clj-dsl-v15.md
+1 .D N... 100644 100644 000000 a0f02956397b595d8369be0098c00eaf2a1d20cb a0f02956397b595d8369be0098c00eaf2a1d20cb pm2-clj-project/spec/notes-extracted/infrastructure--pm2-clj-dsl-v2-prototypes.md
+1 .D N... 100644 100644 000000 4a0750dc0ebc4c40fb468b4e2452e29cef38816c 4a0750dc0ebc4c40fb468b4e2452e29cef38816c pm2-clj-project/spec/notes-extracted/infrastructure--pm2-clj-dsl-v3.md
+1 .D N... 100644 100644 000000 8f48503d8f0d105963faa9ed0504f1cd9c62354b 8f48503d8f0d105963faa9ed0504f1cd9c62354b pm2-clj-project/spec/notes-extracted/infrastructure--pm2-clj-implementation-summary.md
+1 .D N... 100644 100644 000000 c09d66aa48ac152da8f3efebb7efff1922cbc02e c09d66aa48ac152da8f3efebb7efff1922cbc02e pm2-clj-project/spec/notes-extracted/pm2--pm2-clj-dsl-v1.md
+1 .D N... 100644 100644 000000 acdd617620b5ba501b6b227c32c8e9ecfc092341 acdd617620b5ba501b6b227c32c8e9ecfc092341 pm2-clj-project/spec/notes-extracted/pm2--pm2-clj-dsl-v3-mixins.md
+1 .D N... 100644 100644 000000 381606479f6facc1d40d92939eb0cbd16bb58729 381606479f6facc1d40d92939eb0cbd16bb58729 pm2-clj-project/src/clobber/cli.cljs
+1 .D N... 100644 100644 000000 6411bd074e1fd3a9c6065437f40ccfe170c03c8a 6411bd074e1fd3a9c6065437f40ccfe170c03c8a pm2-clj-project/src/clobber/dsl.cljs
+1 .D N... 100644 100644 000000 6d1dd1f23b94c745f41b688adbd7cdb5bd54ae0a 6d1dd1f23b94c745f41b688adbd7cdb5bd54ae0a pm2-clj-project/src/clobber/macro.cljs
+1 .D N... 100644 100644 000000 c7b6a098003fba783b5653b219cace922569b79c c7b6a098003fba783b5653b219cace922569b79c pm2-clj-project/src/pm2_clj/cli.cljs
+1 .D N... 100644 100644 000000 980bf2d1fd19ba684cbde4bfb26bec6017d28551 980bf2d1fd19ba684cbde4bfb26bec6017d28551 pm2-clj-project/src/pm2_clj/dsl.cljs
+1 .D N... 100644 100644 000000 e719b74be591e4c18d91ff32762eb1de01f478b4 e719b74be591e4c18d91ff32762eb1de01f478b4 pm2-clj-project/src/pm2_clj/eval.cljs
+1 .D N... 100644 100644 000000 4aa8847322a6ff33ea74f6b353c51f43f42ff2b2 4aa8847322a6ff33ea74f6b353c51f43f42ff2b2 pm2-clj-project/src/pm2_clj/internal.cljs
+1 .D N... 100644 100644 000000 bb9e19c705f392ee6696994a7d65aad2147faf72 bb9e19c705f392ee6696994a7d65aad2147faf72 pm2-clj-project/src/pm2_clj/merge.cljs
+1 .D N... 100644 100644 000000 a99148c1a5b665c9062f6951feff6d43b835f1b4 a99148c1a5b665c9062f6951feff6d43b835f1b4 pm2-clj-project/src/pm2_clj/merge.cljs.bak
+1 .D N... 100644 100644 000000 cb8189c14a7779ec97e9f16a3f3b32ea5c2cd81c cb8189c14a7779ec97e9f16a3f3b32ea5c2cd81c pm2-clj-project/src/pm2_clj/pm2.cljs
+1 .D N... 100644 100644 000000 ce31d2d21ecf4321bd1aee32001580f92aad5948 ce31d2d21ecf4321bd1aee32001580f92aad5948 pm2-clj-project/src/pm2_clj/runtime.cljs
+1 .D N... 100644 100644 000000 da161988ad1d5eecc2fce6a32d5a20bd11050357 da161988ad1d5eecc2fce6a32d5a20bd11050357 pm2-clj-project/src/pm2_clj/util.cljs
+1 .D N... 100644 100644 000000 7de04c5d3db3065aaee924e31630a2e3bfa3c114 7de04c5d3db3065aaee924e31630a2e3bfa3c114 pm2-clj-project/test-ecosystem.cljs
+1 .M N... 100644 100644 100644 e4a67ca1d67512793b85c7c10991558af0b97899 e4a67ca1d67512793b85c7c10991558af0b97899 pnpm-lock.yaml
+1 .D N... 100644 100644 000000 0650bbd51bb4190e015aa231c0ecc2e0f5b6a04c 0650bbd51bb4190e015aa231c0ecc2e0f5b6a04c readmeflow-debug.js
+1 .D N... 100644 100644 000000 1f957d977497c40065762da54ed5df9f327b5eb6 1f957d977497c40065762da54ed5df9f327b5eb6 readmeflow-debug.ts
+1 .D N... 100644 100644 000000 f6d4112f1f15a431dfa39952e5a7784bee33928c f6d4112f1f15a431dfa39952e5a7784bee33928c reconstitute.js
+1 .D N... 100644 100644 000000 474d0ebcfeeb5f86eabada2f1a01e9544f28a14b 474d0ebcfeeb5f86eabada2f1a01e9544f28a14b reconstitute.ts
+1 .D N... 100644 100644 000000 662ff8b2b47f4c91ae3147b0fc9c780f3ed99226 662ff8b2b47f4c91ae3147b0fc9c780f3ed99226 reconstitute/.env.example
+1 .D N... 100644 100644 000000 d892ae8443d2faaa15c77f943a93dd58e2a12188 d892ae8443d2faaa15c77f943a93dd58e2a12188 reconstitute/AGENTS.md
+1 .D N... 100644 100644 000000 5db81f9168e9f438ebacc6571ea95a36bc16ac40 5db81f9168e9f438ebacc6571ea95a36bc16ac40 reconstitute/docs/notes/reconstitute/chroma-fs-embeddings.md
+1 .D N... 100644 100644 000000 45b29daea95b99f8da44012c4df72791579db33b 45b29daea95b99f8da44012c4df72791579db33b reconstitute/docs/notes/reconstitute/reconstitute-background-indexer.md
+1 .D N... 100644 100644 000000 cc74379d62936e0a0847837635f49366c628a38c cc74379d62936e0a0847837635f49366c628a38c reconstitute/docs/notes/reconstitute/reconstitute-cli-concept.md
+1 .D N... 100644 100644 000000 8676305334bd0ad7aa5b4f83d63f45be9d2d8206 8676305334bd0ad7aa5b4f83d63f45be9d2d8206 reconstitute/docs/notes/reconstitute/reconstitute-context-compaction.md
+1 .D N... 100644 100644 000000 0b4c8c51254d5cff9e89b4b7689c9da33f00ffdd 0b4c8c51254d5cff9e89b4b7689c9da33f00ffdd reconstitute/docs/notes/reconstitute/reconstitute-event-indexing.md
+1 .D N... 100644 100644 000000 77ddd44920ea039693096a174a353d7faee5fbb1 77ddd44920ea039693096a174a353d7faee5fbb1 reconstitute/docs/notes/reconstitute/reconstitute-full-cli.md
+1 .D N... 100644 100644 000000 153f46e67eb796649c24265dd63eeda198d6d625 153f46e67eb796649c24265dd63eeda198d6d625 reconstitute/docs/notes/reconstitute/reconstitute-indexer-design.md
+1 .D N... 100644 100644 000000 9b7d2958c2b905fbb4c74ca9c51aa985582d6f2e 9b7d2958c2b905fbb4c74ca9c51aa985582d6f2e reconstitute/docs/notes/reconstitute/reconstitute-mcp-server.md
+1 .D N... 100644 100644 000000 e8df832668abb051a8cd7863bfd8b4c895ab0254 e8df832668abb051a8cd7863bfd8b4c895ab0254 reconstitute/docs/notes/reconstitute/reconstitute-runner-full.md
+1 .D N... 100644 100644 000000 26a56b1b7aa8018a1e53adc911d937a1db6c95ac 26a56b1b7aa8018a1e53adc911d937a1db6c95ac reconstitute/docs/notes/reconstitute/reconstitute-upgrade-canonical-paths.md
+1 .D N... 100644 100644 000000 af6d667a7f94bec56957bee4bc2b2f263e5517f2 af6d667a7f94bec56957bee4bc2b2f263e5517f2 reconstitute/docs/notes/reconstitute/reconstitute-wal-durability.md
+1 .D N... 100644 100644 000000 8fb9208ae59997b85e38a91526de8af6a86555c3 8fb9208ae59997b85e38a91526de8af6a86555c3 reconstitute/docs/notes/reconstitute/reconstitution-cli.md
+1 .D N... 100644 100644 000000 c305de7de3c766f838cd0f253b369cf4df1805c2 c305de7de3c766f838cd0f253b369cf4df1805c2 reconstitute/docs/notes/reconstitute/reconstitution-skills-expanded.md
+1 .D N... 100644 100644 000000 e4bdfaded08bdd6ccadbc95fb508595ffdb3bcd4 e4bdfaded08bdd6ccadbc95fb508595ffdb3bcd4 reconstitute/package.json
+1 .D N... 100644 100644 000000 038f551f802d079e55433478aa54691c7a6a94b1 038f551f802d079e55433478aa54691c7a6a94b1 reconstitute/spec/notes-extracted/reconstitute--chroma-fs-embeddings.md
+1 .D N... 100644 100644 000000 5e88c4450280cc2a7f0c8d94dfd3db636bbb16c6 5e88c4450280cc2a7f0c8d94dfd3db636bbb16c6 reconstitute/spec/notes-extracted/reconstitute--reconstitute-background-indexer.md
+1 .D N... 100644 100644 000000 4acc57fa05f2e83587f21c923c6a0ec91582007f 4acc57fa05f2e83587f21c923c6a0ec91582007f reconstitute/spec/notes-extracted/reconstitute--reconstitute-cli-concept.md
+1 .D N... 100644 100644 000000 57a4f0a22b372d4069dee60cc786799b07655af9 57a4f0a22b372d4069dee60cc786799b07655af9 reconstitute/spec/notes-extracted/reconstitute--reconstitute-context-compaction.md
+1 .D N... 100644 100644 000000 e34d13b174ea830fb2772d9d9541da977a7f6912 e34d13b174ea830fb2772d9d9541da977a7f6912 reconstitute/spec/notes-extracted/reconstitute--reconstitute-event-indexing.md
+1 .D N... 100644 100644 000000 a230013f7cff974da1ca891412b340b23455c77c a230013f7cff974da1ca891412b340b23455c77c reconstitute/spec/notes-extracted/reconstitute--reconstitute-full-cli.md
+1 .D N... 100644 100644 000000 3e1f56832d2418f11af537a52c8382c5b48f2486 3e1f56832d2418f11af537a52c8382c5b48f2486 reconstitute/spec/notes-extracted/reconstitute--reconstitute-indexer-design.md
+1 .D N... 100644 100644 000000 4d486789845652427b34f426725ace40d2ad9175 4d486789845652427b34f426725ace40d2ad9175 reconstitute/spec/notes-extracted/reconstitute--reconstitute-mcp-server.md
+1 .D N... 100644 100644 000000 0de746027f186fc3a1930c3297ec5ea12342d1d3 0de746027f186fc3a1930c3297ec5ea12342d1d3 reconstitute/spec/notes-extracted/reconstitute--reconstitute-runner-full.md
+1 .D N... 100644 100644 000000 d094589ae44cca75f285a204559b221b1b1a0b1a d094589ae44cca75f285a204559b221b1b1a0b1a reconstitute/spec/notes-extracted/reconstitute--reconstitute-upgrade-canonical-paths.md
+1 .D N... 100644 100644 000000 61d1b68f47b33f3dd3843b0eb617389c347218d0 61d1b68f47b33f3dd3843b0eb617389c347218d0 reconstitute/spec/notes-extracted/reconstitute--reconstitute-wal-durability.md
+1 .D N... 100644 100644 000000 c7b452dcbf1a6ce58632b38cd06d71d2f4e37cbb c7b452dcbf1a6ce58632b38cd06d71d2f4e37cbb reconstitute/spec/notes-extracted/reconstitute--reconstitution-cli.md
+1 .D N... 100644 100644 000000 70cd5d14fc10809effcb4a2b85b0621ffedd10ac 70cd5d14fc10809effcb4a2b85b0621ffedd10ac reconstitute/spec/notes-extracted/reconstitute--reconstitution-skills-expanded.md
+1 .D N... 100644 100644 000000 50ceb705fbe899785dde39abb6d67b56f4bf028b 50ceb705fbe899785dde39abb6d67b56f4bf028b reconstitute/src/cleanup-collections.ts
+1 .D N... 100644 100644 000000 3cd87dc8a0dd1102d9860c0bd51f514cd4b68e4f 3cd87dc8a0dd1102d9860c0bd51f514cd4b68e4f reconstitute/src/inspect-chroma.ts
+1 .D N... 100644 100644 000000 d48a0f0b59ded00698898784297ae2f5bad0cd8b d48a0f0b59ded00698898784297ae2f5bad0cd8b reconstitute/src/reconstitute.ts
+1 .D N... 100644 100644 000000 6cc1c831445322b40aa281cadfa9dc588966f2ff 6cc1c831445322b40aa281cadfa9dc588966f2ff reconstitute/tsconfig.json
+1 .D N... 100755 100755 000000 adbfdd7e340e106ca5f79bc80a2eb03f7c5332ee adbfdd7e340e106ca5f79bc80a2eb03f7c5332ee reconstruct.mjs
+1 .D N... 100755 100755 000000 f978d15dde3f36a99d4cfda24c734a40da56e738 f978d15dde3f36a99d4cfda24c734a40da56e738 recover-sessions.mjs
+1 .D N... 100644 100644 000000 1a32a30967dd0c96d22c69c013027a9b731c1eba 1a32a30967dd0c96d22c69c013027a9b731c1eba render.yaml
+1 .D N... 100755 100755 000000 b6d3dc1bea8d0ec7779d216ff7fb7de1fb23d672 b6d3dc1bea8d0ec7779d216ff7fb7de1fb23d672 repl.sh
+1 .D N... 100644 100644 000000 9a98b85e25cd879655d1bf6437706a079e122c61 9a98b85e25cd879655d1bf6437706a079e122c61 search_opencode_sessions.js
+1 .D N... 100644 100644 000000 6de40132afa8e34a1b73b6e1e47315218b8ce4ec 6de40132afa8e34a1b73b6e1e47315218b8ce4ec search_opencode_sessions.ts
+1 .M N... 100644 100644 100644 2e3ab4c54e94235c035c4edd13b1a67e9f952702 2e3ab4c54e94235c035c4edd13b1a67e9f952702 services/openplanner/docker-compose.yml
+1 .M N... 100755 100755 100755 ea59369f9cb603affac3174b628e2cf75cbff921 ea59369f9cb603affac3174b628e2cf75cbff921 services/openplanner/scripts/atlas-init.sh
+1 .M N... 100644 100644 100644 3dfb92f93fd24edb1672edc41612904cc9ff5896 3dfb92f93fd24edb1672edc41612904cc9ff5896 services/proxx/docker-compose.yml
+1 .D N... 100644 100644 000000 1bda36595a91e5387ac5f07efc761554fb0d35d6 1bda36595a91e5387ac5f07efc761554fb0d35d6 shadow-cljs.edn
+1 .D N... 100644 100644 000000 eb42b724dbee5bf838fa513a1ff4ef287f760fa3 eb42b724dbee5bf838fa513a1ff4ef287f760fa3 share/applications/codex-open-hax.desktop
+1 .D N... 100644 100644 000000 727f7f013db3270aaba6f1bc6c4504d8fe41d93a 727f7f013db3270aaba6f1bc6c4504d8fe41d93a share/icons/codex-open-hax.png
+1 .D N... 100644 100644 000000 4afafed664c37988915acf90b3349ab79f2c4b07 4afafed664c37988915acf90b3349ab79f2c4b07 size-lint.config.mjs
+1 .D N... 100644 100644 000000 79646c83ce2609e22d98127995cb8380a9b8ee7a 79646c83ce2609e22d98127995cb8380a9b8ee7a skill_graph.json
+1 .D N... 100644 100644 000000 89944d771ca273085306ee8dbb727d95323033ff 89944d771ca273085306ee8dbb727d95323033ff system/README.md
+1 .D N... 100644 100644 000000 28a8ba14ea9add9dc1e3cfefd2b983c321602d7b 28a8ba14ea9add9dc1e3cfefd2b983c321602d7b system/markdown-dsl.md
+1 .D N... 100644 100644 000000 288270f3d4a8615d4b0137b399b8704884a6d863 288270f3d4a8615d4b0137b399b8704884a6d863 t0-snapshot.md
+1 .D N... 100644 100644 000000 a93a205c191ea88e5cc838f7640196cc80086d2a a93a205c191ea88e5cc838f7640196cc80086d2a t1-snapshot.md
+1 .D N... 100644 100644 000000 c1faf9b85a4efa5d66742fa6d4b7de1a387a2746 c1faf9b85a4efa5d66742fa6d4b7de1a387a2746 taco.svg
+1 .D S... 160000 160000 000000 7436cc4d43371fd674efe539c0e034f4d2d0bedc 7436cc4d43371fd674efe539c0e034f4d2d0bedc threat-radar-deploy
+1 .D N... 100644 100644 000000 24a2d0cca21b338964e02dcb3d0b14a1cfd5f388 24a2d0cca21b338964e02dcb3d0b14a1cfd5f388 threat-radar-next-step/README.md
+1 .D N... 100644 100644 000000 cba0636da4c5a5ac1f97361638a487664ea94593 cba0636da4c5a5ac1f97361638a487664ea94593 threat-radar-next-step/orgs/riatzukiza/threat-radar-mcp/src/repositories/interface.ts
+1 .D N... 100644 100644 000000 43847c24eb45643a2668a2b1eba6e2c526a0c9de 43847c24eb45643a2668a2b1eba6e2c526a0c9de threat-radar-next-step/orgs/riatzukiza/threat-radar-mcp/src/repositories/postgres.ts
+1 .D N... 100644 100644 000000 3d0e5f3ebeaa2986036f026ba247d68d0b008eba 3d0e5f3ebeaa2986036f026ba247d68d0b008eba threat-radar-next-step/orgs/riatzukiza/threat-radar-web/src/lib/api.ts
+1 .D N... 100644 100644 000000 9607c340beb801896756218ca33bfa78aefb97e8 9607c340beb801896756218ca33bfa78aefb97e8 threat-radar-next-step/packages/radar-core/sql/001_threat_radar.sql
+1 .D N... 100644 100644 000000 ac6da6c61d8ead0a262624f50065d00f9af0bb08 ac6da6c61d8ead0a262624f50065d00f9af0bb08 threat-radar-next-step/packages/radar-core/src/postgres-types.ts
+1 .D N... 100644 100644 000000 e5bc909942db9680aed687b7cf0ef620cd67cc54 e5bc909942db9680aed687b7cf0ef620cd67cc54 threat-radar-next-step/specs/control-plane-tool-surface.md
+1 .D N... 100644 100644 000000 b68cd6ac211f6c7ff7ec66b20dbc0271e2da0651 b68cd6ac211f6c7ff7ec66b20dbc0271e2da0651 threat-radar-next-step/specs/validation-contract.md
+1 .D N... 100644 100644 000000 0665eb844834a55779a70f9fd0a0e40864a6e36f 0665eb844834a55779a70f9fd0a0e40864a6e36f translate_document.js
+1 .D N... 100644 100644 000000 07032672e14bc854c5e33bc6d596f4adcf91a811 07032672e14bc854c5e33bc6d596f4adcf91a811 update-package-versions.mjs
+1 .D S... 160000 160000 000000 54ebec689e97c0d5ffd5366e779b4252c460c1d2 54ebec689e97c0d5ffd5366e779b4252c460c1d2 vaults/static_man
+1 .D S... 160000 160000 000000 3b5aabb4f861de270c2cf496ba92557e91400e0c 3b5aabb4f861de270c2cf496ba92557e91400e0c verathar-server
+1 .D N... 100644 100644 000000 5bb6245a28531a706051b4d972c79d03a9fe0c23 5bb6245a28531a706051b4d972c79d03a9fe0c23 web/index.html
+1 .D N... 100644 100644 000000 5e80a94daa33190d9d339839876dd043684493e4 5e80a94daa33190d9d339839876dd043684493e4 web/src/App.tsx
+1 .D N... 100644 100644 000000 ebfcc114585ce1593102fe488217097e568657e9 ebfcc114585ce1593102fe488217097e568657e9 web/src/lib/api.ts
+1 .D N... 100644 100644 000000 cb85c54ace64b1c136bc591ea517738ea999fa7a cb85c54ace64b1c136bc591ea517738ea999fa7a web/src/lib/format.ts
+1 .D N... 100644 100644 000000 c0ef6541a5c216535df3ed8a14ca2f4e930a9368 c0ef6541a5c216535df3ed8a14ca2f4e930a9368 web/src/lib/local-storage.ts
+1 .D N... 100644 100644 000000 80f638b9639e076802f1afbfa84525703f6bd2c5 80f638b9639e076802f1afbfa84525703f6bd2c5 web/src/lib/use-stored-state.ts
+1 .D N... 100644 100644 000000 8ff2505821732232fcb66204c7d488ed7ad2c7f0 8ff2505821732232fcb66204c7d488ed7ad2c7f0 web/src/main.tsx
+1 .D N... 100644 100644 000000 abc9cdd670940ac6ed624f6d868033503d648744 abc9cdd670940ac6ed624f6d868033503d648744 web/src/pages/AnalyticsPage.tsx
+1 .D N... 100644 100644 000000 81fd268d59fd312bf22620d579604ac405d22f86 81fd268d59fd312bf22620d579604ac405d22f86 web/src/pages/ChatPage.tsx
+1 .D N... 100644 100644 000000 9cd7bb50ba4059177d9cf6b57b787c3e7cd88f27 9cd7bb50ba4059177d9cf6b57b787c3e7cd88f27 web/src/pages/CredentialsPage.tsx
+1 .D N... 100644 100644 000000 c07b5433f3cc13b6fc811965bd21d8e2050e5638 c07b5433f3cc13b6fc811965bd21d8e2050e5638 web/src/pages/DashboardPage.tsx
+1 .D N... 100644 100644 000000 336675b0e642fadd33ece65ebf67cc67b69c80da 336675b0e642fadd33ece65ebf67cc67b69c80da web/src/pages/HostsPage.tsx
+1 .D N... 100644 100644 000000 465ffc2e4acb080dc94dc9050a3d2bb1315a7db0 465ffc2e4acb080dc94dc9050a3d2bb1315a7db0 web/src/pages/ImagesPage.tsx
+1 .D N... 100644 100644 000000 70a7e55412e098bd5ae5c6b9e3f0af8539faa64c 70a7e55412e098bd5ae5c6b9e3f0af8539faa64c web/src/pages/ToolsPage.tsx
+1 .D N... 100644 100644 000000 afccdae91b3c84072f44ceb326d4b46bd97c9af8 afccdae91b3c84072f44ceb326d4b46bd97c9af8 web/src/styles.css
+1 .D N... 100644 100644 000000 fc1fcc67584e30258a4cf90b15be00847f795ece fc1fcc67584e30258a4cf90b15be00847f795ece web/vite.config.ts
+1 .D S... 160000 160000 000000 eab449ca35f3f76eee99a74acc055b40d191ed8d eab449ca35f3f76eee99a74acc055b40d191ed8d workspaces/openhax-codex
+
+## gitlinks (mode 160000) from index
+01e9da46965c111f968d773a3d0befa68f74ae46	orgs/open-hax/depenoxx
+0357ebd8a7d27a0403370d1a8dfe0dcf5590f863	orgs/shuv/codex-desktop-linux
+04bf0c2e032d5d09c69eac2b8d7481ec008d1b1f	orgs/mojomast/ragussy
+055140971cbe35d4cfb533b2f88967db6eed9faa	".\316\267\316\274/03_ARTIFACTS/narrative_audio"
+09002a113911a1758f6685a186853b3892b97921	orgs/anomalyco/opencode
+0a280dfc6bd3f49000b57988f2dff59c4c6caceb	orgs/riatzukiza/desktop
+0e6aa3e82dfdb938086bd5d10dd60efeba33a9cf	orgs/octave-commons/promethean
+0ea0091b94d6821ca67da098f2bde61fe3bbe70e	orgs/octave-commons/mythloom
+1df7e3795b4b4fbb7fc7325808796b906fe2ba7b	orgs/ussyverse/kanban
+1ec677ca5dfa8e03109866f9c069dcf96b589529	orgs/open-hax/vivgrid-openai-proxy
+1fc8f7785a47529a01f9c3fdc618ee2400bf068a	orgs/octave-commons/simulacron
+22f55abb7174ca483d0a5c4a98d38553c6d0c180	orgs/riatzukiza/goblin-lessons
+25dd1c7014c6cfe41af8cb8acb7d910057ecd398	orgs/shuv/shuvcrawl
+2c7d12163f75fa32ddb2587641c4bb192dd360d5	orgs/ussyverse/openclawssy
+2eff626ecb04d808fd093fe72c571e14311caf47	ggrs
+2f46bf93fdb2f5c0eb617a6a5cfc414929a6a5b2	orgs/riatzukiza/ollama-benchmarks
+31f968fe1f0f774fe20ee0c64f749e90d54147fd	orgs/ollama/ollama
+32e4c3b0152e6e4f69b9e04d04e44cf9d120ed73	orgs/open-hax/openplanner
+336484aea275e4fbe89d3e09cb17dde328ca5b8c	orgs/riatzukiza/dotfiles
+3b5aabb4f861de270c2cf496ba92557e91400e0c	verathar-server
+40c9cff85f00884d7f7d16e1a097cab16f708af2	orgs/shuv/our-gpus
+41e5da38e7c60c491f5ead3605ab9fbd98d9374e	orgs/agustif/codex-linux
+4210d33c69af1f09c476643c7a1326ab8b958167	orgs/open-hax/privaxxy
+4c124a79bbf79fd18f233dd5990b5ede2c04d368	lightyear
+4c4d2f2ce4e2dee2446958acb598376c914d606c	orgs/riatzukiza/stt
+4c8b90bb0ffa3ae227e1df37c0234e46fb5134ac	orgs/riatzukiza/agent-shell
+4db5cc732c4da5a65366fc2d585d315363a7a6da	.emacs.d
+51ddae9e8ad200864afe96686adb3d6b1a9903e5	orgs/open-hax/cljs-plugin-template
+54a8933f9a05b81ec76958e7d0922a0e833bdf4b	orgs/open-hax/eta-mu
+54ebec689e97c0d5ffd5366e779b4252c460c1d2	vaults/static_man
+569e2dbf88e331bd59ca2411b901fd3cfe0befee	orgs/moofone/codex-ts-sdk
+59651d70c1dff83e644bbce27f20018f4a9fb9d2	game_network
+653288f130ffe8e9643774610b12ba8f089bd15d	orgs/open-hax/janus
+680736862269c2d7d8c54586549f59c42384a389	orgs/openai/codex
+6967a373b86c0d7b68b6dc2549d161c665402d52	orgs/open-hax/codex
+738bbb20f5b6e2c55f38f74deda32c2d6ff6a505	orgs/riatzukiza/riatzukiza.github.io
+7436cc4d43371fd674efe539c0e034f4d2d0bedc	threat-radar-deploy
+83ea10c9b04cab908ef898ad5d0d54f069dc0ba9	orgs/open-hax/plugins/codex
+89185d75aab8395eadd2b54f06145e4fc2d03bbf	orgs/riatzukiza/book-of-shadows
+8bb0078c910910978ebe58c311b71dfe742ac4f2	orgs/open-hax/tooloxx/services/hormuz-clock-mcp
+9a7be24ec38d0019b699a12f3817cbf1775ca721	gates-pr35-hardening-main
+9a7be24ec38d0019b699a12f3817cbf1775ca721	orgs/octave-commons/gates-of-aker
+9a9b5be5189b744c5412832bcb684cc6b9f82a40	orgs/code-yeongyu/oh-my-openagent
+9bfce9e39ecef3a2fa3505ab23de009c18612ac4	orgs/octave-commons/shibboleth
+a1c90889e110f6339c228361f7ff70121941c775	orgs/open-hax/tooloxx/services/mcp-fs-oauth
+a3738696365bfed219f81f6896e88a6f7c6cc190	orgs/octave-commons/eros-eris-field
+a3fcccdc9152d53b611db87a83295927524fe128	orgs/kcrommett/oc-manager
+ae65c857948a905120474cf93b96dd51cec6d5f6	egregoria
+b6181bed92299f7df0b4e9a2e8bda9a7f65a2405	orgs/badlogic/pi-mono
+b6797e57664c951885f914173ad5556529f82f8c	orgs/open-hax/voxx
+b7572c79ad6e90c77033f3c525f3f4ad43a50212	orgs/octave-commons/fork_tales
+b99d433505f942fb384516553442c15322efc472	orgs/robertdavidgraham/masscan
+bccbcdcc157b1ab8db39e462135680f62f6647f1	bevy_replicon
+be5de0b2e0564addd25f3b3ba6288a34a7a20bd7	orgs/riatzukiza/TANF-app
+c0a6c0cffab7f107598cc8d2da8015ef62037982	orgs/ussyverse/routussy
+c66b12f4d527c247bd8837fa0358723e8ab6acbc	orgs/octave-commons/lineara_conversation_export
+ce1d7b672d8c397e143033d304b51fd7fd1ff226	mcp-social-publisher-live
+d0c3782a24468a96ddc3ebead4a4f0c21db77ad9	orgs/octave-commons/helm
+d70257c7e175099fc9d2a538cc1301fa854f464a	orgs/open-hax/proxx
+d9814750c27e648332d41b72f040ddd494e9e877	orgs/riatzukiza/openhax
+db67352238ea7dededde5b9051d082886d0e84f8	orgs/octave-commons/eros-eris-field-app
+e0dad69f47a93b99e75304dc4ebb830aac0c7170	orgs/open-hax/vexx
+e4b8570bc242704d50ec6388ea96548d53746007	orgs/octave-commons/promethean-agent-system
+e65cd5f9ba5d9f75b5d5b2d4c784db1c59522f0c	orgs/open-hax/uxx
+eab449ca35f3f76eee99a74acc055b40d191ed8d	workspaces/openhax-codex
+eb84ad7c795b4c0dfea995b0398ec16052ef50ea	orgs/octave-commons/pantheon
+f4c210a86b25ee5bbb1278d12600a6cbaab2e1ed	orgs/openai/parameter-golf
+f74135adc01dbe97387156fe25cc8474013070f7	orgs/octave-commons/daimoi
+f8fe469bd179224ec35c91b6a9e4e5397824d492	orgs/open-hax/agent-actors
+fb2b6ac89f0818ba17d59767b1631f6b9e10fe1b	orgs/open-hax/opencode-skills
+fbab7ebee3bfa5f8ec945dab8a12fab8e40d234b	orgs/open-hax/museeks
+
+## proxx submodule (worktree)
+proxx.branch: fix/ollama-cloud-glm-routing
+proxx.head: 668838793ad06df9c1efaadafda0302d0d8b0b38

@@ -1,0 +1,11 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#0a0e1a" />
+  <path d="M400 50 L750 550 L50 550 Z" fill="none" stroke="#d4af37" stroke-width="4" opacity="0.3" />
+  <circle cx="400" cy="300" r="120" stroke="#d4af37" stroke-width="10" fill="none" />
+  <text x="400" y="310" font-family="serif" font-size="48" fill="#d4af37" text-anchor="middle" font-weight="bold">SCLDF</text>
+  <text x="400" y="150" font-family="serif" font-size="32" fill="#ffffff" text-anchor="middle" font-weight="bold" letter-spacing="2">ZOMBIE-LEAK TASKFORCE</text>
+  <text x="400" y="450" font-family="serif" font-size="24" fill="#ffcc00" text-anchor="middle" font-weight="bold">SQUAD STATUS: HYPER-GLITCHED</text>
+  <text x="400" y="480" font-family="serif" font-size="18" fill="#cccccc" text-anchor="middle">"Ensuring all memory leaks are legally binding in 5D."</text>
+  <rect x="300" y="500" width="200" height="40" rx="5" fill="#d4af37" />
+  <text x="400" y="525" font-family="serif" font-size="20" fill="#0a0e1a" text-anchor="middle" font-weight="bold">CERTIFIED BRAIN-FART</text>
+</svg>

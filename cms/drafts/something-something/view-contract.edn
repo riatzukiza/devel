@@ -1,0 +1,32 @@
+{:view/id "something-something"
+ :view/title "something something this is a test"
+ :view/kind :landing-page
+ :view/schema-version 1
+ :view/status :draft
+
+ :source
+ {:kind :manual
+  :imported-at "2026-05-08T18:14:18.343Z"}
+
+ :layout
+ {:template :landing-page
+  :zones
+  []}
+
+ :blocks
+ []
+
+ :editor
+ {:locked false
+  :allowed-actions [:drag :drop :duplicate :hide :delete :edit-props]
+  :default-panel :layout}
+
+ :publishing
+ {:last-published-at nil
+  :defer-index false
+  :skip-translation true}
+
+ :settings
+ {:language "en"
+  :allow-comments true
+  :chat-actor-id nil}}

@@ -1,0 +1,26 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="#0a0a0c" />
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#dfb05e" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#000" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <circle cx="256" cy="256" r="200" stroke="#dfb05e" stroke-width="1" fill="none" opacity="0.3" />
+  <circle cx="256" cy="256" r="180" stroke="#dfb05e" stroke-width="2" fill="none" />
+  <circle cx="256" cy="256" r="150" stroke="#dfb05e" stroke-width="0.5" fill="none" opacity="0.5" />
+
+  <!-- Hexagonal Frame -->
+  <polygon points="256,40 385,130 385,382 256,472 127,382 127,130" stroke="#dfb05e" stroke-width="3" fill="none" />
+
+  <!-- Inner a-periodic lines -->
+  <line x1="256" y1="40" x2="256" y2="472" stroke="#dfb05e" stroke-width="0.5" opacity="0.4" />
+  <line x1="127" y1="130" x2="385" y2="382" stroke="#dfb05e" stroke-width="0.5" opacity="0.4" />
+  <line x1="385" y1="130" x2="127" y2="382" stroke="#dfb05e" stroke-width="0.5" opacity="0.4" />
+
+  <!-- Central Void -->
+  <circle cx="256" cy="256" r="40" fill="#000" stroke="#dfb05e" stroke-width="2" />
+  <circle cx="256" cy="256" r="20" fill="#dfb05e" opacity="0.8" />
+
+  <text x="256" y="440" font-family="serif" font-size="16" fill="#dfb05e" text-anchor="middle" opacity="0.7">SCLDF // THE FIRST WORD // 0xS0V3R31GN</text>
+</svg>

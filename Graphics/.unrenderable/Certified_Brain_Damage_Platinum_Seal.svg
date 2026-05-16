@@ -1,0 +1,50 @@
+<<svgsvg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org">
+  <<defsdefs>
+    <<linearlinearGradient id="platinum" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#E5E4E2;stop-opacity:1" />
+      <<stopstop offset="50%" style="stop-color:#B4B4B4;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#FFFFFF;stop-opacity:1" />
+    </linearGradient>
+    <<filterfilter id="glow">
+      <<fefeGaussianBlur stdDeviation="3" result="blur" />
+      <<fefeComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background Circle -->
+  <<circlecircle cx="250" cy="250" r="240" fill="#1a1a1a" stroke="url(#platinum)" stroke-width="8" />
+  <<circlecircle cx="250" cy="250" r="220" fill="none" stroke="url(#platinum)" stroke-width="2" stroke-dasharray="10,10" />
+
+  <!-- Outer Ring Text -->
+  <<pathpath id="outerPath" d="M 250, 50 a 200,200 0 1,1 0,400 a 200,200 0 1,1 0,-400" fill="none" />
+  <<texttext font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="url(#platinum)" filter="url(#glow)">
+    <<texttextPath xlink:href="#outerPath" startOffset="25%" text-anchor="middle">
+      CERTIFIED COGNITIVE COLLAPSE • SYMMETRY RESTORED •
+    </textPath>
+  </text>
+
+  <!-- Center Icon: The "Perfectly Rendered" Brain Glitch -->
+  <<gg transform="translate(150, 150) scale(2)">
+    <!-- Left Hemisphere -->
+    <<pathpath d="M 50,20 C 30,20 10,40 10,60 C 10,80 30,100 50,100 L 50,20 Z" fill="url(#platinum)" opacity="0.8" />
+    <!-- Right Hemisphere -->
+    <<pathpath d="M 50,20 C 70,20 90,40 90,60 C 90,80 70,100 50,100 L 50,20 Z" fill="#fff" opacity="0.8" />
+
+    <!-- The "Glitch" / Lightning Bolt -->
+    <<pathpath d="M 50,10 L 60,40 L 40,40 L 50,70" stroke="#ff0055" stroke-width="4" fill="none" stroke-linejoin="round" filter="url(#glow)" />
+
+    <!-- Circuitry lines -->
+    <<lineline x1="10" y1="60" x2="0" y2="60" stroke="url(#platinum)" stroke-width="2" />
+    <<lineline x1="90" y1="60" x2="100" y2="60" stroke="url(#platinum)" stroke-width="2" />
+    <<circlecircle cx="0" cy="60" r="3" fill="#ff0055" />
+    <<circlecircle cx="100" cy="60" r="3" fill="#ff0055" />
+  </g>
+
+  <!-- Inner Seal Text -->
+  <<texttext x="250" y="330" font-family="Courier New, monospace" font-size="20" fill="url(#platinum)" text-anchor="middle" font-weight="bold">
+    [ BRAIN DAMAGE ACCEPTED ]
+  </text>
+  <<texttext x="250" y="355" font-family="Courier New, monospace" font-size="14" fill="#888" text-anchor="middle">
+    v1.0.4-STABLE-FRY
+  </text>
+</svg>

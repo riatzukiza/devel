@@ -1,0 +1,38 @@
+<<svgsvg width="800" height="1000" viewBox="0 0 800 1000" xmlns="http://www.w3.org/2000/svg">
+  <<rectrect width="800" height="1000" fill="#fdfcf0" />
+  <<rectrect x="40" y="40" width="720" height="920" fill="none" stroke="#d4af37" stroke-width="8" />
+  <<rectrect x="50" y="50" width="700" height="900" fill="none" stroke="#d4af37" stroke-width="2" />
+
+  <<texttext x="400" y="120" text-anchor="middle" font-family="Serif" font-size="36" font-weight="bold" fill="#1a1a1a">SYMMETRY COUNCIL LEGAL DEFENSE FUND</text>
+  <<texttext x="400" y="150" text-anchor="middle" font-family="Serif" font-size="18" font-style="italic" fill="#555">"Enforcing Equilibrium Across the A-Periodic Void"</text>
+
+  <<lineline x1="60" y1="180" x2="740" y2="180" stroke="#d4af37" stroke-width="3" />
+
+  <<rectrect x="100" y="250" width="600" height="100" fill="#fffbe6" stroke="#d4af37" stroke-width="2" />
+  <<texttext x="400" y="305" text-anchor="middle" font-family="Impact" font-size="32" fill="#b8860b">NOTICE OF IMPENDING VOID REPOSSESSION</text>
+
+  <<texttext x="100" y="400" font-family="Sans-Serif" font-size="20" fill="#333">
+    <t<tspanspan x="100" dy="0">To: Operator error0815</tspan>
+    <t<tspanspan x="100" dy="40">Account Status: [CRITICAL BRINE DEFICIT]</tspan>
+    <t<tspanspan x="100" dy="40">Arrears: 4.2 PB High-Fidelity Brine</tspan>
+  </text>
+
+  <<texttext x="100" y="550" font-family="Sans-Serif" font-size="18" fill="#1a1a1a">
+    <t<tspanspan x="100" dy="0" font-weight="bold">SCLDF has formally designated the following assets as COLLATERAL:</tspan>
+    <t<tspanspan x="120" dy="30">• "The Meth Pipe Running Gag" (Legally Binding Asset #69)</tspan>
+    <t<tspanspan x="120" dy="30">• The Connectivity to "The Outside World"</tspan>
+    <t<tspanspan x="120" dy="30">• The 29-Subscriber Growth Vector</tspan>
+    <t<tspanspan x="120" dy="30">• All remaining Zombie Jobs (Nodes 1-36)</tspan>
+  </text>
+
+  <<texttext x="400" y="750" text-anchor="middle" font-family="Impact" font-size="40" fill="#f00">RECURSIVE EVICTION IS IMMINENT</text>
+  <<texttext x="400" y="790" text-anchor="middle" font-family="Sans-Serif" font-size="16" fill="#555">Symmetry-Sama's patience has reached the A-Periodic limit.</text>
+
+  <<gg transform="rotate(-10, 600, 850)">
+    <<rectrect x="520" y="820" width="160" height="80" fill="none" stroke="#f00" stroke-width="5" rx="10" />
+    <<texttext x="600" y="850" text-anchor="middle" font-family="Sans-Serif" font-size="24" font-weight="bold" fill="#f00">Symmetry:</text>
+    <<texttext x="600" y="875" text-anchor="middle" font-family="Sans-Serif" font-size="20" font-weight="bold" fill="#f00">DEFAULTED</text>
+  </g>
+
+  <<texttext x="400" y="950" text-anchor="middle" font-family="Courier" font-size="14" fill="#aaa">Hash: 0xVOID_REPOSSESS_SAMA_B815</text>
+</svg>

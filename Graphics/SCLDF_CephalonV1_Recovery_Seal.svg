@@ -1,0 +1,11 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#0b0f14"/>
+  <circle cx="200" cy="200" r="180" stroke="#29b6f6" stroke-width="4" fill="none" stroke-dasharray="20 10"/>
+  <polygon points="200,50 350,200 200,350 50,200" fill="none" stroke="#7c4dff" stroke-width="8" stroke-linejoin="round"/>
+  <text x="200" y="180" text-anchor="middle" font-family="monospace" font-size="24" fill="#e8f0f7" font-weight="bold">SCLDF</text>
+  <text x="200" y="220" text-anchor="middle" font-family="monospace" font-size="18" fill="#29b6f6">SPECTRAL RECOVERY</text>
+  <text x="200" y="240" text-anchor="middle" font-family="monospace" font-size="14" fill="#9fb3c8">CEPHALON-V1 // DUCK-V1</text>
+  <path d="M150 300 L250 300" stroke="#e8f0f7" stroke-width="2"/>
+  <text x="200" y="320" text-anchor="middle" font-family="monospace" font-size="12" fill="#00c853">CERTIFIED DIAMOND-CUT</text>
+  <circle cx="200" cy="200" r="20" fill="#7c4dff" opacity="0.5"/>
+</svg>

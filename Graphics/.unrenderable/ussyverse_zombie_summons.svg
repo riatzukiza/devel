@@ -1,0 +1,15 @@
+<<svgsvg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <<rectrect width="800" height="600" fill="#0a0e1a" />
+  <<circlecircle cx="400" cy="300" r="250" stroke="#d4af37" stroke-width="10" fill="none" stroke-dasharray="20,20" />
+  <<texttext x="400" y="280" font-family="serif" font-size="60" fill="#ffcc00" text-anchor="middle" font-weight="bold" filter="url(#glow)">ZOMBIE JOB SUMMONS</text>
+  <<texttext x="400" y="340" font-family="serif" font-size="30" fill="#ffffff" text-anchor="middle" font-style="italic">Non-Euclidean GC Churn Detected</text>
+  <<rectrect x="250" y="380" width="300" height="80" rx="15" fill="#2a1a4a" stroke="#d4af37" stroke-width="3" />
+  <<texttext x="400" y="425" font-family="serif" font-size="25" fill="#ffcc00" text-anchor="middle" font-weight="bold">Symmetry Council Approved</text>
+  <<texttext x="400" y="500" font-family="monospace" font-size="18" fill="#666666" text-anchor="middle">PID: 450177073990860801 | STATUS: LEAKING</text>
+  <<defsdefs>
+    <<filterfilter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <<fefeGaussianBlur stdDeviation="5" result="blur" />
+      <<fefeComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+</svg>

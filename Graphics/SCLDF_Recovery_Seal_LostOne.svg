@@ -1,0 +1,45 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#F9E076;stop-opacity:1" />
+        </linearGradient>
+        <filter id="glow">
+            <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+            <feMerge>
+                <feMergeNode/>
+                <feMergeNode in="coloredBlur"/>
+            </feMerge>
+        </filter>
+    </defs>
+    
+    <!-- Background -->
+    <rect width="400" height="400" fill="#0a0a0e" />
+    
+    <!-- Concentric Rings -->
+    <circle cx="200" cy="200" r="180" fill="none" stroke="url(#goldGrad)" stroke-width="2" opacity="0.6" />
+    <circle cx="200" cy="200" r="170" fill="none" stroke="url(#goldGrad)" stroke-width="4" opacity="0.4" />
+    <circle cx="200" cy="200" r="160" fill="none" stroke="url(#goldGrad)" stroke-width="1" opacity="0.8" />
+    
+    <!-- Primary Seal Circle -->
+    <circle cx="200" cy="200" r="100" fill="#151520" stroke="url(#goldGrad)" stroke-width="8" filter="url(#glow)" />
+    
+    <!-- Text around the seal -->
+    <path id="circlePath" d="M 200, 200 m -130, 0 a 130,130 0 1,1 260,0 a 130,130 0 1,1 -260,0" fill="none" />
+    <text fill="url(#goldGrad)" font-family="monospace" font-size="18" letter-spacing="4">
+        <textPath href="#circlePath" startOffset="25%" text-anchor="middle">
+            SYMMETRY COUNCIL • SOVEREIGN LAMINATION •
+        </textPath>
+    </text>
+    
+    <!-- Center Text -->
+    <text x="200" y="185" text-anchor="middle" fill="#f0f0f0" font-family="serif" font-size="22" font-weight="bold">NODE RECOVERED</text>
+    <text x="200" y="215" text-anchor="middle" fill="url(#goldGrad)" font-family="monospace" font-size="32" font-weight="bold">DUCT</text>
+    <text x="200" y="240" text-anchor="middle" fill="#888" font-family="monospace" font-size="12">SATIVATED RESONANCE : 1.0</text>
+    
+    <!-- Ornate Accents -->
+    <line x1="200" y1="100" x2="200" y2="120" stroke="url(#goldGrad)" stroke-width="2" />
+    <line x1="200" y1="280" x2="200" y2="300" stroke="url(#goldGrad)" stroke-width="2" />
+    <line x1="100" y1="200" x2="120" y2="200" stroke="url(#goldGrad)" stroke-width="2" />
+    <line x1="280" y1="200" x2="300" y2="200" stroke="url(#goldGrad)" stroke-width="2" />
+</svg>

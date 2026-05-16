@@ -1,16 +1,41 @@
-# Local development instance - use this as the primary proxx
-# Usage: cd services/proxx && docker compose up -d
+# Local development instance - use this as the primary proxx.
+#
+# Profiles:
+# - prod (default-like): runs the image/pm2 runtime built from ../../orgs/open-hax/proxx
+# - dev: bind-mounts ../../orgs/open-hax/proxx and restarts on changes (debounced)
+#
+# Usage:
+#   cd services/proxx
+#   docker compose --profile prod up -d --build
+#   # or:
+#   docker compose --profile dev up -d --build
 
 name: proxx-local
 
 services:
+  # Init container: fix ownership of the bind-mounted ./data directory so the
+  # main proxx service can run as a non-root user.
+  # Exception: init containers may run as root.
+  proxx-init-data:
+    image: busybox:1.36
+    user: "0:0" # init container; allowed root for one-time volume permission fix
+    command: ["sh", "-lc", "chown -R 1000:1000 /app/data || true"]
+    volumes:
+      - ./data:/app/data
+
   proxx:
+    profiles: ["prod"]
+    cpus: ${PROXX_CPUS:-2}
+    cpuset: ${PROXX_CONTAINER_CPUSET:-2-21}
     depends_on:
+      proxx-init-data:
+        condition: service_completed_successfully
       proxx-local-db:
         condition: service_healthy
+    user: "${DOCKER_USER:-1000:1000}"
     build:
-      context: ../..
-      dockerfile: orgs/open-hax/proxx/Dockerfile
+      context: ../../orgs/open-hax/proxx
+      dockerfile: Dockerfile
     ports:
       # Bind to all interfaces so containers can reach Proxx for embeddings
       - "0.0.0.0:${PROXY_PORT:-8789}:8789"
@@ -28,20 +53,40 @@ services:
       PROXY_KEYS_FILE: /workspace/service-config/seeds/keys.json
       PROXY_MODELS_FILE: /workspace/service-config/models.json
       PROXY_REQUEST_LOGS_FILE: /app/data/request-logs.jsonl
+      PROXX_CLJS_RUNTIME_REQUIRED: "${PROXX_CLJS_RUNTIME_REQUIRED:-true}"
+      PROXX_CLJS_POLICY_SHADOW: "${PROXX_CLJS_POLICY_SHADOW:-true}"
+      PROXX_CLJS_POLICY_AUTHORITATIVE: "${PROXX_CLJS_POLICY_AUTHORITATIVE:-true}"
+      PROXX_CLJS_POLICY_MANIFEST: /etc/proxx/policies/runtime/00-manifest.edn
       PROXY_REQUEST_LOGS_MAX_ENTRIES: "${PROXY_REQUEST_LOGS_MAX_ENTRIES:-100000}"
       PROXY_REQUEST_LOGS_FLUSH_MS: "${PROXY_REQUEST_LOGS_FLUSH_MS:-1000}"
       PROXY_PROMPT_AFFINITY_FLUSH_MS: "${PROXY_PROMPT_AFFINITY_FLUSH_MS:-250}"
       UPSTREAM_PROVIDER_ID: "${UPSTREAM_PROVIDER_ID:-openai}"
-      UPSTREAM_FALLBACK_PROVIDER_IDS: "${UPSTREAM_FALLBACK_PROVIDER_IDS:-ollama-cloud,rotussy,zai,requesty}"
       DISABLED_PROVIDER_IDS: "${DISABLED_PROVIDER_IDS:-}"
       UPSTREAM_BASE_URL: "${UPSTREAM_BASE_URL:-https://chatgpt.com/backend-api}"
-      UPSTREAM_PROVIDER_BASE_URLS: "${UPSTREAM_PROVIDER_BASE_URLS:-ollama-cloud=https://ollama.com,openai=https://chatgpt.com/backend-api,vivgrid=https://api.vivgrid.com,requesty=https://router.requesty.ai/v1}"
+      UPSTREAM_PROVIDER_BASE_URLS: "${UPSTREAM_PROVIDER_BASE_URLS:-musicgen=http://musicgen:8080,ollama-cloud=https://ollama.com,ollama=http://ollama:11434,openai=https://chatgpt.com/backend-api,vivgrid=https://api.vivgrid.com,requesty=https://router.requesty.ai/v1}"
+      EMBED_MODEL_PROVIDER_ALIASES: "${EMBED_MODEL_PROVIDER_ALIASES:-qwen3-embedding:0.6b=ollama,qwen3-embedding-0.6b=ollama}"
       REQUESTY_API_TOKEN: "${REQUESTY_API_TOKEN:-}"
       OPENAI_PROVIDER_ID: "${OPENAI_PROVIDER_ID:-openai}"
       OPENAI_BASE_URL: "${OPENAI_BASE_URL:-https://chatgpt.com/backend-api}"
       # Use the official OpenAI Platform API base URL for image generation (recommended).
       OPENAI_API_BASE_URL: "${OPENAI_API_BASE_URL:-https://api.openai.com}"
       GEMINI_API_KEY: "${GEMINI_API_KEY:-}"
+      BLAZE_API_KEY: "${BLAZE_API_KEY:-${BLAZEAI_API_KEY:-}}"
+      BLAZEAI_API_KEY: "${BLAZEAI_API_KEY:-${BLAZE_API_KEY:-}}"
+      BLAZE_BASE_URL: "${BLAZE_BASE_URL:-https://blazeai.boxu.dev/api/}"
+      MINIMAX_API_KEY: "${MINIMAX_API_KEY:-}"
+      HUGGINGFACE_API_TOKEN: "${HUGGINGFACE_API_TOKEN:-}"
+      XIAOMI_PROVIDER_ID: "${XIAOMI_PROVIDER_ID:-xiaomi}"
+      MIMO_PROVIDER_ID: "${MIMO_PROVIDER_ID:-}"
+      XAIOMI_API_KEY: "${XAIOMI_API_KEY:-}"
+      XIaOMI_API_KEY: "${XIaOMI_API_KEY:-}"
+      XAIOMI_MIMO_API_KEY: "${XAIOMI_MIMO_API_KEY:-}"
+      XAIOMI_API_BASE_URL: "${XAIOMI_API_BASE_URL:-}"
+      XAIOMI_MIMO_API_BASE_URL: "${XAIOMI_MIMO_API_BASE_URL:-}"
+      XIAOMI_API_KEY: "${XIAOMI_API_KEY:-${MIMO_API_KEY:-${XAIOMI_API_KEY:-${XIaOMI_API_KEY:-${XAIOMI_MIMO_API_KEY:-}}}}}"
+      MIMO_API_KEY: "${MIMO_API_KEY:-${XIAOMI_API_KEY:-${XAIOMI_API_KEY:-${XIaOMI_API_KEY:-${XAIOMI_MIMO_API_KEY:-}}}}}"
+      XIAOMI_BASE_URL: "${XIAOMI_BASE_URL:-${XIAOMI_API_BASE_URL:-${MIMO_BASE_URL:-${XAIOMI_API_BASE_URL:-${XAIOMI_MIMO_API_BASE_URL:-https://api.xiaomimimo.com/v1}}}}}"
+      MIMO_BASE_URL: "${MIMO_BASE_URL:-${XIAOMI_BASE_URL:-${XIAOMI_API_BASE_URL:-${XAIOMI_API_BASE_URL:-${XAIOMI_MIMO_API_BASE_URL:-}}}}}"
 
       # Where to send OpenAI image generation requests:
       # - platform: api.openai.com (Images API; requires Platform scopes for OAuth)
@@ -81,7 +126,7 @@ services:
       UPSTREAM_RESPONSES_MODEL_PREFIXES: "${UPSTREAM_RESPONSES_MODEL_PREFIXES:-gpt-}"
       OPENAI_MODEL_PREFIXES: "${OPENAI_MODEL_PREFIXES:-openai/,openai:}"
       OLLAMA_CHAT_PATH: "${OLLAMA_CHAT_PATH:-/api/chat}"
-      OLLAMA_MODEL_PREFIXES: "${OLLAMA_MODEL_PREFIXES:-ollama/,ollama:}"
+      OLLAMA_MODEL_PREFIXES: "${OLLAMA_MODEL_PREFIXES:-ollama/,ollama:,ollama-lan/,ollama-lan:}"
       PROXY_KEY_RELOAD_MS: "${PROXY_KEY_RELOAD_MS:-5000}"
       PROXY_KEY_COOLDOWN_MS: "${PROXY_KEY_COOLDOWN_MS:-30000}"
       UPSTREAM_REQUEST_TIMEOUT_MS: "${UPSTREAM_REQUEST_TIMEOUT_MS:-900000}"
@@ -129,6 +174,12 @@ services:
       - ./models.json:/workspace/service-config/models.json:ro
       - ./seeds:/workspace/service-config/seeds:ro
       - ./data:/app/data
+      # Fast local iteration: build Proxx on the host with
+      # `pnpm --dir ../../orgs/open-hax/proxx build`, then recreate without
+      # rebuilding the image. The container keeps image-provided node_modules
+      # while running the mounted dist/main.js.
+      - ../../orgs/open-hax/proxx/dist:/app/dist:ro
+      - ./policies:/etc/proxx/policies:ro
       - ./:/workspace/runtime-repo:ro
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
@@ -151,6 +202,162 @@ services:
       timeout: 10s
       retries: 3
       start_period: 20s
+    restart: unless-stopped
+
+  # Dev profile: bind-mount the proxx repo and restart on code changes.
+  # Usage: cd services/proxx && docker compose --profile dev up -d
+  proxx-dev:
+    profiles: ["dev"]
+    cpus: ${PROXX_DEV_CPUS:-2}
+    cpuset: ${PROXX_CONTAINER_CPUSET:-2-21}
+    depends_on:
+      proxx-init-data:
+        condition: service_completed_successfully
+      proxx-local-db:
+        condition: service_healthy
+    user: "${DOCKER_USER:-1000:1000}"
+    build:
+      context: ../../orgs/open-hax/proxx
+      dockerfile: Dockerfile
+    command:
+      [
+        "bash",
+        "-lc",
+        "pnpm install --no-frozen-lockfile && pnpm add -g nodemon@3 && pnpm build:cljs && nodemon --delay 750ms --signal SIGTERM --watch src --watch web --watch package.json --ext ts,tsx,js,jsx,json,cljs,edn --exec \"pnpm build:cljs && node --env-file-if-exists=.env --import tsx src/main.ts\"",
+      ]
+    ports:
+      - "0.0.0.0:${PROXY_PORT:-8789}:8789"
+      - "127.0.0.1:${OPENAI_OAUTH_CALLBACK_PORT:-1455}:8789"
+      - "127.0.0.1:${PROXY_WEB_PORT:-5174}:5174"
+    environment:
+      NODE_ENV: development
+      PROXY_HOST: 0.0.0.0
+      PROXY_PORT: "8789"
+      PORT: "8789"
+      OPENAI_OAUTH_CALLBACK_PORT: "${OPENAI_OAUTH_CALLBACK_PORT:-1455}"
+      PROXY_AUTH_TOKEN: "${PROXY_AUTH_TOKEN:-change-me-open-hax-proxy-token}"
+      PROXY_KEYS_FILE: /workspace/service-config/seeds/keys.json
+      PROXY_MODELS_FILE: /workspace/service-config/models.json
+      PROXY_REQUEST_LOGS_FILE: /app/data/request-logs.jsonl
+      PROXX_CLJS_RUNTIME_REQUIRED: "${PROXX_CLJS_RUNTIME_REQUIRED:-true}"
+      PROXX_CLJS_POLICY_SHADOW: "${PROXX_CLJS_POLICY_SHADOW:-true}"
+      PROXX_CLJS_POLICY_AUTHORITATIVE: "${PROXX_CLJS_POLICY_AUTHORITATIVE:-true}"
+      PROXX_CLJS_POLICY_MANIFEST: /etc/proxx/policies/runtime/00-manifest.edn
+      PROXY_REQUEST_LOGS_MAX_ENTRIES: "${PROXY_REQUEST_LOGS_MAX_ENTRIES:-100000}"
+      PROXY_REQUEST_LOGS_FLUSH_MS: "${PROXY_REQUEST_LOGS_FLUSH_MS:-1000}"
+      PROXY_PROMPT_AFFINITY_FLUSH_MS: "${PROXY_PROMPT_AFFINITY_FLUSH_MS:-250}"
+      UPSTREAM_PROVIDER_ID: "${UPSTREAM_PROVIDER_ID:-openai}"
+      DISABLED_PROVIDER_IDS: "${DISABLED_PROVIDER_IDS:-}"
+      UPSTREAM_BASE_URL: "${UPSTREAM_BASE_URL:-https://chatgpt.com/backend-api}"
+      UPSTREAM_PROVIDER_BASE_URLS: "${UPSTREAM_PROVIDER_BASE_URLS:-llamacpp-embed=http://llamacpp-embed:8081,ollama-cloud=https://ollama.com,openai=https://chatgpt.com/backend-api,vivgrid=https://api.vivgrid.com,requesty=https://router.requesty.ai/v1,llamacpp=http://llamacpp-chat:8080}"
+      EMBED_MODEL_PROVIDER_ALIASES: "${EMBED_MODEL_PROVIDER_ALIASES:-qwen3-embedding:0.6b=llamacpp-embed,qwen3-embedding-0.6b=llamacpp-embed}"
+      REQUESTY_API_TOKEN: "${REQUESTY_API_TOKEN:-}"
+      OPENAI_PROVIDER_ID: "${OPENAI_PROVIDER_ID:-openai}"
+      OPENAI_BASE_URL: "${OPENAI_BASE_URL:-https://chatgpt.com/backend-api}"
+      OPENAI_API_BASE_URL: "${OPENAI_API_BASE_URL:-https://api.openai.com}"
+      GEMINI_API_KEY: "${GEMINI_API_KEY:-}"
+      BLAZE_API_KEY: "${BLAZE_API_KEY:-${BLAZEAI_API_KEY:-}}"
+      BLAZEAI_API_KEY: "${BLAZEAI_API_KEY:-${BLAZE_API_KEY:-}}"
+      BLAZE_BASE_URL: "${BLAZE_BASE_URL:-https://blazeai.boxu.dev/api/}"
+      XIAOMI_PROVIDER_ID: "${XIAOMI_PROVIDER_ID:-xiaomi}"
+      MIMO_PROVIDER_ID: "${MIMO_PROVIDER_ID:-}"
+      XAIOMI_API_KEY: "${XAIOMI_API_KEY:-}"
+      XIaOMI_API_KEY: "${XIaOMI_API_KEY:-}"
+      XAIOMI_MIMO_API_KEY: "${XAIOMI_MIMO_API_KEY:-}"
+      XAIOMI_API_BASE_URL: "${XAIOMI_API_BASE_URL:-}"
+      XAIOMI_MIMO_API_BASE_URL: "${XAIOMI_MIMO_API_BASE_URL:-}"
+      XIAOMI_API_KEY: "${XIAOMI_API_KEY:-${MIMO_API_KEY:-${XAIOMI_API_KEY:-${XIaOMI_API_KEY:-${XAIOMI_MIMO_API_KEY:-}}}}}"
+      MIMO_API_KEY: "${MIMO_API_KEY:-${XIAOMI_API_KEY:-${XAIOMI_API_KEY:-${XIaOMI_API_KEY:-${XAIOMI_MIMO_API_KEY:-}}}}}"
+      XIAOMI_BASE_URL: "${XIAOMI_BASE_URL:-${XIAOMI_API_BASE_URL:-${MIMO_BASE_URL:-${XAIOMI_API_BASE_URL:-${XAIOMI_MIMO_API_BASE_URL:-https://api.xiaomimimo.com/v1}}}}}"
+      MIMO_BASE_URL: "${MIMO_BASE_URL:-${XIAOMI_BASE_URL:-${XIAOMI_API_BASE_URL:-${XAIOMI_API_BASE_URL:-${XAIOMI_MIMO_API_BASE_URL:-}}}}}"
+      OPENAI_IMAGES_UPSTREAM_MODE: "${OPENAI_IMAGES_UPSTREAM_MODE:-auto}"
+      OPENAI_OAUTH_CLIENT_ID: "${OPENAI_OAUTH_CLIENT_ID:-app_EMoamEEZ73f0CkXaXp7hrann}"
+      OPENAI_OAUTH_CLIENT_SECRET: "${OPENAI_OAUTH_CLIENT_SECRET:-}"
+      OPENAI_OAUTH_ISSUER: "${OPENAI_OAUTH_ISSUER:-https://auth.openai.com}"
+      OPENAI_OAUTH_SCOPES: "${OPENAI_OAUTH_SCOPES:-openid profile email offline_access}"
+      OPENAI_IMAGES_GENERATIONS_PATHS: "${OPENAI_IMAGES_GENERATIONS_PATHS:-}"
+      IMAGE_COST_USD_DEFAULT: "${IMAGE_COST_USD_DEFAULT:-0}"
+      IMAGE_COST_USD_BY_PROVIDER: "${IMAGE_COST_USD_BY_PROVIDER:-}"
+      OLLAMA_BASE_URL: "${OLLAMA_BASE_URL:-http://ollama:11434}"
+      ZAI_API_KEY: "${ZAI_API_KEY:-}"
+      ZHIPU_API_KEY: "${ZHIPU_API_KEY:-}"
+      ZAI_PROVIDER_ID: "${ZAI_PROVIDER_ID:-zai}"
+      ZHIPU_PROVIDER_ID: "${ZHIPU_PROVIDER_ID:-}"
+      ZAI_BASE_URL: "${ZAI_BASE_URL:-https://api.z.ai/api/paas/v4}"
+      ZEN_API_KEY: "${ZEN_API_KEY:-}"
+      ROTUSSY_API_KEY: "${ROTUSSY_API_KEY:-}"
+      ROTUSSY_PROVIDER_ID: "${ROTUSSY_PROVIDER_ID:-rotussy}"
+      ROTUSSY_BASE_URL: "${ROTUSSY_BASE_URL:-https://api.ussyco.de/v1}"
+      ZHIPU_BASE_URL: "${ZHIPU_BASE_URL:-}"
+      UPSTREAM_CHAT_COMPLETIONS_PATH: "${UPSTREAM_CHAT_COMPLETIONS_PATH:-/v1/chat/completions}"
+      OPENAI_CHAT_COMPLETIONS_PATH: "${OPENAI_CHAT_COMPLETIONS_PATH:-/codex/responses/compact}"
+      UPSTREAM_MESSAGES_PATH: "${UPSTREAM_MESSAGES_PATH:-/v1/messages}"
+      UPSTREAM_MESSAGES_MODEL_PREFIXES: "${UPSTREAM_MESSAGES_MODEL_PREFIXES:-claude-}"
+      UPSTREAM_MESSAGES_INTERLEAVED_THINKING_BETA: "${UPSTREAM_MESSAGES_INTERLEAVED_THINKING_BETA:-interleaved-thinking-2025-05-14}"
+      UPSTREAM_RESPONSES_PATH: "${UPSTREAM_RESPONSES_PATH:-/v1/responses}"
+      OPENAI_RESPONSES_PATH: "${OPENAI_RESPONSES_PATH:-/codex/responses}"
+      UPSTREAM_RESPONSES_MODEL_PREFIXES: "${UPSTREAM_RESPONSES_MODEL_PREFIXES:-gpt-}"
+      OPENAI_MODEL_PREFIXES: "${OPENAI_MODEL_PREFIXES:-openai/,openai:}"
+      OLLAMA_CHAT_PATH: "${OLLAMA_CHAT_PATH:-/api/chat}"
+      OLLAMA_MODEL_PREFIXES: "${OLLAMA_MODEL_PREFIXES:-ollama/,ollama:,ollama-lan/,ollama-lan:}"
+      PROXY_KEY_RELOAD_MS: "${PROXY_KEY_RELOAD_MS:-5000}"
+      PROXY_KEY_COOLDOWN_MS: "${PROXY_KEY_COOLDOWN_MS:-30000}"
+      UPSTREAM_REQUEST_TIMEOUT_MS: "${UPSTREAM_REQUEST_TIMEOUT_MS:-900000}"
+      UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS: "${UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS:-900000}"
+      NODE_OPTIONS: "${NODE_OPTIONS:---max-old-space-size=8192}"
+      EMBED_MAX_BATCH_ITEMS: "${EMBED_MAX_BATCH_ITEMS:-64}"
+      EMBED_MAX_INPUT_CHARS: "${EMBED_MAX_INPUT_CHARS:-200000}"
+      PROXY_ALLOW_UNAUTHENTICATED: "${PROXY_ALLOW_UNAUTHENTICATED:-false}"
+      DATABASE_URL: "${DATABASE_URL:-postgresql://openai_proxy:openai_proxy@proxx-local-db:5432/openai_proxy}" # pragma: allowlist secret
+      VITE_ALLOWED_HOSTS: "${VITE_ALLOWED_HOSTS:-}"
+      CHROMA_URL: "${CHROMA_URL:-http://host.docker.internal:8000}"
+      CHROMA_COLLECTION: "${CHROMA_COLLECTION:-open_hax_proxy_sessions}"
+      CHROMA_EMBED_MODEL: "${CHROMA_EMBED_MODEL:-nomic-embed-text:latest}"
+      HOST_DASHBOARD_SELF_ID: "${HOST_DASHBOARD_SELF_ID:-}"
+      HOST_DASHBOARD_TARGETS_JSON: "${HOST_DASHBOARD_TARGETS_JSON:-}"
+      HOST_DASHBOARD_DOCKER_SOCKET_PATH: "${HOST_DASHBOARD_DOCKER_SOCKET_PATH:-/var/run/docker.sock}"
+      HOST_DASHBOARD_RUNTIME_ROOT: "${HOST_DASHBOARD_RUNTIME_ROOT:-/workspace/runtime-repo}"
+      HOST_DASHBOARD_REQUEST_TIMEOUT_MS: "${HOST_DASHBOARD_REQUEST_TIMEOUT_MS:-5000}"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "${OTEL_EXPORTER_OTLP_ENDPOINT:-}"
+      OTEL_EXPORTER_OTLP_HEADERS: "${OTEL_EXPORTER_OTLP_HEADERS:-}"
+      OTEL_SERVICE_NAME: "${OTEL_SERVICE_NAME:-proxx-local}"
+      OTEL_RESOURCE_ATTRIBUTES: "${OTEL_RESOURCE_ATTRIBUTES:-service.name=proxx-local}"
+      FEDERATION_SELF_NODE_ID: "${FEDERATION_SELF_NODE_ID:-local-primary}"
+      FEDERATION_SELF_GROUP_ID: "${FEDERATION_SELF_GROUP_ID:-proxx-local}"
+      FEDERATION_SELF_CLUSTER_ID: "${FEDERATION_SELF_CLUSTER_ID:-proxx-local-cluster}"
+      FEDERATION_SELF_PEER_DID: "${FEDERATION_SELF_PEER_DID:-}"
+      FEDERATION_SELF_PUBLIC_BASE_URL: "${FEDERATION_SELF_PUBLIC_BASE_URL:-http://proxx:8789}"
+      FEDERATION_DEFAULT_OWNER_SUBJECT: "${FEDERATION_DEFAULT_OWNER_SUBJECT:-did:web:proxx.local}"
+      FEDERATION_REQUEST_TIMEOUT_MS: "${FEDERATION_REQUEST_TIMEOUT_MS:-30000}"
+      FEDERATION_BRIDGE_RELAY_URL: "${FEDERATION_BRIDGE_RELAY_URL:-}"
+      FEDERATION_BRIDGE_AUTH_TOKEN: "${FEDERATION_BRIDGE_AUTH_TOKEN:-}"
+      FEDERATION_BRIDGE_AUTH_MODE: "${FEDERATION_BRIDGE_AUTH_MODE:-admin_key}"
+      FEDERATION_BRIDGE_OWNER_SUBJECT: "${FEDERATION_BRIDGE_OWNER_SUBJECT:-}"
+      FEDERATION_BRIDGE_AGENT_ID: "${FEDERATION_BRIDGE_AGENT_ID:-}"
+      FEDERATION_BRIDGE_LABELS: "${FEDERATION_BRIDGE_LABELS:-}"
+      FEDERATION_BRIDGE_NODE_LABELS: "${FEDERATION_BRIDGE_NODE_LABELS:-}"
+      FEDERATION_BRIDGE_DEFAULT_EXECUTION_POLICY: "${FEDERATION_BRIDGE_DEFAULT_EXECUTION_POLICY:-node_affinity}"
+    volumes:
+      # Bind-mount the repo for live code edits.
+      - ../../orgs/open-hax/proxx:/app
+      # Keep node_modules from the image available even when /app is bind-mounted.
+      - proxx-dev-node-modules:/app/node_modules
+      - ./models.json:/workspace/service-config/models.json:ro
+      - ./seeds:/workspace/service-config/seeds:ro
+      - ./data:/app/data
+      - ./policies:/etc/proxx/policies:ro
+      - ./:/workspace/runtime-repo:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    stop_signal: SIGTERM
+    stop_grace_period: 30s
+    networks:
+      default: {}
+      ai-infra:
+        aliases:
+          - proxx
+          - proxx-local
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     restart: unless-stopped
 
   proxx-local-db:
@@ -179,6 +386,7 @@ services:
 volumes:
   open-hax-openai-proxy_open-hax-openai-proxy-db-data:
     external: true
+  proxx-dev-node-modules:
 
 networks:
   ai-infra:

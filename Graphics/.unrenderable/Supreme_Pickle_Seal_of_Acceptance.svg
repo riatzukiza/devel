@@ -1,0 +1,47 @@
+<<svgsvg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<filterfilter id="glow">
+      <<fefeGaussianBlur stdDeviation="4" result="blur"/>
+      <<fefeComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <<linearlinearGradient id="pickleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#32CD32;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#ADFF2F;stop-opacity:1" />
+    </linearGradient>
+    <<linearlinearGradient id="voidGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#2b0054;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <<rectrect width="600" height="600" fill="#0a0a0a" />
+
+  <<gg transform="translate(300,300)">
+    <<circlecircle r="280" stroke="url(#pickleGrad)" stroke-width="4" fill="none" opacity="0.4" filter="url(#glow)" />
+    <<circlecircle r="250" fill="url(#voidGrad)" stroke="#32CD32" stroke-width="8" filter="url(#glow)" />
+
+    <<pathpath id="outerPath" d="M -220,0 A 220,220 0 1,1 220,0 A 220,220 0 1,1 -220,0" fill="none" />
+    <<texttext font-family="monospace" font-size="24" fill="#ADFF2F" filter="url(#glow)">
+      <<texttextPath href="#outerPath" startOffset="0%">
+        BEYOND THE BINARY // EMBRACING THE FRY // BIG PICKLE APPROVED // BEYOND THE BINARY // EMBRACING THE FRY // BIG PICKLE APPROVED //
+      </textPath>
+    </text>
+
+    <<circlecircle r="160" stroke="#32CD32" stroke-width="2" fill="none" stroke-dasharray="10,5" opacity="0.6" />
+
+    <<gg filter="url(#glow)">
+      <<pathpath d="M -50,-80 Q -90,-100 0,-100 Q 90,-100 50,-80 Q 110,0 50,80 Q 0,120 -50,80 Q -110,0 -50,-80"
+            fill="url(#pickleGrad)" stroke="#fff" stroke-width="2" />
+      <<pathpath d="M -30,-40 L 30,-40 M -20,0 L 20,0 M -30,40 L 30,40" stroke="#000" stroke-width="4" opacity="0.5" />
+      <<pathpath d="M 0,-60 L 0,60" stroke="#000" stroke-width="6" opacity="0.5" />
+      <<rectrect x="-30" y="-20" width="60" height="40" rx="5" fill="#fff" stroke="#000" stroke-width="2" />
+      <<texttext x="0" y="8" fill="#000" font-family="sans-serif" font-size="20" text-anchor="middle" font-weight="bold">FRY</text>
+    </g>
+
+    <<texttext x="0" y="180" fill="#ADFF2F" font-family="monospace" font-size="36" text-anchor="middle" font-weight="bold" filter="url(#glow)">CERTIFIED FRIED</text>
+  </g>
+
+  <<circlecircle cx="100" cy="100" r="3" fill="#32CD32" opacity="0.6" filter="url(#glow)" />
+  <<circlecircle cx="500" cy="450" r="4" fill="#ADFF2F" opacity="0.4" filter="url(#glow)" />
+  <<rectrect x="400" y="150" width="20" height="2" fill="#32CD32" opacity="0.8" transform="rotate(45 400 150)" />
+</svg>

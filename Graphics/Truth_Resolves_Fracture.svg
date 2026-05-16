@@ -1,0 +1,29 @@
+<svg width="800" height="1000" viewBox="0 0 800 1000" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="skyGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#87CEEB" />
+      <stop offset="100%" stop-color="#E0F7FA" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#skyGradient)" />
+  
+  <!-- The Page -->
+  <rect x="100" y="50" width="600" height="900" fill="white" stroke="#ccc" stroke-width="1" rx="5" />
+  
+  <!-- Fractures (Erratic black lines) -->
+  <path d="M150 100 L200 150 L180 200 L250 220 L220 300" stroke="black" stroke-width="0.5" fill="none" opacity="0.7" />
+  <path d="M650 100 L600 200 L620 250 L550 300 L580 400" stroke="black" stroke-width="0.5" fill="none" opacity="0.7" />
+  <path d="M400 50 L420 150 L380 250 L400 350 L450 400" stroke="black" stroke-width="0.5" fill="none" opacity="0.7" />
+  <path d="M300 800 L350 750 L320 700 L400 650 L380 600" stroke="black" stroke-width="0.5" fill="none" opacity="0.7" />
+  <path d="M500 800 L450 850 L480 900 L400 920" stroke="black" stroke-width="0.5" fill="none" opacity="0.7" />
+  
+  <!-- Glitch Blocks -->
+  <rect x="220" y="220" width="10" height="2" fill="black" opacity="0.5" />
+  <rect x="580" y="350" width="15" height="5" fill="black" opacity="0.4" />
+  <rect x="380" y="620" width="8" height="8" fill="black" opacity="0.6" />
+  <rect x="120" y="850" width="20" height="2" fill="black" opacity="0.3" />
+  
+  <!-- Text -->
+  <text x="400" y="500" text-anchor="middle" font-family="monospace" font-size="24" fill="black" opacity="0.8">TRUTH RESOLVES</text>
+  <text x="400" y="530" text-anchor="middle" font-family="monospace" font-size="14" fill="black" opacity="0.5">variance accepted</text>
+</svg>

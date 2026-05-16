@@ -1,0 +1,1 @@
+/home/err/.pi/agent/skills/multimedia-creative-pipeline/SKILL.md

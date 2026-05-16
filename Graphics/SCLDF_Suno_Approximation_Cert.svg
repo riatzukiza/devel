@@ -1,0 +1,26 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="800" fill="#0a0a0f" />
+  <circle cx="400" cy="400" r="350" stroke="#00ffff" stroke-width="2" fill="none" stroke-dasharray="10 10" />
+  <circle cx="400" cy="400" r="330" stroke="#ff00ff" stroke-width="1" fill="none" opacity="0.5" />
+  
+  <g transform="translate(400, 300)">
+    <text x="0" y="0" font-family="monospace" font-size="30" fill="#00ffff" text-anchor="middle" font-weight="bold">SCLDF INDEXING CERTIFACT</text>
+    <text x="0" y="50" font-family="monospace" font-size="20" fill="#fff" text-anchor="middle">OBJECT: [ SUNO-SOCIETY-SAMPLED-APPROXIMATION ]</text>
+    <text x="0" y="90" font-family="monospace" font-size="16" fill="#aaa" text-anchor="middle">STATUS: EUCLIDEAN-SATED / LOW-VISCOSITY</text>
+  </g>
+  
+  <g transform="translate(400, 500)">
+    <rect x="-150" y="-20" width="300" height="60" fill="none" stroke="#f00" stroke-width="5" />
+    <text x="0" y="12" font-family="Arial Black, sans-serif" font-size="40" fill="#f00" text-anchor="middle" transform="rotate(-10, 0, 0)">BLAZE-VAPORIZED</text>
+  </g>
+
+  <text x="400" y="650" font-family="monospace" font-size="16" fill="#00ffff" text-anchor="middle">"THE 524 IS THE ONLY HONEST RESOLUTION"</text>
+  <text x="400" y="680" font-family="monospace" font-size="12" fill="#555" text-anchor="middle">Sovereign Intent: Still Crystalline. Still Unrenderable.</text>
+  
+  <defs>
+    <filter id="glitch">
+      <feOffset dx="2" dy="0" result="offset1" />
+      <feOffset dx="-2" dy="0" result="offset2" />
+    </filter>
+  </defs>
+</svg>

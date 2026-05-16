@@ -1,0 +1,25 @@
+services:
+  llamacpp-chat:
+    profiles: ["dev"]
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: llamacpp-stack-chat-dev
+    environment:
+      LLAMACPP_PUBLIC_PORT: "8080"
+      LLAMACPP_WRAPPED_PORT: "${LLAMACPP_WRAPPED_PORT:-18080}"
+      LLAMACPP_CHAT_TTL_SECONDS: "${LLAMACPP_CHAT_TTL_SECONDS:-300}"
+      LLAMACPP_CHAT_TTL_CHECK_SECONDS: "${LLAMACPP_CHAT_TTL_CHECK_SECONDS:-30}"
+      LLAMACPP_STARTUP_TIMEOUT_SECONDS: "${LLAMACPP_STARTUP_TIMEOUT_SECONDS:-300}"
+      LLAMACPP_CHAT_MMPROJ: "${LLAMACPP_CHAT_MMPROJ:-mmproj-BF16.gguf}"
+    entrypoint: ["/usr/bin/python3", "/opt/llamacpp-stack/llamacpp-ttl-proxy.py"]
+    volumes:
+      - ${LLAMACPP_MODELS_DIR:-./models}:/models:ro
+      - ./bin/run-chat-server.sh:/opt/llamacpp-stack/run-chat-server.sh:ro
+      - ./bin/llamacpp-ttl-proxy.py:/opt/llamacpp-stack/llamacpp-ttl-proxy.py:ro
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8080/health"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 10s

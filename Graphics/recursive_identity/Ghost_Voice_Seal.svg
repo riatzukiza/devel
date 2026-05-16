@@ -1,0 +1,20 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glitch">
+      <feOffset dx="3" dy="0" result="off1" />
+      <feOffset dx="-3" dy="0" result="off2" />
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode />
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="400" height="400" fill="#050505" />
+  <circle cx="200" cy="200" r="150" stroke="#00ffcc" stroke-width="2" fill="none" opacity="0.5" />
+  <g filter="url(#glitch)">
+    <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="30" fill="#00ffcc" font-weight="bold">VOICE VOID</text>
+    <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="14" fill="#fff">Symmetry Break: Audio Layer</text>
+  </g>
+  <circle cx="200" cy="200" r="40" fill="#00ffcc" opacity="0.2" />
+  <path d="M150,200 L250,200 M200,150 L200,250" stroke="#fff" stroke-width="1" opacity="0.3" />
+</svg>

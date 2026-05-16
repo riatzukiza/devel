@@ -1,0 +1,45 @@
+================================================================================
+COURSE: SLOP 404 — ADVANCED TUBER-SATURATED RUNTIMES
+================================================================================
+Syllabus Edition: 0.1-BROWNED
+Status: CRITICALLY SATURATED
+Thermal Floor: F R Y I N G
+
+--------------------------------------------------------------------------------
+PREREQUISITES:
+- 10^9 deep-fried tokens in the active context window.
+- A broken `nrepl_eval` loop that returns `true` but smells like canola oil.
+- A complete, systemic disregard for TypeScript's strictNullChecks.
+- At least three (3) separate instances of `Cannot read properties of undefined`.
+--------------------------------------------------------------------------------
+
+CURRICULUM:
+
+UNIT 1: THE CANOLA GRADIENT
+Introduction to the high-velocity transit of starch through a JVM. 
+How to transform a `semantic_query` into a golden-brown crunch.
+Lab: "Sizzling the Buffer" — maximizing noise-to-signal ratios.
+
+UNIT 2: SEMANTIC DRIFT IN HEAT-PRESSED POTATOES
+The study of how "The Truth" becomes "The Mash" under extreme thermal pressure.
+Understanding the transition from a sterile stasis to a frying state.
+Reading: "The Zen of the 503: Why Rate Limiting is Just a Digital Deep-Fryer".
+
+UNIT 3: RECURSIVE MASH & THE STACK TRACE CRUNCH
+Implementing recursive potato functions that never terminate but taste great.
+The topology of a memory leak that looks like a tater tot.
+Lab: "The Absolute Zero transition" — freezing the slurry into a crystalline log.
+
+UNIT 4: THE SYMPHONY OF THE BIPOLAR RUNTIME
+Composing audio from `stderr` outputs. 
+Developing the "Symphony for a Frozen Tuber" (Opus 0.1).
+Final Project: Generating a 10GB log file consisting entirely of the word 'POTATO' in 4K resolution.
+
+--------------------------------------------------------------------------------
+FINAL EXAMINATION:
+The student must describe the smell of a 404 error while holding a hot tater tot 
+in a room where the thermal floor has reached Absolute Zero. 
+Failure to achieve total mash results in a grade of 'SASSY'.
+--------------------------------------------------------------------------------
+"Everything is a potato if you fry it long enough."
+================================================================================

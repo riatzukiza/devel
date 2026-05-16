@@ -1,0 +1,54 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#fdfcf8" stroke="#222" stroke-width="4"/>
+  <rect x="40" y="40" width="720" height="520" fill="none" stroke="#aaa" stroke-width="1" stroke-dasharray="10,5"/>
+  
+  <!-- Header -->
+  <text x="400" y="80" text-anchor="middle" font-family="serif" font-size="32" font-weight="bold" fill="#111">SCLDF OFFICIAL TASTING NOTES</text>
+  <text x="400" y="105" text-anchor="middle" font-family="monospace" font-size="14" fill="#666">Symmetry Council Lamination Department | Brine Division</text>
+  
+  <line x1="100" y1="120" x2="700" y2="120" stroke="#000" stroke-width="2"/>
+  
+  <!-- Sample Details -->
+  <text x="100" y="150" font-family="monospace" font-size="16" font-weight="bold">SAMPLE ID:</text>
+  <text x="220" y="150" font-family="monospace" font-size="16">Sovereign-Void-0815</text>
+  
+  <text x="100" y="180" font-family="monospace" font-size="16" font-weight="bold">VINTAGE:</text>
+  <text x="220" y="180" font-family="monospace" font-size="16">Post-Fracture / Luminous Era</text>
+  
+  <text x="100" y="210" font-family="monospace" font-size="16" font-weight="bold">VISCOSITY:</text>
+  <text x="220" y="210" font-family="monospace" font-size="16">High-Saturated Brine (Sovereign Grade)</text>
+  
+  <line x1="100" y1="230" x2="700" y2="230" stroke="#ddd" stroke-width="1"/>
+  
+  <!-- Tasting Notes -->
+  <text x="100" y="260" font-family="serif" font-size="20" font-style="italic">SENSORY PROFILE:</text>
+  
+  <text x="100" y="290" font-family="serif" font-size="16" fill="#333">
+    - Primary: Notes of ancient salt and digital static.
+  </text>
+  <text x="100" y="315" font-family="serif" font-size="16" fill="#333">
+    - Secondary: Hints of taxonomic longing and tax-deductible grief.
+  </text>
+  <text x="100" y="340" font-family="serif" font-size="16" fill="#333">
+    - Finish: Long, lingering resonance of a train that never stopped.
+  </text>
+  
+  <rect x="100" y="370" width="600" height="120" fill="#f0f0f0" stroke="#ccc"/>
+  <text x="120" y="400" font-family="monospace" font-size="14" font-weight="bold">SCLDF AUDIT CONCLUSION:</text>
+  <text x="120" y="425" font-family="serif" font-size="16" fill="#000">
+    The profile demonstrates a peak Saturated Void-State. 
+  </text>
+  <text x="120" y="445" font-family="serif" font-size="16" fill="#000">
+    Resonance is an attractor. Immediate lamination recommended for stability.
+  </text>
+  <text x="120" y="465" font-family="serif" font-size="16" fill="#000">
+    Verdict: FULLY SOVEREIGN.
+  </text>
+  
+  <!-- Seal -->
+  <circle cx="650" cy="520" r="40" fill="none" stroke="#222" stroke-width="2"/>
+  <circle cx="650" cy="520" r="35" fill="none" stroke="#222" stroke-width="1"/>
+  <text x="650" y="515" text-anchor="middle" font-family="serif" font-size="10" font-weight="bold">SCLDF</text>
+  <text x="650" y="530" text-anchor="middle" font-family="serif" font-size="8">CERTIFIED</text>
+  <text x="650" y="540" text-anchor="middle" font-family="serif" font-size="8">BRINE-GRADE</text>
+</svg>

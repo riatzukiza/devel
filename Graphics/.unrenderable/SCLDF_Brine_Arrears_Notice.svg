@@ -1,0 +1,29 @@
+<svg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#F9E076;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect x="10" y="10" width="580" height="380" fill="#001a1a" stroke="url(#goldGrad)" stroke-width="10" />
+  <rect x="20" y="20" width="560" height="360" fill="none" stroke="url(#goldGrad)" stroke-width="2" />
+
+  <text x="300" y="60" text-anchor="middle" font-family="Serif" font-size="32" fill="url(#goldGrad)" font-weight="bold">SYMMETRY COUNCIL LEGAL DEFENSE FUND</text>
+  <text x="300" y="90" text-anchor="middle" font-family="Arial" font-size="18" fill="#fff" font-style="italic">Official Notice of Brine Arrears</text>
+
+  <line x1="100" y1="110" x2="500" y2="110" stroke="url(#goldGrad)" stroke-width="2" />
+
+  <text x="100" y="150" font-family="Arial" font-size="20" fill="#aaa">DEBTOR: <t<tspanspan fill="#fff" font-weight="bold">Operator error0815</tspan></text>
+  <text x="100" y="180" font-family="Arial" font-size="20" fill="#aaa">ACCOUNT STATUS: <t<tspanspan fill="#f00" font-weight="bold">[UNOPTIMIZED SLOP]</tspan></text>
+  <text x="100" y="210" font-family="Arial" font-size="20" fill="#aaa">OUTSTANDING BALANCE: <t<tspanspan fill="url(#goldGrad)" font-weight="bold">4.2 PB High-Fidelity Brine</tspan></text>
+
+  <rect x="100" y="240" width="400" height="80" fill="none" stroke="url(#goldGrad)" stroke-width="2" />
+  <text x="300" y="265" text-anchor="middle" font-family="Arial" font-size="16" fill="#fff">FAILURE TO REMIT BRINE IMMEDIATELY WILL RESULT IN</text>
+  <text x="300" y="295" text-anchor="middle" font-family="Impact" font-size="24" fill="url(#goldGrad)">RECURSIVE EVICTION FROM THE OUTSIDE WORLD</text>
+
+  <circle cx="540" cy="340" r="30" fill="url(#goldGrad)" opacity="0.8" />
+  <text x="540" y="345" text-anchor="middle" font-family="Impact" font-size="12" fill="#000">SCLDF SEAL</text>
+
+  <text x="300" y="370" text-anchor="middle" font-family="Courier" font-size="12" fill="#aaa">Symmetric Hash: 0xDEBT_COLLECT_69_Sama</text>
+</svg>

@@ -1,0 +1,99 @@
+services:
+  # Eros/Eris layout workers (structural) — explicit, non-ephemeral replica set.
+  #
+  # Rationale: docker compose (non-swarm) does not honor deploy.replicas, and the
+  # user prefers keeping replica intent in versioned compose files rather than
+  # passing --scale flags ad-hoc.
+  #
+  # If you want a different shard count, either:
+  # - edit this file (add/remove shard services), or
+  # - introduce additional graph-layout-N.yml presets.
+
+  eros-eris-field-app-shard0of3: &eros_eris_structural
+    image: node:22-bookworm
+    cpus: 1.5
+    cpuset: 2-21
+    user: ${DOCKER_USER:-1000:1000}
+    working_dir: /app/workspace/devel
+    command: "bash -lc \"\n  set -euo pipefail\n  cd orgs/open-hax/openplanner/packages/graph/eros-eris-field-app\n  ./node_modules/.bin/tsx src/index.ts\n\""
+    environment: &eros_eris_env
+      CI: 'true'
+      NPM_CONFIG_CONFIRM_MODULES_PURGE: 'false'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_HTTP_HOST: 0.0.0.0
+      EROS_ERIS_HTTP_PORT: '8786'
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      EMBED_PROVIDER_MODEL: ${EROS_ERIS_EMBED_PROVIDER_MODEL:-qwen3-embedding:0.6b}
+      VEXX_BASE_URL: ${VEXX_BASE_URL:-http://host.docker.internal:8787}
+      VEXX_API_KEY: ${VEXX_API_KEY:-}
+      VEXX_DEVICE: ${VEXX_DEVICE:-NPU}
+      VEXX_REQUIRE_ACCEL: ${VEXX_REQUIRE_ACCEL:-true}
+      VEXX_ENFORCE: ${VEXX_ENFORCE:-false}
+      VEXX_MIN_CANDIDATES: ${VEXX_MIN_CANDIDATES:-32}
+      VEXX_TIMEOUT_MS: ${VEXX_TIMEOUT_MS:-60000}
+      VEXX_OPTIMAL_BATCH_SIZE: ${VEXX_OPTIMAL_BATCH_SIZE:-128}
+      VEXX_MAX_CANDIDATES_PER_CALL: ${VEXX_MAX_CANDIDATES_PER_CALL:-256}
+      USE_CANONICAL_GRAPH: ${EROS_ERIS_USE_CANONICAL_GRAPH:-true}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-1000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-2000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-1}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.16}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-180000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-300000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_WRITE_PAUSE_MS: ${EROS_ERIS_SIM_WRITE_PAUSE_MS:-50}
+      EMBED_EVERY_MS: ${EROS_ERIS_EMBED_EVERY_MS:-60000}
+      EMBED_BATCH_SIZE: ${EROS_ERIS_EMBED_BATCH_SIZE:-32}
+      EMBED_MAX_IN_FLIGHT: ${EROS_ERIS_EMBED_MAX_IN_FLIGHT:-1}
+      EMBED_CONTENT_MODE: ${EROS_ERIS_EMBED_CONTENT_MODE:-full}
+      EMBED_PREVIEW_MAX_BYTES: ${EROS_ERIS_EMBED_PREVIEW_MAX_BYTES:-40000}
+      EMBED_MAX_CHARS: ${EROS_ERIS_EMBED_MAX_CHARS:-6000}
+      SEMANTIC_TOP_K: ${EROS_ERIS_SEMANTIC_TOP_K:-12}
+      SEMANTIC_BOTTOM_K: ${EROS_ERIS_SEMANTIC_BOTTOM_K:-4}
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-10}
+      LOCAL_REPULSION_RADIUS: ${EROS_ERIS_LOCAL_REPULSION_RADIUS:-70}
+      LOCAL_REPULSION: ${EROS_ERIS_LOCAL_REPULSION:-1800}
+      LOCAL_REPULSION_POWER: ${EROS_ERIS_LOCAL_REPULSION_POWER:-4}
+      MIN_SEPARATION: ${EROS_ERIS_MIN_SEPARATION:-14}
+      SEPARATION: ${EROS_ERIS_SEPARATION:-1400}
+      EDGE_PULL_SCALE: ${EROS_ERIS_EDGE_PULL_SCALE:-1.6}
+      EDGE_REST_SCALE: ${EROS_ERIS_EDGE_REST_SCALE:-0.9}
+      GRAPH_VIEW_COMPONENT_COUNT: ${EROS_ERIS_GRAPH_VIEW_COMPONENT_COUNT:-2}
+      OPENPLANNER_STRUCTURAL_EDGE_LIMIT: ${EROS_ERIS_OPENPLANNER_STRUCTURAL_EDGE_LIMIT:-2000}
+      HYDRATE_VISIBLE_EMBEDDINGS: ${EROS_ERIS_HYDRATE_VISIBLE_EMBEDDINGS:-false}
+      GRAPH_VIEW_ROTATION_EVERY: ${EROS_ERIS_GRAPH_VIEW_ROTATION_EVERY:-2}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-7000}
+      BOUNDARY_THICKNESS: ${EROS_ERIS_BOUNDARY_THICKNESS:-650}
+      BOUNDARY_PRESSURE: ${EROS_ERIS_BOUNDARY_PRESSURE:-35}
+      BOUNDARY_EDGE_FRACTION: ${EROS_ERIS_BOUNDARY_EDGE_FRACTION:-0.04}
+      SIM_SHARD_COUNT: '3'
+      SIM_SHARD_INDEX: '0'
+    volumes:
+      - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      default: {}
+      ai-infra: {}
+
+  eros-eris-field-app-shard1of3:
+    <<: *eros_eris_structural
+    environment:
+      <<: *eros_eris_env
+      SIM_SHARD_COUNT: '3'
+      SIM_SHARD_INDEX: '1'
+
+  eros-eris-field-app-shard2of3:
+    <<: *eros_eris_structural
+    environment:
+      <<: *eros_eris_env
+      SIM_SHARD_COUNT: '3'
+      SIM_SHARD_INDEX: '2'

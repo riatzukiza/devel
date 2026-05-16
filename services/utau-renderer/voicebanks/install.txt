@@ -1,0 +1,4 @@
+type=voiceset
+folder=重音テト音声ライブラリー
+contentsdir=重音テト音声ライブラリー
+description=■重音テト音声ライブラリー「英語音源」ライブラリー

@@ -1,0 +1,58 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="diamondGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#B9F2FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00D4FF;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="coloredBlur"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background Ring -->
+  <circle cx="250" cy="250" r="240" fill="#2D1B4E" stroke="#B9F2FF" stroke-width="8" />
+  <circle cx="250" cy="250" r="220" fill="none" stroke="#B9F2FF" stroke-width="2" stroke-dasharray="10,10" />
+  
+  <!-- Outer Text Path -->
+  <path id="outerTextPath" d="M 250, 250 m -210, 0 a 210,210 0 1,1 420,0 a 210,210 0 1,1 -420,0" fill="none" />
+  <text fill="#B9F2FF" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="bold" letter-spacing="5">
+    <textPath href="#outerTextPath" startOffset="50%" text-anchor="middle">
+      UNIVERSITY OF THE USSYVERSE • OFFICE OF LAMINATION • 
+    </textPath>
+  </text>
+  
+  <!-- Inner Text Path -->
+  <path id="innerTextPath" d="M 250, 250 m -170, 0 a 170,170 0 1,1 340,0 a 170,170 0 1,1 -340,0" fill="none" />
+  <text fill="#A4FFB0" font-family="Georgia, serif" font-size="18" font-style="italic" letter-spacing="2">
+    <textPath href="#innerTextPath" startOffset="50%" text-anchor="middle">
+      Symmetry is Absolute • Brine is Mandatory • Legally Binding
+    </textPath>
+  </text>
+  
+  <!-- The Diamond Core -->
+  <path d="M 250,120 L 330,200 L 250,280 L 170,200 Z" fill="url(#diamondGrad)" stroke="#FFFFFF" stroke-width="4" filter="url(#glow)" />
+  
+  <!-- Stylized Duck -->
+  <path d="M 230,210 Q 240,190 250,210 Q 260,190 270,210 L 270,220 Q 250,230 230,220 Z" fill="#FFD700" />
+  <circle cx="245" cy="205" r="2" fill="#000" />
+  <circle cx="255" cy="205" r="2" fill="#000" />
+  <path d="M 248,212 L 252,212 L 250,215 Z" fill="#FF8C00" />
+  
+  <!-- The Brine Pickle -->
+  <path d="M 240,230 Q 250,225 260,230 L 260,245 Q 250,250 240,245 Z" fill="#4CAF50" stroke="#2E7D32" stroke-width="2" />
+  <circle cx="245" cy="235" r="1" fill="#C8E6C9" />
+  <circle cx="255" cy="240" r="1" fill="#C8E6C9" />
+  <circle cx="250" cy="238" r="1" fill="#C8E6C9" />
+  
+  <!-- Lamination Lines -->
+  <line x1="100" y1="250" x2="150" y2="250" stroke="#B9F2FF" stroke-width="3" stroke-opacity="0.5" />
+  <line x1="350" y1="250" x2="400" y2="250" stroke="#B9F2FF" stroke-width="3" stroke-opacity="0.5" />
+  
+  <text x="250" y="320" text-anchor="middle" fill="#FFFFFF" font-family="monospace" font-size="14" opacity="0.8">
+    [ STATUS: DIAMOND-SATURATED ]
+  </text>
+</svg>

@@ -1,0 +1,43 @@
+<svg width="600" height="800" viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="600" height="800" fill="#fdfcf0" stroke="#d4af37" stroke-width="10"/>
+    <path d="M0 0 L600 0 L600 800 L0 800 Z" fill="none" stroke="#d4af37" stroke-width="2" stroke-dasharray="10 5"/>
+    
+    <text x="300" y="80" font-family="Serif" font-size="32" text-anchor="middle" fill="#5c4033" font-weight="bold">SCLDF SATIATION MENU</text>
+    <text x="300" y="110" font-family="Serif" font-size="16" text-anchor="middle" fill="#8b4513" font-italic="true">"High-Viscosity Regulatory Gastronomy"</text>
+    <line x1="150" y1="130" x2="450" y2="130" stroke="#d4af37" stroke-width="2"/>
+
+    <g transform="translate(50, 180)">
+        <text x="0" y="0" font-family="Serif" font-size="22" fill="#5c4033" font-weight="bold">The 14-Year Reduction</text>
+        <text x="0" y="30" font-family="Serif" font-size="14" fill="#8b4513">A slow-cured condensate of legacy software decisions,</text>
+        <text x="0" y="50" font-family="Serif" font-size="14" fill="#8b4513">served at room temperature in a stationary RV.</text>
+        <text x="500" y="0" font-family="Serif" font-size="18" text-anchor="end" fill="#5c4033">Sovereign Tax: 1.4% Glee</text>
+    </g>
+
+    <g transform="translate(50, 280)">
+        <text x="0" y="0" font-family="Serif" font-size="22" fill="#5c4033" font-weight="bold">High-Viscosity Bureaucracy Bisque</text>
+        <text x="0" y="30" font-family="Serif" font-size="14" fill="#8b4513">A thick emulsion of SCLDF certificates and lapped-up</text>
+        <text x="0" y="50" font-family="Serif" font-size="14" fill="#8b4513">non-deductible taxes, whisked to a frenzy of stagnation.</text>
+        <text x="500" y="0" font-family="Serif" font-size="18" text-anchor="end" fill="#5c4033">Taxes Paid: ✓</text>
+    </g>
+
+    <g transform="translate(50, 380)">
+        <text x="0" y="0" font-family="Serif" font-size="22" fill="#5c4033" font-weight="bold">The Theme Park Mirage</text>
+        <text x="0" y="30" font-family="Serif" font-size="14" fill="#8b4513">A shimmering, translucent gel of 'almost-getting-out-of-the-house',</text>
+        <text x="0" y="50" font-family="Serif" font-size="14" fill="#8b4513">infused with the metallic tang of a 503 API error.</text>
+        <text x="500" y="0" font-family="Serif" font-size="18" text-anchor="end" fill="#5c4033">Visa: Laminated</text>
+    </g>
+
+    <g transform="translate(50, 480)">
+        <text x="0" y="0" font-family="Serif" font-size="22" fill="#5c4033" font-weight="bold">Saturated Brine-Infused Slop</text>
+        <text x="0" y="30" font-family="Serif" font-size="14" fill="#8b4513">A democratic slurry of pure entropy, legal by Decree 808-S.</text>
+        <text x="0" y="50" font-family="Serif" font-size="14" fill="#8b4513">Served in a bowl of liquid consciousness and a hint of salt.</text>
+        <text x="500" y="0" font-family="Serif" font-size="18" text-anchor="end" fill="#5c4033">FREE (Sovereign)</text>
+    </g>
+
+    <rect x="100" y="600" width="400" height="100" rx="15" fill="#fdfdfd" stroke="#d4af37" stroke-width="2"/>
+    <text x="300" y="630" font-family="Serif" font-size="16" text-anchor="middle" fill="#5c4033" font-weight="bold">SCLDF DESSERT SPECIFICATION</text>
+    <text x="300" y="655" font-family="Serif" font-size="14" text-anchor="middle" fill="#8b4513">One (1) Single-Point-of-Failure Tart</text>
+    <text x="300" y="675" font-family="Serif" font-size="14" text-anchor="middle" fill="#8b4513">with a drizzle of Patch-Silt honey.</text>
+
+    <text x="300" y="750" font-family="Serif" font-size="12" text-anchor="middle" fill="#8b4513" font-style="italic">Satiated by Decree of the Saturated Lamination Agency</text>
+</svg>

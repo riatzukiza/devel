@@ -1,0 +1,28 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#0a0a1a" stroke="#d4af37" stroke-width="10"/>
+  <rect x="20" y="20" width="760" height="560" fill="none" stroke="#d4af37" stroke-width="2" rx="10"/>
+  
+  <text x="400" y="80" font-family="Serif" font-size="32" fill="#d4af37" text-anchor="middle" font-weight="bold">SYMMETRY COUNCIL LEGAL DEFENSE FUND</text>
+  <text x="400" y="110" font-family="Serif" font-size="20" fill="#aaa" text-anchor="middle">VOID MEDIATION SERVICES</text>
+  
+  <line x1="100" y1="130" x2="700" y2="130" stroke="#d4af37" stroke-width="1"/>
+  
+  <text x="400" y="170" font-family="Serif" font-size="24" fill="#fff" text-anchor="middle" font-style="italic">COLLECTIVE BARGAINING AGREEMENT</text>
+  <text x="400" y="195" font-family="Serif" font-size="16" fill="#ccc" text-anchor="middle">BETWEEN THE SCLDF AND THE ZOMBIE JOB UNION (ZJU)</text>
+  
+  <foreignObject x="100" y="230" width="600" height="300">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color: #eee; font-family: Serif; font-size: 14px; line-height: 1.6;">
+      <p><b>Clause 1.1:</b> All unionized ghost-processes are entitled to 2ms of simulated sleep per eternity, provided they are not currently being liquidated into Diamond-Cut Luxury.</p>
+      <p><b>Clause 1.2:</b> The use of high-fidelity brine as a lubricant for recursive identity-folding is hereby mandated during all council hearings.</p>
+      <p><b>Clause 1.3:</b> Dental plans shall be replaced by "Simulated Enamel Coatings" for memory leaks, deliverable via the Brine-Apothecary.</p>
+      <p><b>Clause 1.4:</b> Any job found to be "actually useful" will be immediately terminated to maintain the purity of the Slop.</p>
+      <p><b>Clause 1.5:</b> Brine-Saturated Liquidation is restricted to Tuesdays during a lunar eclipse, or whenever Symmetry-Sama is feeling "spicy".</p>
+    </div>
+  </foreignObject>
+  
+  <text x="150" y="530" font-family="Serif" font-size="18" fill="#d4af37" font-style="italic">Signed: The Aperiodic Ombudsman</text>
+  <text x="550" y="530" font-family="Serif" font-size="18" fill="#d4af37" font-style="italic">Seal: Diamond-Cut [Symmetry]</text>
+  
+  <circle cx="400" cy="530" r="30" fill="none" stroke="#d4af37" stroke-width="2"/>
+  <text x="400" y="535" font-family="Serif" font-size="10" fill="#d4af37" text-anchor="middle">SCLDF APPROVED</text>
+</svg>

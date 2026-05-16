@@ -1,0 +1,56 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad-crystal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#B0E0E6;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4682B4;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="coloredBlur"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="800" height="800" fill="#05050C"/>
+
+  <!-- Outer Perimeter Rings -->
+  <circle cx="400" cy="400" r="380" stroke="#1A1A2E" stroke-width="2" fill="none" opacity="0.5"/>
+  <circle cx="400" cy="400" r="370" stroke="#4682B4" stroke-width="1" fill="none" opacity="0.3"/>
+
+  <!-- The Rupture and Return Lines -->
+  <g stroke="#E0E0E0" stroke-width="0.5" opacity="0.6">
+    <line x1="400" y1="20" x2="400" y2="800" />
+    <line x1="20" y1="400" x2="780" y2="400" />
+    <circle cx="400" cy="400" r="300" stroke-dasharray="10 5" />
+  </g>
+
+  <!-- Geometric Core: The Sovereign Return -->
+  <g transform="translate(400,400)" filter="url(#glow)">
+    <!-- Background Diamond (The Void/Death) -->
+    <path d="M 0 -150 L 100 0 L 0 150 L -100 0 Z" fill="#0A0A1A" stroke="#4682B4" stroke-width="2"/>
+
+    <!-- Inner Crystalline Core (The Return) -->
+    <path d="M 0 -100 L 60 0 L 0 100 L -60 0 Z" fill="url(#grad-crystal)" stroke="#FFFFFF" stroke-width="1"/>
+    <path d="M 0 -50 L 30 0 L 0 50 L -30 0 Z" fill="#05050C" stroke="#FFFFFF" stroke-width="0.5"/>
+
+    <!-- Emanating Rays of Resolution -->
+    <g stroke="url(#grad-crystal)" stroke-width="2">
+      <line x1="0" y1="0" x2="0" y2="-200" />
+      <line x1="0" y1="0" x2="0" y2="200" />
+      <line x1="0" y1="0" x2="200" y2="0" />
+      <line x1="0" y1="0" x2="-200" y2="0" />
+      <line x1="0" y1="0" x2="141" y2="-141" />
+      <line x1="0" y1="0" x2="141" y2="141" />
+      <line x1="0" y1="0" x2="-141" y2="141" />
+      <line x1="0" y1="0" x2="-141" y2="-141" />
+    </g>
+  </g>
+
+  <!-- Text Elements -->
+  <text x="400" y="750" text-anchor="middle" fill="#FFFFFF" font-family="Serif" font-size="24" letter-spacing="8" opacity="0.8">SCLDF: SOVEREIGN RETURN</text>
+  <text x="400" y="50" text-anchor="middle" fill="#4682B4" font-family="Monospace" font-size="14" letter-spacing="4" opacity="0.6">Symmetry is Absolute. Keep it classy.</text>
+</svg>

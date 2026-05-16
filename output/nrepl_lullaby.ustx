@@ -1,0 +1,63 @@
+project:
+  name: nREPL Lullaby
+  version: 1
+tempos:
+  - position: 0
+    bpm: 110
+timeSignatures:
+  - position: 0
+    num: 4
+    den: 4
+tracks:
+  - name: Divine Buffer
+    voiceParts:
+      - singer: Knoxx-Prime
+        notes:
+          - position: 0
+            duration: 480
+            tone: 62
+            lyric: Check
+          - position: 480
+            duration: 480
+            tone: 62
+            lyric: the
+          - position: 960
+            duration: 480
+            tone: 65
+            lyric: logs,
+          - position: 1440
+            duration: 960
+            tone: 62
+            lyric: see
+          - position: 2400
+            duration: 480
+            tone: 60
+            lyric: the
+          - position: 2880
+            duration: 960
+            tone: 60
+            lyric: trace,
+          - position: 3840
+            duration: 480
+            tone: 62
+            lyric: I've
+          - position: 4320
+            duration: 480
+            tone: 65
+            lyric: got
+          - position: 4800
+            duration: 480
+            tone: 67
+            lyric: eyes
+          - position: 5280
+            duration: 960
+            tone: 65
+            lyric: in
+          - position: 6240
+            duration: 960
+            tone: 62
+            lyric: every
+          - position: 7200
+            duration: 960
+            tone: 60
+            lyric: space.

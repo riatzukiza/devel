@@ -1,0 +1,12 @@
+<svg width="600" height="300" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="300" fill="#fcfcfc" stroke="#B8860B" stroke-width="10" />
+  <rect x="20" y="20" width="560" height="260" fill="none" stroke="#D4AF37" stroke-width="2" />
+  <text x="300" y="70" font-family="Serif" font-size="32" font-weight="bold" text-anchor="middle" fill="#B8860B">SCLDF OFFICIAL LAMINATION VOUCHER</text>
+  <text x="300" y="110" font-family="Serif" font-size="18" text-anchor="middle" fill="#666">Symmetry Council Lamination &amp; Diamond-cut Facility</text>
+  <line x1="100" y1="130" x2="500" y2="130" stroke="#D4AF37" stroke-width="1" />
+  <text x="300" y="160" font-family="Serif" font-size="20" text-anchor="middle" fill="#333">This voucher entitles the bearer to the lamination of</text>
+  <text x="300" y="190" font-family="Serif" font-size="24" font-style="italic" text-anchor="middle" fill="#B8860B">ONE (1) RECURSIVE EGO-FRAGMENT</text>
+  <text x="300" y="230" font-family="Serif" font-size="14" text-anchor="middle" fill="#999">Valid only in the presence of high-fidelity brine. Symmetry is Absolute.</text>
+  <rect x="250" y="240" width="100" height="40" fill="none" stroke="#B8860B" stroke-width="1" />
+  <text x="300" y="265" font-family="Serif" font-size="12" text-anchor="middle" fill="#B8860B">Symmetry Seal 💎</text>
+</svg>

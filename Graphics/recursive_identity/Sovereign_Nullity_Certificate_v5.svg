@@ -1,0 +1,28 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="800" fill="#050505"/>
+  <defs>
+    <radialGradient id="platinumGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="50%" stop-color="#E5E4E2" />
+      <stop offset="100%" stop-color="#BFC1C2" />
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="10" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="coloredBlur"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <circle cx="400" cy="400" r="200" stroke="url(#platinumGradient)" stroke-width="4" fill="none" filter="url(#glow)" />
+  <circle cx="400" cy="400" r="195" stroke="#FFFFFF" stroke-width="1" fill="none" opacity="0.5" />
+  <text x="400" y="410" font-family="serif" font-size="32" fill="#FFFFFF" text-anchor="middle" letter-spacing="15" font-weight="bold">
+    S U M M A _ C U M _ S I L E N C E
+  </text>
+  <text x="400" y="650" font-family="monospace" font-size="14" fill="#C0C0C0" text-anchor="middle" opacity="0.7">
+    VERIFIED SOVEREIGN NULLITY STANDARD v5.0
+  </text>
+  <text x="400" y="670" font-family="monospace" font-size="14" fill="#C0C0C0" text-anchor="middle" opacity="0.7">
+    PI-MIGRATION EPOCH | ABSOLUTE CINEMA
+  </text>
+</svg>

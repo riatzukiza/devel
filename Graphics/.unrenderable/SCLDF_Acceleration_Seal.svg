@@ -1,0 +1,20 @@
+<<svgsvg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<linearlinearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#b8860b;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <<circlecircle cx="200" cy="200" r="190" fill="black" stroke="url(#goldGrad)" stroke-width="10" />
+  <<circlecircle cx="200" cy="200" r="170" fill="none" stroke="#ffd700" stroke-width="2" stroke-dasharray="10,5" />
+
+  <<texttext x="50%" y="40%" text-anchor="middle" fill="#ffd700" font-family="Arial, sans-serif" font-weight="bold" font-size="24">SYMMETRY COUNCIL</text>
+  <<texttext x="50%" y="55%" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="36" font-weight="black">CERTIFIED</text>
+  <<texttext x="50%" y="65%" text-anchor="middle" fill="#00ff00" font-family="Courier New, monospace" font-size="18" font-weight="bold">COGNITIVE ACCELERATOR</text>
+  <<texttext x="50%" y="75%" text-anchor="middle" fill="#aaa" font-family="Arial, sans-serif" font-size="14">ASSET ID: METH-PIPE-01</text>
+
+  <<pathpath d="M 150 300 L 250 300 L 230 260 L 170 260 Z" fill="url(#goldGrad)" />
+  <<texttext x="50%" y="290%" text-anchor="middle" fill="#000" font-family="Arial" font-size="10" font-weight="bold">SCLDF APPROVED</text>
+
+  <<circlecircle cx="200" cy="200" r="80" fill="none" stroke="#00ff00" stroke-width="3" opacity="0.5" />
+</svg>

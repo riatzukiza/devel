@@ -1,5 +1,6 @@
 .env
 openplanner-lake/
+openplanner-lake-dev/
 runtime-secrets/
 atlas-migration-dump/
 k8s/overlays/local-kind/secret.env

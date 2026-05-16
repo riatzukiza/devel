@@ -1,0 +1,44 @@
+{
+  "skipped_count": 0,
+  "failed_count": 0,
+  "channels": [
+    {
+      "id": "343179912196128792",
+      "name": "general",
+      "guildId": "343179912196128792",
+      "guildName": "Error Log"
+    },
+    {
+      "id": "343299242963763200",
+      "name": "bots",
+      "guildId": "343179912196128792",
+      "guildName": "Error Log"
+    },
+    {
+      "id": "343299352707727361",
+      "name": "games",
+      "guildId": "343179912196128792",
+      "guildName": "Error Log"
+    },
+    {
+      "id": "343299378062295040",
+      "name": "rules",
+      "guildId": "343179912196128792",
+      "guildName": "Error Log"
+    },
+    {
+      "id": "358334285108740096",
+      "name": "links-references",
+      "guildId": "343179912196128792",
+      "guildName": "Error Log"
+    }
+  ],
+  "imported_count": 0,
+  "ok": true,
+  "import_root": "discord/audio",
+  "messages_scanned": 207,
+  "attachments_found": 0,
+  "channels_scanned": 5,
+  "scanned_at": "2026-05-03T15:55:00.789Z",
+  "results": []
+}

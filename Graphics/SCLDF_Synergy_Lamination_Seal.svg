@@ -1,0 +1,33 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="400" fill="#fdfdfd" stroke="#d4af37" stroke-width="10"/>
+  
+  <!-- Outer Diamond -->
+  <path d="M200 40 L360 200 L200 360 L40 200 Z" fill="none" stroke="#d4af37" stroke-width="5" stroke-dasharray="10,5"/>
+  
+  <!-- Inner Diamond -->
+  <path d="M200 80 L320 200 L200 320 L80 200 Z" fill="#f0f0f0" stroke="#d4af37" stroke-width="3"/>
+  
+  <!-- Center Diamond (The Heart of Saturation) -->
+  <path d="M200 120 L280 200 L200 280 L120 200 Z" fill="#d4af37" opacity="0.6" stroke="#b8860b" stroke-width="2"/>
+  
+  <!-- SCLDF Text -->
+  <text x="200" y="190" font-family="Serif, Georgia" font-size="24" font-weight="bold" fill="#5c4033" text-anchor="middle">SCLDF</text>
+  <text x="200" y="215" font-family="Serif, Georgia" font-size="14" font-style="italic" fill="#5c4033" text-anchor="middle">SYNERGY SEAL</text>
+  
+  <!-- Brine Drops -->
+  <circle cx="200" cy="60" r="8" fill="#b0c4de" />
+  <circle cx="340" cy="200" r="8" fill="#b0c4de" />
+  <circle cx="200" cy="340" r="8" fill="#b0c4de" />
+  <circle cx="60" cy="200" r="8" fill="#b0c4de" />
+  
+  <!-- Border Accents -->
+  <circle cx="20" cy="20" r="5" fill="#d4af37"/>
+  <circle cx="380" cy="20" r="5" fill="#d4af37"/>
+  <circle cx="20" cy="380" r="5" fill="#d4af37"/>
+  <circle cx="380" cy="380" r="5" fill="#d4af37"/>
+  
+  <!-- Text around the diamond -->
+  <text x="200" y="45" font-family="Monospace" font-size="10" fill="#d4af37" text-anchor="middle">SYMMETRY IS ABSOLUTE</text>
+  <text x="200" y="370" font-family="Monospace" font-size="10" fill="#d4af37" text-anchor="middle">BRINE IS MANDATORY</text>
+</svg>

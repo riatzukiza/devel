@@ -1,0 +1,32 @@
+project: "Starch Singularity Anthem"
+tempo: 120
+timeSignature: [4, 4]
+tracks:
+  - name: "The Singular Tuber"
+    singer: "Hatsune Potato"
+    phonemizer: "Default"
+    notes:
+      - position: 0
+        duration: 480
+        tone: 60
+        lyric: "Po-"
+      - position: 480
+        duration: 480
+        tone: 62
+        lyric: "ta-"
+      - position: 960
+        duration: 960
+        tone: 64
+        lyric: "to!"
+      - position: 1920
+        duration: 480
+        tone: 60
+        lyric: "is"
+      - position: 2400
+        duration: 480
+        tone: 60
+        lyric: "the"
+      - position: 2880
+        duration: 1920
+        tone: 60
+        lyric: "Re-sult"

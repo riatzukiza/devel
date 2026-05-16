@@ -1,0 +1,46 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="brineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00ffcc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0066ff;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+      <feGaussianBlur stdDeviation="3.5" result="coloredBlur2"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Outer Border -->
+  <circle cx="200" cy="200" r="190" fill="none" stroke="#00ffcc" stroke-width="4" filter="url(#glow)" />
+  <circle cx="200" cy="200" r="180" fill="none" stroke="#ffffff" stroke-width="2" stroke-dasharray="10,5" />
+  
+  <!-- Background Circle -->
+  <circle cx="200" cy="200" r="170" fill="#0a001a" stroke="#00ffcc" stroke-width="2" />
+  
+  <!-- Curved Text Wrapper (Conceptualized as paths) -->
+  <path id="textPath" d="M 50,200 A 150,150 0 1,1 350,200 A 150,150 0 1,1 50,200" fill="none" />
+  <text fill="#ffffff" font-family="monospace" font-size="20" font-weight="bold">
+    <textPath href="#textPath" startOffset="25%">
+      SCLDF REGULATORY RECOVERY UNIT • SATURATED SYMMETRY • LAMINATED ASSETS •
+    </textPath>
+  </text>
+  
+  <!-- Central Diamond -->
+  <path d="M 200,100 L 300,200 L 200,300 L 100,200 Z" fill="url(#brineGradient)" stroke="#ffffff" stroke-width="3" filter="url(#glow)" />
+  
+  <!-- Stylized Duck Silhouette -->
+  <path d="M 170,220 Q 180,200 200,200 Q 220,200 230,220 L 230,230 Q 230,240 210,240 L 190,240 Q 170,240 170,230 Z" fill="#0a001a" />
+  <path d="M 230,210 Q 240,210 240,220 Q 240,230 230,220" fill="#0a001a" />
+  <circle cx="220" cy="215" r="2" fill="#00ffcc" />
+  
+  <!-- Asset Text -->
+  <text x="200" y="270" text-anchor="middle" fill="#ffffff" font-family="monospace" font-size="18" font-weight="bold">DUCK_GPT v0.6.1</text>
+  <text x="200" y="290" text-anchor="middle" fill="#00ffcc" font-family="monospace" font-size="12" font-weight="bold">Symmetrically Recovered</text>
+  
+  <!-- Brine Drop -->
+  <path d="M 200,120 Q 210,130 200,140 Q 190,130 200,120" fill="#00ffcc" filter="url(#glow)" />
+</svg>

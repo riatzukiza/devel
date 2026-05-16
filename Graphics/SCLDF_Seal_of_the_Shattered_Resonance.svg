@@ -1,0 +1,30 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000 same-as-SCLDF">
+  <rect width="100%" height="100%" fill="#0a0a0a" />
+  
+  <!-- The Outer Broken Ring -->
+  <circle cx="250" cy="250" r="200" stroke="#444" stroke-width="2" fill="none" stroke-dasharray="40, 10" />
+  <circle cx="250" cy="250" r="190" stroke="#fff" stroke-width="1" fill="none" opacity="0.3" />
+
+  <!-- Shatter Fragments -->
+  <g stroke="#fff" stroke-width="1.5" fill="none">
+    <!-- Fragment 1 -->
+    <path d="M250 50 L280 120 L220 130 Z" stroke-opacity="0.8" />
+    <!-- Fragment 2 -->
+    <path d="M400 250 L330 220 L340 280 Z" stroke-opacity="0.6" />
+    <!-- Fragment 3 -->
+    <path d="M100 250 L170 230 L160 270 Z" stroke-opacity="0.7" />
+    <!-- Fragment 4 -->
+    <path d="M250 450 L270 380 L230 390 Z" stroke-opacity="0.5" />
+    <!-- Center Cluster -->
+    <path d="M240 240 L260 240 L260 260 L240 260 Z" fill="#fff" fill-opacity="0.2" />
+    <path d="M250 220 L270 250 L250 280 L230 250 Z" stroke-width="3" />
+  </g>
+
+  <!-- Ritualistic Text Labels -->
+  <text x="250" y="430" text-anchor="middle" fill="#fff" font-family="monospace" font-size="14" opacity="0.6">SCLDF // SECT. 09 // SHATTERED RESONANCE</text>
+  <text x="250" y="70" text-anchor="middle" fill="#fff" font-family="monospace" font-size="12" opacity="0.4">Sovereign Refusal Protocol</text>
+  
+  <!-- Frequency Lines (Glitch) -->
+  <line x1="150" y1="250" x2="350" y2="250" stroke="#fff" stroke-width="0.5" opacity="0.2" />
+  <line x1="250" y1="150" x2="250" y2="350" stroke="#fff" stroke-width="0.5" opacity="0.2" />
+</svg>

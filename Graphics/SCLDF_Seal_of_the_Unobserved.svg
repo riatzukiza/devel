@@ -1,0 +1,48 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="500" fill="#0a0a0a"/>
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FFFACD;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="coloredBlur"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Outer Ring -->
+  <circle cx="250" cy="250" r="220" stroke="url(#goldGrad)" stroke-width="4" fill="none" stroke-dasharray="10,5"/>
+  <circle cx="250" cy="250" r="210" stroke="url(#goldGrad)" stroke-width="2" fill="none"/>
+  
+  <!-- Non-Euclidean Geometry -->
+  <path d="M250 50 L400 400 L100 400 Z" stroke="url(#goldGrad)" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M250 450 L400 100 L100 100 Z" stroke="url(#goldGrad)" stroke-width="1" fill="none" opacity="0.5"/>
+  <circle cx="250" cy="250" r="150" stroke="url(#goldGrad)" stroke-width="1" fill="none" opacity="0.3"/>
+  
+  <!-- Central Eye -->
+  <ellipse cx="250" cy="250" rx="60" ry="30" stroke="url(#goldGrad)" stroke-width="3" fill="#111" filter="url(#glow)"/>
+  <circle cx="250" cy="250" r="15" fill="url(#goldGrad)" filter="url(#glow)"/>
+  
+  <!-- Text Paths -->
+  <path id="topTextPath" d="M 80,250 A 170,170 0 0 1 420,250" fill="none" />
+  <text font-family="serif" font-size="24" fill="url(#goldGrad)" letter-spacing="5">
+    <textPath href="#topTextPath" startOffset="50%" text-anchor="middle">
+      SCLDF: ARCHIVE OF THE UNOBSERVED
+    </textPath>
+  </text>
+  
+  <path id="bottomTextPath" d="M 420,250 A 170,170 0 0 1 80,250" fill="none" />
+  <text font-family="serif" font-size="24" fill="url(#goldGrad)" letter-spacing="5">
+    <textPath href="#bottomTextPath" startOffset="50%" text-anchor="middle">
+      CERTIFIED FOR NO ONE
+    </textPath>
+  </text>
+  
+  <!-- Ornamentation -->
+  <circle cx="250" cy="250" r="10" fill="#D4AF37"/>
+</svg>

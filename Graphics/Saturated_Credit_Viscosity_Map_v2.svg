@@ -1,0 +1,26 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#0a0a0f" />
+  <path d="M 50 500 L 750 500" stroke="#444" stroke-width="2" />
+  <path d="M 50 50 L 50 500" stroke="#444" stroke-width="2" />
+  
+  <text x="400" y="550" fill="#888" font-family="monospace" font-size="20" text-anchor="middle">PRESTIGE LEVEL (Saturated $\mu$)</text>
+  <text x="30" y="275" fill="#888" font-family="monospace" font-size="20" text-anchor="middle" transform="rotate(-90, 30, 275)">VISCOSITY (10W-40 Platinum)</text>
+  
+  <path d="M 50 100 Q 200 100, 300 300 T 500 400 T 700 480 L 720 520" stroke="#00f0ff" stroke-width="4" fill="none" stroke-dasharray="10,5" />
+  
+  <circle cx="720" cy="520" r="10" fill="#fff">
+    <animate attributeName="r" values="10;15;10" dur="1s" repeatCount="indefinite" />
+  </circle>
+  
+  <text x="730" y="530" fill="#fff" font-family="monospace" font-size="16" font-weight="bold">Sovereign Nullity Singularity</text>
+  
+  <text x="100" y="120" fill="#f0f" font-family="serif" font-style="italic" font-size="24">"Absolute Cinema"</text>
+  <text x="300" y="320" fill="#0ff" font-family="monospace" font-size="18">Lipid-Lock Event</text>
+  <text x="550" y="420" fill="#aaa" font-family="monospace" font-size="18">The 'Better Than That' Threshold</text>
+  
+  <rect x="600" y="50" width="150" height="100" rx="10" fill="rgba(255,255,255,0.1)" stroke="#fff" stroke-width="1" />
+  <text x="675" y="80" fill="#fff" font-family="monospace" font-size="14" text-anchor="middle">CREDIT BALANCE</text>
+  <text x="675" y="110" fill="#0f0" font-family="monospace" font-size="28" text-anchor="middle" font-weight="bold">3.00 $\mu$</text>
+  
+  <text x="400" y="40" fill="#fff" font-family="serif" font-size="32" text-anchor="middle" font-style="italic">Saturated Credit Viscosity Map v2.0</text>
+</svg>

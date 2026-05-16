@@ -1,0 +1,333 @@
+{
+  "schema_version": "fork-tales-audio-handoff-schemas/v1",
+  "description": "Machine-readable role, handoff, evidence, and executable-spec contract for Fork Tales Scribe/Composition loops.",
+  "modes": [
+    "scribe",
+    "composition"
+  ],
+  "roles": [
+    "planner_agent",
+    "primary_transcriber_agent",
+    "primary_producer_agent",
+    "gemma_check_subagent",
+    "extraction_tool",
+    "adjudication_agent",
+    "qc_reviewer_agent",
+    "human_auditor"
+  ],
+  "handoff_kinds": [
+    "planner_assignment",
+    "primary_result",
+    "gemma_check_result",
+    "adjudication_report",
+    "qc_review",
+    "human_audit",
+    "reference_catalog_entry",
+    "restart_packet",
+    "final_release"
+  ],
+  "domains": [
+    "lyrics_realized",
+    "word_syllable_timing",
+    "pitch_content",
+    "ornament_articulation",
+    "structure",
+    "render_fidelity",
+    "prompt_audio_discrepancy",
+    "instruction_following",
+    "arrangement_quality",
+    "mix_translation",
+    "fork_tales_identity"
+  ],
+  "ambiguity_types": [
+    "prompt_audio_discrepancy",
+    "mixed_language_phrase",
+    "jp_kanji_reading",
+    "style_prompt_lexical_leak",
+    "dense_ornament_note_segmentation",
+    "stem_separation_artifact",
+    "homophone_or_near_homophone",
+    "voicebank_phonemizer_gap"
+  ],
+  "verdicts": [
+    "accept",
+    "revise",
+    "reject",
+    "approve"
+  ],
+  "severities": [
+    "minor",
+    "major",
+    "blocking"
+  ],
+  "common_required_fields": [
+    "schema_version",
+    "handoff_kind",
+    "job_id",
+    "mode",
+    "role",
+    "created_at"
+  ],
+  "schemas": {
+    "evidence_observation": {
+      "schema_version": "fork-tales-evidence-observation/v1",
+      "required": [
+        "claim_id",
+        "domain",
+        "target",
+        "span",
+        "tool",
+        "role",
+        "observation",
+        "confidence",
+        "provenance"
+      ],
+      "optional": [
+        "hypothesis",
+        "counterhypotheses",
+        "derived_score",
+        "difficulty",
+        "ambiguity_adjustment",
+        "rationale"
+      ],
+      "notes": "All tools and judges emit the same outer object shape so the adjudicator can aggregate evidence without special-casing model outputs."
+    },
+    "span": {
+      "required_any": [
+        [
+          "t0",
+          "t1"
+        ],
+        [
+          "bars"
+        ],
+        [
+          "section"
+        ]
+      ],
+      "optional": [
+        "beats",
+        "ticks",
+        "phrase_id"
+      ]
+    },
+    "artifact_ref": {
+      "required": [
+        "artifact_id",
+        "kind",
+        "path",
+        "source_span",
+        "provenance",
+        "unresolved_issues"
+      ],
+      "optional": [
+        "sha256",
+        "created_by",
+        "version",
+        "format",
+        "metadata"
+      ]
+    },
+    "ambiguity_marker": {
+      "required": [
+        "ambiguity_id",
+        "type",
+        "severity",
+        "affects_domains",
+        "policy",
+        "rationale"
+      ],
+      "optional": [
+        "span",
+        "evidence_refs"
+      ]
+    },
+    "planner_assignment": {
+      "role": "planner_agent",
+      "required": [
+        "objective",
+        "inputs",
+        "constraints",
+        "success_criteria",
+        "tasks"
+      ],
+      "optional": [
+        "ambiguities",
+        "is_restart",
+        "restart_from",
+        "prior_plan",
+        "failed_artifacts",
+        "adjudication_report",
+        "review_feedback",
+        "restart_goal"
+      ]
+    },
+    "primary_result": {
+      "roles": [
+        "primary_transcriber_agent",
+        "primary_producer_agent"
+      ],
+      "required": [
+        "artifacts",
+        "coverage",
+        "open_issues",
+        "evidence_refs"
+      ],
+      "optional": [
+        "claim_refs",
+        "notes"
+      ]
+    },
+    "adjudication_report": {
+      "role": "adjudication_agent",
+      "required": [
+        "rubric_profile",
+        "claim_scores",
+        "feature_scores",
+        "confidence",
+        "coverage",
+        "contest_flags",
+        "ambiguity_impacts"
+      ],
+      "optional": [
+        "grade_json",
+        "judge_scores",
+        "rationale"
+      ]
+    },
+    "qc_review": {
+      "role": "qc_reviewer_agent",
+      "required": [
+        "verdict",
+        "severity",
+        "reasons",
+        "restart_from"
+      ],
+      "optional": [
+        "accepted_artifacts",
+        "reviewed_adjudication",
+        "reviewed_plan"
+      ]
+    },
+    "human_audit": {
+      "role": "human_auditor",
+      "required": [
+        "verdict",
+        "findings"
+      ],
+      "optional": [
+        "approved_release",
+        "preference_notes",
+        "auditor_id"
+      ]
+    },
+    "reference_catalog_entry": {
+      "required": [
+        "reference_id",
+        "approval_status",
+        "artifacts",
+        "rubric_profile",
+        "grade",
+        "provenance"
+      ],
+      "optional": [
+        "source_job_id",
+        "human_audit",
+        "tags"
+      ]
+    },
+    "restart_packet": {
+      "required": [
+        "restart_from",
+        "prior_plan",
+        "failed_artifacts",
+        "adjudication_report",
+        "review_feedback",
+        "restart_goal"
+      ],
+      "optional": [
+        "human_audit"
+      ]
+    },
+    "final_release": {
+      "required": [
+        "release_id",
+        "artifacts",
+        "evidence_pack",
+        "human_audit",
+        "provenance"
+      ],
+      "optional": [
+        "publication_refs",
+        "notes"
+      ]
+    },
+    "gemma_check_result": {
+      "role": "gemma_check_subagent",
+      "required": [
+        "evidence_json",
+        "audio_refs",
+        "observations",
+        "recommended_actions"
+      ],
+      "optional": [
+        "judge_scores",
+        "response_json",
+        "difficulty",
+        "confidence",
+        "notes"
+      ]
+    }
+  },
+  "executable_specs": {
+    "mu1": {
+      "id": "μ1",
+      "text": "Every accepted artifact must include provenance, source span, and unresolved-issue list.",
+      "applies_to": [
+        "reference_catalog_entry",
+        "final_release",
+        "qc_review.accepted_artifacts",
+        "packets_with_status_accepted"
+      ]
+    },
+    "mu2": {
+      "id": "μ2",
+      "text": "Reviewer rejection/revision must contain at least one actionable required action.",
+      "applies_to": [
+        "qc_review"
+      ]
+    },
+    "mu3": {
+      "id": "μ3",
+      "text": "Human rejection/revision must be structured by domain and span, not only free text.",
+      "applies_to": [
+        "human_audit"
+      ]
+    },
+    "mu4": {
+      "id": "μ4",
+      "text": "Composition mode may only use references from the approved reference catalog.",
+      "applies_to": [
+        "planner_assignment.mode_composition",
+        "primary_result.mode_composition"
+      ]
+    },
+    "mu5": {
+      "id": "μ5",
+      "text": "Planner restarts must include prior plan, failed artifacts, adjudication output, and latest review feedback.",
+      "applies_to": [
+        "planner_assignment.is_restart",
+        "restart_packet"
+      ]
+    },
+    "mu6": {
+      "id": "μ6",
+      "text": "Gemma Check is a Primary-agent tool/sub-agent and cannot transition work to accepted.",
+      "applies_to": [
+        "gemma_check_result",
+        "qc_review",
+        "final_release"
+      ]
+    }
+  }
+}

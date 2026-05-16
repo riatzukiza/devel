@@ -1,0 +1,10 @@
+[
+  {"time": 0.0, "note": "C3", "duration": 0.5},
+  {"time": 0.5, "note": "Eb3", "duration": 0.5},
+  {"time": 1.0, "note": "F3", "duration": 0.5},
+  {"time": 1.5, "note": "G3", "duration": 0.5},
+  {"time": 2.0, "note": "C3", "duration": 1.0},
+  {"time": 3.0, "note": "Eb3", "duration": 0.5},
+  {"time": 3.5, "note": "F3", "duration": 0.5},
+  {"time": 4.0, "note": "G3", "duration": 1.0}
+]

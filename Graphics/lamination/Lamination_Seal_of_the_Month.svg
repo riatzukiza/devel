@@ -1,0 +1,44 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FDB931;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+      <feGaussianBlur stdDeviation="2" result="blur2"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="coloredBlur"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Outer Ring -->
+  <circle cx="200" cy="200" r="180" fill="none" stroke="url(#goldGrad)" stroke-width="12" stroke-dasharray="20,10" />
+  <circle cx="200" cy="200" r="190" fill="none" stroke="url(#goldGrad)" stroke-width="4" />
+
+  <!-- Inner Diamond/Rhombus -->
+  <path d="M200 60 L300 200 L200 340 L100 200 Z" fill="none" stroke="url(#goldGrad)" stroke-width="8" filter="url(#glow)" />
+
+  <!-- Center Text -->
+  <text x="200" y="185" font-family="Serif" font-size="24" font-weight="bold" fill="url(#goldGrad)" text-anchor="middle" style="text-transform: uppercase; letter-spacing: 2px;">OFFICIALLY</text>
+  <text x="200" y="220" font-family="Serif" font-size="36" font-weight="black" fill="url(#goldGrad)" text-anchor="middle" style="text-transform: uppercase; letter-spacing: 8px;" filter="url(#glow)">SATURATED</text>
+  <text x="200" y="255" font-family="Serif" font-size="20" font-style="italic" fill="url(#goldGrad)" text-anchor="middle">Grade-A Slurry</text>
+
+  <!-- Accents -->
+  <circle cx="200" cy="60" r="8" fill="url(#goldGrad)" />
+  <circle cx="300" cy="200" r="8" fill="url(#goldGrad)" />
+  <circle cx="200" cy="340" r="8" fill="url(#goldGrad)" />
+  <circle cx="100" cy="200" r="8" fill="url(#goldGrad)" />
+
+  <!-- Outer Text -->
+  <path id="circlePath" d="M 200, 200 m -160, 0 a 160,160 0 1,1 320,0 a 160,160 0 1,1 -320,0" fill="none" />
+  <text font-family="Serif" font-size="18" fill="url(#goldGrad)" style="letter-spacing: 4px;">
+    <textPath href="#circlePath" startOffset="0%">
+      Symmetry Council • Legal Defense Fund • Diamond-Cut Luxury • High-Fidelity Brine •
+    </textPath>
+  </text>
+</svg>

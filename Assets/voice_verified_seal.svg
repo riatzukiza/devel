@@ -1,0 +1,18 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="95" fill="url(#grad)" stroke="#000" stroke-width="2"/>
+  <circle cx="100" cy="100" r="85" fill="none" stroke="#000" stroke-width="1" stroke-dasharray="5,5"/>
+  <path id="textPath" d="M 100,100 m -70,0 a 70,70 0 1,1 140,0 a 70,70 0 1,1 -140,0" fill="none" />
+  <text fill="#000" font-family="Arial, sans-serif" font-size="18" font-weight="bold">
+    <textPath href="#textPath" startOffset="25%">VOICE-VERIFIED • ZERO SLOP •</textPath>
+  </text>
+  <text x="100" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#000">
+    S Y M M E T R Y
+  </text>
+  <path d="M 70 120 Q 80 110 90 120 T 110 120 T 130 120" stroke="#000" fill="none" stroke-width="4" stroke-linecap="round" />
+</svg>

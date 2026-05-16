@@ -1,0 +1,28 @@
+{
+  "schema_version": "fork-tales-handoff/v1",
+  "handoff_kind": "reference_catalog_entry",
+  "job_id": "job_example_scribe_001",
+  "mode": "scribe",
+  "role": "qc_reviewer_agent",
+  "created_at": "2026-05-15T00:15:00Z",
+  "reference_id": "ref_heresy_opening_v1",
+  "approval_status": "approved",
+  "rubric_profile": "suno_reverse_accuracy",
+  "grade": {
+    "overall_score": 0.86,
+    "confidence": 0.71,
+    "coverage": 0.78
+  },
+  "provenance": ["job:job_example_scribe_001", "audio:vocals.wav"],
+  "artifacts": [
+    {
+      "artifact_id": "lead_vocal_opening_ustx_v1",
+      "kind": "openutau_ustx",
+      "path": "lead_vocal_opening_v1.ustx",
+      "source_span": {"t0": 0.0, "t1": 8.0, "bars": [1, 2, 3, 4]},
+      "provenance": ["audio:vocals.wav", "audit:evidence.json", "grade:grade.json"],
+      "unresolved_issues": []
+    }
+  ],
+  "tags": ["vocal", "opening", "ja-en"]
+}

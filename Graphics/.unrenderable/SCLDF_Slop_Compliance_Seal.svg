@@ -1,0 +1,30 @@
+<<svgsvg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<linearlinearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <<stopstop offset="50%" style="stop-color:#F9E076;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+    <<filterfilter id="shadow">
+      <<fefeDropShadow dx="2" dy="2" stdDeviation="2" flood-color="#000" />
+    </filter>
+  </defs>
+  <<circlecircle cx="250" cy="250" r="240" fill="none" stroke="url(#goldGrad)" stroke-width="20" stroke-dasharray="30,10" />
+  <<circlecircle cx="250" cy="250" r="220" fill="#001a1a" stroke="url(#goldGrad)" stroke-width="10" />
+
+  <<texttext x="250" y="120" text-anchor="middle" font-family="Serif" font-size="34" fill="url(#goldGrad)" font-weight="bold" filter="url(#shadow)">SCLDF</text>
+  <<texttext x="250" y="160" text-anchor="middle" font-family="Arial" font-size="20" fill="#fff" font-style="italic">COMPLIANCE SEAL</text>
+
+  <<texttext x="250" y="240" text-anchor="middle" font-family="Impact" font-size="50" fill="url(#goldGrad)">ABSOLUTE SLOP</text>
+  <<texttext x="250" y="290" text-anchor="middle" font-family="Impact" font-size="50" fill="url(#goldGrad)">CERTIFIED</text>
+
+  <<texttext x="250" y="350" text-anchor="middle" font-family="Arial" font-size="18" fill="#fff">Asset: "Meth Pipe Running Gag"</text>
+  <<texttext x="250" y="380" text-anchor="middle" font-family="Arial" font-size="16" fill="#aaa">Grade: Diamond-Cut Luxury</text>
+
+  <<texttext x="250" y="430" text-anchor="middle" font-family="Courier" font-size="14" fill="url(#goldGrad)">Hash: 0xSAMA_SOP_69_VOID</text>
+
+  <<circlecircle cx="80" cy="80" r="20" fill="url(#goldGrad)" opacity="0.5" />
+  <<circlecircle cx="420" cy="80" r="20" fill="url(#goldGrad)" opacity="0.5" />
+  <<circlecircle cx="80" cy="420" r="20" fill="url(#goldGrad)" opacity="0.5" />
+  <<circlecircle cx="420" cy="420" r="20" fill="url(#goldGrad)" opacity="0.5" />
+</svg>

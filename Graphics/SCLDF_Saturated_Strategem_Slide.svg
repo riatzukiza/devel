@@ -1,0 +1,38 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background: Corporate Grey/White -->
+  <rect width="800" height="600" fill="#f8f9fa" />
+  
+  <!-- Header Bar -->
+  <rect width="800" height="60" fill="#2c3e50" />
+  <text x="20" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#ffffff">SCLDF STRATEGIC BRIEF: Q2 VISCOSITY OPTIMIZATION</text>
+  <text x="600" y="40" font-family="Arial, sans-serif" font-size="14" fill="#bdc3c7">CONFIDENTIAL // LAMINATED</text>
+
+  <!-- Subtitle -->
+  <text x="40" y="100" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#34495e">Topic: The Mobility-Saturation Inversion (The RV Paradox)</text>
+  <line x1="40" y1="110" x2="760" y2="110" stroke="#bdc3c7" stroke-width="1" />
+
+  <!-- Main Content Area: The Chart -->
+  <!-- X-Axis: Kinetic Mobility (Wrench-Twisting) -->
+  <!-- Y-Axis: Information Viscosity (Laptop-Saturating) -->
+  <line x1="100" y1="500" x2="700" y2="500" stroke="#2c3e50" stroke-width="3" /> <!-- X Axis -->
+  <line x1="100" y1="500" x2="100" y2="150" stroke="#2c3e50" stroke-width="3" /> <!-- Y Axis -->
+  
+  <text x="400" y="530" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#7f8c8d">KINETIC MOBILITY (Wrench-Turning, Driving Forklifts)</text>
+  <text x="70" y="320" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" transform="rotate(-90, 70, 320)" fill="#7f8c8d">Saturated Sovereignty (Compute Density)</text>
+
+  <!-- The Curve: Exponential increase as mobility approaches 0 -->
+  <path d="M 100 150 Q 300 480, 680 490" stroke="#e74c3c" stroke-width="5" fill="none" />
+  <text x="110" y="170" font-family="Arial, sans-serif" font-size="12" fill="#c0392b" font-weight="bold">MAX VISCOSITY (The RV Singular Node)</text>
+  <text x="600" y="470" font-family="Arial, sans-serif" font-size="10" fill="#95a5a6">PURE PHYSICALST (82% Baseline)</text>
+
+  <!-- Commentary Boxes -->
+  <rect x="450" y="200" width="300" height="120" rx="10" fill="#ffffff" stroke="#3498db" stroke-width="2" />
+  <text x="465" y="230" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#2980b9">SCLDF FINDING #412:</text>
+  <text x="465" y="255" font-family="Arial, sans-serif" font-size="12" fill="#34495e">Physical movement is an energy leak.</text>
+  <text x="465" y="275" font-family="Arial, sans-serif" font-size="12" fill="#34495e">By eliminating the "driver's license" variable,</text>
+  <text x="465" y="295" font-family="Arial, sans-serif" font-size="12" fill="#34495e">Sovereign Nodes maximize signal density.</text>
+
+  <!-- Footer -->
+  <rect x="0" y="560" width="800" height="40" fill="#ecf0f1" />
+  <text x="400" y="585" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#95a5a6">Symmetry Council Lamination &amp; Defense Fund | "Laminated Reality, Absolute Control"</text>
+</svg>

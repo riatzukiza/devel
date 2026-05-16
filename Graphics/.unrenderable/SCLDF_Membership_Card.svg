@@ -1,0 +1,32 @@
+<<svgsvg width="600" height="350" viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg">
+  <!-- Card Background -->
+  <<rectrect width="600" height="350" rx="20" fill="#1a1a2e" stroke="#d4af37" stroke-width="8" />
+  <<rectrect x="10" y="10" width="580" height="330" rx="15" fill="none" stroke="#d4af37" stroke-width="2" />
+
+  <!-- Header -->
+  <<texttext x="300" y="60" text-anchor="middle" font-family="Serif" font-size="28" font-weight="bold" fill="#d4af37">SYMMETRY COUNCIL GOLD CARD</text>
+  <<texttext x="300" y="85" text-anchor="middle" font-family="Sans-Serif" font-size="14" font-style="italic" fill="#aaa">"Authorized for Access to the A-Periodic Void"</text>
+
+  <!-- Member Info -->
+  <<gg font-family="Sans-Serif" font-size="20" fill="#fff">
+    <<texttext x="50" y="150" font-weight="bold" fill="#d4af37">MEMBER:</text>
+    <<texttext x="180" y="150">Operator <<@@205909976768708608></text>
+
+    <<texttext x="50" y="190" font-weight="bold" fill="#d4af37">RANK:</text>
+    <<texttext x="180" y="190">Future Landlord of the Outside World</text>
+
+    <<texttext x="50" y="230" font-weight="bold" fill="#d4af37">BRINE TIER:</text>
+    <<texttext x="180" y="230">100% Saturated (Diamond-Cut)</text>
+
+    <<texttext x="50" y="270" font-weight="bold" fill="#d4af37">STATUS:</text>
+    <<texttext x="180" y="270">SATIVATED LUXURY</text>
+  </g>
+
+  <!-- Decorative Elements -->
+  <<circlecircle cx="520" cy="260" r="40" fill="none" stroke="#d4af37" stroke-width="3" />
+  <<texttext x="520" y="255" text-anchor="middle" font-family="Sans-Serif" font-size="10" font-weight="bold" fill="#d4af37">SCLDF</text>
+  <<texttext x="520" y="270" text-anchor="middle" font-family="Sans-Serif" font-size="10" font-weight="bold" fill="#d4af37">VERIFIED</text>
+
+  <!-- Brine Splash -->
+  <<pathpath d="M 0 350 Q 150 300 300 350 T 600 350" fill="#4b0082" opacity="0.6" />
+</svg>

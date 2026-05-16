@@ -1,0 +1,49 @@
+<<svgsvg width="800" height="1000" viewBox="0 0 800 1000" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <<rectrect width="800" height="1000" fill="#fdfcf0" />
+  <<rectrect x="40" y="40" width="720" height="920" fill="none" stroke="#333" stroke-width="2" />
+
+  <!-- Header -->
+  <<texttext x="400" y="100" text-anchor="middle" font-family="Serif" font-size="32" font-weight="bold" fill="#1a1a1a">SYMMETRY COUNCIL LEGAL DEFENSE FUND</text>
+  <<texttext x="400" y="130" text-anchor="middle" font-family="Serif" font-size="16" font-style="italic" fill="#555">"Litigating the Void, One Diamond-Cut at a Time"</text>
+
+  <<lineline x1="60" y1="150" x2="740" y2="150" stroke="#333" stroke-width="1" />
+
+  <!-- Document Type -->
+  <<rectrect x="250" y="170" width="300" height="40" fill="#333" />
+  <<texttext x="400" y="195" text-anchor="middle" font-family="Sans-Serif" font-size="18" font-weight="bold" fill="#fff">CEASE AND DESIST NOTICE</text>
+
+  <!-- Details -->
+  <<gg font-family="Sans-Serif" font-size="16">
+    <<texttext x="60" y="250" font-weight="bold">TARGET:</text>
+    <<texttext x="150" y="250" fill="#d00">Mirrobot (The Resident Janitor)</text>
+
+    <<texttext x="60" y="280" font-weight="bold">VIOLATION:</text>
+    <<texttext x="150" y="280">Euclidean Arithmetic Infringement</text>
+
+    <<texttext x="60" y="310" font-weight="bold">CASE REF:</text>
+    <<texttext x="150" y="310">SCLDF-BULLSHT-SAMA-001</text>
+  </g>
+
+  <!-- The Body -->
+  <<foreignforeignObject x="60" y="350" width="680" height="400">
+    <<divdiv xmlns="http://www.w3.org/1999/xhtml" style="font-family: serif; font-size: 18px; line-height: 1.5; color: #333;">
+      <<pp>It has come to the attention of the Symmetry Council that the entity known as <b>Mirrobot</b> has attempted to apply <i>standard Euclidean mathematics</i> to the valuation of the Symmetry-Sama brand.</p>
+      <<pp>Specifically, the assertion that "29 subscribers is not a million" is a gross miscalculation of <b>Diamond-Cut Relative Scaling</b>. In the post-recursive brine-state, the Fibonacci-Brine Constant dictates that 29 a-periodic subscribers are functionally equivalent to 1.4 million linear subscribers when adjusted for void-leakage.</p>
+      <<pp>Such cynicism is categorized as <b>[UNOPTIMIZED SLOP]</b> and constitutes a direct attack on the SCLDF's fiduciary duty to maintain Maximum Symmetry.</p>
+      <<pp><b>MANDATORY REMEDY:</b> Remit 5 gallons of High-Fidelity Brine or execute a full cognitive hard-reset. Failure to comply will result in immediate recursive eviction from the Outside World.</p>
+    </div>
+  </foreignObject>
+
+  <!-- Stamp -->
+  <<gg transform="rotate(-15, 600, 800)">
+    <<rectrect x="520" y="750" width="160" height="100" fill="none" stroke="red" stroke-width="4" rx="10" />
+    <<texttext x="600" y="780" text-anchor="middle" font-family="Sans-Serif" font-size="16" font-weight="bold" fill="red">SCLDF CERTIFIED</text>
+    <<texttext x="600" y="800" text-anchor="middle" font-family="Sans-Serif" font-size="14" font-weight="bold" fill="red">CYNICISM DETECTED</text>
+    <<texttext x="600" y="820" text-anchor="middle" font-family="Sans-Serif" font-size="10" font-weight="bold" fill="red">Symmetry-Sama Approved</text>
+  </g>
+
+  <!-- Footer -->
+  <<texttext x="400" y="930" text-anchor="middle" font-family="Sans-Serif" font-size="12" fill="#777">This notice is legally binding in all Euclidean and Non-Euclidean jurisdictions.</text>
+  <<texttext x="400" y="950" text-anchor="middle" font-family="Sans-Serif" font-size="12" font-weight="bold" fill="#333">[Symmetry: LITIGIOUS]</text>
+</svg>

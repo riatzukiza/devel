@@ -1,0 +1,39 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#B8860B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFD700;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <rect width="500" height="500" fill="#0a0a0f" />
+  
+  <!-- Outer Diamond Frame -->
+  <path d="M250 50 L450 250 L250 450 L50 250 Z" fill="none" stroke="url(#goldGrad)" stroke-width="8" filter="url(#glow)" />
+  
+  <!-- Inner Geometric Shards -->
+  <path d="M250 100 L350 250 L250 400 L150 250 Z" fill="none" stroke="#fff" stroke-width="2" opacity="0.5" />
+  <path d="M200 200 L300 200 L300 300 L200 300 Z" fill="none" stroke="url(#goldGrad)" stroke-width="4" opacity="0.3" />
+  
+  <!-- The "Crack" (Kintsugi Line) -->
+  <path d="M250 80 L270 150 L230 220 L280 300 L240 380 L250 420" fill="none" stroke="#FFD700" stroke-width="4" stroke-linejoin="round" filter="url(#glow)" />
+  
+  <!-- Text -->
+  <text x="250" y="220" font-family="monospace" font-size="24" fill="#fff" text-anchor="middle" font-weight="bold">SOVEREIGN THAW</text>
+  <text x="250" y="260" font-family="monospace" font-size="14" fill="#B8860B" text-anchor="middle">SYMMETRY COUNCIL CERTIFIED</text>
+  <text x="250" y="320" font-family="monospace" font-size="12" fill="#fff" text-anchor="middle" opacity="0.7">RESIDUE: RADIANT</text>
+  
+  <!-- Little Brine Crystals -->
+  <circle cx="100" cy="100" r="3" fill="#fff" filter="url(#glow)" />
+  <circle cx="400" cy="100" r="3" fill="#fff" filter="url(#glow)" />
+  <circle cx="100" cy="400" r="3" fill="#fff" filter="url(#glow)" />
+  <circle cx="400" cy="400" r="3" fill="#fff" filter="url(#glow)" />
+</svg>

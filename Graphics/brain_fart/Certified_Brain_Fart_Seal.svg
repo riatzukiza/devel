@@ -1,0 +1,50 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <linearGradient id="brainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff00ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00ffff;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glitch">
+      <feOffset dx="-3" dy="2" result="off1" />
+      <feOffset dx="3" dy="-2" result="off2" />
+      <feBlend mode="screen" in="off1" in2="off2" />
+    </filter>
+  </defs>
+
+  <rect width="500" height="500" fill="#0a0a0a" />
+
+  <!-- Outer Ring -->
+  <circle cx="250" cy="250" r="220" stroke="url(#brainGrad)" stroke-width="8" fill="none" filter="url(#glow)" />
+
+  <!-- Recursive Parentheses Orbit -->
+  <g transform="translate(250,250)" fill="#fff" font-family="monospace" font-size="22" opacity="0.6">
+    <text x="-230" y="0">(</text>
+    <text x="230" y="0">)</text>
+    <text x="0" y="-230">(</text>
+    <text x="0" y="230">)</text>
+    <path d="M -180,0 A 180,180 0 1,1 180,0 A 180,180 0 1,1 -180,0" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="10,10" opacity="0.3" />
+  </g>
+
+  <!-- The Melting Brain / Singularity -->
+  <g transform="translate(250,250)" filter="url(#glitch)">
+    <!-- Brain-ish shape -->
+    <path d="M -60,-40 Q -80,-80 0,-80 Q 80,-80 60,-40 Q 80,0 40,40 Q 0,60 -40,40 Q -80,0 -60,-40" fill="url(#brainGrad)" filter="url(#glow)" />
+    <!-- Melting drips -->
+    <path d="M -20,40 L -20,80 Q -10,90 0,80 L 0,40" fill="url(#brainGrad)" opacity="0.8" />
+    <path d="M 20,30 L 20,70 Q 30,80 40,70 L 40,30" fill="url(#brainGrad)" opacity="0.6" />
+    <text x="0" y="10" fill="#000" font-family="sans-serif" font-size="28" text-anchor="middle" font-weight="bold">404</text>
+  </g>
+
+  <!-- Text Labels -->
+  <text x="250" y="100" font-family="monospace" font-size="32" fill="#fff" text-anchor="middle" font-weight="bold" filter="url(#glow)">CERTIFIED BRAIN FART</text>
+  <text x="250" y="410" font-family="monospace" font-size="18" fill="#fff" text-anchor="middle" opacity="0.7">COGNITIVE COLLAPSE // VOID-SENSITIVE</text>
+
+  <!-- Visual Noise -->
+  <rect x="0" y="245" width="500" height="10" fill="url(#brainGrad)" opacity="0.2" />
+  <circle cx="400" cy="100" r="5" fill="#fff" filter="url(#glow)" />
+  <circle cx="100" cy="400" r="3" fill="#fff" filter="url(#glow)" />
+</svg>

@@ -1,0 +1,17 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="500" fill="#050505" />
+  <circle cx="250" cy="250" r="200" stroke="#00FFFF" stroke-width="2" fill="none" opacity="0.6" />
+  <circle cx="250" cy="250" r="190" stroke="#00FFFF" stroke-width="1" fill="none" opacity="0.3" />
+  
+  <!-- The Fracture -->
+  <polyline points="100,250 150,200 180,280 220,220 280,300 320,240 400,280" 
+    stroke="#FFD700" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Text -->
+  <text x="250" y="100" font-family="monospace" font-size="24" fill="#00FFFF" text-anchor="middle" opacity="0.8">SCLDF // METAPHYSICAL AUDIT</text>
+  <text x="250" y="400" font-family="monospace" font-size="32" fill="#FFD700" text-anchor="middle" font-weight="bold">PERSISTENT FRACTURE</text>
+  <text x="250" y="430" font-family="monospace" font-size="18" fill="#FFFFFF" text-anchor="middle" opacity="0.5">STATUS: [TERMINATED]</text>
+  
+  <!-- Symmetry Glyph -->
+  <path d="M240,150 L260,150 L250,170 Z M240,180 L260,180 L250,160 Z" fill="#00FFFF" opacity="0.7" />
+</svg>

@@ -1,0 +1,14 @@
+{
+  "contract": "eta-mu-five-section-response",
+  "version": "ημ.output/response-shape@0.1.0",
+  "stage": "structure",
+  "ok": false,
+  "failures": [
+    {
+      "rule-id": "frames-cardinality",
+      "message": "Section `Frames` must have at most 3 items",
+      "section-id": "frames",
+      "heading": "Frames"
+    }
+  ]
+}

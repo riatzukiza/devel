@@ -1,0 +1,44 @@
+{
+  "schema_version": "fork-tales-handoff/v1",
+  "handoff_kind": "planner_assignment",
+  "job_id": "job_example_scribe_001",
+  "mode": "scribe",
+  "role": "planner_agent",
+  "created_at": "2026-05-15T00:00:00Z",
+  "objective": "derive vocal score and aligned realized lyrics from an owned source vocal stem",
+  "inputs": {
+    "audio": ["vocals.wav"],
+    "lyrics_prompt": "lyrics.txt",
+    "style_prompt": "style.txt",
+    "references": []
+  },
+  "constraints": {
+    "languages": ["ja", "en"],
+    "deliverables": ["lyrics_realized", "phonemes", "note_events", "midi", "openutau"],
+    "rubric_profile": "suno_reverse_accuracy"
+  },
+  "ambiguities": [
+    {
+      "ambiguity_id": "lyrics.jp_kanji_reading.example",
+      "type": "jp_kanji_reading",
+      "severity": 0.62,
+      "affects_domains": ["lyrics_realized", "word_syllable_timing"],
+      "policy": {
+        "require_human_audit_if_disagreement_gt": 0.4
+      },
+      "rationale": "Kanji reading may diverge from prompt or local STT."
+    }
+  ],
+  "tasks": [
+    {
+      "task_id": "segment-opening",
+      "domain": "lyrics_realized",
+      "span": {"t0": 0.0, "t1": 8.0},
+      "required_outputs": ["evidence.json", "grade.json"]
+    }
+  ],
+  "success_criteria": [
+    "all deliverables emitted",
+    "critical rubric gates pass or unresolved issues are explicitly reviewed"
+  ]
+}

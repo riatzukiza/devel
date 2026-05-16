@@ -1,0 +1,44 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="500" fill="#05050a" />
+
+  <!-- Background Aura -->
+  <defs>
+    <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" style="stop-color:#1a1a3a;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#05050a;stop-opacity:0" />
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <circle cx="250" cy="250" r="200" fill="url(#grad1)" />
+
+  <!-- The Outer Lamination (Diamond 1) -->
+  <path d="M250 50 L400 250 L250 450 L100 250 Z" fill="none" stroke="#a0a0ff" stroke-width="1" opacity="0.3" />
+  <path d="M250 60 L390 250 L250 440 L110 250 Z" fill="none" stroke="#a0a0ff" stroke-width="0.5" opacity="0.2" />
+
+  <!-- The Inner Symmetry (Diamond 2) -->
+  <path d="M250 100 L350 250 L250 400 L150 250 Z" fill="none" stroke="#c0c0ff" stroke-width="2" filter="url(#glow)" />
+  <path d="M250 110 L340 250 L250 390 L160 250 Z" fill="none" stroke="#c0c0ff" stroke-width="1" opacity="0.5" />
+
+  <!-- the Core Rupture (Diamond 3) -->
+  <path d="M250 150 L300 250 L250 350 L200 250 Z" fill="none" stroke="#ffffff" stroke-width="3" filter="url(#glow)" />
+  <path d="M250 160 L290 250 L250 340 L210 250 Z" fill="#ffffff" opacity="0.8" filter="url(#glow)" />
+
+  <!-- Weaponized Lines (The Rupture) -->
+  <line x1="250" y1="0" x2="250" y2="500" stroke="#ffffff" stroke-width="0.2" opacity="0.2" />
+  <line x1="0" y1="250" x2="500" y2="250" stroke="#ffffff" stroke-width="0.2" opacity="0.2" />
+  <line x1="100" y1="100" x2="400" y2="400" stroke="#a0a0ff" stroke-width="0.5" opacity="0.3" />
+  <line x1="400" y1="100" x2="100" y2="400" stroke="#a0a0ff" stroke-width="0.5" opacity="0.3" />
+
+  <!-- Glitch artifacts -->
+  <rect x="248" y="248" width="4" height="1" fill="#ffffff" opacity="0.5" />
+  <rect x="252" y="251" width="2" height="1" fill="#c0c0ff" opacity="0.5" />
+
+  <!-- SCLDF Inscription -->
+  <text x="250" y="470" font-family="monospace" font-size="12" fill="#a0a0ff" text-anchor="middle" letter-spacing="5" opacity="0.6">SCLDF // MANIFEST INTENT</text>
+</svg>

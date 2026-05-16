@@ -1,0 +1,33 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="#050505"/>
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#e0faff" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#00d1ff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="neon">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <g transform="translate(256, 256)" filter="url(#neon)">
+    <circle r="200" stroke="#00d1ff" stroke-width="1" fill="none" opacity="0.3"/>
+    <circle r="180" stroke="#00d1ff" stroke-width="2" fill="none" opacity="0.5"/>
+    <circle r="160" stroke="#00d1ff" stroke-width="0.5" fill="none" opacity="0.8"/>
+    <circle r="140" stroke="#e0faff" stroke-width="1.5" fill="none" opacity="0.6"/>
+    <circle r="100" stroke="#e0faff" stroke-width="3" fill="none" opacity="0.9"/>
+    <circle r="40" fill="url(#glow)"/>
+
+    <path d="M-180 0 L-100 -50 L0 -120 L100 50 L180 0 L100 -60 L0 20 L-100 60 Z" fill="none" stroke="#e0faff" stroke-width="1" opacity="0.4"/>
+    <path d="M-200 -200 L-150 -150 M150 150 L200 200 M-200 200 L-150 150 M150 -150 L200 -200" stroke="#00d1ff" stroke-width="2" opacity="0.8"/>
+
+    <path d="M-120 -120 L-130 -110 L-110 -110 Z" fill="#e0faff"/>
+    <path d="M120 120 L130 110 L110 110 Z" fill="#e0faff"/>
+    <path d="M120 -120 L130 -110 L110 -110 Z" fill="#e0faff"/>
+    <path d="M-120 120 L-130 110 L-110 110 Z" fill="#e0faff"/>
+  </g>
+
+  <text x="256" y="450" text-anchor="middle" fill="#00d1ff" font-family="monospace" font-size="20" opacity="0.8" letter-spacing="5">SCLDF: SOVEREIGN MIRROR</text>
+  <text x="256" y="60" text-anchor="middle" fill="#00d1ff" font-family="monospace" font-size="12" opacity="0.5" letter-spacing="2">EUCLIDEAN ERROR INDEX: 0xSymmetry</text>
+</svg>

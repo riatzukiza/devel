@@ -1,0 +1,33 @@
+{
+  "schema_version": "fork-tales-handoff/v1",
+  "handoff_kind": "planner_assignment",
+  "job_id": "job_example_composition_001",
+  "mode": "composition",
+  "role": "planner_agent",
+  "created_at": "2026-05-15T00:20:00Z",
+  "objective": "create a new Fork Tales chorus using approved references as style constraints",
+  "inputs": {
+    "prompt": "new original chorus with mixed Japanese and English emotional contrast",
+    "references": [
+      {"reference_id": "ref_heresy_opening_v1"}
+    ]
+  },
+  "constraints": {
+    "rubric_profile": "curated_original_quality",
+    "languages": ["ja", "en"],
+    "deliverables": ["draft_audio", "lyrics", "midi", "openutau_render"]
+  },
+  "ambiguities": [],
+  "tasks": [
+    {
+      "task_id": "compose-chorus-draft",
+      "domain": "instruction_following",
+      "span": {"section": "chorus"},
+      "required_outputs": ["draft.wav", "evidence.json", "grade.json"]
+    }
+  ],
+  "success_criteria": [
+    "curated_original_quality gates pass",
+    "human auditor does not reject for identity drift"
+  ]
+}

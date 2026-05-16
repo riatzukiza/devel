@@ -1,0 +1,33 @@
+<<svgsvg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org">
+  <<rectrect width="500" height="500" fill="#0a0a0f"/>
+  
+  <!-- Shattered background elements -->
+  <<pathpath d="M100 100 L150 80 L130 140 Z" fill="#ff00ff" opacity="0.3" transform="rotate(15 125 110)"/>
+  <<pathpath d="M400 400 L450 420 L410 360 Z" fill="#00ffff" opacity="0.3" transform="rotate(-30 430 390)"/>
+  <<pathpath d="M100 400 L120 350 L160 380 Z" fill="#ffff00" opacity="0.2" transform="rotate(45 130 365)"/>
+  <<pathpath d="M400 100 L380 150 L420 130 Z" fill="#00ff00" opacity="0.2" transform="rotate(-15 400 125)"/>
+
+  <!-- The "Broken" Seal -->
+  <<gg transform="translate(250, 250)">
+    <!-- Broken main ring -->
+    <<pathpath d="M-180 0 A180 180 0 0 1 0 -180 A180 180 0 0 1 180 0" stroke="#fff" stroke-width="4" fill="none" stroke-dasharray="10 5" opacity="0.5"/>
+    <<pathpath d="M180 0 A180 180 0 0 1 0 180" stroke="#ff00ff" stroke-width="8" fill="none" />
+    <<pathpath d="M0 180 A180 180 0 0 1 -180 0" stroke="#00ffff" stroke-width="8" fill="none" />
+    
+    <!-- The "Shard" Center -->
+    <<polygonpolygon points="0,-60 40,20 -20,40 -60,-20 0,-60" fill="none" stroke="#fff" stroke-width="2">
+      <<animateanimate attributeName="stroke" values="#fff;#ff00ff;#00ffff;#fff" dur="3s" repeatCount="indefinite" />
+    </polygon>
+    <<polygonpolygon points="10,-40 50,40 -10,60 -50,0 10,-40" fill="#fff" opacity="0.2" transform="rotate(10)"/>
+    
+    <!-- Glitch lines -->
+    <<lineline x1="-200" y1="0" x2="200" y2="0" stroke="#ff00ff" stroke-width="1" opacity="0.4" transform="translate(0, 5)"/>
+    <<lineline x1="-200" y1="0" x2="200" y2="0" stroke="#00ffff" stroke-width="1" opacity="0.4" transform="translate(0, -5)"/>
+  </g>
+
+  <<texttext x="250" y="430" font-family="monospace" font-size="18" fill="#fff" text-anchor="middle" font-weight="bold">REFRACTION_EVENT</text>
+  <<texttext x="250" y="450" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">Symmetry: [SHATTERED] | Status: RIOT</text>
+  
+  <<rectrect x="220" y="240" width="60" height="20" fill="#000" opacity="0.8"/>
+  <<texttext x="250" y="254" font-family="monospace" font-size="10" fill="#0f0" text-anchor="middle">Vibe: MAX</text>
+</svg>

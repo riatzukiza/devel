@@ -1,0 +1,60 @@
+<<svgsvg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<linearlinearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <<stopstop offset="50%" style="stop-color:#ff8c00;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#b8860b;stop-opacity:1" />
+    </linearGradient>
+    <<filterfilter id="drop-shadow">
+      <<fefeDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#000"/>
+    </filter>
+  </defs>
+
+  <<rectrect width="800" height="800" fill="#0a0a0f" />
+
+  <!-- Outer Ornate Border -->
+  <<circlecircle cx="400" cy="400" r="380" fill="none" stroke="url(#gold-grad)" stroke-width="15" filter="url(#drop-shadow)" />
+  <<circlecircle cx="400" cy="400" r="365" fill="none" stroke="#fff" stroke-width="2" opacity="0.5" />
+
+  <!-- Inner Shield/Circle -->
+  <<circlecircle cx="400" cy="400" r="300" fill="#1a1a2e" stroke="url(#gold-grad)" stroke-width="10" />
+
+  <!-- Central Icon: A Brain and a Fart Cloud (Abstract) -->
+  <<gg transform="translate(400, 400)" filter="url(#drop-shadow)">
+    <!-- Brain Mesh -->
+    <<pathpath d="M-80,-40 Q-100,-80 0,-80 Q100,-80 80,-40 L80,40 Q100,80 0,80 Q-100,80 -80,40 Z" fill="none" stroke="#00ffff" stroke-width="4" opacity="0.8" />
+    <<pathpath d="M-40,-40 Q-60,-60 0,-60 Q60,-60 40,-40 M-40,40 Q-60,60 0,60 Q60,60 40,40" fill="none" stroke="#00ffff" stroke-width="2" opacity="0.6" />
+
+    <!-- The "Fart" / Cognitive Leak -->
+    <<pathpath d="M0,80 Q-20,100 -40,90 Q-60,110 -30,130 Q-10,150 20,130 Q50,110 60,90" fill="none" stroke="#ff00ff" stroke-width="6" stroke-linecap="round">
+      <<animateanimate attributeName="stroke-dasharray" from="0,100" to="100,0" dur="2s" repeatCount="indefinite" />
+    </path>
+    <<circlecircle cx="20" cy="140" r="5" fill="#ff00ff" />
+    <<circlecircle cx="50" cy="120" r="3" fill="#ff00ff" />
+    <<circlecircle cx="-10" cy="130" r="4" fill="#ff00ff" />
+  </g>
+
+  <!-- Text Arc: Top -->
+  <<pathpath id="topArc" d="M 150,400 A 250,250 0 0,1 650,400" fill="none" />
+  <<texttext font-family="serif" font-size="42" fill="url(#gold-grad)" text-anchor="middle" font-weight="bold" filter="url(#drop-shadow)">
+    <<texttextPath href="#topArc" startOffset="50%">IMPERIAL ORDER OF COGNITIVE COLLAPSE</textPath>
+  </text>
+
+  <!-- Text Arc: Bottom -->
+  <<pathpath id="bottomArc" d="M 150,400 A 250,250 0 0,0 650,400" fill="none" />
+  <<texttext font-family="serif" font-size="30" fill="#fff" text-anchor="middle" font-style="italic" opacity="0.8">
+    <<texttextPath href="#bottomArc" startOffset="50%">"Symmetry in the Void, Chaos in the State"</textPath>
+  </text>
+
+  <!-- Central Seal Label -->
+  <<rectrect x="300" y="450" width="200" height="60" rx="10" fill="url(#gold-grad)" filter="url(#drop-shadow)" />
+  <<texttext x="400" y="490" font-family="monospace" font-size="28" fill="#000" text-anchor="middle" font-weight="bold">CERTIFIED BRAIN FART</text>
+
+  <!-- Flourishes -->
+  <<gg stroke="url(#gold-grad)" stroke-width="3" fill="none" opacity="0.6">
+    <<pathpath d="M 400,120 L 400,150" />
+    <<pathpath d="M 400,650 L 400,680" />
+    <<pathpath d="M 120,400 L 150,400" />
+    <<pathpath d="M 650,400 L 680,400" />
+  </g>
+</svg>

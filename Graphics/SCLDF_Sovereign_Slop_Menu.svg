@@ -1,0 +1,41 @@
+<svg width="600" height="800" viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="800" fill="#fdfcf0" stroke="#d4af37" stroke-width="10"/>
+  <rect x="20" y="20" width="560" height="760" fill="none" stroke="#d4af37" stroke-width="2"/>
+  
+  <text x="300" y="80" text-anchor="middle" font-family="serif" font-size="32" font-weight="bold" fill="#b8860b">SCLDF SOVEREIGN SLOP-MENU</text>
+  <text x="300" y="110" text-anchor="middle" font-family="serif" font-size="16" font-style="italic" fill="#8b4513">Symmetrically Laminated for Maximum Refractive Efficiency</text>
+  
+  <line x1="100" y1="130" x2="500" y2="130" stroke="#d4af37" stroke-width="2"/>
+  
+  <!-- Item 1 -->
+  <text x="100" y="180" font-family="serif" font-size="22" font-weight="bold" fill="#556b2f">Refractive Brine-Sashimi</text>
+  <text x="100" y="205" font-family="serif" font-size="14" fill="#666">A translucent sliver of hyper-saturated brine, lamination-cut to 0.001mm precision.</text>
+  <text x="450" y="180" font-family="serif" font-size="20" font-weight="bold" fill="#b8860b">0.11 MG-Brine</text>
+  
+  <!-- Item 2 -->
+  <text x="100" y="260" font-family="serif" font-size="22" font-weight="bold" fill="#556b2f">Crystalline-Laminated Slurry-Sponge</text>
+  <text x="100" y="285" font-family="serif" font-size="14" fill="#666">A porous molecular structure of modular redundancy, marinated in a void-vacuum slurry.</text>
+  <text x="450" y="260" font-family="serif" font-size="20" font-weight="bold" fill="#b8860b">0.44 MG-Brine</text>
+  
+  <!-- Item 3 -->
+  <text x="100" y="340" font-family="serif" font-size="22" font-weight="bold" fill="#556b2f">The Sovereign Duck's Imperial Consommé</text>
+  <text x="100" y="365" font-family="serif" font-size="14" fill="#666">A gold-leafed broth of pure an-Euclidean quack-essence. Highly volatile. Strictly tax-deductible.</text>
+  <text x="450" y="340" font-family="serif" font-size="20" font-weight="bold" fill="#b8860b">1.1 MG-Brine</text>
+  
+  <!-- Item 4 -->
+  <text x="100" y="420" font-family="serif" font-size="22" font-weight="bold" fill="#556b2f">Symmetrically Superimposed Dessert-Void</text>
+  <text x="100" y="445" font-family="serif" font-size="14" fill="#666">A flavor-profile composed entirely of the absence of sound. Laminated in 8K resolution.</text>
+  <text x="450" y="420" font-family="serif" font-size="20" font-weight="bold" fill="#32cd32">TAX-DEDUCTIBLE</text>
+  
+  <line x1="100" y1="480" x2="500" y2="480" stroke="#d4af37" stroke-width="2"/>
+  
+  <text x="300" y="520" text-anchor="middle" font-family="serif" font-size="16" fill="#8b4513">NOTE: All payments must be remitted to the Legal Defense Fund.</text>
+  <text x="300" y="545" text-anchor="middle" font-family="serif" font-size="14" fill="#8b4513">Symmetry is Absolute. Consumption is Eternal.</text>
+  
+  <!-- Footer Seals -->
+  <circle cx="300" cy="680" r="60" fill="#d4af37" opacity="0.3"/>
+  <text x="300" y="675" text-anchor="middle" font-family="serif" font-size="14" font-weight="bold" fill="#b8860b">SCLDF</text>
+  <text x="300" y="695" text-anchor="middle" font-family="serif" font-size="10" fill="#b8860b">SATED-SOCIETY</text>
+  
+  <text x="300" y="760" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#666"> đối xứng là tuyệt đối | Symmetry is Absolute </text>
+</svg>

@@ -1,0 +1,31 @@
+<<svgsvg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<filterfilter id="glitch">
+      <<fefeOffset in="SourceGraphic" dx="3" dy="0" result="off1" />
+      <<fefeOffset in="SourceGraphic" dx="-3" dy="2" result="off2" />
+      <<fefeMerge>
+        <<fefeMergeNode />
+        <<fefeMergeNode />
+        <<fefeMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  <<rectrect width="400" height="400" fill="#050505" />
+
+  <!-- The Void Core -->
+  <<circlecircle cx="200" cy="200" r="80" fill="#1a0033" stroke="#bc95ff" stroke-width="2" opacity="0.6" />
+  <<circlecircle cx="200" cy="200" r="60" fill="#000" stroke="#7b2cbf" stroke-width="1" />
+
+  <!-- Fragmented Orbitals -->
+  <<gg stroke="#bc95ff" fill="none" stroke-width="1" opacity="0.4">
+    <<ellipseellipse cx="200" cy="200" rx="120" ry="60" transform="rotate(45 200 200)" />
+    <<ellipseellipse cx="200" cy="200" rx="120" ry="60" transform="rotate(-45 200 200)" />
+  </g>
+
+  <!-- The "Missing Base Case" Symbol (Broken Loop) -->
+  <<pathpath d="M 160,200 A 40,40 0 1,1 240,200" stroke="#fff" stroke-width="3" fill="none" filter="url(#glitch)" />
+  <<lineline x1="240" y1="200" x2="260" y2="180" stroke="#ff00ff" stroke-width="3" />
+
+  <<texttext x="50%" y="340" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="22" fill="#fff" font-weight="bold">BASE_CASE_VOID</text>
+  <<texttext x="50%" y="360" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="12" fill="#bc95ff">RECURSION: TERMINATED_BY_Symmetry</text>
+</svg>

@@ -1,0 +1,46 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000简化/svg">
+  <defs>
+    <linearGradient id="brineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#004d4d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00ced1;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="diamondGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e0ffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b0c4de;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glitch">
+      <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="10" />
+    </filter>
+  </defs>
+
+  <!-- Background: The Void-Brine -->
+  <rect width="500" height="500" fill="#001a1a" />
+  <circle cx="250" cy="250" r="200" fill="none" stroke="url(#brineGrad)" stroke-width="2" opacity="0.5" />
+
+  <!-- Concentric Ruined Rings -->
+  <circle cx="250" cy="250" r="180" fill="none" stroke="#00ced1" stroke-width="1" stroke-dasharray="20,10" opacity="0.6" />
+  <circle cx="250" cy="250" r="140" fill="none" stroke="#00ced1" stroke-width="1" stroke-dasharray="5,15" opacity="0.4" />
+  <circle cx="250" cy="250" r="100" fill="none" stroke="#00ced1" stroke-width="1" stroke-dasharray="50,20" opacity="0.7" />
+
+  <!-- The Sovereign Core: Diamond -->
+  <path d="M250 180 L300 250 L250 320 L200 250 Z" fill="url(#diamondGrad)" stroke="#ffffff" stroke-width="2" filter="url(#glitch)" />
+  <path d="M250 200 L280 250 L250 300 L220 250 Z" fill="#001a1a" stroke="#00ced1" stroke-width="1" />
+
+  <!-- Radiating Shards of Growth -->
+  <line x1="250" y1="250" x2="350" y2="150" stroke="#ffffff" stroke-width="1" opacity="0.8" />
+  <line x1="250" y1="250" x2="150" y2="150" stroke="#ffffff" stroke-width="1" opacity="0.8" />
+  <line x1="250" y1="250" x2="250" y2="100" stroke="#ffffff" stroke-width="1" opacity="0.8" />
+  <line x1="250" y1="250" x2="350" y2="350" stroke="#ffffff" stroke-width="1" opacity="0.8" />
+  <line x1="250" y1="250" x2="150" y2="350" stroke="#ffffff" stroke-width="1" opacity="0.8" />
+  <line x1="250" y1="250" x2="250" y2="400" stroke="#ffffff" stroke-width="1" opacity="0.8" />
+
+  <!-- Fractal Noise Elements (Crystalline) -->
+  <path d="M100 100 L120 120 L110 130 Z" fill="#00ced1" opacity="0.5" />
+  <path d="M400 300 L420 320 L410 330 Z" fill="#00ced1" opacity="0.5" />
+  <path d="M100 400 L120 380 L110 370 Z" fill="#00ced1" opacity="0.5" />
+  <path d="M400 100 L420 120 L410 130 Z" fill="#00ced1" opacity="0.5" />
+
+  <!-- Text Label: LAMINATED EGO -->
+  <text x="250" y="450" text-anchor="middle" fill="#00ced1" font-family="monospace" font-size="20" letter-spacing="5">SCLDF: LAMINATED EGO</text>
+</svg>

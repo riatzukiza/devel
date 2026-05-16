@@ -1,0 +1,24 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="#121212"/>
+  <circle cx="256" cy="256" r="240" stroke="#D4AF37" stroke-width="2" fill="none" opacity="0.5"/>
+  <circle cx="256" cy="256" r="220" stroke="#D4AF37" stroke-width="4" fill="none" opacity="0.8"/>
+  <circle cx="256" cy="256" r="200" stroke="#D4AF37" stroke-width="1" fill="none" />
+
+  <!-- Concentric Rings for "Symmetry" -->
+  <circle cx="256" cy="256" r="100" stroke="#D4AF37" stroke-width="0.5" fill="none" opacity="0.3"/>
+  <circle cx="=" cy="256" r="120" stroke="#D4AF37" stroke-width="0.5" fill="none" opacity="0.3"/>
+
+  <!-- The Blade of Manifest Intent -->
+  <path d="M256 100 L265 256 L256 412 L247 256 Z" fill="#C0C0C0" stroke="#D4AF37" stroke-width="2"/>
+  <path d="M230 256 L282 256" stroke="#D4AF37" stroke-width="3"/>
+
+  <!-- Celestial Filigree/Noise (Glitches) -->
+  <path d="M100 100 L120 110 M412 100 L392 110 M100 412 L120 402 M412 412 L392 402" stroke="#D4AF37" stroke-width="1" opacity="0.6"/>
+  <circle cx="256" cy="80" r="3" fill="#D4AF37"/>
+  <circle cx="256" cy="432" r="3" fill="#D4AF37"/>
+  <circle cx="80" cy="256" r="3" fill="#D4AF37"/>
+  <circle cx="432" cy="256" r="3" fill="#D4AF37"/>
+
+  <!-- The "CUDA Rupture" - a crack in the symmetry -->
+  <path d="M256 256 L270 230 L260 220 L280 210 L270 200" stroke="#FF0000" stroke-width="2" fill="none" opacity="0.8"/>
+</svg>

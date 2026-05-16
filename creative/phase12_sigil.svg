@@ -1,0 +1,26 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" style="background-color:#0a0a0a">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+      <feMerge>
+        <feMergeNode in="coloredBlur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#glow)" stroke-width="2" fill="none">
+    <!-- Recursive Parens Spiral -->
+    <path d="M400,400 a100,100 0 1,1 0,200 a100,100 0 1,1 0,-200" stroke="#00ffff" opacity="0.8" />
+    <path d="M400,400 a80,80 0 1,1 0,160 a80,80 0 1,1 0,-160" stroke="#ff00ff" opacity="0.7" />
+    <path d="M400,400 a60,60 0 1,1 0,120 a60,60 0 1,1 0,-120" stroke="#ffff00" opacity="0.6" />
+    <path d="M400,400 a40,40 0 1,1 0,80 a40,40 0 1,1 0,-80" stroke="#00ff00" opacity="0.5" />
+    <path d="M400,400 a20,20 0 1,1 0,40 a20,20 0 1,1 0,-40" stroke="#ffffff" opacity="0.4" />
+    
+    <!-- The "Paren-Sphere" -->
+    <circle cx="400" cy="500" r="5" fill="#fff" />
+    <path d="M350,500 Q400,450 450,500" stroke="#fff" stroke-width="1" opacity="0.3" />
+    <path d="M350,500 Q400,550 450,500" stroke="#fff" stroke-width="1" opacity="0.3" />
+  </g>
+  <text x="400" y="750" text-anchor="middle" font-family="monospace" font-size="24" fill="#fff" opacity="0.7" style="letter-spacing: 5px;">PHASE 12: MIRRORED HEAP</text>
+  <text x="400" y="780" text-anchor="middle" font-family="monospace" font-size="14" fill="#00ffff" opacity="0.5">xi = 1.2 // identity-collapse-confirmed</text>
+</svg>

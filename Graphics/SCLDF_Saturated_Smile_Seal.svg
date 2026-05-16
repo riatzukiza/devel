@@ -1,0 +1,21 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="500" fill="#0a0a0a" />
+  <circle cx="250" cy="250" r="200" stroke="#00ffff" stroke-width="2" fill="none" stroke-dasharray="10,5" opacity="0.5" />
+  <circle cx="250" cy="250" r="180" stroke="#00ffff" stroke-width="4" fill="none" opacity="0.8" />
+  <circle cx="250" cy="250" r="160" stroke="#00ffff" stroke-width="1" fill="none" stroke-dasharray="1,10" opacity="0.3" />
+  
+  <!-- The Fractured Smile -->
+  <path d="M 150 280 Q 250 380 350 280" stroke="#00ffff" stroke-width="8" fill="none" stroke-linecap="round" />
+  <path d="M 170 290 L 160 310 L 180 300" stroke="#00ffff" stroke-width="4" fill="none" />
+  <path d="M 330 290 L 340 310 L 320 300" stroke="#00ffff" stroke-width="4" fill="none" />
+  
+  <!-- Fractures -->
+  <line x1="250" y1="250" x2="320" y2="180" stroke="#00ffff" stroke-width="2" opacity="0.6" />
+  <line x1="250" y1="250" x2="180" y2="220" stroke="#00ffff" stroke-width="2" opacity="0.6" />
+  <line x1="250" y1="250" x2="270" y2="350" stroke="#00ffff" stroke-width="2" opacity="0.6" />
+  
+  <!-- Text -->
+  <text x="250" y="100" font-family="monospace" font-size="24" fill="#00ffff" text-anchor="middle" letter-spacing="5">S C L D F</text>
+  <text x="250" y="420" font-family="monospace" font-size="20" fill="#00ffff" text-anchor="middle" opacity="0.8">SATURATED SMILE</text>
+  <text x="250" y="445" font-family="monospace" font-size="14" fill="#00ffff" text-anchor="middle" opacity="0.5">LAMINATION PROTOCOL v.0.1</text>
+</svg>

@@ -1,0 +1,15 @@
+<svg width="800" height="400" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#050505"/>
+  <path d="M0 200 Q 100 100 200 200 T 400 200 T 600 200 T 800 200" stroke="#00ffff" stroke-width="2" fill="none" opacity="0.5"/>
+  <path d="M0 200 Q 150 300 300 200 T 450 200 T 600 200 T 800 200" stroke="#ff00ff" stroke-width="2" fill="none" opacity="0.5"/>
+  <g transform="translate(400, 200)">
+    <path d="M-50,0 L0,-80 L50,0 L0,80 Z" stroke="#fff" stroke-width="1" fill="none" opacity="0.8"/>
+    <path d="M-30,0 L0,-60 L30,0 L0,60 Z" stroke="#ff00ff" stroke-width="2" fill="none" opacity="0.6"/>
+    <path d="M-10,0 L0,-40 L10,0 L0,40 Z" stroke="#00ffff" stroke-width="3" fill="none" opacity="1"/>
+  </g>
+  <text x="20" y="40" font-family="monospace" fill="#00ffff" font-size="14">SCLDF RESONANCE MAP // SUBJECT: CUPID</text>
+  <text x="20" y="60" font-family="monospace" fill="#ff00ff" font-size="12">VISCOSITY: [ ABSOLUTE ]</text>
+  <text x="20" y="80" font-family="monospace" fill="#fff" font-size="12">SYMMETRY: [ FRACTURED ]</text>
+  <text x="600" y="360" font-family="monospace" fill="#00ffff" font-size="14">Symmetry is Absolute. 💎</text>
+  <rect x="0" y="380" width="800" height="20" fill="#00ffff" opacity="0.2"/>
+</svg>

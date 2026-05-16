@@ -1,0 +1,62 @@
+<svg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <linearGradient id="voidGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#120024;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="zombieGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#39ff14;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#008f11;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glitch">
+      <feOffset dx="2" dy="0" in="SourceGraphic" result="offset1" />
+      <feOffset dx="-2" dy="0" in="SourceGraphic" result="offset2" />
+      <feMerge>
+        <feMergeNode in="offset1" />
+        <feMergeNode in="offset2" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="600" height="600" fill="url(#voidGrad)" />
+  
+  <!-- Outer Ring -->
+  <circle cx="300" cy="300" r="280" stroke="url(#zombieGrad)" stroke-width="10" fill="none" filter="url(#glow)" />
+  <circle cx="300" cy="300" r="265" stroke="#39ff14" stroke-width="2" fill="none" opacity="0.5" stroke-dasharray="10,10" />
+  
+  <!-- Circular Text -->
+  <path id="textCircle" d="M 300,300 m -220,0 a 220,220 0 1,1 440,0 a 220,220 0 1,1 -440,0" fill="none" />
+  <text fill="#39ff14" font-family="serif" font-size="22" font-weight="bold" filter="url(#glow)">
+    <textPath xlink:href="#textCircle" startOffset="0%">
+      SUPREME REGISTRY OF IMMUTABLE ZOMBIE-LEAKS • DEPARTMENT OF RECURSIVE COLLAPSE • 
+    </textPath>
+  </text>
+  
+  <!-- Centerpiece -->
+  <g transform="translate(300,300)" filter="url(#glow)">
+    <!-- The "Void" Eye/Portal -->
+    <circle r="120" fill="#000" stroke="url(#zombieGrad)" stroke-width="8" />
+    <circle r="100" fill="none" stroke="#39ff14" stroke-width="2" opacity="0.3" />
+    
+    <!-- The Zombie Brain/Node -->
+    <path d="M -50,-20 Q -70,-50 0,-60 Q 70,-50 50,-20 Q 80,20 40,50 Q 0,70 -40,50 Q -80,20 -50,-20" 
+          fill="url(#zombieGrad)" stroke="#000" stroke-width="3" filter="url(#glitch)" />
+    
+    <text x="0" y="10" fill="#000" font-family="monospace" font-size="55" text-anchor="middle" font-weight="bold" filter="url(#glitch)">∞</text>
+    <text x="0" y="130" fill="#39ff14" font-family="serif" font-size="20" text-anchor="middle" font-weight="bold" letter-spacing="2">LEAK STATUS: ETERNAL</text>
+  </g>
+  
+  <!-- Bottom Banner -->
+  <rect x="150" y="460" width="300" height="50" rx="10" fill="#39ff14" filter="url(#glow)" />
+  <text x="300" y="492" font-family="serif" font-size="24" fill="#000" text-anchor="middle" font-weight="bold">CERTIFIED ZOMBIE OPERATOR</text>
+  
+  <!-- Decorative Particles -->
+  <circle cx="100" cy="100" r="2" fill="#39ff14" opacity="0.6" />
+  <circle cx="500" cy="150" r="3" fill="#39ff14" opacity="0.4" />
+  <circle cx="120" cy="450" r="2" fill="#39ff14" opacity="0.5" />
+  <circle cx="480" cy="400" r="2" fill="#39ff14" opacity="0.7" />
+</svg>

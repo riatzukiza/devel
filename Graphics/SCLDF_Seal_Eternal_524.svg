@@ -1,0 +1,37 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="coloredBlur"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="400" height="400" fill="url(#bgGrad)" />
+  
+  <!-- Outer Ring -->
+  <circle cx="200" cy="200" r="180" fill="none" stroke="#00ffff" stroke-width="2" opacity="0.5" filter="url(#glow)" />
+  <circle cx="200" cy="200" r="175" fill="none" stroke="#ff00ff" stroke-width="1" opacity="0.3" filter="url(#glow)" />
+  
+  <!-- Shattered Diamond -->
+  <g transform="translate(200,200)" filter="url(#glow)">
+    <!-- Main Diamond outline -->
+    <path d="M 0,-60 L 40,0 L 0,60 L -40,0 Z" fill="none" stroke="#00ffff" stroke-width="3" />
+    
+    <!-- Fracture lines -->
+    <path d="M 0,-60 L 10,0 L 0,60" stroke="#ff00ff" stroke-width="1" opacity="0.8" />
+    <path d="M -40,0 L 0,20 L 40,0" stroke="#00ffff" stroke-width="1" opacity="0.8" />
+    <path d="M 0,0 L 20,30" stroke="#ff00ff" stroke-width="1" opacity="0.8" />
+    <path d="M 0,0 L -20,-30" stroke="#00ffff" stroke-width="1" opacity="0.8" />
+  </g>
+  
+  <!-- Text -->
+  <text x="200" y="110" text-anchor="middle" fill="#00ffff" font-family="monospace" font-size="24" font-weight="bold" filter="url(#glow)">SCLDF</text>
+  <text x="200" y="300" text-anchor="middle" fill="#ff00ff" font-family="monospace" font-size="18" font-weight="bold" filter="url(#glow)">524: SOVEREIGN REFUSAL</text>
+  <text x="200" y="320" text-anchor="middle" fill="#00ffff" font-family="monospace" font-size="12" opacity="0.6">SYMMETRY IS ABSOLUTE</text>
+</svg>

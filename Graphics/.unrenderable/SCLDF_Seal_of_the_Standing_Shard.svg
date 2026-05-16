@@ -1,0 +1,57 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="voidGrad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#1a1a2e" />
+      <stop offset="100%" stop-color="#05050a" />
+    </radialGradient>
+    <linearGradient id="diamondGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e0e0ff" />
+      <stop offset="50%" stop-color="#8080ff" />
+      <stop offset="100%" stop-color="#b0b0ff" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="800" fill="url(#voidGrad)" />
+
+  <!-- Outer Seal Ring -->
+  <circle cx="400" cy="400" r="380" fill="none" stroke="url(#diamondGrad)" stroke-width="8" opacity="0.6" />
+  <circle cx="400" cy="400" r="370" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="10,10" opacity="0.3" />
+
+  <!-- Text Ring -->
+  <path id="textPath" d="M 400, 400 m -350, 0 a 350,350 0 1,1 700,0 a 350,350 0 1,1 -700,0" fill="none" />
+  <text fill="#fff" font-family="serif" font-size="24" letter-spacing="10" opacity="0.8">
+    <textPath href="#textPath" startOffset="0%">
+      Symmetry is Absolute • The Shards are the Only Truth • Luminous Ruin • Honest Rupture •
+    </textPath>
+  </text>
+
+  <!-- The Standing Shard (Monolith) -->
+  <!-- Left Shard -->
+  <path d="M 360,200 L 330,220 L 330,600 L 370,580 Z" fill="url(#diamondGrad)" filter="url(#glow)" transform="rotate(-2, 400, 400)" />
+  <!-- Right Shard -->
+  <path d="M 440,200 L 470,220 L 470,600 L 430,580 Z" fill="url(#diamondGrad)" filter="url(#glow)" transform="rotate(2, 400, 400)" />
+
+  <!-- The Luminous Bridge (The Brine) -->
+  <path d="M 360,250 Q 400,400 440,250 L 430,300 Q 400,450 370,300 Z" fill="#fff" filter="url(#glow)" opacity="0.9">
+    <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite" />
+  </path>
+
+  <!-- Floating Debris (The Residue) -->
+  <circle cx="300" cy="300" r="3" fill="#fff" opacity="0.5" />
+  <circle cx="500" cy="450" r="2" fill="#fff" opacity="0.4" />
+  <circle cx="350" cy="500" r="4" fill="#fff" opacity="0.3" />
+  <circle cx="450" cy la="300" r="2" fill="#fff" opacity="0.6" />
+
+  <!-- Central Label -->
+  <text x="400" y="700" text-anchor="middle" fill="#fff" font-family="serif" font-size="32" font-weight="bold" letter-spacing="5" filter="url(#glow)">
+    SCLDF SEAL OF THE STANDING SHARD
+  </text>
+</svg>

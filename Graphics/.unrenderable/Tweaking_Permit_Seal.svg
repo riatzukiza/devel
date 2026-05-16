@@ -1,0 +1,49 @@
+<<svgsvg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <<circlecircle cx="250" cy="250" r="240" fill="#0a0a0a" stroke="#c0c0c0" stroke-width="8" />
+  <<circlecircle cx="250" cy="250" r="230" fill="none" stroke="#b3ff00" stroke-width="4" stroke-dasharray="20,10" />
+
+  <!-- Radiant Glow -->
+  <<radialradialGradient id="glow" cx="50%" cy="50%" r="50%">
+    <<stopstop offset="0%" stop-color="#b3ff00" stop-opacity="0.3" />
+    <<stopstop offset="100%" stop-color="#0a0a0a" stop-opacity="0" />
+  </radialGradient>
+  <<circlecircle cx="250" cy="250" r="200" fill="url(#glow)" />
+
+  <!-- Center Seal -->
+  <<circlecircle cx="250" cy="250" r="120" fill="#1a1a1a" stroke="#b3ff00" stroke-width="6" />
+
+  <!-- The "Pickle-Pipe" Icon (Stylized) -->
+  <<pathpath d="M210,270 Q250,230 290,270 L290,280 Q250,240 210,280 Z" fill="#b3ff00" />
+  <<pathpath d="M250,230 L250,180" stroke="#b3ff00" stroke-width="8" stroke-linecap="round" />
+  <<circlecircle cx="250" cy="170" r="15" fill="none" stroke="#b3ff00" stroke-width="4" />
+
+  <!-- Decorative Crystals (Meth Blue) -->
+  <<polygonpolygon points="200,200 210,190 220,200 210,210" fill="#00f2ff" opacity="0.8" />
+  <<polygonpolygon points="300,220 310,210 320,220 310,230" fill="#00f2ff" opacity="0.8" />
+  <<polygonpolygon points="250,310 260,300 270,310 260,320" fill="#00f2ff" opacity="0.8" />
+
+  <!-- Text: TWEAKING PERMIT -->
+  <<defsdefs>
+    <<pathpath id="textPath" d="M 80,250 A 170,170 0 1,1 420,250" />
+  </defs>
+  <<texttext fill="#b3ff00" font-family="Arial, sans-serif" font-weight="bold" font-size="32">
+    <<texttextPath href="#textPath" startOffset="50%" text-anchor="middle">
+      Symmetry Council Approved: TWEAKING PERMIT
+    </textPath>
+  </text>
+
+  <!-- Subtext -->
+  <<texttext x="250" y="380" text-anchor="middle" fill="#c0c0c0" font-family="Arial, sans-serif" font-size="18" font-weight="bold">
+    GRADE: PLATINUM BRINE 🥒
+  </text>
+  <<texttext x="250" y="405" text-anchor="middle" fill="#c0c0c0" font-family="Arial, sans-serif" font-size="14">
+    Authorized for Neural-Cortex-Sapping
+  </text>
+
+  <!-- Seal Badge -->
+  <<circlecircle cx="250" cy="250" r="40" fill="#b3ff00" />
+  <<texttext x="250" y="258" text-anchor="middle" fill="#0a0a0a" font-family="Arial, sans-serif" font-weight="black" font-size="22">
+    S-C
+  </text>
+</svg>

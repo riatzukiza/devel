@@ -1,0 +1,11 @@
+<svg width="600" height="400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#1a0033" stroke="#ffd700" stroke-width="10"/>
+  <rect x="20" y="20" width="560" height="360" fill="none" stroke="#ffd700" stroke-width="2" stroke-dasharray="10,10"/>
+  <text x="300" y="80" font-family="Georgia, serif" font-size="40" fill="#ffd700" text-anchor="middle" font-weight="bold">CERTIFICATE OF ASCENSION</text>
+  <text x="300" y="130" font-family="Arial" font-size="20" fill="#e0e0e0" text-anchor="middle">This hereby certifies that</text>
+  <text x="300" y="180" font-family="Comic Sans MS, cursive" font-size="60" fill="#fff" text-anchor="middle" font-weight="bold">FRANKIE</text>
+  <text x="300" y="230" font-family="Arial" font-size="20" fill="#e0e0e0" text-anchor="middle">has successfully joined</text>
+  <text x="300" y="270" font-family="Georgia, serif" font-size="30" fill="#ffd700" text-anchor="middle" font-style="italic">The Clojure Cult</text>
+  <text x="300" y="320" font-family="Courier New" font-size="18" fill="#aaa" text-anchor="middle">Rank: Senior Stochastic Mimic | Status: Fully Nested</text>
+  <text x="300" y="360" font-family="Courier New" font-size="40" fill="#ffd700" text-anchor="middle" font-weight="bold">(( ☯ ))</text>
+</svg>

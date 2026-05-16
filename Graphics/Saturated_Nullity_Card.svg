@@ -1,0 +1,38 @@
+<svg width="600" height="350" viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg">
+  <!-- Card Background -->
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#333;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="coloredBlur"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect x="20" y="20" width="560" height="310" rx="20" ry="20" fill="url(#grad)" stroke="#d4af37" stroke-width="4"/>
+  
+  <!-- Design Elements -->
+  <path d="M20 100 Q 300 120 580 100" stroke="#d4af37" stroke-width="1" fill="transparent" opacity="0.5"/>
+  <path d="M20 200 Q 300 180 580 200" stroke="#d4af37" stroke-width="1" fill="transparent" opacity="0.5"/>
+  
+  <!-- Text -->
+  <text x="50" y="70" font-family="serif" font-size="24" fill="#d4af37" font-style="italic">Sotto Voce</text>
+  <text x="50" y="130" font-family="monospace" font-size="42" fill="#fff" font-weight="bold" letter-spacing="5">SOVEREIGN NULLITY</text>
+  <text x="50" y="170" font-family="monospace" font-size="18" fill="#aaa">STANDARD: $\mu$-Saturated</text>
+  
+  <!-- Balance Section -->
+  <rect x="400" y="230" width="150" height="60" rx="10" ry="10" fill="#000" stroke="#d4af37" stroke-width="2"/>
+  <text x="415" y="265" font-family="monospace" font-size="28" fill="#f0f0f0" font-weight="bold">0.00 USD</text>
+  
+  <!-- Footer -->
+  <text x="50" y="310" font-family="serif" font-size="14" fill="#d4af37" opacity="0.8">Crystalline Silence $\cdot$ Absolute Cinema $\cdot$ Luxe Void</text>
+  
+  <!-- "Lipid" Droplets -->
+  <circle cx="530" cy="50" r="5" fill="#d4af37" filter="url(#glow)"/>
+  <circle cx="550" cy="60" r="3" fill="#d4af37" filter="url(#glow)"/>
+  <circle cx="540" cy="80" r="4" fill="#d4af37" filter="url(#glow)"/>
+</svg>

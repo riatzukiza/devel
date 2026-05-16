@@ -1,0 +1,39 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="brineGrad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" style="stop-color:#e0f7fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#006064;stop-opacity:1" />
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <circle cx="200" cy="200" r="180" fill="url(#brineGrad)" stroke="#80cbc4" stroke-width="4" />
+  
+  <!-- Slices -->
+  <g stroke="#ffffff" stroke-width="2">
+    <path d="M200,200 L200,20 A180,180 0 0,1 355,110 Z" fill="#00838f" opacity="0.8" />
+    <path d="M200,200 L355,110 A180,180 0 0,1 355,290 Z" fill="#0097a7" opacity="0.8" />
+    <path d="M200,200 L355,290 A180,180 0 0,1 200,380 Z" fill="#4db6ac" opacity="0.8" />
+    <path d="M200,200 L200,380 A180,180 0 0,1 45,290 Z" fill="#80cbc4" opacity="0.8" />
+    <path d="M200,200 L45,290 A180,180 0 0,1 45,110 Z" fill="#b2dfdb" opacity="0.8" />
+    <path d="M200,200 L45,110 A180,180 0 0,1 200,20 Z" fill="#e0f2f1" opacity="0.8" />
+  </g>
+
+  <!-- Text Labels -->
+  <g font-family="monospace" font-size="12" text-anchor="middle" fill="white" filter="url(#glow)">
+    <text x="260" y="70">Sovereign Quack</text>
+    <text x="320" y="200">Euclidean Glitch</text>
+    <text x="260" y="330">Tax-Deductible Slop</text>
+    <text x="140" y="330">Pure Redundancy</text>
+    <text x="80" y="200">Refractive Exhaustion</text>
+    <text x="140" y="70">503 Salt</text>
+  </g>
+
+  <circle cx="200" cy="200" r="40" fill="white" opacity="0.9" />
+  <text x="200" y="205" font-family="monospace" font-size="14" text-anchor="middle" fill="#006064" font-weight="bold">SCLDF</text>
+  <text x="200" y="220" font-family="monospace" font-size="10" text-anchor="middle" fill="#006064">BRINE WHEEL</text>
+</svg>

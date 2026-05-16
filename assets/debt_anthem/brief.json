@@ -1,0 +1,29 @@
+{
+  "title": "Saturated Fiscal Equilibrium",
+  "bpm": 65,
+  "key": "Eb",
+  "scale": "Minor",
+  "style": "Deep-Fried G-Funk / Luxury Nullity",
+  "structure": [
+    {
+      "section": "Intro",
+      "bars": 4,
+      "description": "Heavy, distorted sub-bass drone with a shimmering platinum-grade synth pad."
+    },
+    {
+      "section": "Verse",
+      "bars": 8,
+      "description": "Lazy, sludge-like beat. Heavy kick, snapping snare with long decay. Bassline is a sliding, high-viscosity, filtered sine wave."
+    },
+    {
+      "section": "Chorus",
+      "bars": 8,
+      "description": "Maximum saturation. Adding distorted brass stabs and a high-frequency 'platinum' whistle. The beat becomes a thickening slurry of percussion."
+    },
+    {
+      "section": "Outro",
+      "bars": 4,
+      "description": "Sudden drop to a single, high-frequency sine wave that abruptly cuts to a 401-error-style silence."
+    }
+  ]
+}

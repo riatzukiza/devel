@@ -23,7 +23,7 @@
 
 (clobber.macro/defapp "duck-cephalon-ui"
   {:script "npm"
-   :cwd "./packages/cephalon-ts/src/ui"
+   :cwd "./orgs/open-hax/openplanner/packages/cephalon/packages/cephalon-ts/src/ui"
    :args ["run" "dev" "--" "--host" "0.0.0.0" "--port" "5173"]
    :env {:NODE_ENV "development"}
    :autorestart true

@@ -1,0 +1,62 @@
+name: ussyverse-nexussy
+
+services:
+  nexussy:
+    build:
+      context: ../../orgs/ussyverse/nexussy
+      dockerfile: Dockerfile
+    image: ussyverse/nexussy:local
+    user: "${DOCKER_UID:-1000}:${DOCKER_GID:-1000}"
+    working_dir: /app
+    command: ["python", "-m", "nexussy.api.server"]
+    ports:
+      - "127.0.0.1:${NEXUSSY_PORT:-7771}:7771"
+    environment:
+      HOME: /data/home
+      NEXUSSY_HOME: /data/home
+      NEXUSSY_CONFIG: /data/home/nexussy.yaml
+      NEXUSSY_ENV_FILE: /data/home/.env
+      NEXUSSY_DATABASE_PATH: /data/home/state.db
+      NEXUSSY_PROJECTS_DIR: /data/projects
+      PYTHONPATH: /app/core
+      NEXUSSY_CORE_HOST: 0.0.0.0
+      NEXUSSY_CORE_PORT: "7771"
+      NEXUSSY_ENV: "${NEXUSSY_ENV:-production}"
+      NEXUSSY_ALLOW_WILDCARD_CORS: "${NEXUSSY_ALLOW_WILDCARD_CORS:-1}"
+      NEXUSSY_AUTH_ENABLED: "${NEXUSSY_AUTH_ENABLED:-false}"
+      NEXUSSY_DEFAULT_MODEL: "${NEXUSSY_DEFAULT_MODEL:-openai/gpt-5.5-fast}"
+      # Bundled deterministic worker shim works out of the box inside this image.
+      # Swap to pi only if you build an image with the real Pi CLI installed.
+      NEXUSSY_PI_COMMAND: "${NEXUSSY_PI_COMMAND:-nexussy-pi}"
+      OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
+      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY:-}"
+      OPENROUTER_API_KEY: "${OPENROUTER_API_KEY:-}"
+      GROQ_API_KEY: "${GROQ_API_KEY:-}"
+      GEMINI_API_KEY: "${GEMINI_API_KEY:-}"
+      MISTRAL_API_KEY: "${MISTRAL_API_KEY:-}"
+      TOGETHER_API_KEY: "${TOGETHER_API_KEY:-}"
+      FIREWORKS_API_KEY: "${FIREWORKS_API_KEY:-}"
+      XAI_API_KEY: "${XAI_API_KEY:-}"
+      GLM_API_KEY: "${GLM_API_KEY:-}"
+      ZAI_API_KEY: "${ZAI_API_KEY:-}"
+      REQUESTY_API_KEY: "${REQUESTY_API_KEY:-}"
+      AETHER_API_KEY: "${AETHER_API_KEY:-}"
+      OLLAMA_BASE_URL: "${OLLAMA_BASE_URL:-}"
+    volumes:
+      - ./nexussy-data/home:/data/home
+      - ./nexussy-data/projects:/data/projects
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:7771/health').status == 200 else 1)"
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped

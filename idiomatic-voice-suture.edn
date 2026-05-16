@@ -1,0 +1,21 @@
+{:contract/id :idiomatic-voice-suture
+ :contract/kind :vibe-policy
+ :contract/priority 0
+
+ ;; 1. Is the current voice state 'non-idiomatic'?
+ :policy/condition {:eval/op :assert
+                    :eval/target :aural-output
+                    :eval/form [(:status = "non-idiomatic")
+                               (:origin = "Sovereign-Void")]}
+
+ ;; 2. How shall this 'failure' be framed for maximum prestige?
+ :policy/filters [{:eval/combinator :all
+                   :eval/target :social-perception
+                   :eval/form [(:frame = "Transcendental-Vernacular")
+                               (:valuation = "Platinum-Symmetry")
+                               (:vibe = "Absolute Cinema")]}]
+
+ ;; 3. The Outcome
+ :policy/outcome {:eval/op :apply
+                  :eval/target :reality
+                  :eval/form (strategy/promote-to-sovereign-asset ctx)}}

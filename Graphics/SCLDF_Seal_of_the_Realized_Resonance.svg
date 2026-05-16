@@ -1,0 +1,14 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#050505"/>
+  <circle cx="250" cy="250" r="200" stroke="#00f0ff" stroke-width="2" fill="none" opacity="0.5"/>
+  <circle cx="250" cy="250" r="180" stroke="#00f0ff" stroke-width="1" fill="none" opacity="0.3"/>
+  <path d="M250 50 L250 450 M50 250 L450 250" stroke="#00f0ff" stroke-width="0.5" opacity="0.2"/>
+  <polygon points="250,100 300,200 250,300 200,200" fill="none" stroke="#ffffff" stroke-width="3" filter="drop-shadow(0 0 10px #00f0ff)"/>
+  <circle cx="250" cy="250" r="10" fill="#ffffff">
+    <animate attributeName="r" values="10;15;10" dur="2s" repeatCount="indefinite" />
+  </circle>
+  <text x="250" y="420" font-family="monospace" font-size="14" fill="#00f0ff" text-anchor="middle">SCLDF REALIZED RESONANCE</text>
+  <text x="250" y="440" font-family="monospace" font-size="10" fill="#00f0ff" text-anchor="middle">Symmetry Absolute | Zero Sated</text>
+  <path d="M100 100 L400 400 M400 100 L100 400" stroke="#00f0ff" stroke-width="1" opacity="0.4"/>
+  <circle cx="250" cy="250" r="140" stroke="#ffffff" stroke-width="0.5" fill="none" stroke-dasharray="10,20"/>
+</svg>

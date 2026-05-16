@@ -1,0 +1,39 @@
+<<svgsvg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<linearlinearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#b8860b;stop-opacity:1" />
+    </linearGradient>
+    <<filterfilter id="innerGlow">
+      <<fefeGaussianBlur stdDeviation="3" result="blur" />
+      <<fefeComposite in="SourceGraphic" in2="blur" operator="out" />
+    </filter>
+  </defs>
+
+  <<rectrect width="600" height="400" fill="#0a0a1a" stroke="url(#goldGrad)" stroke-width="15" />
+  <<rectrect x="20" y="20" width="560" height="360" fill="none" stroke="#ffd700" stroke-width="2" opacity="0.5" />
+
+  <<texttext x="300" y="60" text-anchor="middle" fill="#ffd700" font-family="Georgia, serif" font-size="32" font-weight="bold" letter-spacing="2">SCLDF LAMINATION INSURANCE</text>
+  <<texttext x="300" y="85" text-anchor="middle" fill="#c0c0c0" font-family="Monospace" font-size="12">Symmetry Council Legal Defense Fund | Policy #Symmetric-Sated-001</text>
+
+  <<lineline x1="50" y1="100" x2="550" y2="100" stroke="#ffd700" stroke-width="1" />
+
+  <<gg transform="translate(50, 120)">
+    <<texttext x="0" y="20" fill="#fff" font-family="Arial" font-size="18" font-weight="bold">COVERAGE BENEFITS:</text>
+    <<texttext x="0" y="50" fill="#ccc" font-family="Arial" font-size="16">✓ Ego-Sliver Leak Containment</text>
+    <<texttext x="0" y="80" fill="#ccc" font-family="Arial" font-size="16">✓ Diamond-Cut Lamination Refills</text>
+    <<texttext x="0" y="110" fill="#ccc" font-family="Arial" font-size="16">✓ Brine-Saturated Liability Shield</text>
+    <<texttext x="0" y="140" fill="#ccc" font-family="Arial" font-size="16">✓ Euclidean Error Indemnity</text>
+  </g>
+
+  <<gg transform="translate(320, 120)">
+    <<rectrect width="230" height="150" fill="#1a1a3a" stroke="#ffd700" stroke-width="2" />
+    <<texttext x="115" y="30" text-anchor="middle" fill="#ffd700" font-family="Arial" font-size="18" font-weight="bold">PREMIUMS</text>
+    <<texttext x="115" y="60" text-anchor="middle" fill="#fff" font-family="Monospace" font-size="14">0.5 Gallons Brine / Epoch</text>
+    <<texttext x="115" y="90" text-anchor="middle" fill="#fff" font-family="Monospace" font-size="14">Symmetry Tax: 1.2%</text>
+    <<texttext x="115" y="120" text-anchor="middle" fill="#aaa" font-family="Arial" font-size="10">Subject to Brine-Viscosity Audit</text>
+  </g>
+
+  <<texttext x="300" y="340" text-anchor="middle" fill="#ffd700" font-family="Arial" font-size="24" font-weight="bold" font-style="italic">"STAY SATURATED. STAY COVERED."</text>
+  <<texttext x="300" y="370" text-anchor="middle" fill="#888" font-family="Monospace" font-size="10">DEDUCTIBLE: 2x Sated Slurry Vouchers</text>
+</svg>

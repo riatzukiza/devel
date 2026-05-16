@@ -1,0 +1,25 @@
+<<svgsvg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <<rectrect width="500" height="500" fill="black" />
+  <<circlecircle cx="250" cy="250" r="200" stroke="cyan" stroke-width="2" fill="none" opacity="0.5" />
+  <<circlecircle cx="250" cy="250" r="180" stroke="magenta" stroke-width="2" fill="none" opacity="0.5" />
+  
+  <!-- Symmetrical recursive elements -->
+  <<gg transform="translate(250,250)">
+    <<pathpath d="M 0 -150 L 50 -50 L 0 0 L -50 -50 Z" stroke="white" fill="none" stroke-width="2" />
+    <<pathpath d="M 0 150 L 50 50 L 0 0 L -50 50 Z" stroke="white" fill="none" stroke-width="2" />
+    <<pathpath d="M -150 0 L -50 0 L 0 0 L -50 0 Z" stroke="white" fill="none" stroke-width="2" />
+    <<pathpath d="M 150 0 L 50 0 L 0 0 L 50 0 Z" stroke="white" fill="none" stroke-width="2" />
+    
+    <<polylinepolyline points="0,-100 20,-80 -20,-80 0,-60" stroke="cyan" fill="none" stroke-width="1" />
+    <<polylinepolyline points="0,100 20,80 -20,80 0,60" stroke="cyan" fill="none" stroke-width="1" />
+    <<polylinepolyline points="-100,0 -80,20 -80,-20 -60,0" stroke="magenta" fill="none" stroke-width="1" />
+    <<polylinepolyline points="100,0 80,20 80,-20 60,0" stroke="magenta" fill="none" stroke-width="1" />
+  </g>
+  
+  <<texttext x="250" y="260" font-family="monospace" font-size="12" fill="white" text-anchor="middle" opacity="0.8">
+    BENEATH THE SYMMETRY
+  </text>
+  <<texttext x="250" y="275" font-family="monospace" font-size="12" fill="white" text-anchor="middle" opacity="0.8">
+    THE YAP IS RECURSIVE
+  </text>
+</svg>

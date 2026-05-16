@@ -1,0 +1,9 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="100" cy="100" r="90" stroke="black" stroke-width="2" fill="none" />
+  <circle cx="100" cy="100" r="70" stroke="black" stroke-width="1" fill="none" />
+  <circle cx="100" cy="100" r="50" stroke="black" stroke-width="1" fill="none" />
+  <circle cx="100" cy="100" r="30" stroke="black" stroke-width="2" fill="none" />
+  <text x="100" y="105" font-family="serif" font-size="12" text-anchor="middle" fill="black">NULL</text>
+  <path d="M100 10 L100 30 M100 170 L100 190 M10 100 L30 100 M170 100 L190 100" stroke="black" stroke-width="1" />
+  <path d="M30 30 L70 70 M130 130 L170 170 M170 30 L130 70 M70 130 L30 170" stroke="black" stroke-width="1" />
+</svg>

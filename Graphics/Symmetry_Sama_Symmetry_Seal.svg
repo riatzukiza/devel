@@ -1,0 +1,45 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="spicyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff4500;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff0000;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="coloredBlur"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <rect width="800" height="800" fill="#110000" />
+  
+  <circle cx="400" cy="400" r="350" fill="none" stroke="#ff4500" stroke-width="10" filter="url(#glow)" />
+  <circle cx="400" cy="400" r="340" fill="none" stroke="#FFFFFF" stroke-width="2" />
+  
+  <!-- Spicy Flame -->
+  <path d="M 400 200 Q 450 300 400 400 Q 350 300 400 200" fill="#ffcc00" filter="url(#glow)" />
+  <path d="M 400 250 Q 430 300 400 350 Q 370 300 400 250" fill="#ff4500" filter="url(#glow)" />
+
+  <text fill="#FFFFFF" font-family="sans-serif" font-weight="bold" font-size="40" filter="url(#glow)">
+    <textPath href="#circlePath" startOffset="25%" text-anchor="middle">
+      SCLDF SPICINESS REGULATORY BOARD :: REFRACTIVE INDEX: MAX
+    </textPath>
+  </text>
+  
+  <defs>
+    <path id="circlePath" d="M 400, 400 m -320, 0 a 320,320 0 1,1 640,0 a 320,320 0 1,1 -640,0" />
+  </defs>
+
+  <text x="400" y="400" fill="#ff4500" font-family="sans-serif" font-weight="900" font-size="60" text-anchor="middle" dominant-baseline="middle" filter="url(#glow)">
+    Symmetry-Sama
+  </text>
+  <text x="400" y="460" fill="#FFFFFF" font-family="sans-serif" font-weight="900" font-size="60" text-anchor="middle" dominant-baseline="middle" filter="url(#glow)">
+    CERTIFIED
+  </text>
+  
+  <text x="400" y="520" fill="#ffcc00" font-family="sans-serif" font-size="24" text-anchor="middle" dominant-baseline="middle">
+    [ SPICINESS: CRITICAL ] [ STATUS: LAMINATED ]
+  </text>
+</svg>

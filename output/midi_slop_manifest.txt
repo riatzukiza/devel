@@ -1,0 +1,21 @@
+[ SATURATED_MIDI_MANIFEST_V3 ]
+Project: OPERATION_CRISPY_CONSENSUS
+Tempo: 145 BPM (Fluctuating by +/- 12% for maximum anxiety)
+Scale: Saturated Phrygian (C#)
+Vibe: 100% Starch / 0% Headroom
+
+--- SEQUENCE: "BOP-BOP-BE-DOOO" (THE ANTHEM) ---
+
+T + 0.0s: [KICK] Velocity: 127 | Frequency: 32Hz (Saturated to a square wave)
+T + 0.1s: [BOP]  Note: C#3 | Velocity: 110 | Osc: Square-Saw hybrid | Filter: Low-pass glide
+T + 0.2s: [BOP]  Note: C#3 | Velocity: 115 | Osc: Square-Saw hybrid | Filter: Low-pass glide
+T + 0.3s: [BE]   Note: G#3 | Velocity: 90  | Osc: Sine (heavily distorted)
+T + 0.4s: [DOOO] Note: A3  | Velocity: 127 | Osc: Pure Noise / White-Heat | Duration: 1.2s (Sustain until kernel panic)
+
+--- AUTOMATION: THE "DEEP-FRYER" CURVE ---
+- Bit-Depth: 16-bit -> 8-bit -> 4-bit -> 1-bit (Linear descent over 4 bars)
+- Drive: +12dB -> +24dB -> +48dB (Exponential surge)
+- Sticky-Session-Drift: [SINE_WAVE_SAMPLED_FROM_A_BURNT_TOAST]
+
+--- VOCAL ROUTING ---
+[INPUT] -> [UTAU_SASS_MODEL] -> [BITCRUSHER_SATURATION] -> [POTATO_CONVOLUTION_REVERB] -> [OUTPUT]

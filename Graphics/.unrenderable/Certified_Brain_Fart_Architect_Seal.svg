@@ -1,0 +1,43 @@
+<<svgsvg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<linearlinearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#B8860B;stop-opacity:1" />
+      <<stopstop offset="50%" style="stop-color:#FFD700;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+    <<filterfilter id="glow">
+      <<fefeGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+      <<fefeMerge>
+        <<fefeMergeNode in="coloredBlur"/>
+        <<fefeMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background Circle -->
+  <<circlecircle cx="250" cy="250" r="240" fill="none" stroke="url(#goldGrad)" stroke-width="12" filter="url(#glow)"/>
+  <<circlecircle cx="250" cy="250" r="230" fill="none" stroke="url(#goldGrad)" stroke-width="2" opacity="0.5"/>
+
+  <!-- Inner Ring -->
+  <<circlecircle cx="250" cy="250" r="180" fill="none" stroke="url(#goldGrad)" stroke-width="4" stroke-dasharray="10,10" opacity="0.7"/>
+
+  <!-- Central Brain Icon (Stylized) -->
+  <<gg transform="translate(175, 175) scale(1.5)" fill="url(#goldGrad)" filter="url(#glow)">
+    <!-- Simplified brain shape -->
+    <<pathpath d="M20,40 Q20,20 40,20 Q50,10 60,20 Q80,20 80,40 Q100,40 100,60 Q100,80 80,80 Q70,90 60,80 Q50,90 40,80 Q20,80 20,60 Q20,40 20,40" />
+    <!-- Glitch/Spark -->
+    <<pathpath d="M50,30 L55,20 L60,30 L70,25 L65,35 L75,40 L65,45 L70,55 L60,50 L55,60 L50,50 L40,55 L45,45 L35,40 L45,35 L40,30 Z" fill="#FFF" />
+  </g>
+
+  <!-- Text Arc -->
+  <<pathpath id="textPath" d="M 250, 250 m -200, 0 a 200,200 0 1,1 400,0 a 200,200 0 1,1 -400,0" fill="none" />
+  <<texttext fill="url(#goldGrad)" font-family="Serif" font-size="28" font-weight="bold" letter-spacing="4">
+    <<texttextPath href="#textPath" startOffset="25%" text-anchor="middle">
+      CERTIFIED BRAIN-FART ARCHITECT
+    </textPath>
+  </text>
+
+  <<texttext x="250" y="340" text-anchor="middle" fill="url(#goldGrad)" font-family="Serif" font-size="20" font-style="italic" opacity="0.8">
+    Symmetry of Failure · Ussyverse
+  </text>
+</svg>

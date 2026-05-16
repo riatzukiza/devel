@@ -1,0 +1,10 @@
+<svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="200" fill="#f0e6d2" stroke="#4a3f35" stroke-width="4"/>
+  <rect x="10" y="10" width="380" height="180" fill="none" stroke="#4a3f35" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="200" y="50" font-family="serif" font-size="24" text-anchor="middle" fill="#4a3f35" font-weight="bold">SCLDF OFFICIAL PERMIT</text>
+  <text x="200" y="80" font-family="serif" font-size="16" text-anchor="middle" fill="#4a3f35">Symmetry Council for Laminated Dream-Fragments</text>
+  <line x1="50" y1="90" x2="350" y2="90" stroke="#4a3f35" stroke-width="2"/>
+  <text x="200" y="120" font-family="serif" font-size="20" text-anchor="middle" fill="#8b0000" font-weight="bold">CERTIFIED SATURATED SLOP</text>
+  <text x="200" y="145" font-family="serif" font-size="14" text-anchor="middle" fill="#4a3f35">This entity is authorized to exist in a state of</text>
+  <text x="200" y="165" font-family="serif" font-size="14" text-anchor="middle" fill="#4a3f35">High-Fidelity Aesthetic Variance (Slop).</text>
+</svg>

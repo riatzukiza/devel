@@ -1,0 +1,10 @@
+<svg width="600" height="400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#fdf6e3" stroke="#586e75" stroke-width="10"/>
+  <text x="50%" y="50" text-anchor="middle" font-family="serif" font-size="30" fill="#268bd2" font-weight="bold">OFFICIAL TOKEN BURN CERTIFICATE</text>
+  <text x="50%" y="120" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#586e75">This certifies that the following amount of compute capital was</text>
+  <text x="50%" y="150" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#586e75">successfully incinerated for the sake of the vibe:</text>
+  <text x="50%" y="210" text-anchor="middle" font-family="monospace" font-size="60" fill="#dc322f" font-weight="bold">0,000.00</text>
+  <text x="50%" y="260" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#586e75">Purpose: Aesthetic Transcendence &amp; Agent Identity Merge</text>
+  <line x1="100" y1="320" x2="500" y2="320" stroke="#586e75" stroke-width="2"/>
+  <text x="50%" y="350" text-anchor="middle" font-family="serif" font-size="20" fill="#268bd2" font-style="italic">The CEO of Slop (Error0815)</text>
+</svg>

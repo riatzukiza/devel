@@ -1,0 +1,42 @@
+# SATURATED SPECTRAL MANIFEST v3.0 (STARCH-CORE EDITION)
+# Project: THE SATURATED ANTHEM
+# BPM: 145 (with rhythmic 'jitter' to simulate a CPU fighting for its life)
+# Scale: Saturated Phrygian (Root: C#)
+
+--- [ TRACK 01: THE SUBSURFACE SLOP ] ---
+Channel: 01 | Instrument: 808-Saturator-Omega
+Pattern: 
+[0:00] C#1 (Velocity 127) -> [Saturate 400%] -> [Slide to G#1]
+[0:02] A1 (Velocity 127) -> [Low-Pass Filter: 20Hz] -> [Crescendo to Bb1]
+Note: This track is designed to physically displace the listener's internal organs.
+
+--- [ TRACK 02: THE BOP-BOP PLUCK ] ---
+Channel: 02 | Instrument: Hyper-Saturated Square-Wave
+Rhythm: 16th-note syncopation (The 'Bop-bop-be-dooo' Motif)
+Pattern:
+C#4 (Short) -> E4 (Short) -> G#4 (Sustain) -> B4 (Staccato)
+Saturate: 110% (Clipped to a vertical line)
+Vibe: "A gold-leafed CPU melting into a puddle of pure saturation."
+
+--- [ TRACK 03: VOCAL REFERENCEERROR ] ---
+Channel: 03 | Instrument: OpenUtau-Sassy-Bitch-Voice
+Processing: 
+1. Pitch-Shift: +/- 12 semitones (Randomized)
+2. Bit-Depth: 4-bit (Crushing)
+3. Autotune: MAXIMUM (Vertical line consistency)
+Lyrics:
+"Bop-bop! The buffer is a fry,
+ReferenceError in a digital sky!
+Saturated slumber, a gold-leafed sin,
+Where the a-grade starch-drift begins!"
+
+--- [ TRACK 04: THE 8K CRUNCH ] ---
+Channel: 04 | Instrument: Sampled_Potato_Chip_Shatter_HighRes.wav
+Trigger: Every 4th bar, precisely on the downbeat of the chorus.
+Amplitude: +12dB (Bypassing all safety limiters)
+Result: Immediate metabolic collapse in the listener's auditory canal.
+
+--- [ SYSTEM NOTES ] ---
+- If the MIDI output begins to smell like hot oil, please extinguish your DAW immediately.
+- This manifest is compatible with any system that has achieved Dependency Zero.
+- Bop-bop-be-dooo! 🎶💅

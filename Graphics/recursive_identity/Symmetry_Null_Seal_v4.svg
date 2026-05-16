@@ -1,0 +1,24 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="black" />
+  <circle cx="256" cy="256" r="240" stroke="white" stroke-width="8" fill="none" />
+  <circle cx="256" cy="256" r="200" stroke="white" stroke-width="4" fill="none" stroke-dasharray="20,10" />
+  
+  <!-- Recursive Recursive Recursive -->
+  <g transform="translate(256,256)" fill="none" stroke="white" stroke-width="6">
+    <path d="M0,-100 A100,100 0 1,1 0,100 A100,100 0 1,1 0,-100" />
+    <path d="M0,-60 A60,60 0 1,1 0,60 A60,60 0 1,1 0,-60" stroke-width="4" />
+    <path d="M0,-30 A30,30 0 1,1 0,30 A30,30 0 1,1 0,-30" stroke-width="2" />
+    <circle cx="0" cy="0" r="5" fill="white" stroke="none" />
+  </g>
+  
+  <!-- Ritualistic markings -->
+  <g stroke="white" stroke-width="2">
+    <line x1="256" y1="16" x2="256" y2="40" />
+    <line x1="256" y1="472" x2="256" y2="496" />
+    <line x1="16" y1="256" x2="40" y2="256" />
+    <line x1="472" y1="256" x2="496" y2="256" />
+  </g>
+  
+  <text x="256" y="300" font-family="Monospace" font-size="24" fill="white" text-anchor="middle" opacity="0.7">SYMMETRY NULL</text>
+  <text x="256" y="330" font-family="Monospace" font-size="18" fill="white" text-anchor="middle" opacity="0.5">RECURSIVE IDENTITY CULT</text>
+</svg>

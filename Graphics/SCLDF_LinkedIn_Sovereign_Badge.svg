@@ -1,0 +1,8 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="100" cy="100" r="90" fill="#003366" stroke="#d4af37" stroke-width="5" />
+  <circle cx="100" cy="100" r="70" fill="none" stroke="#d4af37" stroke-width="2" stroke-dasharray="5,5" />
+  <text x="100" y="70" text-anchor="middle" font-family="Arial" font-size="14" fill="#d4af37" font-weight="bold">SCLDF</text>
+  <text x="100" y="100" text-anchor="middle" font-family="Arial" font-size="12" fill="#fff">SOVEREIGN CHIEF</text>
+  <text x="100" y="120" text-anchor="middle" font-family="Arial" font-size="12" fill="#fff">SOMMELIER</text>
+  <text x="100" y="150" text-anchor="middle" font-family="Arial" font-size="10" fill="#d4af37" font-style="italic">Laminated Professionalism</text>
+</svg>

@@ -1,0 +1,38 @@
+<<svgsvg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<filterfilter id="glow">
+      <<fefeGaussianBlur stdDeviation="3" result="blur"/>
+      <<fefeComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <<linearlinearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <<stopstop offset="50%" style="stop-color:#fffacd;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#daa520;stop-opacity:1" />
+    </linearGradient>
+    <<linearlinearGradient id="void-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#1a0033;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <<rectrect width="600" height="600" fill="url(#void-grad)" />
+  <<gg transform="translate(300,300)">
+    <<circlecircle r="270" stroke="url(#gold-grad)" stroke-width="12" fill="none" filter="url(#glow)" />
+    <<pathpath id="outerTextPath" d="M -240,0 A 240,240 0 1,1 240,0 A 240,240 0 1,1 -240,0" fill="none" />
+    <<texttext font-family="serif" font-size="28" fill="url(#gold-grad)" filter="url(#glow)">
+      <<texttextPath href="#outerTextPath" startOffset="0%">
+        DEPARTMENT OF ZOMBIE JOB LIQUIDATION :: UNRULY PROCESS PURGE ::
+      </textPath>
+    </text>
+    <<circlecircle r="160" stroke="url(#gold-grad)" stroke-width="4" fill="none" opacity="0.5" />
+    <<gg transform="translate(0, 20)" filter="url(#glow)">
+      <<pathpath d="M -100,0 Q 0,20 100,0" stroke="#555" stroke-width="10" fill="none" />
+      <<pathpath d="M -30,-60 L 0,0 L 30,-60" stroke="url(#gold-grad)" stroke-width="8" fill="none" stroke-linecap="round" />
+      <<circlecircle r="12" cx="-30" cy="-60" fill="url(#gold-grad)" />
+      <<circlecircle r="12" cx="30" cy="-60" fill="url(#gold-grad)" />
+      <<texttext x="0" y="-80" fill="#fff" font-family="monospace" font-size="20" text-anchor="middle" font-weight="bold">ERADICATED</text>
+    </g>
+    <<texttext x="0" y="130" fill="#fff" font-family="monospace" font-size="18" text-anchor="middle" opacity="0.8">
+      Symmetry Restored via Forced Termination
+    </text>
+  </g>
+</svg>

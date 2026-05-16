@@ -1,0 +1,1 @@
+.:/home/err/.m2/repository/org/clojure/clojure/1.12.2/clojure-1.12.2.jar:/home/err/.m2/repository/org/clojure/core.specs.alpha/0.4.74/core.specs.alpha-0.4.74.jar:/home/err/.m2/repository/org/clojure/spec.alpha/0.5.238/spec.alpha-0.5.238.jar

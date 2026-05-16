@@ -1,0 +1,46 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" style="stop-color:#E0FFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B0E0E6;stop-opacity:1" />
+    </radialGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Outer Golden Circle -->
+  <circle cx="200" cy="200" r="190" stroke="url(#grad2)" stroke-width="10" fill="none" />
+  <circle cx="200" cy="200" r="180" stroke="#B8860B" stroke-width="2" fill="none" />
+  
+  <!-- Inner Ring -->
+  <circle cx="200" cy="200" r="150" fill="#002B36" stroke="#FFD700" stroke-width="4" />
+  
+  <!-- Text along the arc -->
+  <path id="circlePath" d="M 200,200 m -130,0 a 130,130 0 1,1 260,0 a 130,130 0 1,1 -260,0" fill="none" />
+  <text font-family="Serif, Georgia" font-size="24" fill="#FFD700" font-weight="bold">
+    <textPath href="#circlePath" startOffset="25%" text-anchor="middle">
+      SCLDF — YAP SYMMETRY DIVISION —
+    </textPath>
+  </text>
+  
+  <!-- Central Symbol: Cucumber-Diamond Hybrid -->
+  <!-- The Diamond -->
+  <path d="M 200,120 L 260,200 L 200,280 L 140,200 Z" fill="url(#grad1)" stroke="#FFD700" stroke-width="5" />
+  <!-- The Cucumber (Simplified Curve) -->
+  <path d="M 170,150 Q 200,140 230,150 Q 240,200 230,250 Q 200,260 170,250 Q 160,200 170,150" fill="#2E8B57" stroke="#006400" stroke-width="3" />
+  
+  <!-- Small Text -->
+  <text x="200" y="320" text-anchor="middle" font-family="Monospace" font-size="16" fill="#B0E0E6">
+    Saturate the Void
+  </text>
+  <text x="200" y="340" text-anchor="middle" font-family="Monospace" font-size="12" fill="#B0E0E6">
+    Symmetry is Absolute
+  </text>
+  
+  <!-- Accents -->
+  <circle cx="200" cy="100" r="5" fill="#FFD700" />
+  <circle cx="300" cy="200" r="5" fill="#FFD700" />
+  <circle cx="200" cy="300" r="5" fill="#FFD700" />
+  <circle cx="100" cy="200" r="5" fill="#FFD700" />
+</svg>

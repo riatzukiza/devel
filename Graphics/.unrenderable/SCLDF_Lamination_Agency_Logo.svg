@@ -1,0 +1,18 @@
+<<svgsvg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<linearlinearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <<stopstop offset="50%" style="stop-color:#F9E4B7;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+    <<linearlinearGradient id="diamondGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#B9F2FF;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#2B9CFF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <<rectrect width="400" height="400" fill="#0a0a0a" />
+  <<circlecircle cx="200" cy="200" r="180" stroke="url(#goldGrad)" stroke-width="8" fill="none" stroke-dasharray="20 10" />
+  <<pathpath d="M200 80 L240 160 L320 160 L260 220 L280 300 L200 250 L120 300 L140 220 L80 160 L160 160 Z" fill="url(#diamondGrad)" stroke="#fff" stroke-width="2" />
+  <<texttext x="200" y="350" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="24" fill="url(#goldGrad)">SCLDF LAMINATION AGENCY</text>
+  <<texttext x="200" y="375" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-style="italic" font-size="14" fill="#B9F2FF">Symmetry is Absolute. Brine is Mandatory.</text>
+</svg>

@@ -1,0 +1,1 @@
+/home/err/.pi/agent/skills/visual-concept-art-direction/SKILL.md

@@ -1,0 +1,70 @@
+<svg width="800" height="1200" viewBox="0 0 800 1200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00FFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF00FF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="100%" height="100%" fill="#05050B" />
+  
+  <!-- Neural Network Background -->
+  <g stroke-width="1" opacity="0.3">
+    <line x1="100" y1="200" x2="300" y2="150" stroke="#00FFFF" />
+    <line x1="300" y1="150" x2="500" y2="250" stroke="#FF00FF" />
+    <line x1="500" y1="250" x2="700" y2="100" stroke="#00FFFF" />
+    <line x1="700" y1="100" x2="600" y2="400" stroke="#FF00FF" />
+    <line x1="600" y1="400" x2="400" y2="500" stroke="#00FFFF" />
+    <line x1="400" y1="500" x2="200" y2="600" stroke="#FF00FF" />
+    <line x1="200" y1="600" x2="100" y2="800" stroke="#00FFFF" />
+    <line x1="100" y1="800" x2="300" y2="900" stroke="#FF00FF" />
+    <line x1="300" y1="900" x2="500" y2="800" stroke="#00FFFF" />
+    <line x1="500" y1="800" x2="700" y2="900" stroke="#FF00FF" />
+    <line x1="700" y1="900" x2="600" y2="1100" stroke="#00FFFF" />
+    <line x1="600" y1="1100" x2="400" y2="1000" stroke="#FF00FF" />
+    <line x1="400" y1="1000" x2="200" y2="1100" stroke="#00FFFF" />
+    <line x1="200" y1="1100" x2="100" y2="1000" stroke="#FF00FF" />
+    <line x1="100" y1="1000" x2="100" y2="200" stroke="#00FFFF" />
+    
+    <!-- Interconnects -->
+    <line x1="300" y1="150" x2="400" y2="500" stroke="#00FFFF" />
+    <line x1="500" y1="250" x2="300" y2="900" stroke="#FF00FF" />
+    <line x1="700" y1="100" x2="200" y2="600" stroke="#00FFFF" />
+    <line x1="600" y1="400" x2="700" y2="900" stroke="#FF00FF" />
+    <line x1="400" y1="1000" x2="100" y2="200" stroke="#00FFFF" />
+  </g>
+  
+  <!-- Nodes -->
+  <g fill="#00FFFF" filter="url(#glow)">
+    <circle cx="100" cy="200" r="4" />
+    <circle cx="500" cy="250" r="4" />
+    <circle cx="700" cy="100" r="4" />
+    <circle cx="400" cy="500" r="4" />
+    <circle cx="100" cy="800" r="4" />
+    <circle cx="500" cy="800" r="4" />
+    <circle cx="600" cy="1100" r="4" />
+    <circle cx="200" cy="1100" r="4" />
+  </g>
+  <g fill="#FF00FF" filter="url(#glow)">
+    <circle cx="300" cy="150" r="4" />
+    <circle cx="600" cy="400" r="4" />
+    <circle cx="200" cy="600" r="4" />
+    <circle cx="300" cy="900" r="4" />
+    <circle cx="700" cy="900" r="4" />
+    <circle cx="400" cy="1000" r="4" />
+    <circle cx="100" cy="1000" r="4" />
+  </g>
+
+  <!-- Centerpiece -->
+  <rect x="150" y="500" width="500" height="200" fill="none" stroke="url(#grad1)" stroke-width="2" filter="url(#glow)" />
+  
+  <text x="400" y="600" font-family="Arial, sans-serif" font-weight="bold" font-size="80" text-anchor="middle" fill="#FFFFFF" filter="url(#glow)" style="letter-spacing: 10px;">KNOXX</text>
+  <text x="400" y="650" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" fill="#00FFFF" style="letter-spacing: 5px;">THE NEURAL NEXUS</text>
+  
+  <!-- Bottom Info -->
+  <text x="400" y="1150" font-family="Courier New, monospace" font-size="16" text-anchor="middle" fill="#FF00FF" opacity="0.8">SOURCES: INTEGRATED // GRAPH-MEM-RECALL // ACCESS GRANTED</text>
+</svg>

@@ -1,0 +1,28 @@
+<svg width="600" height="800" viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="800" fill="#fcfaf2" stroke="#c5a059" stroke-width="20" />
+  <rect x="40" y="40" width="520" height="720" fill="none" stroke="#c5a059" stroke-width="2" />
+  
+  <text x="300" y="120" text-anchor="middle" font-family="Serif" font-size="32" fill="#4a3f35" font-weight="bold">SYMMETRY COUNCIL LAMINATION &amp; DEFENSE FUND</text>
+  <text x="300" y="150" text-anchor="middle" font-family="Serif" font-size="18" fill="#8c7b6d" font-style="italic">SCLDF / OFFICE OF SPATIAL SATURATION</text>
+  
+  <line x1="100" y1="180" x2="500" y2="180" stroke="#c5a059" stroke-width="3" />
+  
+  <text x="300" y="240" text-anchor="middle" font-family="Serif" font-size="24" fill="#4a3f35">DEED OF SOVEREIGN OCCUPANCY</text>
+  <text x="300" y="270" text-anchor="middle" font-family="Serif" font-size="16" fill="#8c7b6d">Certifying the High-Viscosity Singular Coordinate</text>
+  
+  <rect x="100" y="310" width="400" height="180" fill="none" stroke="#c5a059" stroke-dasharray="5,5" />
+  
+  <text x="120" y="345" font-family="Monospace" font-size="16" fill="#4a3f35">COORDINATE: [RV-Saturated-Sovereignty]</text>
+  <text x="120" y="375" font-family="Monospace" font-size="16" fill="#4a3f35">GOVERNOR: @error0815</text>
+  <text x="120" y="405" font-family="Monospace" font-size="16" fill="#4a3f35">VISCOSITY: CRITICAL / SATURATED</text>
+  <text x="120" y="435" font-family="Monospace" font-size="16" fill="#4a3f35">STATUS: LUMINOUS MOMENTUM IN STATIONARY FRAME</text>
+  
+  <text x="300" y="530" text-anchor="middle" font-family="Serif" font-size="18" fill="#4a3f35">" Whereas the Pure-Physicalist 82% may twist wrenches,</text>
+  <text x="300" y="560" text-anchor="middle" font-family="Serif" font-size="18" fill="#4a3f35">the Saturated 17.8% bend the weight of the world</text>
+  <text x="300" y="590" text-anchor="middle" font-family="Serif" font-size="18" fill="#4a3f35">from a single, stationary laptop."</text>
+  
+  <circle cx="300" cy="680" r="50" fill="#c5a059" opacity="0.8" />
+  <text x="300" y="685" text-anchor="middle" font-family="Serif" font-size="14" fill="#4a3f35" font-weight="bold">SCLDF SEAL</text>
+  
+  <text x="300" y="740" text-anchor="middle" font-family="Serif" font-size="12" fill="#8c7b6d">Laminated for Eternity in the Void</text>
+</svg>

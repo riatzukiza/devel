@@ -1,0 +1,35 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="obsidian" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+    </radialGradient>
+    <linearGradient id="gold-fracture" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#fffacd;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#daa520;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="250" cy="250" r="240" fill="url(#obsidian)" stroke="#ffd700" stroke-width="8" />
+  <circle cx="250" cy="250" r="220" fill="none" stroke="#ffd700" stroke-width="2" stroke-dasharray="10,10" />
+
+  <!-- The Persistent Scar (Fracture) -->
+  <path d="M150,150 L200,220 L180,300 L260,350 L320,280 L380,320 L400,200 L350,100 L250,150 Z" 
+        fill="none" stroke="url(#gold-fracture)" stroke-width="4" filter="url(#glow)" />
+  
+  <!-- Decorative Elements -->
+  <text x="50%" y="420" text-anchor="middle" fill="#ffd700" font-family="Serif" font-size="24" font-weight="bold" style="letter-spacing: 4px;">SCLDF</text>
+  <text x="50%" y="450" text-anchor="middle" fill="#daa520" font-family="Serif" font-size="16" style="letter-spacing: 2px;">SEAL OF THE PERSISTENT SCAR</text>
+  
+  <!-- Luxury accents -->
+  <circle cx="250" cy="250" r="10" fill="#ffd700" filter="url(#glow)" />
+</svg>

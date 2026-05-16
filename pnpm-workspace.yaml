@@ -1,52 +1,59 @@
 packages:
-  - .
-  - packages/embedding
-  - packages/persistence
-  - orgs/open-hax/uxx
-  - packages/ollama-registry
-  - packages/opencode-cljs-client
-  - packages/aether
-  - packages/hermes
-  - packages/event
-  - packages/test-utils
-  - packages/logger
-  - packages/utils
-  - packages/fsm
-  - orgs/open-hax/tooloxx/packages/*
-  - packages/radar-core
-  - packages/output-contract-gate
-  - packages/thread-assessment
-  - packages/npu-top
-  - packages/radar-core
-  - packages/mcp-foundation
-  - packages/signal-atproto
-  - packages/signal-embed-browser
-  - packages/thread-assessment
-  - packages/embedding
-  - orgs/riatzukiza/threat-radar-mcp
-  - orgs/riatzukiza/threat-radar-web
-  - services/*
-  - orgs/open-hax/openhax/packages/*
-  - orgs/riatzukiza/promethean/packages/*
-  - orgs/riatzukiza/promethean/packages/*/*
-  - orgs/riatzukiza/promethean/cli/*
-  - orgs/riatzukiza/promethean/cli/*/*
-  - orgs/riatzukiza/promethean/cli/*/*/*
-  - orgs/riatzukiza/promethean/services/*
-  - orgs/riatzukiza/promethean/services/*/*
-  - orgs/riatzukiza/promethean/services/*/*/*
-  - orgs/riatzukiza/promethean/experimental/*
-  - orgs/riatzukiza/promethean/experimental/*/*
-  - orgs/riatzukiza/promethean/experimental/*/*/*
-  - orgs/riatzukiza/promethean/pipelines/*
-  - orgs/riatzukiza/promethean/pipelines/*/*
-  - orgs/riatzukiza/promethean/tools/*
-  - orgs/riatzukiza/promethean/.opencode/*
-  - orgs/riatzukiza/promethean/scripts
-  - '!orgs/octave-commons/promethean/cli'
-  - '!orgs/octave-commons/promethean/packages'
-  - '!orgs/riatzukiza/promethean/packages/discord'
-  - '!**/stryker-tmp/**'
+  - orgs/octave-commons/**
+  - orgs/open-hax/**
+  - orgs/packages/**
+  # - .
+  # - packages/embedding
+  # - packages/persistence
+  # - orgs/open-hax/uxx
+  # - packages/ollama-registry
+  # - packages/opencode-cljs-client
+  # - packages/aether
+  # - packages/hermes
+  # - packages/event
+  # - packages/test-utils
+  # - packages/logger
+  # - packages/utils
+  # - packages/fsm
+  # - orgs/open-hax/tooloxx/packages/*
+  # - orgs/open-hax/tooloxx/services/*
+  # - packages/radar-core
+  # - packages/output-contract-gate
+  # - packages/thread-assessment
+  # - packages/npu-top
+  # - packages/radar-core
+  # - packages/mcp-foundation
+  # - packages/signal-atproto
+  # - packages/signal-embed-browser
+  # - packages/thread-assessment
+  # - packages/embedding
+  # - packages/omni-top
+  # - orgs/riatzukiza/threat-radar-mcp
+  # - orgs/riatzukiza/threat-radar-web
+  # - services/*
+  # - orgs/open-hax/openhax/packages/*
+  # - orgs/riatzukiza/promethean/packages/*
+  # - orgs/riatzukiza/promethean/packages/*/*
+  # - orgs/riatzukiza/promethean/cli/*
+  # - orgs/riatzukiza/promethean/cli/*/*
+  # - orgs/riatzukiza/promethean/cli/*/*/*
+  # - orgs/riatzukiza/promethean/services/*
+  # - orgs/riatzukiza/promethean/services/*/*
+  # - orgs/riatzukiza/promethean/services/*/*/*
+  # - orgs/riatzukiza/promethean/experimental/*
+  # - orgs/riatzukiza/promethean/experimental/*/*
+  # - orgs/riatzukiza/promethean/experimental/*/*/*
+  # - orgs/riatzukiza/promethean/pipelines/*
+  # - orgs/riatzukiza/promethean/pipelines/*/*
+  # - orgs/riatzukiza/promethean/tools/*
+  # - orgs/riatzukiza/promethean/.opencode/*
+  # - orgs/riatzukiza/promethean/scripts
+  # - orgs/open-hax/openplanner/
+  # - orgs/open-hax/openplanner/**
+  # - '!orgs/octave-commons/promethean/cli'
+  # - '!orgs/octave-commons/promethean/packages'
+  # - '!orgs/riatzukiza/promethean/packages/discord'
+  # - '!**/stryker-tmp/**'
 
 link-workspace-packages: true
 prefer-workspace-packages: true

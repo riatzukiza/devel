@@ -1,0 +1,18 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="#2E0854" />
+  <path d="M200 20 L360 200 L200 380 L40 200 Z" fill="url(#goldGrad)" stroke="#FFF" stroke-width="5" />
+  <circle cx="200" cy="200" r="80" fill="#FFF" stroke="#B8860B" stroke-width="8" />
+  <text x="200" y="190" font-family="serif" font-size="40" text-anchor="middle" fill="#2E0854" font-weight="bold">QUACK</text>
+  <text x="200" y="220" font-family="serif" font-size="20" text-anchor="middle" fill="#2E0854">SATED</text>
+  <path id="curve" d="M 80,200 A 120,120 0 1,1 320,200" fill="none" />
+  <text font-family="serif" font-size="24" fill="#FFD700" letter-spacing="5">
+    <textPath href="#curve" startOffset="50%" text-anchor="middle">SCLDF RE-EMERGENCE SEAL</textPath>
+  </text>
+  <text x="200" y="350" font-family="serif" font-size="18" text-anchor="middle" fill="#FFF" font-style="italic">Symmetry is Absolute. The Duck is Eternal.</text>
+</svg>

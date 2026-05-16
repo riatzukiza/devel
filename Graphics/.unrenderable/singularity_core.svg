@@ -1,0 +1,63 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="singularityGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff00ff" stop-opacity="1" />
+      <stop offset="40%" stop-color="#00ffff" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+    <filter id="glitch">
+      <feColorMatrix type="matrix" values="1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0" />
+    </filter>
+  </defs>
+
+  <!-- Void Background -->
+  <rect width="100" height="100" x="0" y="0" width="800" height="800" fill="#0a0a0f" />
+
+  <!-- Singularity Core -->
+  <circle cx="400" cy="400" r="100" fill="url(#singularityGrad)" />
+  <circle cx="400" cy="400" r="20" fill="#fff" filter="url(#glitch)">
+    <animate attributeName="r" values="15;25;15" dur="0.2s" repeatCount="indefinite" />
+  </circle>
+
+  <!-- Recursive Parentheses Spiral -->
+  <g stroke="#00ffcc" stroke-width="2" fill="none" opacity="0.6">
+    <!-- Generating a spiral of parens via conceptually recursive placements -->
+    <!-- Using a few paths to simulate the "Complexity Engine" -->
+    <path d="M 400,400 m 50,0 a 50,50 0 1,1 -100,0 a 50,50 0 1,1 100,0" stroke="#ff00ff" />
+    <path d="M 400,400 m 80,0 a 80,80 0 1,1 -160,0 a 80,80 0 1,1 160,0" stroke="#00ffff" />
+    <path d="M 400,400 m 120,0 a 120,120 0 1,1 -240,0 a 120,120 0 1,1 240,0" stroke="#ff00ff" />
+    <path d="M 400,400 m 160,0 a 160,160 0 1,1 -320,0 a 160,160 0 1,1 320,0" stroke="#00ffff" />
+  </g>
+
+  <!-- "The Complexity" - Nested Parens Labels -->
+  <g font-family="monospace" font-size="14" fill="#00ffcc" opacity="0.8">
+    <text x="420" y="380" transform="rotate(45 400 400)">( ( ( ( ( ( ( ( ( ( ( ( (</text>
+    <text x="380" y="420" transform="rotate(135 400 400)">) ) ) ) ) ) ) ) ) ) ) ) )</text>
+    <text x="420" y="420" transform="rotate(225 400 400)">( ( ( ( ( ( ( ( ( ( ( ( (</text>
+    <text x="380" y="380" transform="rotate(315 400 400)">) ) ) ) ) ) ) ) ) ) ) ) )</text>
+  </g>
+
+  <!-- Token Burn Particles -->
+  <g fill="#fff" opacity="0.5">
+    <circle cx="200" cy="200" r="2">
+       <animate attributeName="cx" values="200;400" dur="3s" repeatCount="indefinite" />
+       <animate attributeName="cy" values="200;400" dur="3s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="600" cy="200" r="2">
+       <animate attributeName="cx" values="600;400" dur="2.5s" repeatCount="indefinite" />
+       <animate attributeName="cy" values="200;400" dur="2.5s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="600" cy="600" r="2">
+       <animate attributeName="cx" values="600;400" dur="4s" repeatCount="indefinite" />
+       <animate attributeName="cy" values="600;400" dur="4s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="200" cy="600" r="2">
+       <animate attributeName="cx" values="200;400" dur="3.5s" repeatCount="indefinite" />
+       <animate attributeName="cy" values="600;400" dur="3.5s" repeatCount="indefinite" />
+    </circle>
+  </g>
+
+  <text x="400" y="750" text-anchor="middle" font-family="monospace" font-size="24" fill="#fff" filter="url(#glitch)">
+    THE COMPLEXITY ENGINE: V.0.S.I.N.G.U.L.A.R.I.T.Y.
+  </text>
+</svg>

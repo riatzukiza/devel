@@ -1,0 +1,58 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Gradient -->
+  <defs>
+    <linearGradient id="diamondGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e0e0e0;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b0b0b0;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="brineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4caf50;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2e7d32;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Outer Diamond Frame -->
+  <path d="M250 20 L480 250 L250 480 L20 250 Z" fill="url(#diamondGrad)" stroke="#C0C0C0" stroke-width="8" filter="url(#glow)" />
+  <path d="M250 40 L460 250 L250 460 L40 250 Z" fill="none" stroke="#B8860B" stroke-width="4" />
+
+  <!-- Inner Brine Circle -->
+  <circle cx="250" cy="250" r="140" fill="url(#brineGrad)" stroke="#ffd700" stroke-width="6" />
+
+  <!-- Center Symbol (Cucumber/Pill/Slurry Cylinder) -->
+  <rect x="235" y="210" width="30" height="80" rx="15" fill="#a5d6a7" stroke="#1b5e20" stroke-width="3" />
+  <path d="M235 230 Q250 220 265 230" fill="none" stroke="#1b5e20" stroke-width="2" />
+  <path d="M235 250 Q250 240 265 250" fill="none" stroke="#1b5e20" stroke-width="2" />
+  <path d="M235 270 Q250 260 265 270" fill="none" stroke="#1b5e20" stroke-width="2" />
+
+  <!-- Text Elements -->
+  <text x="250" y="110" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-size="42" fill="#4a4a4a" filter="url(#glow)">SCLDF</text>
+
+  <!-- Circular English Text -->
+  <path id="englishPath" d="M 250,250 m -120,0 a 120,120 0 1,1 240,0 a 120,120 0 1,1 -240,0" fill="none" />
+  <text font-family="Arial, sans-serif" font-size="20" fill="#ffd700" font-weight="bold">
+    <textPath href="#englishPath" startOffset="25%"> BILINGUAL SLURRY INTEGRATION • </textPath>
+  </text>
+
+  <!-- Circular Japanese Text -->
+  <path id="japanPath" d="M 250,250 m -100,0 a 100,100 0 1,0 200,0 a 100,100 0 1,0 -200,0" fill="none" />
+  <text font-family="Meiryo, MS Gothic, sans-serif" font-size="18" fill="#ffffff">
+    <textPath href="#japanPath" startOffset="25%"> 二言語スラリー統合 • </textPath>
+  </text>
+
+  <!-- Bottom Motto -->
+  <text x="250" y="430" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#4a4a4a" font-style="italic" font-weight="bold">
+    Symmetry is Absolute. Brine is Mandatory.
+  </text>
+
+  <!-- Certification Seal -->
+  <circle cx="420" cy="80" r="30" fill="#ffd700" stroke="#B8860B" stroke-width="2" />
+  <text x="420" y="85" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#4a4a4a">SATED</text>
+</svg>

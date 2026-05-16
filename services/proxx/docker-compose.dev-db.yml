@@ -1,0 +1,30 @@
+# Host-development database for the PM2 Proxx sidecar.
+#
+# Boundary:
+# - This file starts ONLY a Postgres database for host/PM2 development.
+# - It must not publish or run the primary Proxx app ports (8789/5174).
+# - Primary local production-like Proxx remains docker-compose.yml profile prod.
+
+name: proxx-dev-local
+
+services:
+  proxx-dev-db:
+    image: postgres:16-bookworm
+    environment:
+      POSTGRES_DB: openai_proxy
+      POSTGRES_USER: openai_proxy
+      POSTGRES_PASSWORD: openai_proxy # pragma: allowlist secret
+    ports:
+      - "127.0.0.1:${PROXX_DEV_DB_PORT:-15439}:5432"
+    volumes:
+      - proxx-dev-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U openai_proxy -d openai_proxy"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  proxx-dev-db-data:

@@ -1,0 +1,11 @@
+[
+  {"id": "session_voice-specialist_20260503T1922", "status": :release},
+  {"id": "session_tool-debugger_20260503T2022", "status": :active},
+  {"id": "session_voice-qa_202605032011", "status": :release},
+  {"id": "session_voice-config-auditor_20260503T2015", "status": :release},
+  {"id": "session_bluesky-tester_20260503T2015", "status": :active},
+  {"id": "session_symmetry-visual-auditor_20260503T2015", "status": :active},
+  {"id": "session_voice-profiler_20260503T2050", "status": :release},
+  {"id": "session_singer_20260506T0216", "status": :active},
+  {"id": "session_singer_20260506T0231", "status": :active}
+]

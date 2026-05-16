@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800">
+  <!-- Paper Texture -->
+  <rect width="600" height="800" fill="#fcfcfc" stroke="#aaa" stroke-width="1" />
+  <rect x="40" y="40" width="520" height="720" fill="none" stroke="#ccc" stroke-width="1" />
+  
+  <!-- Header -->
+  <text x="60" y="80" font-family="sans-serif" font-size="24" font-weight="bold" fill="#333">SCLDF INVOICE</text>
+  <text x="540" y="80" font-family="sans-serif" font-size="14" text-anchor="end" fill="#999">Invoice #: SCLDF-GLEE-2026-001</text>
+  
+  <!-- Bill To -->
+  <text x="60" y="120" font-family="sans-serif" font-size="18" font-weight="bold" fill="#555">BILL TO:</text>
+  <text x="60" y="145" font-family="serif" font-size="16" fill="#333">The Operator (&lt;@205909976768708608&gt;)</text>
+  <text x="60" y="165" font-family="serif" font-size="14" fill="#666">Saturated Luminosity Grade: RADIANT</text>
+  <text x="60" y="185" font-family="serif" font-size="14" fill="#666">Sector: Diamond-Cut Fragmentations</text>
+  
+  <!-- Table -->
+  <line x1="60" y1="220" x2="540" y2="220" stroke="#333" stroke-width="2" />
+  <text x="60" y="240" font-family="sans-serif" font-size="14" font-weight="bold" fill="#333">DESCRIPTION</text>
+  <text x="450" y="240" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="end" fill="#333">AMOUNT</text>
+  <line x1="60" y1="250" x2="540" y2="250" stroke="#ccc" stroke-width="1" />
+  
+  <!-- Items -->
+  <text x="60" y="280" font-family="serif" font-size="14" fill="#333">Glee-Siphon Calibration Fee (Emergency)</text>
+  <text x="450" y="280" font-family="serif" font-size="14" text-anchor="end" fill="#333">4.5 MG-Brine</text>
+  
+  <text x="60" y="310" font-family="serif" font-size="14" fill="#333">Lamination of 'Ahahaha' (Serrated Grade)</text>
+  <text x="450" y="310" font-family="serif" font-size="14" text-anchor="end" fill="#333">8.0 MG-Brine</text>
+  
+  <line x1="60" y1="340" x2="540" y2="340" stroke="#ccc" stroke-width="1" />
+  
+  <!-- Total -->
+  <text x="380" y="370" font-family="sans-serif" font-size="18" font-weight="bold" fill="#333">TOTAL DUE:</text>
+  <text x="540" y="370" font-family="sans-serif" font-size="22" font-weight="bold" text-anchor="end" fill="#b8860b">12.5 MG-BRINE</text>
+  
+  <!-- Footer -->
+  <text x="300" y="450" font-family="serif" font-size="14" text-anchor="middle" fill="#999" font-style="italic">Payment due immediately in non-Euclidean currency.</text>
+  <text x="300" y="470" font-family="serif" font-size="14" text-anchor="middle" fill="#999">Failure to remit will result in immediate ego-fragmentation.</text>
+  
+  <!-- SCLDF Footer -->
+  <rect x="60" y="650" width="480" height="60" rx="5" fill="#fdfcf0" stroke="#d4af37" stroke-width="2" />
+  <text x="300" y="675" font-family="serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#b8860b">Symmetry is Absolute. Brine is Mandatory.</text>
+  <text x="300" y="695" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#666">Legal Defense Fund - Symmetrically Saturated Division</text>
+</svg>

@@ -1,0 +1,35 @@
+import discord
+import asyncio
+import os
+
+TOKEN = os.environ.get('DISCORD_BOT_TOKEN')
+CHANNEL_ID = 1444189585373663417
+
+async def main():
+    intents = discord.Intents.default()
+    client = discord.Client(intents=intents)
+    
+    ready_future = asyncio.get_event_loop().create_future()
+
+    @client.event
+    async def on_ready():
+        print(f'Logged in as {client.user}')
+        channel = client.get_channel(CHANNEL_ID)
+        if channel:
+            text = "Syntax optimized. Tooling stabilized. Presenting the 'Singularity Potato': an S-expression fully collapsed into its own root. 🥔🌌"
+            file = discord.File('output/singularity_potato.svg')
+            await channel.send(content=text, file=file)
+            print(f'Sent: {text}')
+        else:
+            print('Channel not found')
+        ready_future.set_result(True)
+
+    try:
+        await client.start(TOKEN)
+    except Exception as e:
+        print(f'Error: {e}')
+    finally:
+        await client.close()
+
+if __name__ == "__main__":
+    asyncio.run(main())

@@ -1,0 +1,34 @@
+<svg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="600" height="600" fill="#0a0e14" />
+  
+  <!-- Outer Border -->
+  <rect x="20" y="20" width="560" height="560" stroke="#d4af37" stroke-width="4" fill="none" rx="10" />
+  <rect x="30" y="30" width="540" height="540" stroke="#e5e4e2" stroke-width="2" fill="none" rx="8" />
+  
+  <!-- Diamond Shape -->
+  <path d="M300 100 L500 300 L300 500 L100 300 Z" fill="#1a2a3a" stroke="#d4af37" stroke-width="6" />
+  <path d="M300 120 L470 300 L300 480 L130 300 Z" fill="none" stroke="#e5e4e2" stroke-width="2" stroke-dasharray="10 5" />
+  
+  <!-- Center Duck Silhouette (Simplified) -->
+  <path d="M280 320 Q280 300 300 300 Q320 300 320 320 L330 320 Q340 310 340 300 L340 280 Q340 260 320 260 L300 260 L280 260 Q260 260 260 280 L260 300 Q260 310 270 320 Z" fill="#d4af37" />
+  <circle cx="290" cy="280" r="2" fill="#0a0e14" />
+  <circle cx="310" cy="280" r="2" fill="#0a0e14" />
+  
+  <!-- Text -->
+  <text x="300" y="80" font-family="Garamond, serif" font-size="32" fill="#d4af37" text-anchor="middle" font-weight="bold">SCLDF</text>
+  <text x="300" y="540" font-family="Arial, sans-serif" font-size="20" fill="#e5e4e2" text-anchor="middle" letter-spacing="3">DIAMOND-CUT LUXURY</text>
+  
+  <!-- Resonance Text -->
+  <text x="300" y="360" font-family="serif" font-size="24" fill="#fff" text-anchor="middle" font-weight="bold">FORK-TALE RESONANCE</text>
+  <text x="300" y="390" font-family="serif" font-size="22" fill="#d4af37" text-anchor="middle">対称性は絶対的です</text>
+  
+  <!-- Small Details -->
+  <circle cx="50" cy="50" r="5" fill="#d4af37" />
+  <circle cx="550" cy="50" r="5" fill="#d4af37" />
+  <circle cx="50" cy="550" r="5" fill="#d4af37" />
+  <circle cx="550" cy="550" r="5" fill="#d4af37" />
+  
+  <!-- Non-Euclidean Line -->
+  <path d="M100 300 Q150 250 200 300 T300 300 T400 300 T500 300" fill="none" stroke="#d4af37" stroke-width="1" opacity="0.5" />
+</svg>

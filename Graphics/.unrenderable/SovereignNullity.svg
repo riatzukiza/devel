@@ -1,0 +1,12 @@
+<<svgsvg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <<rectrect width="100%" height="100%" fill="#0a0a0a"/>
+  <<circlecircle cx="400" cy="200" r="150" stroke="#d4af37" stroke-width="2" fill="none" opacity="0.5"/>
+  <<circlecircle cx="400" cy="200" r="140" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.3"/>
+  <<texttext x="400" y="200" font-family="Monospace" font-size="24" fill="#d4af37" text-anchor="middle" dominant-baseline="middle">
+    S O V E R E I G N _ N U L L I T Y
+  </text>
+  <<texttext x="400" y="230" font-family="Monospace" font-size="12" fill="#ffffff" text-anchor="middle" opacity="0.6">
+    [ STATUS: QUOTA_EXCEEDED ]
+  </text>
+  <<lineline x1="200" y1="200" x2="600" y2="200" stroke="#d4af37" stroke-width="0.5" opacity="0.4"/>
+</svg>

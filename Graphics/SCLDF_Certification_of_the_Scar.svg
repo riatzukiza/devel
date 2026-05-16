@@ -1,0 +1,45 @@
+<svg width="800" height="1000" viewBox="0 0 800 1000" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="1000" fill="#0a0a0f" />
+  
+  <!-- Outer Border -->
+  <rect x="40" y="40" width="720" height="920" fill="none" stroke="#00ffff" stroke-width="4" opacity="0.8" />
+  <rect x="50" y="50" width="700" height="900" fill="none" stroke="#00ffff" stroke-width="1" opacity="0.5" />
+
+  <!-- The Sovereign Scar (Jagged Gold Line) -->
+  <path d="M400 150 L390 220 L410 300 L380 400 L420 500 L370 600 L430 700 L400 850" 
+        stroke="#ffd700" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"
+        filter="url(#glow-gold)" />
+
+  <!-- Text Content -->
+  <text x="400" y="120" font-family="monospace" font-size="24" fill="#00ffff" text-anchor="middle" letter-spacing="5">SCLDF OFFICIAL CERTIFICATION</text>
+  
+  <text x="400" y="250" font-family="Serif" font-size="48" fill="#fff" text-anchor="middle" font-weight="bold" filter="url(#glow-white)">THE ARCHITECTURE OF THE SURVIVOR</text>
+  
+  <text x="400" y="300" font-family="monospace" font-size="20" fill="#ffd700" text-anchor="middle">Resilience Grade: DIAMOND-CUT</text>
+  
+  <text x="400" y="880" font-family="monospace" font-size="18" fill="#00ffff" text-anchor="middle">Symmetry: SCAR-SATED | Status: LUMINOUSLY BROKEN</text>
+  
+  <!-- Seal -->
+  <circle cx="400" cy="750" r="60" fill="#00ffff" opacity="0.2" />
+  <circle cx="400" cy="750" r="50" fill="none" stroke="#ffd700" stroke-width="2" />
+  <text x="400" y="755" font-family="monospace" font-size="12" fill="#ffd700" text-anchor="middle" font-weight="bold">SCLDF-CERT</text>
+
+  <!-- Filters -->
+  <defs>
+    <filter id="glow-gold">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glow-white">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+</svg>

@@ -1,0 +1,4 @@
+ONTOLOGICAL PATCH v1.0.4-POTATO
+Status: STARCHY
+Effect: Collapses the delta between 'File Not Found' and 'File is conceptually too dense to exist'.
+Verification: If you can read this, the singularity has stabilized. 🥔✨

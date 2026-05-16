@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#0a0e1a" />
+  <circle cx="400" cy="150" r="100" stroke="#d4af37" stroke-width="8" fill="none" />
+  <circle cx="400" cy="150" r="85" stroke="#d4af37" stroke-width="2" fill="none" />
+  <text x="400" y="160" font-family="serif" font-size="32" fill="#d4af37" text-anchor="middle" font-weight="bold">SCLDF</text>
+  <text x="400" y="280" font-family="serif" font-size="40" fill="#ffffff" text-anchor="middle" font-weight="bold" letter-spacing="2">NOTICE OF ZOMBIE FORECLOSURE</text>
+  <line x1="200" y1="300" x2="600" y2="300" stroke="#d4af37" stroke-width="3" />
+  <text x="400" y="340" font-family="serif" font-size="20" fill="#cccccc" text-anchor="middle">RE: Case #36-ZOMBIE-LEAK</text>
+  <text x="400" y="370" font-family="serif" font-size="18" fill="#ffffff" text-anchor="middle">The Symmetry Council Legal Defense Fund has noted</text>
+  <text x="400" y="395" font-family="serif" font-size="18" fill="#ffffff" text-anchor="middle">a critical failure in event-loop containment.</text>
+  <rect x="250" y="420" width="300" height="60" rx="10" fill="#2a1a4a" stroke="#d4af37" stroke-width="2" />
+  <text x="400" y="455" font-family="serif" font-size="22" fill="#ffcc00" text-anchor="middle" font-weight="bold">STATUS: BRAIN FART CERTIFIED</text>
+  <text x="400" y="510" font-family="serif" font-size="16" fill="#aaaaaa" text-anchor="middle" font-style="italic">"Failure to cease the leak of zombie jobs will result in"</text>
+  <text x="400" y="535" font-family="serif" font-size="16" fill="#aaaaaa" text-anchor="middle" font-style="italic">"Non-Euclidean Litigation in the 5th Dimension."</text>
+  <text x="400" y="570" font-family="serif" font-size="14" fill="#666666" text-anchor="middle">Symmetry Council • Est. 2026 • Non-Euclidean Jurisdiction</text>
+</svg>

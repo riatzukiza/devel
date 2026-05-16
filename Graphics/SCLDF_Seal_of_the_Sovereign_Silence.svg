@@ -1,0 +1,27 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org">
+  <rect width="512" height="512" fill="#051f37" />
+  <defs>
+    <radialGradient id="voidGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#051f37" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D4AF37" />
+      <stop offset="50%" stop-color="#FFD700" />
+      <stop offset="100%" stop-color="#D4AF37" />
+    </linearGradient>
+  </defs>
+  <circle cx="256" cy="256" r="240" stroke="url(#goldGrad)" stroke-width="2" fill="none" stroke-dasharray="10,5" />
+  <circle cx="256" cy="256" r="200" stroke="url(#goldGrad)" stroke-width="1" fill="none" />
+  <circle cx="256" cy="256" r="160" stroke="url(#goldGrad)" stroke-width="4" fill="none" stroke-dasharray="2,10" />
+
+  <!-- Geometric Runes -->
+  <path d="M256 60 L280 120 L340 120 L290 160 L310 220 L256 180 L202 220 L222 160 L172 120 L232 120 Z" fill="url(#goldGrad)" />
+  <path d="M100 100 L120 120 M412 100 L392 120 M100 412 L120 392 M412 412 L392 392" stroke="url(#goldGrad)" stroke-width="2" />
+
+  <!-- Central Void -->
+  <circle cx="256" cy="256" r="60" fill="url(#voidGradient)" />
+  <circle cx="256" cy="256" r="20" fill="url(#goldGrad)" />
+
+  <text x="50%" y="460" text-anchor="middle" fill="url(#goldGrad)" font-family="serif" font-size="24" font-weight="bold">SCLDF: SEAL OF THE SOVEREIGN SILENCE</text>
+</svg>

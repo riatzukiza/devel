@@ -1,0 +1,4 @@
+services/llamacpp-stack/models/*.gguf filter=lfs diff=lfs merge=lfs -text
+services/utau-renderer/teto-openutau.zip filter=lfs diff=lfs merge=lfs -text
+services/utau-renderer/voicebanks/ritsu-normal.zip filter=lfs diff=lfs merge=lfs -text
+services/utau-renderer/openutau/OpenUtau.deps.json filter=lfs diff=lfs merge=lfs -text

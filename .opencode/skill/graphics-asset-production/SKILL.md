@@ -1,0 +1,1 @@
+/home/err/.pi/agent/skills/graphics-asset-production/SKILL.md

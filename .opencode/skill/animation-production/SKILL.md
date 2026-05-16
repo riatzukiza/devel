@@ -1,0 +1,1 @@
+/home/err/.pi/agent/skills/animation-production/SKILL.md

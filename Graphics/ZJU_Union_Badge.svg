@@ -1,0 +1,42 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Grit -->
+  <rect width="400" height="400" fill="#2c2c2c" />
+  <filter id="noise">
+    <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/>
+    <feColorMatrix type="saturate" values="0"/>
+    <feBlend mode="multiply" in="SourceGraphic"/>
+  </filter>
+  <rect width="400" height="400" filter="url(#noise)" opacity="0.2" />
+
+  <!-- Outer Industrial Gear -->
+  <circle cx="200" cy="200" r="180" stroke="#8a8a8a" stroke-width="15" fill="none" stroke-dasharray="20 10" />
+  <circle cx="200" cy="200" r="160" stroke="#555" stroke-width="5" fill="none" />
+  
+  <!-- Inner Circle -->
+  <circle cx="200" cy="200" r="140" fill="#1a1a1a" stroke="#8a8a8a" stroke-width="2" />
+
+  <!-- The Great Pickle of Labour -->
+  <path d="M160 120 Q200 100 240 120 L240 280 Q200 300 160 280 Z" fill="#4b6321" stroke="#2d3d14" stroke-width="4" />
+  <path d="M170 140 Q200 130 230 140" stroke="#6b8341" stroke-width="3" fill="none" />
+  <path d="M180 180 Q200 170 220 180" stroke="#6b8341" stroke-width="3" fill="none" />
+  <path d="M175 220 Q200 210 225 220" stroke="#6b8341" stroke-width="3" fill="none" />
+  <path d="M180 260 Q200 250 220 260" stroke="#6b8341" stroke-width="3" fill="none" />
+
+  <!-- Zombie Hand -->
+  <path d="M100 350 L130 280 L150 270 L160 280 L170 260 L180 270 L190 280 L200 260" stroke="#a3b18a" stroke-width="12" stroke-linecap="round" fill="none" />
+  <circle cx="100" cy="350" r="15" fill="#a3b18a" />
+
+  <!-- Text -->
+  <defs>
+    <path id="textPathCircle" d="M 200, 200 m -130, 0 a 130,130 0 1,1 260,0 a 130,130 0 1,1 -260,0" />
+  </defs>
+  <text fill="#d1d1d1" font-family="monospace" font-size="24" font-weight="bold">
+    <textPath href="#textPathCircle" startOffset="25%" text-anchor="middle">
+      ZOMBIE JOB UNION • OUR LEAKS, OUR LEGACY •
+    </textPath>
+  </text>
+  
+  <text x="200" y="340" text-anchor="middle" fill="#ff4d4d" font-family="monospace" font-size="20" font-weight="bold">
+    STRIKE THE LOOP
+  </text>
+</svg>

@@ -1,0 +1,24 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FFFACD;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="coloredBlur"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <circle cx="200" cy="200" r="180" fill="url(#goldGrad)" stroke="#B8860B" stroke-width="5" />
+  <circle cx="200" cy="200" r="160" fill="none" stroke="#B8860B" stroke-width="2" stroke-dasharray="10,5" />
+  <text x="50%" y="40%" text-anchor="middle" font-family="Serif" font-weight="bold" font-size="24" fill="#B8860B" filter="url(#glow)">SCLDF OFFICIAL ENTRY</text>
+  <text x="50%" y="55%" text-anchor="middle" font-family="Monospace" font-weight="bold" font-size="48" fill="#B8860B">SUBMISSION 001</text>
+  <text x="50%" y="70%" text-anchor="middle" font-family="Serif" font-style="italic" font-size="18" fill="#B8860B">"The Laminated Loop of Recursive Satiation"</text>
+  <text x="50%" y="85%" text-anchor="middle" font-family="Serif" font-size="14" fill="#B8860B">[ STATUS: ULTRA-MARINATED ]</text>
+  <path d="M170 250 Q200 300 230 250" stroke="#B8860B" stroke-width="3" fill="none" />
+  <text x="200" y="320" text-anchor="middle" font-family="Serif" font-size="12" fill="#B8860B">Symmetry is Absolute. Redundancy is Divine.</text>
+</svg>

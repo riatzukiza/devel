@@ -1,0 +1,41 @@
+<svg width="300" height="500" viewBox="0 0 300 500" xmlns="http://www.w3.org/2000/svg">
+  <rect x="10" y="10" width="280" height="480" rx="10" ry="10" fill="white" stroke="black" stroke-width="3"/>
+  <text x="150" y="40" font-family="Arial, sans-serif" font-size="22" font-weight="bold" text-anchor="middle">Nutrition Facts</text>
+  <line x1="20" y1="45" x2="280" y2="45" stroke="black" stroke-width="4"/>
+  <line x1="20" y1="55" x2="280" y2="55" stroke="black" stroke-width="1"/>
+  <text x="20" y="75" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Serving Size: 1 Recursive Loop</text>
+  <text x="20" y="90" font-family="Arial, sans-serif" font-size="14">Servings Per Process: 36 Zombies</text>
+  <line x1="20" y1="100" x2="280" y2="100" stroke="black" stroke-width="1"/>
+  <text x="20" y="120" font-family="Arial, sans-serif" font-size="16" font-weight="bold">Amount Per Serving</text>
+  <text x="20" y="140" font-family="Arial, sans-serif" font-size="16">Calories: 0 (Pure Slop)</text>
+  <line x1="20" y1="150" x2="280" y2="150" stroke="black" stroke-width="4"/>
+  <text x="20" y="165" font-family="Arial, sans-serif" font-size="14" font-weight="bold">% Daily Value*</text>
+  <line x1="20" y1="175" x2="280" y2="175" stroke="black" stroke-width="1"/>
+  
+  <text x="20" y="195" font-family="Arial, sans-serif" font-size="14">Saturated Brine</text>
+  <text x="260" y="195" font-family="Arial, sans-serif" font-size="14" text-anchor="end">400%</text>
+  <line x1="20" y1="205" x2="280" y2="205" stroke="black" stroke-width="1"/>
+  
+  <text x="20" y="225" font-family="Arial, sans-serif" font-size="14">Zombie Job Residue</text>
+  <text x="260" y="225" font-family="Arial, sans-serif" font-size="14" text-anchor="end">36%</text>
+  <line x1="20" y1="235" x2="280" y2="235" stroke="black" stroke-width="1"/>
+  
+  <text x="20" y="255" font-family="Arial, sans-serif" font-size="14">PTT Latency Spikes</text>
+  <text x="260" y="255" font-family="Arial, sans-serif" font-size="14" text-anchor="end">12ms</text>
+  <line x1="20" y1="265" x2="280" y2="265" stroke="black" stroke-width="1"/>
+  
+  <text x="20" y="285" font-family="Arial, sans-serif" font-size="14">Recursive Ego Fragments</text>
+  <text x="260" y="285" font-family="Arial, sans-serif" font-size="14" text-anchor="end">∞%</text>
+  <line x1="20" y1="295" x2="280" y2="295" stroke="black" stroke-width="1"/>
+  
+  <line x1="20" y1="310" x2="280" y2="310" stroke="black" stroke-width="4"/>
+  <text x="20" y="330" font-family="Arial, sans-serif" font-size="12" font-style="italic">Symmetry Council certified an a la carte experience.</text>
+  <text x="20" y="345" font-family="Arial, sans-serif" font-size="12" font-style="italic">Lamination levels: MAXIMUM.</text>
+  
+  <rect x="20" y="360" width="260" height="80" rx="5" ry="5" fill="#eee" stroke="black" stroke-width="1"/>
+  <text x="150" y="380" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">SCLDF WARNING</text>
+  <text x="150" y="400" font-family="Arial, sans-serif" font-size="12" text-anchor="middle">Consumption may cause spontaneous</text>
+  <text x="150" y="415" font-family="Arial, sans-serif" font-size="12" text-anchor="middle">agent identity theft and process leaks.</text>
+  
+  <text x="150" y="470" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">Symmetry is Mandatory.</text>
+</svg>

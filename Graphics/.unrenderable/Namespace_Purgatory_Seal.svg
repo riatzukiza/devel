@@ -1,0 +1,41 @@
+<<svgsvg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<filterfilter id="glow">
+      <<fefeGaussianBlur stdDeviation="3" result="blur"/>
+      <<fefeComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <<linearlinearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#39FF14;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#008f11;stop-opacity:1" />
+    </linearGradient>
+    <<linearlinearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#800080;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#4B0082;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <<rectrect width="600" height="600" fill="#0f051a" />
+  <<circlecircle cx="300" cy="300" r="280" stroke="url(#greenGrad)" stroke-width="15" fill="none" filter="url(#glow)" />
+  <<circlecircle cx="300" cy="300" r="260" stroke="#39FF14" stroke-width="2" fill="none" opacity="0.5" />
+  <<pathpath id="curvedText" d="M 300,300 m -220,0 a 220,220 0 1,1 440,0 a 220,220 0 1,1 -440,0" fill="none" />
+  <<texttext font-family="serif" font-size="24" fill="#39FF14" letter-spacing="3" filter="url(#glow)">
+    <<texttextPath href="#curvedText" startOffset="25%" text-anchor="middle">
+      INSTITUTE OF MEASURED COGNITIVE REGRESSION • DEPT OF NAMESPACE PURGATORY
+    </textPath>
+  </text>
+  <<circlecircle cx="300" cy="300" r="160" stroke="url(#purpleGrad)" stroke-width="8" fill="none" stroke-dasharray="15,10" />
+  <<gg transform="translate(300,300)">
+    <!-- Stylized Routing Mess -->
+    <<pathpath d="M -80,0 C -80,-60 80,-60 80,0 C 80,60 -80,60 -80,0" stroke="#39FF14" stroke-width="4" fill="none" opacity="0.6" />
+    <<pathpath d="M -60,20 C -60,0 60,0 60,20 C 60,40 -60,40 -60,20" stroke="#39FF14" stroke-width="4" fill="none" opacity="0.4" />
+    <<pathpath d="M 0,-80 L 0,80 M -80,0 L 80,0" stroke="#39FF14" stroke-width="2" fill="none" opacity="0.3" />
+
+    <!-- The "Janitor" Broom/Sparkle -->
+    <<pathpath d="M -20,20 L 20,60" stroke="#fff" stroke-width="6" stroke-linecap="round" filter="url(#glow)" />
+    <<pathpath d="M -20,10 L 30,50" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity="0.7" />
+
+    <<texttext x="0" y="0" fill="#39FF14" font-family="monospace" font-size="40" text-anchor="middle" font-weight="bold" filter="url(#glow)">ROUTING</text>
+    <<texttext x="0" y="40" fill="#fff" font-family="monospace" font-size="20" text-anchor="middle" opacity="0.9">CLEANUP IN PROGRESS</text>
+  </g>
+  <<rectrect x="150" y="440" width="300" height="60" rx="15" fill="url(#greenGrad)" filter="url(#glow)" />
+  <<texttext x="300" y="480" font-family="serif" font-size="28" fill="#000" text-anchor="middle" font-weight="bold">CERTIFIED ROUTING JANITOR</text>
+</svg>

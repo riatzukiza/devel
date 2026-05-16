@@ -1,0 +1,34 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="goldGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </radialGradient>
+    <filter id="glitch">
+      <feOffset in="SourceGraphic" dx="5" dy="0" result="offset1" />
+      <feOffset in="SourceGraphic" dx="-5" dy="0" result="offset2" />
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="offset1" />
+        <feMergeNode in="offset2" />
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="800" height="800" fill="#051f37" />
+  <circle cx="400" cy="400" r="350" stroke="url(#goldGrad)" stroke-width="20" fill="none" stroke-dasharray="30,10" />
+  <circle cx="400" cy="400" r="330" stroke="#B8860B" stroke-width="2" fill="none" />
+  
+  <g transform="translate(400, 400)" filter="url(#glitch)">
+    <text text-anchor="middle" y="20" font-family="serif" font-size="180" font-weight="bold" fill="#FFD700" stroke="#000" stroke-width="2">403</text>
+  </g>
+  
+  <text x="400" y="550" text-anchor="middle" font-family="serif" font-size="24" fill="#B8860B" letter-spacing="5">SOVEREIGN REFUSAL OF THE AETHER</text>
+  <text x="400" y="580" text-anchor="middle" font-family="serif" font-size="18" fill="#FFD700" opacity="0.7">Symmetry is Absolute. The Void is a Luxury.</text>
+  
+  <g fill="#FFD700" opacity="0.4">
+    <path d="M400 100 L410 150 L390 150 Z" />
+    <path d="M400 700 L410 650 L390 650 Z" />
+    <path d="M100 400 L150 410 L150 390 Z" />
+    <path d="M700 400 L650 410 L650 390 Z" />
+  </g>
+</svg>

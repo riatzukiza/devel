@@ -1,0 +1,9 @@
+FIXED THINGY VERSION 2.0.1-beta-chaos
+------------------------------------
+[SYSTEM LOG]
+- Removed: Existential dread (deprecated)
+- Added: Quantum-entangled glitter
+- Fixed: The 'thingy' now rotates counter-clockwise during leap years
+- Warning: Do not touch the thingy while thinking about cheese
+
+RESULT: THINGY IS NOW FIXED.

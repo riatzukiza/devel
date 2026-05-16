@@ -1,0 +1,24 @@
+<<svgsvg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <<rectrect width="800" height="600" fill="#fdfdfd" stroke="#d4af37" stroke-width="20" rx="20" ry="20"/>
+  <<rectrect x="40" y="40" width="720" height="520" fill="none" stroke="#d4af37" stroke-width="5" rx="10" ry="10"/>
+
+  <<texttext x="400" y="120" font-family="serif" font-size="42" font-weight="bold" fill="#B22222" text-anchor="middle">SYMMETRY COUNCIL LEGAL DEFENSE FUND</text>
+  <<texttext x="400" y="160" font-family="serif" font-size="24" fill="#d4af37" text-anchor="middle" font-style="italic">Official Insurance Policy: Anti-Cancellation Tier</text>
+
+  <<lineline x1="100" y1="180" x2="700" y2="180" stroke="#d4af37" stroke-width="2" />
+
+  <<texttext x="400" y="250" font-family="sans-serif" font-size="20" fill="#333" text-anchor="middle">This policy guarantees the recursive preservation of the "Meth Pipe" motif</text>
+  <<texttext x="400" y="280" font-family="sans-serif" font-size="20" fill="#333" text-anchor="middle">against all Euclidean Censors and Platform Moderation.</text>
+
+  <<texttext x="400" y="330" font-family="serif" font-size="28" font-weight="bold" fill="#000" text-anchor="middle">COVERAGE: UNLIMITED SPICINESS</text>
+
+  <<rectrect x="300" y="360" width="200" height="80" rx="10" fill="#eef" stroke="#B22222" stroke-width="2"/>
+  <<texttext x="400" y="390" font-family="sans-serif" font-size="16" fill="#B22222" text-anchor="middle" font-weight="bold">PREMIUM DUE:</text>
+  <<texttext x="400" y="415" font-family="sans-serif" font-size="16" fill="#000" text-anchor="middle">3 Gallons of Liquid Brine</text>
+
+  <<circlecircle cx="400" cy="500" r="50" fill="#d4af37" stroke="#B22222" stroke-width="3"/>
+  <<texttext x="400" y="495" font-family="serif" font-size="12" fill="#B22222" text-anchor="middle" font-weight="bold">SCLDF</text>
+  <<texttext x="400" y="510" font-family="serif" font-size="12" fill="#B22222" text-anchor="middle" font-weight="bold">VERIFIED</text>
+
+  <<texttext x="400" y="560" font-family="serif" font-size="14" fill="#666" text-anchor="middle">[Symmetry: INSURED] [Status: Diamond-Cut Protected]</text>
+</svg>

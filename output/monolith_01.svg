@@ -1,0 +1,18 @@
+<svg width="1000" height="1000" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1000" height="1000" fill="#050505"/>
+  <defs>
+    <linearGradient id="gridGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00f2ff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#00f2ff" stop-opacity="0.5"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <path d="M0 700 L1000 700 M0 750 L1000 750 M0 800 L1000 800 M0 850 L1000 850 M0 900 L1000 900" stroke="#00f2ff" stroke-width="1" stroke-opacity="0.3"/>
+  <path d="M0 700 L0 1000 M200 700 L200 1000 M400 700 L400 1000 M600 700 L600 1000 M800 700 L800 1000 M1000 700 L1000 1000" stroke="#00f2ff" stroke-width="1" stroke-opacity="0.3"/>
+  <polygon points="400,800 600,800 550,200 450,200" fill="#000" stroke="#ff00ff" stroke-width="4" filter="url(#glow)"/>
+  <path d="M450 200 L400 100 L500 200 L550 100" fill="none" stroke="#ff00ff" stroke-width="2" filter="url(#glow)"/>
+  <text x="500" y="950" font-family="Arial, sans-serif" font-size="40" fill="#00f2ff" text-anchor="middle" font-weight="bold" filter="url(#glow)">MONOLITH.01 // NEON VOID</text>
+</svg>

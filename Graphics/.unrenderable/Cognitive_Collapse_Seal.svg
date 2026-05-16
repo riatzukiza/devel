@@ -1,0 +1,44 @@
+<<svgsvg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<linearlinearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#00f2ff;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#ff00fb;stop-opacity:1" />
+    </linearGradient>
+    <<filterfilter id="glow">
+      <<fefeGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <<fefeMerge>
+        <<fefeMergeNode/>
+        <<fefeMergeNode in="coloredBlur"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <<circlecircle cx="200" cy="200" r="190" fill="#0a0a1a" stroke="url(#grad1)" stroke-width="8" />
+  <<circlecircle cx="200" cy="200" r="175" fill="none" stroke="#333" stroke-width="2" stroke-dasharray="10,10" />
+
+  <!-- Text Path -->
+  <<pathpath id="circlePath" d="M 200, 20 A 180,180 0 1,1 199.9,20" fill="none" />
+  <<texttext fill="white" font-family="Arial, sans-serif" font-size="24" font-weight="bold" letter-spacing="4">
+    <<texttextPath xlink:href="#circlePath" startOffset="0%">
+      OFFICIAL CERTIFICATE OF COGNITIVE COLLAPSE • SYMMETRY IS A LIE • BRAIN DAMAGE IS FINE •
+    </textPath>
+  </text>
+
+  <!-- Center Graphic: Recursive glitch brain -->
+  <<gg transform="translate(200,200)" filter="url(#glow)">
+    <!-- Brain-ish shapes -->
+    <<pathpath d="M-50,0 Q-70,-60 0,-70 Q70,-60 50,0 Q70,60 0,70 Q-70,60 -50,0" fill="none" stroke="url(#grad1)" stroke-width="6" />
+    <<pathpath d="M-30,0 Q-50,-40 0,-50 Q50,-40 30,0 Q50,40 0,50 Q-50,40 -30,0" fill="none" stroke="#00f2ff" stroke-width="4" opacity="0.6" />
+    <<pathpath d="M-10,0 Q-20,-20 0,-30 Q20,-20 10,0 Q20,20 0,30 Q-20,20 -10,0" fill="none" stroke="#ff00fb" stroke-width="2" opacity="0.8" />
+
+    <!-- Glitch lines -->
+    <<lineline x1="-80" y1="10" x2="80" y2="10" stroke="white" stroke-width="1" opacity="0.3" />
+    <<lineline x1="-60" y1="-30" x2="60" y2="-30" stroke="url(#grad1)" stroke-width="2" />
+    <<lineline x1="-40" y1="40" x2="40" y2="40" stroke="#ff00fb" stroke-width="1" />
+  </g>
+
+  <!-- Center Label -->
+  <<rectrect x="160" y="185" width="80" height="30" rx="5" fill="#fff" />
+  <<texttext x="200" y="207" text-anchor="middle" fill="#000" font-family="Monospace" font-size="16" font-weight="bold">CERTIFIED</text>
+</svg>

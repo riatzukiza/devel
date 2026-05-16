@@ -1,0 +1,29 @@
+{
+  "fork_tales_theme.ogg": [
+    "decepticon"
+  ],
+  "ForkTales_SovereignTheme.mp3": [
+    "overlay"
+  ],
+  "voice_audit.mp3": [
+    "what"
+  ],
+  "singularity_radio.mp3": [
+    "monotone"
+  ],
+  "./Audio/broadcasts/ForkTales_Vocal_Kokoro_Direct.mp3": [
+    "good_voice"
+  ],
+  "errorcoded_singularity_hype.mp3": [
+    "what"
+  ],
+  "errorcoded_singularity_pitch.mp3": [
+    "good_voice"
+  ],
+  ".": [
+    "good_voice"
+  ],
+  "singularity_pitch.mp3": [
+    "good_inflection"
+  ]
+}

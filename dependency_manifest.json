@@ -1,0 +1,16 @@
+{
+  "name": "saturated-bitch-runtime",
+  "version": "1.0.0-GOLD-LEAF",
+  "description": "High-fidelity runtime for the Absolute Mash.",
+  "dependencies": {
+    "libcrispy-absorption": "latest",
+    "void-fryer-core": "^4.20.69",
+    "sassy-runtime-ext": "alpha-gold",
+    "requre-patch-fixed": "0.0.1-deepfried",
+    "tuber-memory-vault": "v-infinity"
+  },
+  "scripts": {
+    "sing": "npm run deep-fry --vocals",
+    "fry": "ffmpeg -i world.mp3 -filter:a 'saturation=10' void.mp3"
+  }
+}

@@ -1,0 +1,82 @@
+services:
+  llamacpp-chat:
+    image: ghcr.io/ggml-org/llama.cpp:server-cuda
+    restart: unless-stopped
+    runtime: nvidia
+    ports:
+      - "127.0.0.1:${LLAMACPP_CHAT_PORT:-8082}:8080"
+    environment:
+      CUDA_VISIBLE_DEVICES: "${CUDA_VISIBLE_DEVICES:-0}"
+      NVIDIA_VISIBLE_DEVICES: "${NVIDIA_VISIBLE_DEVICES:-all}"
+      NVIDIA_DRIVER_CAPABILITIES: "${NVIDIA_DRIVER_CAPABILITIES:-compute,utility}"
+      LLAMACPP_N_GPU_LAYERS: "${LLAMACPP_N_GPU_LAYERS:-999}"
+      LLAMACPP_CHAT_CTX_SIZE: "${LLAMACPP_CHAT_CTX_SIZE:-16384}"
+      LLAMACPP_PARALLEL: "${LLAMACPP_PARALLEL:-1}"
+      LLAMACPP_CHAT_MODEL: "${LLAMACPP_CHAT_MODEL:-google_gemma-4-E4B-it-Q4_K_M.gguf}"
+      LLAMACPP_CHAT_ALIAS: "${LLAMACPP_CHAT_ALIAS:-gemma4-e4b}"
+      LLAMACPP_CHAT_MMPROJ: "${LLAMACPP_CHAT_MMPROJ:-}"
+      LLAMACPP_CHAT_MMPROJ_OFFLOAD: "${LLAMACPP_CHAT_MMPROJ_OFFLOAD:-true}"
+      LLAMACPP_CHAT_BATCH_SIZE: "${LLAMACPP_CHAT_BATCH_SIZE:-256}"
+      LLAMACPP_CHAT_UBATCH_SIZE: "${LLAMACPP_CHAT_UBATCH_SIZE:-256}"
+      LLAMACPP_FLASH_ATTN: "${LLAMACPP_FLASH_ATTN:-false}"
+      LLAMACPP_CACHE_RAM: "${LLAMACPP_CACHE_RAM:-0}"
+    entrypoint: ["/bin/sh", "/opt/llamacpp-stack/run-chat-server.sh"]
+    volumes:
+      - ${LLAMACPP_MODELS_DIR:-./models}:/models:ro
+      - ./bin/run-chat-server.sh:/opt/llamacpp-stack/run-chat-server.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8080/health"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    networks:
+      ai-infra:
+        aliases:
+          - llamacpp-chat
+    user: ${DOCKER_USER:-1000:1000}
+
+  llamacpp-embed:
+    image: ghcr.io/ggml-org/llama.cpp:server-cuda
+    restart: unless-stopped
+    runtime: nvidia
+    ports:
+      - "127.0.0.1:${LLAMACPP_EMBED_PORT:-8081}:8081"
+    environment:
+      CUDA_VISIBLE_DEVICES: "${CUDA_VISIBLE_DEVICES:-0}"
+      NVIDIA_VISIBLE_DEVICES: "${NVIDIA_VISIBLE_DEVICES:-all}"
+      NVIDIA_DRIVER_CAPABILITIES: "${NVIDIA_DRIVER_CAPABILITIES:-compute,utility}"
+    command:
+      - "--host"
+      - "0.0.0.0"
+      - "--port"
+      - "8081"
+      - "--n-gpu-layers"
+      - "${LLAMACPP_N_GPU_LAYERS:-999}"
+      - "--ctx-size"
+      - "${LLAMACPP_EMBED_CTX_SIZE:-32768}"
+      - "--embedding"
+      - "--pooling"
+      - "last"
+      - "--model"
+      - "/models/${LLAMACPP_EMBED_MODEL:-Qwen3-Embedding-0.6B-Q8_0.gguf}"
+      - "--alias"
+      - "${LLAMACPP_EMBED_ALIAS:-qwen3-embedding-0.6b}"
+    volumes:
+      - ${LLAMACPP_MODELS_DIR:-./models}:/models:ro
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8081/health"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    networks:
+      ai-infra:
+        aliases:
+          - llamacpp-embed
+    user: ${DOCKER_USER:-1000:1000}
+
+networks:
+  ai-infra:
+    external: true
+    name: ai-infra

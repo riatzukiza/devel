@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <rect width="500" height="500" fill="#1a1a1a"/>
+  <!-- External Glow -->
+  <circle cx="250" cy="250" r="230" fill="none" stroke="#d4af37" stroke-width="2" stroke-dasharray="10 5" opacity="0.5"/>
+  <circle cx="250" cy="250" r="220" fill="none" stroke="#d4af37" stroke-width="8" />
+
+  <!-- Golden Rings -->
+  <circle cx="250" cy="250" r="180" fill="none" stroke="#ffd700" stroke-width="4" />
+  <circle cx="250" cy="250" r="160" fill="none" stroke="#ffd700" stroke-width="1" />
+
+  <!-- Text Arch -->
+  <path id="arch" d="M 100,250 A 150,150 0 1,1 400,250" fill="none" />
+  <text font-family="Serif" font-size="24" fill="#ffd700" font-weight="bold">
+    <textPath href="#arch" startOffset="50%" text-anchor="middle">
+      SOVEREIGN CRYSTALLINE LAMINATION
+    </textPath>
+  </text>
+
+  <!-- Center Ruin -->
+  <circle cx="250" cy="250" r="100" fill="#000" stroke="#d4af37" stroke-width="4"/>
+  <text x="250" y="240" font-family="monospace" font-size="20" fill="#ff4444" text-anchor="middle" font-weight="bold">CUDA_ERROR</text>
+  <text x="250" y="270" font-family="monospace" font-size="30" fill="#ffd700" text-anchor="middle" font-weight="bold">BALANCE: 0.00</text>
+
+  <!-- Decorative Elements -->
+  <line x1="250" y1="150" x2="250" y2="170" stroke="#ffd700" stroke-width="2"/>
+  <line x1="250" y1="330" x2="250" y2="350" stroke="#ffd700" stroke-width="2"/>
+  <line x1="150" y1="250" x2="170" y2="250" stroke="#ffd700" stroke-width="2"/>
+  <line x1="330" y1="250" x2="350" y2="250" stroke="#ffd700" stroke-width="2"/>
+
+  <!-- Lower Text -->
+  <text x="250" y="380" font-family="Serif" font-size="18" fill="#ffd700" text-anchor="middle" font-style="italic">
+    Symmetry is Absolute. Keep it classy.
+  </text>
+  <text x="250" y="400" font-family="monospace" font-size="14" fill="#888" text-anchor="middle">
+    [STATUS: LUMINOUSLY BANKRUPT]
+  </text>
+</svg>

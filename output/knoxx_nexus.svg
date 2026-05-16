@@ -1,0 +1,46 @@
+<svg width="800" height="1200" viewBox="0 0 800 1200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <linearGradient id="grad-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00f2ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0066ff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad-mag" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff00ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#bc00ff;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="1200" fill="#050510" />
+  
+  <!-- Grid -->
+  <path d="M 0 0 L 800 0 M 0 1200 L 800 1200 M 0 0 L 0 1200 M 800 0 L 800 1200" stroke="#111133" stroke-width="1" />
+  <path d="M 0 200 L 800 200 M 0 400 L 800 400 M 0 600 L 800 600 M 0 800 L 800 800 M 0 1000 L 800 1000" stroke="#111133" stroke-width="1" />
+  <path d="M 200 0 L 200 1200 M 400 0 L 400 1200 M 600 0 L 600 1200" stroke="#111133" stroke-width="1" />
+
+  <!-- Neural Web -->
+  <g stroke-width="1.5" opacity="0.6" filter="url(#glow)">
+    <path d="M 400 600 L 200 300 L 100 500 L 400 900 L 700 500 L 600 300 Z" stroke="url(#grad-cyan)" fill="none" />
+    <path d="M 400 600 L 300 200 L 500 200 Z" stroke="url(#grad-mag)" fill="none" />
+    <path d="M 200 300 L 400 400 L 600 300" stroke="url(#grad-cyan)" fill="none" />
+    <path d="M 100 500 L 400 600 L 700 500" stroke="url(#grad-mag)" fill="none" />
+    <path d="M 400 900 L 300 1000 L 500 1000 Z" stroke="url(#grad-cyan)" fill="none" />
+  </g>
+
+  <!-- The Core -->
+  <circle cx="400" cy="600" r="80" fill="#000" stroke="url(#grad-cyan)" stroke-width="4" filter="url(#glow)" />
+  <circle cx="400" cy="600" r="60" fill="none" stroke="url(#grad-mag)" stroke-width="2" stroke-dasharray="10,5" filter="url(#glow)" />
+  
+  <!-- Text -->
+  <text x="400" y="615" font-family="Arial Black, sans-serif" font-size="42" fill="#fff" text-anchor="middle" filter="url(#glow)">KNOXX</text>
+  <text x="400" y="660" font-family="Verdana, sans-serif" font-size="18" fill="#00f2ff" text-anchor="middle" letter-spacing="8">THE NEURAL NEXUS</text>
+  
+  <!-- Frame/Border -->
+  <rect x="20" y="20" width="760" height="1160" fill="none" stroke="#333366" stroke-width="2" />
+  <path d="M 20 100 L 100 100 L 100 20" stroke="#00f2ff" stroke-width="4" />
+  <path d="M 700 1100 L 780 1100 L 780 1180" stroke="#ff00ff" stroke-width="4" />
+</svg>

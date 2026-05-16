@@ -1,0 +1,2533 @@
+{
+  "generated": "2026-05-16T18:53:24Z",
+  "repo_count": 721,
+  "dirty_count": 142,
+  "dirty": [
+    {
+      "path": ".",
+      "branch": "pi/fork-tax/2026-04-15-170411",
+      "counts": {
+        "M ": 1,
+        " M": 27,
+        "A ": 6302,
+        "R ": 199,
+        "AM": 4,
+        "D ": 1,
+        "MM": 1,
+        "??": 205
+      },
+      "n": 6740,
+      "remote": "git@github.com:riatzukiza/devel.git",
+      "sample": [
+        "M  .gitmodules",
+        " M AGENTS.md",
+        "A  Blaze/responses/blaze-0870da17-5c8e-49e2-9528-c2921c55d5f7.json",
+        "A  Blaze/responses/blaze-091afe36-0b35-4187-8c38-9d8878d74d8a.json",
+        "A  Blaze/responses/blaze-0a2dd827-53b5-43d7-b56e-50b0a52cd059.json",
+        "A  Blaze/responses/blaze-10b41801-20ce-40ec-854e-f5b8af0bb481.json",
+        "A  Blaze/responses/blaze-1163ab1a-6c4f-4221-8e00-098ad21dd29e.json",
+        "A  Blaze/responses/blaze-1699e2c2-6779-4898-851a-51eaebac6111.json"
+      ]
+    },
+    {
+      "path": ".worktrees/battlebussy-ci-pr-clean",
+      "branch": "",
+      "counts": {
+        " D": 5
+      },
+      "n": 5,
+      "remote": "git@github.com:riatzukiza/battlebussy.git",
+      "sample": [
+        " D public/file.svg",
+        " D public/globe.svg",
+        " D public/next.svg",
+        " D public/vercel.svg",
+        " D public/window.svg"
+      ]
+    },
+    {
+      "path": ".worktrees/battlebussy-live-reconcile",
+      "branch": "reconcile/live-ussy-prod-20260323",
+      "counts": {
+        " D": 5
+      },
+      "n": 5,
+      "remote": "git@github.com:riatzukiza/battlebussy.git",
+      "sample": [
+        " D public/file.svg",
+        " D public/globe.svg",
+        " D public/next.svg",
+        " D public/vercel.svg",
+        " D public/window.svg"
+      ]
+    },
+    {
+      "path": ".worktrees/battlebussy-main-gate-fixes",
+      "branch": "fix/network-subnet-overlap",
+      "counts": {
+        " D": 5
+      },
+      "n": 5,
+      "remote": "git@github.com:riatzukiza/battlebussy.git",
+      "sample": [
+        " D public/file.svg",
+        " D public/globe.svg",
+        " D public/next.svg",
+        " D public/vercel.svg",
+        " D public/window.svg"
+      ]
+    },
+    {
+      "path": ".worktrees/battlebussy-promotion",
+      "branch": "ci/standardize-promotion-flow",
+      "counts": {
+        " D": 7
+      },
+      "n": 7,
+      "remote": "git@github.com:riatzukiza/battlebussy.git",
+      "sample": [
+        " D dashboard/public/vite.svg",
+        " D dashboard/src/assets/react.svg",
+        " D public/file.svg",
+        " D public/globe.svg",
+        " D public/next.svg",
+        " D public/vercel.svg",
+        " D public/window.svg"
+      ]
+    },
+    {
+      "path": ".worktrees/battlebussy-staging-bootstrap",
+      "branch": "ci/live-reconcile-staging-bootstrap",
+      "counts": {
+        " D": 5
+      },
+      "n": 5,
+      "remote": "git@github.com:riatzukiza/battlebussy.git",
+      "sample": [
+        " D public/file.svg",
+        " D public/globe.svg",
+        " D public/next.svg",
+        " D public/vercel.svg",
+        " D public/window.svg"
+      ]
+    },
+    {
+      "path": ".worktrees/shibboleth-promotion",
+      "branch": "ci/pr-promotion-bootstrap",
+      "counts": {
+        " D": 1
+      },
+      "n": 1,
+      "remote": "git@github.com:octave-commons/shibboleth.git",
+      "sample": [
+        " D ui/src/assets/shibboleth-logo.svg"
+      ]
+    },
+    {
+      "path": "archives/open-hax-openai-proxy-retired-worktree-2026-03-19",
+      "error": "Command '['git', '-C', '/home/err/devel/archives/open-hax-openai-proxy-retired-worktree-2026-03-19', 'status', '--porcelain=v1', '--untracked-files=normal']' returned non-zero exit status 128."
+    },
+    {
+      "path": "inbox/gates-pr35-hardening-main",
+      "branch": "main",
+      "counts": {
+        " D": 4
+      },
+      "n": 4,
+      "remote": "git@github.com:octave-commons/gates-of-aker.git",
+      "sample": [
+        " D \"web/designs/generated/ChatGPT Image Jan 12, 2026, 01_27_10 AM.png\"",
+        " D \"web/designs/generated/ChatGPT Image Jan 12, 2026, 01_37_21 AM.png\"",
+        " D \"web/designs/generated/ChatGPT Image Jan 12, 2026, 01_51_07 AM.png\"",
+        " D \"web/designs/generated/ChatGPT Image Jan 12, 2026, 12_56_44 AM.png\""
+      ]
+    },
+    {
+      "path": "inbox/vaults/static_man",
+      "branch": "main",
+      "counts": {
+        " D": 3
+      },
+      "n": 3,
+      "remote": "git@github.com:octave-commons/static_man.git",
+      "sample": [
+        " D CONTACT_edges_canny.png",
+        " D silhouettes_montage.png",
+        " D wraith_volume_projections.png"
+      ]
+    },
+    {
+      "path": "inbox/workspaces/openhax-codex",
+      "branch": "device/stealth",
+      "counts": {
+        " M": 3
+      },
+      "n": 3,
+      "remote": "",
+      "sample": [
+        " M codex-auth",
+        " M codex-cli",
+        " M opencode"
+      ]
+    },
+    {
+      "path": "inbox/workspaces/openhax-codex/codex-auth",
+      "branch": "docs/release-process-and-issues-triage",
+      "counts": {
+        " M": 1,
+        " D": 1
+      },
+      "n": 2,
+      "remote": "git@github.com:open-hax/codex.git",
+      "sample": [
+        " M AGENTS.md",
+        " D assets/opencode-logo-ornate-dark.svg"
+      ]
+    },
+    {
+      "path": "inbox/workspaces/openhax-codex/codex-cli",
+      "branch": "main",
+      "counts": {
+        " D": 3,
+        " M": 1,
+        "??": 4
+      },
+      "n": 8,
+      "remote": "org-14957082@github.com:openai/codex.git",
+      "sample": [
+        " D .github/codex-cli-login.png",
+        " D .github/codex-cli-permissions.png",
+        " D .github/codex-cli-splash.png",
+        " M AGENTS.md",
+        "?? codex-cli/AGENTS.md",
+        "?? codex-rs/responses-api-proxy/npm/AGENTS.md",
+        "?? sdk/typescript/AGENTS.md",
+        "?? shell-tool-mcp/AGENTS.md"
+      ]
+    },
+    {
+      "path": "inbox/workspaces/openhax-codex/opencode",
+      "branch": "dev",
+      "counts": {
+        " M": 3,
+        " D": 1177,
+        "??": 15
+      },
+      "n": 1195,
+      "remote": "git@github.com:sst/opencode.git",
+      "sample": [
+        " M AGENTS.md",
+        " D packages/console/app/public/favicon-zen.svg",
+        " D packages/console/app/public/favicon.svg",
+        " D packages/console/app/public/social-share-zen.png",
+        " D packages/console/app/public/social-share.png",
+        " D packages/console/app/src/asset/brand/opencode-logo-dark.png",
+        " D packages/console/app/src/asset/brand/opencode-logo-dark.svg",
+        " D packages/console/app/src/asset/brand/opencode-logo-light.png"
+      ]
+    },
+    {
+      "path": "orgs/anomalyco/opencode",
+      "branch": "feat/security-scans",
+      "counts": {
+        "??": 1
+      },
+      "n": 1,
+      "remote": "git@github.com:riatzukiza/opencode.git",
+      "sample": [
+        "?? receipts.edn"
+      ]
+    },
+    {
+      "path": "orgs/octave-commons/fork_tales/.ημ/03_ARTIFACTS/narrative_audio",
+      "branch": "main",
+      "counts": {
+        " D": 48
+      },
+      "n": 48,
+      "remote": "https://github.com/riatzukiza/gates-of-truth-audio.git",
+      "sample": [
+        " D Chapter_01_Chapter_1.mp3",
+        " D Chapter_02_Chapter_2.mp3",
+        " D Chapter_03_Chapter_3.mp3",
+        " D Chapter_04_Chapter_4.mp3",
+        " D Chapter_05_Chapter_5.mp3",
+        " D Chapter_06_Chapter_6.mp3",
+        " D Chapter_07_Adjacent_Power.mp3",
+        " D Chapter_08_Minor_Desync.mp3"
+      ]
+    },
+    {
+      "path": "orgs/open-hax/eta-mu",
+      "branch": "main",
+      "counts": {
+        " M": 12,
+        "M ": 24,
+        "??": 1
+      },
+      "n": 37,
+      "remote": "git@github.com:open-hax/eta-mu.git",
+      "sample": [
+        " M opencode.json",
+        "M  packages/agent/package.json",
+        "M  packages/ai/package.json",
+        "M  packages/ai/src/models.generated.ts",
+        " M packages/coding-agent/docs/extensions.md",
+        " M packages/coding-agent/docs/sdk.md",
+        "M  packages/coding-agent/package.json",
+        " M packages/coding-agent/src/core/agent-session.ts"
+      ]
+    },
+    {
+      "path": "orgs/open-hax/openplanner",
+      "branch": "tests/sentance-chunker",
+      "counts": {
+        " M": 1
+      },
+      "n": 1,
+      "remote": "git@github.com:open-hax/openplanner.git",
+      "sample": [
+        " M packages/agents/knoxx"
+      ]
+    },
+    {
+      "path": "orgs/open-hax/openplanner/packages/agents/knoxx",
+      "branch": "feat/discord-attachments",
+      "counts": {
+        " M": 9,
+        "??": 3
+      },
+      "n": 12,
+      "remote": "git@github.com:open-hax/knoxx.git",
+      "sample": [
+        " M backend/scripts/synthesize-music.mjs",
+        " M backend/src/cljs/knoxx/backend/agent_templates.cljs",
+        " M backend/src/cljs/knoxx/backend/event_agents.cljs",
+        " M backend/src/cljs/knoxx/backend/routes/tools.cljs",
+        " M backend/src/cljs/knoxx/backend/tools/music.cljs",
+        " M backend/test/cljs/knoxx/backend/agent_templates_test.cljs",
+        " M frontend/src/lib/api/admin.ts",
+        " M receipts.edn"
+      ]
+    },
+    {
+      "path": "orgs/open-hax/openplanner/packages/agents/knoxx/.worktrees/xiaomi-mimo-contracts",
+      "branch": "feat/xiaomi-mimo-contracts",
+      "counts": {
+        " M": 5,
+        " D": 362,
+        "??": 1
+      },
+      "n": 368,
+      "remote": "git@github.com:open-hax/knoxx.git",
+      "sample": [
+        " M backend/src/cljs/knoxx/backend/app_routes.cljs",
+        " M backend/src/cljs/knoxx/backend/workspace_media_routes.cljs",
+        " D contracts/agents/novel_ABSURDIST_INTEROP_CARTOGRAPHER_20260428T0135.edn",
+        " D contracts/agents/novel_ANNOYANCE_AUDITOR_20260428T0300.edn",
+        " D contracts/agents/novel_ANNOYANCE_QUANTIFIER_20260428T0311.edn",
+        " D contracts/agents/novel_BOT_CORRUPTION_EXORCIST_20260428T0245.edn",
+        " D contracts/agents/novel_BUG_HAIKU_20260428T0126.edn",
+        " D contracts/agents/novel_CATHARSIS_SYMPHONIST_20260428T0148.edn"
+      ]
+    },
+    {
+      "path": "orgs/open-hax/openplanner/packages/graph/webgl-graph-view",
+      "branch": "main",
+      "counts": {
+        " M": 1,
+        "??": 1
+      },
+      "n": 2,
+      "remote": "git@github.com:octave-commons/webgl-graph-view.git",
+      "sample": [
+        " M package.json",
+        "?? LICENSE"
+      ]
+    },
+    {
+      "path": "orgs/open-hax/proxx",
+      "branch": "feat/policy-polish",
+      "counts": {
+        " M": 4
+      },
+      "n": 4,
+      "remote": "git@github.com:open-hax/proxx.git",
+      "sample": [
+        " M receipts.edn",
+        " M src/lib/provider-strategy/routing/attempt-executor.ts",
+        " M src/lib/proxy.ts",
+        " M src/tests/proxy-headers.test.ts"
+      ]
+    },
+    {
+      "path": "orgs/open-hax/proxx/.worktrees/feat-federated-ollama-downstream-routing",
+      "branch": "feat/federated-ollama-downstream-routing",
+      "counts": {
+        " M": 1,
+        "??": 2
+      },
+      "n": 3,
+      "remote": "git@github.com:open-hax/proxx.git",
+      "sample": [
+        " M src/app.ts",
+        "?? src/routes/credentials/visible-accounts.ts",
+        "?? src/tests/dynamic-ollama-routes.test.ts"
+      ]
+    },
+    {
+      "path": "orgs/open-hax/proxx/.worktrees/sync-main-into-staging",
+      "branch": "sync/main-into-staging-followup",
+      "counts": {
+        " M": 1
+      },
+      "n": 1,
+      "remote": "git@github.com:open-hax/proxx.git",
+      "sample": [
+        " M src/app.ts"
+      ]
+    },
+    {
+      "path": "orgs/open-hax/uxx",
+      "branch": "main",
+      "counts": {
+        "M ": 1
+      },
+      "n": 1,
+      "remote": "git@github.com:open-hax/uxx.git",
+      "sample": [
+        "M  README.md"
+      ]
+    },
+    {
+      "path": "orgs/private/snorkel-ai/projects/clojure",
+      "branch": "main",
+      "counts": {
+        " M": 19,
+        " D": 2,
+        "??": 6
+      },
+      "n": 27,
+      "remote": "",
+      "sample": [
+        " M .lsp/.cache/db.transit.json",
+        " M AGENTS.md",
+        " M README.md",
+        " M bin/rebuild-task",
+        " D data/forum.sqlite",
+        " M deps.edn",
+        " M difficulty_check_artifact.zip",
+        " M output.json"
+      ]
+    },
+    {
+      "path": "orgs/riatzukiza/desktop/.worktrees/fix-typecheck-deps",
+      "branch": "fix-typecheck-deps",
+      "counts": {
+        " M": 9,
+        "??": 2
+      },
+      "n": 11,
+      "remote": "git@github.com:riatzukiza/devel.git/orgs/riatzukiza/desktop",
+      "sample": [
+        " M package.json",
+        " M pnpm-lock.yaml",
+        " M src/server.ts",
+        " M src/utils/auddLookupFile.ts",
+        " M src/utils/copyright.ts",
+        " M src/utils/misc.ts",
+        " M src/utils/screenUrl.ts",
+        " M src/utils/yt-helpers.ts"
+      ]
+    },
+    {
+      "path": "orgs/riatzukiza/kronos",
+      "error": "Command '['git', '-C', '/home/err/devel/orgs/riatzukiza/kronos', 'status', '--porcelain=v1', '--untracked-files=normal']' returned non-zero exit status 128."
+    },
+    {
+      "path": "orgs/shuv/Opencode-Extensions-TUI",
+      "branch": "master",
+      "counts": {
+        "A ": 1
+      },
+      "n": 1,
+      "remote": "git@github.com:riatzukiza/Opencode-Extensions-TUI.git",
+      "sample": [
+        "A  .gitmodules"
+      ]
+    },
+    {
+      "path": "orgs/shuv/claude-code-plugins-plus-skills",
+      "branch": "main",
+      "counts": {
+        "A ": 1
+      },
+      "n": 1,
+      "remote": "git@github.com:riatzukiza/claude-code-plugins-plus-skills.git",
+      "sample": [
+        "A  .gitmodules"
+      ]
+    },
+    {
+      "path": "orgs/shuv/inbound",
+      "branch": "main",
+      "counts": {
+        "A ": 1
+      },
+      "n": 1,
+      "remote": "git@github.com:riatzukiza/inbound.git",
+      "sample": [
+        "A  .gitmodules"
+      ]
+    },
+    {
+      "path": "orgs/shuv/maple",
+      "branch": "main",
+      "counts": {
+        "A ": 1
+      },
+      "n": 1,
+      "remote": "git@github.com:riatzukiza/maple.git",
+      "sample": [
+        "A  .gitmodules"
+      ]
+    },
+    {
+      "path": "orgs/stakira/OpenUtau",
+      "branch": "master",
+      "counts": {
+        " M": 1,
+        "??": 1
+      },
+      "n": 2,
+      "remote": "https://github.com/stakira/OpenUtau.git",
+      "sample": [
+        " M OpenUtau/ViewModels/MainWindowViewModel.cs",
+        "?? .opencode/"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/battlebussy",
+      "branch": "ci/pr-promotion-workflows",
+      "counts": {
+        " D": 5,
+        "??": 1
+      },
+      "n": 6,
+      "remote": "git@github.com:riatzukiza/battlebussy.git",
+      "sample": [
+        " D public/file.svg",
+        " D public/globe.svg",
+        " D public/next.svg",
+        " D public/vercel.svg",
+        " D public/window.svg",
+        "?? specs/drafts/commentary-latency-midroll-smoothing.md"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo",
+      "branch": "main",
+      "counts": {
+        " M": 96
+      },
+      "n": 96,
+      "remote": "git@github.com:mojomast/ussyverse.git",
+      "sample": [
+        " M projects/ai-agents/Beatrice",
+        " M projects/ai-agents/becomussy",
+        " M projects/ai-agents/clanker01",
+        " M projects/ai-agents/clanker02",
+        " M projects/ai-agents/clanker03",
+        " M projects/ai-agents/clanker04",
+        " M projects/ai-agents/clanker06",
+        " M projects/ai-agents/clanker07"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/Beatrice",
+      "branch": "master",
+      "counts": {
+        "D ": 55
+      },
+      "n": 55,
+      "remote": "https://github.com/mojomast/Beatrice.git",
+      "sample": [
+        "D  .env.example",
+        "D  .gitignore",
+        "D  Dockerfile",
+        "D  README.md",
+        "D  beatrice.pid",
+        "D  bot/__init__.py",
+        "D  bot/__main__.py",
+        "D  bot/app.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/becomussy",
+      "branch": "main",
+      "counts": {
+        "D ": 121
+      },
+      "n": 121,
+      "remote": "https://github.com/mojomast/becomussy.git",
+      "sample": [
+        "D  .env.example",
+        "D  .gitignore",
+        "D  ARCHITECTURE.md",
+        "D  README.md",
+        "D  backend/Dockerfile",
+        "D  backend/alembic.ini",
+        "D  backend/app/__init__.py",
+        "D  backend/app/api/__init__.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/clanker01",
+      "branch": "main",
+      "counts": {
+        "D ": 219
+      },
+      "n": 219,
+      "remote": "https://github.com/mojomast/clanker01.git",
+      "sample": [
+        "D  ARCHITECTURE.md",
+        "D  CONTRIBUTING.md",
+        "D  DEPLOYMENT.md",
+        "D  LICENSE",
+        "D  README.md",
+        "D  cmd/swarm/internal/agent.go",
+        "D  cmd/swarm/internal/client.go",
+        "D  cmd/swarm/internal/config.go"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/clanker02",
+      "branch": "main",
+      "counts": {
+        "D ": 120
+      },
+      "n": 120,
+      "remote": "https://github.com/mojomast/clanker02.git",
+      "sample": [
+        "D  .env.example",
+        "D  .gitignore",
+        "D  .prettierignore",
+        "D  .prettierrc",
+        "D  Dockerfile",
+        "D  README.md",
+        "D  docker-compose.yml",
+        "D  eslint.config.js"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/clanker03",
+      "branch": "main",
+      "counts": {
+        "D ": 83
+      },
+      "n": 83,
+      "remote": "https://github.com/mojomast/clanker03.git",
+      "sample": [
+        "D  .github/workflows/cd.yml",
+        "D  .github/workflows/ci.yml",
+        "D  .github/workflows/e2e.yml",
+        "D  .gitignore",
+        "D  AGENTREPLAY_SPEC.md",
+        "D  README.md",
+        "D  agentreplay/DATA_DESIGN.md",
+        "D  agentreplay/README.md"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/clanker04",
+      "branch": "main",
+      "counts": {
+        "D ": 31
+      },
+      "n": 31,
+      "remote": "https://github.com/mojomast/clanker04.git",
+      "sample": [
+        "D  .gitignore",
+        "D  LICENSE",
+        "D  README.md",
+        "D  docs/architecture.md",
+        "D  docs/configuration.md",
+        "D  go.mod",
+        "D  go.sum",
+        "D  internal/agent/adapters/claude/adapter.go"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/clanker06",
+      "branch": "master",
+      "counts": {
+        "D ": 134
+      },
+      "n": 134,
+      "remote": "https://github.com/mojomast/clanker06.git",
+      "sample": [
+        "D  .env.example",
+        "D  .github/workflows/ci.yml",
+        "D  .gitignore",
+        "D  .npmrc",
+        "D  .prettierignore",
+        "D  .prettierrc",
+        "D  .vscode/extensions.json",
+        "D  DEPLOYMENT.md"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/clanker07",
+      "branch": "master",
+      "counts": {
+        "D ": 112
+      },
+      "n": 112,
+      "remote": "https://github.com/mojomast/clanker07.git",
+      "sample": [
+        "D  .env.example",
+        "D  .github/workflows/ci.yml",
+        "D  .gitignore",
+        "D  .npmrc",
+        "D  .prettierrc",
+        "D  .vscode/extensions.json",
+        "D  .vscode/settings.json",
+        "D  DEPLOYMENT.md"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/devussy",
+      "branch": "main",
+      "counts": {
+        "D ": 545
+      },
+      "n": 545,
+      "remote": "https://github.com/mojomast/devussy.git",
+      "sample": [
+        "D  .env.example",
+        "D  .env.test",
+        "D  .flake8",
+        "D  .gitignore",
+        "D  .kiro/steering/product.md",
+        "D  .kiro/steering/structure.md",
+        "D  .kiro/steering/tech.md",
+        "D  .pre-commit-config.yaml"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/hermes-agent",
+      "branch": "main",
+      "counts": {
+        "D ": 1491
+      },
+      "n": 1491,
+      "remote": "https://github.com/mojomast/hermes-agent.git",
+      "sample": [
+        "D  .dockerignore",
+        "D  .env.example",
+        "D  .envrc",
+        "D  .github/ISSUE_TEMPLATE/bug_report.yml",
+        "D  .github/ISSUE_TEMPLATE/config.yml",
+        "D  .github/ISSUE_TEMPLATE/feature_request.yml",
+        "D  .github/ISSUE_TEMPLATE/setup_help.yml",
+        "D  .github/PULL_REQUEST_TEMPLATE.md"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/ralphussy",
+      "branch": "main",
+      "counts": {
+        "D ": 222
+      },
+      "n": 222,
+      "remote": "https://github.com/mojomast/ralphussy.git",
+      "sample": [
+        "D  .github/workflows/test.yml",
+        "D  .gitignore",
+        "D  CLEANUP_SUMMARY.md",
+        "D  IMPLEMENTATION.md",
+        "D  IMPLEMENTATION_COMPLETED.md",
+        "D  IMPLEMENTATION_PLAN.md",
+        "D  MONITOR-FIX.md",
+        "D  NEXT_TUI_UPGRADE_PROMPT.md"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/roguelitussy",
+      "branch": "main",
+      "counts": {
+        "D ": 523
+      },
+      "n": 523,
+      "remote": "https://github.com/mojomast/roguelitussy.git",
+      "sample": [
+        "D  .editorconfig",
+        "D  .gitignore",
+        "D  Addons/roguelike_tools/RoguelikeToolsPlugin.cs",
+        "D  Addons/roguelike_tools/RoguelikeToolsPlugin.cs.uid",
+        "D  Addons/roguelike_tools/plugin.cfg",
+        "D  Assets/0x72_source.txt",
+        "D  Assets/Fonts/default_font.tres",
+        "D  Assets/Sprites/0x72/Big_Demon_Idle_1.png"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/swarmussy",
+      "branch": "master",
+      "counts": {
+        "D ": 1134
+      },
+      "n": 1134,
+      "remote": "https://github.com/mojomast/swarmussy.git",
+      "sample": [
+        "D  .env",
+        "D  .env.example",
+        "D  .gitignore",
+        "D  .hypothesis/constants/003ed9435c6e6e8c",
+        "D  .hypothesis/constants/006b559781a41f7f",
+        "D  .hypothesis/constants/01767735a9e8256f",
+        "D  .hypothesis/constants/02aa8a0079b29a8e",
+        "D  .hypothesis/constants/0303d8c7ffe4ee2d"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/uberclawcontrol",
+      "branch": "main",
+      "counts": {
+        "D ": 296
+      },
+      "n": 296,
+      "remote": "https://github.com/mojomast/uberclawcontrol.git",
+      "sample": [
+        "D  .DS_Store",
+        "D  .dockerignore",
+        "D  .env.production.example",
+        "D  .gitattributes",
+        "D  .github/dependabot.yml",
+        "D  .github/workflows/ci.yml",
+        "D  .github/workflows/release.yml",
+        "D  .gitignore"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/ussycode",
+      "branch": "main",
+      "counts": {
+        "D ": 156
+      },
+      "n": 156,
+      "remote": "https://github.com/mojomast/ussycode.git",
+      "sample": [
+        "D  .gitignore",
+        "D  AUDIT-REPORT.md",
+        "D  LICENSE",
+        "D  PLAN-exe-dev-parity-roadmap.md",
+        "D  PROGRESS-A.md",
+        "D  PROGRESS-B.md",
+        "D  PROGRESS-C.md",
+        "D  PROGRESS-E.md"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/chat-bots/Tchaikovskussy",
+      "branch": "main",
+      "counts": {
+        "D ": 27
+      },
+      "n": 27,
+      "remote": "https://github.com/mojomast/Tchaikovskussy.git",
+      "sample": [
+        "D  .env.example",
+        "D  .gitignore",
+        "D  README.md",
+        "D  backend/config.py",
+        "D  backend/llm.py",
+        "D  backend/main.py",
+        "D  backend/models.py",
+        "D  backend/requirements.txt"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/chat-bots/botmanagussy",
+      "branch": "master",
+      "counts": {
+        "D ": 7
+      },
+      "n": 7,
+      "remote": "https://github.com/mojomast/botmanagussy.git",
+      "sample": [
+        "D  README.md",
+        "D  botmanager/__init__.py",
+        "D  botmanager/__main__.py",
+        "D  botmanager/cli.py",
+        "D  botmanager/db.py",
+        "D  botmanager/process_manager.py",
+        "D  requirements.txt"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/chat-bots/diffusionchatussy",
+      "branch": "main",
+      "counts": {
+        "D ": 27
+      },
+      "n": 27,
+      "remote": "https://github.com/mojomast/diffusionchatussy.git",
+      "sample": [
+        "D  .env.example",
+        "D  .gitignore",
+        "D  README.md",
+        "D  backend/config.py",
+        "D  backend/llm.py",
+        "D  backend/main.py",
+        "D  backend/models.py",
+        "D  backend/requirements.txt"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/chat-bots/gemini-nano-banana-discord-bot",
+      "branch": "master",
+      "counts": {
+        "D ": 53
+      },
+      "n": 53,
+      "remote": "https://github.com/mojomast/gemini-nano-banana-discord-bot.git",
+      "sample": [
+        "D  .dockerignore",
+        "D  .env.example",
+        "D  .git_commit_msg.txt",
+        "D  .gitignore",
+        "D  .pre-commit-config.yaml",
+        "D  CHANGELOG.md",
+        "D  CONFIG.md",
+        "D  CONTRIBUTING.md"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/chat-bots/ragussy",
+      "branch": "master",
+      "counts": {
+        "D ": 93
+      },
+      "n": 93,
+      "remote": "https://github.com/mojomast/ragussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  backend/.env.example",
+        "D  backend/Dockerfile",
+        "D  backend/app/__init__.py",
+        "D  backend/app/api/__init__.py",
+        "D  backend/app/api/chat.py",
+        "D  backend/app/api/config.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/chat-bots/ussybot",
+      "branch": "main",
+      "counts": {
+        "D ": 28
+      },
+      "n": 28,
+      "remote": "https://github.com/mojomast/ussybot.git",
+      "sample": [
+        "D  .env.example",
+        "D  .gitignore",
+        "D  MVP_PLAN.md",
+        "D  README.md",
+        "D  data/.gitkeep",
+        "D  devplan-devussy-discord-bot-python.md",
+        "D  handoff.md",
+        "D  nextstep.md"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/chat-bots/ussyring",
+      "branch": "main",
+      "counts": {
+        "D ": 7
+      },
+      "n": 7,
+      "remote": "https://github.com/mojomast/ussyring.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  main.py",
+        "D  nginx-ussy.host",
+        "D  webring-api.service",
+        "D  webring.json",
+        "D  widget.js"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/chat-bots/xcancelussybot",
+      "branch": "main",
+      "counts": {
+        "D ": 20
+      },
+      "n": 20,
+      "remote": "https://github.com/mojomast/xcancelussybot.git",
+      "sample": [
+        "D  .env.example",
+        "D  .gitignore",
+        "D  README.md",
+        "D  bot.js",
+        "D  data/image_macros.json",
+        "D  data/requests.json",
+        "D  data/rpg/channels.json",
+        "D  data/rpg/game_state.json"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/alembicussy",
+      "branch": "main",
+      "counts": {
+        "D ": 26
+      },
+      "n": 26,
+      "remote": "https://github.com/mojomast/alembicussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  pyproject.toml",
+        "D  src/alembic/__init__.py",
+        "D  src/alembic/__main__.py",
+        "D  src/alembic/azeotrope.py",
+        "D  src/alembic/cli.py",
+        "D  src/alembic/column.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/cavityussy",
+      "branch": "main",
+      "counts": {
+        "D ": 28
+      },
+      "n": 28,
+      "remote": "https://github.com/mojomast/cavityussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  pyproject.toml",
+        "D  src/cavity/__init__.py",
+        "D  src/cavity/__main__.py",
+        "D  src/cavity/beat_frequency.py",
+        "D  src/cavity/cli.py",
+        "D  src/cavity/damping.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/churnmap",
+      "branch": "main",
+      "counts": {
+        "D ": 19
+      },
+      "n": 19,
+      "remote": "https://github.com/mojomast/churnmap.git",
+      "sample": [
+        "D  .gitignore",
+        "D  LICENSE",
+        "D  README.md",
+        "D  SPEC.md",
+        "D  churnmap/__init__.py",
+        "D  churnmap/cli.py",
+        "D  churnmap/cochange.py",
+        "D  churnmap/colors.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/dosemateussy",
+      "branch": "main",
+      "counts": {
+        "D ": 30
+      },
+      "n": 30,
+      "remote": "https://github.com/mojomast/dosemateussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  dosemate/__init__.py",
+        "D  dosemate/__main__.py",
+        "D  dosemate/absorption.py",
+        "D  dosemate/ci_collector.py",
+        "D  dosemate/cli.py",
+        "D  dosemate/ddi.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/hitchussy",
+      "branch": "main",
+      "counts": {
+        "D ": 21
+      },
+      "n": 21,
+      "remote": "https://github.com/mojomast/hitchussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  pyproject.toml",
+        "D  src/hitch/__init__.py",
+        "D  src/hitch/__main__.py",
+        "D  src/hitch/classify.py",
+        "D  src/hitch/cli.py",
+        "D  src/hitch/graph.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/isobarussy",
+      "branch": "main",
+      "counts": {
+        "D ": 22
+      },
+      "n": 22,
+      "remote": "https://github.com/mojomast/isobarussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  isobar/__init__.py",
+        "D  isobar/__main__.py",
+        "D  isobar/cli.py",
+        "D  isobar/cyclones.py",
+        "D  isobar/fields.py",
+        "D  isobar/forecast.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/kintsugiussy",
+      "branch": "main",
+      "counts": {
+        "D ": 19
+      },
+      "n": 19,
+      "remote": "https://github.com/mojomast/kintsugiussy.git",
+      "sample": [
+        "D  .github/workflows/ci.yml",
+        "D  .gitignore",
+        "D  README.md",
+        "D  conftest.py",
+        "D  pyproject.toml",
+        "D  src/kintsugi/__init__.py",
+        "D  src/kintsugi/archaeology.py",
+        "D  src/kintsugi/cli.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/kompressiussy",
+      "branch": "main",
+      "counts": {
+        "D ": 35
+      },
+      "n": 35,
+      "remote": "https://github.com/mojomast/kompressiussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  kompressi/__init__.py",
+        "D  kompressi/__main__.py",
+        "D  kompressi/cli.py",
+        "D  kompressi/cluster.py",
+        "D  kompressi/compressors.py",
+        "D  kompressi/delta.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/morsethussy",
+      "branch": "main",
+      "counts": {
+        "D ": 32
+      },
+      "n": 32,
+      "remote": "https://github.com/mojomast/morsethussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  morseth/__init__.py",
+        "D  morseth/__main__.py",
+        "D  morseth/ast_parser.py",
+        "D  morseth/cli.py",
+        "D  morseth/critical.py",
+        "D  morseth/diagram.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/snapshotussy",
+      "branch": "main",
+      "counts": {
+        "D ": 30
+      },
+      "n": 30,
+      "remote": "https://github.com/mojomast/snapshotussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  pyproject.toml",
+        "D  snapshot/__init__.py",
+        "D  snapshot/__main__.py",
+        "D  snapshot/cli.py",
+        "D  snapshot/context.py",
+        "D  snapshot/core.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/stenography",
+      "branch": "master",
+      "counts": {
+        "D ": 26
+      },
+      "n": 26,
+      "remote": "https://github.com/mojomast/stenography.git",
+      "sample": [
+        "D  .github/workflows/scan.yml",
+        "D  .gitignore",
+        "D  README.md",
+        "D  SPEC.md",
+        "D  action.yml",
+        "D  pyproject.toml",
+        "D  src/stenography/__init__.py",
+        "D  src/stenography/cli.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/strudelussy",
+      "branch": "",
+      "counts": {
+        " D": 8
+      },
+      "n": 8,
+      "remote": "https://github.com/mojomast/strudelussy.git",
+      "sample": [
+        " D ui/assets/logo.png",
+        " D ui/assets/logo2.png",
+        " D ui/public/apple-touch-icon.png",
+        " D ui/public/favicon-96x96.png",
+        " D ui/public/favicon.svg",
+        " D ui/public/toaster-banner.png",
+        " D ui/public/web-app-manifest-192x192.png",
+        " D ui/public/web-app-manifest-512x512.png"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/tellussy",
+      "branch": "main",
+      "counts": {
+        "D ": 27
+      },
+      "n": 27,
+      "remote": "https://github.com/mojomast/tellussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  pyproject.toml",
+        "D  smoke_test.py",
+        "D  src/tell/__init__.py",
+        "D  src/tell/__main__.py",
+        "D  src/tell/artifacts.py",
+        "D  src/tell/builder.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/topussy",
+      "branch": "main",
+      "counts": {
+        "D ": 71
+      },
+      "n": 71,
+      "remote": "https://github.com/mojomast/topussy.git",
+      "sample": [
+        "D  .github/workflows/ci.yml",
+        "D  .gitignore",
+        "D  CLAUDE.md",
+        "D  CONTRIBUTING.md",
+        "D  README.md",
+        "D  bun.lock",
+        "D  devplan.md",
+        "D  docs/config.md"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/unconformity",
+      "branch": "master",
+      "counts": {
+        "D ": 29
+      },
+      "n": 29,
+      "remote": "https://github.com/mojomast/unconformity.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  SPEC.md",
+        "D  pyproject.toml",
+        "D  src/unconformity/__init__.py",
+        "D  src/unconformity/cli.py",
+        "D  src/unconformity/detectors/__init__.py",
+        "D  src/unconformity/detectors/angular.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/ussycodeproxy",
+      "branch": "main",
+      "counts": {
+        "D ": 29
+      },
+      "n": 29,
+      "remote": "https://github.com/mojomast/ussycodeproxy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  admin.html",
+        "D  admin/index.html",
+        "D  certbot-dns-hook.sh",
+        "D  cmd/ussycode/main.go",
+        "D  cmd/ussyctl/main.go",
+        "D  go.mod"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/voltronussy",
+      "branch": "master",
+      "counts": {
+        "D ": 106
+      },
+      "n": 106,
+      "remote": "https://github.com/mojomast/voltronussy.git",
+      "sample": [
+        "D  .github/CODEOWNERS",
+        "D  .github/ISSUE_TEMPLATE/bug-report.md",
+        "D  .github/ISSUE_TEMPLATE/game-submission.md",
+        "D  .github/ISSUE_TEMPLATE/patch-proposal.md",
+        "D  .github/ISSUE_TEMPLATE/promotion-checklist.md",
+        "D  .github/PULL_REQUEST_TEMPLATE.md",
+        "D  .github/labels.yml",
+        "D  .github/workflows/ci.yml"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/creative/365cspadminussy",
+      "branch": "main",
+      "counts": {
+        "D ": 28
+      },
+      "n": 28,
+      "remote": "https://github.com/mojomast/365cspadminussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  Documentation/APIReference.md",
+        "D  Documentation/Contributing.md",
+        "D  Documentation/Installation-Guide.md",
+        "D  Documentation/PermissionsSetup.md",
+        "D  Documentation/Security-Guide.md",
+        "D  Documentation/SetupGuide.md",
+        "D  Documentation/Troubleshooting.md"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/creative/ArtistSiteussy",
+      "branch": "master",
+      "counts": {
+        "D ": 99
+      },
+      "n": 99,
+      "remote": "https://github.com/mojomast/ArtistSiteussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  __tests__/updateInventory.test.ts",
+        "D  app/admin/commissions/page.tsx",
+        "D  app/admin/events/page.tsx",
+        "D  app/admin/layout.tsx",
+        "D  app/admin/login/page.tsx",
+        "D  app/admin/page.tsx"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/creative/driftlineussy",
+      "branch": "main",
+      "counts": {
+        "D ": 24
+      },
+      "n": 24,
+      "remote": "https://github.com/mojomast/driftlineussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  pyproject.toml",
+        "D  src/driftline/__init__.py",
+        "D  src/driftline/__main__.py",
+        "D  src/driftline/archipelago.py",
+        "D  src/driftline/cli.py",
+        "D  src/driftline/convergence.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/creative/fruityboofs",
+      "branch": "main",
+      "counts": {
+        "D ": 33
+      },
+      "n": 33,
+      "remote": "https://github.com/mojomast/fruityboofs.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  app.js",
+        "D  index.html",
+        "D  modules/arrangement.js",
+        "D  modules/automation-lane.js",
+        "D  modules/chords.js",
+        "D  modules/gesture-melody.js"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/creative/inkblotussy",
+      "branch": "main",
+      "counts": {
+        "D ": 26
+      },
+      "n": 26,
+      "remote": "https://github.com/mojomast/inkblotussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  inkblot/__init__.py",
+        "D  inkblot/cli.py",
+        "D  inkblot/codebase.py",
+        "D  inkblot/comparer.py",
+        "D  inkblot/diversity.py",
+        "D  inkblot/extractor.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/creative/llmproxy",
+      "branch": "main",
+      "counts": {
+        "D ": 113
+      },
+      "n": 113,
+      "remote": "https://github.com/mojomast/llmproxy.git",
+      "sample": [
+        "D  .dockerignore",
+        "D  .env.example",
+        "D  .github/CODEOWNERS",
+        "D  .github/FUNDING.yml",
+        "D  .github/ISSUE_TEMPLATE/bug_report.yml",
+        "D  .github/ISSUE_TEMPLATE/config.yml",
+        "D  .github/ISSUE_TEMPLATE/feature_request.yml",
+        "D  .github/actions/bot-setup/action.yml"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/creative/partymemberbotussy",
+      "branch": "master",
+      "counts": {
+        "D ": 14
+      },
+      "n": 14,
+      "remote": "https://github.com/mojomast/partymemberbotussy.git",
+      "sample": [
+        "D  .env.example",
+        "D  .gitignore",
+        "D  README.md",
+        "D  data/.gitkeep",
+        "D  logs/.gitkeep",
+        "D  requirements.txt",
+        "D  run.py",
+        "D  src/__init__.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/creative/tarotussy",
+      "branch": "main",
+      "counts": {
+        "D ": 21
+      },
+      "n": 21,
+      "remote": "https://github.com/mojomast/tarotussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  pyproject.toml",
+        "D  tarot/__init__.py",
+        "D  tarot/__main__.py",
+        "D  tarot/bayesian.py",
+        "D  tarot/cards.py",
+        "D  tarot/cli.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/data-science/aquiferussy",
+      "branch": "main",
+      "counts": {
+        "D ": 24
+      },
+      "n": 24,
+      "remote": "https://github.com/mojomast/aquiferussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  aquifer/__init__.py",
+        "D  aquifer/__main__.py",
+        "D  aquifer/cli.py",
+        "D  aquifer/contour.py",
+        "D  aquifer/darcy.py",
+        "D  aquifer/drawdown.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/data-science/bananagen",
+      "branch": "main",
+      "counts": {
+        "D ": 85
+      },
+      "n": 85,
+      "remote": "https://github.com/mojomast/bananagen.git",
+      "sample": [
+        "D  .env.example",
+        "D  .github/copilot-instructions.md",
+        "D  .github/prompts/plan.prompt.md",
+        "D  .github/prompts/specify.prompt.md",
+        "D  .github/prompts/tasks.prompt.md",
+        "D  .gitignore",
+        "D  LICENSE",
+        "D  README.md"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/data-science/broipussy",
+      "branch": "main",
+      "counts": {
+        "D ": 99
+      },
+      "n": 99,
+      "remote": "https://github.com/mojomast/broipussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  .vscode/launch.json",
+        "D  README.md",
+        "D  broip-cli/dist/components/AISommelier.js",
+        "D  broip-cli/dist/components/Achievements.js",
+        "D  broip-cli/dist/components/AutoCarb.js",
+        "D  broip-cli/dist/components/BowlStatus.js",
+        "D  broip-cli/dist/components/CrystalAnalyzer.js"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/data-science/cycloneussy",
+      "branch": "main",
+      "counts": {
+        "D ": 22
+      },
+      "n": 22,
+      "remote": "https://github.com/mojomast/cycloneussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  pyproject.toml",
+        "D  src/cyclone/__init__.py",
+        "D  src/cyclone/__main__.py",
+        "D  src/cyclone/category.py",
+        "D  src/cyclone/cisk.py",
+        "D  src/cyclone/cli.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/data-science/endemicussy",
+      "branch": "main",
+      "counts": {
+        "D ": 32
+      },
+      "n": 32,
+      "remote": "https://github.com/mojomast/endemicussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  endemic/__init__.py",
+        "D  endemic/__main__.py",
+        "D  endemic/cli.py",
+        "D  endemic/git_tracer.py",
+        "D  endemic/herd_immunity.py",
+        "D  endemic/models.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/data-science/gamutussy",
+      "branch": "main",
+      "counts": {
+        "D ": 35
+      },
+      "n": 35,
+      "remote": "https://github.com/mojomast/gamutussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  gamut/__init__.py",
+        "D  gamut/__main__.py",
+        "D  gamut/analyzer.py",
+        "D  gamut/cli.py",
+        "D  gamut/dag_parser.py",
+        "D  gamut/models.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/data-science/ghstatsussy",
+      "branch": "main",
+      "counts": {
+        "D ": 89
+      },
+      "n": 89,
+      "remote": "https://github.com/mojomast/ghstatsussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  Dockerfile",
+        "D  HOSTED_SPEC.md",
+        "D  README.md",
+        "D  SPEC.md",
+        "D  docker-compose.preview.yml",
+        "D  docker-compose.yml",
+        "D  docs/export-and-profile-publishing-handoff.md"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/data-science/petrichorussy",
+      "branch": "master",
+      "counts": {
+        "D ": 27
+      },
+      "n": 27,
+      "remote": "https://github.com/mojomast/petrichorussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  pyproject.toml",
+        "D  src/petrichor/__init__.py",
+        "D  src/petrichor/__main__.py",
+        "D  src/petrichor/cli.py",
+        "D  src/petrichor/db.py",
+        "D  src/petrichor/diff.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/data-science/stemmaussy",
+      "branch": "main",
+      "counts": {
+        "D ": 30
+      },
+      "n": 30,
+      "remote": "https://github.com/mojomast/stemmaussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  pyproject.toml",
+        "D  stemma/__init__.py",
+        "D  stemma/__main__.py",
+        "D  stemma/alignment.py",
+        "D  stemma/classify.py",
+        "D  stemma/cli.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/data-science/telegraphaussy",
+      "branch": "main",
+      "counts": {
+        "D ": 31
+      },
+      "n": 31,
+      "remote": "https://github.com/mojomast/telegraphaussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  pyproject.toml",
+        "D  telegrapha/__init__.py",
+        "D  telegrapha/__main__.py",
+        "D  telegrapha/attenuation.py",
+        "D  telegrapha/capacity.py",
+        "D  telegrapha/cli.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/BackupUSSY",
+      "branch": "main",
+      "counts": {
+        "D ": 69
+      },
+      "n": 69,
+      "remote": "https://github.com/mojomast/BackupUSSY.git",
+      "sample": [
+        "D  .gitignore",
+        "D  CHANGELOG.md",
+        "D  CLI_README.md",
+        "D  CONTRIBUTING.md",
+        "D  LICENSE",
+        "D  README.md",
+        "D  backupussy.conf.example",
+        "D  backupussy.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/assayussy",
+      "branch": "main",
+      "counts": {
+        "D ": 33
+      },
+      "n": 33,
+      "remote": "https://github.com/mojomast/assayussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  assay/__init__.py",
+        "D  assay/__main__.py",
+        "D  assay/alloy.py",
+        "D  assay/classifier.py",
+        "D  assay/cli.py",
+        "D  assay/compose.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/blinkslice",
+      "branch": "feature/llm-enrichment",
+      "counts": {
+        "D ": 30
+      },
+      "n": 30,
+      "remote": "https://github.com/mojomast/blinkslice.git",
+      "sample": [
+        "D  .env.example",
+        "D  DEVLOG.md",
+        "D  DEVPLAN.md",
+        "D  PROGRESS.MD",
+        "D  README.md",
+        "D  backend/__init__.py",
+        "D  backend/architecture.md",
+        "D  backend/cache/__init__.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/circadiaussy",
+      "branch": "main",
+      "counts": {
+        "D ": 21
+      },
+      "n": 21,
+      "remote": "https://github.com/mojomast/circadiaussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  circadia/__init__.py",
+        "D  circadia/__main__.py",
+        "D  circadia/cli.py",
+        "D  circadia/config.py",
+        "D  circadia/estimator.py",
+        "D  circadia/hooks.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/coronerussy",
+      "branch": "main",
+      "counts": {
+        "D ": 34
+      },
+      "n": 34,
+      "remote": "https://github.com/mojomast/coronerussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  coroner/__init__.py",
+        "D  coroner/__main__.py",
+        "D  coroner/cli.py",
+        "D  coroner/custody.py",
+        "D  coroner/db.py",
+        "D  coroner/investigate.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/crystallossy",
+      "branch": "main",
+      "counts": {
+        "D ": 24
+      },
+      "n": 24,
+      "remote": "https://github.com/mojomast/crystallossy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  pyproject.toml",
+        "D  src/crystallo/__init__.py",
+        "D  src/crystallo/__main__.py",
+        "D  src/crystallo/classify.py",
+        "D  src/crystallo/cli.py",
+        "D  src/crystallo/defects.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/designussy",
+      "branch": "master",
+      "counts": {
+        "D ": 1591
+      },
+      "n": 1591,
+      "remote": "https://github.com/mojomast/designussy.git",
+      "sample": [
+        "D  .env",
+        "D  .env.example",
+        "D  .github/workflows/test.yml",
+        "D  ASSETS_GUIDE.md",
+        "D  HANDOFF.md",
+        "D  HANDOFF.old.md",
+        "D  HANDOFF_P2T1.old.txt",
+        "D  HANDOFF_P2T1.txt"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/fatigueussy",
+      "branch": "main",
+      "counts": {
+        "D ": 29
+      },
+      "n": 29,
+      "remote": "https://github.com/mojomast/fatigueussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  fatigue/__init__.py",
+        "D  fatigue/__main__.py",
+        "D  fatigue/cli.py",
+        "D  fatigue/models.py",
+        "D  fatigue/monitor.py",
+        "D  fatigue/paris.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/fossilrecordussy",
+      "branch": "main",
+      "counts": {
+        "D ": 26
+      },
+      "n": 26,
+      "remote": "https://github.com/mojomast/fossilrecordussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  fossilrecord/__init__.py",
+        "D  fossilrecord/__main__.py",
+        "D  fossilrecord/cli.py",
+        "D  fossilrecord/compare/__init__.py",
+        "D  fossilrecord/compare/comparator.py",
+        "D  fossilrecord/corpus/__init__.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/geoffrussy",
+      "branch": "master",
+      "counts": {
+        "D ": 223
+      },
+      "n": 223,
+      "remote": "https://github.com/mojomast/geoffrussy.git",
+      "sample": [
+        "D  .dockerignore",
+        "D  .github/workflows/ci.yml",
+        "D  .github/workflows/release.yml",
+        "D  .gitignore",
+        "D  .golangci.yml",
+        "D  .kiro/specs/geoffrey-ai-agent/design.md",
+        "D  .kiro/specs/geoffrey-ai-agent/requirements.md",
+        "D  .kiro/specs/geoffrey-ai-agent/tasks.md"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/mushinussy",
+      "branch": "main",
+      "counts": {
+        "D ": 22
+      },
+      "n": 22,
+      "remote": "https://github.com/mojomast/mushinussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  mushin/__init__.py",
+        "D  mushin/__main__.py",
+        "D  mushin/bookmarks.py",
+        "D  mushin/branching.py",
+        "D  mushin/cli.py",
+        "D  mushin/diff.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/reverseoracleussy",
+      "branch": "main",
+      "counts": {
+        "D ": 28
+      },
+      "n": 28,
+      "remote": "https://github.com/mojomast/reverseoracleussy.git",
+      "sample": [
+        "D  .build-status",
+        "D  .built",
+        "D  .gitignore",
+        "D  PROMPT.md",
+        "D  README.md",
+        "D  SPEC.md",
+        "D  pyproject.toml",
+        "D  src/reverseoracle/__init__.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/seralussy",
+      "branch": "main",
+      "counts": {
+        "D ": 29
+      },
+      "n": 29,
+      "remote": "https://github.com/mojomast/seralussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  pyproject.toml",
+        "D  seral/__init__.py",
+        "D  seral/__main__.py",
+        "D  seral/cli.py",
+        "D  seral/config.py",
+        "D  seral/diff.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/sigintussy",
+      "branch": "master",
+      "counts": {
+        "D ": 65
+      },
+      "n": 65,
+      "remote": "https://github.com/mojomast/sigintussy.git",
+      "sample": [
+        "D  .github/ISSUE_TEMPLATE/bug_report.md",
+        "D  .github/ISSUE_TEMPLATE/feature_request.md",
+        "D  .github/ISSUE_TEMPLATE/hardware_issue.md",
+        "D  .github/PULL_REQUEST_TEMPLATE.md",
+        "D  Brand-Guidelines.md",
+        "D  CHANGELOG.md",
+        "D  CODE_OF_CONDUCT.md",
+        "D  CONTRIBUTING.md"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/stratagitussy",
+      "branch": "main",
+      "counts": {
+        "D ": 26
+      },
+      "n": 26,
+      "remote": "https://github.com/mojomast/stratagitussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  pyproject.toml",
+        "D  stratagit/__init__.py",
+        "D  stratagit/__main__.py",
+        "D  stratagit/cli.py",
+        "D  stratagit/core/__init__.py",
+        "D  stratagit/core/carbon_date.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/terrariumussy",
+      "branch": "main",
+      "counts": {
+        "D ": 44
+      },
+      "n": 44,
+      "remote": "https://github.com/mojomast/terrariumussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  pyproject.toml",
+        "D  terrarium/__init__.py",
+        "D  terrarium/cli.py",
+        "D  terrarium/ecosystem/__init__.py",
+        "D  terrarium/ecosystem/diagnosis.py",
+        "D  terrarium/ecosystem/model.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/timeloomussy",
+      "branch": "main",
+      "counts": {
+        "D ": 24
+      },
+      "n": 24,
+      "remote": "https://github.com/mojomast/timeloomussy.git",
+      "sample": [
+        "D  .build-status",
+        "D  .built",
+        "D  .gitignore",
+        "D  PROMPT.md",
+        "D  README.md",
+        "D  SPEC.md",
+        "D  pyproject.toml",
+        "D  src/timeloom/__init__.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/ussybiot",
+      "branch": "master",
+      "counts": {
+        "D ": 16
+      },
+      "n": 16,
+      "remote": "https://github.com/mojomast/ussybiot.git",
+      "sample": [
+        "D  .env.example",
+        "D  .gitignore",
+        "D  README.md",
+        "D  data/.gitkeep",
+        "D  devplan-devussy-discord-bot-python.md",
+        "D  requirements.txt",
+        "D  run.py",
+        "D  src/__init__.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/games/CONTAINERWARZ",
+      "branch": "main",
+      "counts": {
+        "D ": 26
+      },
+      "n": 26,
+      "remote": "https://github.com/mojomast/CONTAINERWARZ.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  eslint.config.js",
+        "D  index.html",
+        "D  package-lock.json",
+        "D  package.json",
+        "D  public/vite.svg",
+        "D  src/App.css"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/games/mudussy",
+      "branch": "main",
+      "counts": {
+        "D ": 486
+      },
+      "n": 486,
+      "remote": "https://github.com/mojomast/mudussy.git",
+      "sample": [
+        "D  .env",
+        "D  .env.example",
+        "D  .eslintrc.js",
+        "D  .github/workflows/ci.yml",
+        "D  .gitignore",
+        "D  .prettierrc",
+        "D  DEVLOG.md",
+        "D  Dockerfile"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/games/pawn-shop-pioneers",
+      "branch": "main",
+      "counts": {
+        "D ": 61
+      },
+      "n": 61,
+      "remote": "https://github.com/mojomast/pawn-shop-pioneers.git",
+      "sample": [
+        "D  .codecov.yml",
+        "D  .github/workflows/e2e.yml",
+        "D  .github/workflows/quality-gate.yml",
+        "D  .github/workflows/test.yml",
+        "D  .gitignore",
+        "D  .husky/pre-commit",
+        "D  .roo/rules-orchestrator/rules.md",
+        "D  .roomodes"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/games/rpg-dm-bot",
+      "branch": "master",
+      "counts": {
+        "D ": 64
+      },
+      "n": 64,
+      "remote": "https://github.com/mojomast/rpg-dm-bot.git",
+      "sample": [
+        "D  .gitignore",
+        "D  HANDOFF.md",
+        "D  README.md",
+        "D  data/game_data/classes.json",
+        "D  data/game_data/enemies.json",
+        "D  data/game_data/items.json",
+        "D  data/game_data/npc_templates.json",
+        "D  data/game_data/races.json"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/games/scoreboardussy",
+      "branch": "main",
+      "counts": {
+        "D ": 168
+      },
+      "n": 168,
+      "remote": "https://github.com/mojomast/scoreboardussy.git",
+      "sample": [
+        "D  .dockerignore",
+        "D  .github/workflows/ci-deploy.yml",
+        "D  .github/workflows/ci.yml",
+        "D  .github/workflows/release-windows.yml",
+        "D  .gitignore",
+        "D  ADD_FEATURE_GUIDE.md",
+        "D  CHANGELOG.md",
+        "D  Caddyfile"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/games/stallionussy",
+      "branch": "master",
+      "counts": {
+        "D ": 68
+      },
+      "n": 68,
+      "remote": "https://github.com/mojomast/stallionussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  CASINO_DESIGN_SPEC.md",
+        "D  Dockerfile",
+        "D  MULTIPLAYER_ENGAGEMENT_RESEARCH.md",
+        "D  Makefile",
+        "D  README.md",
+        "D  REVIEW_FINDINGS.md",
+        "D  cmd/stallionussy/main.go"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/infra/dashboardussy",
+      "branch": "main",
+      "counts": {
+        "D ": 32
+      },
+      "n": 32,
+      "remote": "https://github.com/mojomast/dashboardussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  DEPLOYMENT.md",
+        "D  HANDOFF.md",
+        "D  README.md",
+        "D  agent.py",
+        "D  app.py",
+        "D  clean_app.py",
+        "D  crash_app.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/infra/evenia-mudlet-llm",
+      "branch": "main",
+      "counts": {
+        "D ": 1616
+      },
+      "n": 1616,
+      "remote": "https://github.com/mojomast/evenia-mudlet-llm.git",
+      "sample": [
+        "D  .flake8",
+        "D  .github/CONTRIBUTING.md",
+        "D  .github/FUNDING.yml",
+        "D  .github/ISSUE_TEMPLATE.md",
+        "D  .github/ISSUE_TEMPLATE/bug-report.md",
+        "D  .github/ISSUE_TEMPLATE/config.yml",
+        "D  .github/ISSUE_TEMPLATE/documentation-issue.md",
+        "D  .github/ISSUE_TEMPLATE/feature-request.md"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/infra/familydashboardussy",
+      "branch": "main",
+      "counts": {
+        "D ": 55
+      },
+      "n": 55,
+      "remote": "https://github.com/mojomast/familydashboardussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  development-plan.md",
+        "D  devplan.md",
+        "D  eslint-output.json",
+        "D  eslint.config.js",
+        "D  index.html",
+        "D  package-lock.json"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/infra/warpussy",
+      "branch": "master",
+      "counts": {
+        "D ": 25
+      },
+      "n": 25,
+      "remote": "https://github.com/mojomast/warpussy.git",
+      "sample": [
+        "D  HANDOFF.md",
+        "D  IMPLEMENTATION_SUMMARY.md",
+        "D  IMPROVEMENT_SUMMARY.md",
+        "D  PHASE3_ENHANCEMENTS.md",
+        "D  README.md",
+        "D  cmd/warpussy/main.go",
+        "D  go.mod",
+        "D  go.sum"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/media/mediageckussy",
+      "branch": "main",
+      "counts": {
+        "D ": 267
+      },
+      "n": 267,
+      "remote": "https://github.com/mojomast/mediageckussy.git",
+      "sample": [
+        "D  .env.example",
+        "D  .github/workflows/deploy-github-pages.yml",
+        "D  .github/workflows/validate.yml",
+        "D  .gitignore",
+        "D  CHANGELOG.md",
+        "D  README.md",
+        "D  deploy/glass-harbor-site/about.html",
+        "D  deploy/glass-harbor-site/assets/styles.css"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/media/weouthere",
+      "branch": "main",
+      "counts": {
+        "D ": 188
+      },
+      "n": 188,
+      "remote": "https://github.com/mojomast/weouthere.git",
+      "sample": [
+        "D  .gitignore",
+        "D  00_admin/assumptions.md",
+        "D  00_admin/canon_lock.md",
+        "D  00_admin/master_schedule.md",
+        "D  00_admin/partner_materials_index.md",
+        "D  00_admin/project_glossary.md",
+        "D  00_admin/risk_register.md",
+        "D  00_admin/studio_manifest.md"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/security/365compromisesleuth",
+      "branch": "main",
+      "counts": {
+        "D ": 10
+      },
+      "n": 10,
+      "remote": "https://github.com/mojomast/365compromisesleuth.git",
+      "sample": [
+        "D  Modules/CaseFolder.psm1",
+        "D  Modules/Connection.ps1",
+        "D  Modules/EntraEvidence.psm1",
+        "D  Modules/ExchangeEvidence.ps1",
+        "D  Modules/Logging.psm1",
+        "D  Modules/Prerequisites.psm1",
+        "D  Modules/SignInAnalysis.psm1",
+        "D  Modules/Summary.psm1"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/security/fireslice",
+      "branch": "main",
+      "counts": {
+        "D ": 200
+      },
+      "n": 200,
+      "remote": "https://github.com/mojomast/fireslice.git",
+      "sample": [
+        "D  .gitignore",
+        "D  LICENSE",
+        "D  README.md",
+        "D  cmd/fireslice-bastion/main.go",
+        "D  cmd/fireslice-guest-init/main.go",
+        "D  cmd/fireslice-guest-ssh/main.go",
+        "D  cmd/fireslice/main.go",
+        "D  cmd/ussycode/main.go"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/security/mintussy",
+      "branch": "main",
+      "counts": {
+        "D ": 29
+      },
+      "n": 29,
+      "remote": "https://github.com/mojomast/mintussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  mint/__init__.py",
+        "D  mint/__main__.py",
+        "D  mint/cli.py",
+        "D  mint/composition.py",
+        "D  mint/counterfeit.py",
+        "D  mint/debasement.py"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/security/openclawremoteussy",
+      "branch": "main",
+      "counts": {
+        "D ": 12
+      },
+      "n": 12,
+      "remote": "https://github.com/mojomast/openclawremoteussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  LICENSE",
+        "D  README.md",
+        "D  docs/ARCHITECTURE.md",
+        "D  docs/USAGE.md",
+        "D  go.mod",
+        "D  go.sum",
+        "D  internal/remote/errors.go"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/security/openclawssy",
+      "branch": "main",
+      "counts": {
+        "D ": 492
+      },
+      "n": 492,
+      "remote": "https://github.com/mojomast/openclawssy.git",
+      "sample": [
+        "D  .dockerignore",
+        "D  .env.example",
+        "D  .factory/droids/user-testing-flow-validator.md",
+        "D  .factory/init.sh",
+        "D  .factory/library/architecture.md",
+        "D  .factory/library/environment.md",
+        "D  .factory/library/user-testing.md",
+        "D  .factory/scripts/agent-browser-bootstrap.sh"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/web-apps/iMaCoMpUtERussy",
+      "branch": "main",
+      "counts": {
+        "D ": 63
+      },
+      "n": 63,
+      "remote": "https://github.com/mojomast/iMaCoMpUtERussy.git",
+      "sample": [
+        "D  .github/workflows/ci.yml",
+        "D  .gitignore",
+        "D  FIXES_APPLIED.md",
+        "D  README.md",
+        "D  USER_GUIDE.md",
+        "D  css/components.css",
+        "D  css/retro-theme.css",
+        "D  debug-test.html"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/web-apps/plan9webplumbussy",
+      "branch": "main",
+      "counts": {
+        "D ": 17
+      },
+      "n": 17,
+      "remote": "https://github.com/mojomast/plan9webplumbussy.git",
+      "sample": [
+        "D  .gitignore",
+        "D  README.md",
+        "D  browser_extension/background.js",
+        "D  browser_extension/content.js",
+        "D  browser_extension/manifest.json",
+        "D  config/handlers/example.yaml",
+        "D  config/rules/example.yaml",
+        "D  pyproject.toml"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/monorepo/projects/web-apps/templeossy",
+      "branch": "master",
+      "counts": {
+        "D ": 94
+      },
+      "n": 94,
+      "remote": "https://github.com/mojomast/templeossy.git",
+      "sample": [
+        "D  .factory/init.sh",
+        "D  .factory/library/architecture.md",
+        "D  .factory/library/build-integration.md",
+        "D  .factory/library/environment.md",
+        "D  .factory/library/user-testing.md",
+        "D  .factory/research/QEMU_WASM_DISPLAY_RESEARCH.md",
+        "D  .factory/research/QEMU_WASM_RESEARCH.md",
+        "D  .factory/research/RESEARCH_ISO_HOSTING.md"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/psp2",
+      "branch": "master",
+      "counts": {
+        "A ": 1
+      },
+      "n": 1,
+      "remote": "git@github.com:riatzukiza/psp2.git",
+      "sample": [
+        "A  .gitmodules"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/ralphussy",
+      "branch": "main",
+      "counts": {
+        "A ": 1
+      },
+      "n": 1,
+      "remote": "git@github.com:riatzukiza/ralphussy.git",
+      "sample": [
+        "A  .gitmodules"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/rooagussy",
+      "branch": "main",
+      "counts": {
+        "A ": 1
+      },
+      "n": 1,
+      "remote": "git@github.com:riatzukiza/rooagussy.git",
+      "sample": [
+        "A  .gitmodules"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/swarmussy",
+      "branch": "master",
+      "counts": {
+        "A ": 1
+      },
+      "n": 1,
+      "remote": "git@github.com:riatzukiza/swarmussy.git",
+      "sample": [
+        "A  .gitmodules"
+      ]
+    },
+    {
+      "path": "orgs/ussyverse/voltronussy",
+      "branch": "master",
+      "counts": {
+        "A ": 1
+      },
+      "n": 1,
+      "remote": "git@github.com:riatzukiza/voltronussy.git",
+      "sample": [
+        "A  .gitmodules"
+      ]
+    },
+    {
+      "path": "tmp/codex-linux-test2/home/.codex/vendor_imports/skills",
+      "branch": "main",
+      "counts": {
+        " D": 61
+      },
+      "n": 61,
+      "remote": "https://github.com/openai/skills.git",
+      "sample": [
+        " D skills/.curated/aspnet-core/assets/dotnet-logo.png",
+        " D skills/.curated/cloudflare-deploy/assets/cloudflare-small.svg",
+        " D skills/.curated/cloudflare-deploy/assets/cloudflare.png",
+        " D skills/.curated/develop-web-game/assets/game-small.svg",
+        " D skills/.curated/develop-web-game/assets/game.png",
+        " D skills/.curated/doc/assets/doc-small.svg",
+        " D skills/.curated/doc/assets/doc.png",
+        " D skills/.curated/figma-implement-design/assets/figma-small.svg"
+      ]
+    },
+    {
+      "path": "tmp/codex-linux-test3/home/.codex/vendor_imports/skills",
+      "branch": "main",
+      "counts": {
+        " D": 61
+      },
+      "n": 61,
+      "remote": "https://github.com/openai/skills.git",
+      "sample": [
+        " D skills/.curated/aspnet-core/assets/dotnet-logo.png",
+        " D skills/.curated/cloudflare-deploy/assets/cloudflare-small.svg",
+        " D skills/.curated/cloudflare-deploy/assets/cloudflare.png",
+        " D skills/.curated/develop-web-game/assets/game-small.svg",
+        " D skills/.curated/develop-web-game/assets/game.png",
+        " D skills/.curated/doc/assets/doc-small.svg",
+        " D skills/.curated/doc/assets/doc.png",
+        " D skills/.curated/figma-implement-design/assets/figma-small.svg"
+      ]
+    },
+    {
+      "path": "tmp/codex-linux-test4/home/.codex/vendor_imports/skills",
+      "branch": "main",
+      "counts": {
+        " D": 61
+      },
+      "n": 61,
+      "remote": "https://github.com/openai/skills.git",
+      "sample": [
+        " D skills/.curated/aspnet-core/assets/dotnet-logo.png",
+        " D skills/.curated/cloudflare-deploy/assets/cloudflare-small.svg",
+        " D skills/.curated/cloudflare-deploy/assets/cloudflare.png",
+        " D skills/.curated/develop-web-game/assets/game-small.svg",
+        " D skills/.curated/develop-web-game/assets/game.png",
+        " D skills/.curated/doc/assets/doc-small.svg",
+        " D skills/.curated/doc/assets/doc.png",
+        " D skills/.curated/figma-implement-design/assets/figma-small.svg"
+      ]
+    },
+    {
+      "path": "tmp/codex-linux-test5/home/.codex/vendor_imports/skills",
+      "branch": "main",
+      "counts": {
+        " D": 61
+      },
+      "n": 61,
+      "remote": "https://github.com/openai/skills.git",
+      "sample": [
+        " D skills/.curated/aspnet-core/assets/dotnet-logo.png",
+        " D skills/.curated/cloudflare-deploy/assets/cloudflare-small.svg",
+        " D skills/.curated/cloudflare-deploy/assets/cloudflare.png",
+        " D skills/.curated/develop-web-game/assets/game-small.svg",
+        " D skills/.curated/develop-web-game/assets/game.png",
+        " D skills/.curated/doc/assets/doc-small.svg",
+        " D skills/.curated/doc/assets/doc.png",
+        " D skills/.curated/figma-implement-design/assets/figma-small.svg"
+      ]
+    },
+    {
+      "path": "tmp/oss-tools/CV-Matcher",
+      "branch": "main",
+      "counts": {
+        " D": 5
+      },
+      "n": 5,
+      "remote": "https://github.com/eristavi/CV-Matcher.git",
+      "sample": [
+        " D Assets/img/banner.png",
+        " D Assets/img/header.png",
+        " D Assets/img/header_image.jpg",
+        " D UI-Mockup/mockup_1.1.png",
+        " D img.png"
+      ]
+    },
+    {
+      "path": "tmp/oss-tools/resume-standard",
+      "branch": "main",
+      "counts": {
+        " M": 1
+      },
+      "n": 1,
+      "remote": "https://github.com/rezi-io/resume-standard.git",
+      "sample": [
+        " M parser/lib/rms-parser"
+      ]
+    }
+  ]
+}

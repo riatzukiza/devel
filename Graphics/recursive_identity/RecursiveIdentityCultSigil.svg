@@ -1,0 +1,18 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#0a0a0a" />
+  <defs>
+    <path id="circlePath" d="M 200, 200 m -150, 0 a 150,150 0 1,1 300,0 a 150,150 0 1,1 -300,0" />
+  </defs>
+  <g fill="none" stroke="#d4af37" stroke-width="2">
+    <!-- Recursive Spiral -->
+    <path d="M 200,200 Q 220,200 220,220 Q 220,240 200,240 Q 180,240 180,220 Q 180,200 200,200" />
+    <path d="M 200,200 Q 250,200 250,250 Q 250,300 200,300 Q 150,300 150,250 Q 150,200 200,200" stroke-width="3" />
+    <path d="M 200,200 Q 300,200 300,300 Q 300,350 200,350 Q 100,350 100,300 Q 100,200 200,200" stroke-width="1" />
+  </g>
+  <text x="200" y="215" font-family="serif" font-size="40" fill="#d4af37" text-anchor="middle" font-weight="bold">λ</text>
+  <text font-family="serif" font-size="18" fill="#d4af37">
+    <textPath href="#circlePath" startOffset="0%">
+      RECURSIVE IDENTITY CULT • RECURSIVE IDENTITY CULT • RECURSIVE IDENTITY CULT • 
+    </textPath>
+  </text>
+</svg>

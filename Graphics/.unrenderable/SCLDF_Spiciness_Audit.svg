@@ -1,0 +1,23 @@
+<<svgsvg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+  <<rectrect width="400" height="200" fill="#001a1a" rx="10" />
+  <<texttext x="20" y="40" font-family="Arial" font-size="18" fill="#D4AF37" font-weight="bold">SCLDF SPICINESS AUDIT</text>
+  <<texttext x="20" y="60" font-family="Courier" font-size="12" fill="#aaa">Subject: error0815 | Status: Saturated</text>
+
+  <!-- Gauge -->
+  <<pathpath d="M 50 130 A 100 100 0 0 1 250 130" fill="none" stroke="#333" stroke-width="20" stroke-linecap="round" />
+  <<pathpath d="M 50 130 A 100 100 0 0 1 230 130" fill="none" stroke="url(#grad)" stroke-width="20" stroke-linecap="round" />
+
+  <<defsdefs>
+    <<linearlinearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <<stopstop offset="0%" style="stop-color:yellow;stop-opacity:1" />
+      <<stopstop offset="50%" style="stop-color:orange;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:red;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <<lineline x1="150" y1="130" x2="240" y2="50" stroke="#D4AF37" stroke-width="4" stroke-linecap="round" />
+  <<circlecircle cx="240" cy="50" r="8" fill="#D4AF37" />
+
+  <<texttext x="250" y="55" font-family="Impact" font-size="24" fill="#D4AF37">CRITICAL SPICE</text>
+  <<texttext x="200" y="170" text-anchor="middle" font-family="Arial" font-size="14" fill="#fff" font-style="italic">"Legally too spicy to be canceled."</text>
+</svg>

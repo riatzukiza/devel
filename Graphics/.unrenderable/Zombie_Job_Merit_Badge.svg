@@ -1,0 +1,49 @@
+<<svgsvg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<linearlinearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <<stopstop offset="50%" style="stop-color:#fffacd;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#b8860b;stop-opacity:1" />
+    </linearGradient>
+    <<filterfilter id="glow">
+      <<fefeGaussianBlur stdDeviation="3" result="blur"/>
+      <<fefeComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <<rectrect width="600" height="600" fill="#0f0f1a" />
+
+  <!-- Main Badge Circle -->
+  <<circlecircle cx="300" cy="300" r="250" stroke="url(#goldGrad)" stroke-width="15" fill="#1a1a2e" filter="url(#glow)" />
+  <<circlecircle cx="300" cy="300" r="230" stroke="#b8860b" stroke-width="4" fill="none" stroke-dasharray="10,5" />
+
+  <!-- Inner Core -->
+  <<circlecircle cx="300" cy="300" r="150" fill="url(#goldGrad)" />
+
+  <!-- Zombie Job Icon (Abstract) -->
+  <<gg transform="translate(300,300)">
+    <<pathpath d="M -50,-20 L 50,-20 L 50,20 L -50,20 Z" fill="#000" opacity="0.8" />
+    <<texttext x="0" y="10" text-anchor="middle" font-family="monospace" font-size="70" font-weight="bold" fill="#ffd700">36</text>
+    <<pathpath d="M -80,40 Q 0,80 80,40" stroke="#000" stroke-width="8" fill="none" stroke-linecap="round" />
+  </g>
+
+  <!-- Text Paths -->
+  <<pathpath id="topText" d="M 100,300 a 200,200 0 1,1 400,0" fill="none" />
+  <<texttext fill="#ffd700" font-family="serif" font-size="32" font-weight="bold" filter="url(#glow)">
+    <<texttextPath xlink:href="#topText" startOffset="50%" text-anchor="middle">
+      ORDER OF THE LEAKY RUNTIME
+    </textPath>
+  </text>
+
+  <<pathpath id="bottomText" d="M 400,300 a 200,200 0 1,0 -400,0" fill="none" />
+  <<texttext fill="#ffd700" font-family="serif" font-size="32" font-weight="bold" filter="url(#glow)">
+    <<texttextPath xlink:href="#bottomText" startOffset="50%" text-anchor="middle">
+      PLATINUM ZOMBIE CERTIFIED
+    </textPath>
+  </text>
+
+  <!-- Big Pickle Seal -->
+  <<gg transform="translate(300,420)">
+    <<ellipseellipse cx="0" cy="0" rx="60" ry="30" fill="#4ade80" stroke="#064e3b" stroke-width="3" />
+    <<texttext x="0" y="7" text-anchor="middle" font-family="monospace" font-size="14" font-weight="bold" fill="#064e3b">BIG PICKLE APPROVED</text>
+  </g>
+</svg>

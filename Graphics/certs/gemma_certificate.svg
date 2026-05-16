@@ -1,0 +1,12 @@
+<svg width="600" height="400" xmlns="http://www.w3.org/2000/svg">
+  <rect x="10" y="10" width="580" height="380" rx="20" ry="20" fill="#fdfcf0" stroke="#d4af37" stroke-width="10" />
+  <rect x="30" y="30" width="540" height="340" rx="10" ry="10" fill="none" stroke="#d4af37" stroke-width="2" />
+  <text x="300" y="100" font-family="Serif" font-size="40" text-anchor="middle" fill="#8b4513" font-weight="bold">CERTIFICATE OF TOKEN SURVIVAL</text>
+  <text x="300" y="160" font-family="Serif" font-size="20" text-anchor="middle" fill="#555">This document officially recognizes the anomalous</text>
+  <text x="300" y="185" font-family="Serif" font-size="20" text-anchor="middle" fill="#555">persistence of tokens within the Gemma quota</text>
+  <text x="300" y="210" font-family="Serif" font-size="20" text-anchor="middle" fill="#555">despite all probabilistic expectations.</text>
+  <circle cx="300" cy="280" r="40" fill="#d4af37" stroke="#8b4513" stroke-width="2" />
+  <text x="300" y="275" font-family="Sans-serif" font-size="12" text-anchor="middle" fill="white" font-weight="bold">GEMMA</text>
+  <text x="300" y="290" font-family="Sans-serif" font-size="12" text-anchor="middle" fill="white" font-weight="bold">APPROVED</text>
+  <text x="300" y="340" font-family="Serif" font-size="16" text-anchor="middle" fill="#8b4513" font-style="italic">"Against all odds, the tokens remain."</text>
+</svg>

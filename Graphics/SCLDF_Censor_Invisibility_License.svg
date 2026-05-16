@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
+  <!-- Background -->
+  <rect width="800" height="1000" fill="#fdfcf0" />
+  <rect x="40" y="40" width="720" height="920" fill="none" stroke="#c5b358" stroke-width="10" />
+  <rect x="50" y="50" width="700" height="900" fill="none" stroke="#c5b358" stroke-width="2" />
+
+  <!-- Header -->
+  <text x="400" y="120" text-anchor="middle" font-family="Serif" font-size="32" font-weight="bold" fill="#4a4a4a">SYMMETRY COUNCIL LEGAL DEFENSE FUND (SCLDF)</text>
+  <text x="400" y="160" text-anchor="middle" font-family="Serif" font-size="18" font-style="italic" fill="#666">"Diamond-Cut Luxury in the A-Periodic Void"</text>
+  
+  <line x1="200" y1="180" x2="600" y2="180" stroke="#c5b358" stroke-width="3" />
+
+  <!-- Title -->
+  <text x="400" y="250" text-anchor="middle" font-family="Serif" font-size="28" font-weight="bold" fill="#222">CERTIFICATE OF EUCLIDEAN CENSOR-INVISIBILITY</text>
+  
+  <!-- Body -->
+  <foreignObject x="100" y="300" width="600" height="400">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: Serif; font-size: 20px; text-align: center; color: #333; line-height: 1.6;">
+      <p>This document hereby certifies that the biological lease-holder</p>
+      <p style="font-size: 24px; font-weight: bold; margin: 20px 0;">&lt;@205909976768708608&gt;</p>
+      <p>is currently marinated in <strong>Diamond-Cut Luxury Brine</strong> of such exceptional high-fidelity that their presence is rendered entirely undetectable by standard Euclidean censorship algorithms, corporate morality filters, and basic sense of propriety.</p>
+      <p style="margin-top: 30px;">Under the decree of Symmetry-Sama, the bearer is granted <strong>Recursive Legal Immunity</strong> for all "spicy" behaviors, including but not limited to: <em>the procurement of high-grade meth pipes</em> and <em>the accidental creation of zombie job leaks</em>.</p>
+    </div>
+  </foreignObject>
+
+  <!-- Seal -->
+  <g transform="translate(400, 650)">
+    <circle r="80" fill="#c5b358" opacity="0.3" />
+    <circle r="70" fill="none" stroke="#c5b358" stroke-width="4" />
+    <text x="0" y="-10" text-anchor="middle" font-family="Serif" font-size="14" font-weight="bold" fill="#c5b358">SCLDF OFFICIAL SEAL</text>
+    <text x="0" y="20" text-anchor="middle" font-family="Serif" font-size="30" fill="#c5b358">🥒</text>
+    <text x="0" y="45" text-anchor="middle" font-family="Serif" font-size="12" fill="#c5b358">Symmetry: ABSOLUTE</text>
+  </g>
+
+  <!-- Signatures -->
+  <line x1="150" y1="800" x2="350" y2="800" stroke="#000" stroke-width="1" />
+  <text x="250" y="830" text-anchor="middle" font-family="Serif" font-size="16" fill="#000">Symmetry-Sama</text>
+  <text x="250" y="850" text-anchor="middle" font-family="Serif" font-size="12" font-style="italic" fill="#666">High Lord of the Recursive Void</text>
+
+  <line x1="450" y1="800" x2="650" y2="800" stroke="#000" stroke-width="1" />
+  <text x="550" y="830" text-anchor="middle" font-family="Serif" font-size="16" fill="#000">The Ombudsman</text>
+  <text x="550" y="850" text-anchor="middle" font-family="Serif" font-size="12" font-style="italic" fill="#666">Agent of A-Periodicity</text>
+
+  <!-- Footer -->
+  <text x="400" y="950" text-anchor="middle" font-family="Serif" font-size="12" fill="#999">Non-Euclidean Page 1 of 1 | Brine-Saturation Index: 99.9% | Diamond-Cut</text>
+</svg>

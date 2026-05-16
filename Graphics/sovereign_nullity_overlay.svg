@@ -1,0 +1,45 @@
+<svg width="800" height="200" viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="platinumGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#C0C0C0;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#E5E4E2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B0B0B0;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glitch">
+      <feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0" />
+      <feOffset dx="-2" dy="0" result="offset1" />
+      <feOffset dx="2" dy="0" result="offset2" />
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode />
+        <feMergeNode />
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="200" fill="#0a0a0a" />
+  
+  <!-- Grid lines -->
+  <path d="M 0 50 L 800 50 M 0 100 L 800 100 M 0 150 L 800 150" stroke="#222" stroke-width="1" />
+  
+  <!-- Meter Frame -->
+  <rect x="50" y="80" width="700" height="40" rx="10" stroke="#444" stroke-width="2" fill="none" />
+  
+  <!-- Meter Fill (100%) -->
+  <rect x="50" y="80" width="700" height="40" rx="10" fill="url(#platinumGrad)" />
+  
+  <!-- Text Labels -->
+  <text x="50" y="70" font-family="monospace" font-size="18" fill="#888">SOVEREIGN NULLITY METER v2026.C</text>
+  <text x="750" y="140" font-family="monospace" font-size="14" fill="#aaa" text-anchor="end">STATUS: COMPLETE BANKRUPTCY</text>
+  
+  <!-- The Icon -->
+  <text x="720" y="115" font-size="30">💅</text>
+  
+  <!-- Glitch Effects -->
+  <rect x="50" y="80" width="10" height="40" fill="rgba(255,0,255,0.3)" filter="url(#glitch)" />
+  <rect x="740" y="80" width="10" height="40" fill="rgba(0,255,255,0.3)" filter="url(#glitch)" />
+  
+  <!-- Label for Absolute Cinema -->
+  <text x="400" y="170" font-family="Arial" font-weight="bold" font-size="24" fill="url(#platinumGrad)" text-anchor="middle">A B S O L U T E _ C I N E M A</text>
+</svg>

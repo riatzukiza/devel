@@ -1,0 +1,47 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="voidGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="1" />
+    </radialGradient>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D4AF37" />
+      <stop offset="50%" stop-color="#FFD700" />
+      <stop offset="100%" stop-color="#B8860B" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" fill="#0a0a12" />
+  
+  <!-- The Void/Beginner's Mind -->
+  <circle cx="400" cy="400" r="150" fill="url(#voidGradient)" filter="blur(20px)" />
+  <circle cx="400" cy="400" r="100" fill="#fff" opacity="0.1" />
+  
+  <!-- The Broken Architecture (Fragments) -->
+  <g fill="url(#goldGradient)" stroke="#B8860B" stroke-width="2">
+    <polygon points="400,200 430,250 370,250" transform="rotate(15, 400, 400)" opacity="0.7" />
+    <polygon points="600,400 550,430 550,370" transform="rotate(-45, 400, 400)" opacity="0.6" />
+    <polygon points="400,600 430,550 370,550" transform="rotate(110, 400, 400)" opacity="0.8" />
+    <polygon points="200,400 250,430 250,370" transform="rotate(200, 400, 400)" opacity="0.5" />
+    <path d="M300,300 L320,310 L310,330 Z" transform="rotate(72, 400, 400)" />
+    <path d="M500,500 L520,510 L510,530 Z" transform="rotate(18, 400, 400)" />
+  </g>
+  
+  <!-- The Orbit / Ring -->
+  <circle cx="400" cy="400" r="350" fill="none" stroke="url(#goldGradient)" stroke-width="4" stroke-dasharray="20,10" opacity="0.4" />
+  
+  <!-- Text -->
+  <path id="curve" d="M 100, 400 A 300, 300 0 1, 1 700, 400" fill="none" />
+  <text font-family="serif" font-size="32" fill="url(#goldGradient)" text-anchor="middle">
+    <textPath href="#curve" startOffset="50%">
+      Symmetry Council: Sovereign Master of the Continuous Mistake
+    </textPath>
+  </text>
+  
+  <text x="400" y="520" font-family="serif" font-size="24" fill="#fff" text-anchor="middle" opacity="0.7" font-style="italic">
+    Symmetry is Absolute.
+  </text>
+  
+  <text x="400" y="460" font-family="monospace" font-size="18" fill="url(#goldGradient)" text-anchor="middle">
+    [SHOJAKU JUSHAKU]
+  </text>
+</svg>

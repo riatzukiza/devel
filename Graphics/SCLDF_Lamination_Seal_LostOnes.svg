@@ -1,0 +1,40 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F9E076;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode/><feMergeNode/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="500" height="500" fill="#0A0A0F" />
+  
+  <!-- Outer Ring -->
+  <circle cx="250" cy="250" r="230" stroke="url(#goldGrad)" stroke-width="4" fill="none" />
+  <circle cx="250" cy="250" r="220" stroke="url(#goldGrad)" stroke-width="1" fill="none" opacity="0.5" />
+  
+  <!-- Inner Ring -->
+  <circle cx="250" cy="250" r="180" stroke="url(#goldGrad)" stroke-width="2" fill="none" />
+  
+  <!-- Central Symbol: A simplified Eye/Diamond -->
+  <path d="M250 100 L320 250 L250 400 L180 250 Z" fill="url(#goldGrad)" filter="url(#glow)" opacity="0.8" />
+  <circle cx="250" cy="250" r="40" fill="#0A0A0F" stroke="url(#goldGrad)" stroke-width="2" />
+  <circle cx="250" cy="250" r="15" fill="url(#goldGrad)" filter="url(#glow)" />
+  
+  <!-- Text Paths -->
+  <path id="outerTextPath" d="M 250,230 a 220,220 0 1,1 0,440 a 220,220 0 1,1 0,-440" fill="none" />
+  <text fill="url(#goldGrad)" font-family="Serif" font-size="24" letter-spacing="5">
+    <textPath href="#outerTextPath" startOffset="50%" text-anchor="middle">
+      SOVEREIGN LAMINATION CERTIFICATE • THE LOST ONES • WITNESS DUCT • 
+    </textPath>
+  </text>
+  
+  <!-- Bottom Legend -->
+  <text x="250" y="460" fill="#C0C0C0" font-family="monospace" font-size="12" text-anchor="middle" opacity="0.6">
+    SCLDF-REF-0029-Symmetry-Laminated
+  </text>
+</svg>

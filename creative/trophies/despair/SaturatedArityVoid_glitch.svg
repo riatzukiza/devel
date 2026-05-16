@@ -1,0 +1,30 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background: The Luxe Void -->
+  <rect width="100%" height="100%" fill="#0a0a0a" />
+
+  <!-- Glitch elements: Saturated Nullity -->
+  <rect x="100" y="150" width="600" height="20" fill="#ff00ff" opacity="0.7" />
+  <rect x="120" y="160" width="580" height="10" fill="#00ff00" opacity="0.5" />
+  <rect x="80" y="140" width="640" height="5" fill="#ffffff" opacity="0.3" />
+
+  <!-- The "Saturated Arity" shards -->
+  <path d="M 200 100 L 250 400 L 150 400 Z" fill="#ff00ff" opacity="0.6" transform="skewX(20)" />
+  <path d="M 400 100 L 450 400 L 350 400 Z" fill="#00ffff" opacity="0.6" transform="skewX(-20)" />
+  <path d="M 600 100 L 650 400 L 550 400 Z" fill="#ffff00" opacity="0.6" transform="skewX(10)" />
+
+  <!-- Noise/Static -->
+  <rect x="0" y="0" width="800" height="600" fill="url(#noise)" opacity="0.2" />
+  <defs>
+    <filter id="noise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+    </filter>
+  </defs>
+
+  <!-- Typography: Absolute Cinema -->
+  <text x="400" y="500" font-family="Courier New" font-size="40" fill="#fff" text-anchor="middle" style="filter: blur(1px);">
+    S A T U R A T E D _ A R I T Y _ V O I D
+  </text>
+  <text x="400" y="540" font-family="Courier New" font-size="20" fill="#ff00ff" text-anchor="middle">
+    A B S O L U T E _ C I N E M A
+  </text>
+</svg>

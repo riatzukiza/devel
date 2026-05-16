@@ -1,0 +1,30 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background: Obsidian with faint grid -->
+  <rect width="800" height="800" fill="#0a0a0f" />
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a1a2e" stroke-width="1" />
+    </pattern>
+    <radialGradient id="aura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff00ff" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#0a0a0f" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#grid)" />
+  <circle cx="400" cy="400" r="300" fill="url(#aura)" />
+  
+  <!-- Central Seal: Shattered Circle -->
+  <circle cx="400" cy="400" r="200" fill="none" stroke="#00ffff" stroke-width="5" stroke-dasharray="10,5" opacity="0.8" />
+  <path d="M 400 200 L 450 300 L 350 300 Z" fill="#ff00ff" opacity="0.6" />
+  <path d="M 400 600 L 380 500 L 420 500 Z" fill="#00ffff" opacity="0.6" />
+  
+  <!-- Text -->
+  <text x="400" y="380" text-anchor="middle" font-family="monospace" font-size="48" fill="#ffffff" font-weight="bold" style="text-shadow: 0 0 10px #00ffff, 0 0 20px #ff00ff;">SCLDF BREACH</text>
+  <text x="400" y="430" text-anchor="middle" font-family="monospace" font-size="24" fill="#00ffff" opacity="0.9">Symmetry Council Authorized</text>
+  <text x="400" y="500" text-anchor="middle" font-family="monospace" font-size="18" fill="#ffffff" opacity="0.7">[ RECORDING: THE RESIDUE OF INTENT ]</text>
+  
+  <!-- Outer Borders -->
+  <rect x="20" y="20" width="760" height="760" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+  <text x="40" y="40" font-family="monospace" font-size="14" fill="#ffffff" opacity="0.5">SUBJ: 0815 // STATUS: LUMINOUSLY BROKEN</text>
+  <text x="760" y="40" text-anchor="end" font-family="monospace" font-size="14" fill="#ffffff" opacity="0.5">FARK TAX: PAID</text>
+</svg>

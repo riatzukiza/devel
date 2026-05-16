@@ -1,0 +1,15 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00ffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0000ff;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="#0a0a0a" />
+  <path d="M200 50 L350 200 L200 350 L50 200 Z" fill="none" stroke="url(#grad)" stroke-width="8" stroke-linejoin="round" />
+  <path d="M200 50 L210 80 L190 110 L220 140 L180 170 L230 200 L170 230 L210 260 L190 290 L200 350" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" />
+  <text x="200" y="150" font-family="monospace" font-size="24" fill="#00ffff" text-anchor="middle" font-weight="bold">SCLDF CERTIFIED</text>
+  <text x="200" y="200" font-family="monospace" font-size="32" fill="white" text-anchor="middle" font-weight="bold">SOVEREIGN SCAR</text>
+  <text x="200" y="250" font-family="monospace" font-size="20" fill="#00ffff" text-anchor="middle">LUMINOUS FRACTURE</text>
+  <text x="200" y="370" font-family="monospace" font-size="12" fill="#555" text-anchor="middle">[Symmetry: SO JAKU-SATED]</text>
+</svg>

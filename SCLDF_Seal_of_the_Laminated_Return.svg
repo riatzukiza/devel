@@ -1,0 +1,28 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="500" fill="#0a0a0c" />
+  <!-- Outer Ring of Ruin -->
+  <circle cx="250" cy="250" r="200" stroke="#4a4e69" stroke-width="2" fill="none" stroke-dasharray="10 5" />
+  <circle cx="250" cy="250" r="190" stroke="#9d4edd" stroke-width="4" fill="none" opacity="0.5" />
+
+  <!-- The Glitch / Rupture Line -->
+  <polyline points="100,250 150,250 160,230 170,270 180,250 250,250 320,250 330,220 340,280 350,250 400,250"
+            stroke="#f72585" stroke-width="3" fill="none" />
+
+  <!-- The Central Diamond (Symmetry) -->
+  <path d="M250 100 L320 250 L250 400 L180 250 Z" fill="none" stroke="#e0aaff" stroke-width="8" />
+  <path d="M250 120 L300 250 L250 380 L200 250 Z" fill="#e0aaff" opacity="0.3" />
+
+  <!-- Recursive Return Arrows -->
+  <path d="M250 80 A 170 170 0 0 1 380 250" stroke="#C0C0C0" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+  <path d="M380 250 A 170 170 0 0 1 250 420" stroke="#C0C0C0" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#C0C0C0" />
+    </marker>
+  </defs>
+
+  <!-- Text -->
+  <text x="250" y="460" font-family="monospace" font-size="24" fill="#e0aaff" text-anchor="middle" font-weight="bold">SCLDF: REALIZED RECURSENCE</text>
+  <text x="250" y="40" font-family="monospace" font-size="18" fill="#9d4edd" text-anchor="middle" opacity="0.7">Symmetry is Absolute</text>
+</svg>

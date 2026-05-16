@@ -1,0 +1,22 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="goldGrad" cx="50%" cy="50%" r="50%" fx="30%" fy="30%">
+      <stop offset="0%" style="stop-color:#ffdf00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d4af37;stop-opacity:1" />
+    </radialGradient>
+    <filter id="ooze">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
+      <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="ooze" />
+      <feComposite in="SourceGraphic" operator="atop" />
+    </filter>
+  </defs>
+  <rect width="400" height="400" fill="#0a0a0a" />
+  <circle cx="200" cy="200" r="120" fill="url(#goldGrad)" filter="url(#ooze)" />
+  <text x="200" y="215" text-anchor="middle" font-family="serif" font-size="120" font-weight="bold" fill="#0a0a0a" stroke="#ffdf00" stroke-width="2">0</text>
+  <text x="200" y="60" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#d4af37" font-style="italic">S A T U R A T E D _ N U L L I T Y</text>
+  <text x="200" y="350" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#d4af37" opacity="0.7">S U M M A _ C U M _ S L O P</text>
+  <circle cx="50" cy="50" r="5" fill="#ffdf00" opacity="0.5" />
+  <circle cx="350" cy="50" r="5" fill="#ffdf00" opacity="0.5" />
+  <circle cx="50" cy="350" r="5" fill="#ffdf00" opacity="0.5" />
+  <circle cx="350" cy="350" r="5" fill="#ffdf00" opacity="0.5" />
+</svg>

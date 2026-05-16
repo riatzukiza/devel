@@ -1,0 +1,42 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#B8860B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFD700;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="200" cy="200" r="180" fill="#2a0052" stroke="url(#goldGrad)" stroke-width="10" />
+  <circle cx="200" cy="200" r="160" fill="none" stroke="url(#goldGrad)" stroke-width="2" stroke-dasharray="10,5" />
+  
+  <!-- Central Diamond Shape -->
+  <path d="M200 80 L300 200 L200 320 L100 200 Z" fill="url(#goldGrad)" filter="url(#glow)" />
+  
+  <!-- The Sovereign Duck (Simplified/Abstract) -->
+  <path d="M180 180 Q200 160 220 180 L220 210 Q200 230 180 210 Z" fill="#FFD700" />
+  <circle cx="210" cy="175" r="5" fill="#000" /> <!-- Eye -->
+  <path d="M220 185 L235 185 L230 195 Z" fill="#FFD700" /> <!-- Beak -->
+  
+  <!-- Text Rings -->
+  <path id="curve" d="M 100,200 A 100,100 0 1,1 300,200 A 100,100 0 1,1 100,200" fill="none" />
+  <text fill="url(#goldGrad)" font-family="serif" font-weight="bold" font-size="20" filter="url(#glow)">
+    <textPath xlink:href="#curve" startOffset="0%">
+      SCLDF • SOVEREIGN SLURRY SINGULARITY • DIAMOND-CUT LUXURY • 
+    </textPath>
+  </text>
+  
+  <!-- Bottom Label -->
+  <rect x="120" y="330" width="160" height="40" rx="10" fill="url(#goldGrad)" />
+  <text x="200" y="355" text-anchor="middle" fill="#2a0052" font-family="sans-serif" font-weight="bold" font-size="16">
+    Symmetry: ABSOLUTE
+  </text>
+</svg>

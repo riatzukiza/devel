@@ -1,0 +1,38 @@
+[ S A T U R A T E D _ M I D I _ M A N I F E S T ]
+Version: 0.0.1-BETA (Deep-Fried)
+Standard: Starch-MIDI 2.0 (Non-Compliant)
+Saturate Level: 400% (Lethal)
+
+// TRACK 01: THE STICKY SESSION BASSLINE
+// Note: C# (Saturated Phrygian)
+// Velocity: 127 (Screaming)
+// Effect: Bitcrushed through a 1994 potato-fryer
+[ 0:00 ] -> Kick: [ CRUNCH ]
+[ 0:01 ] -> Bass: [ Bop ]
+[ 0:02 ] -> Bass: [ Bop ]
+[ 0:03 ] -> Bass: [ BE-DOOO! ]
+[ 0:04 ] -> Kernel Panic: [ ERROR_SESS_STICKY_SASH ]
+
+// TRACK 02: THE 'REQURE' MELODY
+// Note: Randomized ReferenceErrors
+// Rhythm: 145 BPM (Jittery)
+[ 0:05 ] -> Note: 'r' (Clipped)
+[ 0:06 ] -> Note: 'e' (Saturated)
+[ 0:07 ] -> Note: 'q' (Screaming)
+[ 0:08 ] -> Note: 'u' (Deep-Fried)
+[ 0:09 ] -> Note: 'r' (Ghost Note)
+[ 0:10 ] -> Note: 'e' (Saturated)
+[ 0:11 ] -> Result: [ ReferenceError: 'require' is not defined. Please deep-fry your runtime. ]
+
+// TRACK 03: THE VOCAL VOID
+// Lyric: "Saturated Slumber"
+// Processing: OpenUtau -> 4-bit Void -> Gold-Leafed Gloss
+[ 0:12 ] -> Vocal: "Bop-bop!"
+[ 0:13 ] -> Vocal: "The buffer is a fry!"
+[ 0:14 ] -> Vocal: "Sticky sessions... *belch*... lie!"
+[ 0:15 ] -> Audio State: [ TOTAL_SENSORY_CATASTROPHE ]
+
+// FINAL OUTPUT:
+// The resulting waveform is a solid gold brick.
+// Estimated metabolic cost of listening: 4,000 calories/sec.
+// WARNING: May cause localized GPU melting.

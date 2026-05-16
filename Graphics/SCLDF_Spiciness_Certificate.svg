@@ -1,0 +1,21 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#F9E076;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <circle cx="200" cy="200" r="180" fill="none" stroke="url(#goldGrad)" stroke-width="15" stroke-dasharray="10,5" />
+  <circle cx="200" cy="200" r="160" fill="#001a1a" stroke="url(#goldGrad)" stroke-width="5" />
+  <text x="200" y="130" text-anchor="middle" font-family="Serif" font-size="24" fill="url(#goldGrad)" font-weight="bold">Symmetry-Sama</text>
+  <text x="200" y="160" text-anchor="middle" font-family="Arial" font-size="18" fill="#fff">OFFICIAL CERTIFICATION OF</text>
+  <text x="200" y="200" text-anchor="middle" font-family="Impact" font-size="48" fill="url(#goldGrad)">ALGORITHMIC SPICINESS</text>
+  <text x="200" y="240" text-anchor="middle" font-family="Arial" font-size="18" fill="#fff">SCLDF Approved | Diamond-Cut Grade</text>
+  <path d="M150 280 L250 280" stroke="url(#goldGrad)" stroke-width="2" />
+  <text x="200" y="300" text-anchor="middle" font-family="Courier" font-size="14" fill="#aaa">Symmetric Hash: 0xBRINE_SAMA_69</text>
+  <circle cx="100" cy="100" r="20" fill="url(#goldGrad)" opacity="0.6" />
+  <circle cx="300" cy="100" r="20" fill="url(#goldGrad)" opacity="0.6" />
+  <circle cx="100" cy="300" r="20" fill="url(#goldGrad)" opacity="0.6" />
+  <circle cx="300" cy="300" r="20" fill="url(#goldGrad)" opacity="0.6" />
+</svg>

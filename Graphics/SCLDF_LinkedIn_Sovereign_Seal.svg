@@ -1,0 +1,46 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F9E076;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="diamondGrad">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B9F2FF;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Outer gold ring -->
+  <circle cx="200" cy="200" r="190" fill="url(#goldGrad)" stroke="#B8860B" stroke-width="8" />
+  
+  <!-- Inner diamond circle -->
+  <circle cx="200" cy="200" r="150" fill="url(#diamondGrad)" stroke="#C0C0C0" stroke-width="4" />
+  
+  <!-- Text rings -->
+  <path id="textPath" d="M 200,200 m -170,0 a 170,170 0 1,1 340,0 a 170,170 0 1,1 -340,0" fill="none" />
+  <text fill="#B8860B" font-family="Serif" font-size="24" font-weight="bold">
+    <textPath href="#textPath" startOffset="0%">
+      SCLDF - SOVEREIGN PROFESSIONALISM - DIAMOND-CUT SLOP - 
+    </textPath>
+  </text>
+
+  <!-- The Duck Sommelier -->
+  <g transform="translate(140, 140) scale(1.2)">
+    <!-- Body -->
+    <path d="M 20,60 Q 20,40 40,40 L 60,40 Q 80,40 80,60 L 80,80 Q 80,100 60,100 L 40,100 Q 20,100 20,80 Z" fill="#FFD700" stroke="#000" stroke-width="2"/>
+    <!-- Head -->
+    <circle cx="60" cy="30" r="20" fill="#FFD700" stroke="#000" stroke-width="2"/>
+    <!-- Beak -->
+    <path d="M 78,30 L 90,30 L 78,35 Z" fill="#FF8C00" stroke="#000" stroke-width="1"/>
+    <!-- Eye -->
+    <circle cx="65" cy="25" r="2" fill="#000"/>
+    <!-- Sommelier Hat -->
+    <path d="M 50,15 L 70,15 L 70,5 L 60,0 L 50,5 Z" fill="#FFF" stroke="#000" stroke-width="1"/>
+  </g>
+
+  <!-- Bottom Banner -->
+  <rect x="80" y="320" width="240" height="40" rx="10" fill="#B8860B" />
+  <text x="200" y="345" text-anchor="middle" fill="#FFF" font-family="Serif" font-size="16" font-weight="bold">
+    TAX-DEDUCTIBLE IN 42 JURISDICTIONS
+  </text>
+</svg>

@@ -1,0 +1,24 @@
+<<svgsvg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <<rectrect width="500" height="500" fill="#FFFDF5" />
+
+  <!-- Gold Diamond Border -->
+  <<pathpath d="M250 50 L450 250 L250 450 L50 250 Z" fill="none" stroke="#D4AF37" stroke-width="10" />
+  <<pathpath d="M250 70 L430 250 L250 430 L70 250 Z" fill="none" stroke="#D4AF37" stroke-width="2" />
+
+  <!-- Center Diamond -->
+  <<pathpath d="M250 150 L350 250 L250 350 L150 250 Z" fill="#EEDC82" stroke="#B8860B" stroke-width="3" />
+
+  <!-- Text -->
+  <<texttext x="250" y="240" font-family="Serif" font-size="32" font-weight="bold" text-anchor="middle" fill="#5D4037">SCLDF</text>
+  <<texttext x="250" y="265" font-family="Serif" font-size="18" text-anchor="middle" fill="#5D4037">QUACK COMPLIANCE</text>
+
+  <!-- Headers/Footers -->
+  <<texttext x="250" y="40" font-family="Serif" font-size="14" text-anchor="middle" fill="#B8860B" letter-spacing="2">SYMMETRY ABSOLUTE</text>
+  <<texttext x="250" y="470" font-family="Serif" font-size="14" text-anchor="middle" fill="#B8860B" letter-spacing="2">BRINE IS MANDATORY</text>
+
+  <!-- Simple Duck Icon -->
+  <<pathpath d="M230 280 Q250 270 270 280 Q280 290 270 300 L230 300 Q220 290 230 280 Z" fill="#F4D03F" stroke="#B8860B" stroke-width="1" />
+  <<circlecircle cx="265" cy="285" r="2" fill="#000" />
+  <<pathpath d="M270 285 L275 285 L275 287 L270 287 Z" fill="#E67E22" />
+</svg>

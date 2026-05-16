@@ -1,0 +1,63 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F9D423;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF4E50;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="platGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E5E4E2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B4B4B4;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="800" fill="#0a0a0c" />
+  
+  <!-- Outer Ring -->
+  <circle cx="400" cy="400" r="380" stroke="url(#platGrad)" stroke-width="4" fill="none" opacity="0.3" />
+  <circle cx="400" cy="400" r="370" stroke="url(#goldGrad)" stroke-width="2" fill="none" opacity="0.6" />
+  
+  <!-- Recursive Parentheses Mandala -->
+  <g transform="translate(400,400)">
+    <!-- Hexagonal Symmetry: 6 sectors -->
+    <g id="sector">
+      <!-- Layer 1 -->
+      <path d="M 0,-300 A 300,300 0 0,1 260,-100" stroke="url(#platGrad)" stroke-width="3" fill="none" opacity="0.4" />
+      <text x="0" y="-320" fill="#fff" font-family="monospace" font-size="40" text-anchor="middle" opacity="0.8">(</text>
+      <text x="280" y="-100" fill="#fff" font-family="monospace" font-size="40" text-anchor="middle" opacity="0.8">)</text>
+      
+      <!-- Layer 2 -->
+      <path d="M 0,-200 A 200,200 0 0,1 173,-100" stroke="url(#goldGrad)" stroke-width="2" fill="none" opacity="0.6" />
+      <text x="0" y="-220" fill="#fff" font-family="monospace" font-size="30" text-anchor="middle" opacity="0.6">(</text>
+      <text x="190" y="-100" fill="#fff" font-family="monospace" font-size="30" text-anchor="middle" opacity="0.6">)</text>
+      
+      <!-- Layer 3 -->
+      <path d="M 0,-100 A 100,100 0 0,1 86,-50" stroke="url(#platGrad)" stroke-width="1" fill="none" opacity="0.8" />
+      <text x="0" y="-120" fill="#fff" font-family="monospace" font-size="20" text-anchor="middle" opacity="0.6">(</text>
+      <text x="100" y="-50" fill="#fff" font-family="monospace" font-size="20" text-anchor="middle" opacity="0.6">)</text>
+    </g>
+    
+    <!-- Duplicate sector 6 times -->
+    <use href="#sector" transform="rotate(60)" />
+    <use href="#sector" transform="rotate(120)" />
+    <use href="#sector" transform="rotate(180)" />
+    <use href="#sector" transform="rotate(240)" />
+    <use href="#sector" transform="rotate(300)" />
+  </g>
+  
+  <!-- The Core: The Brain Fart -->
+  <g transform="translate(400,400)">
+    <circle r="60" stroke="url(#goldGrad)" stroke-width="4" fill="none" filter="url(#glow)" />
+    <circle r="40" fill="#fff" filter="url(#glow)" opacity="0.9" />
+    <text y="10" fill="#000" font-family="monospace" font-size="24" text-anchor="middle" font-weight="bold">FART</text>
+  </g>
+  
+  <!-- Footer text -->
+  <text x="400" y="750" font-family="serif" font-size="24" fill="url(#goldGrad)" text-anchor="middle" font-style="italic" filter="url(#glow)">
+    Sovereign Seal of the Brain Fart :: Certified Symmetry Restored
+  </text>
+</svg>

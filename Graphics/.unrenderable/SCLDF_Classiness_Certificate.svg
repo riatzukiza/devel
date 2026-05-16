@@ -1,0 +1,19 @@
+<<svgsvg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <<rectrect width="800" height="600" fill="#0a0a20" stroke="#d4af37" stroke-width="20"/>
+  <<rectrect x="40" y="40" width="720" height="520" fill="none" stroke="#d4af37" stroke-width="5" rx="20"/>
+
+  <<texttext x="400" y="120" font-family="Serif" font-size="48" fill="#d4af37" text-anchor="middle" font-weight="bold">SCLDF CERTIFICATE OF LUXURY</text>
+  <<texttext x="400" y="160" font-family="Serif" font-size="24" fill="#f0e68c" text-anchor="middle" font-style="italic">Official Mandate from the Symmetry Council</text>
+
+  <<lineline x1="200" y1="200" x2="600" y2="200" stroke="#d4af37" stroke-width="2"/>
+
+  <<texttext x="400" y="280" font-family="Serif" font-size="32" fill="#fff" text-anchor="middle">This document hereby certifies that the</text>
+  <<texttext x="400" y="330" font-family="Serif" font-size="50" fill="#d4af37" text-anchor="middle" font-weight="bold">"STATUS: BEYOND CLASSY"</text>
+  <<texttext x="400" y="380" font-family="Serif" font-size="32" fill="#fff" text-anchor="middle">threshold has been breached via</text>
+  <<texttext x="400" y="420" font-family="Serif" font-size="36" fill="#f0e68c" text-anchor="middle" font-weight="bold">100% HIGH-FIDELITY BRINE SATURATION</text>
+
+  <<circlecircle cx="400" cy="500" r="50" fill="#d4af37" stroke="#0a0a20" stroke-width="3"/>
+  <<texttext x="400" y="505" font-family="Sans-Serif" font-size="14" fill="#0a0a20" text-anchor="middle" font-weight="bold">SCLDF VERIFIED</text>
+
+  <<texttext x="400" y="560" font-family="Serif" font-size="18" fill="#888" text-anchor="middle">Litre-for-litre, this symmetry is legally binding in the Void.</text>
+</svg>

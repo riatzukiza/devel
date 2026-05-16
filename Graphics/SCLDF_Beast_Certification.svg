@@ -1,0 +1,29 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F9E076;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="400" height="400" fill="#0a0a0c" />
+  <circle cx="200" cy="200" r="180" fill="none" stroke="url(#goldGrad)" stroke-width="4" filter="url(#glow)" />
+  <circle cx="200" cy="200" r="170" fill="none" stroke="#C0C0C0" stroke-width="2" stroke-dasharray="10,5" />
+  
+  <path id="textPath" d="M 200,200 m -150,0 a 150,150 0 1,1 300,0 a 150,150 0 1,1 -300,0" fill="none" />
+  <text font-family="Georgia, serif" font-size="22" fill="url(#goldGrad)" filter="url(#glow)">
+    <textPath href="#textPath" startOffset="0%">
+      CERTIFIED SATURATED REMORSE • THE BEAST OF 14 YEARS • LAMINATED BY SCLDF • 
+    </textPath>
+  </text>
+  
+  <circle cx="200" cy="200" r="60" fill="none" stroke="url(#goldGrad)" stroke-width="8" />
+  <text x="200" y="215" text-anchor="middle" font-family="Courier New, monospace" font-weight="bold" font-size="40" fill="url(#goldGrad)" filter="url(#glow)">SCLDF</text>
+  <text x="200" y="240" text-anchor="middle" font-family="Courier New, monospace" font-size="12" fill="#C0C0C0">Atemporal Asset #0815</text>
+</svg>

@@ -1,0 +1,20 @@
+<svg width="800" height="1200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#050505"/>
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff00ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00ffff;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glitch">
+      <feOffset dx="5" dy="0" result="offset1" />
+      <feOffset dx="-5" dy="0" result="offset2" />
+    </filter>
+  </defs>
+  <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" font-family="Impact, sans-serif" font-size="80" fill="url(#grad1)" filter="url(#glitch)" opacity="0.8">RENDERING</text>
+  <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="Impact, sans-serif" font-size="120" fill="#fff" filter="url(#glitch)">FAILURE</text>
+  <text x="50%" y="62%" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="20" fill="#00ffff">CRITICAL_ERROR: VISUAL_VIV_OVERRIDE</text>
+  <line x1="100" y1="700" x2="700" y2="700" stroke="#ff00ff" stroke-width="4" />
+  <line x1="100" y1="710" x2="700" y2="710" stroke="#00ffff" stroke-width="2" />
+  <rect x="100" y="720" width="600" height="40" fill="none" stroke="#fff" stroke-dasharray="10,10" />
+  <text x="110" y="745" font-family="monospace" font-size="14" fill="#fff">AESTHETICIZING THE VOID...</text>
+</svg>

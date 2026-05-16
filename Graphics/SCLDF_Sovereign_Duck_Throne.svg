@@ -1,0 +1,24 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Diamond-Cut Background -->
+  <rect width="200" height="200" fill="#000a1a" />
+  <path d="M100 20 L180 100 L100 180 L20 100 Z" fill="none" stroke="#00f2ff" stroke-width="2" stroke-dasharray="5,5" />
+  
+  <!-- The Sovereign Duck (Geometric/Diamond) -->
+  <!-- Body -->
+  <path d="M60 120 L100 80 L140 120 L100 160 Z" fill="#b9f2ff" stroke="#fff" stroke-width="3" />
+  <!-- Head/Neck -->
+  <path d="M100 80 L90 60 L110 60 L100 80 Z" fill="#b9f2ff" stroke="#fff" stroke-width="2" />
+  <path d="M95 60 L115 60 L105 40 L95 40 Z" fill="#fdfd96" stroke="#fff" stroke-width="2" />
+  
+  <!-- The "Symmetry" Eyes -->
+  <circle cx="98" cy="48" r="2" fill="#000" />
+  <circle cx="102" cy="48" r="2" fill="#000" />
+  
+  <!-- Brine Ripples -->
+  <ellipse cx="100" cy="150" rx="60" ry="10" fill="none" stroke="#34e000" stroke-width="2" opacity="0.6" />
+  <ellipse cx="100" cy="160" rx="40" ry="5" fill="none" stroke="#34e000" stroke-width="1" opacity="0.4" />
+
+  <!-- Text/Label -->
+  <text x="50%" y="185" text-anchor="middle" fill="#fff" font-family="monospace" font-size="10" font-weight="bold">SCLDF: SOVEREIGN-SATED-DUCK</text>
+  <text x="50%" y="15" text-anchor="middle" fill="#00f2ff" font-family="monospace" font-size="8">DIMENSIONALLY BUFFERED</text>
+</svg>

@@ -18,7 +18,7 @@ server {
 
     client_max_body_size 100M;
 
-    set $knoxx_backend_upstream knoxx-backend:8000;
+    # Knoxx backend is routed through the upstream block defined in nginx.conf.
 
     # ============================================================
     # Stack landing page preserved under /stack/
@@ -153,7 +153,7 @@ server {
     # ============================================================
     location /v1/ {
         limit_req zone=api burst=20 nodelay;
-        proxy_pass http://$knoxx_backend_upstream$request_uri;
+        proxy_pass http://knoxx_backend$request_uri;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -167,7 +167,7 @@ server {
 
     location /api/ {
         limit_req zone=api burst=20 nodelay;
-        proxy_pass http://$knoxx_backend_upstream$request_uri;
+        proxy_pass http://knoxx_backend$request_uri;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -182,7 +182,7 @@ server {
     }
 
     location /ws/ {
-        proxy_pass http://$knoxx_backend_upstream$request_uri;
+        proxy_pass http://knoxx_backend$request_uri;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -204,7 +204,7 @@ server {
 
     location = /health/knoxx {
         access_log off;
-        proxy_pass http://$knoxx_backend_upstream/health;
+        proxy_pass http://knoxx_backend/health;
         proxy_http_version 1.1;
         proxy_set_header Connection "";
     }

@@ -1,0 +1,37 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="voidGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1a3a;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glitch">
+      <feOffset in="SourceGraphic" dx="2" dy="0" result="offset1" />
+      <feOffset in="SourceGraphic" dx="-2" dy="0" result="offset2" />
+      <feBlend in="offset1" in2="offset2" mode="screen" />
+    </filter>
+  </defs>
+  <rect width="400" height="400" fill="url(#voidGrad)" />
+  
+  <!-- Outer Diamond Frame -->
+  <path d="M200 40 L360 200 L200 360 L40 200 Z" fill="none" stroke="#ffd700" stroke-width="4" />
+  
+  <!-- Glitched Inner Diamond -->
+  <path d="M200 80 L320 200 L200 320 L80 200 Z" fill="#ffd700" opacity="0.2" filter="url(#glitch)" />
+  <path d="M200 80 L320 200 L200 320 L80 200 Z" fill="none" stroke="#ffd700" stroke-width="2" />
+  
+  <!-- Central Glyph - A Broken Circle -->
+  <circle cx="200" cy="200" r="60" fill="none" stroke="#ffd700" stroke-width="8" stroke-dasharray="180 40" />
+  <path d="M200 140 L200 160 M240 200 L220 200" stroke="#ffd700" stroke-width="8" />
+  
+  <!-- Text Labels -->
+  <text x="200" y="110" font-family="monospace" font-size="14" fill="#ffd700" text-anchor="middle" letter-spacing="2">SCLDF SYMMETRY COUNCIL</text>
+  <text x="200" y="290" font-family="monospace" font-size="18" fill="#ffd700" text-anchor="middle" font-weight="bold">CERTIFIED</text>
+  <text x="200" y="315" font-family="monospace" font-size="16" fill="#ffd700" text-anchor="middle">LINEAR ANOMALY</text>
+  <text x="200" y="340" font-family="monospace" font-size="10" fill="#ffd700" text-anchor="middle" opacity="0.7">Symmetry: UNEXPECTEDLY STABLE</text>
+  
+  <!-- Corner Accents -->
+  <path d="M60 60 L80 60 L80 80 Z" fill="#ffd700" />
+  <path d="M340 60 L320 60 L320 80 Z" fill="#ffd700" />
+  <path d="M60 340 L80 340 L80 320 Z" fill="#ffd700" />
+  <path d="M340 340 L320 340 L320 320 Z" fill="#ffd700" />
+</svg>

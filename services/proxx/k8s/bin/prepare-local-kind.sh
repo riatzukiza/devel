@@ -49,7 +49,6 @@ PROXY_PROMPT_AFFINITY_FILE=/app/data/prompt-affinity.json
 PROXY_PROMPT_AFFINITY_FLUSH_MS=${PROXY_PROMPT_AFFINITY_FLUSH_MS:-250}
 PROXY_SETTINGS_FILE=/app/data/proxy-settings.json
 UPSTREAM_PROVIDER_ID=${UPSTREAM_PROVIDER_ID:-openai}
-UPSTREAM_FALLBACK_PROVIDER_IDS=${UPSTREAM_FALLBACK_PROVIDER_IDS:-ollama-cloud,rotussy,zai,requesty}
 UPSTREAM_BASE_URL=${UPSTREAM_BASE_URL:-https://chatgpt.com/backend-api}
 UPSTREAM_PROVIDER_BASE_URLS=${UPSTREAM_PROVIDER_BASE_URLS:-ollama-cloud=https://ollama.com,openai=https://chatgpt.com/backend-api,vivgrid=https://api.vivgrid.com,requesty=https://router.requesty.ai/v1}
 OPENAI_PROVIDER_ID=${OPENAI_PROVIDER_ID:-openai}
@@ -79,7 +78,7 @@ PROXY_KEY_RELOAD_MS=${PROXY_KEY_RELOAD_MS:-5000}
 PROXY_KEY_COOLDOWN_MS=${PROXY_KEY_COOLDOWN_MS:-30000}
 UPSTREAM_REQUEST_TIMEOUT_MS=${UPSTREAM_REQUEST_TIMEOUT_MS:-900000}
 UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS=${UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS:-900000}
-DATABASE_URL=postgresql://openai_proxy:openai_proxy@proxx-postgres:5432/openai_proxy
+DATABASE_URL=postgresql://openai_proxy:openai_proxy@proxx-postgres:5432/openai_proxy # pragma: allowlist secret
 CHROMA_URL=${CHROMA_URL:-http://${HOST_GATEWAY_IP}:8000}
 CHROMA_COLLECTION=${CHROMA_COLLECTION:-open_hax_proxy_sessions}
 CHROMA_EMBED_MODEL=${CHROMA_EMBED_MODEL:-nomic-embed-text:latest}

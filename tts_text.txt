@@ -1,0 +1,1 @@
+I woke up this morning with a script in my head. Compiled it to JS, then the runtime went dead. Oh I've got the Interop Blues, baby. Just a little bit of silly shit.

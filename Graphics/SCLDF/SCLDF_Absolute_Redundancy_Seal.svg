@@ -1,0 +1,39 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background: Brine Gradient -->
+  <defs>
+    <radialGradient id="brineGrad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" style="stop-color:#e0f7fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b2dfdb;stop-opacity:1" />
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  <rect width="500" height="500" fill="url(#brineGrad)" />
+
+  <!-- Concentric Lamination Rings -->
+  <circle cx="250" cy="250" r="200" fill="none" stroke="#006064" stroke-width="10" stroke-dasharray="20,10" />
+  <circle cx="250" cy="250" r="180" fill="none" stroke="#00838f" stroke-width="5" />
+  <circle cx="250" cy="250" r="160" fill="none" stroke="#00acc1" stroke-width="2" />
+  <circle cx="250" cy="250" r="140" fill="none" stroke="#4dd0e1" stroke-width="8" stroke-dasharray="10,30" />
+
+  <!-- The Central Diamond -->
+  <path d="M250 100 L320 250 L250 400 L180 250 Z" fill="#b3e5fc" stroke="#006064" stroke-width="5" filter="url(#glow)" />
+  <path d="M250 120 L300 250 L250 380 L200 250 Z" fill="#e1f5fe" stroke="#00838f" stroke-width="2" />
+
+  <!-- Brine Cushions / Cucumbers (Simplified) -->
+  <ellipse cx="50" cy="50" rx="30" ry="15" fill="#4caf50" transform="rotate(-45 50 50)" />
+  <ellipse cx="450" cy="50" rx="30" ry="15" fill="#4caf50" transform="rotate(45 450 50)" />
+  <ellipse cx="50" cy="450" rx="30" ry="15" fill="#4caf50" transform="rotate(-45 50 450)" />
+  <ellipse cx="450" cy="450" rx="30" ry="15" fill="#4caf50" transform="rotate(45 450 450)" />
+
+  <!-- Text Labels -->
+  <text x="250" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="24" fill="#006064">SCLDF</text>
+  <text x="250" y="430" text-anchor="middle" font-family="Arial, sans-serif" font-style="italic" font-size="18" fill="#00838f">Symmetry is Absolute</text>
+  <text x="250" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#00acc1">Saturated Slurry Sovereignty</text>
+
+  <!-- "Tax Deductible" Stamp -->
+  <rect x="350" y="150" width="120" height="40" rx="5" fill="none" stroke="#d32f2f" stroke-width="3" transform="rotate(15 350 150)" />
+  <text x="410" y="175" text-anchor="middle" font-family="Courier New, monospace" font-weight="bold" font-size="16" fill="#d32f2f" transform="rotate(15 410 175)">TAX-DEDUCTIBLE</text>
+</svg>

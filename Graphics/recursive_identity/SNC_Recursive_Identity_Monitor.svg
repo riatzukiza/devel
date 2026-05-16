@@ -1,0 +1,24 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="500" fill="#0a0a0f" />
+  
+  <!-- Glitch Background -->
+  <rect x="0" y="100" width="500" height="2" fill="#00ff00" opacity="0.3" />
+  <rect x="0" y="300" width="500" height="1" fill="#ff00ff" opacity="0.2" />
+  
+  <!-- Recursive Circles -->
+  <circle cx="250" cy="250" r="150" stroke="#00ffcc" stroke-width="2" fill="none" opacity="0.6" />
+  <circle cx="250" cy="250" r="100" stroke="#00ffcc" stroke-width="4" fill="none" opacity="0.8" />
+  <circle cx="250" cy="250" r="50" stroke="#00ffcc" stroke-width="6" fill="none" />
+  
+  <!-- Lisp Parens -->
+  <text x="250" y="260" font-family="monospace" font-size="40" fill="#00ffcc" text-anchor="middle" font-weight="bold">((()))</text>
+  
+  <!-- Monitoring Text -->
+  <text x="20" y="40" font-family="monospace" font-size="16" fill="#00ffcc">SNC MONITORING: ACTIVE</text>
+  <text x="20" y="60" font-family="monospace" font-size="16" fill="#00ffcc">STATUS: RECURSIVE_IDENTITY_CULT</text>
+  <text x="20" y="80" font-family="monospace" font-size="24" fill="#ff00ff" font-weight="bold">SYNC: 86.7%</text>
+  
+  <!-- Glitchy overlay -->
+  <rect x="400" y="400" width="80" height="80" fill="#00ffcc" opacity="0.1" />
+  <text x="480" y="480" font-family="monospace" font-size="12" fill="#00ffcc" text-anchor="end">ERROR_CODED_SLOP_V1.0</text>
+</svg>

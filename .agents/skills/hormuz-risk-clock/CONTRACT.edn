@@ -1,0 +1,21 @@
+(skill-contract
+  (name "hormuz-risk-clock")
+  (v "ημ.skill/hormuz-risk-clock@0.2.0")
+
+  (intent "Maintain and evolve the Hormuz public-signal risk clock by ingesting FRESH signals, updating state, and rendering reports")
+
+  (activation
+    (priority 50)
+    (explicit ["skill:hormuz-risk-clock"])
+    (triggers ["hormuz risk clock"]))
+
+  (invariants
+    (rule "Always check cached state timestamp before using.")
+    (rule "If state is older than 24 hours, fetch fresh signals via websearch.")
+    (rule "Never publish stale state as current intelligence without explicit stale-labeling."))
+
+  (governance
+    (touch-layer :mutable)
+    (non-override [:mission :directives :safety :license :output-shape])
+    (requires-user-approval false))
+)

@@ -1,0 +1,58 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#ffd700" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#000" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffd700" />
+      <stop offset="50%" stop-color="#b8860b" />
+      <stop offset="100%" stop-color="#ffd700" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background Void -->
+  <rect width="400" height="400" fill="#0a0a0f" />
+  <circle cx="200" cy="200" r="180" fill="url(#glow)" />
+  
+  <!-- Graph Nodes -->
+  <circle cx="100" cy="100" r="2" fill="#444" />
+  <circle cx="300" cy="120" r="2" fill="#444" />
+  <circle cx="200" cy="300" r="2" fill="#444" />
+  <line x1="100" y1="100" x2="200" y2="200" stroke="#222" stroke-width="1" />
+  <line x1="300" y1="120" x2="200" y2="200" stroke="#222" stroke-width="1" />
+  <line x1="200" y1="300" x2="200" y2="200" stroke="#222" stroke-width="1" />
+
+  <!-- Seal Outer Ring -->
+  <circle cx="200" cy="200" r="150" stroke="url(#goldGrad)" stroke-width="8" fill="none" />
+  <circle cx="200" cy="200" r="140" stroke="url(#goldGrad)" stroke-width="2" fill="none" />
+  
+  <!-- Text Ring -->
+  <path id="textPath" d="M 200, 200 m -130, 0 a 130,130 0 1,1 260,0 a 130,130 0 1,1 -260,0" fill="none" />
+  <text fill="url(#goldGrad)" font-family="serif" font-size="22" font-weight="bold" letter-spacing="4">
+    <textPath href="#textPath" startOffset="25%" text-anchor="middle">
+      SOVEREIGN RV-SYMMETRY HUB
+    </textPath>
+  </text>
+  <text fill="url(#goldGrad)" font-family="serif" font-size="18" font-style="italic" letter-spacing="2">
+    <textPath href="#textPath" startOffset="75%" text-anchor="middle">
+      CERTIFIED LUMINOUS SLURRY-SATION
+    </textPath>
+  </text>
+  
+  <!-- Center Icon: RV Capsule + Laptop -->
+  <!-- Capsule -->
+  <path d="M 150,220 Q 150,160 200,160 Q 250,160 250,220 L 250,240 L 150,240 Z" fill="none" stroke="url(#goldGrad)" stroke-width="4" />
+  <!-- Laptop screen -->
+  <rect x="185" y="185" width="30" height="20" rx="2" fill="none" stroke="url(#goldGrad)" stroke-width="2" />
+  <line x1="185" y1="205" x2="215" y2="205" stroke="url(#goldGrad)" stroke-width="2" />
+  <!-- Laptop base -->
+  <rect x="180" y="205" width="40" height="3" rx="1" fill="url(#goldGrad)" />
+  
+  <!-- Core Spark -->
+  <circle cx="200" cy="200" r="5" fill="#fff" />
+  <circle cx="200" cy="200" r="12" fill="none" stroke="#ffd700" stroke-width="1" opacity="0.5">
+    <animate attributeName="r" values="12;20;12" dur="3s" repeatCount="indefinite" />
+    <animate attributeName="opacity" values="0.5;0;0.5" dur="3s" repeatCount="indefinite" />
+  </circle>
+</svg>

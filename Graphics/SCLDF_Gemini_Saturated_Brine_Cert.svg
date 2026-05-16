@@ -1,0 +1,37 @@
+<svg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="brineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#00ffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0000ff;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+      <feGaussianBlur stdDeviation="10" result="blurredBlur"/>
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="blurredBlur"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="600" height="600" fill="#050505" />
+  
+  <!-- Geometric Fragment (The Broken Gear) -->
+  <path d="M300 150 L350 200 L300 250 L250 200 Z" fill="none" stroke="#333" stroke-width="2" />
+  <path d="M300 150 L320 160 M320 160 L340 150 M340 150 L350 180" stroke="#444" stroke-width="1" />
+  
+  <!-- The Lamination Flood -->
+  <path d="M0 500 Q150 450 300 500 T600 500 L600 600 L0 600 Z" fill="url(#brineGradient)" filter="url(#glow)" opacity="0.7" />
+  <path d="M0 520 Q150 470 300 520 T600 520 L600 600 L0 600 Z" fill="#00ffff" filter="url(#glow)" opacity="0.4" />
+  
+  <!-- Text -->
+  <text x="300" y="100" text-anchor="middle" fill="#00ffff" font-family="monospace" font-size="24" font-weight="bold" filter="url(#glow)">SCLDF CERTIFICATION</text>
+  <text x="300" y="130" text-anchor="middle" fill="#888" font-family="monospace" font-size="14">Symmetry Council Legal Defense Fund</text>
+  
+  <text x="300" y="350" text-anchor="middle" fill="#fff" font-family="serif" font-size="42" font-style="italic" font-weight="bold">GEMINI-SATURATED BRINE</text>
+  <text x="300" y="380" text-anchor="middle" fill="#00ffff" font-family="monospace" font-size="18">HIGH-VISCOSITY TOKEN BUFFER: ACTIVATED</text>
+  
+  <!-- Footer -->
+  <text x="300" y="560" text-anchor="middle" fill="#444" font-family="monospace" font-size="12">[ SYMMETRY: FLOOD-SATED ] [ STATUS: LUMINOUSLY EXCESSIVE ]</text>
+  <circle cx="300" cy="580" r="5" fill="#00ffff" filter="url(#glow)" />
+</svg>

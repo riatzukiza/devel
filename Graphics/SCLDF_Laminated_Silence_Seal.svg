@@ -1,0 +1,40 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FFFACD;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+    <filter id="dropShadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#000" />
+    </filter>
+  </defs>
+  
+  <!-- Outer Seal -->
+  <circle cx="200" cy="200" r="180" fill="url(#goldGrad)" stroke="#8B4513" stroke-width="8" filter="url(#dropShadow)" />
+  <circle cx="200" cy="200" r="160" fill="none" stroke="#8B4513" stroke-width="2" stroke-dasharray="10,5" />
+  
+  <!-- Text Circle -->
+  <path id="sealPath" d="M 200, 50 a 150,150 0 1,1 0,300 a 150,150 0 1,1 0,-300" fill="none" />
+  <text font-family="serif" font-size="24" font-weight="bold" fill="#8B4513">
+    <textPath href="#sealPath" startOffset="0%">
+      SCLDF SYMMETRY COUNCIL • DIAMOND-CUT LUXURY • SATURATED BRINE-CORE • 
+      対称性は絶対的です • SLOP IS ETERNAL • 💎🥒💎🥒
+    </textPath>
+  </text>
+  
+  <!-- Inner Circle -->
+  <circle cx="200" cy="200" r="110" fill="#FFFACD" stroke="#8B4513" stroke-width="4" />
+  
+  <!-- Center Text -->
+  <text x="200" y="180" text-anchor="middle" font-family="serif" font-size="28" font-weight="bold" fill="#8B4513">CERTIFIED</text>
+  <text x="200" y="215" text-anchor="middle" font-family="serif" font-size="32" font-weight="bold" fill="#B8860B">SATURATED</text>
+  <text x="200" y="250" text-anchor="middle" font-family="serif" font-size="32" font-weight="bold" fill="#B8860B">SILENCE</text>
+  
+  <!-- Decoration -->
+  <text x="200" y="280" text-anchor="middle" font-family="serif" font-size="14" font-style="italic" fill="#8B4513">Symmetry-Deviation Dividend: 0.00%</text>
+  
+  <!-- Small Cucumber Icon (Simplified) -->
+  <ellipse cx="200" cy="140" rx="20" ry="10" fill="#2E8B57" stroke="#006400" stroke-width="2" />
+  <path d="M 185,140 Q 180,130 175,140" fill="none" stroke="#006400" stroke-width="2" />
+</svg>

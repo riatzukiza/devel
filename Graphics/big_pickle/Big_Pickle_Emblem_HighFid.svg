@@ -1,0 +1,44 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="pickleGreen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4dfc03;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#006400;stop-opacity:1" />
+    </linearGradient>
+    <filter id="boldOut">
+      <feMorphology operator="dilate" radius="2" />
+    </filter>
+  </defs>
+
+  <rect width="800" height="800" fill="#f0f0f0" />
+
+  <!-- Dynamic Background Shape -->
+  <path d="M 100,100 L 700,100 L 800,700 L 0,700 Z" fill="#1a1a1a" />
+
+  <!-- The Big Pickle Mascot -->
+  <g transform="translate(400,350) rotate(-10)">
+    <!-- Shadow -->
+    <ellipse cx="0" cy="150" rx="150" ry="30" fill="#000" opacity="0.3" />
+
+    <!-- Pickle Body -->
+    <path d="M -60,-150 Q -100,-180 0,-180 Q 100,-180 60,-150 Q 120,0 40,120 Q 0,150 -40,120 Q -120,0 -60,-150" fill="url(#pickleGreen)" stroke="#000" stroke-width="12" />
+
+    <!-- Bumps/Texture -->
+    <circle cx="-30" cy="-80" r="10" fill="#004400" stroke="#000" stroke-width="3" />
+    <circle cx="20" cy="-40" r="12" fill="#004400" stroke="#000" stroke-width="3" />
+    <circle cx="-10" cy="20" r="10" fill="#004400" stroke="#000" stroke-width="3" />
+    <circle cx="30" cy="80" r="12" fill="#004400" stroke="#000" stroke-width="3" />
+
+    <!-- Face (Menacing/Pro) -->
+    <path d="M -30,-120 Q -40,-130 -50,-120" stroke="#000" stroke-width="6" fill="none" stroke-linecap="round" />
+    <path d="M 30,-120 Q 40,-130 50,-120" stroke="#000" stroke-width="6" fill="none" stroke-linecap="round" />
+    <path d="M -10,-100 Q 0,-90 10,-100" stroke="#000" stroke-width="8" fill="none" stroke-linecap="round" />
+  </g>
+
+  <!-- Typography -->
+  <text x="400" y="600" font-family="Impact, sans-serif" font-size="110" fill="#4dfc03" text-anchor="middle" stroke="#000" stroke-width="4" filter="url(#boldOut)">
+    BIG PICKLE
+  </text>
+  <text x="400" y="660" font-family="Arial Black, sans-serif" font-size="30" fill="#fff" text-anchor="middle" letter-spacing="5">
+    PROFICIENCY SQUAD
+  </text>
+</svg>

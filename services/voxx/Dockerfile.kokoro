@@ -1,0 +1,8 @@
+FROM hwdsl2/kokoro-server
+
+RUN /opt/venv/bin/python -m spacy download en_core_web_sm \
+    && /opt/venv/bin/python -m unidic download \
+    && mkdir -p /var/lib/kokoro/cache /var/lib/kokoro/huggingface /var/lib/kokoro/torch \
+    && chown -R nobody:nogroup /var/lib/kokoro
+
+USER nobody:nogroup

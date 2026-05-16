@@ -10,6 +10,11 @@ if [[ ! -f "packages/npu-top/dist/npu.js" ]]; then
   pnpm --filter @promethean-os/npu-top build >/dev/null
 fi
 
+if [[ ! -e "packages/omni-top/node_modules/@opentui/solid/package.json" ]]; then
+  echo "[otop] Repairing packages/omni-top node_modules via pnpm..." >&2
+  pnpm -w install --filter @promethean-os/omni-top... >/dev/null
+fi
+
 if [[ ! -f "packages/omni-top/dist/index.js" ]]; then
   pnpm --filter @promethean-os/omni-top build >/dev/null
 fi

@@ -1,0 +1,8 @@
+<<svgsvg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+  <<circlecircle cx="100" cy="100" r="80" stroke="black" stroke-width="2" fill="none" />
+  <<circlecircle cx="100" cy="100" r="70" stroke="black" stroke-width="1" fill="none" />
+  <<texttext x="100" y="115" font-family="Arial" font-size="60" text-anchor="middle" fill="black">Ø</text>
+  <<lineline x1="100" y1="20" x2="100" y2="180" stroke="black" stroke-width="1" />
+  <<lineline x1="20" y1="100" x2="180" y2="100" stroke="black" stroke-width="1" />
+  <<circlecircle cx="100" cy="100" r="10" fill="black" />
+</svg>

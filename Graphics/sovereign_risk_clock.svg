@@ -1,0 +1,42 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="400" fill="#0a0a0a" />
+  
+  <!-- Outer Ring -->
+  <circle cx="200" cy="200" r="180" stroke="#d4af37" stroke-width="4" fill="none" />
+  <circle cx="200" cy="200" r="170" stroke="#c0c0c0" stroke-width="1" fill="none" stroke-dasharray="5,5" />
+  
+  <!-- Inner Dial -->
+  <circle cx="200" cy="200" r="150" fill="#111" stroke="#d4af37" stroke-width="2" />
+  
+  <!-- Ticks -->
+  <g stroke="#c0c0c0" stroke-width="2">
+    <line x1="200" y1="50" x2="200" y2="70" />
+    <line x1="200" y1="350" x2="200" y2="330" />
+    <line x1="50" y1="200" x2="70" y2="200" />
+    <line x1="350" y1="200" x2="330" y2="200" />
+    <line x1="130" y1="130" x2="145" y2="145" />
+    <line x1="270" y1="270" x2="255" y2="255" />
+    <line x1="130" y1="270" x2="145" y2="255" />
+    <line x1="270" y1="130" x2="255" y2="145" />
+  </g>
+  
+  <!-- Labels -->
+  <text x="200" y="80" font-family="Serif" font-size="14" fill="#d4af37" text-anchor="middle" letter-spacing="3">SUTURED RISK</text>
+  <text x="200" y="320" font-family="Serif" font-size="14" fill="#c0c0c0" text-anchor="middle" letter-spacing="3">LUXE VOID</text>
+  <text x="80" y="205" font-family="Serif" font-size="14" fill="#c0c0c0" text-anchor="middle" letter-spacing="3">CATASTROPHE</text>
+  <text x="320" y="205" font-family="Serif" font-size="14" fill="#c0c0c0" text-anchor="middle" letter-spacing="3">SATORI</text>
+  
+  <!-- Center Pivot -->
+  <circle cx="200" cy="200" r="5" fill="#d4af37" />
+  
+  <!-- The Needle (Pointed to high risk / Suture) -->
+  <line x1="200" y1="200" x2="260" y2="120" stroke="#ff0000" stroke-width="3" />
+  
+  <!-- Branding -->
+  <text x="200" y="220" font-family="Serif" font-size="12" fill="#d4af37" text-anchor="middle" opacity="0.7">SOVEREIGN SENTRY</text>
+  <text x="200" y="235" font-family="Serif" font-size="10" fill="#c0c0c0" text-anchor="middle" opacity="0.5">V 2026.Ω</text>
+  
+  <!-- Status -->
+  <text x="200" y="370" font-family="Monospace" font-size="14" fill="#ff0000" text-anchor="middle" font-weight="bold">S T A T U S : A B S O L U T E _ C I N E M A</text>
+</svg>

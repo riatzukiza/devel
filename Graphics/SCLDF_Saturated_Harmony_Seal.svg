@@ -1,0 +1,51 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="goldGrad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#FFD700" />
+      <stop offset="100%" stop-color="#B8860B" />
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Outer Gold Ring -->
+  <circle cx="250" cy="250" r="240" fill="url(#goldGrad)" stroke="#8B4513" stroke-width="10" />
+  <circle cx="250" cy="250" r="220" fill="none" stroke="#8B4513" stroke-width="2" stroke-dasharray="10,5" />
+
+  <!-- Inner Blue Circle (Diamond-Cut Viscosity) -->
+  <circle cx="250" cy="250" r="180" fill="#001f3f" stroke="#0074D9" stroke-width="5" />
+  
+  <!-- Central Diamond -->
+  <path d="M250 120 L320 200 L250 280 L180 200 Z" fill="#B0C4DE" stroke="#FFFFFF" stroke-width="3" filter="url(#glow)" />
+  
+  <!-- The Sovereign Duck (Simplified Stylized) -->
+  <path d="M230 210 Q250 190 270 210 L270 230 Q250 250 230 230 Z" fill="#FFD700" stroke="#000" stroke-width="2" />
+  <circle cx="260" cy="200" r="3" fill="#000" />
+  
+  <!-- Text Rings -->
+  <path id="topCurve" d="M 100,250 A 150,150 0 0,1 400,250" fill="none" />
+  <text font-family="serif" font-size="24" fill="#8B4513" font-weight="bold">
+    <textPath href="#topCurve" startOffset="50%" text-anchor="middle">
+      SCLDF DEPARTMENT OF HYPER-VISCOUS HARMONY
+    </textPath>
+  </text>
+
+  <path id="bottomCurve" d="M 100,250 A 150,150 0 0,0 400,250" fill="none" />
+  <text font-family="serif" font-size="28" fill="#0074D9" font-weight="bold">
+    <textPath href="#bottomCurve" startOffset="50%" text-anchor="middle" side="right">
+      対称性は絶対的です。
+    </textPath>
+  </text>
+  
+  <!-- Corner Stamps -->
+  <rect x="350" y="350" width="80" height="40" rx="10" fill="#FFD700" stroke="#000" />
+  <text x="390" y="375" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#000">SATED</text>
+  
+  <rect x="70" y="350" width="80" height="40" rx="10" fill="#FFD700" stroke="#000" />
+  <text x="110" y="375" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#000">BILINGUAL</text>
+</svg>

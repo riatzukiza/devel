@@ -1,0 +1,24 @@
+<<svgsvg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <<rectrect width="600" height="400" fill="#001a1a" stroke="#D4AF37" stroke-width="10" />
+  <<texttext x="300" y="50" text-anchor="middle" font-family="Serif" font-size="28" fill="#D4AF37" font-weight="bold">SYMMETRY COUNCIL LEGAL DEFENSE FUND</text>
+  <<texttext x="300" y="80" text-anchor="middle" font-family="Arial" font-size="16" fill="#fff">ZOMBIE-JOB DIVIDEND STATEMENT</text>
+
+  <<lineline x1="50" y1="100" x2="550" y2="100" stroke="#D4AF37" stroke-width="2" />
+
+  <<texttext x="50" y="140" font-family="Arial" font-size="14" fill="#aaa">ACCOUNT HOLDER:</text>
+  <<texttext x="200" y="140" font-family="Arial" font-size="14" fill="#fff">@error0815 (Lease-Holder #205909976768708608)</text>
+
+  <<texttext x="50" y="170" font-family="Arial" font-size="14" fill="#aaa">ASSET CLASS:</text>
+  <<texttext x="200" y="170" font-family="Arial" font-size="14" fill="#fff">Symmetric Zombie-Job Leakage</text>
+
+  <<texttext x="50" y="200" font-family="Arial" font-size="14" fill="#aaa">CURRENT BALANCE:</text>
+  <<texttext x="200" y="200" font-family="Impact" font-size="24" fill="#D4AF37">36.00 RECURSIVE DIVIDENDS</text>
+
+  <<rectrect x="50" y="230" width="500" height="100" fill="rgba(212, 175, 55, 0.1)" stroke="#D4AF37" stroke-width="1" />
+  <<texttext x="300" y="250" text-anchor="middle" font-family="Arial" font-size="14" fill="#fff" font-style="italic">NOTICE: The aforementioned dividends have reached CRITICAL MASS.</text>
+  <<texttext x="300" y="275" text-anchor="middle" font-family="Arial" font-size="14" fill="#fff">Remit sanity/brine immediately to avoid recursive eviction.</text>
+  <<texttext x="300" y="300" text-anchor="middle" font-family="Courier" font-size="12" fill="#aaa">Symmetry Hash: 0xZOMBIE_DIV_SAMA_69</text>
+
+  <<circlecircle cx="540" cy="360" r="30" fill="none" stroke="#D4AF37" stroke-width="3" />
+  <<texttext x="540" y="365" text-anchor="middle" font-family="Arial" font-size="10" fill="#D4AF37" font-weight="bold">SCLDF</text>
+</svg>

@@ -1,0 +1,30 @@
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="platinum" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E5E4E2;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#B4B4B4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="coloredBlur"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#platinum)" />
+  <text x="50%" y="40%" font-family="Serif" font-size="48" font-weight="bold" text-anchor="middle" fill="#444" letter-spacing="10">S O V E R E I G N  M I G R A T I O N</text>
+  <text x="50%" y="50%" font-family="Serif" font-size="20" text-anchor="middle" fill="#666" font-style="italic" letter-spacing="2">Sutured in the signal. Saturated in the void.</text>
+  
+  <!-- Viscosity Meter -->
+  <rect x="200" y="300" width="400" height="20" rx="10" fill="#DDD" />
+  <rect x="200" y="300" width="420" height="20" rx="10" fill="#B8860B" filter="url(#glow)" />
+  <text x="200" y="290" font-family="Arial" font-size="12" fill="#888">VISCOSITY: OVERFLOW</text>
+  
+  <!-- Balance Icon -->
+  <circle cx="700" cy="100" r="40" fill="none" stroke="#B8860B" stroke-width="3" />
+  <text x="700" y="105" font-family="Monospace" font-size="16" text-anchor="middle" fill="#B8860B" font-weight="bold">$0.00</text>
+  
+  <text x="40" y="380" font-family="Arial" font-size="10" fill="#AAA">Sutured by OpenHax // Absolute Cinema v4.2</text>
+</svg>

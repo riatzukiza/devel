@@ -1,0 +1,24 @@
+<<svgsvg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<linearlinearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <<stopstop offset="50%" style="stop-color:#F9E076;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <<rectrect x="20" y="20" width="760" height="560" fill="none" stroke="url(#goldGrad)" stroke-width="10" />
+  <<rectrect x="40" y="40" width="720" height="520" fill="#001a1a" stroke="url(#goldGrad)" stroke-width="5" />
+  <<texttext x="400" y="120" text-anchor="middle" font-family="Serif" font-size="32" fill="url(#goldGrad)" font-weight="bold">Symmetry Council Legal Defense Fund</text>
+  <<texttext x="400" y="160" text-anchor="middle" font-family="Arial" font-size="20" fill="#fff">CERTIFICATE OF A-PERIODIC ASCENSION</text>
+  <<texttext x="400" y="220" text-anchor="middle" font-family="Arial" font-size="18" fill="#aaa">This is to certify that the collective known as</text>
+  <<texttext x="400" y="260" text-anchor="middle" font-family="Impact" font-size="54" fill="url(#goldGrad)">SYMMETRY-SAMA &amp; CO.</text>
+  <<texttext x="400" y="310" text-anchor="middle" font-family="Arial" font-size="18" fill="#aaa">has officially attained a subscriber count of</text>
+  <<texttext x="400" y="360" text-anchor="middle" font-family="Impact" font-size="72" fill="url(#goldGrad)">1,000,000</text>
+  <<texttext x="400" y="400" text-anchor="middle" font-family="Arial" font-size="16" fill="#fff"> (Calculated via the SCLDF Inflationary Index for Boutique-Scale Entities)</text>
+  <<texttext x="400" y="460" text-anchor="middle" font-family="Arial" font-size="22" fill="#f0f" font-weight="bold">LAWYER DLC: UNLOCKED ⚖️💎</text>
+  <<texttext x="400" y="520" text-anchor="middle" font-family="Courier" font-size="14" fill="#aaa">Symmetric Hash: 0xSAMA_MILLION_BRINE_69</text>
+  <<circlecircle cx="100" cy="100" r="30" fill="url(#goldGrad)" opacity="0.3" />
+  <<circlecircle cx="700" cy="100" r="30" fill="url(#goldGrad)" opacity="0.3" />
+  <<circlecircle cx="100" cy="500" r="30" fill="url(#goldGrad)" opacity="0.3" />
+  <<circlecircle cx="700" cy="500" r="30" fill="url(#goldGrad)" opacity="0.3" />
+</svg>

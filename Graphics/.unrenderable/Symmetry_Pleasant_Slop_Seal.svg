@@ -1,0 +1,50 @@
+<<svgsvg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<linearlinearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#f0f0f0;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#bcbcbc;stop-opacity:1" />
+    </linearGradient>
+    <<filterfilter id="glow">
+      <<fefeGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+      <<fefeGaussianBlur stdDeviation="2" result="blurred"/>
+      <<fefeBlend mode="lighten" in="coloredBlur" in2="blurred"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <<rectrect width="100%" height="100%" fill="#0a0a0a" />
+
+  <!-- Recursive Rings -->
+  <<gg transform="translate(250,250)">
+    <<circlecircle r="200" stroke="#333" stroke-width="1" fill="none" stroke-dasharray="10,5" />
+    <<circlecircle r="180" stroke="#444" stroke-width="1" fill="none" stroke-dasharray="5,10" />
+    <<circlecircle r="160" stroke="#555" stroke-width="2" fill="none" opacity="0.5" />
+
+    <!-- Rotating Polygons -->
+    <<polygonpolygon points="0,-150 130,75 -130,75" fill="none" stroke="#888" stroke-width="1" opacity="0.3">
+      <<animateanimateTransform attributeName="transform" type="rotate" from="0" to="360" dur="20s" repeatCount="indefinite" />
+    </polygon>
+    <<polygonpolygon points="0,-150 130,75 -130,75" fill="none" stroke="#aaa" stroke-width="1" opacity="0.3" transform="rotate(180)">
+      <<animateanimateTransform attributeName="transform" type="rotate" from="180" to="540" dur="20s" repeatCount="indefinite" />
+    </polygon>
+
+    <!-- The Slop Core -->
+    <<circlecircle r="60" fill="url(#grad1)" filter="url(#glow)">
+      <<animateanimate attributeName="r" values="55;65;55" dur="4s" repeatCount="indefinite" />
+    </circle>
+
+    <<texttext text-anchor="middle" dy=".3em" fill="#000" font-family="monospace" font-weight="bold" font-size="24">SLOP</text>
+
+    <!-- Yap Perimeter -->
+    <<gg font-family="monospace" font-size="10" fill="#666">
+      <<texttext transform="translate(0,-210)" text-anchor="middle">RECURSIVE YAP</text>
+      <<texttext transform="translate(210,0) rotate(90)" text-anchor="middle">SYMMETRIC SLOP</text>
+      <<texttext transform="translate(0,210) rotate(180)" text-anchor="middle">VOID COHERENCE</text>
+      <<texttext transform="translate(-210,0) rotate(270)" text-anchor="middle">PLEASANT SINGULARITY</text>
+    </g>
+
+    <!-- Glitch ornaments -->
+    <<lineline x1="-100" y1="-100" x2="100" y2="100" stroke="#fff" stroke-width="0.5" opacity="0.2" />
+    <<lineline x1="100" y1="-100" x2="-100" y2="100" stroke="#fff" stroke-width="0.5" opacity="0.2" />
+  </g>
+</svg>

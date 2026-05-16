@@ -1,29 +1,44 @@
 # OpenPlanner Docker Stack
 
-**Single compose file. MongoDB Community Server. No overlays. No variants.**
+**Split Compose stack. MongoDB Community Server. Main OpenPlanner is not profile-gated.**
 
 ## Quick Reference
 
 | What | Value |
 |------|-------|
-| Compose file | `docker-compose.yml` (THIS IS THE ONLY ONE) |
+| Compose root | `docker-compose.yml` |
+| Service fragments | `compose/*.yml` |
+| Main app service | `openplanner` (default profile; no `prod` profile required) |
 | MongoDB image | `mongo:8.0` (Community Server) |
-| Vector search | Handled by `openplanner-proxx` embedding service |
+| Vector search | Handled by canonical `services/proxx` by default; bundled `openplanner-proxx` is opt-in via `--profile bundled-proxx` |
 | Init service | `mongo-init` (runs once, `restart: "no"`) |
+
+## Compose Layout
+
+`docker-compose.yml` is intentionally small. It defines the project name, shared volumes/networks, and includes service fragments:
+
+| File | Contents |
+|------|----------|
+| `compose/storage.yml` | MongoDB, mongot, mongo-init, secret init, Knoxx Postgres/Redis |
+| `compose/openplanner.yml` | Main OpenPlanner app and migration workers |
+| `compose/dev.yml` | Optional watch-mode backend on `OPENPLANNER_DEV_PORT` |
+| `compose/proxx.yml` | Optional bundled Proxx/Vexx services |
+| `compose/graph-core.yml` | Graph weaver and single semantic/field workers |
+| `compose/graph-shards-2.yml` | 2-way graph shard profile |
+| `compose/graph-shards-3.yml` | 3-way graph shard profile |
+| `compose/graph-shards-20.yml` | 20-way graph shard profile |
+| `compose/ingestion.yml` | Shuvcrawl, Myrmex, semantic graph builder, translation worker |
 
 ## Architecture
 
 ```
-docker-compose.yml
-├── mongodb             MongoDB Community Server 8.0 (standalone, no replica set)
-├── mongo-init          runs mongo-init.sh once, creates user + collections + indexes
-├── openplanner         main application (depends on mongodb healthy + mongo-init complete)
-├── openplanner-proxx   Embedding service + vector search
-├── knoxx-*             Knoxx agent backend, frontend, nginx, postgres, redis
-├── graph-weaver        graph processing service
-├── eros-eris-field-app force-directed graph simulation
-├── kms-ingestion       knowledge management ingestion (Clojure)
-└── shibboleth-*        auth services
+docker-compose.yml       tiny include/root file
+compose/storage.yml      persistent dependencies
+compose/openplanner.yml  main API on ${OPENPLANNER_PORT:-7777}
+compose/dev.yml          optional dev API on ${OPENPLANNER_DEV_PORT:-7778}
+compose/proxx.yml        optional bundled embedding stack
+compose/graph-*.yml      graph workers and shard profiles
+compose/ingestion.yml    ingestion and background workers
 ```
 
 ## Why MongoDB Community Server (NOT Atlas Local)
@@ -39,20 +54,52 @@ MongoDB Community Server in standalone mode (no replica set) allows:
 - Simpler configuration
 - Standard MongoDB 8.0 features
 
-**Trade-off**: No native vector search in MongoDB. Vector search is handled by the `openplanner-proxx` embedding service.
+**Trade-off**: No native vector search in MongoDB. Vector search is handled by Proxx; the default local path is the canonical `services/proxx` stack, with `openplanner-proxx` reserved for opt-in isolated runs.
 
 ## Startup Sequence
 
-### Quick Start (Full Stack with Dev Frontend)
+### Quick Start (Main API Only)
 
 ```bash
 cd /home/err/devel/services/openplanner
 
-# Start everything with dev profile (includes Vite dev server)
-docker compose --profile dev up -d
+# Starts default-profile services, including the main OpenPlanner API.
+# No prod profile is required.
+docker compose up -d mongodb mongo-init openplanner
 
-# Wait for all services to become healthy (~2 minutes)
-docker compose ps
+curl http://localhost:${OPENPLANNER_PORT:-7777}/v1/health
+```
+
+### Optional Dev Backend
+
+Run this only when you explicitly want a second watch-mode backend on a different port:
+
+```bash
+cd /home/err/devel/services/openplanner
+docker compose up -d mongo-init        # grants app user access to the dev DB too
+docker compose --profile dev up -d openplanner-dev
+curl http://localhost:${OPENPLANNER_DEV_PORT:-7778}/v1/health
+```
+
+`openplanner-dev` is intentionally isolated from the main API:
+
+| Surface | Main API | Dev API |
+|---------|----------|---------|
+| HTTP port | `${OPENPLANNER_PORT:-7777}` | `${OPENPLANNER_DEV_PORT:-7778}` |
+| Mongo database | `${MONGODB_DB:-openplanner}` | `${OPENPLANNER_DEV_MONGODB_DB:-openplanner_dev}` |
+| Data dir | `./openplanner-lake` | `./openplanner-lake-dev` |
+| Migration graph | enabled by default | disabled unless `OPENPLANNER_DEV_MIGRATION_GRAPH_URL` is set |
+
+Do not run `openplanner` and `openplanner-dev` as interchangeable endpoints. Point clients at one deliberate base URL, usually:
+
+```bash
+export OPENPLANNER_BASE_URL=http://127.0.0.1:${OPENPLANNER_PORT:-7777}
+```
+
+Default local development assumes the canonical `services/proxx` stack is already running on the shared `ai-infra` network. Only enable the bundled proxy when you explicitly want an isolated OpenPlanner-local Proxx runtime:
+
+```bash
+docker compose --profile bundled-proxx up -d openplanner-proxx
 ```
 
 ### Core Stack Only
@@ -96,6 +143,7 @@ All variables have sensible defaults. Override in `.env` or host environment.
 | `OPENPLANNER_MONGO_APP_USERNAME` | `openplanner` | Application readWrite user |
 | `OPENPLANNER_MONGO_APP_PASSWORD` | `change-me-openplanner-password` | Application user password |
 | `OPENPLANNER_PORT` | `7777` | Main app port |
+| `OPENPLANNER_DEV_PORT` | `7778` | Dev backend watch service host port |
 | `OPENPLANNER_API_KEY` | `change-me` | API key for HTTP access |
 
 ## Common Operations
@@ -103,17 +151,17 @@ All variables have sensible defaults. Override in `.env` or host environment.
 ### Fresh start (wipes all data)
 ```bash
 docker compose down -v   # -v removes volumes
-docker compose --profile dev up -d
-# Wait for all services healthy, then verify:
+docker compose up -d mongodb mongo-init openplanner
+# Wait for services healthy, then verify:
 docker compose ps
 ```
 
 ### Restart without losing data
 ```bash
-docker compose restart
+docker compose restart openplanner
 # Or to stop completely:
 docker compose down
-docker compose --profile dev up -d
+docker compose up -d mongodb mongo-init openplanner
 ```
 
 ### Verify MongoDB connection
@@ -145,11 +193,16 @@ docker compose up -d mongo-init --force-recreate
 
 | Profile | Services | Use Case |
 |---------|----------|----------|
-| (none) | mongodb, openplanner, proxx, knoxx-backend, kms-ingestion | Core services |
-| `dev` | + knoxx-frontend-dev (Vite) | Development with hot reload |
-| `production` | + knoxx-frontend (built) | Production deployment |
-| `graph` | + graph-weaver, eros-eris-field-app | Force-directed simulation |
-| `graph-20` | + 20 simulation shards | Parallel processing |
+| (none) | `mongodb`, `mongo-init`, `openplanner`, and other default workers | Main stack; OpenPlanner API is available without a profile |
+| `dev` | `openplanner-dev` | Optional watch-mode backend on `OPENPLANNER_DEV_PORT` |
+| `bundled-proxx` | `openplanner-proxx`, `openplanner-proxx-db` | Isolated local embedding proxy |
+| `container-vexx` | `vexx` | Containerized Vexx service |
+| `graph` | semantic graph workers | Force-directed simulation |
+| `graph-2` / `graph-3` / `graph-20` | sharded graph workers | Parallel graph processing |
+| `jobs` | `semantic-graph-builder` | Optional background graph build job |
+| `legacy-translation-worker` | `translation-worker` | Legacy translation worker |
+
+There is intentionally no `prod`/`production` profile for the main OpenPlanner API.
 
 ## Troubleshooting
 

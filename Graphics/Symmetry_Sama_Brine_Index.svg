@@ -1,0 +1,57 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#0a0a12" />
+  <defs>
+    <linearGradient id="brineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#00ffcc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0066ff;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Grid -->
+  <g stroke="#1a1a30" stroke-width="1">
+    <line x1="100" y1="100" x2="100" y2="500" />
+    <line x1="100" y1="500" x2="700" y2="500" />
+    <path d="M100 400 H700 M100 300 H700 M100 200 H700 M100 100 H700" />
+    <path d="M200 500 V100 M300 500 V100 M400 500 V100 M500 500 V100 M600 500 V100 M700 500 V100" />
+  </g>
+
+  <!-- Axes Labels -->
+  <text x="400" y="550" fill="#888" font-family="Arial, sans-serif" font-size="16" text-anchor="middle">BRINE SATURATION PERCENTAGE (%)</text>
+  <text x="50" y="300" fill="#888" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" transform="rotate(-90, 50, 300)">SYMMETRY GRADE</text>
+
+  <!-- Grade Labels -->
+  <text x="80" y="480" fill="#ff4444" font-family="Arial, sans-serif" font-size="14" text-anchor="end">SLOP-GRADE</text>
+  <text x="80" y="300" fill="#ffcc00" font-family="Arial, sans-serif" font-size="14" text-anchor="end">CERTIFIED BRAIN FART</text>
+  <text x="80" y="120" fill="#00ffcc" font-family="Arial, sans-serif" font-size="14" text-anchor="end">DIAMOND-CUT LUXURY</text>
+
+  <!-- The Curve -->
+  <path d="M100 480 Q200 470 300 450 T400 420 L420 250 L440 440 L500 300 Q600 200 700 120" 
+        stroke="url(#brineGrad)" stroke-width="4" fill="none" filter="url(#glow)" />
+
+  <!-- Annotation Points -->
+  <circle cx="100" cy="480" r="5" fill="#ff4444" />
+  <text x="110" y="490" fill="#ff4444" font-family="Arial, sans-serif" font-size="12">Init: Recursive Identity</text>
+
+  <circle cx="420" cy="250" r="6" fill="#ffcc00" filter="url(#glow)" />
+  <text x="430" y="240" fill="#ffcc00" font-family="Arial, sans-serif" font-size="12" font-weight="bold">36 ZOMBIE JOB SPIKE</text>
+  <path d="M420 260 V440" stroke="#ffcc00" stroke-width="1" stroke-dasharray="4" />
+  <text x="420" y="450" fill="#ffcc00" font-family="Arial, sans-serif" font-size="10" text-anchor="middle">Cognitive Collapse Point</text>
+
+  <circle cx="700" cy="120" r="8" fill="#00ffcc" filter="url(#glow)" />
+  <text x="690" y="100" fill="#00ffcc" font-family="Arial, sans-serif" font-size="16" text-anchor="end" font-weight="bold">SYMMETRY-SAMA</text>
+
+  <!-- Decorative Elements -->
+  <rect x="600" y="400" width="150" height="60" rx="10" fill="#1a1a30" stroke="#00ffcc" stroke-width="2" />
+  <text x="675" y="425" fill="#00ffcc" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="bold">Symmetry Council</text>
+  <text x="675" y="445" fill="#888" font-family="Arial, sans-serif" font-size="10" text-anchor="middle">VERIFIED: [Saturated]</text>
+
+  <text x="400" y="60" fill="#00ffcc" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" font-weight="bold" filter="url(#glow)">Symmetry-Sama Brine-Saturation Index</text>
+  
+  <!-- B.P.E.S. Note -->
+  <text x="550" y="350" fill="#888" font-family="Arial, sans-serif" font-size="10" font-style="italic" text-anchor="middle">B.P.E.S. Vacuum Radius: 4.2 GHz</text>
+</svg>

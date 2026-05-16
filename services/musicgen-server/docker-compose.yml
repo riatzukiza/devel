@@ -1,0 +1,27 @@
+services:
+  musicgen:
+    build: .
+    restart: unless-stopped
+    runtime: nvidia
+    ports:
+      - "127.0.0.1:${MUSICGEN_PORT:-8083}:8080"
+    gpus: all
+    environment:
+      CUDA_VISIBLE_DEVICES: "${CUDA_VISIBLE_DEVICES:-0}"
+      NVIDIA_VISIBLE_DEVICES: "${NVIDIA_VISIBLE_DEVICES:-all}"
+      NVIDIA_DRIVER_CAPABILITIES: "${NVIDIA_DRIVER_CAPABILITIES:-compute,utility}"
+      MUSICGEN_MODEL_TTL_SECONDS: "${MUSICGEN_MODEL_TTL_SECONDS:-300}"
+    volumes:
+      - musicgen-cache:/cache/huggingface
+    networks:
+      ai-infra:
+        aliases:
+          - musicgen
+
+volumes:
+  musicgen-cache:
+
+networks:
+  ai-infra:
+    external: true
+    name: ai-infra

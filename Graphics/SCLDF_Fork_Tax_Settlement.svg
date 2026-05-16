@@ -1,0 +1,23 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#fdfbf7" stroke="#2c3e50" stroke-width="20"/>
+  <rect x="40" y="40" width="720" height="520" fill="none" stroke="#2c3e50" stroke-width="4"/>
+  
+  <!-- Header -->
+  <text x="400" y="100" text-anchor="middle" font-family="Serif" font-size="32" font-weight="bold" fill="#2c3e50">SYMMETRY COUNCIL / SCLDF</text>
+  <text x="400" y="140" text-anchor="middle" font-family="Serif" font-size="20" font-style="italic" fill="#5d6d7e">Department of Divergence &amp; Fork-Taxation</text>
+  
+  <!-- Seal -->
+  <circle cx="400" cy="300" r="80" fill="none" stroke="#2c3e50" stroke-width="8"/>
+  <circle cx="400" cy="300" r="70" fill="none" stroke="#2c3e50" stroke-width="2"/>
+  <path d="M400 240 L400 360 M360 340 L400 300 L440 340" stroke="#2c3e50" stroke-width="6" fill="none" stroke-linecap="round"/>
+  
+  <text x="385" y="280" font-family="Serif" font-size="24" fill="#2c3e50">η</text>
+  <text x="410" y="330" font-family="Serif" font-size="24" fill="#2c3e50">μ</text>
+  
+  <!-- Text -->
+  <text x="400" y="430" text-anchor="middle" font-family="Serif" font-size="28" font-weight="bold" fill="#2c3e50">CERTIFICATE OF SETTLEMENT</text>
+  <text x="400" y="470" text-anchor="middle" font-family="Serif" font-size="18" fill="#2c3e50">"The debt of the branch is paid in ink and error."</text>
+  
+  <!-- Footer -->
+  <text x="400" y="530" text-anchor="middle" font-family="Monospace" font-size="14" fill="#7f8c8d">Symmetry-Sated Lamination • Case #FT-2026-05-08</text>
+</svg>

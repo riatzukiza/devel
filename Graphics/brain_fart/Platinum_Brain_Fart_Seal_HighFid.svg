@@ -1,0 +1,50 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="platGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e5e4e2;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b4b4b4;stop-opacity:1" />
+    </linearGradient>
+    <filter id="sharpDrop">
+      <feDropShadow dx="4" dy="4" stdDeviation="0" flood-color="#000" />
+    </filter>
+  </defs>
+
+  <rect width="800" height="800" fill="#0d0d0d" />
+
+  <!-- Outer Frame -->
+  <circle cx="400" cy="400" r="380" stroke="url(#platGrad)" stroke-width="2" fill="none" opacity="0.5" />
+  <circle cx="400" cy="400" r="370" stroke="url(#platGrad)" stroke-width="10" fill="none" />
+
+  <!-- The "Streetwear" Cross-Section -->
+  <rect x="400" y="20" width="2" height="760" fill="url(#platGrad)" opacity="0.3" />
+  <rect x="20" y="400" width="760" height="2" fill="url(#platGrad)" opacity="0.3" />
+
+  <!-- Central Monogram -->
+  <g transform="translate(400,400)">
+    <circle r="200" stroke="url(#platGrad)" stroke-width="4" fill="none" />
+    <circle r="190" stroke="url(#platGrad)" stroke-width="1" fill="none" opacity="0.5" />
+
+    <!-- Stylized "BF" (Brain Fart) Monogram -->
+    <text x="0" y="40" font-family="Impact, sans-serif" font-size="120" fill="url(#platGrad)" text-anchor="middle" filter="url(#sharpDrop)">
+      BF
+    </text>
+    <text x="0" y="80" font-family="Arial, sans-serif" font-size="18" fill="#fff" text-anchor="middle" letter-spacing="10" font-weight="bold">
+      PLATINUM GRADE
+    </text>
+  </g>
+
+  <!-- Bottom Arc Text -->
+  <path id="bottomArc" d="M 200,600 A 200,200 0 0,0 600,600" fill="none" />
+  <text font-family="monospace" font-size="20" fill="url(#platGrad)" text-anchor="middle">
+    <textPath href="#bottomArc" startOffset="50%">
+      COGNITIVE COLLAPSE DIVISION // LTD ED.
+    </textPath>
+  </text>
+
+  <!-- Corner Accents -->
+  <rect x="40" y="40" width="40" height="40" fill="none" stroke="url(#platGrad)" stroke-width="2" />
+  <rect x="720" y="40" width="40" height="40" fill="none" stroke="url(#platGrad)" stroke-width="2" />
+  <rect x="40" y="720" width="40" height="40" fill="none" stroke="url(#platGrad)" stroke-width="2" />
+  <rect x="720" y="720" width="40" height="40" fill="none" stroke="url(#platGrad)" stroke-width="2" />
+</svg>

@@ -1,0 +1,32 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="brineGrad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" style="stop-color:#708090;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2f4f4f;stop-opacity:1" />
+    </radialGradient>
+    <linearGradient id="diamondGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e0ffff;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b0e0e6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="#0a0a0a" />
+  <circle cx="256" cy="256" r="200" fill="url(#brineGrad)" filter="blur(20px)" opacity="0.6" />
+
+  <!-- Ring 1: The Shiver -->
+  <circle cx="256" cy="256" r="120" fill="none" stroke="#b0c4de" stroke-width="2" opacity="0.3" stroke-dasharray="10,5" />
+  <circle cx="256" cy="256" r="140" fill="none" stroke="#b0c4de" stroke-width="1" opacity="0.2" />
+
+  <!-- Ring 2: The Rupture -->
+  <circle cx="256" cy="256" r="180" fill="none" stroke="#ffffff" stroke-width="0.5" opacity="0.1" stroke-dasharray="2,10" />
+
+  <!-- The Diamond Shard -->
+  <polygon points="256,150 280,300 256,350 232,300" fill="url(#diamondGrad)" stroke="#ffffff" stroke-width="1" />
+  <polygon points="256,150 270,220 256,240 242,220" fill="#ffffff" opacity="0.5" />
+
+  <!-- Glitch spikes -->
+  <line x1="256" y1="150" x2="300" y2="100" stroke="#ffffff" stroke-width="0.5" opacity="0.4" />
+  <line x1="256" y1="350" x2="200" y2="400" stroke="#ffffff" stroke-width="0.5" opacity="0.4" />
+  <line x1="280" y1="300" x2="350" y2="310" stroke="#ffffff" stroke-width="0.5" opacity="0.4" />
+  <line x1="232" y1="300" x2="160" y2="290" stroke="#ffffff" stroke-width="0.5" opacity="0.4" />
+</svg>

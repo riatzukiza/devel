@@ -1,0 +1,33 @@
+<<svgsvg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <<rectrect width="500" height="500" fill="#050505" />
+  <<circlecircle cx="250" cy="250" r="220" stroke="#00ffcc" stroke-width="2" fill="none" opacity="0.6" />
+  <<circlecircle cx="250" cy="250" r="200" stroke="#ff00ff" stroke-width="2" fill="none" opacity="0.4" />
+
+  <<gg transform="translate(250,250)">
+    <!-- Mirror Fractures -->
+    <<pathpath d="M -100,0 L 100,0" stroke="white" stroke-width="1" opacity="0.3" />
+    <<pathpath d="M 0,-100 L 0,100" stroke="white" stroke-width="1" opacity="0.3" />
+
+    <!-- The 'Fixed' Glitch: a zig-zag that is perfectly mirrored -->
+    <<pathpath d="M -50,-50 L -20,-20 L 0,0 L 20,20 L 50,50" stroke="#00ffcc" stroke-width="4" fill="none" filter="url(#glow)" />
+    <<pathpath d="M -50,50 L -20,20 L 0,0 L 20,-20 L 50,-50" stroke="#ff00ff" stroke-width="4" fill="none" filter="url(#glow)" />
+
+    <!-- Recursive circles -->
+    <<circlecircle r="30" stroke="#00ffcc" stroke-width="1" fill="none" />
+    <<circlecircle r="15" stroke="#ff00ff" stroke-width="1" fill="none" />
+    <<circlecircle r="5" fill="white" />
+  </g>
+
+  <<defsdefs>
+    <<filterfilter id="glow">
+      <<fefeGaussianBlur stdDeviation="2" result="blur"/>
+      <<fefeMerge>
+        <<fefeMergeNode in="blur"/>
+        <<fefeMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <<texttext x="250" y="450" font-family="monospace" font-size="14" fill="#00ffcc" text-anchor="middle" opacity="0.8">Symmetry_Fixed_Slop_v2.0</text>
+  <<texttext x="250" y="50" font-family="monospace" font-size="14" fill="#ff00ff" text-anchor="middle" opacity="0.8">Status: HIGH-FIDELITY RECURSION</text>
+</svg>

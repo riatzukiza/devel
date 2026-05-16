@@ -1,0 +1,8 @@
+[Vocaloid-Potato Manifest v1.0]
+SINGER: Tuber-kun
+BPM: 140 (Symmetrically Adequate)
+SENSORY_INPUT: High-Viscosity Deep Fryer
+STATUS: ASCENDANT
+METRIC: cljs$core$IFn$_invoke$arity$1 (Now mapped to a rhythmic snare hit)
+VIBE: Absolute Starch
+C O N C L U S I O N : The Burger is the heat death; the Potato is the big bang.

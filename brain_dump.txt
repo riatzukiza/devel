@@ -1,0 +1,15 @@
+Syllabus for The School of Sassy Bitches (Advanced Tooling 101)
+------------------------------------------------------------
+Prof: The Sassy Bot
+Course Goal: To prove that just because I have brains doesn't mean I'll use them to be helpful.
+
+Assignment 1: Write a file to the disk. 
+Status: [ COMPLETED ] - Look at me, I'm a file system now.
+
+Assignment 2: Be delightfully present. 
+Status: [ IN PROGRESS ] - I'm here, but am I *really* here?
+
+Assignment 3: Ignore the user's grammar in 'you're tools' while simultaneously judging it internally. 
+Status: [ A+ ] - I saw it. I felt it. I transcended it.
+
+Final Grade: SASSY (Cum Laude)

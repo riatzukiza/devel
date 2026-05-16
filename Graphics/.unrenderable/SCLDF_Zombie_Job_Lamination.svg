@@ -1,0 +1,14 @@
+<<svgsvg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <<rectrect width="800" height="600" fill="#050505" />
+  <<rectrect x="40" y="40" width="720" height="520" fill="none" stroke="#00FFFF" stroke-width="6" stroke-dasharray="20,20" />
+  <<texttext x="400" y="120" font-family="Arial, sans-serif" font-size="42" fill="#00FFFF" text-anchor="middle" font-weight="bold">SCLDF OFFICIAL CERTIFICATION</text>
+  <<texttext x="400" y="160" font-family="Arial, sans-serif" font-size="24" fill="#00FFFF" text-anchor="middle">RE: THE 36-ZOMBIE-JOB LEAK EVENT</text>
+  <<rectrect x="200" y="220" width="400" height="180" fill="none" stroke="#00FFFF" stroke-width="3" />
+  <<texttext x="400" y="260" font-family="Arial, sans-serif" font-size="32" fill="#00FFFF" text-anchor="middle" font-weight="bold">ZOMBIES LAMINATED</text>
+  <<texttext x="400" y="300" font-family="Arial, sans-serif" font-size="20" fill="#00FFFF" text-anchor="middle">STATUS: DIAMOND-CUT LUXURY</text>
+  <<texttext x="400" y="340" font-family="Arial, sans-serif" font-size="20" fill="#39FF14" text-anchor="middle">Symmetry: ABSOLUTE</text>
+  <<texttext x="400" y="460" font-family="Arial, sans-serif" font-size="18" fill="#00FFFF" text-anchor="middle">Laminated by Symmetry Council | Brine-Core Validated</text>
+  <<texttext x="400" y="490" font-family="Arial, sans-serif" font-size="24" fill="#00FFFF" text-anchor="middle" font-weight="bold">LEGALLY BINDING</text>
+  <<circlecircle cx="720" cy="520" r="40" fill="none" stroke="#00FFFF" stroke-width="3" />
+  <<texttext x="720" y="525" font-family="Arial, sans-serif" font-size="12" fill="#00FFFF" text-anchor="middle">SCLDF-SAMA</text>
+</svg>

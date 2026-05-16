@@ -1,0 +1,7 @@
+Missing required section `Evidence`
+
+Missing required section `Frames`
+
+Missing required section `Countermoves`
+
+Missing required section `Next`

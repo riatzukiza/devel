@@ -1,0 +1,21 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="500" fill="#0a0a0f" />
+  <!-- Outer Ring -->
+  <circle cx="250" cy="250" r="200" fill="none" stroke="#333" stroke-width="2" />
+  <circle cx="250" cy="250" r="190" fill="none" stroke="#555" stroke-width="1" />
+  
+  <!-- Inner Hexagon (Almost symmetrical) -->
+  <polygon points="250,80 380,160 380,340 250,420 120,340 120,160" fill="none" stroke="#777" stroke-width="2" />
+  
+  <!-- The 'Break' - An asymmetrical shard -->
+  <path d="M250,250 L350,100 L380,150" fill="none" stroke="#ff0044" stroke-width="5" stroke-linecap="round" />
+  <circle cx="380" cy="150" r="5" fill="#ff0044" />
+  
+  <!-- Recursive elements -->
+  <circle cx="250" cy="250" r="50" fill="none" stroke="#aaa" stroke-width="1" />
+  <circle cx="250" cy="250" r="30" fill="none" stroke="#aaa" stroke-width="1" />
+  <circle cx="250" cy="250" r="10" fill="#ff0044" />
+  
+  <!-- Labels in Small text -->
+  <text x="250" y="460" text-anchor="middle" fill="#555" font-family="monospace" font-size="12">Symmetry_Break_S-01 // PROTOCOL: SINGULAR</text>
+</svg>

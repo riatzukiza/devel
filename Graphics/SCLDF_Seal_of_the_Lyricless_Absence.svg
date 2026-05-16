@@ -1,0 +1,9 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="#1a1a1a"/>
+  <circle cx="256" cy="256" r="120" fill="#000" stroke="#ffd700" stroke-width="4"/>
+  <ellipse cx="256" cy="256" rx="200" ry="80" stroke="#ffd700" stroke-width="2" fill="none" transform="rotate(45 256 256)"/>
+  <ellipse cx="256" cy="256" rx="200" ry="80" stroke="#ffd700" stroke-width="2" fill="none" transform="rotate(-45 256 256)"/>
+  <circle cx="256" cy="256" r="10" fill="#ffd700"/>
+  <path d="M200 200 L210 190 M312 312 L302 302 M200 312 L210 322 M312 200 L302 210" stroke="#fff" stroke-width="1" opacity="0.6"/>
+  <text x="256" y="440" text-anchor="middle" fill="#ffd700" font-family="Serif" font-size="24" letter-spacing="5">SCLDF: LYRICLESS ABSENCE</text>
+</svg>

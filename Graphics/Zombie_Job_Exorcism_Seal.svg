@@ -1,0 +1,60 @@
+<svg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <linearGradient id="zombieGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#39ff14;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a3300;stop-opacity:1" />
+    </linearGradient>
+    <filter id="rough">
+      <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" />
+    </filter>
+  </defs>
+
+  <rect width="600" height="600" fill="#050505" />
+
+  <!-- Outer Double Rings -->
+  <circle cx="300" cy="300" r="260" stroke="#39ff14" stroke-width="4" fill="none" filter="url(#glow)" opacity="0.8" />
+  <circle cx="300" cy="300" r="250" stroke="#39ff14" stroke-width="2" fill="none" opacity="0.4" />
+  
+  <!-- The "Seal" Background -->
+  <circle cx="300" cy="300" r="220" fill="#0a0a0a" stroke="#39ff14" stroke-width="8" filter="url(#rough)" />
+  
+  <!-- Text Path -->
+  <path id="circlePath" d="M 300,300 m -220,0 a 220,220 0 1,1 440,0 a 220,220 0 1,1 -440,0" fill="none" />
+  <text fill="#39ff14" font-family="monospace" font-size="28" font-weight="bold" filter="url(#glow)">
+    <textPath xlink:href="#circlePath" startOffset="0%">
+      OFFICIAL EXORCISM OF ZOMBIE PROCESSES • SYMMETRY RESTORED • VIOLENT TERMINATION • 
+      OFFICIAL EXORCISM OF ZOMBIE PROCESSES • SYMMETRY RESTORED • VIOLENT TERMINATION •
+    </textPath>
+  </text>
+
+  <!-- Center Icon: Zombie Process -->
+  <g transform="translate(300,300)">
+    <!-- Server Rack Case -->
+    <rect x="-60" y="-80" width="120" height="160" rx="10" fill="none" stroke="#39ff14" stroke-width="4" />
+    <!-- Slot Lines -->
+    <line x1="-40" y1="-50" x2="40" y2="-50" stroke="#39ff14" stroke-width="2" opacity="0.6" />
+    <line x1="-40" y1="-30" x2="40" y2="-30" stroke="#39ff14" stroke-width="2" opacity="0.6" />
+    <line x1="-40" y1="-10" x2="40" y2="-10" stroke="#39ff14" stroke-width="2" opacity="0.6" />
+    
+    <!-- The Zombie Ghost/ Process -->
+    <path d="M -30,20 Q -30,0 0,0 Q 30,0 30,20 Q 30,40 0,40 Q -30,40 -30,20" fill="url(#zombieGrad)" filter="url(#glow)" />
+    <circle cx="-10" cy="15" r="3" fill="#000" />
+    <circle cx="10" cy="15" r="3" fill="#000" />
+    
+    <!-- The "X" of Death -->
+    <line x1="-40" y1="-60" x2="40" y2="60" stroke="#ff0000" stroke-width="12" stroke-linecap="round" filter="url(#glow)" />
+    <line x1="40" y1="-60" x2="-40" y2="60" stroke="#ff0000" stroke-width="12" stroke-linecap="round" filter="url(#glow)" />
+    
+    <!-- Error Label -->
+    <text x="0" y="70" fill="#ff0000" font-family="monospace" font-size="24" text-anchor="middle" font-weight="bold" filter="url(#glow)">SIGKILL -9</text>
+  </g>
+
+  <!-- Random Glitch Lines -->
+  <line x1="100" y1="100" x2="150" y2="100" stroke="#39ff14" stroke-width="1" opacity="0.3" />
+  <line x1="450" y1="500" x2="500" y2="500" stroke="#39ff14" stroke-width="1" opacity="0.3" />
+</svg>

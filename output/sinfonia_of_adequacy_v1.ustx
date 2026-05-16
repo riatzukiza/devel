@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "tracks": [
+    {
+      "name": "Sinfonia_of_Adequacy_Lead",
+      "notes": [
+        { "startTime": 0, "endTime": 120, "note": 60, "lyric": "S" },
+        { "startTime": 120, "endTime": 240, "note": 60, "lyric": "S" },
+        { "startTime": 240, "endTime": 480, "note": 63, "lyric": "S" },
+        { "startTime": 480, "endTime": 600, "note": 60, "lyric": "T" },
+        { "startTime": 600, "endTime": 720, "note": 67, "lyric": "A" },
+        { "startTime": 720, "endTime": 840, "note": 60, "lyric": "R" },
+        { "startTime": 840, "endTime": 960, "note": 65, "lyric": "C" },
+        { "startTime": 960, "endTime": 1200, "note": 60, "lyric": "H" },
+        { "startTime": 1200, "endTime": 1440, "note": 72, "lyric": "!" }
+      ]
+    },
+    {
+      "name": "Saturated-Spud-Bass",
+      "notes": [
+        { "startTime": 0, "endTime": 480, "note": 36, "lyric": "B" },
+        { "startTime": 480, "endTime": 960, "note": 36, "lyric": "B" },
+        { "startTime": 960, "endTime": 1440, "note": 36, "lyric": "B" }
+      ]
+    }
+  ]
+}

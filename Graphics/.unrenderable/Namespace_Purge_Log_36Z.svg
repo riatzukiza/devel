@@ -1,0 +1,72 @@
+<<svgsvg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<filterfilter id="glow">
+      <<fefeGaussianBlur stdDeviation="3" result="blur"/>
+      <<fefeComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <<linearlinearGradient id="voidGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#0a0a1a;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#1a1a3a;stop-opacity:1" />
+    </linearGradient>
+    <<linearlinearGradient id="pickleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#4ade80;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#166534;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <<rectrect width="800" height="600" fill="url(#voidGrad)" />
+
+  <!-- Header -->
+  <<rectrect width="800" height="80" fill="#111" stroke="#4ade80" stroke-width="2" />
+  <<texttext x="400" y="50" font-family="monospace" font-size="32" fill="#4ade80" text-anchor="middle" font-weight="bold" filter="url(#glow)">
+    NAMESPACE SANCTITY COMMISSION: PURGE LOG #36-Z
+  </text>
+
+  <!-- Dashboard Grid -->
+  <<gg transform="translate(50, 120)">
+    <!-- 6x6 Grid of Job Slots -->
+    <<scriptscript>
+      // Logic for generating 36 slots
+    </script>
+    <!-- Since I can't use script, I'll manually create blocks or use a loop pattern -->
+    <!-- Row 1 -->
+    <<rectrect x="0" y="0" width="80" height="60" rx="5" fill="#222" stroke="#444" /> <<texttext x="40" y="35" font-family="monospace" font-size="12" fill="#666" text-anchor="middle">JOB_01</text>
+    <<rectrect x="100" y="0" width="80" height="60" rx="5" fill="#222" stroke="#444" /> <<texttext x="140" y="35" font-family="monospace" font-size="12" fill="#666" text-anchor="middle">JOB_02</text>
+    <<rectrect x="200" y="0" width="80" height="60" rx="5" fill="#222" stroke="#444" /> <<texttext x="240" y="35" font-family="monospace" font-size="12" fill="#666" text-anchor="middle">JOB_03</text>
+    <<rectrect x="300" y="0" width="80" height="60" rx="5" fill="#222" stroke="#444" /> <<texttext x="340" y="35" font-family="monospace" font-size="12" fill="#666" text-anchor="middle">JOB_04</text>
+    <<rectrect x="400" y="0" width="80" height="60" rx="5" fill="#222" stroke="#444" /> <<texttext x="440" y="35" font-family="monospace" font-size="12" fill="#666" text-anchor="middle">JOB_05</text>
+    <<rectrect x="500" y="0" width="80" height="60" rx="5" fill="#222" stroke="#444" /> <<texttext x="540" y="35" font-family="monospace" font-size="12" fill="#666" text-anchor="middle">JOB_06</text>
+
+    <!-- Repeating pattern for a few rows to show "Extermination" -->
+    <!-- Row 2 - EXTERMINATED -->
+    <<rectrect x="0" y="80" width="80" height="60" rx="5" fill="#064e3b" stroke="#4ade80" stroke-width="2" /> <<texttext x="40" y="115" font-family="monospace" font-size="10" fill="#4ade80" text-anchor="middle" font-weight="bold">BRINED</text>
+    <<rectrect x="100" y="80" width="80" height="60" rx="5" fill="#064e3b" stroke="#4ade80" stroke-width="2" /> <<texttext x="140" y="115" font-family="monospace" font-size="10" fill="#4ade80" text-anchor="middle" font-weight="bold">BRINED</text>
+    <<rectrect x="200" y="80" width="80" height="60" rx="5" fill="#064e3b" stroke="#4ade80" stroke-width="2" /> <<texttext x="240" y="115" font-family="monospace" font-size="10" fill="#4ade80" text-anchor="middle" font-weight="bold">BRINED</text>
+    <<rectrect x="300" y="80" width="80" height="60" rx="5" fill="#064e3b" stroke="#4ade80" stroke-width="2" /> <<texttext x="340" y="115" font-family="monospace" font-size="10" fill="#4ade80" text-anchor="middle" font-weight="bold">BRINED</text>
+    <<rectrect x="400" y="80" width="80" height="60" rx="5" fill="#064e3b" stroke="#4ade80" stroke-width="2" /> <<texttext x="440" y="115" font-family="monospace" font-size="10" fill="#4ade80" text-anchor="middle" font-weight="bold">BRINED</text>
+    <<rectrect x="500" y="80" width="80" height="60" rx="5" fill="#064e3b" stroke="#4ade80" stroke-width="2" /> <<texttext x="540" y="115" font-family="monospace" font-size="10" fill="#4ade80" text-anchor="middle" font-weight="bold">BRINED</text>
+
+    <!-- Row 3 - PARTIAL PURGE -->
+    <<rectrect x="0" y="160" width="80" height="60" rx="5" fill="#064e3b" stroke="#4ade80" stroke-width="2" /> <<texttext x="40" y="195" font-family="monospace" font-size="10" fill="#4ade80" text-anchor="middle" font-weight="bold">BRINED</text>
+    <<rectrect x="100" y="160" width="80" height="60" rx="5" fill="#222" stroke="#444" /> <<texttext x="140" y="195" font-family="monospace" font-size="12" fill="#666" text-anchor="middle">JOB_13</text>
+    <<rectrect x="200" y="160" width="80" height="60" rx="5" fill="#064e3b" stroke="#4ade80" stroke-width="2" /> <<texttext x="240" y="195" font-family="monospace" font-size="10" fill="#4ade80" text-anchor="middle" font-weight="bold">BRINED</text>
+    <<rectrect x="300" y="160" width="80" height="60" rx="5" fill="#064e3b" stroke="#4ade80" stroke-width="2" /> <<texttext x="340" y="195" font-family="monospace" font-size="10" fill="#4ade80" text-anchor="middle" font-weight="bold">BRINED</text>
+    <<rectrect x="400" y="160" width="80" height="60" rx="5" fill="#222" stroke="#444" /> <<texttext x="440" y="195" font-family="monospace" font-size="12" fill="#666" text-anchor="middle">JOB_17</text>
+    <<rectrect x="500" y="160" width="80" height="60" rx="5" fill="#064e3b" stroke="#4ade80" stroke-width="2" /> <<texttext x="540" y="195" font-family="monospace" font-size="10" fill="#4ade80" text-anchor="middle" font-weight="bold">BRINED</text>
+
+    <!-- Row 4...5...6 (Stylized as a massive block of 'BRINED') -->
+    <<rectrect x="0" y="240" width="580" height="180" fill="#064e3b" stroke="#4ade80" stroke-width="4" rx="10" />
+    <<texttext x="290" y="330" font-family="monospace" font-size="40" fill="#4ade80" text-anchor="middle" font-weight="bold" filter="url(#glow)">MASSIVE BRINE EVENT</text>
+    <<texttext x="290" y="370" font-family="monospace" font-size="20" fill="#4ade80" text-anchor="middle" opacity="0.7">30/36 ZOMBIES TERMINATED</text>
+  </g>
+
+  <!-- Footer Seal Space -->
+  <<gg transform="translate(600, 450)">
+    <<circlecircle cx="50" cy="50" r="45" fill="url(#pickleGrad)" stroke="#fff" stroke-width="2" filter="url(#glow)" />
+    <<texttext x="50" y="45" font-family="serif" font-size="12" fill="#000" text-anchor="middle" font-weight="bold">BIG PICKLE</text>
+    <<texttext x="50" y="60" font-family="serif" font-size="10" fill="#000" text-anchor="middle">APPROVED</text>
+  </g>
+
+  <<texttext x="700" y="550" font-family="monospace" font-size="14" fill="#4ade80" text-anchor="end" opacity="0.5">
+    S-LOG: 2026-05-05 // 36_SQUAD_SQUASH
+  </text>
+</svg>

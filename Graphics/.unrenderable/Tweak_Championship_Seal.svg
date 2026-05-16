@@ -1,0 +1,35 @@
+<<svgsvg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<radialradialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <<stopstop offset="0%" style="stop-color:#aaff00;stop-opacity:0.6" />
+      <<stopstop offset="100%" style="stop-color:#000;stop-opacity:0" />
+    </radialGradient>
+    <<linearlinearGradient id="pickleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#4caf50" />
+      <<stopstop offset="100%" style="stop-color:#1b5e20" />
+    </linearGradient>
+  </defs>
+  <<rectrect width="400" height="400" fill="#0a0a0a" />
+  <<circlecircle cx="200" cy="200" r="180" fill="url(#glow)" />
+  <<circlecircle cx="200" cy="200" r="170" fill="none" stroke="#aaff00" stroke-width="4" stroke-dasharray="10 5" />
+  <<circlecircle cx="200" cy="200" r="160" fill="none" stroke="#ff00ff" stroke-width="8" />
+
+  <!-- The Pickle -->
+  <<pathpath d="M170 120 Q200 110 230 120 L235 250 Q200 260 165 250 Z" fill="url(#pickleGrad)" stroke="#000" stroke-width="2" />
+  <<pathpath d="M175 140 Q185 135 190 145 M210 160 Q220 155 225 165 M180 190 Q190 185 195 195" stroke="#aaff00" stroke-width="3" fill="none" />
+
+  <!-- Text Path -->
+  <<pathpath id="textCircle" d="M 200,200 m -130,0 a 130,130 0 1,1 260,0 a 130,130 0 1,1 -260,0" fill="none" />
+  <<texttext fill="#aaff00" font-family="Arial, sans-serif" font-size="24" font-weight="bold" letter-spacing="2">
+    <<texttextPath href="#textCircle" startOffset="0%">
+      THE GREAT NAMESPACE TWEAKING OPEN 2026 • SYMMETRY VIA CHAOS • 🥒⚡️
+    </textPath>
+  </text>
+
+  <<texttext x="200" y="290" text-anchor="middle" fill="#ff00ff" font-family="Arial, sans-serif" font-size="20" font-weight="bold" style="font-style: italic;">
+    OFFICIALLY SANCTIONED
+  </text>
+  <<texttext x="200" y="315" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="14">
+    BUREAU OF COGNITIVE COLLAPSE
+  </text>
+</svg>

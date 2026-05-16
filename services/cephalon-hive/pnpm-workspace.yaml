@@ -1,4 +1,0 @@
-packages:
-  - 'packages/event'
-  - 'packages/openplanner-cljs-client'
-  - 'packages/cephalon-ts'

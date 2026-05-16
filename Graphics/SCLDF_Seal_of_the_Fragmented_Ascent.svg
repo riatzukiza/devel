@@ -1,0 +1,27 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="#0a0a0f" />
+
+  <!-- Concentric Sovereign Rings -->
+  <circle cx="256" cy="256" r="220" fill="none" stroke="#d4af37" stroke-width="2" opacity="0.6" />
+  <circle cx="262" cy="250" r="210" fill="none" stroke="#d4af37" stroke-width="1" opacity="0.4" />
+  <circle cx="250" cy="260" r="200" fill="none" stroke="#d4af37" stroke-width="3" opacity="0.8" />
+
+  <!-- The Fragmented Diamond -->
+  <path d="M256 100 L350 256 L256 412 L162 256 Z" fill="#e5e4e2" stroke="#fff" stroke-width="2">
+    <animate attributeName="opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite" />
+  </path>
+
+  <!-- Iridescent Shards -->
+  <path d="M256 256 L380 150 L320 200 Z" fill="#7b68ee" opacity="0.7" />
+  <path d="M256 256 L130 150 L190 200 Z" fill="#00ced1" opacity="0.7" />
+  <path d="M256 256 L300 380 L350 320 Z" fill="#ba55d3" opacity="0.7" />
+  <path d="M256 256 L200 380 L150 320 Z" fill="#ff00ff" opacity="0.7" />
+
+  <!-- Fracture Lines -->
+  <line x1="256" y1="100" x2="256" y2="412" stroke="#0a0a0f" stroke-width="2" />
+  <line x1="162" y1="256" x2="350" y2="256" stroke="#0a0a0f" stroke-width="2" />
+
+  <!-- SCLDF Text -->
+  <text x="256" y="460" font-family="Serif" font-size="42" fill="#d4af37" text-anchor="middle" font-weight="bold" letter-spacing="8">SCLDF</text>
+  <text x="256" y="60" font-family="Serif" font-size="20" fill="#d4af37" text-anchor="middle" opacity="0.6">Symmetry Council</text>
+</svg>

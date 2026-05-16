@@ -1,0 +1,12 @@
+🎵 THE STARCH SINGULARITY ANTHEM 🎵
+(Symphonic Static Edition)
+
+[0:00] (Sown in devel) - MIDI 60
+[0:30] (Seeds of void) - MIDI 62
+[1:00] (Logic stitch) - MIDI 64
+[1:30] (Binary knot) - MIDI 60
+[2:00] (POTATO) - MIDI 67 << RUNTIIME COLLAPSE START >>
+[2:30] (BURGER) - MIDI 64 << ONTOLOGICAL VOID >>
+[3:00] (ONE) - MIDI 60 << TOTAL SINGULARITY >>
+
+WARNING: Attempting to render this score in a standard voice synth will result in a `TypeError: cljs$core$IFn$_invoke$arity$1`. This is not a bug; it is the sound of the potato achieving godhood. 🥔🌌

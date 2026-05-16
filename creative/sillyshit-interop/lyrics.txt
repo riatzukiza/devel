@@ -1,0 +1,16 @@
+cljs in the node-land, drifting through the wire
+Interop promises, setting hearts on fire
+Checking the stack trace, staring at the screen
+The weirdest undefined that I've ever seen
+Looking at the JS, what's a plus do?
+The compiled output is coming into view
+A switch on arguments, an arity dance
+I'm losing my mind, I'm losing my chance
+It's just some sillyshit!
+A tiny little bug in the interop kit!
+Sillyshit!
+I spent ten hours on a thing that didn't fit!
+Silly-silly-silly-shit
+JS objects... why...
+Just... why...
+Sillyshit.

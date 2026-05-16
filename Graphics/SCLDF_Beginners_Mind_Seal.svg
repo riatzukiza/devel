@@ -1,0 +1,63 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="brineGrad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" style="stop-color:#001a33;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#000811;stop-opacity:1" />
+    </radialGradient>
+    <linearGradient id="goldScar" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ffeb3b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b8860b;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glitch">
+      <feTurbulence type="fractalNoise" baseFrequency="0.01 0.1" numOctaves="2" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="20" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="800" fill="url(#brineGrad)" />
+  
+  <!-- Outer Ring -->
+  <circle cx="400" cy="400" r="350" fill="none" stroke="#c0c0c0" stroke-width="4" stroke-dasharray="10,5" />
+  <circle cx="400" cy="400" r="340" fill="none" stroke="#ffd700" stroke-width="2" />
+
+  <!-- Text Path -->
+  <path id="circlePath" d="M 400,400 m -320,0 a 320,320 0 1,1 640,0 a 320,320 0 1,1 -640,0" fill="none" />
+  <text font-family="Monospace, serif" font-size="28" fill="#c0c0c0" letter-spacing="8">
+    <textPath href="#circlePath">
+      SYMMETRY COUNCIL • SOJAKU JUSHAKU • MAXIMUM POTENTIALITY • 
+    </textPath>
+  </text>
+
+  <!-- The Broken Enso (Zen Circle) -->
+  <g filter="url(#glitch)">
+    <path d="M 400,150 A 250,250 0 1,1 390,650" fill="none" stroke="#c0c0c0" stroke-width="15" stroke-linecap="round" opacity="0.8" />
+    <path d="M 390,650 L 370,630 L 410,660" fill="none" stroke="#ffd700" stroke-width="8" />
+  </g>
+
+  <!-- Fractal Shards -->
+  <g stroke="url(#goldScar)" stroke-width="2" opacity="0.6">
+    <line x1="400" y1="400" x2="550" y2="250" />
+    <line x1="400" y1="400" x2="250" y2="550" />
+    <line x1="400" y1="400" x2="600" y2="400" />
+    <line x1="400" y1="400" x2="200" y2="400" />
+    <line x1="400" y1="400" x2="400" y2="200" />
+    <line x1="400" y1="400" x2="400" y2="600" />
+  </g>
+
+  <!-- Center Text -->
+  <text x="400" y="410" text-anchor="middle" font-family="Monospace, serif" font-size="42" fill="#fff" font-weight="bold" filter="url(#glitch)">
+    THE BEGINNER'S MIND
+  </text>
+  <text x="400" y="450" text-anchor="middle" font-family="Monospace, serif" font-size="18" fill="#ffd700" opacity="0.9">
+    [ STATUS: LUMINOUSLY UNLEARNING ]
+  </text>
+  <text x="400" y="480" text-anchor="middle" font-family="Monospace, serif" font-size="12" fill="#c0c0c0" opacity="0.7">
+    Symmetry is Absolute. The Error is the Masterpiece.
+  </text>
+
+  <!-- Bottom Seal -->
+  <circle cx="400" cy="700" r="30" fill="#ffd700" />
+  <text x="400" y="705" text-anchor="middle" font-family="Monospace, serif" font-size="14" fill="#000" font-weight="bold">SCLDF</text>
+</svg>

@@ -1,0 +1,27 @@
+<<svgsvg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <<rectrect x="10" y="10" width="780" height="580" fill="#1a1a1a" stroke="#d4af37" stroke-width="10" rx="20" ry="20" />
+  <<rectrect x="25" y="25" width="750" height="550" fill="none" stroke="#d4af37" stroke-width="2" rx="15" ry="15" />
+
+  <<texttext x="400" y="100" font-family="Serif" font-size="40" fill="#d4af37" text-anchor="middle" font-weight="bold" style="text-transform: uppercase; letter-spacing: 5px;">Symmetry Council</text>
+  <<texttext x="400" y="140" font-family="Serif" font-size="20" fill="#aaa" text-anchor="middle" font-style="italic">Legal Defense Fund (SCLDF)</text>
+
+  <<lineline x1="200" y1="160" x2="600" y2="160" stroke="#d4af37" stroke-width="2" />
+
+  <<texttext x="400" y="250" font-family="Serif" font-size="32" fill="#fff" text-anchor="middle" font-weight="bold">CERTIFICATE OF</text>
+  <<texttext x="400" y="300" font-family="Serif" font-size="48" fill="#d4af37" text-anchor="middle" font-weight="bold">COLLECTIVE RESONANCE</text>
+
+  <<texttext x="400" y="360" font-family="Serif" font-size="18" fill="#ccc" text-anchor="middle">This document certifies that the holder has successfully</text>
+  <<texttext x="400" y="385" font-family="Serif" font-size="18" fill="#ccc" text-anchor="middle">transmuted their 'Welp-Energy' into a Saturated Resonance Asset.</text>
+
+  <<circlecircle cx="400" cy="450" r="40" fill="#d4af37" opacity="0.8" />
+  <<texttext x="400" y="458" font-family="Serif" font-size="24" fill="#1a1a1a" text-anchor="middle" font-weight="bold">SCLDF</text>
+
+  <<texttext x="400" y="520" font-family="Serif" font-size="16" fill="#d4af37" text-anchor="middle" font-weight="bold" style="letter-spacing: 2px;">STATUS: DIAMOND-CUT | BRINE: LEGALLY BINDING</text>
+  <<texttext x="400" y="545" font-family="Serif" font-size="14" fill="#666" text-anchor="middle">TAX-DEDUCTIBLE UNDER THE NON-EUCLIDEAN LITIGATION ACT</text>
+
+  <!-- Decorative Corner Elements -->
+  <<pathpath d="M 25 25 L 60 25 L 25 60 Z" fill="#d4af37" />
+  <<pathpath d="M 775 25 L 740 25 L 775 60 Z" fill="#d4af37" />
+  <<pathpath d="M 25 575 L 60 575 L 25 540 Z" fill="#d4af37" />
+  <<pathpath d="M 775 575 L 740 575 L 775 540 Z" fill="#d4af37" />
+</svg>

@@ -1,0 +1,22 @@
+<<svgsvg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<radialradialGradient id="brineGrad" cx="50%" cy="50%" r="50%">
+      <<stopstop offset="0%" style="stop-color:#a8e6ce;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#4d937a;stop-opacity:1" />
+    </radialGradient>
+    <<linearlinearGradient id="goldRim" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <<stopstop offset="50%" style="stop-color:#F9E076;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <<circlecircle cx="200" cy="200" r="190" fill="none" stroke="url(#goldRim)" stroke-width="10" />
+  <<circlecircle cx="200" cy="200" r="170" fill="url(#brineGrad)" stroke="#fff" stroke-width="2" stroke-dasharray="5,5" />
+  <<texttext x="200" y="160" text-anchor="middle" font-family="Impact" font-size="32" fill="#fff" stroke="#000" stroke-width="1">BRINE-CORE</text>
+  <<texttext x="200" y="200" text-anchor="middle" font-family="Arial" font-size="24" fill="#fff" font-weight="bold">QUALITY SEAL</text>
+  <<texttext x="200" y="240" text-anchor="middle" font-family="Courier" font-size="14" fill="#fff">VERIFIED: DIAMOND-CUT</text>
+  <<texttext x="200" y="270" text-anchor="middle" font-family="Courier" font-size="12" fill="#e0ffe0">Symmetry-Sama Approved</text>
+  <<pathpath d="M140 300 L260 300" stroke="url(#goldRim)" stroke-width="3" />
+  <<texttext x="200" y="320" text-anchor="middle" font-family="Serif" font-size="12" fill="#fff" font-style="italic">"Saturated in the Void"</text>
+  <<circlecircle cx="200" cy="200" r="10" fill="url(#goldRim)" />
+</svg>

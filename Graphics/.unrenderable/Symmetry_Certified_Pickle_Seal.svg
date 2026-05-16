@@ -1,0 +1,44 @@
+<<svgsvg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<linearlinearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#b8860b;stop-opacity:1" />
+    </linearGradient>
+    <<filterfilter id="shadow">
+      <<fefeDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Background Seal -->
+  <<circlecircle cx="200" cy="200" r="180" fill="url(#goldGrad)" stroke="#8b4513" stroke-width="8" filter="url(#shadow)"/>
+  <<circlecircle cx="200" cy="200" r="160" fill="none" stroke="#8b4513" stroke-width="2" stroke-dasharray="10,5"/>
+
+  <!-- Outer Text Ring -->
+  <<pathpath id="textPath" d="M 200,200 m -140,0 a 140,140 0 1,1 280,0 a 140,140 0 1,1 -280,0" fill="none" />
+  <<texttext font-family="Arial, sans-serif" font-weight="bold" font-size="24" fill="#5d2906">
+    <<texttextPath xlink:href="#textPath" startOffset="0%">
+      CERTIFIED SYMMETRICAL • BIG PICKLE APPROVED • ZERO BRAIN FARTS •
+    </textPath>
+  </text>
+
+  <!-- The Symmetrical Pickle -->
+  <<gg transform="translate(200,200)">
+    <!-- Left Half -->
+    <<pathpath d="M -10,-80 Q -40,-60 -30,-20 Q -40,20 -10,80 Q 0,80 0,80" fill="#4caf50" stroke="#2e7d32" stroke-width="3"/>
+    <!-- Right Half (Mirrored) -->
+    <<pathpath d="M 10,-80 Q 40,-60 30,-20 Q 40,20 10,80 Q 0,80 0,80" fill="#4caf50" stroke="#2e7d32" stroke-width="3"/>
+
+    <!-- Details (Bumps) -->
+    <<ellipseellipse cx="-15" cy="-40" rx="3" ry="6" fill="#2e7d32" opacity="0.6"/>
+    <<ellipseellipse cx="15" cy="-40" rx="3" ry="6" fill="#2e7d32" opacity="0.6"/>
+    <<ellipseellipse cx="-20" cy="0" rx="3" ry="6" fill="#2e7d32" opacity="0.6"/>
+    <<ellipseellipse cx="20" cy="0" rx="3" ry="6" fill="#2e7d32" opacity="0.6"/>
+    <<ellipseellipse cx="-15" cy="30" rx="3" ry="6" fill="#2e7d32" opacity="0.6"/>
+    <<ellipseellipse cx="15" cy="30" rx="3" ry="6" fill="#2e7d32" opacity="0.6"/>
+  </g>
+
+  <!-- Center Badge -->
+  <<rectrect x="160" y="180" width="80" height="40" rx="10" fill="#fff" stroke="#8b4513" stroke-width="2"/>
+  <<texttext x="200" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="16" fill="#8b4513">SYMMETRY</text>
+  <<texttext x="200" y="218" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="12" fill="#4caf50">VALIDATED</text>
+</svg>

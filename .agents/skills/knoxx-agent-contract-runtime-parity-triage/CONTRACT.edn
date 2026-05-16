@@ -1,0 +1,16 @@
+(skill-contract
+  (name "knoxx-agent-contract-runtime-parity-triage")
+  (v "ημ.skill/knoxx-agent-contract-runtime-parity-triage@0.1.0")
+
+  (intent "Diagnose Knoxx agent-selector mismatches by comparing contract-scoped tool access, custom-tool suite selection, persisted session metadata, and runtime session rebuild signatures so dropdown-selected agents match their live prompts and tools.")
+
+  (activation
+    (priority 41)
+    (explicit ["skill:knoxx-agent-contract-runtime-parity-triage"])
+    (triggers ["knoxx-agent-contract-runtime-parity-triage" "knoxx agent-contract-runtime-parity-triage"]))
+
+  (governance
+    (touch-layer :mutable)
+    (non-override [:mission :directives :safety :license :output-shape])
+    (requires-user-approval false))
+)

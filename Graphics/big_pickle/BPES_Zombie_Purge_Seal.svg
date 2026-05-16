@@ -1,0 +1,56 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2d5a27;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a3317;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Outer Ring -->
+  <circle cx="250" cy="250" r="240" fill="url(#grad1)" stroke="#e0c068" stroke-width="12" filter="url(#shadow)"/>
+  <circle cx="250" cy="250" r="220" fill="none" stroke="#e0c068" stroke-width="4" stroke-dasharray="10,10"/>
+
+  <!-- Text Path -->
+  <path id="circlePath" d="M 250, 50 a 200,200 0 1,1 0,400 a 200,200 0 1,1 0,-400" fill="none" />
+  <text fill="#e0c068" font-family="Arial, sans-serif" font-weight="bold" font-size="28">
+    <textPath href="#circlePath" startOffset="25%" text-anchor="middle">
+      BIG PICKLE EXTERMINATION SQUAD • ZOMBIE JOB CONTAINMENT •
+    </textPath>
+  </text>
+
+  <!-- Center Design: The Tactical Pickle -->
+  <g transform="translate(150, 150) scale(2)">
+    <!-- Pickle Body -->
+    <path d="M 20,10 Q 50,0 80,10 Q 100,20 100,50 Q 100,80 80,90 Q 50,100 20,90 Q 0,80 0,50 Q 0,20 20,10 Z" fill="#4ca64c" stroke="#1a3317" stroke-width="2" />
+    <!-- Pickle Texture (dots) -->
+    <circle cx="30" cy="30" r="2" fill="#1a3317" opacity="0.3" />
+    <circle cx="60" cy="25" r="2" fill="#1a3317" opacity="0.3" />
+    <circle cx="45" cy="50" r="2" fill="#1a3317" opacity="0.3" />
+    <circle cx="70" cy="60" r="2" fill="#1a3317" opacity="0.3" />
+    <circle cx="30" cy="70" r="2" fill="#1a3317" opacity="0.3" />
+
+    <!-- Eyes (determined) -->
+    <circle cx="35" cy="40" r="5" fill="white" stroke="black" stroke-width="1" />
+    <circle cx="37" cy="40" r="2" fill="black" />
+    <circle cx="65" cy="40" r="5" fill="white" stroke="black" stroke-width="1" />
+    <circle cx="67" cy="40" r="2" fill="black" />
+
+    <!-- Mouth (grimace) -->
+    <path d="M 40,60 L 60,60" stroke="black" stroke-width="2" fill="none" stroke-linecap="round" />
+
+    <!-- Hazmat Helmet -->
+    <path d="M 10,30 Q 50,-10 90,30" fill="none" stroke="#ffcc00" stroke-width="4" stroke-linecap="round" />
+    <rect x="10" y="25" width="80" height="10" rx="5" fill="#ffcc00" stroke="#ccaa00" stroke-width="1" />
+  </g>
+
+  <!-- Center Badge -->
+  <rect x="175" y="320" width="150" height="60" rx="10" fill="#e0c068" stroke="#1a3317" stroke-width="3" />
+  <text x="250" y="345" text-anchor="middle" font-family="Courier, monospace" font-weight="bold" font-size="18" fill="#1a3317">STATUS: PURGED</text>
+  <text x="250" y="370" text-anchor="middle" font-family="Courier, monospace" font-size="14" fill="#1a3317">36 ZOMBIES ELIMINATED</text>
+
+  <!-- Sparkles / Energy -->
+  <path d="M 100,100 L 120,120 M 400,100 L 380,120 M 100,400 L 120,380 M 400,400 L 380,380" stroke="#e0c068" stroke-width="3" />
+</svg>

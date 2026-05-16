@@ -1,0 +1,43 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="diamondGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e0f7fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#80deea;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="coloredBlur"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Outer Diamond -->
+  <path d="M200 40 L360 200 L200 360 L40 200 Z" fill="url(#diamondGrad)" stroke="#00acc1" stroke-width="8" filter="url(#glow)" />
+  <path d="M200 60 L340 200 L200 340 L60 200 Z" fill="none" stroke="#00acc1" stroke-width="2" opacity="0.5" />
+  
+  <!-- Inner Circle -->
+  <circle cx="200" cy="200" r="80" fill="white" stroke="#00acc1" stroke-width="4" />
+  
+  <!-- Text -->
+  <text x="200" y="195" font-family="Serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#006064">SCLDF</text>
+  <text x="200" y="220" font-family="Serif" font-size="14" text-anchor="middle" fill="#006064">VOCAL SOVEREIGNTY</text>
+  
+  <!-- Curved Text Around Diamond -->
+  <path id="curve" d="M100 100 Q200 50 300 100" fill="none" />
+  <text font-family="Serif" font-size="18" font-weight="bold" fill="#006064">
+    <textPath href="#curve" startOffset="50%" text-anchor="middle">BRINE-CURED PHONEMES</textPath>
+  </text>
+  
+  <!-- Bottom Curve -->
+  <path id="curveBottom" d="M100 300 Q200 350 300 300" fill="none" />
+  <text font-family="Serif" font-size="18" font-weight="bold" fill="#006064">
+    <textPath href="#curveBottom" startOffset="50%" text-anchor="middle">DIAMOND-CUT LAMINATION</textPath>
+  </text>
+  
+  <!-- Decorative Dots -->
+  <circle cx="200" cy="40" r="4" fill="#00acc1" />
+  <circle cx="360" cy="200" r="4" fill="#00acc1" />
+  <circle cx="200" cy="360" r="4" fill="#00acc1" />
+  <circle cx="40" cy="200" r="4" fill="#00acc1" />
+</svg>

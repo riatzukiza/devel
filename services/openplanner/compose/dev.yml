@@ -1,0 +1,88 @@
+services:
+  openplanner-dev:
+    profiles:
+    - dev
+    image: node:22-bookworm-slim
+    working_dir: /app
+    cpus: 2
+    cpuset: 2-21
+    command:
+    - npm
+    - run
+    - dev:watch:container
+    depends_on:
+      secrets-init:
+        condition: service_completed_successfully
+      mongodb:
+        condition: service_healthy
+      mongo-init:
+        condition: service_completed_successfully
+      openplanner-migration-graph:
+        condition: service_healthy
+      knoxx-redis:
+        condition: service_healthy
+    ports:
+    - 127.0.0.1:${OPENPLANNER_DEV_PORT:-7778}:7778
+    environment:
+      NODE_ENV: development
+      OPENPLANNER_HOST: 0.0.0.0
+      OPENPLANNER_PORT: '7778'
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      OPENPLANNER_DATA_DIR: /app/openplanner-lake
+      OPENPLANNER_STORAGE_BACKEND: mongodb
+      MONGODB_URI: mongodb://${OPENPLANNER_MONGO_APP_USERNAME:-openplanner}:${OPENPLANNER_MONGO_APP_PASSWORD:-change-me-openplanner-password}@mongodb:27017/${OPENPLANNER_DEV_MONGODB_DB:-openplanner_dev}?authSource=${MONGODB_DB:-openplanner}
+      MONGODB_DB: ${OPENPLANNER_DEV_MONGODB_DB:-openplanner_dev}
+      MONGODB_EVENTS_COLLECTION: ${OPENPLANNER_DEV_MONGODB_EVENTS_COLLECTION:-events}
+      MONGODB_COMPACTED_COLLECTION: ${OPENPLANNER_DEV_MONGODB_COMPACTED_COLLECTION:-compacted_memories}
+      MONGODB_VECTOR_HOT_COLLECTION: ${OPENPLANNER_DEV_MONGODB_VECTOR_HOT_COLLECTION:-event_chunks}
+      MONGODB_VECTOR_COMPACT_COLLECTION: ${OPENPLANNER_DEV_MONGODB_VECTOR_COMPACT_COLLECTION:-compacted_vectors}
+      MONGODB_GRAPH_LAYOUT_COLLECTION: ${OPENPLANNER_DEV_MONGODB_GRAPH_LAYOUT_COLLECTION:-graph_layout_overrides}
+      MONGODB_GRAPH_NODE_EMBEDDING_COLLECTION: ${OPENPLANNER_DEV_MONGODB_GRAPH_NODE_EMBEDDING_COLLECTION:-graph_node_embeddings}
+      MONGODB_EVENTS_TTL_SECONDS: ${MONGODB_EVENTS_TTL_SECONDS:-0}
+      MONGODB_COMPACTED_TTL_SECONDS: ${MONGODB_COMPACTED_TTL_SECONDS:-0}
+      EMBED_PROVIDER_BASE_URL: ${OPENPLANNER_PROXX_BASE_URL:-http://proxx:8789}
+      EMBED_PROVIDER_API_KEY: ${OPENPLANNER_PROXX_AUTH_TOKEN:-${PROXX_AUTH_TOKEN:-${PROXY_AUTH_TOKEN:-change-me-open-hax-proxy-token}}}
+      EMBED_PROVIDER_MODEL: ${EMBED_PROVIDER_MODEL:-llamacpp-embed:qwen3-embedding:0.6b}
+      EMBED_PROVIDER_COMPACT_MODEL: ${EMBED_PROVIDER_COMPACT_MODEL:-llamacpp-embed:qwen3-embedding:0.6b}
+      EMBED_PROVIDER_MODEL_BY_SOURCE: ${EMBED_PROVIDER_MODEL_BY_SOURCE:-}
+      EMBED_PROVIDER_MODEL_BY_KIND: ${EMBED_PROVIDER_MODEL_BY_KIND:-}
+      EMBED_PROVIDER_MODEL_BY_PROJECT: ${EMBED_PROVIDER_MODEL_BY_PROJECT:-}
+      EMBED_PROVIDER_BATCH_WINDOW_MS: ${EMBED_PROVIDER_BATCH_WINDOW_MS:-5}
+      EMBED_PROVIDER_MAX_BATCH_ITEMS: ${EMBED_PROVIDER_MAX_BATCH_ITEMS:-32}
+      EMBED_PROVIDER_CACHE_PATH: ${OPENPLANNER_DEV_EMBED_PROVIDER_CACHE_PATH:-/app/openplanner-lake/dev/cache/embed-provider-cache.jsonl}
+      OPENPLANNER_SOURCE_ROOT: ${OPENPLANNER_SOURCE_ROOT:-/app/workspace/devel}
+      OPENPLANNER_HYDRATION_REDIS_URL: ${OPENPLANNER_HYDRATION_REDIS_URL:-redis://knoxx-redis:6379}
+      OPENPLANNER_HYDRATION_LMDB_PATH: ${OPENPLANNER_DEV_HYDRATION_LMDB_PATH:-/app/openplanner-lake/dev/cache/source-hydration-lmdb}
+      OPENPLANNER_HYDRATION_CACHE_TTL_MS: ${OPENPLANNER_HYDRATION_CACHE_TTL_MS:-18000000}
+      OPENPLANNER_MIGRATION_GRAPH_URL: ${OPENPLANNER_DEV_MIGRATION_GRAPH_URL:-}
+      VEXX_BASE_URL: ${VEXX_BASE_URL:-}
+      VEXX_API_KEY: ${VEXX_API_KEY:-}
+      VEXX_DEVICE: ${VEXX_DEVICE:-NPU}
+      VEXX_REQUIRE_ACCEL: ${VEXX_REQUIRE_ACCEL:-false}
+      VEXX_ENFORCE: ${VEXX_ENFORCE:-false}
+      VEXX_MIN_CANDIDATES: ${VEXX_MIN_CANDIDATES:-1}
+      VEXX_TIMEOUT_MS: ${VEXX_TIMEOUT_MS:-30000}
+    volumes:
+    - ../openplanner-lake-dev:/app/openplanner-lake
+    - ${WORKSPACE_PATH:-../../..}:/app/workspace:ro
+    - ../../../orgs/open-hax/openplanner:/app
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    healthcheck:
+      test:
+      - CMD
+      - node
+      - -e
+      - fetch('http://127.0.0.1:7778/v1/health').then((response) => { if (!response.ok) { process.exit(1); } }).catch(() => process.exit(1))
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      default: {}
+      knoxx-internal: {}
+      ai-infra:
+        aliases:
+        - openplanner-dev
+    user: ${DOCKER_USER:-1000:1000}

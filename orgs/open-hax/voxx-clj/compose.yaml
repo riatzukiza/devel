@@ -1,0 +1,30 @@
+services:
+  voxx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8788:8788"
+    environment:
+      - VOICE_GATEWAY_HOST=0.0.0.0
+      - VOICE_GATEWAY_PORT=8788
+      - VOICE_GATEWAY_API_KEY=${VOICE_GATEWAY_API_KEY:-dev-key}
+      - VOICE_GATEWAY_DATA_DIR=/app/data
+      - VOICE_GATEWAY_DEFAULT_AUDIO_FORMAT=mp3
+      - VOICE_GATEWAY_DEFAULT_LANGUAGE=en
+      - VOICE_GATEWAY_TTS_DEVICE=cpu
+      - VOICE_GATEWAY_STT_ENABLED=false
+      - TTS_POSTPROCESS_ENABLED=true
+      - TTS_POSTPROCESS_PROFILE=sports-commentator-v1
+      - TTS_PROMPT_AWARE_DEFAULT=true
+    volumes:
+      - voxx-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8788/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  voxx-data:

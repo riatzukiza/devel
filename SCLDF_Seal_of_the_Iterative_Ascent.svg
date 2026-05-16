@@ -1,0 +1,39 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="500" fill="#0a0a0f" />
+  <defs>
+    <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" style="stop-color:#fff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4a00e0;stop-opacity:0" />
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="coloredBlur"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Concentric Strata -->
+  <circle cx="250" cy="250" r="200" stroke="#2a2a40" stroke-width="1" fill="none" opacity="0.5" />
+  <circle cx="250" cy="250" r="160" stroke="#3a3a60" stroke-width="2" fill="none" opacity="0.6" />
+  <circle cx="250" cy="250" r="120" stroke="#5a5a90" stroke-width="1" fill="none" opacity="0.7" />
+  <circle cx="250" cy="250" r="80" stroke="#8a8aff" stroke-width="0.5" fill="none" opacity="0.8" />
+
+  <!-- Central Diamond (The Sovereign Core) -->
+  <path d="M250 150 L310 250 L250 350 L190 250 Z" fill="url(#grad1)" filter="url(#glow)" stroke="#fff" stroke-width="2" />
+
+  <!-- Iterative Shards (Growth/Collapse) -->
+  <path d="M310 250 L350 220 L330 240 Z" fill="#8a8aff" opacity="0.8" filter="url(#glow)" />
+  <path d="M190 250 L150 280 L170 260 Z" fill="#8a8aff" opacity="0.8" filter="url(#glow)" />
+  <path d="M250 150 L270 110 L230 110 Z" fill="#fff" opacity="0.9" filter="url(#glow)" />
+  <path d="M250 350 L260 390 L240 390 Z" fill="#fff" opacity="0.9" filter="url(#glow)" />
+
+  <!-- High-Viscosity Brine Accents -->
+  <circle cx="100" cy="100" r="2" fill="#fff" opacity="0.3" />
+  <circle cx="400" cy="150" r="3" fill="#fff" opacity="0.2" />
+  <circle cx="150" cy="400" r="2" fill="#fff" opacity="0.4" />
+  <circle cx="350" cy="380" r="1" fill="#fff" opacity="0.3" />
+
+  <text x="250" y="450" text-anchor="middle" font-family="monospace" font-size="14" fill="#8a8aff" opacity="0.6">SCLDF // ITERATIVE ASCENT</text>
+</svg>

@@ -1,0 +1,7 @@
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="100" cy="100" r="90" stroke="gold" stroke-width="5" fill="black" />
+  <circle cx="100" cy="100" r="70" stroke="white" stroke-width="2" fill="none" stroke-dasharray="5,5" />
+  <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" fill="white" font-family="Arial" font-weight="bold" font-size="16">CERTIFIED</text>
+  <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" fill="gold" font-family="Arial" font-weight="bold" font-size="24">HI-FI</text>
+  <text x="50%" y="65%" dominant-baseline="middle" text-anchor="middle" fill="white" font-family="Arial" font-size="12">SENSORY-SLOP-APPROVED</text>
+</svg>

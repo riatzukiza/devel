@@ -100,3 +100,4 @@ services/cephalon-hive/quartz-garden/proxx-api/*.png
 
 # Database archives
 *.duckdb
+.envrc

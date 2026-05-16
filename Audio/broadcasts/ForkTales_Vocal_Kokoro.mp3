@@ -1,0 +1,1 @@
+{"error":{"message":"No TTS backend available. kokoro: kokoro is not configured; melo: unavailable; elevenlabs: elevenlabs failed (voice=af_heart status=404)","type":"service_unavailable","param":null,"code":"service_unavailable"}}

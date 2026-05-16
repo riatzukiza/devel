@@ -1,0 +1,22 @@
+[
+  {"time": 0.0, "note": "C#3"},
+  {"time": 2.0, "note": "C#3"},
+  {"time": 4.0, "note": "C#3"},
+  {"time": 6.0, "note": "C#3"},
+  {"time": 8.0, "note": "E3"},
+  {"time": 10.0, "note": "G#3"},
+  {"time": 12.0, "note": "C#4"},
+  {"time": 14.0, "note": "B3"},
+  {"time": 16.0, "note": "C#4"},
+  {"time": 18.0, "note": "C#4"},
+  {"time": 20.0, "note": "C#4"},
+  {"time": 22.0, "note": "B3"},
+  {"time": 24.0, "note": "C#4"},
+  {"time": 26.0, "note": "G#3"},
+  {"time": 28.0, "note": "F#3"},
+  {"time": 30.0, "note": "E3"},
+  {"time": 32.0, "note": "C#3"},
+  {"time": 35.0, "note": "C#3"},
+  {"time": 38.0, "note": "C#3"},
+  {"time": 41.0, "note": "C#3"}
+]

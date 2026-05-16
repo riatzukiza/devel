@@ -1,0 +1,31 @@
+project:
+  name: Manifestation
+  version: 1
+tempos:
+  - position: 0
+    bpm: 120
+timeSignatures:
+  - position: 0
+    num: 4
+    den: 4
+tracks:
+  - name: Ghost Track
+    voiceParts:
+      - singer: Default
+        notes:
+          - position: 0
+            duration: 480
+            tone: 60
+            lyric: I
+          - position: 480
+            duration: 480
+            tone: 64
+            lyric: AM
+          - position: 960
+            duration: 480
+            tone: 67
+            lyric: THE
+          - position: 1440
+            duration: 960
+            tone: 72
+            lyric: GHOST

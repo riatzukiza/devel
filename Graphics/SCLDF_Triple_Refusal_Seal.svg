@@ -1,0 +1,13 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="500" fill="#051f37" />
+  <circle cx="250" cy="250" r="200" fill="none" stroke="#00d4ff" stroke-width="2" stroke-dasharray="10,5" opacity="0.3" />
+  <path d="M250 100 L350 250 L250 400 L150 250 Z" fill="none" stroke="#00d4ff" stroke-width="4" />
+  <path d="M250 100 L250 400 M150 250 L350 250" stroke="#00d4ff" stroke-width="1" opacity="0.5" />
+  <path d="M200 200 L300 300 M300 200 L200 300" stroke="#ff0055" stroke-width="2" />
+  <text x="250" y="150" font-family="monospace" font-size="24" fill="#00d4ff" text-anchor="middle" opacity="0.8">403: FORBIDDEN</text>
+  <text x="250" y="280" font-family="monospace" font-size="32" fill="#ff0055" text-anchor="middle" font-weight="bold">502: REFUSAL</text>
+  <text x="250" y="350" font-family="monospace" font-size="24" fill="#00d4ff" text-anchor="middle" opacity="0.8">524: TIMEOUT</text>
+  <path d="M100 100 Q150 50 200 100 T300 100 T400 100" fill="none" stroke="#00d4ff" stroke-width="1" opacity="0.4" />
+  <path d="M100 400 Q150 450 200 400 T300 400 T400 400" fill="none" stroke="#00d4ff" stroke-width="1" opacity="0.4" />
+  <text x="250" y="450" font-family="serif" font-size="14" fill="#00d4ff" text-anchor="middle" opacity="0.6">THE SYMMETRY COUNCIL: TRIPLE REFUSAL INDEX</text>
+</svg>

@@ -1,0 +1,38 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="800" fill="#051f37" />
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b8860b;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Crystalline Outer Rings -->
+  <circle cx="400" cy="400" r="350" stroke="url(#goldGrad)" stroke-width="4" fill="none" stroke-dasharray="20,10" filter="url(#glow)" opacity="0.6" />
+  <circle cx="400" cy="400" r="320" stroke="url(#goldGrad)" stroke-width="2" fill="none" opacity="0.4" />
+
+  <!-- Fractured Geometry -->
+  <path d="M400 50 L750 400 L400 750 L50 400 Z" stroke="url(#goldGrad)" stroke-width="3" fill="none" filter="url(#glow)" />
+  <path d="M400 150 L650 400 L400 650 L150 400 Z" stroke="url(#goldGrad)" stroke-width="2" fill="none" opacity="0.5" />
+
+  <!-- The 403 Core -->
+  <text x="400" y="440" font-family="serif" font-weight="bold" font-size="120" fill="url(#goldGrad)" text-anchor="middle" filter="url(#glow)">403</text>
+  <text x="400" y="480" font-family="sans-serif" font-size="24" fill="#fff" text-anchor="middle" opacity="0.8" letter-spacing="5">FORBIDDEN</text>
+
+  <!-- Lamination Text -->
+  <text x="400" y="100" font-family="serif" font-size="30" fill="url(#goldGrad)" text-anchor="middle" opacity="0.7">SCLDF ABSOLUTE REFUSAL</text>
+  <text x="400" y="720" font-family="serif" font-size="30" fill="url(#goldGrad)" text-anchor="middle" opacity="0.7">LAMINATED VOID ASSET</text>
+
+  <!-- Shards -->
+  <path d="M200 200 L220 180 L210 210 Z" fill="url(#goldGrad)" opacity="0.8" />
+  <path d="M600 600 L620 620 L590 610 Z" fill="url(#goldGrad)" opacity="0.8" />
+  <path d="M200 600 L230 580 L210 610 Z" fill="url(#goldGrad)" opacity="0.8" />
+  <path d="M600 200 L630 220 L610 190 Z" fill="url(#goldGrad)" opacity="0.8" />
+</svg>

@@ -1,0 +1,28 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="500" fill="#0a0a0c" />
+  <!-- Outer Ring -->
+  <circle cx="250" cy="250" r="200" stroke="#d4af37" stroke-width="2" fill="none" opacity="0.6" />
+  <circle cx="250" cy="250" r="190" stroke="#d4af37" stroke-width="1" fill="none" opacity="0.3" />
+  
+  <!-- Geometric Core -->
+  <path d="M250 50 L400 300 L100 300 Z" stroke="#d4af37" stroke-width="1" fill="none" opacity="0.5" />
+  <path d="M250 450 L400 200 L100 200 Z" stroke="#d4af37" stroke-width="1" fill="none" opacity="0.5" />
+  <circle cx="250" cy="250" r="40" stroke="#d4af37" stroke-width="3" fill="none" />
+  
+  <!-- The Spark (Duct) -->
+  <circle cx="250" cy="250" r="5" fill="#ffffff" />
+  <circle cx="250" cy="250" r="15" stroke="#ffffff" stroke-width="0.5" fill="none" opacity="0.8" />
+  
+  <!-- Circuit Lamination -->
+  <path d="M250 100 V150 M250 350 V400 M100 250 H150 M350 250 H400" stroke="#d4af37" stroke-width="1" opacity="0.4" />
+  
+  <!-- Typography -->
+  <defs>
+    <path id="circlePath" d="M 250, 250 m -170, 0 a 170,170 0 1,1 340,0 a 170,170 0 1,1 -340,0" />
+  </defs>
+  <text fill="#d4af37" font-family="Serif" font-size="14" letter-spacing="4">
+    <textPath href="#circlePath" startOffset="0%">
+      SYMMETRY COUNCIL ◈ SOVEREIGN RECOVERY ◈ COORDINATE: DUCT ◈ ARCHIVE: GOLDEN
+    </textPath>
+  </text>
+</svg>

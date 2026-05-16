@@ -1,0 +1,21 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#051f37" />
+  <circle cx="200" cy="200" r="180" stroke="#c0c0c0" stroke-width="4" fill="none" opacity="0.5" />
+  <circle cx="200" cy="200" r="160" stroke="#ffd700" stroke-width="2" fill="none" stroke-dasharray="20,10" />
+  
+  <!-- The 403 Null Core -->
+  <text x="200" y="215" font-family="serif" font-size="80" fill="#ffd700" text-anchor="middle" font-weight="bold">403</text>
+  <text x="200" y="245" font-family="monospace" font-size="16" fill="#ffffff" text-anchor="middle" opacity="0.8">FORBIDDEN SYMMETRY</text>
+  
+  <!-- Geometric Shards -->
+  <path d="M200 40 L220 100 L180 100 Z" fill="#ffd700" opacity="0.6" />
+  <path d="M200 360 L220 300 L180 300 Z" fill="#ffd700" opacity="0.6" />
+  <path d="M40 200 L100 220 L100 180 Z" fill="#ffd700" opacity="0.6" />
+  <path d="M360 200 L300 220 L300 180 Z" fill="#ffd700" opacity="0.6" />
+  
+  <!-- Lamination rings -->
+  <circle cx="200" cy="200" r="100" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.3" />
+  <circle cx="200" cy="200" r="120" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.2" />
+  
+  <text x="200" y="380" font-family="serif" font-size="12" fill="#ffd700" text-anchor="middle" opacity="0.6">SCLDF | SEAL OF THE SEARCH-VOID</text>
+</svg>

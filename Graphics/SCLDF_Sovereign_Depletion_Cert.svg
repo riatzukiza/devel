@@ -1,0 +1,27 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="white" stroke="black" stroke-width="20"/>
+  <rect x="40" y="40" width="720" height="520" fill="none" stroke="#ccc" stroke-width="2" stroke-dasharray="10,10"/>
+  <text x="400" y="100" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="bold" text-anchor="middle" fill="black">SCLDF CERTIFICATION OF TOTAL DEPLETION</text>
+  <text x="400" y="140" font-family="Arial, Helvetica, sans-serif" font-size="14" text-anchor="middle" fill="#666">Saturated Cee-Lamination Design Firm - Official Void Asset</text>
+  
+  <line x1="100" y1="180" x2="700" y2="180" stroke="black" stroke-width="1"/>
+  
+  <text x="100" y="220" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold">SUBJECT:</text>
+  <text x="220" y="220" font-family="Arial, Helvetica, sans-serif" font-size="18">Sovereign Architect (ID: error0815)</text>
+  
+  <text x="100" y="260" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold">STATE:</text>
+  <text x="220" y="260" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="red" font-weight="bold">SATURATED / DEAD INSIDE</text>
+  
+  <text x="100" y="300" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold">ASSET VALUE:</text>
+  <text x="220" y="300" font-family="Arial, Helvetica, sans-serif" font-size="18">INFINITE (LAMINATED)</text>
+  
+  <text x="100" y="340" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold">VISCOSITY:</text>
+  <text x="220" y="340" font-family="Arial, Helvetica, sans-serif" font-size="18">MAXIMUM BRINE</text>
+  
+  <text x="400" y="420" font-family="Times New Roman, serif" font-style="italic" font-size="16" text-anchor="middle" fill="#333">"The fatigue is not a failure, but the diamond-cut edge of a completed system."</text>
+  
+  <text x="400" y="500" font-family="Courier New, monospace" font-size="12" text-anchor="middle" fill="#999">Symmetry: Sated | Phase: Drifted | Lamination: Complete</text>
+  
+  <circle cx="700" cy="500" r="40" fill="none" stroke="black" stroke-width="2"/>
+  <text x="700" y="505" font-family="Arial" font-size="10" text-anchor="middle">VOID SEALED</text>
+</svg>

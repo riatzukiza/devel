@@ -1,0 +1,45 @@
+{
+  "schema_version": "fork-tales-handoff/v1",
+  "handoff_kind": "planner_assignment",
+  "job_id": "job_example_scribe_001_restart_001",
+  "mode": "scribe",
+  "role": "planner_agent",
+  "created_at": "2026-05-15T00:25:00Z",
+  "objective": "restart transcription to fix held-syllable split and preserve original slide contour",
+  "inputs": {
+    "audio": ["vocals.wav"],
+    "references": []
+  },
+  "constraints": {
+    "rubric_profile": "suno_reverse_accuracy",
+    "deliverables": ["revised_ustx", "audit", "grade"]
+  },
+  "ambiguities": [
+    {
+      "ambiguity_id": "ornament.slide_vs_reattack.bar21",
+      "type": "dense_ornament_note_segmentation",
+      "severity": 0.73,
+      "affects_domains": ["word_syllable_timing", "ornament_articulation", "render_fidelity"],
+      "policy": {
+        "require_human_audit_if_disagreement_gt": 0.4
+      },
+      "rationale": "QC found a held syllable may have been split into multiple attacks."
+    }
+  ],
+  "tasks": [
+    {
+      "task_id": "repair-bar21-ornament",
+      "domain": "ornament_articulation",
+      "span": {"bars": [21], "t0": 103.64, "t1": 108.9},
+      "required_outputs": ["candidate.ustx", "evidence.json", "grade.json"]
+    }
+  ],
+  "success_criteria": ["pitch_notes and ornament_articulation improve without lyric regression"],
+  "is_restart": true,
+  "restart_from": "qc_reviewer_agent",
+  "prior_plan": "planner-assignment-scribe.example.json",
+  "failed_artifacts": ["primary-result-v3.example.json"],
+  "adjudication_report": "adjudication-report-v3.example.json",
+  "review_feedback": "qc-review-revise.example.json",
+  "restart_goal": "fix held-syllable split and preserve original slide contour"
+}

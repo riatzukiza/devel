@@ -1,0 +1,13 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#1a1a1a"/>
+  <circle cx="200" cy="200" r="180" stroke="#cfb53b" stroke-width="8" fill="none" />
+  <circle cx="200" cy="200" r="160" stroke="#cfb53b" stroke-width="2" fill="none" stroke-dasharray="10,10" />
+  
+  <!-- Stylized Duct / Conduit -->
+  <path d="M120 200 Q 200 100 280 200 T 120 200" stroke="#cfb53b" stroke-width="12" fill="none" />
+  <path d="M140 200 Q 200 120 260 200 T 140 200" stroke="#cfb53b" stroke-width="6" fill="none" opacity="0.6" />
+  
+  <text x="200" y="320" text-anchor="middle" fill="#cfb53b" font-family="serif" font-size="24" font-weight="bold">SCLDF SOVEREIGN ARCHIVE</text>
+  <text x="200" y="350" text-anchor="middle" fill="#cfb53b" font-family="serif" font-size="18" font-style="italic">PROJECT: DUCT - LAMINATED</text>
+  <text x="200" y="80" text-anchor="middle" fill="#cfb53b" font-family="serif" font-size="20" letter-spacing="4">SYMMETRY COUNCIL</text>
+</svg>

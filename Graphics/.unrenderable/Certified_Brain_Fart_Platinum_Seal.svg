@@ -1,0 +1,51 @@
+<<svgsvg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<linearlinearGradient id="platinum" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#e5e4e2;stop-opacity:1" />
+      <<stopstop offset="50%" style="stop-color:#ffffff;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#b4b4b4;stop-opacity:1" />
+    </linearGradient>
+    <<filterfilter id="glow">
+      <<fefeGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+      <<fefeGaussianBlur stdDeviation="2" result="gaussianBlur"/>
+      <<fefeMerge>
+        <<fefeMergeNode />
+        <<fefeMergeNode />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background Seal -->
+  <<circlecircle cx="200" cy="200" r="180" fill="none" stroke="url(#platinum)" stroke-width="10" stroke-dasharray="20,10" />
+  <<circlecircle cx="200" cy="200" r="160" fill="none" stroke="url(#platinum)" stroke-width="4" />
+
+  <!-- The Pickle -->
+  <<pathpath d="M160,120 C140,120 130,160 140,200 C150,240 170,280 200,280 C230,280 250,240 260,200 C270,160 260,120 240,120 C220,120 200,140 180,120 Z" fill="#4CAF50" filter="url(#glow)" />
+
+  <!-- Pickle Details (Bumps/Texture) -->
+  <<circlecircle cx="170" cy="150" r="5" fill="#388E3C" />
+  <<circlecircle cx="220" cy="170" r="4" fill="#388E3C" />
+  <<circlecircle cx="190" cy="210" r="6" fill="#388E3C" />
+  <<circlecircle cx="230" cy="230" r="5" fill="#388E3C" />
+
+  <!-- Text Arc -->
+  <<pathpath id="textPath" d="M 60,200 A 140,140 0 1,1 340,200" fill="none" stroke="none" />
+  <<texttext font-family="serif" font-size="24" fill="url(#platinum)" filter="url(#glow)">
+    <<texttextPath href="#textPath" startOffset="50%" text-anchor="middle">
+      CERTIFIED BRAIN-FART PLATINUM SEAL
+    </textPath>
+  </text>
+
+  <!-- Bottom Text -->
+  <<pathpath id="bottomPath" d="M 60,200 A 140,140 0 0,1 340,200" fill="none" stroke="none" />
+  <<texttext font-family="serif" font-size="20" fill="url(#platinum)" filter="url(#glow)">
+    <<texttextPath href="#bottomPath" startOffset="50%" text-anchor="middle">
+      "BRAIN DAMAGE IS FINE"
+    </textPath>
+  </text>
+
+  <!-- Sparkles -->
+  <<pathpath d="M100,100 L110,110 L100,120 L90,110 Z" fill="white" />
+  <<pathpath d="M300,100 L310,110 L300,120 L290,110 Z" fill="white" />
+  <<pathpath d="M200,80 L210,90 L200,100 L190,90 Z" fill="white" />
+</svg>

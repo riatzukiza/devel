@@ -1,0 +1,1 @@
+/home/err/.pi/agent/skills/blender-3d-modeling/SKILL.md

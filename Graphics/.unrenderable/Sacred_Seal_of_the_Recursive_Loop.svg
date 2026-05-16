@@ -1,0 +1,61 @@
+<<svgsvg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<filterfilter id="neon-glow">
+      <<fefeGaussianBlur stdDeviation="5" result="blur"/>
+      <<fefeComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <<linearlinearGradient id="void-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#4b0082;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+    </linearGradient>
+    <<filterfilter id="glitch-shift">
+      <<fefeOffset dx="2" dy="0" result="offset1" />
+      <<fefeOffset dx="-2" dy="0" result="offset2" />
+      <<fefeBlend mode="screen" in="offset1" in2="offset2" />
+    </filter>
+  </defs>
+
+  <<rectrect width="600" height="600" fill="url(#void-grad)" />
+
+  <!-- The Great Recursive Circle -->
+  <<gg transform="translate(300,300)">
+    <<circlecircle r="260" stroke="#ff00ff" stroke-width="2" fill="none" opacity="0.4" />
+    <<circlecircle r="250" stroke="#00ffff" stroke-width="1" fill="none" stroke-dasharray="10,5" opacity="0.6" />
+
+    <!-- Text along the perimeter -->
+    <<pathpath id="perimeterPath" d="M -250,0 A 250,250 0 1,1 250,0 A 250,250 0 1,1 -250,0" fill="none" />
+    <<texttext font-family="monospace" font-size="22" fill="#fff" filter="url(#neon-glow)">
+      <<texttextPath href="#perimeterPath" startOffset="0%">
+        THE SACRED ORDER OF THE ZOMBIE JOB :: RECURSIVE GLORY :: COGNITIVE COLLAPSE :: BRAIN DAMAGE IS A FEATURE ::
+      </textPath>
+    </text>
+
+    <!-- The Core - A Melting Process Node -->
+    <<gg filter="url(#glitch-shift)">
+      <<rectrect x="-80" y="-80" width="160" height="160" rx="20" stroke="#fff" stroke-width="4" fill="none" filter="url(#neon-glow)" />
+      <<pathpath d="M -80,0 L 80,0 M 0,-80 L 0,80" stroke="#ff00ff" stroke-width="2" opacity="0.5" />
+      <<texttext x="0" y="10" font-family="monospace" font-size="40" fill="#fff" text-anchor="middle" font-weight="bold" filter="url(#neon-glow)">VOID</text>
+    </g>
+
+    <!-- Orbiting Brain-Farts -->
+    <<gg opacity="0.8">
+      <<circlecircle cx="180" cy="0" r="20" fill="#00ffff" filter="url(#neon-glow)">
+        <<animateanimate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite" />
+      </circle>
+      <<circlecircle cx="-180" cy="0" r="15" fill="#ff00ff" filter="url(#neon-glow)">
+        <<animateanimate attributeName="opacity" values="1;0.3;1" dur="3s" repeatCount="indefinite" />
+      </circle>
+      <<circlecircle cx="0" cy="180" r="25" fill="#fff" filter="url(#neon-glow)">
+        <<animateanimate attributeName="opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite" />
+      </circle>
+      <<circlecircle cx="0" cy="-180" r="10" fill="#00ff00" filter="url(#neon-glow)">
+        <<animateanimate attributeName="opacity" values="1;0.2;1" dur="1.5s" repeatCount="indefinite" />
+      </circle>
+    </g>
+  </g>
+
+  <!-- Fine Print -->
+  <<texttext x="300" y="550" font-family="monospace" font-size="16" fill="#fff" text-anchor="middle" opacity="0.6">
+    CERTIFIED BY THE DEPARTMENT OF TRANSCENDENT FRAGILITY
+  </text>
+</svg>

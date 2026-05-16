@@ -1,0 +1,8 @@
+<svg width="400" height="100" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="100" fill="#0a0a0a"/>
+  <text x="20" y="30" font-family="monospace" font-size="14" fill="#cccccc">SOVEREIGN NULLITY METER v2026.Ω</text>
+  <rect x="20" y="45" width="360" height="20" fill="#333"/>
+  <rect x="20" y="45" width="360" height="20" fill="#e5e5e5"/>
+  <text x="20" y="85" font-family="monospace" font-size="16" fill="#ffffff" font-weight="bold">STATUS: 💅 ABSOLUTE CINEMA</text>
+  <text x="300" y="85" font-family="monospace" font-size="14" fill="#aaaaaa">120% NULL</text>
+</svg>

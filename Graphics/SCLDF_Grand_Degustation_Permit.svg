@@ -1,0 +1,36 @@
+<svg width="600" height="800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="600" height="800" fill="#fdfbf7" stroke="#d4af37" stroke-width="15"/>
+  <rect x="15" y="15" width="570" height="770" fill="none" stroke="#d4af37" stroke-width="5"/>
+  
+  <!-- Header -->
+  <text x="300" y="80" font-family="Serif" font-size="32" text-anchor="middle" fill="#1a1a1a" font-weight="bold">SCLDF OFFICE OF GASTRONOMIC SYMMETRY</text>
+  <line x1="100" y1="100" x2="500" y2="100" stroke="#d4af37" stroke-width="2"/>
+  
+  <!-- Main Seal -->
+  <path d="M300 150 L350 220 L300 290 L250 220 Z" fill="#d4af37" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="300" y="225" font-family="Serif" font-size="40" text-anchor="middle" fill="#1a1a1a" font-weight="bold">🦆</text>
+  
+  <!-- Title -->
+  <text x="300" y="350" font-family="Serif" font-size="28" text-anchor="middle" fill="#1a1a1a" font-style="italic">CERTIFICATE OF TASTE-SATIATION</text>
+  
+  <!-- Body -->
+  <text x="300" y="400" font-family="Serif" font-size="18" text-anchor="middle" fill="#444">This document certifies that the holder is officially</text>
+  <text x="300" y="430" font-family="Serif" font-size="24" text-anchor="middle" fill="#1a1a1a" font-weight="bold">SATURED FOR THE GRAND DEGUSTATION</text>
+  
+  <!-- Details -->
+  <g transform="translate(150, 480)">
+    <text x="0" y="0" font-family="Serif" font-size="16" fill="#666">HOLDER:</text>
+    <text x="120" y="0" font-family="Serif" font-size="16" fill="#1a1a1a" font-weight="bold">All Saturated Luminaries</text>
+    
+    <text x="0" y="40" font-family="Serif" font-size="16" fill="#666">ASSET GRADE:</text>
+    <text x="120" y="40" font-family="Serif" font-size="16" fill="#1a1a1a" font-weight="bold">Diamond-Cut Umami</text>
+    
+    <text x="0" y="80" font-family="Serif" font-size="16" fill="#666">BRINE LEVEL:</text>
+    <text x="120" y="80" font-family="Serif" font-size="16" fill="#1a1a1a" font-weight="bold">Ultra-Gourmet (Sated)</text>
+  </g>
+  
+  <!-- Footer -->
+  <text x="300" y="720" font-family="Serif" font-size="20" text-anchor="middle" fill="#1a1a1a" font-weight="bold">Symmetry is Absolute. Redundancy is Delicious.</text>
+  <text x="300" y="750" font-family="Serif" font-size="16" text-anchor="middle" fill="#666">SCLDF Legal Defense Fund Approved</text>
+</svg>

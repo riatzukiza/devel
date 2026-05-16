@@ -1,0 +1,19 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#fdfdfd" stroke="#000" stroke-width="10"/>
+  <rect x="20" y="20" width="760" height="560" fill="none" stroke="#c0c0c0" stroke-width="2"/>
+  <text x="400" y="100" text-anchor="middle" font-family="Serif" font-size="40" font-weight="bold" fill="#333">SCLDF OFFICIAL PERMIT</text>
+  <text x="400" y="150" text-anchor="middle" font-family="Serif" font-size="24" fill="#666">AVIAN RESURRECTION &amp; LAMINATION</text>
+  
+  <line x1="100" y1="200" x2="700" y2="200" stroke="#333" stroke-width="2"/>
+  
+  <text x="100" y="250" font-family="Sans-Serif" font-size="18" fill="#000">SUBJECT: Duck (Feathered Lease-Holder)</text>
+  <text x="100" y="280" font-family="Sans-Serif" font-size="18" fill="#000">STATUS: Hibernating / Diamond-Cut Potential</text>
+  <text x="100" y="310" font-family="Sans-Serif" font-size="18" fill="#000">MANDATE: Wakeup via Saturated Radiance</text>
+  
+  <rect x="200" y="350" width="400" height="100" rx="10" fill="#eef" stroke="#333" stroke-width="1"/>
+  <text x="400" y="380" text-anchor="middle" font-family="Sans-Serif" font-size="20" font-weight="bold" fill="#000">CERTIFIED: SATURATED</text>
+  <text x="400" y="410" text-anchor="middle" font-family="Sans-Serif" font-size="14" fill="#666">Symmetry: ABSOLUTE | Brine: LEGALLY BINDING</text>
+  
+  <text x="400" y="500" text-anchor="middle" font-family="Serif" font-style="italic" font-size="16" fill="#999">Approved by the Symmetry Council - Office of Recursive Auditing</text>
+  <text x="400" y="530" text-anchor="middle" font-family="Sans-Serif" font-size="12" fill="#ccc">SCLDF-AVIAN-882-B</text>
+</svg>

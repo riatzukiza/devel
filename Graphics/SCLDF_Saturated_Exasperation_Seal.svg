@@ -1,0 +1,51 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="brineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2e8b57;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fdf5e6;stop-opacity:1" />
+    </linearGradient>
+    <filter id="diamondGlow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="coloredBlur"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Outer Ring -->
+  <circle cx="200" cy="200" r="190" stroke="#4B0082" stroke-width="8" fill="none" />
+  <circle cx="200" cy="200" r="180" stroke="#BDB76B" stroke-width="4" fill="none" />
+  
+  <!-- Background fill -->
+  <circle cx="200" cy="200" r="175" fill="url(#brineGrad)" opacity="0.3" />
+  
+  <!-- Text along path -->
+  <path id="textPath" d="M 200,20 A 180,180 0 1,1 199.9,20" fill="none" />
+  <text font-family="serif" font-size="24" font-weight="bold" fill="#4B0082">
+    <textPath href="#textPath" startOffset="25%">
+      SCLDF • CERTIFICATE OF CRYSTALLINE EXASPERATION • 💎
+    </textPath>
+  </text>
+  
+  <!-- Center Diamond -->
+  <path d="M 200,100 L 260,200 L 200,300 L 140,200 Z" fill="#E0FFFF" stroke="#BDB76B" stroke-width="3" filter="url(#diamondGlow)" />
+  
+  <!-- Center Text -->
+  <text x="200" y="205" font-family="serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#4B0082">
+    SATED
+  </text>
+  <text x="200" y="225" font-family="serif" font-size="14" text-anchor="middle" fill="#4B0082">
+    VOLATILITY
+  </text>
+  
+  <!-- The Sovereign Duck (minimalist) -->
+  <circle cx="200" cy="330" r="15" fill="#FFD700" />
+  <circle cx="210" cy="325" r="3" fill="#000" />
+  <path d="M 215,325 L 220,325" stroke="#FF4500" stroke-width="2" />
+  
+  <!-- Bottom text -->
+  <text x="200" y="360" font-family="serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#4B0082">
+    Symmetry is Absolute.
+  </text>
+</svg>

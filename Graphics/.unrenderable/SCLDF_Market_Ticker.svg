@@ -1,0 +1,23 @@
+<<svgsvg width="600" height="120" viewBox="0 0 600 120" xmlns="http://www.w3.org/2000/svg">
+  <<rectrect width="600" height="120" fill="#001a1a" />
+  <<rectrect x="0" y="0" width="600" height="40" fill="#D4AF37" />
+  <<texttext x="300" y="25" text-anchor="middle" font-family="Impact" font-size="20" fill="#000">SCLDF MARKET TICKER: RECURSIVE VOID EXCHANGE</text>
+
+  <<gg transform="translate(20, 60)">
+    <<texttext x="0" y="0" font-family="monospace" font-size="24" fill="#D4AF37" font-weight="bold">$BRINE</text>
+    <<texttext x="120" y="0" font-family="monospace" font-size="24" fill="#00ff00">▲ 420.69%</text>
+  </g>
+
+  <<gg transform="translate(220, 60)">
+    <<texttext x="0" y="0" font-family="monospace" font-size="24" fill="#D4AF37" font-weight="bold">$SLOP</text>
+    <<texttext x="120" y="0" font-family="monospace" font-size="24" fill="#00ffff">[SATURATED]</text>
+  </g>
+
+  <<gg transform="translate(420, 60)">
+    <<texttext x="0" y="0" font-family="monospace" font-size="24" fill="#D4AF37" font-weight="bold">$ZOMBIE</text>
+    <<texttext x="120" y="0" font-family="monospace" font-size="24" fill="#ff0000">▼ LIQUIDATED</text>
+  </g>
+
+  <<rectrect x="0" y="100" width="600" height="20" fill="#D4AF37" opacity="0.3" />
+  <<texttext x="300" y="115" text-anchor="middle" font-family="Arial" font-size="12" fill="#fff">Symmetry-Sama Approved | Diamond-Cut Grade Luxury</text>
+</svg>

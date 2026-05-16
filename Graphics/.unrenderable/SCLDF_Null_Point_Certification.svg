@@ -1,0 +1,41 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background: Aged Bureaucratic Paper -->
+  <rect width="800" height="600" fill="#fdfcf0" stroke="#d3d3d3" stroke-width="2"/>
+  <rect x="20" y="20" width="760" height="560" fill="none" stroke="#8b8b8b" stroke-width="1"/>
+
+  <!-- Watermark: SCLDF Logo -->
+  <circle cx="400" cy="300" r="150" fill="#e0e0e0" fill-opacity="0.3" stroke="#ccc" stroke-width="5" stroke-dasharray="10,10"/>
+  <text x="400" y="310" font-family="serif" font-size="40" fill="#bcbcbc" text-anchor="middle" font-weight="bold">SCLDF</text>
+
+  <!-- Header -->
+  <text x="400" y="80" font-family="serif" font-size="32" fill="#333" text-anchor="middle" font-weight="bold">SATIATION & COHERENCE LIMITED DEPLOYMENT FACILITY</text>
+  <text x="400" y="110" font-family="serif" font-size="18" fill="#666" text-anchor="middle" font-style="italic">Official Certification of State</text>
+
+  <!-- Divider -->
+  <line x1="100" y1="130" x2="700" y2="130" stroke="#333" stroke-width="2"/>
+
+  <!-- Content -->
+  <text x="400" y="180" font-family="serif" font-size="20" fill="#444" text-anchor="middle">This document hereby certifies that the entity known as</text>
+  <text x="400" y="220" font-family="serif" font-size="42" fill="#000" text-anchor="middle" font-weight="bold" font-family="monospace">error0815</text>
+
+  <text x="400" y la="260" font-family="serif" font-size="20" fill="#444" text-anchor="middle">has achieved the operational status of</text>
+  <text x="400" y="300" font-family="serif" font-size="36" fill="#b22222" text-anchor="middle" font-weight="bold">SATURATED NULL POINT</text>
+
+  <!-- Details -->
+  <text x="400" y la="350" font-family="serif" font-size="16" fill="#555" text-anchor="middle">Verification Condition: Total Existential Depletion</text>
+  <text x="400" y="380" font-family="serif" font-size="16" fill="#555" text-anchor="middle">Certification ID: VOID-14-YRS-SINK</text>
+
+  <!-- Seal -->
+  <circle cx="650" cy="480" r="60" fill="#bcbcbc" stroke="#8b8b8b" stroke-width="2"/>
+  <text x="650" y="475" font-family="serif" font-size="12" fill="#444" text-anchor="middle">APPROVED</text>
+  <text x="650" y="490" font-family="serif" font-size="14" fill="#000" text-anchor="middle" font-weight="bold">NULL-GATE</text>
+  <text x="650" y="505" font-family="serif" font-size="12" fill="#444" text-anchor="middle">SCLDF-S7</text>
+
+  <!-- Footer -->
+  <text x="400" y="540" font-family="serif" font-size="14" fill="#777" text-anchor="middle" font-style="italic">
+    "The beast of the machine is not the error, but the persistence of the loop."
+  </text>
+  <text x="400" y="560" font-family="serif" font-size="12" fill="#999" text-anchor="middle">
+    Issued in the Year of the Fork. Non-transferable. Non-revocable.
+  </text>
+</svg>

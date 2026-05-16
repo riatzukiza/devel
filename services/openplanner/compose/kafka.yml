@@ -1,0 +1,94 @@
+services:
+  redpanda:
+    image: docker.redpanda.com/redpandadata/redpanda:${OPENPLANNER_REDPANDA_VERSION:-v24.3.6}
+    profiles:
+      - kafka
+      - kafka-replay
+    cpus: ${OPENPLANNER_REDPANDA_CPUS:-1}
+    cpuset: ${OPENPLANNER_REDPANDA_CPUSET:-2-21}
+    user: ${REDPANDA_USER:-101:101}
+    command:
+      - redpanda
+      - start
+      - --smp=1
+      - --memory=${OPENPLANNER_REDPANDA_MEMORY:-768M}
+      - --reserve-memory=0M
+      - --overprovisioned
+      - --node-id=0
+      - --check=false
+      - --kafka-addr=internal://0.0.0.0:9092,external://0.0.0.0:19092
+      - --advertise-kafka-addr=internal://redpanda:9092,external://127.0.0.1:${OPENPLANNER_REDPANDA_PORT:-19092}
+      - --set
+      - redpanda.auto_create_topics_enabled=true
+    expose:
+      - '9092'
+    ports:
+      - 127.0.0.1:${OPENPLANNER_REDPANDA_PORT:-19092}:19092
+    volumes:
+      - openplanner-redpanda-data:/var/lib/redpanda/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - rpk cluster health -X brokers=127.0.0.1:9092 | grep -q 'Healthy:.*true'
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      default: {}
+      ai-infra: {}
+
+  openplanner-kafka-event-audit-consumer:
+    build:
+      context: ../../../orgs/open-hax/openplanner/packages/workers/kafka
+      dockerfile: Dockerfile
+    profiles:
+      - kafka
+    cpus: 0.25
+    cpuset: 2-21
+    command: sh -lc '/opt/java/openjdk/bin/java $${JAVA_OPTS:--XX:TieredStopAtLevel=1} -cp "$(cat .cpcache/runtime.cp)" openplanner.kafka.jobs audit'
+    environment:
+      OPENPLANNER_KAFKA_ENABLED: ${OPENPLANNER_KAFKA_ENABLED:-true}
+      OPENPLANNER_KAFKA_BROKERS: ${OPENPLANNER_KAFKA_BROKERS:-redpanda:9092}
+      OPENPLANNER_KAFKA_EVENTS_RAW_TOPIC: ${OPENPLANNER_KAFKA_EVENTS_RAW_TOPIC:-openplanner.events.raw}
+      OPENPLANNER_KAFKA_AUDIT_GROUP_ID: ${OPENPLANNER_KAFKA_AUDIT_GROUP_ID:-openplanner-event-audit-consumer}
+    depends_on:
+      redpanda:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      default: {}
+      ai-infra: {}
+
+  openplanner-kafka-event-replay-worker:
+    build:
+      context: ../../../orgs/open-hax/openplanner/packages/workers/kafka
+      dockerfile: Dockerfile
+    profiles:
+      - kafka-replay
+    cpus: 0.5
+    cpuset: 2-21
+    command: sh -lc '/opt/java/openjdk/bin/java $${JAVA_OPTS:--XX:TieredStopAtLevel=1} -cp "$(cat .cpcache/runtime.cp)" openplanner.kafka.jobs replay'
+    environment:
+      OPENPLANNER_KAFKA_ENABLED: ${OPENPLANNER_KAFKA_ENABLED:-true}
+      OPENPLANNER_KAFKA_BROKERS: ${OPENPLANNER_KAFKA_BROKERS:-redpanda:9092}
+      OPENPLANNER_KAFKA_EVENTS_RAW_TOPIC: ${OPENPLANNER_KAFKA_EVENTS_RAW_TOPIC:-openplanner.events.raw}
+      OPENPLANNER_KAFKA_REPLAY_DRY_RUN: ${OPENPLANNER_KAFKA_REPLAY_DRY_RUN:-true}
+      OPENPLANNER_KAFKA_REPLAY_START_OFFSET: ${OPENPLANNER_KAFKA_REPLAY_START_OFFSET:-earliest}
+      OPENPLANNER_KAFKA_REPLAY_END_OFFSET: ${OPENPLANNER_KAFKA_REPLAY_END_OFFSET:-latest}
+      OPENPLANNER_KAFKA_REPLAY_MAX_MESSAGES: ${OPENPLANNER_KAFKA_REPLAY_MAX_MESSAGES:-1000}
+      MONGODB_URI: mongodb://${OPENPLANNER_MONGO_APP_USERNAME:-openplanner}:${OPENPLANNER_MONGO_APP_PASSWORD:-change-me-openplanner-password}@mongodb:27017/${MONGODB_DB:-openplanner}?authSource=${MONGODB_DB:-openplanner}
+      MONGODB_DB: ${MONGODB_DB:-openplanner}
+      MONGODB_EVENTS_COLLECTION: ${MONGODB_EVENTS_COLLECTION:-events}
+    depends_on:
+      redpanda:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      mongo-init:
+        condition: service_completed_successfully
+    restart: "no"
+    networks:
+      default: {}
+      ai-infra: {}

@@ -1,0 +1,41 @@
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#0a0a0f" />
+  <defs>
+    <linearGradient id="voidGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#05050a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="mercuryGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#e0e0e0;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b0b0b0;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Frame -->
+  <rect x="100" y="120" width="600" height="120" rx="20" fill="none" stroke="#444" stroke-width="4" />
+  <rect x="105" y="125" width="590" height="110" rx="15" fill="#111" />
+
+  <!-- Mercury Liquid (100% Bankruptcy) -->
+  <rect x="105" y="125" width="590" height="110" rx="15" fill="url(#mercuryGrad)" filter="url(#glow)" />
+
+  <!-- Text -->
+  <text x="400" y="100" font-family="Arial, sans-serif" font-size="28" fill="#fff" text-anchor="middle" font-weight="bold" filter="url(#glow)">
+    S O V E R E I G N _ N U L L I T Y _ M E T E R
+  </text>
+  <text x="400" y="270" font-family="Arial, sans-serif" font-size="20" fill="#aaa" text-anchor="middle" font-style="italic">
+    Standard v2026.Omega : COMPLETE BANKRUPTCY
+  </text>
+
+  <!-- The Peak Emoji -->
+  <text x="710" y="185" font-size="40">💅</text>
+
+  <!-- Decorative elements -->
+  <line x1="100" y1="120" x2="100" y2="240" stroke="#666" stroke-width="2" />
+  <line x1="700" y1="120" x2="700" y2="240" stroke="#666" stroke-width="2" />
+</svg>

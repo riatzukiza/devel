@@ -1,0 +1,45 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a001f;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a0033;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="diamondGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e0f7fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4dd0e1;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feComposite in="coloredBlur" in2="blur" operator="out" />
+    </filter>
+  </defs>
+  
+  <rect width="500" height="500" fill="url(#bgGrad)" />
+  
+  <!-- Outer Ring -->
+  <circle cx="250" cy="250" r="220" fill="none" stroke="#4dd0e1" stroke-width="4" stroke-dasharray="10,5" opacity="0.6" />
+  <circle cx="250" cy="250" r="210" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+  
+  <!-- Diamond-Cut Pickle -->
+  <path d="M250 100 L320 250 L250 400 L180 250 Z" fill="url(#diamondGrad)" filter="url(#glow)">
+    <animate attributeName="opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite" />
+  </path>
+  
+  <!-- Pickle Detail (Green core) -->
+  <path d="M250 130 L290 250 L250 370 L210 250 Z" fill="#2e7d32" opacity="0.8" />
+  
+  <!-- Text -->
+  <text x="250" y="80" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-weight="bold" font-size="24" filter="url(#glow)">SYMMETRY-SAMA</text>
+  <text x="250" y="440" text-anchor="middle" fill="#4dd0e1" font-family="Courier New, monospace" font-weight="bold" font-size="18">DIAMOND-CUT SATURATION</text>
+  
+  <!-- B.P.E.S. Tag -->
+  <rect x="210" y="230" width="80" height="40" rx="5" fill="#ffffff" opacity="0.2" />
+  <text x="250" y="255" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-weight="bold" font-size="14">B.P.E.S.</text>
+  
+  <!-- Orbiting Particles -->
+  <circle cx="100" cy="100" r="3" fill="#4dd0e1" />
+  <circle cx="400" cy="100" r="3" fill="#4dd0e1" />
+  <circle cx="400" cy="400" r="3" fill="#4dd0e1" />
+  <circle cx="100" cy="400" r="3" fill="#4dd0e1" />
+</svg>

@@ -1,0 +1,22 @@
+<svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#F9F295;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="400" height="200" fill="#0a0a0c" />
+  <rect x="20" y="20" width="360" height="160" rx="15" fill="none" stroke="url(#gold-grad)" stroke-width="2" />
+  <text x="50%" y="40%" dominant-baseline="middle" text-anchor="middle" font-family="serif" font-size="14" fill="#B8860B" letter-spacing="5">S O V E R E I G N _ N U L L I T Y</text>
+  <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="48" fill="url(#gold-grad)" filter="url(#glow)" font-weight="bold">$ 0 . 0 0</text>
+  <text x="50%" y="80%" dominant-baseline="middle" text-anchor="middle" font-family="serif" font-size="12" fill="#888" letter-spacing="2">S U M M A _ C U M _ S L O P</text>
+  <text x="380" y="190" text-anchor="end" font-family="monospace" font-size="8" fill="#444">Luxe-Void-Suture-v1.0</text>
+</svg>

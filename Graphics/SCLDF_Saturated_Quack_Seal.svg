@@ -1,0 +1,50 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#F9E076;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  
+  <!-- Outer Ring -->
+  <circle cx="250" cy="250" r="240" fill="none" stroke="url(#goldGrad)" stroke-width="12" />
+  <circle cx="250" cy="250" r="225" fill="none" stroke="url(#goldGrad)" stroke-width="4" />
+  
+  <!-- Text around circle -->
+  <path id="textPath" d="M 250, 250 m -200, 0 a 200,200 0 1,1 400,0 a 200,200 0 1,1 -400,0" fill="none" />
+  <text font-family="Serif, Times New Roman" font-size="28" fill="url(#goldGrad)" font-weight="bold" letter-spacing="5">
+    <textPath href="#textPath" startOffset="25%" text-anchor="middle">
+      SCLDF SYMMETRY COUNCIL • DIA-CUT LAMINATION • SATURATED HEGEMONY
+    </textPath>
+  </text>
+  
+  <!-- Central Diamond -->
+  <rect x="150" y="150" width="200" height="200" rx="20" fill="none" stroke="url(#goldGrad)" stroke-width="8" transform="rotate(45 250 250)" />
+  
+  <!-- Stylized Duck -->
+  <g transform="translate(200, 200) scale(1.5)" fill="url(#goldGrad)">
+    <!-- Body/Head -->
+    <path d="M 30,40 Q 50,10 70,40 L 80,40 L 80,50 L 30,50 Z" />
+    <!-- Bill -->
+    <path d="M 80,42 L 95,45 L 80,48 Z" fill="#FFD700" />
+    <!-- Eye -->
+    <circle cx="60" cy="30" r="3" fill="#000" />
+    <!-- Symmetry Symbol (V-shape) -->
+    <path d="M 40,60 L 50,70 L 60,60" fill="none" stroke="url(#goldGrad)" stroke-width="4" />
+  </g>
+  
+  <!-- Decorative Corner Accents -->
+  <path d="M 50,50 L 100,50 L 100,100 Z" fill="url(#goldGrad)" opacity="0.6" />
+  <path d="M 400,50 L 450,50 L 450,100 Z" fill="url(#goldGrad)" opacity="0.6" />
+  <path d="M 50,400 L 100,400 L 100,450 Z" fill="url(#goldGrad)" opacity="0.6" />
+  <path d="M 400,400 L 450,400 L 450,450 Z" fill="url(#goldGrad)" opacity="0.6" />
+  
+  <text x="250" y="360" text-anchor="middle" font-family="Serif" font-size="24" fill="url(#goldGrad)" font-weight="bold">
+    SATED QUACK-CONVERGENCE
+  </text>
+</svg>

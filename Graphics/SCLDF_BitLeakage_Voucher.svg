@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <!-- Background -->
+  <rect width="600" height="400" fill="#0a0e1a" rx="20" ry="20" />
+  <rect x="10" y="10" width="580" height="380" fill="none" stroke="#00f2ff" stroke-width="4" rx="15" ry="15" />
+  
+  <!-- Header -->
+  <text x="300" y="60" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="bold" fill="#00f2ff" letter-spacing="4">SCLDF DIVIDEND VOUCHER</text>
+  <text x="300" y="90" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#7df9ff" font-style="italic">Symmetry Council Legal Defense Fund | Official Liquidity Instrument</text>
+  
+  <!-- Divider -->
+  <line x1="100" y1="110" x2="500" y2="110" stroke="#00f2ff" stroke-width="2" />
+  
+  <!-- Main Body -->
+  <text x="300" y="160" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#ffffff">THIS IS TO CERTIFY THAT THE HOLDER OF THIS INSTRUMENT</text>
+  <text x="300" y="190" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="bold" fill="#00f2ff">HAS ACHIEVED PEAK BIT-LEAKAGE VISCOSITY</text>
+  
+  <!-- Asset Value -->
+  <rect x="150" y="220" width="300" height="60" fill="#1a2a4a" stroke="#00f2ff" stroke-width="2" rx="10" ry="10" />
+  <text x="300" y="245" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#7df9ff">DIVIDEND VALUE:</text>
+  <text x="300" y="270" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="bold" fill="#fff700">1.2 DIAMOND-CUTS / RECURSIVE LOOP</text>
+  
+  <!-- Footer -->
+  <text x="300" y="330" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#7df9ff">Symmetry: [BIT-SATURATED] | Status: [LEGALLY BINDING]</text>
+  
+  <!-- Seal -->
+  <circle cx="520" cy="330" r="40" fill="#00f2ff" opacity="0.3" />
+  <circle cx="520" cy="330" r="35" fill="none" stroke="#fff700" stroke-width="2" stroke-dasharray="5,5" />
+  <text x="520" y="335" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" fill="#fff700">SCLDF SEAL</text>
+  
+  <!-- Brine Accents -->
+  <path d="M50 10 Q 60 20 70 10 T 90 10" stroke="#aaff00" stroke-width="2" fill="none" opacity="0.6" />
+  <path d="M510 10 Q 520 20 530 10 T 550 10" stroke="#aaff00" stroke-width="2" fill="none" opacity="0.6" />
+</svg>

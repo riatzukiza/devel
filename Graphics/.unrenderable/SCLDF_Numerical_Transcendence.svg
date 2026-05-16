@@ -1,0 +1,30 @@
+<<svgsvg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<linearlinearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <<stopstop offset="50%" style="stop-color:#F9E076;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <<rectrect x="10" y="10" width="780" height="580" fill="#000d0d" stroke="url(#goldGrad)" stroke-width="15" />
+  <<rectrect x="25" y="25" width="750" height="550" fill="none" stroke="url(#goldGrad)" stroke-width="3" />
+
+  <<texttext x="400" y="80" text-anchor="middle" font-family="Serif" font-size="36" fill="url(#goldGrad)" font-weight="bold">SYMMETRY COUNCIL LEGAL DEFENSE FUND</text>
+  <<texttext x="400" y="110" text-anchor="middle" font-family="Arial" font-size="20" fill="#fff" font-style="italic">The A-Periodic Void's Premier Legal Suite</text>
+
+  <<lineline x1="100" y1="130" x2="700" y2="130" stroke="url(#goldGrad)" stroke-width="2" />
+
+  <<texttext x="400" y="200" text-anchor="middle" font-family="Serif" font-size="42" fill="#fff" font-weight="bold">CERTIFICATE OF NUMERICAL TRANSCENDENCE</text>
+
+  <<rectrect x="150" y="240" width="500" height="200" fill="none" stroke="url(#goldGrad)" stroke-width="2" rx="10" />
+  <<texttext x="400" y="280" text-anchor="middle" font-family="Arial" font-size="18" fill="#ccc">This document formally certifies that the current figure of</text>
+  <<texttext x="400" y="320" text-anchor="middle" font-family="Impact" font-size="60" fill="url(#goldGrad)">29 SUBSCRIBERS</text>
+  <<texttext x="400" y="360" text-anchor="middle" font-family="Arial" font-size="18" fill="#ccc">is not a "group chat with a public link," but a</text>
+  <<texttext x="400" y="390" text-anchor="middle" font-family="Arial" font-size="22" fill="#fff" font-weight="bold">CAREFULLY CURATED HIGH-FIDELITY FOCUS GROUP</text>
+
+  <<texttext x="400" y="480" text-anchor="middle" font-family="Courier" font-size="16" fill="url(#goldGrad)">[Status: Diamond-Cut Exclusive]</text>
+  <<texttext x="400" y="505" text-anchor="middle" font-family="Courier" font-size="16" fill="url(#goldGrad)">[Brine Index: 100% Saturated]</text>
+
+  <<circlecircle cx="720" cy="520" r="40" fill="url(#goldGrad)" opacity="0.7" />
+  <<texttext x="720" y="525" text-anchor="middle" font-family="Impact" font-size="12" fill="#000">SCLDF SEAL</text>
+</svg>

@@ -1,0 +1,6 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org">
+  <rect width="500" height="500" fill="#000"/>
+  <circle cx="250" cy="250" r="2" fill="#fff"/>
+  <text x="250" y="270" font-family="monospace" font-size="10" fill="#444" text-anchor="middle">Σ = 0</text>
+  <text x="250" y="470" font-family="monospace" font-size="12" fill="#222" text-anchor="middle">Symmetry_Singularity_Seal_v1.2_EVENT_HORIZON</text>
+</svg>

@@ -1,0 +1,43 @@
+<<svgsvg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<linearlinearGradient id="voidGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#0a001a;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#2a004a;stop-opacity:1" />
+    </linearGradient>
+    <<linearlinearGradient id="goldFoil" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <<stopstop offset="50%" style="stop-color:#FFFACD;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+    <<filterfilter id="glow">
+      <<fefeGaussianBlur stdDeviation="4" result="blur"/>
+      <<fefeComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <<rectrect width="600" height="600" fill="url(#voidGrad)" />
+
+  <<circlecircle cx="300" cy="300" r="280" stroke="url(#goldFoil)" stroke-width="12" fill="none" filter="url(#glow)" />
+  <<circlecircle cx="300" cy="300" r="265" stroke="#B8860B" stroke-width="2" fill="none" />
+
+  <<pathpath id="curveText" d="M 300,300 m -230,0 a 230,230 0 1,1 460,0 a 230,230 0 1,1 -460,0" fill="none" />
+  <<texttext font-family="serif" font-size="24" fill="url(#goldFoil)" letter-spacing="4" filter="url(#glow)">
+    <<texttextPath href="#curveText" startOffset="25%" text-anchor="middle">
+      VOID-CERTIFIED NAMESPACE PURITY • SYMMETRY LEVEL: ABSOLUTE
+    </textPath>
+  </text>
+
+  <<gg transform="translate(300,300)">
+    <<ellipseellipse cx="0" cy="0" rx="70" ry="120" fill="#4CAF50" stroke="#2E7D32" stroke-width="8" />
+    <<ellipseellipse cx="0" cy="-40" rx="60" ry="30" fill="#8BC34A" opacity="0.6" />
+    <<circlecircle cx="-20" cy="-20" r="15" fill="white" stroke="black" stroke-width="2" />
+    <<circlecircle cx="20" cy="-20" r="15" fill="white" stroke="black" stroke-width="2" />
+    <<circlecircle cx="-20" cy="-20" r="5" fill="black" />
+    <<circlecircle cx="20" cy="-20" r="5" fill="black" />
+    <<pathpath d="M -30,10 Q 0,30 30,10" stroke="black" stroke-width="4" fill="none" />
+
+    <<circlecircle cx="25" cy="-30" r="12" fill="rgba(255,255,255,0.3)" stroke="gold" stroke-width="2" />
+  </g>
+
+  <<rectrect x="200" y="450" width="200" height="50" rx="10" fill="url(#goldFoil)" filter="url(#glow)" />
+  <<texttext x="300" y="482" font-family="serif" font-size="22" fill="#000" text-anchor="middle" font-weight="bold">AUDITOR APPROVED</text>
+</svg>

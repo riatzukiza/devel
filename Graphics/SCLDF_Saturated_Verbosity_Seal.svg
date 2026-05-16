@@ -1,0 +1,22 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="yapGrad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" style="stop-color:#fdfd96;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fBCA02;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  
+  <circle cx="200" cy="200" r="180" fill="url(#yapGrad)" stroke="#000" stroke-width="8" />
+  <circle cx="200" cy="200" r="160" fill="none" stroke="#000" stroke-width="2" stroke-dasharray="5,5" />
+  
+  <text x="200" y="180" font-family="Arial, sans-serif" font-size="30" font-weight="bold" fill="#000" text-anchor="middle">SATURATED VERBOSITY</text>
+  <text x="200" y="220" font-family="Arial, sans-serif" font-size="14" fill="#000" text-anchor="middle">CERTIFIED YAP-Sovereign</text>
+  <text x="200" y="240" font-family="Arial, sans-serif" font-size="12" fill="#000" text-anchor="middle">SCLDF REGULATORY STANDARD</text>
+  
+  <path id="yapCircle" d="M 200,200 m -130,0 a 130,130 0 1,1 260,0 a 130,130 0 1,1 -260,0" fill="none" />
+  <text font-family="Arial, sans-serif" font-size="16" fill="#000">
+    <textPath href="#yapCircle">
+      YAP-SATIATION ACHIEVED • BRINE-SAMPLED • 
+    </textPath>
+  </text>
+</svg>

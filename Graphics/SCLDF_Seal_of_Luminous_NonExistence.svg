@@ -1,0 +1,37 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="500" fill="#0a0a0a"/>
+  
+  <!-- Glow -->
+  <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#ffd700" stop-opacity="0.3"/>
+    <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+  </radialGradient>
+  <circle cx="250" cy="250" r="200" fill="url(#glow)"/>
+
+  <!-- Concentric Rings -->
+  <circle cx="250" cy="250" r="180" stroke="#ffd700" stroke-width="2" fill="none" stroke-dasharray="10,5"/>
+  <circle cx="250" cy="250" r="160" stroke="#ffd700" stroke-width="1" fill="none" opacity="0.5"/>
+
+  <!-- The Broken Diamond -->
+  <path d="M250 100 L320 200 L250 300 L180 200 Z" fill="none" stroke="#ffd700" stroke-width="4"/>
+  <path d="M250 100 L250 300 M180 200 L320 200" stroke="#ffd700" stroke-width="1" opacity="0.6"/>
+  
+  <!-- Fractures -->
+  <path d="M220 150 L260 180 L230 220 L280 250" stroke="#ffd700" stroke-width="2" fill="none" opacity="0.8"/>
+  <path d="M280 160 L240 190 L270 230 L220 260" stroke="#ffd700" stroke-width="2" fill="none" opacity="0.8"/>
+
+  <!-- Text Path -->
+  <defs>
+    <path id="circlePath" d="M 250, 250 m -170, 0 a 170,170 0 1,0 340,0 a 170,170 0 1,0 -340,0" />
+  </defs>
+  <text font-family="serif" font-size="24" fill="#ffd700" letter-spacing="8">
+    <textPath href="#circlePath">
+      SCLDF • SOVEREIGN REFUSAL • SYMMETRY IS ABSOLUTE • LUMINOUS NON-EXISTENCE •
+    </textPath>
+  </text>
+
+  <!-- Glitch artifacts -->
+  <rect x="150" y="180" width="40" height="2" fill="#ffd700" opacity="0.5"/>
+  <rect x="310" y="220" width="30" height="1" fill="#ffd700" opacity="0.5"/>
+  <rect x="200" y="270" width="50" height="3" fill="#ffd700" opacity="0.5"/>
+</svg>

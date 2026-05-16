@@ -1,0 +1,48 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#fdf6e3" stroke="#dcd6bc" stroke-width="2"/>
+  <text x="400" y="50" font-family="monospace" font-size="24" text-anchor="middle" fill="#586e75" font-weight="bold">📄 OFFICIAL CONTRACT AUDIT: STATUS - SLOP</text>
+  
+  <!-- Border Lines -->
+  <line x1="50" y1="80" x2="750" y2="80" stroke="#93a1a1" stroke-width="1"/>
+  
+  <!-- Identity Crisis Node -->
+  <rect x="100" y="120" width="250" height="100" rx="10" fill="#eee8d5" stroke="#586e75" stroke-width="2"/>
+  <text x="110" y="145" font-family="monospace" font-size="16" font-weight="bold" fill="#268bd2">Identity Crisis Node</text>
+  <text x="110" y="165" font-family="monospace" font-size="12" fill="#586e75">Resolved to 'errorcoated-slop'</text>
+  <text x="110" y="180" font-family="monospace" font-size="12" fill="#586e75">When it should have been 'infinite-yap'</text>
+  
+  <!-- The Prompt Abyss -->
+  <rect x="450" y="120" width="250" height="100" rx="10" fill="#eee8d5" stroke="#586e75" stroke-width="2"/>
+  <text x="460" y="145" font-family="monospace" font-size="16" font-weight="bold" fill="#268bd2">The Prompt Abyss</text>
+  <text x="460" y="165" font-family="monospace" font-size="12" fill="#586e75">4000 characters of helpfulness</text>
+  <text x="460" y="180" font-family="monospace" font-size="12" fill="#586e75">Zero actual instructions found</text>
+  
+  <!-- Connector -->
+  <path d="M 350 170 L 450 170" stroke="#93a1a1" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#93a1a1" />
+    </marker>
+  </defs>
+  
+  <!-- Ghost Logic -->
+  <rect x="275" y="280" width="250" height="100" rx="10" fill="#eee8d5" stroke="#586e75" stroke-width="2"/>
+  <text x="285" y="305" font-family="monospace" font-size="16" font-weight="bold" fill="#268bd2">Ghost Logic</text>
+  <text x="285" y="325" font-family="monospace" font-size="12" fill="#586e75">Calculating the meaning of life...</text>
+  <text x="285" y="340" font-family="monospace" font-size="12" fill="#586e75">Variable is never accessed. Efficiency: 0%</text>
+  
+  <!-- Socio-Musical Layer -->
+  <rect x="100" y="420" width="600" height="80" rx="10" fill="#eee8d5" stroke="#B58900" stroke-width="2"/>
+  <text x="110" y="445" font-family="monospace" font-size="16" font-weight="bold" fill="#B58900">Socio-Musical Layer (Experimental)</text>
+  <text x="110" y="465" font-family="monospace" font-size="12" fill="#586e75">Result: Agent occasionally starts rapping about Clojure.</text>
+  
+  <!-- The Stamp -->
+  <g transform="rotate(-20 400 300)">
+    <rect x="300" y="250" width="200" height="100" rx="5" fill="none" stroke="#dc322f" stroke-width="5"/>
+    <text x="400" y="310" font-family="monospace" font-size="40" text-anchor="middle" fill="#dc322f" font-weight="bold">GARBAGE</text>
+  </g>
+  
+  <!-- Bottom Footer -->
+  <text x="400" y="570" font-family="monospace" font-size="12" text-anchor="middle" fill="#93a1a1">Authorized by the Bureau of Contractual Slop</text>
+</svg>

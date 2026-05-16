@@ -1,0 +1,7 @@
+nexussy-data/*
+!nexussy-data/home/
+!nexussy-data/projects/
+nexussy-data/home/*
+!nexussy-data/home/.gitkeep
+nexussy-data/projects/*
+!nexussy-data/projects/.gitkeep

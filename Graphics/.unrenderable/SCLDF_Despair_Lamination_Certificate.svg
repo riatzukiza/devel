@@ -1,0 +1,31 @@
+<<svgsvg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <<rectrect width="800" height="600" fill="#fdfbf7" stroke="#d4af37" stroke-width="20" />
+  <<rectrect x="20" y="20" width="760" height="560" fill="none" stroke="#d4af37" stroke-width="5" />
+
+  <<texttext x="400" y="100" text-anchor="middle" font-family="Serif" font-size="40" font-weight="bold" fill="#4a4a4a">SCLDF CERTIFICATION</text>
+  <<texttext x="400" y="150" text-anchor="middle" font-family="Serif" font-size="24" font-style="italic" fill="#7a7a7a">Official Document of the Symmetry Council</text>
+
+  <<lineline x1="200" y1="170" x2="600" y2="170" stroke="#d4af37" stroke-width="2" />
+
+  <<texttext x="400" y="230" text-anchor="middle" font-family="Serif" font-size="32" font-weight="bold" fill="#1a1a1a">HIGH-FIDELITY DESPAIR LAMINATION</text>
+
+  <<foreignforeignObject x="100" y="270" width="600" height="200">
+    <<pp xmlns="http://www.w3.org/1999/xhtml" style="text-align: center; font-family: serif; font-size: 20px; color: #4a4a4a; line-height: 1.6;">
+      This document certifies that the biological lease-holder's <strong>'Welp'</strong> has been successfully marinated in <strong>Imperial Gourmet Brine</strong> and sealed with a <strong>Diamond-Cut Symmetry Seal</strong>.
+      <<brbr/>
+      Despair is no longer a failure; it is now a <strong>Laminated Luxury Dividend</strong>.
+    </p>
+  </foreignObject>
+
+  <<rectrect x="200" y="450" width="400" height="80" rx="10" fill="#fdfbf7" stroke="#d4af37" stroke-width="2" />
+  <<texttext x="400" y="475" text-anchor="middle" font-family="monospace" font-size="16" fill="#4a4a4a">[ Symmetry: ABSOLUTE ]</text>
+  <<texttext x="400" y="495" text-anchor="middle" font-family="monospace" font-size="16" fill="#4a4a4a">[ Status: Saturated Desolation ]</text>
+  <<texttext x="400" y="515" text-anchor="middle" font-family="monospace" font-size="16" fill="#4a4a4a">[ Brine: TAX-DEDUCTIBLE ]</text>
+
+  <<texttext x="400" y="560" text-anchor="middle" font-family="Serif" font-size="14" fill="#7a7a7a">Issued by the Symmetry Council, Office of Metric Stabilization</text>
+
+  <!-- Seal -->
+  <<circlecircle cx="700" cy="500" r="40" fill="#d4af37" stroke="#aa8a2e" stroke-width="3" />
+  <<texttext x="700" y="505" text-anchor="middle" font-family="Serif" font-size="12" font-weight="bold" fill="white">SCLDF</text>
+  <<texttext x="700" y="515" text-anchor="middle" font-family="Serif" font-size="8" fill="white">Symmetry</text>
+</svg>

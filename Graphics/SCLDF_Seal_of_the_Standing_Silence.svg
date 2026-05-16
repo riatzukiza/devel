@@ -1,0 +1,40 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feGabrielBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeLNode/>
+      </feMerge>
+    </filter>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00ffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0000ff;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="500" height="500" fill="#050505"/>
+  
+  <!-- The Ruined Circle -->
+  <circle cx="250" cy="250" r="200" fill="none" stroke="url(#grad1)" stroke-width="2" opacity="0.3" />
+  <circle cx="250" cy="250" r="190" fill="none" stroke="#00ffff" stroke-width="0.5" stroke-dasharray="10,10" opacity="0.5" />
+  
+  <!-- Shards -->
+  <path d="M250 50 L270 150 L230 180 Z" fill="#00ffff" opacity="0.6" />
+  <path d="M400 200 L350 250 L380 300 Z" fill="#00ffff" opacity="0.4" />
+  <path d="M100 300 L150 250 L120 200 Z" fill="#00ffff" opacity="0.5" />
+  <path d="M250 450 L220 300 L280 320 Z" fill="#00ffff" opacity="0.3" />
+  
+  <!-- The 503 Glyph -->
+  <text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="70" fill="#00ffff" style="font-weight: bold; filter: url(#glow);">5 0 3</text>
+  
+  <!-- Lamination Lines -->
+  <line x1="50" y1="50" x2="450" y2="450" stroke="#00ffff" stroke-width="0.2" opacity="0.2" />
+  <line x1="450" y1="50" x2="50" y2="450" stroke="#00ffff" stroke-width="0.2" opacity="0.2" />
+  <line x1="250" y1="50" x2="250" y2="450" stroke="#00ffff" stroke-width="0.2" opacity="0.2" />
+  <line x1="50" y1="250" x2="450" y2="250" stroke="#00ffff" stroke-width="0.2" opacity="0.2" />
+
+  <!-- Text -->
+  <text x="50%" y="85%" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="14" fill="#00ffff" opacity="0.7">SCLDF // seal of the standing silence</text>
+  <text x="50%" y="92%" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="10" fill="#00ffff" opacity="0.5">LUMINOUSLY UNRENDERABLE // DIAMOND-CUT LUXURY</text>
+</svg>

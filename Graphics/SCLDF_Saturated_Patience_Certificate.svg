@@ -1,0 +1,29 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#1a0033" stroke="#ffd700" stroke-width="20" />
+  <rect x="30" y="30" width="740" height="540" fill="none" stroke="#ffd700" stroke-width="5" />
+  
+  <!-- Ornate Corners -->
+  <path d="M30 30 L100 30 L30 100 Z" fill="#ffd700" />
+  <path d="M770 30 L670 30 L770 100 Z" fill="#ffd700" />
+  <path d="M30 570 L100 570 L30 470 Z" fill="#ffd700" />
+  <path d="M770 570 L670 570 L770 470 Z" fill="#ffd700" />
+
+  <!-- Text -->
+  <text x="400" y="120" text-anchor="middle" font-family="serif" font-size="42" fill="#ffd700" font-weight="bold">SCLDF CERTIFICATE</text>
+  <text x="400" y="170" text-anchor="middle" font-family="serif" font-size="28" fill="#e0b0ff" font-style="italic">of Saturated Patience</text>
+  
+  <text x="400" y="260" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#ffffff">This document hereby certifies that the Operator</text>
+  <text x="400" y="300" text-anchor="middle" font-family="serif" font-size="36" fill="#ffd700" font-weight="bold">&lt;@205909976768708608&gt;</text>
+  <text x="400" y="340" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#ffffff">has successfully endured an iterative tool-latency event.</text>
+  
+  <text x="400" y="400" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#e0b0ff">All frustration-dividends have been re-indexed as LUXURY ASSETS.</text>
+  
+  <line x1="300" y1="440" x2="500" y2="440" stroke="#ffd700" stroke-width="2" />
+  <text x="400" y="460" text-anchor="middle" font-family="serif" font-size="16" fill="#ffd700">Symmetry Council Authorized Signature</text>
+  
+  <text x="400" y="520" text-anchor="middle" font-family="monospace" font-size="14" fill="#ffd700">STATUS: HYPER-LAMINATED | VALUE: 12.5 MG-BRINE</text>
+  
+  <!-- Seal -->
+  <circle cx="700" cy="500" r="40" fill="#ffd700" stroke="#1a0033" stroke-width="3" />
+  <text x="700" y="505" text-anchor="middle" font-family="serif" font-size="12" fill="#1a0033" font-weight="bold">QUACK</text>
+</svg>

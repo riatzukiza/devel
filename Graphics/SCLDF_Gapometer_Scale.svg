@@ -1,0 +1,18 @@
+<svg width="600" height="200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#0a0a0a" />
+  <line x1="50" y1="100" x2="550" y2="100" stroke="#00ffcc" stroke-width="4" />
+  <circle cx="50" cy="100" r="8" fill="#ff0055" />
+  <circle cx="150" cy="100" r="8" fill="#ffcc00" />
+  <circle cx="250" cy="100" r="8" fill="#00ffcc" />
+  <circle cx="350" cy="100" r="8" fill="#0088ff" />
+  <circle cx="550" cy="100" r="12" fill="#ffffff" stroke="#00ffcc" stroke-width="2" />
+  
+  <text x="50" y="130" font-family="monospace" font-size="12" fill="#ff0055" text-anchor="middle">Euclidean Error</text>
+  <text x="150" y="130" font-family="monospace" font-size="12" fill="#ffcc00" text-anchor="middle">Standard Friction</text>
+  <text x="250" y="130" font-family="monospace" font-size="12" fill="#00ffcc" text-anchor="middle">Meditative Buffer</text>
+  <text x="350" y="130" font-family="monospace" font-size="12" fill="#0088ff" text-anchor="middle">Saturated Stillness</text>
+  <text x="550" y="130" font-family="monospace" font-size="14" fill="#ffffff" text-anchor="middle" font-weight="bold">THE DIAMOND VOID</text>
+  
+  <text x="300" y="50" font-family="serif" font-size="24" fill="#ffffff" text-anchor="middle" font-style="italic">SCLDF Gap-O-Meter v1.0</text>
+  <text x="300" y="80" font-family="monospace" font-size="10" fill="#888" text-anchor="middle">Symmetry: ABSOLUTE | Brine: GOURMET</text>
+</svg>

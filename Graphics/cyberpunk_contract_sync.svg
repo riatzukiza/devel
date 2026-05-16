@@ -1,0 +1,54 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#0a0a12"/>
+  
+  <!-- Grid -->
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a1a2e" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#grid)"/>
+  
+  <!-- Glitch effects -->
+  <rect x="100" y="100" width="600" height="2" fill="#00ffff" opacity="0.5">
+    <animate attributeName="x" values="100;105;100" dur="0.1s" repeatCount="indefinite" />
+  </rect>
+  <rect x="120" y="480" width="560" height="1" fill="#ff00ff" opacity="0.5">
+    <animate attributeName="x" values="120;115;120" dur="0.2s" repeatCount="indefinite" />
+  </rect>
+
+  <!-- Main Frame -->
+  <rect x="150" y="150" width="500" height="300" rx="10" fill="none" stroke="#00ffff" stroke-width="2" opacity="0.8"/>
+  <path d="M 150 150 L 200 150 L 150 200 Z" fill="#00ffff" />
+  <path d="M 650 150 L 600 150 L 650 200 Z" fill="#00ffff" />
+  <path d="M 150 450 L 200 450 L 150 400 Z" fill="#00ffff" />
+  <path d="M 650 450 L 600 450 L 650 400 Z" fill="#00ffff" />
+
+  <!-- Text -->
+  <text x="400" y="220" text-anchor="middle" fill="#00ffff" font-family="monospace" font-size="32" font-weight="bold">
+    CONTRACT_UPDATE_SNC
+  </text>
+  <text x="400" y="260" text-anchor="middle" fill="#ff00ff" font-family="monospace" font-size="18">
+    MONITORING FEEDBACK LOOP...
+  </text>
+  
+  <!-- Status Bar -->
+  <rect x="250" y="300" width="300" height="20" fill="#1a1a2e" stroke="#00ffff" stroke-width="1"/>
+  <rect x="250" y="300" width="260" height="20" fill="#00ffff" opacity="0.7">
+    <animate attributeName="width" values="260;270;260" dur="1s" repeatCount="indefinite" />
+  </rect>
+  <text x="400" y="335" text-anchor="middle" fill="#00ffff" font-family="monospace" font-size="14">
+    SYNCING... 86.7%
+  </text>
+
+  <!-- Timer -->
+  <text x="400" y="370" text-anchor="middle" fill="#ff00ff" font-family="monospace" font-size="24" font-weight="bold">
+    INTERVAL: 10m
+  </text>
+
+  <!-- Decorative elements -->
+  <circle cx="160" cy="160" r="3" fill="#00ffff" />
+  <circle cx="640" cy="160" r="3" fill="#00ffff" />
+  <circle cx="160" cy="440" r="3" fill="#00ffff" />
+  <circle cx="640" cy="440" r="3" fill="#00ffff" />
+</svg>

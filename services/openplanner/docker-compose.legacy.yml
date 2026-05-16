@@ -1,0 +1,129 @@
+services:
+  openplanner-proxx-db:
+    profiles:
+    - bundled-proxx
+    image: postgres:16-bookworm
+    cpus: 1
+    cpuset: 2-21
+    expose:
+    - '5432'
+    environment:
+      POSTGRES_DB: ${OPENPLANNER_PROXX_DB_NAME:-openai_proxy}
+      POSTGRES_USER: ${OPENPLANNER_PROXX_DB_USER:-openai_proxy}
+      POSTGRES_PASSWORD: ${OPENPLANNER_PROXX_DB_PASSWORD:-openai_proxy}
+    volumes:
+    - openplanner-proxx-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - pg_isready -U ${OPENPLANNER_PROXX_DB_USER:-openai_proxy} -d ${OPENPLANNER_PROXX_DB_NAME:-openai_proxy}
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      default: {}
+  openplanner-proxx:
+    profiles:
+    - bundled-proxx
+    build:
+      context: ../../orgs/open-hax/proxx
+      dockerfile: Dockerfile
+    cpus: 1.5
+    cpuset: 2-21
+    depends_on:
+      openplanner-proxx-db:
+        condition: service_healthy
+    ports:
+    - 127.0.0.1:${OPENPLANNER_PROXX_HOST_PORT:-8790}:8789
+    - 127.0.0.1:${OPENPLANNER_PROXX_WEB_PORT:-5176}:5174
+    environment:
+      PM2_HOME: /app/data/.pm2
+      NODE_ENV: production
+      PROXY_HOST: 0.0.0.0
+      PROXY_PORT: '8789'
+      PORT: '8789'
+      PROXY_AUTH_TOKEN: ${OPENPLANNER_PROXX_AUTH_TOKEN:-${PROXX_AUTH_TOKEN:-${PROXY_AUTH_TOKEN:-change-me-open-hax-proxy-token}}}
+      PROXY_KEYS_FILE: /workspace/service-config/seeds/keys.json
+      PROXY_MODELS_FILE: /workspace/service-config/models.json
+      PROXY_REQUEST_LOGS_FILE: /app/data/request-logs.jsonl
+      PROXY_REQUEST_LOGS_MAX_ENTRIES: ${OPENPLANNER_PROXX_REQUEST_LOGS_MAX_ENTRIES:-25000}
+      PROXY_REQUEST_LOGS_FLUSH_MS: ${OPENPLANNER_PROXX_REQUEST_LOGS_FLUSH_MS:-1000}
+      PROXY_PROMPT_AFFINITY_FLUSH_MS: ${OPENPLANNER_PROXX_PROMPT_AFFINITY_FLUSH_MS:-250}
+      PROXY_KEY_RELOAD_MS: ${OPENPLANNER_PROXX_KEY_RELOAD_MS:-5000}
+      PROXY_KEY_COOLDOWN_MS: ${OPENPLANNER_PROXX_KEY_COOLDOWN_MS:-30000}
+      PROXY_ALLOW_UNAUTHENTICATED: 'false'
+      DATABASE_URL: postgresql://${OPENPLANNER_PROXX_DB_USER:-openai_proxy}:${OPENPLANNER_PROXX_DB_PASSWORD:-openai_proxy}@openplanner-proxx-db:5432/${OPENPLANNER_PROXX_DB_NAME:-openai_proxy}
+      UPSTREAM_PROVIDER_ID: ${OPENPLANNER_PROXX_UPSTREAM_PROVIDER_ID:-zai}
+      UPSTREAM_FALLBACK_PROVIDER_IDS: ${OPENPLANNER_PROXX_UPSTREAM_FALLBACK_PROVIDER_IDS:-ollama-cloud,openai}
+      UPSTREAM_BASE_URL: ${OPENPLANNER_PROXX_UPSTREAM_BASE_URL:-https://api.z.ai/api/paas/v4}
+      UPSTREAM_PROVIDER_BASE_URLS: ${OPENPLANNER_PROXX_UPSTREAM_PROVIDER_BASE_URLS:-llamacpp=http://llamacpp-chat:8080,llamacpp-embed=http://llamacpp-embed:8081,openai=https://chatgpt.com/backend-api,vivgrid=https://api.vivgrid.com,requesty=https://router.requesty.ai/v1,zai=https://api.z.ai/api/paas/v4}
+      REQUESTY_API_TOKEN: ${REQUESTY_API_TOKEN:-}
+      OPENAI_PROVIDER_ID: ${OPENAI_PROVIDER_ID:-openai}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-https://chatgpt.com/backend-api}
+      OPENAI_API_BASE_URL: ${OPENAI_API_BASE_URL:-https://api.openai.com}
+      OPENAI_IMAGES_UPSTREAM_MODE: ${OPENAI_IMAGES_UPSTREAM_MODE:-auto}
+      OPENAI_OAUTH_CLIENT_ID: ${OPENAI_OAUTH_CLIENT_ID:-app_EMoamEEZ73f0CkXaXp7hrann}
+      OPENAI_OAUTH_CLIENT_SECRET: ${OPENAI_OAUTH_CLIENT_SECRET:-}
+      OPENAI_OAUTH_ISSUER: ${OPENAI_OAUTH_ISSUER:-https://auth.openai.com}
+      OPENAI_OAUTH_SCOPES: ${OPENAI_OAUTH_SCOPES:-openid profile email offline_access}
+      OPENAI_IMAGES_GENERATIONS_PATHS: ${OPENAI_IMAGES_GENERATIONS_PATHS:-}
+      IMAGE_COST_USD_DEFAULT: ${IMAGE_COST_USD_DEFAULT:-0}
+      IMAGE_COST_USD_BY_PROVIDER: ${IMAGE_COST_USD_BY_PROVIDER:-}
+      LLAMACPP_CHAT_BASE_URL: ${LLAMACPP_CHAT_BASE_URL:-http://llamacpp-chat:8080}
+      LLAMACPP_EMBED_BASE_URL: ${LLAMACPP_EMBED_BASE_URL:-http://llamacpp-embed:8081}
+      ZAI_API_KEY: ${OPENPLANNER_PROXX_ZAI_API_KEY:-}
+      ZHIPU_API_KEY: ${ZHIPU_API_KEY:-}
+      ZAI_PROVIDER_ID: ${ZAI_PROVIDER_ID:-zai}
+      ZHIPU_PROVIDER_ID: ${ZHIPU_PROVIDER_ID:-}
+      ZAI_BASE_URL: ${ZAI_BASE_URL:-https://api.z.ai/api/paas/v4}
+      ROTUSSY_API_KEY: ${ROTUSSY_API_KEY:-}
+      ROTUSSY_PROVIDER_ID: ${ROTUSSY_PROVIDER_ID:-rotussy}
+      ROTUSSY_BASE_URL: ${ROTUSSY_BASE_URL:-https://api.ussyco.de/v1}
+      ZHIPU_BASE_URL: ${ZHIPU_BASE_URL:-}
+      UPSTREAM_CHAT_COMPLETIONS_PATH: ${UPSTREAM_CHAT_COMPLETIONS_PATH:-/v1/chat/completions}
+      OPENAI_CHAT_COMPLETIONS_PATH: ${OPENAI_CHAT_COMPLETIONS_PATH:-/codex/responses/compact}
+      UPSTREAM_MESSAGES_PATH: ${UPSTREAM_MESSAGES_PATH:-/v1/messages}
+      UPSTREAM_MESSAGES_MODEL_PREFIXES: ${UPSTREAM_MESSAGES_MODEL_PREFIXES:-claude-}
+      UPSTREAM_MESSAGES_INTERLEAVED_THINKING_BETA: ${UPSTREAM_MESSAGES_INTERLEAVED_THINKING_BETA:-interleaved-thinking-2025-05-14}
+      UPSTREAM_RESPONSES_PATH: ${UPSTREAM_RESPONSES_PATH:-/v1/responses}
+      OPENAI_RESPONSES_PATH: ${OPENAI_RESPONSES_PATH:-/codex/responses}
+      UPSTREAM_RESPONSES_MODEL_PREFIXES: ${UPSTREAM_RESPONSES_MODEL_PREFIXES:-gpt-}
+      OPENAI_MODEL_PREFIXES: ${OPENAI_MODEL_PREFIXES:-openai/,openai:}
+      # Ollama-specific paths removed — llama.cpp uses standard /v1/chat/completions natively
+      UPSTREAM_REQUEST_TIMEOUT_MS: ${OPENPLANNER_PROXX_UPSTREAM_REQUEST_TIMEOUT_MS:-900000}
+      UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS: ${OPENPLANNER_PROXX_UPSTREAM_STREAM_BOOTSTRAP_TIMEOUT_MS:-900000}
+      NODE_OPTIONS: ${OPENPLANNER_PROXX_NODE_OPTIONS:---max-old-space-size=4096}
+      EMBED_MAX_BATCH_ITEMS: ${OPENPLANNER_PROXX_EMBED_MAX_BATCH_ITEMS:-64}
+      EMBED_MAX_INPUT_CHARS: ${OPENPLANNER_PROXX_EMBED_MAX_INPUT_CHARS:-200000}
+      CHROMA_URL: ${CHROMA_URL:-http://host.docker.internal:8000}
+      CHROMA_COLLECTION: ${OPENPLANNER_PROXX_CHROMA_COLLECTION:-openplanner_proxy_sessions}
+      CHROMA_EMBED_MODEL: ${CHROMA_EMBED_MODEL:-qwen3-embedding-0.6b}
+      OTEL_SERVICE_NAME: ${OPENPLANNER_PROXX_OTEL_SERVICE_NAME:-openplanner-proxx}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-}
+      OTEL_EXPORTER_OTLP_HEADERS: ${OTEL_EXPORTER_OTLP_HEADERS:-}
+      OTEL_RESOURCE_ATTRIBUTES: ${OPENPLANNER_PROXX_OTEL_RESOURCE_ATTRIBUTES:-service.name=openplanner-proxx}
+      FEDERATION_SELF_NODE_ID: ${OPENPLANNER_PROXX_FEDERATION_SELF_NODE_ID:-openplanner-proxx}
+      FEDERATION_SELF_GROUP_ID: ${OPENPLANNER_PROXX_FEDERATION_SELF_GROUP_ID:-openplanner}
+      FEDERATION_SELF_CLUSTER_ID: ${OPENPLANNER_PROXX_FEDERATION_SELF_CLUSTER_ID:-openplanner-local}
+      FEDERATION_SELF_PEER_DID: ${OPENPLANNER_PROXX_FEDERATION_SELF_PEER_DID:-did:web:openplanner.proxx.local}
+      FEDERATION_SELF_PUBLIC_BASE_URL: ${OPENPLANNER_PROXX_FEDERATION_SELF_PUBLIC_BASE_URL:-http://openplanner-proxx:8789}
+      # IMPORTANT: this controls which peer set + projected accounts are considered during
+      # routing-time federated fallback.
+      # For "lease from canonical proxx" behavior, this should match the canonical owner's
+      # subject (aka the credential authority realm).
+      FEDERATION_DEFAULT_OWNER_SUBJECT: ${OPENPLANNER_PROXX_FEDERATION_DEFAULT_OWNER_SUBJECT:-did:web:proxx.promethean.rest:brethren}
+      FEDERATION_REQUEST_TIMEOUT_MS: ${OPENPLANNER_PROXX_FEDERATION_REQUEST_TIMEOUT_MS:-30000}
+      # Routing-time peer projection refresh + lease import tuning
+      FEDERATION_ON_DEMAND_PULL_ENABLED: ${OPENPLANNER_PROXX_FEDERATION_ON_DEMAND_PULL_ENABLED:-true}
+      FEDERATION_ON_DEMAND_PULL_TTL_MS: ${OPENPLANNER_PROXX_FEDERATION_ON_DEMAND_PULL_TTL_MS:-60000}
+      FEDERATION_WARM_IMPORT_REQUEST_THRESHOLD: ${OPENPLANNER_PROXX_FEDERATION_WARM_IMPORT_REQUEST_THRESHOLD:-1}
+      # Bridge agent: connect to canonical proxx relay
+      FEDERATION_BRIDGE_RELAY_URL: ${OPENPLANNER_PROXX_FEDERATION_BRIDGE_RELAY_URL:-ws://proxx:8789/api/ui/federation/bridge/ws}
+      FEDERATION_BRIDGE_AUTH_TOKEN: ${OPENPLANNER_PROXX_FEDERATION_BRIDGE_AUTH_TOKEN:-${PROXX_AUTH_TOKEN:-${PROXY_AUTH_TOKEN:-change-me-open-hax-proxy-token}}}
+      FEDERATION_BRIDGE_AUTH_MODE: ${OPENPLANNER_PROXX_FEDERATION_BRIDGE_AUTH_MODE:-admin_key}
+      FEDERATION_BRIDGE_OWNER_SUBJECT: ${OPENPLANNER_PROXX_FEDERATION_BRIDGE_OWNER_SUBJECT:-did:web:proxx.local}
+      FEDERATION_BRIDGE_AGENT_ID: ${OPENPLANNER_PROXX_FEDERATION_BRIDGE_AGENT_ID:-openplanner-proxx}
+      FEDERATION_BRIDGE_LABELS: ${OPENPLANNER_PROXX_FEDERATION_BRIDGE_LABELS:-}
+      FEDERATION_BRIDGE_NODE_LABELS: ${OPENPLANNER_PROXX_FEDERATION_BRIDGE_NODE_LABELS:-}

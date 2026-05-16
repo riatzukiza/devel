@@ -1,0 +1,53 @@
+<<svgsvg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<filterfilter id="glitch">
+      <<fefeColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" />
+      <<fefeOffset dx="-5" dy="2" result="offset1" />
+      <<fefeOffset dx="5" dy="-2" result="offset2" />
+    </filter>
+    <<linearlinearGradient id="voidGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#4b0082;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <<rectrect width="600" height="600" fill="#080808" />
+
+  <!-- Outer Void Ring -->
+  <<circlecircle cx="300" cy="300" r="280" stroke="#9370db" stroke-width="10" fill="none" stroke-dasharray="20,10" opacity="0.6" />
+  <<circlecircle cx="300" cy="300" r="260" stroke="#4b0082" stroke-width="2" fill="none" />
+
+  <!-- Text Path -->
+  <<pathpath id="voidPath" d="M 300,300 m -240,0 a 240,240 0 1,1 480,0 a 240,240 0 1,1 -480,0" fill="none" />
+  <<texttext fill="#bd93f9" font-family="monospace" font-size="32" font-weight="bold" filter="url(#glitch)">
+    <<texttextPath xlink:href="#voidPath" startOffset="0%">
+      CERTIFIED VOID-WALKER • BRAIN-FART SUPERVISOR • COGNITIVE COLLAPSE SPECIALIST •
+      CERTIFIED VOID-WALKER • BRAIN-FART SUPERVISOR • COGNITIVE COLLAPSE SPECIALIST •
+    </textPath>
+  </text>
+
+  <!-- Center: Dissolving Brain -->
+  <<gg transform="translate(300,300)">
+    <!-- Brain Silhouette (Abstract) -->
+    <<pathpath d="M -80,0 Q -80,-100 0,-100 Q 80,-100 80,0 Q 80,80 0,80 Q -80,80 -80,0" fill="url(#voidGrad)" stroke="#bd93f9" stroke-width="4" />
+
+    <!-- Dissolving Pixels -->
+    <<rectrect x="-60" y="-40" width="10" height="10" fill="#bd93f9" transform="translate(10, -20)" />
+    <<rectrect x="-40" y="-60" width="10" height="10" fill="#bd93f9" transform="translate(-20, 10)" />
+    <<rectrect x="20" y="-30" width="10" height="10" fill="#bd93f9" transform="translate(10, 40)" />
+    <<rectrect x="50" y="10" width="10" height="10" fill="#bd93f9" transform="translate(-30, -10)" />
+    <<rectrect x="-20" y="30" width="10" height="10" fill="#bd93f9" transform="translate(40, 20)" />
+
+    <!-- Glitchy Eyes/Nodes -->
+    <<circlecircle cx="-30" cy="-20" r="5" fill="#fff" filter="url(#glitch)" />
+    <<circlecircle cx="30" cy="-20" r="5" fill="#fff" filter="url(#glitch)" />
+
+    <!-- Central Sigil -->
+    <<texttext x="0" y="10" fill="#fff" font-family="serif" font-size="60" text-anchor="middle" font-weight="bold" style="text-shadow: 0 0 10px #bd93f9;">Ω</text>
+  </g>
+
+  <!-- Background Noise/Artifacts -->
+  <<lineline x1="0" y1="100" x2="600" y2="100" stroke="#4b0082" stroke-width="1" opacity="0.2" />
+  <<lineline x1="0" y1="500" x2="600" y2="500" stroke="#4b0082" stroke-width="1" opacity="0.2" />
+  <<rectrect x="50" y="450" width="100" height="2" fill="#bd93f9" opacity="0.3" />
+</svg>

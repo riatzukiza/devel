@@ -1,0 +1,31 @@
+<<svgsvg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<linearlinearGradient id="pickleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#4CAF50;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#1B5E20;stop-opacity:1" />
+    </linearGradient>
+    <<filterfilter id="glow">
+      <<fefeGaussianBlur stdDeviation="3" result="blur"/>
+      <<fefeComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <<rectrect width="600" height="600" fill="#0a0a0a" />
+  <<circlecircle cx="300" cy="300" r="280" stroke="#4CAF50" stroke-width="4" fill="none" opacity="0.3" />
+  <<circlecircle cx="300" cy="300" r="260" stroke="#4CAF50" stroke-width="8" fill="none" stroke-dasharray="15,10" />
+  <<circlecircle cx="300" cy="300" r="220" fill="#121212" stroke="#4CAF50" stroke-width="12" filter="url(#glow)" />
+  <<pathpath id="textPath" d="M 300,300 m -180,0 a 180,180 0 1,1 360,0 a 180,180 0 1,1 -360,0" fill="none" />
+  <<texttext fill="#4CAF50" font-family="monospace" font-size="22" font-weight="bold">
+    <<texttextPath xlink:href="#textPath" startOffset="0%">
+      BIG PICKLE EMERGENCY MEDICAL SERVICES • RAPID RESPONSE TO BRAIN FART •
+      BIG PICKLE EMERGENCY MEDICAL SERVICES • RAPID RESPONSE TO BRAIN FART •
+    </textPath>
+  </text>
+  <<gg transform="translate(300,300)">
+    <!-- The Pickle -->
+    <<pathpath d="M -40,-80 Q -60,-80 -60,0 Q -60,80 -40,80 Q -20,80 -20,0 Q -20,-80 -40,-80" fill="url(#pickleGrad)" stroke="#fff" stroke-width="2" />
+    <!-- Emergency Star/Cross -->
+    <<pathpath d="M 0,-100 L 20,-40 L 100,0 L 20,40 L 0,100 L -20,40 L -100,0 L -20,-40 Z" fill="#ff0000" filter="url(#glow)" opacity="0.8" />
+    <!-- The- EMS Text -->
+    <<texttext x="0" y="120" fill="#fff" font-family="monospace" font-size="40" text-anchor="middle" font-weight="bold">EMS SQUAD</text>
+  </g>
+</svg>

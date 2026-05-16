@@ -2,25 +2,9 @@
 	path = orgs/riatzukiza/promethean
 	url = git@github.com:riatzukiza/promethean.git
 	branch = device/stealth
-[submodule "dotfiles"]
-	path = orgs/riatzukiza/dotfiles
-	url = git@github.com:riatzukiza/dotfiles.git
-	branch = device/stealth
-[submodule "agent-shell"]
-	path = oss/agent-shell
-	url = git@github.com:riatzukiza/agent-shell.git
-[submodule "clojure-mcp"]
-	path = oss/clojure-mcp
-	url = git@github.com:bhauman/clojure-mcp.git
-[submodule "opencode-openai-codex-auth"]
-	path = orgs/openai/opencode-openai-codex-auth
-	url = git@github.com:numman-ali/opencode-openai-codex-auth.git
 [submodule "openai/codex"]
 	path = orgs/openai/codex
 	url = org-14957082@github.com:openai/codex.git
-[submodule "sst/opencode"]
-	path = orgs/sst/opencode
-	url = git@github.com:sst/opencode.git
 [submodule "moofone/codex-ts-sdk"]
 	path = orgs/moofone/codex-ts-sdk
 	url = git@github.com:moofone/codex-ts-sdk.git
@@ -43,10 +27,6 @@
 	path = orgs/riatzukiza/goblin-lessons
 	url = git@github.com:riatzukiza/goblin-lessons.git
 	branch = device/stealth
-[submodule "riatzukiza/stt"]
-	path = orgs/riatzukiza/stt
-	url = git@github.com:riatzukiza/stt.git
-	branch = device/stealth
 [submodule "orgs/open-hax/codex"]
 	path = orgs/open-hax/codex
 	url = git@github.com:open-hax/codex.git
@@ -55,21 +35,9 @@
 	path = orgs/open-hax/agent-actors
 	url = git@github.com:open-hax/agent-actors.git
 	branch = device/stealth
-[submodule "orgs/open-hax/clients"]
-	path = orgs/open-hax/clients
-	url = git@github.com:open-hax/clients.git
-	branch = device/stealth
 [submodule "orgs/open-hax/cljs-plugin-template"]
 	path = orgs/open-hax/cljs-plugin-template
 	url = git@github.com:open-hax/cljs-plugin-template.git
-	branch = device/stealth
-[submodule "orgs/open-hax/plugins/codex"]
-	path = orgs/open-hax/plugins/codex
-	url = git@github.com:open-hax/codex.git
-	branch = device/stealth
-[submodule "orgs/open-hax/workbench"]
-	path = orgs/open-hax/workbench
-	url = git@github.com:open-hax/workbench.git
 	branch = device/stealth
 [submodule "orgs/octave-commons/helm"]
 	path = orgs/octave-commons/helm
@@ -110,24 +78,9 @@
 	path = orgs/open-hax/museeks
 	url = https://github.com/open-hax/museeks.git
 	branch = device/stealth
-[submodule "vaults/fork_tales"]
-	path = vaults/fork_tales
-	url = https://github.com/octave-commons/fork_tales.git
-	branch = device/stealth
-[submodule "vaults/static_man"]
-	path = vaults/static_man
-	url = git@github.com:octave-commons/static_man.git
-	branch = device/stealth
-[submodule "services/vivgrid-openai-proxy"]
-	path = services/vivgrid-openai-proxy
-	url = https://github.com/open-hax/vivgrid-openai-proxy.git
-	branch = device/stealth
-[submodule "services/codex-lb"]
-	path = services/codex-lb
-	url = https://github.com/Soju06/codex-lb.git
 [submodule "orgs/ussyverse/openclawssy"]
 	path = orgs/ussyverse/openclawssy
-	url = git@github.com:mojomast/openclawssy.git
+	url = git@github.com:riatzukiza/shuv1337-openshuvussy.git
 	branch = main
 [submodule "services/open-hax-openai-proxy"]
 	path = services/open-hax-openai-proxy
@@ -135,7 +88,7 @@
 	branch = main
 [submodule "orgs/ussyverse/kanban"]
 	path = orgs/ussyverse/kanban
-	url = https://github.com/open-hax/ussyverse-kanban.git
+	url = git@github.com:open-hax/ussyverse-kanban.git
 [submodule "orgs/open-hax/privaxxy"]
 	path = orgs/open-hax/privaxxy
 	url = https://github.com/open-hax/privaxxy.git
@@ -146,7 +99,7 @@
 	branch = main
 [submodule "orgs/shuv/codex-desktop-linux"]
 	path = orgs/shuv/codex-desktop-linux
-	url = git@github.com:shuv1337/codex-desktop-linux.git
+	url = git@github.com:riatzukiza/codex-desktop-linux.git
 [submodule "orgs/openai/parameter-golf"]
 	path = orgs/openai/parameter-golf
 	url = org-14957082@github.com:openai/parameter-golf.git
@@ -171,14 +124,6 @@
 	path = orgs/riatzukiza/TANF-app
 	url = git@github.com:riatzukiza/TANF-app.git
 	branch = main
-[submodule "orgs/riatzukiza/hormuz-clock-mcp"]
-	path = orgs/riatzukiza/hormuz-clock-mcp
-	url = file:///home/err/devel/orgs/riatzukiza/hormuz-clock-mcp
-	branch = main
-[submodule "threat-radar-deploy"]
-	path = threat-radar-deploy
-	url = https://github.com/riatzukiza/threat-radar.git
-	branch = main
 [submodule "bevy_replicon"]
 	path = bevy_replicon
 	url = https://github.com/simgine/bevy_replicon.git
@@ -187,25 +132,9 @@
 	path = egregoria
 	url = https://github.com/Uriopass/Egregoria.git
 	branch = master
-[submodule "game_network"]
-	path = game_network
-	url = https://github.com/jakalope/game_network.git
-	branch = master
-[submodule "gates-pr35-hardening-main"]
-	path = gates-pr35-hardening-main
-	url = git@github.com:octave-commons/gates-of-aker.git
-	branch = fix/colony-regression-hardening
 [submodule "ggrs"]
 	path = ggrs
 	url = https://github.com/gschup/ggrs.git
-	branch = main
-[submodule "lightyear"]
-	path = lightyear
-	url = https://github.com/cBournhonesque/lightyear.git
-	branch = main
-[submodule "mcp-social-publisher-live"]
-	path = mcp-social-publisher-live
-	url = https://github.com/riatzukiza/mcp-social-publisher
 	branch = main
 [submodule "orgs/anomalyco/opencode"]
 	path = orgs/anomalyco/opencode
@@ -215,14 +144,1452 @@
 	path = orgs/badlogic/pi-mono
 	url = git@github.com:badlogic/pi-mono.git
 	branch = main
-[submodule "verathar-server"]
-	path = verathar-server
-	url = https://github.com/isaacsaancheez/verathar-server.git
-	branch = master
-[submodule "orgs/open-hax/eta-mu-github"]
-	path = orgs/open-hax/eta-mu-github
-	url = https://github.com/open-hax/eta-mu-github.git
 [submodule "orgs/open-hax/eta-mu"]
 	path = orgs/open-hax/eta-mu
 	url = https://github.com/open-hax/eta-mu.git
 	branch = main
+
+[submodule "orgs/code-yeongyu/oh-my-openagent"]
+	path = orgs/code-yeongyu/oh-my-openagent
+	url = https://github.com/code-yeongyu/oh-my-openagent.git
+	branch = dev
+
+[submodule "orgs/mojomast/ragussy"]
+	path = orgs/mojomast/ragussy
+	url = https://github.com/mojomast/ragussy.git
+	branch = master
+
+[submodule "orgs/octave-commons/daimoi"]
+	path = orgs/octave-commons/daimoi
+	url = git@github.com:octave-commons/daimoi.git
+	branch = main
+
+[submodule "orgs/octave-commons/eros-eris-field"]
+	path = orgs/octave-commons/eros-eris-field
+	url = git@github.com:octave-commons/eros-eris-field.git
+	branch = main
+
+[submodule "orgs/octave-commons/eros-eris-field-app"]
+	path = orgs/octave-commons/eros-eris-field-app
+	url = git@github.com:octave-commons/eros-eris-field-app.git
+	branch = main
+
+[submodule "orgs/octave-commons/fork_tales"]
+	path = orgs/octave-commons/fork_tales
+	url = https://github.com/octave-commons/fork_tales.git
+	branch = main
+
+[submodule "orgs/octave-commons/simulacron"]
+	path = orgs/octave-commons/simulacron
+	url = git@github.com:octave-commons/simulacron.git
+	branch = main
+
+[submodule "orgs/ollama/ollama"]
+	path = orgs/ollama/ollama
+	url = git@github.com:ollama/ollama.git
+	branch = main
+
+[submodule "orgs/open-hax/commanoxx"]
+	path = orgs/open-hax/commanoxx
+	url = git@github.com:open-hax/commanoxx.git
+	branch = master
+
+[submodule "orgs/open-hax/depenoxx"]
+	path = orgs/open-hax/depenoxx
+	url = git@github.com:open-hax/depenoxx.git
+	branch = main
+
+[submodule "orgs/open-hax/janus"]
+	path = orgs/open-hax/janus
+	url = git@github.com:open-hax/janus.git
+	branch = main
+
+[submodule "orgs/open-hax/opencode-skills"]
+	path = orgs/open-hax/opencode-skills
+	url = https://github.com/open-hax/opencode-skills.git
+
+[submodule "orgs/open-hax/openplanner"]
+	path = orgs/open-hax/openplanner
+	url = git@github.com:open-hax/openplanner.git
+	branch = resubmodule/knoxx
+
+[submodule "orgs/open-hax/tooloxx/services/hormuz-clock-mcp"]
+	path = orgs/open-hax/tooloxx/services/hormuz-clock-mcp
+	url = https://github.com/open-hax/tooloxx.git
+	branch = main
+
+[submodule "orgs/open-hax/tooloxx/services/mcp-fs-oauth"]
+	path = orgs/open-hax/tooloxx/services/mcp-fs-oauth
+	url = git@github.com:open-hax/mcp-fs-oauth.git
+	branch = main
+
+[submodule "orgs/open-hax/uxx"]
+	path = orgs/open-hax/uxx
+	url = git@github.com:open-hax/uxx.git
+	branch = main
+
+[submodule "orgs/open-hax/vexx"]
+	path = orgs/open-hax/vexx
+	url = git@github.com:open-hax/vexx.git
+	branch = main
+
+[submodule "orgs/open-hax/vivgrid-openai-proxy"]
+	path = orgs/open-hax/vivgrid-openai-proxy
+	url = https://github.com/open-hax/vivgrid-openai-proxy.git
+	branch = main
+
+[submodule "orgs/riatzukiza/openhax"]
+	path = orgs/riatzukiza/openhax
+	url = git@github.com:riatzukiza/openhax.git
+	branch = device/stealth
+
+[submodule "orgs/robertdavidgraham/masscan"]
+	path = orgs/robertdavidgraham/masscan
+	url = git@github.com:robertdavidgraham/masscan.git
+	branch = master
+
+[submodule "orgs/shuv/our-gpus"]
+	path = orgs/shuv/our-gpus
+	url = git@github.com:riatzukiza/our-gpus.git
+	branch = master
+
+[submodule "orgs/shuv/shuvcrawl"]
+	path = orgs/shuv/shuvcrawl
+	url = git@github.com:riatzukiza/shuvcrawl.git
+	branch = master
+
+[submodule "orgs/ussyverse/monorepo"]
+	path = orgs/ussyverse/monorepo
+	url = git@github.com:mojomast/ussyverse.git
+	branch = main
+
+[submodule "orgs/ussyverse/routussy"]
+	path = orgs/ussyverse/routussy
+	url = git@github.com:riatzukiza/routussy.git
+	branch = main
+
+[submodule "tools/parliamentussy"]
+	path = tools/parliamentussy
+	url = https://github.com/mojomast/parliamentussy.git
+	branch = main
+
+[submodule "tools/strudel-music"]
+	path = tools/strudel-music
+	url = https://github.com/karmaterminal/strudel-music.git
+	branch = main
+
+[submodule ".ημ/03_ARTIFACTS/narrative_audio"]
+	path = .ημ/03_ARTIFACTS/narrative_audio
+	url = https://github.com/riatzukiza/gates-of-truth-audio.git
+	branch = main
+[submodule "orgs/shuv/AeroSpace"]
+	path = orgs/shuv/AeroSpace
+	url = git@github.com:riatzukiza/AeroSpace.git
+[submodule "orgs/shuv/agent-browser"]
+	path = orgs/shuv/agent-browser
+	url = git@github.com:riatzukiza/agent-browser.git
+[submodule "orgs/shuv/agent-scripts"]
+	path = orgs/shuv/agent-scripts
+	url = git@github.com:riatzukiza/agent-scripts.git
+[submodule "orgs/shuv/agent-stuff-mitsuhiko"]
+	path = orgs/shuv/agent-stuff-mitsuhiko
+	url = git@github.com:riatzukiza/agent-stuff-mitsuhiko.git
+[submodule "orgs/shuv/askshell"]
+	path = orgs/shuv/askshell
+	url = git@github.com:riatzukiza/askshell.git
+[submodule "orgs/shuv/athas"]
+	path = orgs/shuv/athas
+	url = git@github.com:riatzukiza/athas.git
+[submodule "orgs/shuv/awesome-opencode"]
+	path = orgs/shuv/awesome-opencode
+	url = git@github.com:riatzukiza/awesome-opencode.git
+[submodule "orgs/shuv/awesome-opentui"]
+	path = orgs/shuv/awesome-opentui
+	url = git@github.com:riatzukiza/awesome-opentui.git
+[submodule "orgs/shuv/binary_ninja_mcp"]
+	path = orgs/shuv/binary_ninja_mcp
+	url = git@github.com:riatzukiza/binary_ninja_mcp.git
+[submodule "orgs/shuv/bird-tweet-cli"]
+	path = orgs/shuv/bird-tweet-cli
+	url = git@github.com:riatzukiza/bird-tweet-cli.git
+[submodule "orgs/shuv/bobby-powershell-scripts"]
+	path = orgs/shuv/bobby-powershell-scripts
+	url = git@github.com:riatzukiza/bobby-powershell-scripts.git
+[submodule "orgs/shuv/bolt.diy"]
+	path = orgs/shuv/bolt.diy
+	url = git@github.com:riatzukiza/bolt.diy.git
+[submodule "orgs/shuv/bpc-clean"]
+	path = orgs/shuv/bpc-clean
+	url = git@github.com:riatzukiza/bpc-clean.git
+[submodule "orgs/shuv/bridle"]
+	path = orgs/shuv/bridle
+	url = git@github.com:riatzukiza/bridle.git
+[submodule "orgs/shuv/carbon"]
+	path = orgs/shuv/carbon
+	url = git@github.com:riatzukiza/carbon.git
+[submodule "orgs/shuv/cftop"]
+	path = orgs/shuv/cftop
+	url = git@github.com:riatzukiza/cftop.git
+[submodule "orgs/shuv/CIPP"]
+	path = orgs/shuv/CIPP
+	url = git@github.com:riatzukiza/CIPP.git
+[submodule "orgs/shuv/CIPP-API"]
+	path = orgs/shuv/CIPP-API
+	url = git@github.com:riatzukiza/CIPP-API.git
+[submodule "orgs/shuv/clanker-stats"]
+	path = orgs/shuv/clanker-stats
+	url = git@github.com:riatzukiza/clanker-stats.git
+[submodule "orgs/shuv/claude-code"]
+	path = orgs/shuv/claude-code
+	url = git@github.com:riatzukiza/claude-code.git
+[submodule "orgs/shuv/claude-code-plugins-plus-skills"]
+	path = orgs/shuv/claude-code-plugins-plus-skills
+	url = git@github.com:riatzukiza/claude-code-plugins-plus-skills.git
+[submodule "orgs/shuv/Claude-Red"]
+	path = orgs/shuv/Claude-Red
+	url = git@github.com:riatzukiza/Claude-Red.git
+[submodule "orgs/shuv/cli-demo"]
+	path = orgs/shuv/cli-demo
+	url = git@github.com:riatzukiza/cli-demo.git
+[submodule "orgs/shuv/CodeMachine-CLI"]
+	path = orgs/shuv/CodeMachine-CLI
+	url = git@github.com:riatzukiza/shuv1337-CodeMachine-CLI.git
+[submodule "orgs/shuv/codex"]
+	path = orgs/shuv/codex
+	url = git@github.com:riatzukiza/shuv1337-codex.git
+[submodule "orgs/shuv/codex-quota"]
+	path = orgs/shuv/codex-quota
+	url = git@github.com:riatzukiza/codex-quota.git
+[submodule "orgs/shuv/codexbar"]
+	path = orgs/shuv/codexbar
+	url = git@github.com:riatzukiza/codexbar.git
+[submodule "orgs/shuv/coding_agent_session_search"]
+	path = orgs/shuv/coding_agent_session_search
+	url = git@github.com:riatzukiza/coding_agent_session_search.git
+[submodule "orgs/shuv/colab"]
+	path = orgs/shuv/colab
+	url = git@github.com:riatzukiza/colab.git
+[submodule "orgs/shuv/corsair"]
+	path = orgs/shuv/corsair
+	url = git@github.com:riatzukiza/corsair.git
+[submodule "orgs/shuv/CrabTrap"]
+	path = orgs/shuv/CrabTrap
+	url = git@github.com:riatzukiza/CrabTrap.git
+[submodule "orgs/shuv/critique"]
+	path = orgs/shuv/critique
+	url = git@github.com:riatzukiza/critique.git
+[submodule "orgs/shuv/crush"]
+	path = orgs/shuv/crush
+	url = git@github.com:riatzukiza/crush.git
+[submodule "orgs/shuv/dark"]
+	path = orgs/shuv/dark
+	url = git@github.com:riatzukiza/dark.git
+[submodule "orgs/shuv/desloppify"]
+	path = orgs/shuv/desloppify
+	url = git@github.com:riatzukiza/desloppify.git
+[submodule "orgs/shuv/DevOps-Guide"]
+	path = orgs/shuv/DevOps-Guide
+	url = git@github.com:riatzukiza/DevOps-Guide.git
+[submodule "orgs/shuv/discord.py-self"]
+	path = orgs/shuv/discord.py-self
+	url = git@github.com:riatzukiza/discord.py-self.git
+[submodule "orgs/shuv/DNS-Checker"]
+	path = orgs/shuv/DNS-Checker
+	url = git@github.com:riatzukiza/DNS-Checker.git
+[submodule "orgs/shuv/dotfiles"]
+	path = orgs/shuv/dotfiles
+	url = git@github.com:riatzukiza/dotfiles.git
+[submodule "orgs/shuv/elevenlabs-examples"]
+	path = orgs/shuv/elevenlabs-examples
+	url = git@github.com:riatzukiza/elevenlabs-examples.git
+[submodule "orgs/shuv/engrams"]
+	path = orgs/shuv/engrams
+	url = git@github.com:riatzukiza/engrams.git
+[submodule "orgs/shuv/executor"]
+	path = orgs/shuv/executor
+	url = git@github.com:riatzukiza/executor.git
+[submodule "orgs/shuv/expict"]
+	path = orgs/shuv/expict
+	url = git@github.com:riatzukiza/expict.git
+[submodule "orgs/shuv/fabric-patterns"]
+	path = orgs/shuv/fabric-patterns
+	url = git@github.com:riatzukiza/fabric-patterns.git
+[submodule "orgs/shuv/fabro"]
+	path = orgs/shuv/fabro
+	url = git@github.com:riatzukiza/fabro.git
+[submodule "orgs/shuv/fieldtheory-cli"]
+	path = orgs/shuv/fieldtheory-cli
+	url = git@github.com:riatzukiza/fieldtheory-cli.git
+[submodule "orgs/shuv/fork_tales"]
+	path = orgs/shuv/fork_tales
+	url = git@github.com:riatzukiza/fork_tales.git
+[submodule "orgs/shuv/fresh"]
+	path = orgs/shuv/fresh
+	url = git@github.com:riatzukiza/fresh.git
+[submodule "orgs/shuv/G0DM0D3"]
+	path = orgs/shuv/G0DM0D3
+	url = git@github.com:riatzukiza/G0DM0D3.git
+[submodule "orgs/shuv/gh-dash"]
+	path = orgs/shuv/gh-dash
+	url = git@github.com:riatzukiza/gh-dash.git
+[submodule "orgs/shuv/GitNexus"]
+	path = orgs/shuv/GitNexus
+	url = git@github.com:riatzukiza/GitNexus.git
+[submodule "orgs/shuv/glimpse"]
+	path = orgs/shuv/glimpse
+	url = git@github.com:riatzukiza/glimpse.git
+[submodule "orgs/shuv/gova"]
+	path = orgs/shuv/gova
+	url = git@github.com:riatzukiza/gova.git
+[submodule "orgs/shuv/hacker-reader"]
+	path = orgs/shuv/hacker-reader
+	url = git@github.com:riatzukiza/hacker-reader.git
+[submodule "orgs/shuv/Handy"]
+	path = orgs/shuv/Handy
+	url = git@github.com:riatzukiza/Handy.git
+[submodule "orgs/shuv/helium"]
+	path = orgs/shuv/helium
+	url = git@github.com:riatzukiza/helium.git
+[submodule "orgs/shuv/hermes-agent"]
+	path = orgs/shuv/hermes-agent
+	url = git@github.com:riatzukiza/hermes-agent.git
+[submodule "orgs/shuv/inbound"]
+	path = orgs/shuv/inbound
+	url = git@github.com:riatzukiza/inbound.git
+[submodule "orgs/shuv/intunemanagement"]
+	path = orgs/shuv/intunemanagement
+	url = git@github.com:riatzukiza/intunemanagement.git
+[submodule "orgs/shuv/Joelhooks-opencode-config"]
+	path = orgs/shuv/Joelhooks-opencode-config
+	url = git@github.com:riatzukiza/Joelhooks-opencode-config.git
+[submodule "orgs/shuv/json-formatter"]
+	path = orgs/shuv/json-formatter
+	url = git@github.com:riatzukiza/json-formatter.git
+[submodule "orgs/shuv/juno-code"]
+	path = orgs/shuv/juno-code
+	url = git@github.com:riatzukiza/juno-code.git
+[submodule "orgs/shuv/kapture"]
+	path = orgs/shuv/kapture
+	url = git@github.com:riatzukiza/kapture.git
+[submodule "orgs/shuv/LLM-API-Key-Proxy"]
+	path = orgs/shuv/LLM-API-Key-Proxy
+	url = git@github.com:riatzukiza/LLM-API-Key-Proxy.git
+[submodule "orgs/shuv/llm-cmd"]
+	path = orgs/shuv/llm-cmd
+	url = git@github.com:riatzukiza/llm-cmd.git
+[submodule "orgs/shuv/llm-coding-tools"]
+	path = orgs/shuv/llm-coding-tools
+	url = git@github.com:riatzukiza/llm-coding-tools.git
+[submodule "orgs/shuv/llm-council"]
+	path = orgs/shuv/llm-council
+	url = git@github.com:riatzukiza/llm-council.git
+[submodule "orgs/shuv/llm-rust"]
+	path = orgs/shuv/llm-rust
+	url = git@github.com:riatzukiza/llm-rust.git
+[submodule "orgs/shuv/Lunar"]
+	path = orgs/shuv/Lunar
+	url = git@github.com:riatzukiza/Lunar.git
+[submodule "orgs/shuv/mackup"]
+	path = orgs/shuv/mackup
+	url = git@github.com:riatzukiza/mackup.git
+[submodule "orgs/shuv/maple"]
+	path = orgs/shuv/maple
+	url = git@github.com:riatzukiza/maple.git
+[submodule "orgs/shuv/mastra"]
+	path = orgs/shuv/mastra
+	url = git@github.com:riatzukiza/mastra.git
+[submodule "orgs/shuv/mcporter"]
+	path = orgs/shuv/mcporter
+	url = git@github.com:riatzukiza/mcporter.git
+[submodule "orgs/shuv/mediaserver"]
+	path = orgs/shuv/mediaserver
+	url = git@github.com:riatzukiza/mediaserver.git
+[submodule "orgs/shuv/memos"]
+	path = orgs/shuv/memos
+	url = git@github.com:riatzukiza/memos.git
+[submodule "orgs/shuv/middleman"]
+	path = orgs/shuv/middleman
+	url = git@github.com:riatzukiza/middleman.git
+[submodule "orgs/shuv/models.dev"]
+	path = orgs/shuv/models.dev
+	url = git@github.com:riatzukiza/models.dev.git
+[submodule "orgs/shuv/mrmd"]
+	path = orgs/shuv/mrmd
+	url = git@github.com:riatzukiza/mrmd.git
+[submodule "orgs/shuv/nightowl"]
+	path = orgs/shuv/nightowl
+	url = git@github.com:riatzukiza/nightowl.git
+[submodule "orgs/shuv/O365-InvestigationTooling"]
+	path = orgs/shuv/O365-InvestigationTooling
+	url = git@github.com:riatzukiza/O365-InvestigationTooling.git
+[submodule "orgs/shuv/oc-manager"]
+	path = orgs/shuv/oc-manager
+	url = git@github.com:riatzukiza/oc-manager.git
+[submodule "orgs/shuv/oc-web"]
+	path = orgs/shuv/oc-web
+	url = git@github.com:riatzukiza/oc-web.git
+[submodule "orgs/shuv/OCLoop"]
+	path = orgs/shuv/OCLoop
+	url = git@github.com:riatzukiza/OCLoop.git
+[submodule "orgs/shuv/ocmonitor-share"]
+	path = orgs/shuv/ocmonitor-share
+	url = git@github.com:riatzukiza/ocmonitor-share.git
+[submodule "orgs/shuv/oh-my-pi"]
+	path = orgs/shuv/oh-my-pi
+	url = git@github.com:riatzukiza/oh-my-pi.git
+[submodule "orgs/shuv/omarchy-dotfiles"]
+	path = orgs/shuv/omarchy-dotfiles
+	url = git@github.com:riatzukiza/omarchy-dotfiles.git
+[submodule "orgs/shuv/once"]
+	path = orgs/shuv/once
+	url = git@github.com:riatzukiza/once.git
+[submodule "orgs/shuv/openchamber"]
+	path = orgs/shuv/openchamber
+	url = git@github.com:riatzukiza/openchamber.git
+[submodule "orgs/shuv/opencode-anthropic-auth"]
+	path = orgs/shuv/opencode-anthropic-auth
+	url = git@github.com:riatzukiza/opencode-anthropic-auth.git
+[submodule "orgs/shuv/opencode-cursor"]
+	path = orgs/shuv/opencode-cursor
+	url = git@github.com:riatzukiza/opencode-cursor.git
+[submodule "orgs/shuv/Opencode-Extensions-TUI"]
+	path = orgs/shuv/Opencode-Extensions-TUI
+	url = git@github.com:riatzukiza/Opencode-Extensions-TUI.git
+[submodule "orgs/shuv/opencode-openai-codex-auth"]
+	path = orgs/shuv/opencode-openai-codex-auth
+	url = git@github.com:shuv1337/opencode-openai-codex-auth.git
+[submodule "orgs/shuv/Opencode-Workflows"]
+	path = orgs/shuv/Opencode-Workflows
+	url = git@github.com:riatzukiza/Opencode-Workflows.git
+[submodule "orgs/shuv/opencode.cafe"]
+	path = orgs/shuv/opencode.cafe
+	url = git@github.com:riatzukiza/opencode.cafe.git
+[submodule "orgs/shuv/openmux"]
+	path = orgs/shuv/openmux
+	url = git@github.com:riatzukiza/openmux.git
+[submodule "orgs/shuv/openplanner"]
+	path = orgs/shuv/openplanner
+	url = git@github.com:riatzukiza/openplanner.git
+[submodule "orgs/shuv/openralph"]
+	path = orgs/shuv/openralph
+	url = git@github.com:riatzukiza/openralph.git
+[submodule "orgs/shuv/openshuvussy"]
+	path = orgs/shuv/openshuvussy
+	url = git@github.com:riatzukiza/shuv1337-openshuvussy.git
+[submodule "orgs/shuv/opentui"]
+	path = orgs/shuv/opentui
+	url = git@github.com:riatzukiza/shuv1337-opentui.git
+[submodule "orgs/shuv/openwork"]
+	path = orgs/shuv/openwork
+	url = git@github.com:riatzukiza/openwork.git
+[submodule "orgs/shuv/orangeshell"]
+	path = orgs/shuv/orangeshell
+	url = git@github.com:riatzukiza/orangeshell.git
+[submodule "orgs/shuv/penpot"]
+	path = orgs/shuv/penpot
+	url = git@github.com:riatzukiza/penpot.git
+[submodule "orgs/shuv/pi-agent-router"]
+	path = orgs/shuv/pi-agent-router
+	url = git@github.com:riatzukiza/pi-agent-router.git
+[submodule "orgs/shuv/pi-autoresearch-plus"]
+	path = orgs/shuv/pi-autoresearch-plus
+	url = git@github.com:riatzukiza/pi-autoresearch-plus.git
+[submodule "orgs/shuv/pi-generative-ui"]
+	path = orgs/shuv/pi-generative-ui
+	url = git@github.com:riatzukiza/pi-generative-ui.git
+[submodule "orgs/shuv/pi-interactive-shell"]
+	path = orgs/shuv/pi-interactive-shell
+	url = git@github.com:riatzukiza/pi-interactive-shell.git
+[submodule "orgs/shuv/pi-interactive-subagents"]
+	path = orgs/shuv/pi-interactive-subagents
+	url = git@github.com:riatzukiza/pi-interactive-subagents.git
+[submodule "orgs/shuv/pi-mcp-adapter"]
+	path = orgs/shuv/pi-mcp-adapter
+	url = git@github.com:riatzukiza/pi-mcp-adapter.git
+[submodule "orgs/shuv/pi-mobile"]
+	path = orgs/shuv/pi-mobile
+	url = git@github.com:riatzukiza/pi-mobile.git
+[submodule "orgs/shuv/pi-prompt-suggester"]
+	path = orgs/shuv/pi-prompt-suggester
+	url = git@github.com:riatzukiza/pi-prompt-suggester.git
+[submodule "orgs/shuv/pi-subagents"]
+	path = orgs/shuv/pi-subagents
+	url = git@github.com:riatzukiza/pi-subagents.git
+[submodule "orgs/shuv/pi-subagents-codex"]
+	path = orgs/shuv/pi-subagents-codex
+	url = git@github.com:riatzukiza/pi-subagents-codex.git
+[submodule "orgs/shuv/plymouth-themes"]
+	path = orgs/shuv/plymouth-themes
+	url = git@github.com:riatzukiza/plymouth-themes.git
+[submodule "orgs/shuv/prise"]
+	path = orgs/shuv/prise
+	url = git@github.com:riatzukiza/prise.git
+[submodule "orgs/shuv/proxx"]
+	path = orgs/shuv/proxx
+	url = git@github.com:riatzukiza/proxx.git
+[submodule "orgs/shuv/PSGumshoe"]
+	path = orgs/shuv/PSGumshoe
+	url = git@github.com:riatzukiza/PSGumshoe.git
+[submodule "orgs/shuv/pull"]
+	path = orgs/shuv/pull
+	url = git@github.com:riatzukiza/pull.git
+[submodule "orgs/shuv/pymazda"]
+	path = orgs/shuv/pymazda
+	url = git@github.com:riatzukiza/pymazda.git
+[submodule "orgs/shuv/ralph-tui"]
+	path = orgs/shuv/ralph-tui
+	url = git@github.com:riatzukiza/ralph-tui.git
+[submodule "orgs/shuv/ralphkando"]
+	path = orgs/shuv/ralphkando
+	url = git@github.com:riatzukiza/ralphkando.git
+[submodule "orgs/shuv/remodex"]
+	path = orgs/shuv/remodex
+	url = git@github.com:riatzukiza/remodex.git
+[submodule "orgs/shuv/research_canvas"]
+	path = orgs/shuv/research_canvas
+	url = git@github.com:riatzukiza/research_canvas.git
+[submodule "orgs/shuv/RocketPoSh"]
+	path = orgs/shuv/RocketPoSh
+	url = git@github.com:riatzukiza/RocketPoSh.git
+[submodule "orgs/shuv/rssy"]
+	path = orgs/shuv/rssy
+	url = git@github.com:riatzukiza/rssy.git
+[submodule "orgs/shuv/shibboleth"]
+	path = orgs/shuv/shibboleth
+	url = git@github.com:riatzukiza/shibboleth.git
+[submodule "orgs/shuv/shitter"]
+	path = orgs/shuv/shitter
+	url = git@github.com:riatzukiza/shitter.git
+[submodule "orgs/shuv/shot-scraper"]
+	path = orgs/shuv/shot-scraper
+	url = git@github.com:riatzukiza/shot-scraper.git
+[submodule "orgs/shuv/shuv-pi"]
+	path = orgs/shuv/shuv-pi
+	url = git@github.com:riatzukiza/shuv-pi.git
+[submodule "orgs/shuv/shuv1337"]
+	path = orgs/shuv/shuv1337
+	url = git@github.com:riatzukiza/shuv1337.git
+[submodule "orgs/shuv/shuvascii"]
+	path = orgs/shuv/shuvascii
+	url = git@github.com:riatzukiza/shuvascii.git
+[submodule "orgs/shuv/shuvban"]
+	path = orgs/shuv/shuvban
+	url = git@github.com:riatzukiza/shuvban.git
+[submodule "orgs/shuv/shuvbot"]
+	path = orgs/shuv/shuvbot
+	url = git@github.com:riatzukiza/shuvbot.git
+[submodule "orgs/shuv/shuvcode"]
+	path = orgs/shuv/shuvcode
+	url = git@github.com:riatzukiza/shuv1337-shuvcode.git
+[submodule "orgs/shuv/shuvcode.nvim"]
+	path = orgs/shuv/shuvcode.nvim
+	url = git@github.com:riatzukiza/shuvcode.nvim.git
+[submodule "orgs/shuv/shuvdex"]
+	path = orgs/shuv/shuvdex
+	url = git@github.com:riatzukiza/shuvdex.git
+[submodule "orgs/shuv/shuvgeist"]
+	path = orgs/shuv/shuvgeist
+	url = git@github.com:riatzukiza/shuvgeist.git
+[submodule "orgs/shuv/shuvmaki"]
+	path = orgs/shuv/shuvmaki
+	url = git@github.com:riatzukiza/shuvmaki.git
+[submodule "orgs/shuv/shuvoice"]
+	path = orgs/shuv/shuvoice
+	url = git@github.com:riatzukiza/shuvoice.git
+[submodule "orgs/shuv/shuvoncho"]
+	path = orgs/shuv/shuvoncho
+	url = git@github.com:riatzukiza/shuvoncho.git
+[submodule "orgs/shuv/shuvputer"]
+	path = orgs/shuv/shuvputer
+	url = git@github.com:riatzukiza/shuvputer.git
+[submodule "orgs/shuv/shuvscode"]
+	path = orgs/shuv/shuvscode
+	url = git@github.com:riatzukiza/shuvscode.git
+[submodule "orgs/shuv/SmartTube"]
+	path = orgs/shuv/SmartTube
+	url = git@github.com:riatzukiza/SmartTube.git
+[submodule "orgs/shuv/Speed-Test"]
+	path = orgs/shuv/Speed-Test
+	url = git@github.com:riatzukiza/Speed-Test.git
+[submodule "orgs/shuv/ST3GG"]
+	path = orgs/shuv/ST3GG
+	url = git@github.com:riatzukiza/ST3GG.git
+[submodule "orgs/shuv/superset"]
+	path = orgs/shuv/superset
+	url = git@github.com:riatzukiza/superset.git
+[submodule "orgs/shuv/surf-cli"]
+	path = orgs/shuv/surf-cli
+	url = git@github.com:riatzukiza/surf-cli.git
+[submodule "orgs/shuv/tailcode"]
+	path = orgs/shuv/tailcode
+	url = git@github.com:riatzukiza/tailcode.git
+[submodule "orgs/shuv/takopi"]
+	path = orgs/shuv/takopi
+	url = git@github.com:riatzukiza/takopi.git
+[submodule "orgs/shuv/tinyhands"]
+	path = orgs/shuv/tinyhands
+	url = git@github.com:riatzukiza/tinyhands.git
+[submodule "orgs/shuv/toad"]
+	path = orgs/shuv/toad
+	url = git@github.com:riatzukiza/toad.git
+[submodule "orgs/shuv/tome"]
+	path = orgs/shuv/tome
+	url = git@github.com:riatzukiza/tome.git
+[submodule "orgs/shuv/topussy"]
+	path = orgs/shuv/topussy
+	url = git@github.com:riatzukiza/topussy.git
+[submodule "orgs/shuv/tuidoscope"]
+	path = orgs/shuv/tuidoscope
+	url = git@github.com:riatzukiza/tuidoscope.git
+[submodule "orgs/shuv/ui"]
+	path = orgs/shuv/ui
+	url = git@github.com:riatzukiza/ui.git
+[submodule "orgs/shuv/UltimateFightARR"]
+	path = orgs/shuv/UltimateFightARR
+	url = git@github.com:riatzukiza/UltimateFightARR.git
+[submodule "orgs/shuv/uptime-kuma"]
+	path = orgs/shuv/uptime-kuma
+	url = git@github.com:riatzukiza/uptime-kuma.git
+[submodule "orgs/shuv/Uptime-Kuma-Web-API"]
+	path = orgs/shuv/Uptime-Kuma-Web-API
+	url = git@github.com:riatzukiza/Uptime-Kuma-Web-API.git
+[submodule "orgs/shuv/ussyrouter"]
+	path = orgs/shuv/ussyrouter
+	url = git@github.com:riatzukiza/ussyrouter.git
+[submodule "orgs/shuv/uxx"]
+	path = orgs/shuv/uxx
+	url = git@github.com:riatzukiza/uxx.git
+[submodule "orgs/shuv/vote-manipulator"]
+	path = orgs/shuv/vote-manipulator
+	url = git@github.com:riatzukiza/vote-manipulator.git
+[submodule "orgs/shuv/waha-tui"]
+	path = orgs/shuv/waha-tui
+	url = git@github.com:shuv1337/waha-tui.git
+[submodule "orgs/shuv/whisper-overlay"]
+	path = orgs/shuv/whisper-overlay
+	url = git@github.com:riatzukiza/whisper-overlay.git
+[submodule "orgs/shuv/winutil"]
+	path = orgs/shuv/winutil
+	url = git@github.com:riatzukiza/winutil.git
+[submodule "orgs/shuv/zed"]
+	path = orgs/shuv/zed
+	url = git@github.com:riatzukiza/zed.git
+[submodule "orgs/ussyverse/365compromisesleuth"]
+	path = orgs/ussyverse/365compromisesleuth
+	url = git@github.com:riatzukiza/365compromisesleuth.git
+[submodule "orgs/ussyverse/365cspadminussy"]
+	path = orgs/ussyverse/365cspadminussy
+	url = git@github.com:riatzukiza/365cspadminussy.git
+[submodule "orgs/ussyverse/actuaryussy"]
+	path = orgs/ussyverse/actuaryussy
+	url = git@github.com:riatzukiza/actuaryussy.git
+[submodule "orgs/ussyverse/acumenussy"]
+	path = orgs/ussyverse/acumenussy
+	url = git@github.com:riatzukiza/acumenussy.git
+[submodule "orgs/ussyverse/admeussy"]
+	path = orgs/ussyverse/admeussy
+	url = git@github.com:riatzukiza/admeussy.git
+[submodule "orgs/ussyverse/adsorbaussy"]
+	path = orgs/ussyverse/adsorbaussy
+	url = git@github.com:riatzukiza/adsorbaussy.git
+[submodule "orgs/ussyverse/aeroussy"]
+	path = orgs/ussyverse/aeroussy
+	url = git@github.com:riatzukiza/aeroussy.git
+[submodule "orgs/ussyverse/agenttrafficcontrol"]
+	path = orgs/ussyverse/agenttrafficcontrol
+	url = git@github.com:riatzukiza/agenttrafficcontrol.git
+[submodule "orgs/ussyverse/agentussy"]
+	path = orgs/ussyverse/agentussy
+	url = git@github.com:riatzukiza/agentussy.git
+[submodule "orgs/ussyverse/alembicussy"]
+	path = orgs/ussyverse/alembicussy
+	url = git@github.com:riatzukiza/alembicussy.git
+[submodule "orgs/ussyverse/allomaussy"]
+	path = orgs/ussyverse/allomaussy
+	url = git@github.com:riatzukiza/allomaussy.git
+[submodule "orgs/ussyverse/apicolaussy"]
+	path = orgs/ussyverse/apicolaussy
+	url = git@github.com:riatzukiza/apicolaussy.git
+[submodule "orgs/ussyverse/apoptosisussy"]
+	path = orgs/ussyverse/apoptosisussy
+	url = git@github.com:riatzukiza/apoptosisussy.git
+[submodule "orgs/ussyverse/aquiferussy"]
+	path = orgs/ussyverse/aquiferussy
+	url = git@github.com:riatzukiza/aquiferussy.git
+[submodule "orgs/ussyverse/archivioussy"]
+	path = orgs/ussyverse/archivioussy
+	url = git@github.com:riatzukiza/archivioussy.git
+[submodule "orgs/ussyverse/ArtistSiteussy"]
+	path = orgs/ussyverse/ArtistSiteussy
+	url = git@github.com:riatzukiza/ArtistSiteussy.git
+[submodule "orgs/ussyverse/assayussy"]
+	path = orgs/ussyverse/assayussy
+	url = git@github.com:riatzukiza/assayussy.git
+[submodule "orgs/ussyverse/auscultussy"]
+	path = orgs/ussyverse/auscultussy
+	url = git@github.com:riatzukiza/auscultussy.git
+[submodule "orgs/ussyverse/axisussy"]
+	path = orgs/ussyverse/axisussy
+	url = git@github.com:riatzukiza/axisussy.git
+[submodule "orgs/ussyverse/BackupUSSY"]
+	path = orgs/ussyverse/BackupUSSY
+	url = git@github.com:riatzukiza/BackupUSSY.git
+[submodule "orgs/ussyverse/bananagen"]
+	path = orgs/ussyverse/bananagen
+	url = git@github.com:riatzukiza/bananagen.git
+[submodule "orgs/ussyverse/Beatrice"]
+	path = orgs/ussyverse/Beatrice
+	url = git@github.com:riatzukiza/Beatrice.git
+[submodule "orgs/ussyverse/becomussy"]
+	path = orgs/ussyverse/becomussy
+	url = git@github.com:riatzukiza/becomussy.git
+[submodule "orgs/ussyverse/biofilmussy"]
+	path = orgs/ussyverse/biofilmussy
+	url = git@github.com:riatzukiza/biofilmussy.git
+[submodule "orgs/ussyverse/blinkslice"]
+	path = orgs/ussyverse/blinkslice
+	url = git@github.com:riatzukiza/blinkslice.git
+[submodule "orgs/ussyverse/bloomussy"]
+	path = orgs/ussyverse/bloomussy
+	url = git@github.com:riatzukiza/bloomussy.git
+[submodule "orgs/ussyverse/bonsaiussy"]
+	path = orgs/ussyverse/bonsaiussy
+	url = git@github.com:riatzukiza/bonsaiussy.git
+[submodule "orgs/ussyverse/botmanagussy"]
+	path = orgs/ussyverse/botmanagussy
+	url = git@github.com:riatzukiza/botmanagussy.git
+[submodule "orgs/ussyverse/boustroussy"]
+	path = orgs/ussyverse/boustroussy
+	url = git@github.com:riatzukiza/boustroussy.git
+[submodule "orgs/ussyverse/broipussy"]
+	path = orgs/ussyverse/broipussy
+	url = git@github.com:riatzukiza/broipussy.git
+[submodule "orgs/ussyverse/buttfights-project"]
+	path = orgs/ussyverse/buttfights-project
+	url = git@github.com:riatzukiza/buttfights-project.git
+[submodule "orgs/ussyverse/calderaussy"]
+	path = orgs/ussyverse/calderaussy
+	url = git@github.com:riatzukiza/calderaussy.git
+[submodule "orgs/ussyverse/calibreussy"]
+	path = orgs/ussyverse/calibreussy
+	url = git@github.com:riatzukiza/calibreussy.git
+[submodule "orgs/ussyverse/cambiumussy"]
+	path = orgs/ussyverse/cambiumussy
+	url = git@github.com:riatzukiza/cambiumussy.git
+[submodule "orgs/ussyverse/capillaussy"]
+	path = orgs/ussyverse/capillaussy
+	url = git@github.com:riatzukiza/capillaussy.git
+[submodule "orgs/ussyverse/capstanussy"]
+	path = orgs/ussyverse/capstanussy
+	url = git@github.com:riatzukiza/capstanussy.git
+[submodule "orgs/ussyverse/cartographerussy"]
+	path = orgs/ussyverse/cartographerussy
+	url = git@github.com:riatzukiza/cartographerussy.git
+[submodule "orgs/ussyverse/cavityussy"]
+	path = orgs/ussyverse/cavityussy
+	url = git@github.com:riatzukiza/cavityussy.git
+[submodule "orgs/ussyverse/chloroussy"]
+	path = orgs/ussyverse/chloroussy
+	url = git@github.com:riatzukiza/chloroussy.git
+[submodule "orgs/ussyverse/choreoussy"]
+	path = orgs/ussyverse/choreoussy
+	url = git@github.com:riatzukiza/choreoussy.git
+[submodule "orgs/ussyverse/chromatoussy"]
+	path = orgs/ussyverse/chromatoussy
+	url = git@github.com:riatzukiza/chromatoussy.git
+[submodule "orgs/ussyverse/chunkussy"]
+	path = orgs/ussyverse/chunkussy
+	url = git@github.com:riatzukiza/chunkussy.git
+[submodule "orgs/ussyverse/churnmap"]
+	path = orgs/ussyverse/churnmap
+	url = git@github.com:riatzukiza/churnmap.git
+[submodule "orgs/ussyverse/churnmapussy"]
+	path = orgs/ussyverse/churnmapussy
+	url = git@github.com:riatzukiza/churnmapussy.git
+[submodule "orgs/ussyverse/circadiaussy"]
+	path = orgs/ussyverse/circadiaussy
+	url = git@github.com:riatzukiza/circadiaussy.git
+[submodule "orgs/ussyverse/clanker01"]
+	path = orgs/ussyverse/clanker01
+	url = git@github.com:riatzukiza/clanker01.git
+[submodule "orgs/ussyverse/clanker02"]
+	path = orgs/ussyverse/clanker02
+	url = git@github.com:riatzukiza/clanker02.git
+[submodule "orgs/ussyverse/clanker03"]
+	path = orgs/ussyverse/clanker03
+	url = git@github.com:riatzukiza/clanker03.git
+[submodule "orgs/ussyverse/clanker04"]
+	path = orgs/ussyverse/clanker04
+	url = git@github.com:riatzukiza/clanker04.git
+[submodule "orgs/ussyverse/clanker05"]
+	path = orgs/ussyverse/clanker05
+	url = git@github.com:riatzukiza/clanker05.git
+[submodule "orgs/ussyverse/clanker06"]
+	path = orgs/ussyverse/clanker06
+	url = git@github.com:riatzukiza/clanker06.git
+[submodule "orgs/ussyverse/clanker07"]
+	path = orgs/ussyverse/clanker07
+	url = git@github.com:riatzukiza/clanker07.git
+[submodule "orgs/ussyverse/clavisussy"]
+	path = orgs/ussyverse/clavisussy
+	url = git@github.com:riatzukiza/clavisussy.git
+[submodule "orgs/ussyverse/codelineageussy"]
+	path = orgs/ussyverse/codelineageussy
+	url = git@github.com:riatzukiza/codelineageussy.git
+[submodule "orgs/ussyverse/coderc"]
+	path = orgs/ussyverse/coderc
+	url = git@github.com:riatzukiza/coderc.git
+[submodule "orgs/ussyverse/condorcetussy"]
+	path = orgs/ussyverse/condorcetussy
+	url = git@github.com:riatzukiza/condorcetussy.git
+[submodule "orgs/ussyverse/CONTAINERWARZ"]
+	path = orgs/ussyverse/CONTAINERWARZ
+	url = git@github.com:riatzukiza/CONTAINERWARZ.git
+[submodule "orgs/ussyverse/coreussy"]
+	path = orgs/ussyverse/coreussy
+	url = git@github.com:riatzukiza/coreussy.git
+[submodule "orgs/ussyverse/coronerussy"]
+	path = orgs/ussyverse/coronerussy
+	url = git@github.com:riatzukiza/coronerussy.git
+[submodule "orgs/ussyverse/crackwiseussy"]
+	path = orgs/ussyverse/crackwiseussy
+	url = git@github.com:riatzukiza/crackwiseussy.git
+[submodule "orgs/ussyverse/criterioussy"]
+	path = orgs/ussyverse/criterioussy
+	url = git@github.com:riatzukiza/criterioussy.git
+[submodule "orgs/ussyverse/cryoraussy"]
+	path = orgs/ussyverse/cryoraussy
+	url = git@github.com:riatzukiza/cryoraussy.git
+[submodule "orgs/ussyverse/crystallossy"]
+	path = orgs/ussyverse/crystallossy
+	url = git@github.com:riatzukiza/crystallossy.git
+[submodule "orgs/ussyverse/curatorussy"]
+	path = orgs/ussyverse/curatorussy
+	url = git@github.com:riatzukiza/curatorussy.git
+[submodule "orgs/ussyverse/currentussy"]
+	path = orgs/ussyverse/currentussy
+	url = git@github.com:riatzukiza/currentussy.git
+[submodule "orgs/ussyverse/cycloneussy"]
+	path = orgs/ussyverse/cycloneussy
+	url = git@github.com:riatzukiza/cycloneussy.git
+[submodule "orgs/ussyverse/dashboardussy"]
+	path = orgs/ussyverse/dashboardussy
+	url = git@github.com:riatzukiza/dashboardussy.git
+[submodule "orgs/ussyverse/dendroussy"]
+	path = orgs/ussyverse/dendroussy
+	url = git@github.com:riatzukiza/dendroussy.git
+[submodule "orgs/ussyverse/designussy"]
+	path = orgs/ussyverse/designussy
+	url = git@github.com:riatzukiza/designussy.git
+[submodule "orgs/ussyverse/devussy"]
+	path = orgs/ussyverse/devussy
+	url = git@github.com:riatzukiza/devussy.git
+[submodule "orgs/ussyverse/devussy-fresh"]
+	path = orgs/ussyverse/devussy-fresh
+	url = git@github.com:riatzukiza/devussy-fresh.git
+[submodule "orgs/ussyverse/devussy-testing"]
+	path = orgs/ussyverse/devussy-testing
+	url = git@github.com:riatzukiza/devussy-testing.git
+[submodule "orgs/ussyverse/devussy_old"]
+	path = orgs/ussyverse/devussy_old
+	url = git@github.com:riatzukiza/devussy_old.git
+[submodule "orgs/ussyverse/diffusionchatussy"]
+	path = orgs/ussyverse/diffusionchatussy
+	url = git@github.com:riatzukiza/diffusionchatussy.git
+[submodule "orgs/ussyverse/dosemateussy"]
+	path = orgs/ussyverse/dosemateussy
+	url = git@github.com:riatzukiza/dosemateussy.git
+[submodule "orgs/ussyverse/driftlineussy"]
+	path = orgs/ussyverse/driftlineussy
+	url = git@github.com:riatzukiza/driftlineussy.git
+[submodule "orgs/ussyverse/driftnetussy"]
+	path = orgs/ussyverse/driftnetussy
+	url = git@github.com:riatzukiza/driftnetussy.git
+[submodule "orgs/ussyverse/ebbinghausussy"]
+	path = orgs/ussyverse/ebbinghausussy
+	url = git@github.com:riatzukiza/ebbinghausussy.git
+[submodule "orgs/ussyverse/enamelaussy"]
+	path = orgs/ussyverse/enamelaussy
+	url = git@github.com:riatzukiza/enamelaussy.git
+[submodule "orgs/ussyverse/endemicussy"]
+	path = orgs/ussyverse/endemicussy
+	url = git@github.com:riatzukiza/endemicussy.git
+[submodule "orgs/ussyverse/entrainussy"]
+	path = orgs/ussyverse/entrainussy
+	url = git@github.com:riatzukiza/entrainussy.git
+[submodule "orgs/ussyverse/equilibriaussy"]
+	path = orgs/ussyverse/equilibriaussy
+	url = git@github.com:riatzukiza/equilibriaussy.git
+[submodule "orgs/ussyverse/escutcheonussy"]
+	path = orgs/ussyverse/escutcheonussy
+	url = git@github.com:riatzukiza/escutcheonussy.git
+[submodule "orgs/ussyverse/ethonussy"]
+	path = orgs/ussyverse/ethonussy
+	url = git@github.com:riatzukiza/ethonussy.git
+[submodule "orgs/ussyverse/ethylenoussy"]
+	path = orgs/ussyverse/ethylenoussy
+	url = git@github.com:riatzukiza/ethylenoussy.git
+[submodule "orgs/ussyverse/evenia-mudlet-llm"]
+	path = orgs/ussyverse/evenia-mudlet-llm
+	url = git@github.com:riatzukiza/evenia-mudlet-llm.git
+[submodule "orgs/ussyverse/familydashboardussy"]
+	path = orgs/ussyverse/familydashboardussy
+	url = git@github.com:riatzukiza/familydashboardussy.git
+[submodule "orgs/ussyverse/fatigueussy"]
+	path = orgs/ussyverse/fatigueussy
+	url = git@github.com:riatzukiza/fatigueussy.git
+[submodule "orgs/ussyverse/fermentussy"]
+	path = orgs/ussyverse/fermentussy
+	url = git@github.com:riatzukiza/fermentussy.git
+[submodule "orgs/ussyverse/firelineussy"]
+	path = orgs/ussyverse/firelineussy
+	url = git@github.com:riatzukiza/firelineussy.git
+[submodule "orgs/ussyverse/fireslice"]
+	path = orgs/ussyverse/fireslice
+	url = git@github.com:riatzukiza/fireslice.git
+[submodule "orgs/ussyverse/forageussy"]
+	path = orgs/ussyverse/forageussy
+	url = git@github.com:riatzukiza/forageussy.git
+[submodule "orgs/ussyverse/forgeussy"]
+	path = orgs/ussyverse/forgeussy
+	url = git@github.com:riatzukiza/forgeussy.git
+[submodule "orgs/ussyverse/fossilrecordussy"]
+	path = orgs/ussyverse/fossilrecordussy
+	url = git@github.com:riatzukiza/fossilrecordussy.git
+[submodule "orgs/ussyverse/fruityboofs"]
+	path = orgs/ussyverse/fruityboofs
+	url = git@github.com:riatzukiza/fruityboofs.git
+[submodule "orgs/ussyverse/gamengine"]
+	path = orgs/ussyverse/gamengine
+	url = git@github.com:riatzukiza/gamengine.git
+[submodule "orgs/ussyverse/gamutussy"]
+	path = orgs/ussyverse/gamutussy
+	url = git@github.com:riatzukiza/gamutussy.git
+[submodule "orgs/ussyverse/gatewiseussy"]
+	path = orgs/ussyverse/gatewiseussy
+	url = git@github.com:riatzukiza/gatewiseussy.git
+[submodule "orgs/ussyverse/gemini-nano-banana-discord-bot"]
+	path = orgs/ussyverse/gemini-nano-banana-discord-bot
+	url = git@github.com:riatzukiza/gemini-nano-banana-discord-bot.git
+[submodule "orgs/ussyverse/geoffrussy"]
+	path = orgs/ussyverse/geoffrussy
+	url = git@github.com:riatzukiza/geoffrussy.git
+[submodule "orgs/ussyverse/ghstatsussy"]
+	path = orgs/ussyverse/ghstatsussy
+	url = git@github.com:riatzukiza/ghstatsussy.git
+[submodule "orgs/ussyverse/glacierussy"]
+	path = orgs/ussyverse/glacierussy
+	url = git@github.com:riatzukiza/glacierussy.git
+[submodule "orgs/ussyverse/gravitonussy"]
+	path = orgs/ussyverse/gravitonussy
+	url = git@github.com:riatzukiza/gravitonussy.git
+[submodule "orgs/ussyverse/gridironussy"]
+	path = orgs/ussyverse/gridironussy
+	url = git@github.com:riatzukiza/gridironussy.git
+[submodule "orgs/ussyverse/haccpussy"]
+	path = orgs/ussyverse/haccpussy
+	url = git@github.com:riatzukiza/haccpussy.git
+[submodule "orgs/ussyverse/hermes-agent"]
+	path = orgs/ussyverse/hermes-agent
+	url = git@github.com:riatzukiza/mojomast-hermes-agent.git
+[submodule "orgs/ussyverse/hermesdashboard"]
+	path = orgs/ussyverse/hermesdashboard
+	url = git@github.com:riatzukiza/hermesdashboard.git
+[submodule "orgs/ussyverse/hitchussy"]
+	path = orgs/ussyverse/hitchussy
+	url = git@github.com:riatzukiza/hitchussy.git
+[submodule "orgs/ussyverse/hysteronussy"]
+	path = orgs/ussyverse/hysteronussy
+	url = git@github.com:riatzukiza/hysteronussy.git
+[submodule "orgs/ussyverse/ichniteussy"]
+	path = orgs/ussyverse/ichniteussy
+	url = git@github.com:riatzukiza/ichniteussy.git
+[submodule "orgs/ussyverse/ichnoussy"]
+	path = orgs/ussyverse/ichnoussy
+	url = git@github.com:riatzukiza/ichnoussy.git
+[submodule "orgs/ussyverse/iMaCoMpUtERussy"]
+	path = orgs/ussyverse/iMaCoMpUtERussy
+	url = git@github.com:riatzukiza/iMaCoMpUtERussy.git
+[submodule "orgs/ussyverse/immunussy"]
+	path = orgs/ussyverse/immunussy
+	url = git@github.com:riatzukiza/immunussy.git
+[submodule "orgs/ussyverse/inkblotussy"]
+	path = orgs/ussyverse/inkblotussy
+	url = git@github.com:riatzukiza/inkblotussy.git
+[submodule "orgs/ussyverse/isobarussy"]
+	path = orgs/ussyverse/isobarussy
+	url = git@github.com:riatzukiza/isobarussy.git
+[submodule "orgs/ussyverse/keelussy"]
+	path = orgs/ussyverse/keelussy
+	url = git@github.com:riatzukiza/keelussy.git
+[submodule "orgs/ussyverse/kinesiaussy"]
+	path = orgs/ussyverse/kinesiaussy
+	url = git@github.com:riatzukiza/kinesiaussy.git
+[submodule "orgs/ussyverse/kinshipussy"]
+	path = orgs/ussyverse/kinshipussy
+	url = git@github.com:riatzukiza/kinshipussy.git
+[submodule "orgs/ussyverse/kintsugiussy"]
+	path = orgs/ussyverse/kintsugiussy
+	url = git@github.com:riatzukiza/kintsugiussy.git
+[submodule "orgs/ussyverse/knitussy"]
+	path = orgs/ussyverse/knitussy
+	url = git@github.com:riatzukiza/knitussy.git
+[submodule "orgs/ussyverse/kompressiussy"]
+	path = orgs/ussyverse/kompressiussy
+	url = git@github.com:riatzukiza/kompressiussy.git
+[submodule "orgs/ussyverse/koppenussy"]
+	path = orgs/ussyverse/koppenussy
+	url = git@github.com:riatzukiza/koppenussy.git
+[submodule "orgs/ussyverse/laminarussy"]
+	path = orgs/ussyverse/laminarussy
+	url = git@github.com:riatzukiza/laminarussy.git
+[submodule "orgs/ussyverse/laminateussy"]
+	path = orgs/ussyverse/laminateussy
+	url = git@github.com:riatzukiza/laminateussy.git
+[submodule "orgs/ussyverse/lanugoussy"]
+	path = orgs/ussyverse/lanugoussy
+	url = git@github.com:riatzukiza/lanugoussy.git
+[submodule "orgs/ussyverse/latticeussy"]
+	path = orgs/ussyverse/latticeussy
+	url = git@github.com:riatzukiza/latticeussy.git
+[submodule "orgs/ussyverse/lehrussy"]
+	path = orgs/ussyverse/lehrussy
+	url = git@github.com:riatzukiza/lehrussy.git
+[submodule "orgs/ussyverse/levainussy"]
+	path = orgs/ussyverse/levainussy
+	url = git@github.com:riatzukiza/levainussy.git
+[submodule "orgs/ussyverse/lichenoussy"]
+	path = orgs/ussyverse/lichenoussy
+	url = git@github.com:riatzukiza/lichenoussy.git
+[submodule "orgs/ussyverse/limnoussy"]
+	path = orgs/ussyverse/limnoussy
+	url = git@github.com:riatzukiza/limnoussy.git
+[submodule "orgs/ussyverse/llmproxy"]
+	path = orgs/ussyverse/llmproxy
+	url = git@github.com:riatzukiza/llmproxy.git
+[submodule "orgs/ussyverse/loadpathussy"]
+	path = orgs/ussyverse/loadpathussy
+	url = git@github.com:riatzukiza/loadpathussy.git
+[submodule "orgs/ussyverse/ludonussy"]
+	path = orgs/ussyverse/ludonussy
+	url = git@github.com:riatzukiza/ludonussy.git
+[submodule "orgs/ussyverse/maneuverussy"]
+	path = orgs/ussyverse/maneuverussy
+	url = git@github.com:riatzukiza/maneuverussy.git
+[submodule "orgs/ussyverse/marangoniussy"]
+	path = orgs/ussyverse/marangoniussy
+	url = git@github.com:riatzukiza/marangoniussy.git
+[submodule "orgs/ussyverse/marksmanussy"]
+	path = orgs/ussyverse/marksmanussy
+	url = git@github.com:riatzukiza/marksmanussy.git
+[submodule "orgs/ussyverse/mediageckussy"]
+	path = orgs/ussyverse/mediageckussy
+	url = git@github.com:riatzukiza/mediageckussy.git
+[submodule "orgs/ussyverse/memetixussy"]
+	path = orgs/ussyverse/memetixussy
+	url = git@github.com:riatzukiza/memetixussy.git
+[submodule "orgs/ussyverse/metraussy"]
+	path = orgs/ussyverse/metraussy
+	url = git@github.com:riatzukiza/metraussy.git
+[submodule "orgs/ussyverse/mintussy"]
+	path = orgs/ussyverse/mintussy
+	url = git@github.com:riatzukiza/mintussy.git
+[submodule "orgs/ussyverse/monorepussy"]
+	path = orgs/ussyverse/monorepussy
+	url = git@github.com:riatzukiza/monorepussy.git
+[submodule "orgs/ussyverse/morphemaussy"]
+	path = orgs/ussyverse/morphemaussy
+	url = git@github.com:riatzukiza/morphemaussy.git
+[submodule "orgs/ussyverse/morsethussy"]
+	path = orgs/ussyverse/morsethussy
+	url = git@github.com:riatzukiza/morsethussy.git
+[submodule "orgs/ussyverse/mtorussy"]
+	path = orgs/ussyverse/mtorussy
+	url = git@github.com:riatzukiza/mtorussy.git
+[submodule "orgs/ussyverse/mudussy"]
+	path = orgs/ussyverse/mudussy
+	url = git@github.com:riatzukiza/mudussy.git
+[submodule "orgs/ussyverse/mushinussy"]
+	path = orgs/ussyverse/mushinussy
+	url = git@github.com:riatzukiza/mushinussy.git
+[submodule "orgs/ussyverse/myceliumussy"]
+	path = orgs/ussyverse/myceliumussy
+	url = git@github.com:riatzukiza/myceliumussy.git
+[submodule "orgs/ussyverse/nexussy"]
+	path = orgs/ussyverse/nexussy
+	url = git@github.com:riatzukiza/nexussy.git
+[submodule "orgs/ussyverse/nhlclicker2"]
+	path = orgs/ussyverse/nhlclicker2
+	url = git@github.com:riatzukiza/nhlclicker2.git
+[submodule "orgs/ussyverse/olfactoussy"]
+	path = orgs/ussyverse/olfactoussy
+	url = git@github.com:riatzukiza/olfactoussy.git
+[submodule "orgs/ussyverse/onno"]
+	path = orgs/ussyverse/onno
+	url = git@github.com:riatzukiza/onno.git
+[submodule "orgs/ussyverse/openclawremoteussy"]
+	path = orgs/ussyverse/openclawremoteussy
+	url = git@github.com:riatzukiza/openclawremoteussy.git
+[submodule "orgs/ussyverse/opencode"]
+	path = orgs/ussyverse/opencode
+	url = git@github.com:riatzukiza/mojomast-opencode.git
+[submodule "orgs/ussyverse/operonussy"]
+	path = orgs/ussyverse/operonussy
+	url = git@github.com:riatzukiza/operonussy.git
+[submodule "orgs/ussyverse/opticussy"]
+	path = orgs/ussyverse/opticussy
+	url = git@github.com:riatzukiza/opticussy.git
+[submodule "orgs/ussyverse/orbitalussy"]
+	path = orgs/ussyverse/orbitalussy
+	url = git@github.com:riatzukiza/orbitalussy.git
+[submodule "orgs/ussyverse/otolithussy"]
+	path = orgs/ussyverse/otolithussy
+	url = git@github.com:riatzukiza/otolithussy.git
+[submodule "orgs/ussyverse/paddockussy"]
+	path = orgs/ussyverse/paddockussy
+	url = git@github.com:riatzukiza/paddockussy.git
+[submodule "orgs/ussyverse/palynoussy"]
+	path = orgs/ussyverse/palynoussy
+	url = git@github.com:riatzukiza/palynoussy.git
+[submodule "orgs/ussyverse/parliamentussy"]
+	path = orgs/ussyverse/parliamentussy
+	url = git@github.com:riatzukiza/parliamentussy.git
+[submodule "orgs/ussyverse/partymemberbotussy"]
+	path = orgs/ussyverse/partymemberbotussy
+	url = git@github.com:riatzukiza/partymemberbotussy.git
+[submodule "orgs/ussyverse/pawn-shop-pioneers"]
+	path = orgs/ussyverse/pawn-shop-pioneers
+	url = git@github.com:riatzukiza/pawn-shop-pioneers.git
+[submodule "orgs/ussyverse/pedonussy"]
+	path = orgs/ussyverse/pedonussy
+	url = git@github.com:riatzukiza/pedonussy.git
+[submodule "orgs/ussyverse/percolateussy"]
+	path = orgs/ussyverse/percolateussy
+	url = git@github.com:riatzukiza/percolateussy.git
+[submodule "orgs/ussyverse/petrichorussy"]
+	path = orgs/ussyverse/petrichorussy
+	url = git@github.com:riatzukiza/petrichorussy.git
+[submodule "orgs/ussyverse/pfsense"]
+	path = orgs/ussyverse/pfsense
+	url = git@github.com:riatzukiza/pfsense.git
+[submodule "orgs/ussyverse/PGaudussy"]
+	path = orgs/ussyverse/PGaudussy
+	url = git@github.com:riatzukiza/PGaudussy.git
+[submodule "orgs/ussyverse/pheromaussy"]
+	path = orgs/ussyverse/pheromaussy
+	url = git@github.com:riatzukiza/pheromaussy.git
+[submodule "orgs/ussyverse/photonaussy"]
+	path = orgs/ussyverse/photonaussy
+	url = git@github.com:riatzukiza/photonaussy.git
+[submodule "orgs/ussyverse/photosynthussy"]
+	path = orgs/ussyverse/photosynthussy
+	url = git@github.com:riatzukiza/photosynthussy.git
+[submodule "orgs/ussyverse/phyllotaxisussy"]
+	path = orgs/ussyverse/phyllotaxisussy
+	url = git@github.com:riatzukiza/phyllotaxisussy.git
+[submodule "orgs/ussyverse/plan9webplumbussy"]
+	path = orgs/ussyverse/plan9webplumbussy
+	url = git@github.com:riatzukiza/plan9webplumbussy.git
+[submodule "orgs/ussyverse/plantaussy"]
+	path = orgs/ussyverse/plantaussy
+	url = git@github.com:riatzukiza/plantaussy.git
+[submodule "orgs/ussyverse/portmoreussy"]
+	path = orgs/ussyverse/portmoreussy
+	url = git@github.com:riatzukiza/portmoreussy.git
+[submodule "orgs/ussyverse/predatorussy"]
+	path = orgs/ussyverse/predatorussy
+	url = git@github.com:riatzukiza/predatorussy.git
+[submodule "orgs/ussyverse/pressoraussy"]
+	path = orgs/ussyverse/pressoraussy
+	url = git@github.com:riatzukiza/pressoraussy.git
+[submodule "orgs/ussyverse/proprioceptionussy"]
+	path = orgs/ussyverse/proprioceptionussy
+	url = git@github.com:riatzukiza/proprioceptionussy.git
+[submodule "orgs/ussyverse/proxemaussy"]
+	path = orgs/ussyverse/proxemaussy
+	url = git@github.com:riatzukiza/proxemaussy.git
+[submodule "orgs/ussyverse/psp2"]
+	path = orgs/ussyverse/psp2
+	url = git@github.com:riatzukiza/psp2.git
+[submodule "orgs/ussyverse/psychraussy"]
+	path = orgs/ussyverse/psychraussy
+	url = git@github.com:riatzukiza/psychraussy.git
+[submodule "orgs/ussyverse/pupaussy"]
+	path = orgs/ussyverse/pupaussy
+	url = git@github.com:riatzukiza/pupaussy.git
+[submodule "orgs/ussyverse/quantumussy"]
+	path = orgs/ussyverse/quantumussy
+	url = git@github.com:riatzukiza/quantumussy.git
+[submodule "orgs/ussyverse/queueussy"]
+	path = orgs/ussyverse/queueussy
+	url = git@github.com:riatzukiza/queueussy.git
+[submodule "orgs/ussyverse/quorumussy"]
+	path = orgs/ussyverse/quorumussy
+	url = git@github.com:riatzukiza/quorumussy.git
+[submodule "orgs/ussyverse/rackspace-spot-tool"]
+	path = orgs/ussyverse/rackspace-spot-tool
+	url = git@github.com:riatzukiza/rackspace-spot-tool.git
+[submodule "orgs/ussyverse/ragussy"]
+	path = orgs/ussyverse/ragussy
+	url = git@github.com:riatzukiza/ragussy.git
+[submodule "orgs/ussyverse/ralphussy"]
+	path = orgs/ussyverse/ralphussy
+	url = git@github.com:riatzukiza/ralphussy.git
+[submodule "orgs/ussyverse/resonaussy"]
+	path = orgs/ussyverse/resonaussy
+	url = git@github.com:riatzukiza/resonaussy.git
+[submodule "orgs/ussyverse/reverseoracleussy"]
+	path = orgs/ussyverse/reverseoracleussy
+	url = git@github.com:riatzukiza/reverseoracleussy.git
+[submodule "orgs/ussyverse/rheoussy"]
+	path = orgs/ussyverse/rheoussy
+	url = git@github.com:riatzukiza/rheoussy.git
+[submodule "orgs/ussyverse/roguelitussy"]
+	path = orgs/ussyverse/roguelitussy
+	url = git@github.com:riatzukiza/roguelitussy.git
+[submodule "orgs/ussyverse/roo-code-cloud-alternate-auth"]
+	path = orgs/ussyverse/roo-code-cloud-alternate-auth
+	url = git@github.com:riatzukiza/roo-code-cloud-alternate-auth.git
+[submodule "orgs/ussyverse/rooagussy"]
+	path = orgs/ussyverse/rooagussy
+	url = git@github.com:riatzukiza/rooagussy.git
+[submodule "orgs/ussyverse/roocodehackathon"]
+	path = orgs/ussyverse/roocodehackathon
+	url = git@github.com:riatzukiza/roocodehackathon.git
+[submodule "orgs/ussyverse/rosettussy"]
+	path = orgs/ussyverse/rosettussy
+	url = git@github.com:riatzukiza/rosettussy.git
+[submodule "orgs/ussyverse/rpg-dm-bot"]
+	path = orgs/ussyverse/rpg-dm-bot
+	url = git@github.com:riatzukiza/rpg-dm-bot.git
+[submodule "orgs/ussyverse/saccadaussy"]
+	path = orgs/ussyverse/saccadaussy
+	url = git@github.com:riatzukiza/saccadaussy.git
+[submodule "orgs/ussyverse/saponinussy"]
+	path = orgs/ussyverse/saponinussy
+	url = git@github.com:riatzukiza/saponinussy.git
+[submodule "orgs/ussyverse/scoreboardussy"]
+	path = orgs/ussyverse/scoreboardussy
+	url = git@github.com:riatzukiza/scoreboardussy.git
+[submodule "orgs/ussyverse/seismicussy"]
+	path = orgs/ussyverse/seismicussy
+	url = git@github.com:riatzukiza/seismicussy.git
+[submodule "orgs/ussyverse/sentinelussy"]
+	path = orgs/ussyverse/sentinelussy
+	url = git@github.com:riatzukiza/sentinelussy.git
+[submodule "orgs/ussyverse/seralussy"]
+	path = orgs/ussyverse/seralussy
+	url = git@github.com:riatzukiza/seralussy.git
+[submodule "orgs/ussyverse/shoedelussy"]
+	path = orgs/ussyverse/shoedelussy
+	url = git@github.com:riatzukiza/shoedelussy.git
+[submodule "orgs/ussyverse/sigintussy"]
+	path = orgs/ussyverse/sigintussy
+	url = git@github.com:riatzukiza/sigintussy.git
+[submodule "orgs/ussyverse/silvaussy"]
+	path = orgs/ussyverse/silvaussy
+	url = git@github.com:riatzukiza/silvaussy.git
+[submodule "orgs/ussyverse/slophero"]
+	path = orgs/ussyverse/slophero
+	url = git@github.com:riatzukiza/slophero.git
+[submodule "orgs/ussyverse/snapshotussy"]
+	path = orgs/ussyverse/snapshotussy
+	url = git@github.com:riatzukiza/snapshotussy.git
+[submodule "orgs/ussyverse/soluteussy"]
+	path = orgs/ussyverse/soluteussy
+	url = git@github.com:riatzukiza/soluteussy.git
+[submodule "orgs/ussyverse/sonantaussy"]
+	path = orgs/ussyverse/sonantaussy
+	url = git@github.com:riatzukiza/sonantaussy.git
+[submodule "orgs/ussyverse/speleoussy"]
+	path = orgs/ussyverse/speleoussy
+	url = git@github.com:riatzukiza/speleoussy.git
+[submodule "orgs/ussyverse/stabilonussy"]
+	path = orgs/ussyverse/stabilonussy
+	url = git@github.com:riatzukiza/stabilonussy.git
+[submodule "orgs/ussyverse/stallionussy"]
+	path = orgs/ussyverse/stallionussy
+	url = git@github.com:riatzukiza/stallionussy.git
+[submodule "orgs/ussyverse/STARDUSTUSSY"]
+	path = orgs/ussyverse/STARDUSTUSSY
+	url = git@github.com:riatzukiza/STARDUSTUSSY.git
+[submodule "orgs/ussyverse/stemmaussy"]
+	path = orgs/ussyverse/stemmaussy
+	url = git@github.com:riatzukiza/stemmaussy.git
+[submodule "orgs/ussyverse/stenographussy"]
+	path = orgs/ussyverse/stenographussy
+	url = git@github.com:riatzukiza/stenographussy.git
+[submodule "orgs/ussyverse/stenography"]
+	path = orgs/ussyverse/stenography
+	url = git@github.com:riatzukiza/stenography.git
+[submodule "orgs/ussyverse/stomataussy"]
+	path = orgs/ussyverse/stomataussy
+	url = git@github.com:riatzukiza/stomataussy.git
+[submodule "orgs/ussyverse/stormussy"]
+	path = orgs/ussyverse/stormussy
+	url = git@github.com:riatzukiza/stormussy.git
+[submodule "orgs/ussyverse/stratagitussy"]
+	path = orgs/ussyverse/stratagitussy
+	url = git@github.com:riatzukiza/stratagitussy.git
+[submodule "orgs/ussyverse/strataussy"]
+	path = orgs/ussyverse/strataussy
+	url = git@github.com:riatzukiza/strataussy.git
+[submodule "orgs/ussyverse/stratumussy"]
+	path = orgs/ussyverse/stratumussy
+	url = git@github.com:riatzukiza/stratumussy.git
+[submodule "orgs/ussyverse/SwarmCraft"]
+	path = orgs/ussyverse/SwarmCraft
+	url = git@github.com:riatzukiza/SwarmCraft.git
+[submodule "orgs/ussyverse/swarmussy"]
+	path = orgs/ussyverse/swarmussy
+	url = git@github.com:riatzukiza/swarmussy.git
+[submodule "orgs/ussyverse/symbiosisussy"]
+	path = orgs/ussyverse/symbiosisussy
+	url = git@github.com:riatzukiza/symbiosisussy.git
+[submodule "orgs/ussyverse/synapseussy"]
+	path = orgs/ussyverse/synapseussy
+	url = git@github.com:riatzukiza/synapseussy.git
+[submodule "orgs/ussyverse/syntropussy"]
+	path = orgs/ussyverse/syntropussy
+	url = git@github.com:riatzukiza/syntropussy.git
+[submodule "orgs/ussyverse/taktussy"]
+	path = orgs/ussyverse/taktussy
+	url = git@github.com:riatzukiza/taktussy.git
+[submodule "orgs/ussyverse/tarotussy"]
+	path = orgs/ussyverse/tarotussy
+	url = git@github.com:riatzukiza/tarotussy.git
+[submodule "orgs/ussyverse/tcg2"]
+	path = orgs/ussyverse/tcg2
+	url = git@github.com:riatzukiza/tcg2.git
+[submodule "orgs/ussyverse/Tchaikovskussy"]
+	path = orgs/ussyverse/Tchaikovskussy
+	url = git@github.com:riatzukiza/Tchaikovskussy.git
+[submodule "orgs/ussyverse/tectonicussy"]
+	path = orgs/ussyverse/tectonicussy
+	url = git@github.com:riatzukiza/tectonicussy.git
+[submodule "orgs/ussyverse/telegraphaussy"]
+	path = orgs/ussyverse/telegraphaussy
+	url = git@github.com:riatzukiza/telegraphaussy.git
+[submodule "orgs/ussyverse/tellussy"]
+	path = orgs/ussyverse/tellussy
+	url = git@github.com:riatzukiza/tellussy.git
+[submodule "orgs/ussyverse/tempestussy"]
+	path = orgs/ussyverse/tempestussy
+	url = git@github.com:riatzukiza/tempestussy.git
+[submodule "orgs/ussyverse/templeossy"]
+	path = orgs/ussyverse/templeossy
+	url = git@github.com:riatzukiza/templeossy.git
+[submodule "orgs/ussyverse/tenocyteussy"]
+	path = orgs/ussyverse/tenocyteussy
+	url = git@github.com:riatzukiza/tenocyteussy.git
+[submodule "orgs/ussyverse/terrariumussy"]
+	path = orgs/ussyverse/terrariumussy
+	url = git@github.com:riatzukiza/terrariumussy.git
+[submodule "orgs/ussyverse/terroirussy"]
+	path = orgs/ussyverse/terroirussy
+	url = git@github.com:riatzukiza/terroirussy.git
+[submodule "orgs/ussyverse/testt"]
+	path = orgs/ussyverse/testt
+	url = git@github.com:riatzukiza/testt.git
+[submodule "orgs/ussyverse/thermoussy"]
+	path = orgs/ussyverse/thermoussy
+	url = git@github.com:riatzukiza/thermoussy.git
+[submodule "orgs/ussyverse/ticket"]
+	path = orgs/ussyverse/ticket
+	url = git@github.com:riatzukiza/ticket.git
+[submodule "orgs/ussyverse/ticket2"]
+	path = orgs/ussyverse/ticket2
+	url = git@github.com:riatzukiza/ticket2.git
+[submodule "orgs/ussyverse/tidalussy"]
+	path = orgs/ussyverse/tidalussy
+	url = git@github.com:riatzukiza/tidalussy.git
+[submodule "orgs/ussyverse/tidepoolussy"]
+	path = orgs/ussyverse/tidepoolussy
+	url = git@github.com:riatzukiza/tidepoolussy.git
+[submodule "orgs/ussyverse/timeloomussy"]
+	path = orgs/ussyverse/timeloomussy
+	url = git@github.com:riatzukiza/timeloomussy.git
+[submodule "orgs/ussyverse/toaster"]
+	path = orgs/ussyverse/toaster
+	url = git@github.com:riatzukiza/toaster.git
+[submodule "orgs/ussyverse/tonalussy"]
+	path = orgs/ussyverse/tonalussy
+	url = git@github.com:riatzukiza/tonalussy.git
+[submodule "orgs/ussyverse/topussy"]
+	path = orgs/ussyverse/topussy
+	url = git@github.com:riatzukiza/mojomast-topussy.git
+[submodule "orgs/ussyverse/triageussy"]
+	path = orgs/ussyverse/triageussy
+	url = git@github.com:riatzukiza/triageussy.git
+[submodule "orgs/ussyverse/triagiaussy"]
+	path = orgs/ussyverse/triagiaussy
+	url = git@github.com:riatzukiza/triagiaussy.git
+[submodule "orgs/ussyverse/turnwiseussy"]
+	path = orgs/ussyverse/turnwiseussy
+	url = git@github.com:riatzukiza/turnwiseussy.git
+[submodule "orgs/ussyverse/uberclawcontrol"]
+	path = orgs/ussyverse/uberclawcontrol
+	url = git@github.com:riatzukiza/uberclawcontrol.git
+[submodule "orgs/ussyverse/unconformity"]
+	path = orgs/ussyverse/unconformity
+	url = git@github.com:riatzukiza/unconformity.git
+[submodule "orgs/ussyverse/ussybiot"]
+	path = orgs/ussyverse/ussybiot
+	url = git@github.com:riatzukiza/ussybiot.git
+[submodule "orgs/ussyverse/ussybot"]
+	path = orgs/ussyverse/ussybot
+	url = git@github.com:riatzukiza/ussybot.git
+[submodule "orgs/ussyverse/ussycode"]
+	path = orgs/ussyverse/ussycode
+	url = git@github.com:riatzukiza/ussycode.git
+[submodule "orgs/ussyverse/ussycodeproxy"]
+	path = orgs/ussyverse/ussycodeproxy
+	url = git@github.com:riatzukiza/ussycodeproxy.git
+[submodule "orgs/ussyverse/ussyring"]
+	path = orgs/ussyverse/ussyring
+	url = git@github.com:riatzukiza/ussyring.git
+[submodule "orgs/ussyverse/ussyrouter"]
+	path = orgs/ussyverse/ussyrouter
+	url = git@github.com:riatzukiza/mojomast-ussyrouter.git
+[submodule "orgs/ussyverse/ussyverse"]
+	path = orgs/ussyverse/ussyverse
+	url = git@github.com:riatzukiza/ussyverse.git
+[submodule "orgs/ussyverse/ussyverse-monitor"]
+	path = orgs/ussyverse/ussyverse-monitor
+	url = git@github.com:riatzukiza/ussyverse-monitor.git
+[submodule "orgs/ussyverse/vectorussy"]
+	path = orgs/ussyverse/vectorussy
+	url = git@github.com:riatzukiza/vectorussy.git
+[submodule "orgs/ussyverse/verceltest1"]
+	path = orgs/ussyverse/verceltest1
+	url = git@github.com:riatzukiza/verceltest1.git
+[submodule "orgs/ussyverse/vibraussy"]
+	path = orgs/ussyverse/vibraussy
+	url = git@github.com:riatzukiza/vibraussy.git
+[submodule "orgs/ussyverse/vitalussy"]
+	path = orgs/ussyverse/vitalussy
+	url = git@github.com:riatzukiza/vitalussy.git
+[submodule "orgs/ussyverse/voice-rag-devplan-assistant"]
+	path = orgs/ussyverse/voice-rag-devplan-assistant
+	url = git@github.com:riatzukiza/voice-rag-devplan-assistant.git
+[submodule "orgs/ussyverse/voltronussy"]
+	path = orgs/ussyverse/voltronussy
+	url = git@github.com:riatzukiza/voltronussy.git
+[submodule "orgs/ussyverse/warp"]
+	path = orgs/ussyverse/warp
+	url = git@github.com:riatzukiza/warp.git
+[submodule "orgs/ussyverse/warpussy"]
+	path = orgs/ussyverse/warpussy
+	url = git@github.com:riatzukiza/warpussy.git
+[submodule "orgs/ussyverse/watershedussy"]
+	path = orgs/ussyverse/watershedussy
+	url = git@github.com:riatzukiza/watershedussy.git
+[submodule "orgs/ussyverse/weouthere"]
+	path = orgs/ussyverse/weouthere
+	url = git@github.com:riatzukiza/weouthere.git
+[submodule "orgs/ussyverse/xcancelussybot"]
+	path = orgs/ussyverse/xcancelussybot
+	url = git@github.com:riatzukiza/xcancelussybot.git
+[submodule "orgs/stakira/OpenUtau"]
+	path = orgs/stakira/OpenUtau
+	url = https://github.com/stakira/OpenUtau.git

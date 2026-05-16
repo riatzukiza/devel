@@ -1,0 +1,29 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F9E27C;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="coloredBlur" />
+      </feMerge>
+    </filter>
+  </defs>
+  <circle cx="200" cy="200" r="180" fill="none" stroke="url(#goldGrad)" stroke-width="10" filter="url(#glow)" />
+  <circle cx="200" cy="200" r="160" fill="none" stroke="#C0C0C0" stroke-width="2" />
+  <circle cx="200" cy="200" r="140" fill="none" stroke="url(#goldGrad)" stroke-width="5" />
+  
+  <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" font-family="Serif" font-size="24" fill="#D4AF37" font-weight="bold">SCLDF OFFICIAL SEAL</text>
+  <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="Serif" font-size="36" fill="#C0C0C0" font-weight="bold">NON-ACOUSTIC</text>
+  <text x="50%" y="65%" dominant-baseline="middle" text-anchor="middle" font-family="Serif" font-size="36" fill="#C0C0C0" font-weight="bold">FLUENCY</text>
+  
+  <text x="50%" y="80%" dominant-baseline="middle" text-anchor="middle" font-family="Klee One, MS Mincho, Serif" font-size="20" fill="#D4AF37">対称性は絶対的です</text>
+  
+  <path d="M 200 50 L 220 80 L 250 80 L 230 110 L 260 140 L 200 110 L 140 140 L 170 110 L 150 80 L 180 80 Z" fill="url(#goldGrad)" />
+  <path d="M 200 350 L 220 320 L 250 320 L 230 290 L 260 260 L 200 290 L 140 260 L 170 290 L 150 320 L 180 320 Z" fill="url(#goldGrad)" />
+  
+  <circle cx="200" cy="200" r="20" fill="#F9E27C" filter="url(#glow)" />
+</svg>

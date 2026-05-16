@@ -1,0 +1,89 @@
+\documentclass[10pt]{article}
+\pagestyle{empty}
+
+% Tight margins, no external packages.
+\setlength{\topmargin}{-0.7in}
+\setlength{\textheight}{10.55in}
+\setlength{\oddsidemargin}{-0.3in}
+\setlength{\evensidemargin}{-0.3in}
+\setlength{\textwidth}{7.1in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1pt}
+\renewcommand\labelitemi{-}
+
+\begin{document}
+
+{\LARGE \textbf{Aaron Beavers}}\\
+Principal Engineer / Full-Stack AI Systems Engineer\\
+
+\vspace{2pt}
+\textbf{CONTACT}\\
+West Des Moines, IA 50265 \;\;\textbar\;\; 515-388-0539 \;\;\textbar\;\; foamy125@gmail.com\\
+GitHub: github.com/riatzukiza \;\;\textbar\;\; Open to relocate for the right founding-team role
+
+\vspace{3pt}
+\textbf{PROFESSIONAL SUMMARY}\\
+Founding-minded full-stack engineer with 10+ years building production software and recent deep ownership of OpenPlanner and Knoxx: a graph-backed, multi-tenant AI agent workbench spanning React, TypeScript/Node, Fastify, ClojureScript, PostgreSQL, Redis, WebSockets, OAuth, MCP tools, semantic memory, and LLM-integrated agent workflows. Strong fit for an early third-engineer role: set architecture, ship daily across the stack, keep systems observable, and turn ambiguous product needs into working software.
+
+\vspace{2pt}
+\textbf{SKILLS}\\
+\textbf{Frontend}: React, TypeScript, Vite, React Router, WebSockets, real-time streaming UI, admin/workbench UX, Vitest/Testing Library.\\
+\textbf{Backend}: TypeScript/Node.js, Fastify, ClojureScript/shadow-cljs, REST APIs, WebSockets, PostgreSQL, Redis, MongoDB, Docker Compose.\\
+\textbf{AI / agents}: RAG and semantic-memory systems, tool-calling agents, MCP, OpenAI-compatible APIs, passive context hydration, run receipts, embeddings/vector search, graph traversal.\\
+\textbf{Architecture}: early-stage product architecture, contract-oriented design, auth/RBAC, multi-tenancy, reliability, observability, CI, test strategy.
+
+\vspace{3pt}
+\textbf{PROFESSIONAL EXPERIENCE}\\
+
+\textbf{Open Hax -- OpenPlanner / Knoxx} --- Founder / Principal Engineer \hfill \textit{2026 -- Present}\\
+\vspace{-7pt}
+\begin{itemize}
+  \setlength\itemsep{-3pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Built and directed OpenPlanner, a graph-stack monorepo for semantic graph construction, traversal, layout, vector search, document/event projection, and agent memory APIs.
+  \item Led Knoxx, a full-stack AI agent runtime/workbench with a React/Vite frontend and CLJS/Node/Fastify backend; current source spans more than 60k lines across frontend and backend application code.
+  \item Designed the agent workbench product surface: live chat orchestration, websocket token streaming, passive hydration, witness/source panels, tool receipts, run history, scratchpad/artifact surfaces, and steer/follow-up controls.
+  \item Implemented GitHub OAuth, Redis-backed cookie sessions, invite-based provisioning, bootstrap admin seeding, org context, and secure API route protection.
+  \item Built the PostgreSQL control-plane foundation for multi-tenant RBAC: orgs, users, built-in roles, permission atoms, role assignments, tool policies, user overrides, data lakes, and admin APIs.
+  \item Drove contract-oriented backend architecture so agents, actors, roles, capabilities, models, tool policies, triggers, and materialization rules are explicit EDN contracts instead of scattered runtime assumptions.
+  \item Integrated MCP as both a Knoxx tool-ingestion path and an OAuth-protected HTTP MCP facade, enabling agents and external clients to discover/call governed tools under role-based policy.
+  \item Built tenant/source-scoped ingestion contract surfaces for source drivers, scheduling, sink routing, semantic graph enrichment, translation, projection metadata, and backpressure policies.
+  \item Hardened runtime reliability: shadow-cljs build/test/lint flows, CLJS backend bootstrap for Node built-ins, dockerized non-root runtime, nREPL/PM2 dev loops, streaming duplication fixes, and session persistence repairs.
+\end{itemize}
+
+\textbf{Open Hax -- Proxx / LLM Infrastructure} --- Founder / Maintainer \hfill \textit{2024 -- Present}\\
+\vspace{-7pt}
+\begin{itemize}
+  \setlength\itemsep{-3pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Built an OpenAI-compatible multi-provider LLM gateway routing model-prefixed requests across OpenAI, Anthropic, and Ollama-style APIs with token auth, request translation, streaming, and semantic session recall.
+  \item Implemented OAuth/account ingestion, provider-scoped rotation on rate limits, request/response normalization, reasoning trace preservation, and local/remote model routing.
+\end{itemize}
+
+\textbf{Raft Technologies} --- Full Stack Engineer (Python/Django + React) \hfill \textit{Jul 2020 -- Sep 2023}\\
+\vspace{-7pt}
+\begin{itemize}
+  \setlength\itemsep{-3pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Built and maintained 5-stage Celery pipelines for uploaded-file processing: parse, validate, summarize, error reports, and notifications with safe failure modes and operational visibility.
+  \item Implemented file type/encoding detection and ClamAV REST anti-malware scanning with retry/backoff, timeouts, persisted outcomes, and auditability.
+  \item Supported React application work and Cypress/Gherkin E2E automation in CI against deployed federal/DoD environments.
+\end{itemize}
+
+\textbf{CloudApp} --- Full Stack Engineer (Ruby on Rails) \hfill \textit{Sep 2018 -- Feb 2019}\\
+\vspace{-7pt}
+\begin{itemize}
+  \setlength\itemsep{-3pt}
+  \setlength\parskip{0pt}
+  \setlength\parsep{0pt}
+  \item Integrated a proprietary OCR service into a screenshot platform and shipped interactive OCR UX: render bounding boxes over screenshots and click to extract recognized text.
+\end{itemize}
+
+\textbf{Additional experience}: 1brand (Full Stack Engineer, 2019--2020); Birdseed (Full Stack Engineer, 2019); Freelance Software Engineer (2014--Present).\\
+\textbf{Education}: Valley Springs High School --- Diploma (2012).\\
+\textbf{Work authorization}: Authorized to work in the U.S. for any employer. Willing to relocate.
+
+\end{document}

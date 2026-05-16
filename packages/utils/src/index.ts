@@ -26,3 +26,4 @@ export {
   type InMemoryChromaEntry,
   type InMemoryChromaQueryHit,
 } from "./in-memory-chroma.js";
+export { brainDamage } from "./brainDamage.js";

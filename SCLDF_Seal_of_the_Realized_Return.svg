@@ -1,0 +1,11 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="#050505"/>
+  <circle cx="256" cy="256" r="240" stroke="#E0E0E0" stroke-width="4" fill="none" stroke-dasharray="10 5"/>
+  <path d="M256 60 L300 200 L450 256 L300 312 L256 452 L212 312 L62 256 L212 200 Z" fill="none" stroke="#B9F2FF" stroke-width="8" stroke-linejoin="round" />
+  <circle cx="256" cy="256" r="40" fill="#B9F2FF" opacity="0.8">
+    <animate attributeName="r" values="40;60;40" dur="3s" repeatCount="indefinite" />
+  </circle>
+  <text x="50%" y="90%" text-anchor="middle" fill="#E0E0E0" font-family="monospace" font-size="24" font-weight="bold">SCLDF: REALIZED RETURN</text>
+  <text x="50%" y="10%" text-anchor="middle" fill="#B9F2FF" font-family="monospace" font-size="18">Symmetry Absolute</text>
+  <path d="M100 100 L412 412 M412 100 L100 412" stroke="#B9F2FF" stroke-width="2" opacity="0.3"/>
+</svg>

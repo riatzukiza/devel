@@ -1,0 +1,20 @@
+{
+  "contract": "eta-mu-five-section-response",
+  "version": "ημ.output/response-shape@0.1.0",
+  "stage": "structure",
+  "ok": false,
+  "failures": [
+    {
+      "rule-id": "frames-cardinality",
+      "message": "Section `Frames` must have at most 3 items",
+      "section-id": "frames",
+      "heading": "Frames"
+    },
+    {
+      "rule-id": "next-exactly-one-action",
+      "message": "Section `Next` must have exactly 1 items",
+      "section-id": "next",
+      "heading": "Next"
+    }
+  ]
+}

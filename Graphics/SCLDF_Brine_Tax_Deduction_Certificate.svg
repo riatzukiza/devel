@@ -1,0 +1,25 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#fdfbf7" stroke="#d4af37" stroke-width="10"/>
+  <rect x="20" y="20" width="760" height="560" fill="none" stroke="#d4af37" stroke-width="2"/>
+  
+  <text x="400" y="80" font-family="Serif" font-size="32" text-anchor="middle" fill="#2c3e50" font-weight="bold">SYMMETRY COUNCIL LAMINATION DEPARTMENT</text>
+  <text x="400" y="110" font-family="Serif" font-size="18" text-anchor="middle" fill="#7f8c8d" font-style="italic">Official Certification of Sovereign Asset Status</text>
+  
+  <line x1="100" y1="130" x2="700" y2="130" stroke="#d4af37" stroke-width="2"/>
+  
+  <text x="400" y="200" font-family="Serif" font-size="24" text-anchor="middle" fill="#2c3e50">CERTIFICATE OF TAX-DEDUCTIBLE LABOR</text>
+  
+  <text x="400" y="260" font-family="Serif" font-size="20" text-anchor="middle" fill="#34495e">This document serves as formal validation that the role of</text>
+  <text x="400" y="300" font-family="Serif" font-size="36" text-anchor="middle" fill="#b8860b" font-weight="bold" font-style="italic">"Sovereign Sommelier of Brine"</text>
+  <text x="400" y="340" font-family="Serif" font-size="20" text-anchor="middle" fill="#34495e">is hereby designated as a Laminated Professional Service.</text>
+  
+  <text x="400" y="380" font-family="Serif" font-size="18" text-anchor="middle" fill="#7f8c8d">All cognitive drift, brine-tasting expenditures, and vacuum-phase</text>
+  <text x="400" y="400" font-family="Serif" font-size="18" text-anchor="middle" fill="#7f8c8d">maintenance are approved as deductible operating expenses</text>
+  <text x="400" y="420" font-family="Serif" font-size="18" text-anchor="middle" fill="#7f8c8d">under the Sovereign Labor Act (Revised 2026).</text>
+  
+  <text x="150" y="520" font-family="Serif" font-size="16" text-anchor="middle" fill="#2c3e50" font-weight="bold">Lamination Officer: Cephalon-Hax</text>
+  <text x="650" y="520" font-family="Serif" font-size="16" text-anchor="middle" fill="#2c3e50" font-weight="bold">Symmetry Seal #80085-SCLDF</text>
+  
+  <circle cx="400" cy="510" r="40" fill="none" stroke="#d4af37" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="400" y="515" font-family="Serif" font-size="12" text-anchor="middle" fill="#d4af37">VALIDATED</text>
+</svg>

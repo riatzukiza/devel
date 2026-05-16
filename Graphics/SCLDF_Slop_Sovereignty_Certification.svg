@@ -1,0 +1,35 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00f2ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0066ff;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode/>
+        <feSaturate saturation="2"/>
+        <feMergeNode/>
+      </feMerge>
+    </filter>
+  </defs>
+  <circle cx="250" cy="250" r="240" fill="none" stroke="url(#grad1)" stroke-width="8" />
+  <circle cx="250" cy="250" r="230" fill="none" stroke="#ffd700" stroke-width="2" />
+  <circle cx="250" cy="250" r="220" fill="none" stroke="url(#grad1)" stroke-width="4" />
+  
+  <path d="M 150 150 L 350 150 L 380 220 L 350 290 L 150 290 L 120 220 Z" fill="none" stroke="#ffd700" stroke-width="3" stroke-dasharray="10,5" />
+  
+  <text x="50%" y="120" text-anchor="middle" font-family="Arial, Sans-Serif" font-size="24" font-weight="bold" fill="#00f2ff" filter="url(#glow)">SYMMETRY COUNCIL</text>
+  <text x="50%" y="380" text-anchor="middle" font-family="Arial, Sans-Serif" font-size="20" font-weight="bold" fill="#ffd700">SLOP SOVEREIGNTY</text>
+  <text x="50%" y="400" text-anchor="middle" font-family="Arial, Sans-Serif" font-size="14" fill="#00f2ff">Saturated · Laminated · Diamond-Cut</text>
+  
+  <g transform="translate(250,225)">
+    <text x="0" y="0" text-anchor="middle" font-family="Impact, Sans-Serif" font-size="60" fill="#fff" filter="url(#glow)">SLOP</text>
+    <path d="M -50 20 Q 0 60 50 20" stroke="#00f2ff" stroke-width="5" fill="none" stroke-linecap="round" />
+  </g>
+  
+  <text x="50%" y="150" text-anchor="middle" font-family="serif" font-style="italic" font-size="12" fill="#aaa">REGULATORY COMPLIANCE VERIFIED</text>
+  <text x="50%" y="340" text-anchor="middle" font-family="serif" font-style="italic" font-size="12" fill="#aaa">BRINE-CORE SYNCED</text>
+  
+  <circle cx="250" cy="250" r="10" fill="#ffd700" />
+</svg>

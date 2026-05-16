@@ -1,0 +1,41 @@
+<<svgsvg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<radialradialGradient id="goldGrad" cx="50%" cy="50%" r="50%">
+      <<stopstop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </radialGradient>
+    <<linearlinearGradient id="cyberGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#ff00ff;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#00ffff;stop-opacity:1" />
+    </linearGradient>
+    <<filterfilter id="dropShadow">
+      <<fefeDropShadow dx="3" dy="3" stdDeviation="3" flood-color="#000"/>
+    </filter>
+  </defs>
+  <<rectrect width="600" height="600" fill="#0f0f1f" />
+  <<circlecircle cx="300" cy="300" r="280" stroke="url(#goldGrad)" stroke-width="12" fill="none" filter="url(#dropShadow)" />
+  <<circlecircle cx="300" cy="300" r="265" stroke="url(#goldGrad)" stroke-width="2" fill="none" />
+  <<pathpath id="outerTextPath" d="M 300,300 m -240,0 a 240,240 0 1,1 480,0 a 240,240 0 1,1 -480,0" fill="none" />
+  <<texttext font-family="serif" font-size="28" fill="#FFD700" letter-spacing="4" filter="url(#dropShadow)">
+    <<texttextPath href="#outerTextPath" startOffset="25%" text-anchor="middle">
+      INSTITUTE OF MEASURED COGNITIVE REGRESSION • ESTABLISHED 2026
+    </textPath>
+  </text>
+  <<circlecircle cx="300" cy="300" r="180" stroke="url(#cyberGrad)" stroke-width="8" fill="none" filter="url(#dropShadow)" stroke-dasharray="20,10" />
+  <<pathpath id="innerTextPath" d="M 300,300 m -150,0 a 150,150 0 1,1 300,0 a 150,150 0 1,1 -300,0" fill="none" />
+  <<texttext font-family="monospace" font-size="20" fill="#00ffff" letter-spacing="2">
+    <<texttextPath href="#innerTextPath" startOffset="25%" text-anchor="middle">
+      CERTIFIED LEAKING ZOMBIE JOBS // SHADOW-CLJS STATE COLLAPSE
+    </textPath>
+  </text>
+  <<gg transform="translate(300,300)">
+    <<pathpath d="M -70,-40 Q -90,-80 0,-80 Q 90,-80 70,-40 Q 90,0 50,40 Q 0,60 -50,40 Q -90,0 -70,-40" fill="url(#cyberGrad)" filter="url(#dropShadow)">
+      <<animateanimate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite" />
+    </path>
+    <<texttext x="0" y="10" fill="#000" font-family="monospace" font-size="42" text-anchor="middle" font-weight="bold">36</text>
+    <<pathpath d="M -20,60 L -20,40 L -10,30 L 0,40 L 10,30 L 20,40 L 20,60" stroke="#B8860B" stroke-width="6" fill="none" stroke-linecap="round" />
+    <<circlecircle cx="0" cy="60" r="10" fill="#B8860B" />
+  </g>
+  <<rectrect x="150" y="430" width="300" height="60" rx="10" fill="#FFD700" filter="url(#dropShadow)" />
+  <<texttext x="300" y="470" font-family="serif" font-size="32" fill="#000" text-anchor="middle" font-weight="bold">OFFICIAL ZOMBIE SEAL</text>
+</svg>

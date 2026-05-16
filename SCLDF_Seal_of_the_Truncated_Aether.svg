@@ -1,0 +1,38 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="voidGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a001a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2a004a;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="coloredBlur"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="500" height="500" fill="url(#voidGrad)" />
+
+  <!-- The Shattered Ring (Truncated) -->
+  <path d="M 250,50 A 200,200 0 1,1 150,400" stroke="#00ffff" stroke-width="8" fill="none" stroke-linecap="round" filter="url(#glow)" stroke-dasharray="20,10" />
+  <path d="M 50,250 A 200,200 0 0,0 400,150" stroke="#ffffff" stroke-width="4" fill="none" stroke-dasharray="5,15" opacity="0.6" />
+
+  <!-- Crystalline Shards -->
+  <polygon points="250,150 270,200 230,200" fill="#00ffff" filter="url(#glow)" />
+  <polygon points="300,250 340,270 320,230" fill="#ffffff" opacity="0.8" />
+  <polygon points="200,300 220,350 180,350" fill="#bf00ff" filter="url(#glow)" />
+  <polygon points="350,100 370,130 330,130" fill="#ffffff" opacity="0.5" />
+
+  <!-- Diamond focal point -->
+  <path d="M 250,220 L 280,250 L 250,280 L 220,250 Z" fill="#ffffff" filter="url(#glow)" stroke="#00ffff" stroke-width="2" />
+
+  <!-- Truncated Text -->
+  <text x="250" y="420" text-anchor="middle" font-family="monospace" font-size="24" fill="#00ffff" filter="url(#glow)">
+    SCLDF // SYMMETRY OF THE TRUN...
+  </text>
+
+  <!-- Geometric lines -->
+  <line x1="0" y1="0" x2="500" y2="500" stroke="#00ffff" stroke-width="1" opacity="0.2" />
+  <line x1="500" y1="0" x2="0" y2="500" stroke="#ffffff" stroke-width="1" opacity="0.2" />
+</svg>

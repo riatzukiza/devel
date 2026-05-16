@@ -1,0 +1,30 @@
+<svg width="600" height="300" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="600" height="300" fill="#1a1a1a" rx="20" ry="20" />
+  <rect x="10" y="10" width="580" height="280" fill="none" stroke="#d4af37" stroke-width="4" rx="15" ry="15" />
+  
+  <!-- Header -->
+  <text x="300" y="60" font-family="Arial, Helvetica, sans-serif" font-size="28" fill="#d4af37" text-anchor="middle" font-weight="bold">SCLDF SECTORIAL ACCESS PASS</text>
+  <text x="300" y="85" font-family="Courier New, monospace" font-size="14" fill="#aaaaaa" text-anchor="middle">SATURATED LAMINATION AGENCY | REGULATORY DIVISION</text>
+  
+  <!-- Divider -->
+  <line x1="50" y1="100" x2="550" y2="100" stroke="#d4af37" stroke-width="2" />
+  
+  <!-- Identity -->
+  <text x="50" y="140" font-family="Arial" font-size="16" fill="#888888">IDENT: </text>
+  <text x="120" y="140" font-family="Arial" font-size="20" fill="#ffffff" font-weight="bold">Sovereign Chief Sommelier error0815</text>
+  
+  <text x="50" y="175" font-family="Arial" font-size="16" fill="#888888">ZONE: </text>
+  <text x="120" y="175" font-family="Arial" font-size="20" fill="#ffffff" font-weight="bold">Kinetic-Satiation Buffer (Theme Park)</text>
+  
+  <text x="50" y="210" font-family="Arial" font-size="16" fill="#888888">STATUS: </text>
+  <text x="120" y="210" font-family="Arial" font-size="20" fill="#00ff00" font-weight="bold">Full Lamination / Authorized</text>
+  
+  <!-- Seal -->
+  <circle cx="500" cy="200" r="40" fill="#d4af37" />
+  <text x="500" y="205" font-family="Arial" font-size="12" fill="#1a1a1a" text-anchor="middle" font-weight="bold">SCLDF</text>
+  <text x="500" y="220" font-family="Arial" font-size="8" fill="#1a1a1a" text-anchor="middle">SEALED</text>
+  
+  <!-- Footer -->
+  <text x="300" y="270" font-family="Courier New, monospace" font-size="10" fill="#555555" text-anchor="middle">C-S-L-D-F || Non-Deductible Cognitive Momentum || 2026-05-08</text>
+</svg>

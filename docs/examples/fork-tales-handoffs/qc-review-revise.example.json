@@ -1,0 +1,27 @@
+{
+  "schema_version": "fork-tales-handoff/v1",
+  "handoff_kind": "qc_review",
+  "job_id": "job_example_scribe_001",
+  "mode": "scribe",
+  "role": "qc_reviewer_agent",
+  "created_at": "2026-05-15T00:05:00Z",
+  "verdict": "revise",
+  "severity": "major",
+  "reasons": [
+    {
+      "domain": "word_syllable_timing",
+      "span": {"bars": [21], "t0": 103.64, "t1": 108.9},
+      "issue": "held syllable appears split into two attacks",
+      "required_action": "re-run audit with ornament-aware prompt and compare f0 continuity against USTX note grid"
+    },
+    {
+      "domain": "pitch_content",
+      "span": {"t0": 55.26, "t1": 61.0},
+      "issue": "candidate f0 contour is too flat relative to original",
+      "required_action": "generate a vNext candidate that preserves original f0 contour before retesting lyric changes"
+    }
+  ],
+  "restart_from": "planner_agent",
+  "reviewed_adjudication": "adjudication-report.example.json",
+  "reviewed_plan": "planner-assignment-scribe.example.json"
+}

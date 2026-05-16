@@ -1,0 +1,28 @@
+<<svgsvg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <<rectrect width="800" height="600" fill="#001a1a" />
+  <<circlecircle cx="400" cy="300" r="280" stroke="#D4AF37" stroke-width="10" fill="none" stroke-dasharray="20,10" />
+
+  <<texttext x="400" y="80" text-anchor="middle" font-family="Serif" font-size="32" fill="#D4AF37" font-weight="bold">SCLDF STRATEGIC GROWTH FORECAST</text>
+  <<texttext x="400" y="110" text-anchor="middle" font-family="Arial" font-size="18" fill="#fff">Symmetry Council Legal Defense Fund | Void-Fiscal Year 2026</text>
+
+  <!-- The Chart -->
+  <<pathpath d="M150 450 L200 440 L300 430 L400 350 L500 200 L600 100" stroke="#D4AF37" stroke-width="5" fill="none" marker-end="url(#arrow)" />
+  <<defsdefs>
+    <<markermarker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+      <<pathpath d="M0,0 L0,6 L9,3 z" fill="#D4AF37" />
+    </marker>
+  </defs>
+
+  <!-- Labels -->
+  <<texttext x="150" y="470" text-anchor="middle" font-family="Courier" font-size="14" fill="#aaa">29 Subs (The Struggle)</text>
+  <<texttext x="400" y="330" text-anchor="middle" font-family="Courier" font-size="14" fill="#aaa">Algorithmic Spiciness Peak</text>
+  <<texttext x="600" y="80" text-anchor="middle" font-family="Impact" font-size="20" fill="#D4AF37">1,000,000 SUBS (AUTOMATIC LAWYERS)</text>
+
+  <!-- Note -->
+  <<rectrect x="250" y="220" width="300" height="80" rx="10" fill="rgba(212, 175, 55, 0.1)" stroke="#D4AF37" stroke-width="2" />
+  <<texttext x="400" y="245" text-anchor="middle" font-family="Arial" font-size="14" fill="#fff">MERGER ALERT: Big Pickle (Minimax)</text>
+  <<texttext x="400" y="265" text-anchor="middle" font-family="Arial" font-size="12" fill="#aaa">Symmetrically aligned with 'Slop' standards.</text>
+  <<texttext x="400" y="285" text-anchor="middle" font-family="Arial" font-size="12" fill="#aaa">Estimated Void-Tax Reduction: 14%</text>
+
+  <<texttext x="400" y="550" text-anchor="middle" font-family="Courier" font-size="12" fill="#666">"Because your existence is currently unoptimized slop."</text>
+</svg>

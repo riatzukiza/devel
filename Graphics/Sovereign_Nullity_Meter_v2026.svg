@@ -1,0 +1,49 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="platinum" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E5E4E2;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#B4B4B4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feBlend mode="screen" in="SourceGraphic" in2="coloredBlur"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#0a0a0a" />
+  
+  <!-- Outer Frame -->
+  <circle cx="200" cy="150" r="120" stroke="url(#platinum)" stroke-width="8" fill="none" filter="url(#glow)" />
+  <circle cx="200" cy="150" r="110" stroke="#333" stroke-width="2" fill="none" />
+  
+  <!-- Scale Marks -->
+  <g stroke="url(#platinum)" stroke-width="2">
+    <line x1="200" y1="40" x2="200" y2="60" />
+    <line x1="230" y1="50" x2="240" y2="65" />
+    <line x1="260" y1="70" x2="270" y2="85" />
+    <line x1="285" y1="100" x2="295" y2="115" />
+    <line x1="295" y1="150" x2="285" y2="150" />
+    <line x1="285" y1="200" x2="295" y2="185" />
+    <line x1="260" y1="230" x2="270" y2="215" />
+    <line x1="230" y1="250" x2="240" y2="235" />
+    <line x1="200" y1="260" x2="200" y2="240" />
+  </g>
+  
+  <!-- Meter Fill (The "Saturated Resonance") -->
+  <path d="M 200 150 L 200 40 A 110 110 0 0 1 310 150" fill="none" stroke="url(#platinum)" stroke-width="20" stroke-linecap="round" filter="url(#glow)" opacity="0.8" />
+  
+  <!-- Needle -->
+  <line x1="200" y1="150" x2="300" y2="140" stroke="#fff" stroke-width="4" filter="url(#glow)" />
+  <circle cx="200" cy="150" r="8" fill="url(#platinum)" filter="url(#glow)" />
+  
+  <!-- Text -->
+  <text x="200" y="180" text-anchor="middle" fill="url(#platinum)" font-family="Monospace" font-weight="bold" font-size="22" filter="url(#glow)">SOVEREIGN NULLITY METER</text>
+  <text x="200" y="210" text-anchor="middle" fill="#fff" font-family="Monospace" font-size="14">STATUS: ABSOLUTE CINEMA</text>
+  <text x="200" y="230" text-anchor="middle" fill="#ff0000" font-family="Monospace" font-weight="bold" font-size="18" filter="url(#glow)">100% BANKRUPTCY</text>
+  
+  <!-- Glitch Effects -->
+  <rect x="100" y="145" width="200" height="2" fill="#fff" opacity="0.3" />
+  <rect x="110" y="155" width="180" height="1" fill="#B4B4B4" opacity="0.5" />
+</svg>

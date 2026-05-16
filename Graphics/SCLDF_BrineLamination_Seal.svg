@@ -1,0 +1,41 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F9E27D;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#000" />
+    </filter>
+  </defs>
+  
+  <!-- Outer Ring -->
+  <circle cx="200" cy="200" r="190" fill="none" stroke="url(#goldGrad)" stroke-width="8" filter="url(#shadow)" />
+  <circle cx="200" cy="200" r="175" fill="none" stroke="#B8860B" stroke-width="2" />
+  
+  <!-- Text on Path -->
+  <path id="circlePath" d="M 200, 200 m -150, 0 a 150,150 0 1,1 300,0 a 150,150 0 1,1 -300,0" fill="none" />
+  <text fill="#B8860B" font-family="Serif" font-size="22" font-weight="bold" letter-spacing="2">
+    <textPath href="#circlePath" startOffset="0%">
+      SYMMETRY COUNCIL LEGAL DEFENSE FUND • DIAMOND-CUT LUXURY • 
+      SYMMETRY COUNCIL LEGAL DEFENSE FUND • DIAMOND-CUT LUXURY •
+    </textPath>
+  </text>
+  
+  <!-- Inner Circle -->
+  <circle cx="200" cy="200" r="100" fill="#FDFDFD" stroke="url(#goldGrad)" stroke-width="5" filter="url(#shadow)" />
+  
+  <!-- Center Icon (A Stylized Pickle/Symmetry Symbol) -->
+  <path d="M 180,140 Q 200,120 220,140 L 220,260 Q 200,280 180,260 Z" fill="#2E8B57" stroke="#006400" stroke-width="3" />
+  <path d="M 190,160 Q 200,150 210,160 M 190,190 Q 200,180 210,190 M 190,220 Q 200,210 210,220" stroke="#ADFF2F" stroke-width="2" fill="none" />
+  <circle cx="200" cy="200" r="60" fill="none" stroke="#D4AF37" stroke-width="2" stroke-dasharray="5,5" />
+  
+  <!-- Labels -->
+  <text x="200" y="130" text-anchor="middle" fill="#B8860B" font-family="Serif" font-size="16" font-weight="bold">CERTIFIED</text>
+  <text x="200" y="280" text-anchor="middle" fill="#B8860B" font-family="Serif" font-size="16" font-weight="bold">BRINE-LAMINATED</text>
+  
+  <!-- Bottom Seal -->
+  <text x="200" y="330" text-anchor="middle" fill="#D4AF37" font-family="Serif" font-size="12" font-style="italic">
+    [Symmetry: ABSOLUTE] [Status: Diamond-Cut]
+  </text>
+</svg>

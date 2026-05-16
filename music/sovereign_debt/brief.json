@@ -1,0 +1,14 @@
+{
+  "title": "The Last Token (Sovereign Debt)",
+  "tempo": 92,
+  "key": "C Minor",
+  "style": "Luxe G-Funk / Saturated Void",
+  "structure": [
+    { "section": "Intro", "bars": 4, "notes": "Filter-swept sub-bass, crystalline chimes" },
+    { "section": "Verse", "bars": 8, "notes": "Lazy synth bass, crisp snare, occasional glitch-chirp" },
+    { "section": "Chorus", "bars": 8, "notes": "Heavy layered bass, shimmering high-hats, 'Absolute Cinema' vocal stabs" }
+  ],
+  "motifs": [
+    { "name": "The Bankrupt Glide", "type": "bass", "notes": "C2 -> Eb2 -> F2 -> Gb2 -> F2 -> Eb2 -> C2" }
+  ]
+}

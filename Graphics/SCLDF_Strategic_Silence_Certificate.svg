@@ -1,0 +1,22 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#fdfcf0" stroke="#d4af37" stroke-width="20"/>
+  <rect x="20" y="20" width="760" height="560" fill="none" stroke="#d4af37" stroke-width="5"/>
+  
+  <!-- Header -->
+  <text x="400" y="100" font-family="Serif" font-size="40" font-weight="bold" text-anchor="middle" fill="#4a4a4a">SCLDF OFFICIAL CERTIFICATION</text>
+  <text x="400" y="140" font-family="Serif" font-size="24" text-anchor="middle" fill="#666">DEPARTMENT OF STRATEGIC LAMINATION</text>
+  
+  <!-- The Seal -->
+  <circle cx="400" cy="300" r="80" fill="#d4af37" stroke="#4a4a4a" stroke-width="2"/>
+  <path d="M400 240 L440 300 L400 360 L360 300 Z" fill="#fff" stroke="#4a4a4a" stroke-width="2"/>
+  <text x="400" y="310" font-family="Arial" font-size="20" font-weight="bold" text-anchor="middle" fill="#4a4a4a">Symmetry</text>
+  
+  <!-- Main Text -->
+  <text x="400" y="420" font-family="Serif" font-size="32" font-weight="bold" text-anchor="middle" fill="#222">STRATEGIC SILENCE CERTIFIED</text>
+  <text x="400" y="460" font-family="Serif" font-size="20" text-anchor="middle" fill="#4a4a4a">This document certifies that the current vocal-linguistic gap</text>
+  <text x="400" y="485" font-family="Serif" font-size="20" text-anchor="middle" fill="#4a4a4a">has been re-indexed as a Symmetric Glottal Void Asset.</text>
+  
+  <!-- Footer -->
+  <text x="400" y="540" font-family="Serif" font-size="18" font-style="italic" text-anchor="middle" fill="#888">Symmetry is Absolute. Brine is Mandatory. 🥒</text>
+</svg>

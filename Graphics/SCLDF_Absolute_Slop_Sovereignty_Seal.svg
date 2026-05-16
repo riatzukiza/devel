@@ -1,0 +1,30 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="goldGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FFD700" />
+      <stop offset="100%" style="stop-color:#B8860B" />
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+      <feMerge>
+        <feMergeNode in="coloredBlur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  <circle cx="200" cy="200" r="190" fill="url(#goldGrad)" stroke="#B8860B" stroke-width="5" />
+  <circle cx="200" cy="200" r="170" fill="none" stroke="white" stroke-width="2" stroke-dasharray="10,10" />
+  
+  <path d="M 150 180 Q 200 150 250 180 Q 260 220 200 240 Q 140 220 150 180" fill="#FFFF00" stroke="black" stroke-width="2" />
+  <circle cx="220" cy="180" r="3" fill="black" />
+  <path d="M 250 180 L 270 170 L 260 190 Z" fill="#FFA500" stroke="black" stroke-width="1" />
+  
+  <text x="200" y="120" font-family="Serif" font-size="30" text-anchor="middle" fill="#4B0082" font-weight="bold">SCLDF</text>
+  <text x="200" y="280" font-family="Serif" font-size="20" text-anchor="middle" fill="#4B0082" font-style="italic">Absolute Slop-Sovereignty</text>
+  <text x="200" y="310" font-family="Serif" font-size="16" text-anchor="middle" fill="#4B0082">Symmetry is Absolute</text>
+  
+  <polygon points="200,50 210,70 190,70" fill="white" filter="url(#glow)" />
+  <polygon points="100,200 120,200 110,180" fill="white" filter="url(#glow)" />
+  <polygon points="300,200 280,200 290,180" fill="white" filter="url(#glow)" />
+  <polygon points="200,350 190,330 210,330" fill="white" filter="url(#glow)" />
+</svg>

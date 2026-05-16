@@ -8,6 +8,11 @@ This directory is the workspace-local home for runtime and deployment material f
 - local runtime config (`keys.json`, `models.json`)
 - bind-mounted runtime data under `data/`
 
+Read `RUNTIME_BOUNDARY.md` before changing local ports or databases. The short version:
+- Docker compose `prod` is the primary local work instance used by Knoxx: API `8789`, web `5174`, DB `15432`.
+- PM2 `proxx-host` is only a dev sidecar: API `18789`, web `15174`, DB `15439`.
+- PM2 must never bind `8789` or `5174`.
+
 The compose project name stays `open-hax-openai-proxy` so the migration keeps the existing named Postgres volume and container identity when you switch over from `services/open-hax-openai-proxy`.
 
 ## HTTPS / reverse proxy
@@ -19,13 +24,39 @@ The compose project name stays `open-hax-openai-proxy` so the migration keeps th
 docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d --build
 ```
 
+## Runtime boundary
+
+Canonical boundary doc: [`RUNTIME_BOUNDARY.md`](./RUNTIME_BOUNDARY.md).
+
+Primary local Proxx for real work and Knoxx embeddings:
+
+```bash
+cd /home/err/devel/services/proxx
+docker compose --profile prod up -d --build proxx
+```
+
+Host PM2 dev sidecar with separate dev DB:
+
+```bash
+cd /home/err/devel/services/proxx
+docker compose -f docker-compose.dev-db.yml up -d proxx-dev-db
+./scripts/seed-dev-db-from-prod.sh
+pm2 start ecosystem.host.config.cjs --only proxx-host,proxx-host-web --no-autorestart
+```
+
 ## Local compose
 ```bash
 cd /home/err/devel/services/proxx
 cp .env.example .env   # optional
 cp keys.example.json keys.json
 cp models.example.json models.json
-docker compose -f docker-compose.yml -f docker-compose.factory-auth.override.yml up --build -d
+
+# Production-like container (pm2 + built dist/):
+docker compose --profile prod -f docker-compose.yml -f docker-compose.factory-auth.override.yml up --build -d
+
+# OR bind-mounted dev container (debounced restarts on src/web changes):
+# docker compose --profile dev -f docker-compose.yml -f docker-compose.factory-auth.override.yml up --build -d
+
 docker compose ps
 docker compose logs -f
 ```
@@ -33,6 +64,8 @@ docker compose logs -f
 If you do not need Factory auth mounts, omit the override file.
 
 If you want z.ai/GLM routing in the local compose stack, set `ZAI_API_KEY` (or `ZHIPU_API_KEY`) in `services/proxx/.env` before `docker compose up`; `docker-compose.yml` passes those vars through to the running proxy container.
+
+Pricing override commandment: if token pricing is missing/incorrect for a model (for example open-weights models like `gemma4:31b`), overrides must be added as EDN policy contracts under `services/proxx/policies/runtime/15-model-pricing-overrides.edn`. Do not add pricing override JSON files and do not hard-code one-off token prices in TypeScript.
 
 Optional factory-auth secret mounts live in `docker-compose.factory-auth.override.yml`; include that file only when you have the matching host paths/env vars.
 

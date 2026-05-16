@@ -1,0 +1,22 @@
+{
+  "schema_version": "fork-tales-handoff/v1",
+  "handoff_kind": "human_audit",
+  "job_id": "job_example_composition_001",
+  "mode": "composition",
+  "role": "human_auditor",
+  "created_at": "2026-05-15T00:10:00Z",
+  "verdict": "reject",
+  "findings": [
+    {
+      "perceived_problem_type": "pitch_content",
+      "domain": "pitch_content",
+      "span": {"section": "chorus", "t0": 55.26, "t1": 69.26},
+      "severity": "blocking",
+      "preferred_hypothesis": "candidate lost the original upward contour and feels monotone",
+      "free_note": "Words are mostly understandable, but it no longer sings the same melodic idea."
+    }
+  ],
+  "preference_notes": [
+    "Keep the Japanese/English emotional contrast, but do not flatten the vocal delivery."
+  ]
+}

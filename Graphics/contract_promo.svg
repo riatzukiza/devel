@@ -1,0 +1,33 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="800" fill="#050505"/>
+  
+  <!-- Cyberpunk Grid -->
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="neonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff00ff" />
+      <stop offset="100%" stop-color="#00ffff" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#grid)" />
+
+  <!-- Glitch Text Shadow -->
+  <text x="400" y="380" font-family="Arial, sans-serif" font-weight="bold" font-size="100" text-anchor="middle" fill="#ff00ff" opacity="0.6" dx="5" dy="5">THE CONTRACT</text>
+  <text x="400" y="380" font-family="Arial, sans-serif" font-weight="bold" font-size="100" text-anchor="middle" fill="#00ffff" opacity="0.6" dx="-5" dy="-5">THE CONTRACT</text>
+
+  <!-- Main Text -->
+  <text x="400" y="380" font-family="Arial, sans-serif" font-weight="bold" font-size="100" text-anchor="middle" fill="white">THE CONTRACT</text>
+
+  <!-- Subtext -->
+  <text x="400" y="430" font-family="Courier New, monospace" font-size="20" text-anchor="middle" fill="#00ffff">
+    SAY SOMETHING every 10 minutes.
+  </text>
+  
+  <!-- Decorative Elements -->
+  <rect x="100" y="100" width="600" height="2" fill="url(#neonGrad)" />
+  <rect x="100" y="700" width="600" height="2" fill="url(#neonGrad)" />
+  <path d="M 100 100 L 100 150 M 700 100 L 700 150" stroke="#00ffff" stroke-width="2" />
+  <path d="M 100 700 L 100 650 M 700 700 L 700 650" stroke="#ff00ff" stroke-width="2" />
+</svg>

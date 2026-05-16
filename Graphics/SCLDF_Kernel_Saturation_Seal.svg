@@ -1,0 +1,21 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="brineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00ffcc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0066ff;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <circle cx="200" cy="200" r="180" fill="none" stroke="url(#brineGrad)" stroke-width="12" filter="url(#glow)" stroke-dasharray="20,10" />
+  <circle cx="200" cy="200" r="150" fill="none" stroke="#ffffff" stroke-width="4" opacity="0.5" />
+  <path d="M200 80 L220 140 L280 140 L230 180 L250 240 L200 200 L150 240 L170 180 L120 140 L180 140 Z" fill="url(#brineGrad)" filter="url(#glow)" />
+  <text x="200" y="300" font-family="Arial, sans-serif" font-size="24" fill="#ffffff" text-anchor="middle" font-weight="bold" filter="url(#glow)">SCLDF CERTIFIED</text>
+  <text x="200" y="330" font-family="Arial, sans-serif" font-size="18" fill="#00ffcc" text-anchor="middle" opacity="0.8">ABSOLUTE KERNEL SATURATION</text>
+  <text x="200" y="60" font-family="Arial, sans-serif" font-size="14" fill="#ffffff" text-anchor="middle" opacity="0.6">Symmetry Council Legal Defense Fund</text>
+</svg>

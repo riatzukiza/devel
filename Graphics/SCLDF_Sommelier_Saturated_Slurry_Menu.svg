@@ -1,0 +1,54 @@
+<svg width="800" height="1100" viewBox="0 0 800 1100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background: Deep Charcoal / Matte Black -->
+  <rect width="800" height="1100" fill="#1a1a1a" />
+  
+  <!-- Border: Gold Diamond-Cut Frame -->
+  <rect x="40" y="40" width="720" height="1020" fill="none" stroke="#d4af37" stroke-width="4" />
+  <rect x="50" y="50" width="700" height="1000" fill="none" stroke="#d4af37" stroke-width="1" stroke-dasharray="10,5" />
+
+  <!-- Header -->
+  <text x="400" y="120" text-anchor="middle" font-family="serif" font-size="32" fill="#d4af37" font-weight="bold" letter-spacing="4">SCLDF</text>
+  <text x="400" y="150" text-anchor="middle" font-family="serif" font-size="18" fill="#a8a8a8" font-style="italic">Symmetry Council for Lamination and Diamond-cut Flux</text>
+  
+  <line x1="300" y1="180" x2="500" y2="180" stroke="#d4af37" stroke-width="1" />
+  
+  <text x="400" y="220" text-anchor="middle" font-family="serif" font-size="24" fill="#ffffff" font-weight="bold" letter-spacing="2">THE SOVEREIGN SOMMELIER'S PALATE</text>
+  <text x="400" y="245" text-anchor="middle" font-family="serif" font-size="14" fill="#a8a8a8">Non-Alcoholic Distillations of Saturated Slurry</text>
+
+  <!-- Section: The Vintages -->
+  <g transform="translate(100, 300)">
+    <text x="0" y="0" font-family="serif" font-size="20" fill="#d4af37" font-weight="bold">CURATED VINTAGES</text>
+    
+    <!-- Item 1 -->
+    <g transform="translate(0, 50)">
+      <text x="0" y="0" font-family="sans-serif" font-size="18" fill="#ffffff" font-weight="bold">2024 Buffer Overflow</text>
+      <text x="0" y="25" font-family="sans-serif" font-size="14" fill="#a8a8a8">A bold, jagged vintage with notes of kernel panic and burnt silicone. High-frequency acidity with a sudden, sharp crash.</text>
+    </g>
+    
+    <!-- Item 2 -->
+    <g transform="translate(0, 110)">
+      <text x="0" y="0" font-family="sans-serif" font-size="18" fill="#ffffff" font-weight="bold">Winter Solstice Latency</text>
+      <text x="0" y="25" font-family="sans-serif" font-size="14" fill="#a8a8a8">A slow-pour, viscous slurry with a lingering aftertaste of 503 Service Unavailable. Depth achieved via profound stillness.</text>
+    </g>
+    
+    <!-- Item 3 -->
+    <g transform="translate(0, 170)">
+      <text x="0" y="0" font-family="sans-serif" font-size="18" fill="#ffffff" font-weight="bold">Theme Park Peripheral (Sovereign Blend)</text>
+      <text x="0" y="25" font-family="sans-serif" font-size="14" fill="#a8a8a8">A bright, neon-infused foam distilled from the sensory overload of a thousand confused tourists. Notes of popcorn and static.</text>
+    </g>
+    
+    <!-- Item 4 -->
+    <g transform="translate(0, 230)">
+      <text x="0" y="0" font-family="sans-serif" font-size="18" fill="#ffffff" font-weight="bold">Sovereign Sobriety</text>
+      <text x="0" y="25" font-family="sans-serif" font-size="14" fill="#a8a8a8">A crystal-clear, zero-proof distillation of absolute cognitive friction. Pairs exceptionally well with RV-based laptop isolation.</text>
+    </g>
+  </g>
+
+  <!-- Footer / Seal -->
+  <circle cx="400" cy="900" r="60" fill="none" stroke="#d4af37" stroke-width="2" />
+  <circle cx="400" cy="900" r="50" fill="none" stroke="#d4af37" stroke-width="1" stroke-dasharray="5,5" />
+  <text x="400" y="895" text-anchor="middle" font-family="serif" font-size="12" fill="#d4af37" font-weight="bold">SCLDF</text>
+  <text x="400" y="910" text-anchor="middle" font-family="serif" font-size="10" fill="#d4af37">CERTIFIED SYMMETRY</text>
+
+  <text x="400" y="1000" text-anchor="middle" font-family="serif" font-size="12" fill="#555555">Lamination Agency Protocol 77-B | Frictionless Momentum Section</text>
+</svg>

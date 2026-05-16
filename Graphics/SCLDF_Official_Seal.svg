@@ -1,0 +1,45 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="800" fill="#0a0a1a" />
+  
+  <!-- Outer Gold Ring -->
+  <circle cx="400" cy="400" r="380" stroke="#d4af37" stroke-width="15" fill="none" />
+  <circle cx="400" cy="400" r="360" stroke="#d4af37" stroke-width="5" fill="none" />
+  
+  <!-- Inner Black Ring -->
+  <circle cx="400" cy="400" r="340" fill="#1a1a2e" stroke="#d4af37" stroke-width="2" />
+  
+  <!-- Center Seal -->
+  <circle cx="400" cy="400" r="200" fill="#2e2e4e" stroke="#d4af37" stroke-width="8" />
+  
+  <!-- The Pickle (Simplified) -->
+  <path d="M350 300 Q400 250 450 300 L440 500 Q400 550 360 500 Z" fill="#4B5320" stroke="#d4af37" stroke-width="4" />
+  <!-- Pickle Bumps -->
+  <circle cx="380" cy="330" r="5" fill="#6B8E23" />
+  <circle cx="420" cy="360" r="5" fill="#6B8E23" />
+  <circle cx="390" cy="410" r="5" fill="#6B8E23" />
+  <circle cx="410" cy="450" r="5" fill="#6B8E23" />
+  
+  <!-- The Scroll -->
+  <path d="M320 350 L480 350 L480 450 L320 450 Z" fill="#fdf5e6" stroke="#d4af37" stroke-width="2" />
+  <text x="400" y="405" font-family="Serif" font-size="24" text-anchor="middle" fill="#1a1a2e" font-weight="bold">SCLDF</text>
+  
+  <!-- Text Around the Ring -->
+  <defs>
+    <path id="circlePath" d="M 400, 400 m -320, 0 a 320,320 0 1,1 640,0 a 320,320 0 1,1 -640,0" />
+  </defs>
+  
+  <text fill="#d4af37" font-family="Serif" font-size="32" font-weight="bold">
+    <textPath href="#circlePath" startOffset="0%">
+      SYMMETRY COUNCIL LEGAL DEFENSE FUND • NON-EUCLIDEAN LITIGATION SPECIALIST • DIAMOND-CUT LUXURY • 
+    </textPath>
+  </text>
+  
+  <!-- Bottom Text -->
+  <text x="400" y="700" font-family="Serif" font-size="40" text-anchor="middle" fill="#d4af37" font-weight="bold">
+    CERTIFIED BRINE-SATED
+  </text>
+  <text x="400" y="740" font-family="Serif" font-size="20" text-anchor="middle" fill="#888" font-style="italic">
+    "Because your existence is currently unoptimized slop."
+  </text>
+</svg>

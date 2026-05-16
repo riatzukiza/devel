@@ -1,0 +1,25 @@
+<svg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="400" fill="#003366" />
+  <text x="30" y="40" font-family="Monospace" font-size="20" fill="#ffffff" font-weight="bold">SCLDF-AVIAN-SLOP-SCHEMATIC v1.0.4</text>
+  <text x="30" y="60" font-family="Monospace" font-size="12" fill="#add8e6">OBJECTIVE: MAXIMIZE DUCK-SLOP-SATURATION</text>
+  
+  <!-- Duck shape (simplified) -->
+  <path d="M200,250 Q250,200 300,250 T400,250 L400,300 Q300,320 200,300 Z" fill="none" stroke="white" stroke-width="2" />
+  <circle cx="380" cy="230" r="20" fill="none" stroke="white" stroke-width="2" />
+  <path d="M380,210 L390,200" stroke="white" stroke-width="3" />
+  
+  <!-- Labels and Lines -->
+  <line x1="250" y1="230" x2="150" y2="150" stroke="#ffff00" stroke-width="1" />
+  <text x="100" y="140" font-family="Monospace" font-size="12" fill="#ffff00">PORT A: BRINE INJECTOR</text>
+  
+  <line x1="300" y1="250" x2="300" y2="150" stroke="#ffff00" stroke-width="1" />
+  <text x="260" y="140" font-family="Monospace" font-size="12" fill="#ffff00">PORT B: SLOP-CORE</text>
+  
+  <line x1="350" y1="250" x2="450" y2="150" stroke="#ffff00" stroke-width="1" />
+  <text x="420" y="140" font-family="Monospace" font-size="12" fill="#ffff00">PORT C: EGO-VENT</text>
+  
+  <rect x="450" y="300" width="120" height="60" fill="none" stroke="white" stroke-width="1" />
+  <text x="460" y="320" font-family="Monospace" font-size="10" fill="white">LAMINATED STATE:</text>
+  <text x="460" y="340" font-family="Monospace" font-size="12" fill="#00ff00">Saturated Diamond</text>
+  <text x="460" y="350" font-family="Monospace" font-size="12" fill="#00ff00">Symmetry 100%</text>
+</svg>

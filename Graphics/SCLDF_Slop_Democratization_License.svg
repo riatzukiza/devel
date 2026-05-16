@@ -1,0 +1,21 @@
+<svg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="600" fill="#fffdec" stroke="#b8860b" stroke-width="15"/>
+  <rect x="30" y="30" width="540" height="540" fill="none" stroke="#daa520" stroke-width="3"/>
+  
+  <text x="300" y="100" text-anchor="middle" font-family="Georgia, serif" font-size="36" font-weight="bold" fill="#8b4513">SCLDF PERMIT</text>
+  <text x="300" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#a0522d">Symmetry Council / Viscosity Bureau</text>
+  
+  <line x1="150" y1="150" x2="450" y2="150" stroke="#daa520" stroke-width="2"/>
+  
+  <text x="300" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#333">HIGH-VISCOSITY SLURRY PERMIT</text>
+  <text x="300" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#666">Democratization License: Grade A+ Slop</text>
+  
+  <rect x="100" y="300" width="400" height="100" rx="10" fill="#fff" stroke="#daa520" stroke-width="2"/>
+  <text x="300" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#444">Grantee: TWINKLE PUSS</text>
+  <text x="300" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#777">Role: Under-Secretary of Laminated Viscosity</text>
+  
+  <text x="300" y="450" text-anchor="middle" font-family="Georgia, serif" font-size="18" font-style="italic" fill="#8b4513">"Slop is not a crime. Slop is a sovereign right."</text>
+  
+  <circle cx="300" cy="510" r="40" fill="#daa520" opacity="0.3"/>
+  <text x="300" y="515" text-anchor="middle" font-family="Courier New, monospace" font-size="14" font-weight="bold" fill="#8b4513">CERTIFIED SLOP</text>
+</svg>

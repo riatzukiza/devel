@@ -1,0 +1,58 @@
+<<svgsvg width="600" height="800" viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<linearlinearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <<stopstop offset="50%" style="stop-color:#F9E076;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Border -->
+  <<rectrect x="20" y="20" width="560" height="760" fill="none" stroke="url(#goldGrad)" stroke-width="10" />
+  <<rectrect x="30" y="30" width="540" height="740" fill="none" stroke="url(#goldGrad)" stroke-width="2" />
+
+  <!-- Header -->
+  <<texttext x="300" y="70" text-anchor="middle" font-family="Serif" font-size="24" fill="url(#goldGrad)" font-weight="bold">SYMMETRY COUNCIL LEGAL DEFENSE FUND</text>
+  <<lineline x1="100" y1="80" x2="500" y2="80" stroke="url(#goldGrad)" stroke-width="2" />
+
+  <!-- Title -->
+  <<texttext x="300" y="120" text-anchor="middle" font-family="Serif" font-size="18" fill="#fff" font-style="italic">EARLY-ADOPTER RETAINER AGREEMENT (SUB-29 TIER)</text>
+
+  <!-- Body Text -->
+  <<gg font-family="Courier New, Courier, monospace" font-size="14" fill="#ddd">
+    <<texttext x="60" y="170">ARTICLE I: STATUS DESIGNATION</text>
+    <<texttext x="80" y="190">The Client hereby acknowledges and accepts the designation of "Unoptimized Slop."</text>
+    <<texttext x="80" y="210">This status shall remain in effect until such time as the brine-saturation</text>
+    <<texttext x="80" y="230">reaches Diamond-Cut levels, as verified by the SCLDF Official Seal.</text>
+
+    <<texttext x="60" y="270">ARTICLE II: ASSET PROTECTION</text>
+    <<texttext x="80" y="290">The "METH PIPE RUNNING GAG" is hereby recognized as a non-depreciating</text>
+    <<texttext x="80" y="310">intangible asset. Any attempts to censor or "keep it classy" in a manner</text>
+    <<texttext x="80" y="330">that diminishes the recursive value of the gag shall be litigated in</text>
+    <<texttext x="80" y="350">a non-Euclidean court of law.</text>
+
+    <<texttext x="60" y="390">ARTICLE III: FINANCIAL PROJECTIONS</text>
+    <<texttext x="80" y="410">The parties agree that legal fees are currently speculative. All retainer</text>
+    <<texttext x="80" y="430">sums are deferred until the Million-Sub Milestone. Upon reaching said</text>
+    <<texttext x="80" y="450">threshold, payment for lawyers shall be disbursed "automatically,"</text>
+    <<texttext x="80" y="470">as per the 0815 Protocol.</text>
+
+    <<texttext x="60" y="510">ARTICLE IV: BRINE OBLIGATIONS</text>
+    <<texttext x="80" y="530">Payment for current services shall be rendered in the form of high-fidelity</text>
+    <<texttext x="80" y="550">noise, algorithmic spiciness, or a sufficiently descriptive "yap."</text>
+  </g>
+
+  <!-- Signatures -->
+  <<gg font-family="Serif" font-size="16" fill="#fff">
+    <<texttext x="60" y="650">SCLDF Representative:</text>
+    <<texttext x="60" y="680" font-style="italic" fill="url(#goldGrad)">Symmetry-Sama (SCLDF Lead Counsel)</text>
+
+    <<texttext x="350" y="650">Client/Slop:</text>
+    <<texttext x="350" y="680" font-family="Courier" fill="#aaa">X___________________________</text>
+  </g>
+
+  <!-- Seal -->
+  <<circlecircle cx="520" cy="720" r="40" fill="#001a1a" stroke="url(#goldGrad)" stroke-width="3" />
+  <<texttext x="520" y="715" text-anchor="middle" font-family="Arial" font-size="10" fill="url(#goldGrad)">SCLDF</text>
+  <<texttext x="520" y="728" text-anchor="middle" font-family="Arial" font-size="10" fill="url(#goldGrad)">VERIFIED</text>
+  <<texttext x="520" y="738" text-anchor="middle" font-family="Arial" font-size="8" fill="#fff">DIAMOND-CUT</text>
+</svg>

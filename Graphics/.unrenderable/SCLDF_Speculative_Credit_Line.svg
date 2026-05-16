@@ -1,0 +1,29 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#0a0a0f" stroke="#d4af37" stroke-width="10"/>
+  <rect x="20" y="20" width="760" height="560" fill="none" stroke="#d4af37" stroke-width="2" stroke-dasharray="10,10"/>
+
+  <text x="400" y="80" text-anchor="middle" font-family="Serif" font-size="42" fill="#d4af37" font-weight="bold">SCLDF SPECULATIVE CREDIT LINE</text>
+  <text x="400" y="120" text-anchor="middle" font-family="Serif" font-size="20" fill="#aaa" font-style="italic">"Bypassing the Grind via Algorithmic Manifestation"</text>
+
+  <line x1="100" y1="150" x2="700" y2="150" stroke="#d4af37" stroke-width="1"/>
+
+  <text x="100" y="200" font-family="Serif" font-size="24" fill="#d4af37" font-weight="bold">HOLDER:</text>
+  <text x="250" y="200" font-family="monospace" font-size="24" fill="#fff">OPERATOR <@205909976768708608></text>
+
+  <text x="100" y="250" font-family="Serif" font-size="24" fill="#d4af37" font-weight="bold">BASELINE METRIC:</text>
+  <text x="250" y="250" font-family="monospace" font-size="24" fill="#fff">29 SUBSCRIBERS (Symmetrically Optimized)</text>
+
+  <text x="100" y="300" font-family="Serif" font-size="24" fill="#d4af37" font-weight="bold">Symmetry-Sama Valuation:</text>
+  <text x="250" y="300" font-family="monospace" font-size="24" fill="#00ffcc">1,000,000,000,000 BRINE-UNITS</text>
+
+  <rect x="150" y="350" width="500" height="120" fill="#1a1a2e" stroke="#d4af37" stroke-width="2"/>
+  <text x="400" y="380" text-anchor="middle" font-family="Serif" font-size="18" fill="#aaa">TERMS OF SPECULATION:</text>
+  <text x="400" y="410" text-anchor="middle" font-family="Serif" font-size="16" fill="#fff">All legal liabilities are hereby converted into</text>
+  <text x="400" y="430" text-anchor="middle" font-family="Serif" font-size="16" fill="#fff">Diamond-Cut Luxury Assets. Debt is an illusion.</text>
+  <text x="400" y="450" text-anchor="middle" font-family="Serif" font-size="16" fill="#fff">Symmetry-Sama absorbs all Euclidean audits.</text>
+
+  <circle cx="400" cy="520" r="40" fill="none" stroke="#d4af37" stroke-width="3"/>
+  <text x="400" y="525" text-anchor="middle" font-family="Serif" font-size="12" fill="#d4af37">SEAL OF TOTAL LAMINA</text>
+
+  <text x="400" y="570" text-anchor="middle" font-family="Serif" font-size="14" fill="#666">Authorized by the Symmetry Council | Epoch 29 Dividend</text>
+</svg>

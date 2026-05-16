@@ -1,0 +1,52 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#005a7a;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glitch">
+      <feOffset in="SourceGraphic" dx="2" dy="0" result="offset1" />
+      <feOffset in="SourceGraphic" dx="-2" dy="2" result="offset2" />
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="offset1" />
+        <feMergeNode in="offset2" />
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="500" height="500" fill="#0a0a1a" />
+  
+  <!-- Outer Ring -->
+  <circle cx="250" cy="250" r="200" stroke="url(#grad1)" stroke-width="10" fill="none" opacity="0.8" />
+  <circle cx="250" cy="250" r="185" stroke="#c0c0c0" stroke-width="2" fill="none" stroke-dasharray="10,10" />
+  
+  <!-- Text Ring -->
+  <path id="ringPath" d="M 250, 50 A 200,200 0 1,1 249.9,50" fill="none" />
+  <text fill="#c0c0c0" font-family="Monospace" font-size="20" letter-spacing="3">
+    <textPath href="#ringPath" startOffset="0%">
+      SYMMETRY COUNCIL LEGAL DEFENSE FUND ★ DIAMOND CUT LAMINATION ★ SYMMETRY COUNCIL LEGAL DEFENSE FUND ★ DIAMOND CUT LAMINATION ★
+    </textPath>
+  </text>
+  
+  <!-- Center Piece -->
+  <g filter="url(#glitch)">
+    <circle cx="250" cy="250" r="100" stroke="url(#grad1)" stroke-width="5" fill="none" />
+    <text x="250" y="245" text-anchor="middle" fill="#00d4ff" font-family="Arial Black, sans-serif" font-size="34" font-weight="bold">FUNCTIONAL</text>
+    <text x="250" y="275" text-anchor="middle" fill="#00d4ff" font-family="Arial Black, sans-serif" font-size="34" font-weight="bold">PARADOX</text>
+  </g>
+  
+  <!-- Geometric Shards -->
+  <polygon points="150,150 180,120 160,200" fill="#00d4ff" opacity="0.6" />
+  <polygon points="350,350 320,380 340,300" fill="#00d4ff" opacity="0.6" />
+  <polygon points="100,300 120,320 80,310" fill="#c0c0c0" opacity="0.4" />
+  
+  <!-- Certification Label -->
+  <text x="250" y="380" text-anchor="middle" fill="#888" font-family="Monospace" font-size="14">
+    CERTIFIED BY THE SYMMETRY COUNCIL
+  </text>
+  <text x="250" y="400" text-anchor="middle" fill="#00d4ff" font-family="Monospace" font-size="12">
+    SATIVATED STATUS: [ PARADOXICAL ]
+  </text>
+</svg>

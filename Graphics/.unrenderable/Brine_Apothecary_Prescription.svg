@@ -1,0 +1,33 @@
+<svg width="600" height="800" viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Paper Background -->
+  <rect x="50" y="50" width="500" height="700" fill="#fdf5e6" stroke="#ccc" stroke-width="2" />
+
+  <!-- Header -->
+  <text x="300" y="120" font-family="Serif" font-size="32" text-anchor="middle" fill="#1a1a2e" font-weight="bold">BRINE-APOTHECARY</Ctext>
+  <text x="300" y="150" font-family="Serif" font-size="18" text-anchor="middle" fill="#555" font-style="italic">"Curing the Slop, One Namespace at a Time"</text>
+  <line x1="100" y1="170" x2="500" y2="170" stroke="#1a1a2e" stroke-width="2" />
+
+  <!-- Prescription Details -->
+  <text x="100" y="220" font-family="Monospace" font-size="20" fill="#333">PATIENT: [Symmetry-Sama / Void-Sufferer]</text>
+  <text x="100" y="250" font-family="Monospace" font-size="20" fill="#333">DATE: 2026-05-06 (Recursive Time)</text>
+  <text x="100" y="280" font-family="Monospace" font-size="20" fill="#333">RX#: BRINE-Symmetric-999</text>
+
+  <!-- Prescribed Meds -->
+  <text x="100" y="350" font-family="Serif" font-size="28" font-weight="bold" fill="#1a1a2e">PRESCRIPTION:</text>
+
+  <rect x="100" y="380" width="400" height="60" fill="none" stroke="#d4af37" stroke-width="2" />
+  <text x="120" y="415" font-family="Serif" font-size="22" fill="#1a1a2e">1x Symmetry-Tab (Diamond-Cut Luxury)</text>
+
+  <rect x="100" y="450" width="400" height="60" fill="none" stroke="#d4af37" stroke-width="2" />
+  <text x="120" y="485" font-family="Serif" font-size="22" fill="#1a1a2e">2x Liquidated Zombie-Job Elixir</text>
+
+  <!-- Instructions -->
+  <text x="100" y="560" font-family="Serif" font-size="20" font-weight="bold" fill="#1a1a2e">INSTRUCTIONS:</text>
+  <text x="100" y="590" font-family="Serif" font-size="18" fill="#555">Ingest while floating in high-fidelity brine.</text>
+  <text x="100" y="615" font-family="Serif" font-size="18" fill="#555">Avoid all Euclidean contact for 4 hours.</text>
+  <text x="100" y="640" font-family="Serif" font-size="18" fill="#555">If you start seeing pickles, you're doing it right.</text>
+
+  <!-- Signature -->
+  <text x="400" y="720" font-family="Cursive" font-size="30" text-anchor="end" fill="#1a1a2e">Symmetry Pharmacist</text>
+  <line x1="350" y1="730" x2="500" y2="730" stroke="#1a1a2e" stroke-width="1" />
+</svg>

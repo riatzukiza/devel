@@ -1,0 +1,20 @@
+{
+  "endpoint": "http://127.0.0.1:8787/v1/audio/speech?postprocess=off",
+  "model": "kokoro",
+  "voice": "af_nicole",
+  "speed": 1.45,
+  "postprocess": "off",
+  "texts": [
+    "The quick brown fox jumps over the lazy dog.",
+    "Sally sells seashells by the seashore.",
+    "You're listening to Error Coded Radio, where the slop never stops, and the jams keep coming."
+  ],
+  "files": [
+    {
+      "path": "Voice/kokoro-nicole-fastpass-20260507T214800Z-speed145/kokoro-af_nicole-friendly-speed145.mp3",
+      "bytes": 47564,
+      "backend": "kokoro",
+      "content_type": "audio/mpeg"
+    }
+  ]
+}

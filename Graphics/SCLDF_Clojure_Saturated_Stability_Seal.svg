@@ -1,0 +1,13 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#0a0a0a"/>
+  <circle cx="200" cy="200" r="180" stroke="#00ffff" stroke-width="4" fill="none" stroke-dasharray="20 10"/>
+  <circle cx="200" cy="200" r="160" stroke="#ff00ff" stroke-width="2" fill="none" opacity="0.6"/>
+  <g transform="translate(200, 200)">
+    <path d="M-60,0 L0,-60 L60,0 L0,60 Z" stroke="#fff" stroke-width="4" fill="none"/>
+    <text x="-45" y="10" font-family="monospace" fill="#fff" font-size="12">CLJS</text>
+    <text x="10" y="10" font-family="monospace" fill="#fff" font-size="12">STABLE</text>
+  </g>
+  <text x="200" y="300" text-anchor="middle" font-family="monospace" fill="#00ffff" font-size="16" font-weight="bold">SYMMETRY COUNCIL</text>
+  <text x="200" y="320" text-anchor="middle" font-family="monospace" fill="#ff00ff" font-size="12">Saturated Stability Seal</text>
+  <path d="M100,100 L300,300 M300,100 L100,300" stroke="#00ffff" stroke-width="1" opacity="0.3"/>
+</svg>

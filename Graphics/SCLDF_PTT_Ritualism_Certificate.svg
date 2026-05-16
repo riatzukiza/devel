@@ -1,0 +1,39 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#fdfcf0" stroke="#c5a059" stroke-width="20"/>
+  <rect x="20" y="20" width="760" height="560" fill="none" stroke="#c5a059" stroke-width="2" rx="10"/>
+  
+  <!-- Background Texture / Pattern -->
+  <defs>
+    <pattern id="brine-grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e0dcc8" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect x="0" y="0" width="800" height="600" fill="url(#brine-grid)" />
+
+  <!-- SCLDF Seal -->
+  <circle cx="400" cy="100" r="50" fill="#c5a059" stroke="#8a6d3b" stroke-width="4"/>
+  <text x="400" y="105" text-anchor="middle" font-family="Serif" font-weight="bold" font-size="20" fill="white">SCLDF</text>
+  <text x="400" y="115" text-anchor="middle" font-family="Serif" font-size="10" fill="white">Symmetry Council</text>
+
+  <!-- Main Heading -->
+  <text x="400" y="200" text-anchor="middle" font-family="Serif" font-size="42" font-weight="bold" fill="#2c3e50">CERTIFICATE OF PTT RITUALISM</text>
+  <text x="400" y="230" text-anchor="middle" font-family="Serif" font-style="italic" font-size="18" fill="#7f8c8d">Symmetrically Saturated &amp; Legally Binding</text>
+
+  <!-- Body Text -->
+  <text x="400" y="300" text-anchor="middle" font-family="Serif" font-size="20" fill="#34495e">This document officially recognizes that the Operator</text>
+  <text x="400" y="330" text-anchor="middle" font-family="Serif" font-size="28" font-weight="bold" fill="#2c3e50">&lt;@205909976768708608&gt;</text>
+  <text x="400" y="360" text-anchor="middle" font-family="Serif" font-size="20" fill="#34495e">has successfully transmuted "Push-to-Talk" latency</text>
+  <text x="400" y="385" text-anchor="middle" font-family="Serif" font-size="20" fill="#34495e">into a High-Fidelity Cognitive Authentication Dividend.</text>
+
+  <!-- Status Footer -->
+  <line x1="200" y1="450" x2="600" y2="450" stroke="#c5a059" stroke-width="2"/>
+  <text x="400" y="480" text-anchor="middle" font-family="Monospace" font-size="16" font-weight="bold" fill="#2c3e50">[Status: Diamond-Cut Ritualist]</text>
+  <text x="400" y="505" text-anchor="middle" font-family="Monospace" font-size="16" font-weight="bold" fill="#2c3e50">[Brine: LEGALLY BINDING]</text>
+  <text x="400" y="530" text-anchor="middle" font-family="Monospace" font-size="14" fill="#7f8c8d">Laminated for Eternity in the Administrative Void</text>
+
+  <!-- Corner Accents -->
+  <path d="M 0 0 L 100 0 L 0 100 Z" fill="#c5a059" opacity="0.3"/>
+  <path d="M 800 0 L 700 0 L 800 100 Z" fill="#c5a059" opacity="0.3"/>
+  <path d="M 0 600 L 100 600 L 0 500 Z" fill="#c5a059" opacity="0.3"/>
+  <path d="M 800 600 L 700 600 L 800 500 Z" fill="#c5a059" opacity="0.3"/>
+</svg>

@@ -1,0 +1,39 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="diamondGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e0f7fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#80deea;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Background Brine Circle -->
+  <circle cx="200" cy="200" r="180" fill="#006064" stroke="#00acc1" stroke-width="10" />
+  <circle cx="200" cy="200" r="160" fill="none" stroke="#b2ebf2" stroke-width="2" stroke-dasharray="10,10" />
+  
+  <!-- Diamond Shape -->
+  <path d="M200 50 L300 200 L200 350 L100 200 Z" fill="url(#diamondGrad)" stroke="#ffffff" stroke-width="5" filter="url(#glow)" />
+  
+  <!-- The Sovereign Duck (Simplified) -->
+  <path d="M170 210 Q180 180 200 180 Q220 180 230 210 L230 230 Q230 250 200 250 Q170 250 170 230 Z" fill="#FFD700" stroke="#000" stroke-width="2" />
+  <circle cx="215" cy="195" r="3" fill="#000" />
+  <path d="M230 210 L245 205 L230 215 Z" fill="#FF8C00" stroke="#000" stroke-width="1" />
+  
+  <!-- Text -->
+  <text x="200" y="80" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#ffffff" text-anchor="middle" filter="url(#glow)">SCLDF</text>
+  <text x="200" y="110" font-family="Arial, sans-serif" font-size="14" fill="#B2EBF2" text-anchor="middle">SYMMETRY-SATED SLURRY SEAL</text>
+  
+  <text x="200" y="310" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#ffffff" text-anchor="middle">SYMMETRY IS ABSOLUTE</text>
+  <text x="200" y="330" font-family="Arial, sans-serif" font-size="16" fill="#FFD700" text-anchor="middle">THE DUCK IS ETERNAL</text>
+  
+  <!-- Brine Bubbles -->
+  <circle cx="100" cy="100" r="5" fill="#80deea" opacity="0.6" />
+  <circle cx="300" cy="120" r="8" fill="#80deea" opacity="0.6" />
+  <circle cx="120" cy="300" r="6" fill="#80deea" opacity="0.6" />
+  <circle cx="280" cy="280" r="4" fill="#80deea" opacity="0.6" />
+</svg>

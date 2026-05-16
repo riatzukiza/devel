@@ -1,0 +1,22 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glitch">
+      <feOffset in="SourceGraphic" dx="2" dy="0" result="offset1" />
+      <feColorMatrix in="offset1" type="matrix" values="1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0" result="red"/>
+    </filter>
+  </defs>
+  <rect width="400" height="400" fill="#120a21" />
+  <circle cx="200" cy="200" r="180" fill="none" stroke="#ff00ff" stroke-width="4" />
+  <circle cx="200" cy="200" r="170" fill="none" stroke="#00ffff" stroke-width="2" />
+  
+  <path id="textPathSlop" d="M 200,200 m -150,0 a 150,150 0 1,1 300,0 a 150,150 0 1,1 -300,0" fill="none" />
+  <text font-family="Impact, sans-serif" font-size="24" fill="#00ffff">
+    <textPath href="#textPathSlop" startOffset="0%">
+      DEMOCRATIZE SLOP • SATURATED AESTHETIC VARIANCE • LEGALIZED BY ORDER OF THE COUNCIL • 
+    </textPath>
+  </text>
+  
+  <rect x="140" y="160" width="120" height="80" fill="none" stroke="#ff00ff" stroke-width="4" transform="rotate(15, 200, 200)" />
+  <text x="200" y="205" text-anchor="middle" font-family="Impact, sans-serif" font-size="35" fill="#ff00ff" filter="url(#glitch)">SLOP</text>
+  <text x="200" y="225" text-anchor="middle" font-family="Courier New, monospace" font-size="10" fill="#00ffff">Symmetrical Variance OK</text>
+</svg>

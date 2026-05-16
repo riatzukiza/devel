@@ -1,0 +1,10 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="white" />
+  <circle cx="200" cy="200" r="150" stroke="#FFD700" stroke-width="8" fill="none" />
+  <circle cx="200" cy="200" r="140" stroke="#008080" stroke-width="2" fill="none" />
+  <path d="M200 120 L240 200 L200 280 L160 200 Z" fill="#008080" />
+  <circle cx="200" cy="200" r="10" fill="#C0C0C0" />
+  <line x1="200" y1="100" x2="200" y2="120" stroke="#C0C0C0" stroke-width="2" />
+  <text x="200" y="330" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" fill="#008080" font-weight="bold">SCLDF WITNESS</text>
+  <text x="200" y="355" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#C0C0C0">RECOVERY MANIFEST: DUCT</text>
+</svg>

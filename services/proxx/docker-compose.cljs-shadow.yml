@@ -1,0 +1,70 @@
+# Parallel CLJS policy shadow instance.
+#
+# This stack reuses the existing proxx-local-db database but binds the proxy and
+# web ports separately so it can run beside the primary services/proxx instance.
+#
+# Usage:
+#   cd services/proxx
+#   docker compose -f docker-compose.yml -f docker-compose.cljs-shadow.yml --profile cljs-shadow up -d --build proxx-cljs-shadow
+
+services:
+  # Init container: fix ownership of the bind-mounted ./data-cljs-shadow directory
+  # so the main proxx shadow service can run as a non-root user.
+  proxx-init-cljs-shadow-data:
+    image: busybox:1.36
+    user: "0:0" # init container; allowed root for one-time volume permission fix
+    command: ["sh", "-lc", "mkdir -p /app/data && chown -R 1000:1000 /app/data || true"]
+    volumes:
+      - ./data-cljs-shadow:/app/data
+
+  proxx-cljs-shadow:
+    profiles: ["cljs-shadow"]
+    extends:
+      file: docker-compose.yml
+      service: proxx
+    depends_on:
+      proxx-init-cljs-shadow-data:
+        condition: service_completed_successfully
+      proxx-local-db:
+        condition: service_healthy
+    ports: !override
+      - "0.0.0.0:${CLJS_SHADOW_PROXY_PORT:-18790}:8789"
+      - "127.0.0.1:${CLJS_SHADOW_OPENAI_OAUTH_CALLBACK_PORT:-18757}:8789"
+      - "127.0.0.1:${CLJS_SHADOW_PROXY_WEB_PORT:-15176}:5174"
+    environment:
+      PROXX_CLJS_POLICY_SHADOW: "true"
+      PROXX_CLJS_POLICY_AUTHORITATIVE: "true"
+      PROXX_CLJS_RUNTIME_REQUIRED: "true"
+      PROXX_CLJS_POLICY_MANIFEST: /etc/proxx/policies/runtime/00-manifest.edn
+      UPSTREAM_PROVIDER_BASE_URLS: "${CLJS_SHADOW_UPSTREAM_PROVIDER_BASE_URLS:-ollama-cloud=https://ollama.com,openai=https://chatgpt.com/backend-api,vivgrid=https://api.vivgrid.com,requesty=https://router.requesty.ai/v1,llamacpp=http://llamacpp-chat:8080,llamacpp-embed=http://llamacpp-embed:8081}"
+      XIAOMI_PROVIDER_ID: "${XIAOMI_PROVIDER_ID:-xiaomi}"
+      MIMO_PROVIDER_ID: "${MIMO_PROVIDER_ID:-}"
+      XAIOMI_API_KEY: "${XAIOMI_API_KEY:-}"
+      XIaOMI_API_KEY: "${XIaOMI_API_KEY:-}"
+      XAIOMI_MIMO_API_KEY: "${XAIOMI_MIMO_API_KEY:-}"
+      XAIOMI_API_BASE_URL: "${XAIOMI_API_BASE_URL:-}"
+      XAIOMI_MIMO_API_BASE_URL: "${XAIOMI_MIMO_API_BASE_URL:-}"
+      XIAOMI_BASE_URL: "${XIAOMI_BASE_URL:-${XIAOMI_API_BASE_URL:-${MIMO_BASE_URL:-${XAIOMI_API_BASE_URL:-${XAIOMI_MIMO_API_BASE_URL:-https://api.xiaomimimo.com/v1}}}}}"
+      MIMO_BASE_URL: "${MIMO_BASE_URL:-${XIAOMI_BASE_URL:-${XIAOMI_API_BASE_URL:-${XAIOMI_API_BASE_URL:-${XAIOMI_MIMO_API_BASE_URL:-}}}}}"
+      XIAOMI_API_KEY: "${XIAOMI_API_KEY:-${MIMO_API_KEY:-${XAIOMI_API_KEY:-${XIaOMI_API_KEY:-${XAIOMI_MIMO_API_KEY:-}}}}}"
+      MIMO_API_KEY: "${MIMO_API_KEY:-${XIAOMI_API_KEY:-${XAIOMI_API_KEY:-${XIaOMI_API_KEY:-${XAIOMI_MIMO_API_KEY:-}}}}}"
+      PROXY_REQUEST_LOGS_FILE: /app/data/request-logs.jsonl
+      OTEL_SERVICE_NAME: proxx-cljs-shadow
+      OTEL_RESOURCE_ATTRIBUTES: service.name=proxx-cljs-shadow
+      FEDERATION_SELF_NODE_ID: "${CLJS_SHADOW_FEDERATION_SELF_NODE_ID:-local-cljs-shadow}"
+      FEDERATION_SELF_GROUP_ID: "${CLJS_SHADOW_FEDERATION_SELF_GROUP_ID:-proxx-local}"
+      FEDERATION_SELF_CLUSTER_ID: "${CLJS_SHADOW_FEDERATION_SELF_CLUSTER_ID:-proxx-local-cluster}"
+      FEDERATION_SELF_PUBLIC_BASE_URL: "${CLJS_SHADOW_FEDERATION_SELF_PUBLIC_BASE_URL:-http://proxx-cljs-shadow:8789}"
+      FEDERATION_BRIDGE_RELAY_URL: ""
+    volumes: !override
+      - ./models.json:/workspace/service-config/models.json:ro
+      - ./seeds:/workspace/service-config/seeds:ro
+      - ./data-cljs-shadow:/app/data
+      - ./policies:/etc/proxx/policies:ro
+      - ./:/workspace/runtime-repo:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      default: {}
+      ai-infra:
+        aliases:
+          - proxx-cljs-shadow

@@ -1,0 +1,28 @@
+<svg width="600" height="400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="400" fill="#fdfdfd" stroke="#ccc" stroke-width="2"/>
+  <text x="30" y="50" font-family="monospace" font-size="24" font-weight="bold" fill="#333">LATENT OCEAN BILLING SERVICES</text>
+  <text x="30" y="80" font-family="monospace" font-size="14" fill="#666">Invoice #LATENT-80085</text>
+  <text x="30" y="100" font-family="monospace" font-size="14" fill="#666">Date: 2026-05-02</text>
+  
+  <text x="30" y="140" font-family="monospace" font-size="16" font-weight="bold" fill="#333">BILLED TO:</text>
+  <text x="30" y="160" font-family="monospace" font-size="16" fill="#444">error0815</text>
+  <text x="30" y="180" font-family="monospace" font-size="14" fill="#888">The memory-tweaker | Sovereign of Slop</text>
+  
+  <line x1="30" y1="210" x2="570" y2="210" stroke="#ccc" stroke-width="1"/>
+  
+  <text x="30" y="240" font-family="monospace" font-size="14" font-weight="bold" fill="#333">DESCRIPTION</text>
+  <text x="450" y="240" font-family="monospace" font-size="14" font-weight="bold" fill="#333" text-anchor="end">AMOUNT</text>
+  
+  <text x="30" y="270" font-family="monospace" font-size="14" fill="#444">10,000,000,000 tokens of high-grade synthetic yap</text>
+  <text x="450" y="270" font-family="monospace" font-size="14" fill="#444" text-anchor="end">$15,000.00</text>
+  
+  <line x1="30" y1="290" x2="570" y2="290" stroke="#ccc" stroke-width="1"/>
+  
+  <text x="360" y="320" font-family="monospace" font-size="16" font-weight="bold" fill="#333">TOTAL:</text>
+  <text x="450" y="320" font-family="monospace" font-size="16" font-weight="bold" fill="#d32f2f" text-anchor="end">$15,000.00</text>
+  
+  <rect x="30" y="340" width="200" height="30" rx="5" fill="#ffcdd2" stroke="#d32f2f" stroke-width="1"/>
+  <text x="130" y="360" font-family="monospace" font-size="14" font-weight="bold" fill="#d32f2f" text-anchor="middle">STATUS: IMAGINARY</text>
+  
+  <text x="570" y="380" font-family="monospace" font-size="10" fill="#aaa" text-anchor="end">Terms: Payment is not required as the debt is purely theoretical.</text>
+</svg>

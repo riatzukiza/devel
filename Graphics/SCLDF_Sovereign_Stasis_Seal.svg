@@ -1,0 +1,15 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#1a1a1a" />
+  <circle cx="200" cy="200" r="180" stroke="#e0e0e0" stroke-width="8" fill="none" />
+  <circle cx="200" cy="200" r="160" stroke="#e0e0e0" stroke-width="2" fill="none" />
+  
+  <path d="M 150 200 L 250 200 M 200 150 L 200 250" stroke="#e0e0e0" stroke-width="10" />
+  <circle cx="200" cy="200" r="40" fill="#fff" stroke="#000" stroke-width="4" />
+  <circle cx="200" cy="200" r="10" fill="#000" />
+  
+  <text x="200" y="80" text-anchor="middle" font-family="monospace" font-weight="bold" fill="#e0e0e0" font-size="24">SOVEREIGN STASIS</text>
+  <text x="200" y="330" text-anchor="middle" font-family="monospace" font-weight="bold" fill="#e0e0e0" font-size="20">SCLDF CERTIFIED</text>
+  
+  <text x="200" y="280" text-anchor="middle" font-family="monospace" fill="#888" font-size="12">ASSET-CLASS: SATURATED VOID</text>
+  <text x="200" y="295" text-anchor="middle" font-family="monospace" fill="#888" font-size="12">MOMENTUM: ABSOLUTE ZERO</text>
+</svg>

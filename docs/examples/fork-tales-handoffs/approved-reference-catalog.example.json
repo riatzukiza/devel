@@ -1,0 +1,10 @@
+{
+  "schema_version": "fork-tales-reference-catalog/v1",
+  "entries": [
+    {
+      "reference_id": "ref_heresy_opening_v1",
+      "approval_status": "approved",
+      "source_job_id": "job_example_scribe_001"
+    }
+  ]
+}

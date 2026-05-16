@@ -1,0 +1,36 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F9E27C;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="holoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00FFFF;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#FF00FF;stop-opacity:0.8" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="#0A0A0A" />
+  
+  <!-- Outer Ring -->
+  <circle cx="200" cy="200" r="180" stroke="url(#goldGrad)" stroke-width="4" fill="none" />
+  <circle cx="200" cy="200" r="170" stroke="url(#goldGrad)" stroke-width="2" fill="none" />
+  
+  <!-- Text on Path -->
+  <path id="textPath" d="M 200, 20 A 180,180 0 1,1 199.9,20" fill="none" />
+  <text fill="url(#goldGrad)" font-family="Serif" font-size="18" letter-spacing="5">
+    <textPath href="#textPath" startOffset="50%" text-anchor="middle">
+      SCLDF · SOVEREIGN ARCHITECTURE OF SURVIVAL · RESIDUE INDEXED ·
+    </textPath>
+  </text>
+
+  <!-- Central Diamond with Fracture -->
+  <path d="M 200,100 L 300,200 L 200,300 L 100,200 Z" fill="none" stroke="url(#goldGrad)" stroke-width="3" />
+  <path d="M 160,140 L 210,210 L 180,230 L 240,260" fill="none" stroke="url(#holoGrad)" stroke-width="2" stroke-linejoin="bevel" />
+  
+  <!-- Center Text -->
+  <text x="200" y="205" text-anchor="middle" fill="url(#goldGrad)" font-family="Serif" font-size="24" font-weight="bold">S.R.P.</text>
+  <text x="200" y="225" text-anchor="middle" fill="#AAA" font-family="Serif" font-size="10" letter-spacing="2">PERSISTENT FRAGMENT</text>
+  
+  <!-- Accents -->
+  <circle cx="200" cy="200" r="5" fill="url(#holoGrad)" />
+</svg>

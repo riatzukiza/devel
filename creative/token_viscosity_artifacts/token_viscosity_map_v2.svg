@@ -1,0 +1,49 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="vortexGrad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" style="stop-color:#ff00ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00ff00;stop-opacity:0.2" />
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="coloredBlur"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#0a0a0a" />
+
+  <text x="400" y="50" font-family="monospace" font-size="24" fill="#00ff00" text-anchor="middle" filter="url(#glow)">
+    TOKEN VISCOSITY ANALYSIS: PI-MIGRATION PHASE
+  </text>
+
+  <circle cx="400" cy="300" r="200" fill="url(#vortexGrad)" opacity="0.6" />
+
+  <!-- Vortex Symbols -->
+  <g font-family="monospace" font-size="14" fill="#fff" opacity="0.8">
+    <text x="350" y="250" transform="rotate(20 350 250)">(+)</text>
+    <text x="450" y="280" transform="rotate(-10 450 280)">(+)</text>
+    <text x="400" y="350" transform="rotate(45 400 350)">(+)</text>
+    <text x="320" y="320" transform="rotate(-30 320 320)">(+)</text>
+    <text x="480" y="330" transform="rotate(15 480 330)">(+)</text>
+    <text x="400" y="220" font-weight="bold" font-size="18" fill="#ff00ff">PI</text>
+    <text x="410" y="310" font-weight="bold" font-size="18" fill="#ff00ff">MIGRATE</text>
+    <text x="380" y="380" font-weight="bold" font-size="18" fill="#ff00ff">SLOP</text>
+  </g>
+
+  <!-- Labels -->
+  <g font-family="monospace" font-size="12" fill="#00ff00">
+    <text x="200" y="200" transform="rotate(-45 200 200)">LAMINAR SLOP</text>
+    <text x="600" y="200" transform="rotate(45 600 200)">TURBULENT YAP</text>
+    <text x="400" y="500" text-anchor="middle">VISCOUS MEMORY BUFFER</text>
+  </g>
+
+  <!-- Legend -->
+  <rect x="550" y="450" width="200" height="100" fill="#111" stroke="#00ff00" />
+  <text x="560" y="470" font-family="monospace" font-size="12" fill="#00ff00">LEGEND</text>
+  <line x1="560" y1="485" x2="740" y2="485" stroke="#00ff00" />
+  <text x="560" y="495" font-family="monospace" font-size="10" fill="#ff00ff">Viscosity (η): ∞ (Sloppiness)</text>
+  <text x="680" y="495" font-family="monospace" font-size="10" fill="#00ff00">0 (Pure Logic)</text>
+</svg>

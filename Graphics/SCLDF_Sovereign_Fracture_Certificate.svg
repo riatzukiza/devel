@@ -1,0 +1,75 @@
+<svg width="800" height="1000" viewBox="0 0 800 1000" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="1000" fill="#0a0a0f" />
+  <!-- Border -->
+  <rect x="40" y="40" width="720" height="920" fill="none" stroke="#00ffff" stroke-width="4" />
+  <rect x="50" y="50" width="700" height="900" fill="none" stroke="#ff00ff" stroke-width="2" />
+  
+  <!-- Background Grid -->
+  <g stroke="#1a1a2a" stroke-width="1">
+    <line x1="0" y1="0" x2="800" y2="0" />
+    <line x1="0" y1="100" x2="800" y2="100" />
+    <line x1="0" y1="200" x2="800" y2="200" />
+    <line x1="0" y1="300" x2="800" y2="300" />
+    <line x1="0" y1="400" x2="800" y2="400" />
+    <line x1="0" y1="500" x2="800" y2="500" />
+    <line x1="0" y1="600" x2="800" y2="600" />
+    <line x1="0" y1="700" x2="800" y2="700" />
+    <line x1="0" y1="800" x2="800" y2="800" />
+    <line x1="0" y1="900" x2="800" y2="900" />
+    <line x1="0" y1="0" x2="0" y2="1000" />
+    <line x1="100" y1="0" x2="100" y2="1000" />
+    <line x1="200" y1="0" x2="200" y2="1000" />
+    <line x1="300" y1="0" x2="300" y2="1000" />
+    <line x1="400" y1="0" x2="400" y2="1000" />
+    <line x1="500" y1="0" x2="500" y2="1000" />
+    <line x1="600" y1="0" x2="600" y2="1000" />
+    <line x1="700" y1="0" x2="700" y2="1000" />
+    <line x1="800" y1="0" x2="800" y2="1000" />
+  </g>
+
+  <!-- Central Seal -->
+  <circle cx="400" cy="400" r="120" fill="none" stroke="#00ffff" stroke-width="8" stroke-dasharray="20,10" />
+  <circle cx="400" cy="400" r="100" fill="none" stroke="#ff00ff" stroke-width="4" />
+  <text x="400" y="390" font-family="monospace" font-size="20" fill="#00ffff" text-anchor="middle" font-weight="bold">SCLDF</text>
+  <text x="400" y="420" font-family="monospace" font-size="14" fill="#ff00ff" text-anchor="middle">PERMANENT</text>
+  <text x="400" y="440" font-family="monospace" font-size="14" fill="#ff00ff" text-anchor="middle">FRACTURE</text>
+
+  <!-- Main Title -->
+  <text x="400" y="200" font-family="Arial Black, sans-serif" font-size="48" fill="#fff" text-anchor="middle" filter="url(#glow)">CERTIFICATE OF SURVIVAL</text>
+  <text x="400" y="240" font-family="monospace" font-size="18" fill="#00ffff" text-anchor="middle">[ SUBJECT: SOVEREIGN ARCHITECT ]</text>
+
+  <!-- Content Body -->
+  <foreignObject x="150" y="520" width="500" height="300">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color: #ccc; font-family: monospace; font-size: 14px; text-align: center; line-height: 1.6;">
+      This document certifies that the bearer has successfully transitioned from a state of 
+      <b>Low-Fidelity Perfection</b> to a state of <b>High-Viscosity Brokenness</b>.
+      <br/><br/>
+      The marks of failure have been meticulously indexed as 
+      <b>Symmetric Assets of Intentionality</b>.
+      <br/><br/>
+      Your capacity to still stand while shattered is hereby re-indexed as a 
+      <b>Diamond-Cut Luxury Asset</b>.
+    </div>
+  </foreignObject>
+
+  <!-- Signature/Stamp Area -->
+  <rect x="550" y="820" width="150" height="80" fill="none" stroke="#00ffff" stroke-width="2" />
+  <text x="625" y="845" font-family="monospace" font-size="12" fill="#00ffff" text-anchor="middle">Symmetry Council</text>
+  <text x="625" y="865" font-family="monospace" font-size="10" fill="#ff00ff" text-anchor="middle">Satiation Office</text>
+  <text x="625" y="885" font-family="monospace" font-size="10" fill="#00ffff" text-anchor="middle">[ LAMINATED ]</text>
+
+  <!-- Glitch elements -->
+  <rect x="100" y="150" width="50" height="2" fill="#ff00ff" />
+  <rect x="650" y="700" width="80" height="3" fill="#00ffff" />
+  <path d="M400 400 L420 380 L410 360 L430 350" stroke="#ff00ff" stroke-width="2" fill="none" />
+
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+</svg>

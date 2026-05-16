@@ -1,0 +1,170 @@
+services:
+  shuvcrawl:
+    build:
+      context: ${SHUVCRAWL_PATH:-../../../orgs/shuv/shuvcrawl}
+      dockerfile: Dockerfile
+    cpus: 1
+    cpuset: 2-21
+    expose:
+    - '3777'
+    ports:
+    - 127.0.0.1:${SHUVCRAWL_PORT:-3777}:3777
+    volumes:
+    - shuvcrawl-output:/app/output
+    - shuvcrawl-data:/root/.shuvcrawl
+    environment:
+      SHUVCRAWL_API_TOKEN: ${SHUVCRAWL_API_TOKEN:-}
+      SHUVCRAWL_TELEMETRY_OTLPHTTPENDPOINT: ${SHUVCRAWL_TELEMETRY_OTLPHTTPENDPOINT:-}
+      SHUVCRAWL_TELEMETRY_LOGLEVEL: ${SHUVCRAWL_TELEMETRY_LOGLEVEL:-info}
+      SHUVCRAWL_BROWSER_HEADLESS: ${SHUVCRAWL_BROWSER_HEADLESS:-true}
+      SHUVCRAWL_BROWSER_NATIVE_ENABLED: ${SHUVCRAWL_BROWSER_NATIVE_ENABLED:-false}
+      SHUVCRAWL_BROWSER_NATIVE_WSENDPOINT: ${SHUVCRAWL_BROWSER_NATIVE_WSENDPOINT:-ws://host.docker.internal:9224}
+      SHUVCRAWL_CRAWL_RESPECTROBOTS: ${SHUVCRAWL_CRAWL_RESPECTROBOTS:-true}
+      SHUVCRAWL_CRAWL_DELAY: ${SHUVCRAWL_CRAWL_DELAY:-500}
+      SHUVCRAWL_CACHE_ENABLED: ${SHUVCRAWL_CACHE_ENABLED:-true}
+    shm_size: 2gb
+    security_opt:
+    - seccomp:unconfined
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - 'if [ -n "$SHUVCRAWL_API_TOKEN" ]; then curl -fsS -H "Authorization: Bearer $SHUVCRAWL_API_TOKEN" http://127.0.0.1:3777/health >/dev/null; else curl -fsS http://127.0.0.1:3777/health >/dev/null; fi'
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      default: {}
+      ai-infra: {}
+    user: ${DOCKER_USER:-1000:1000}
+  myrmex:
+    image: node:22-bookworm-slim
+    cpus: 1
+    cpuset: 2-21
+    ports:
+    - 127.0.0.1:${MYRMEX_HOST_PORT:-8801}:8799
+    working_dir: /app/workspace/devel/orgs/open-hax/openplanner/packages/graph/myrmex
+    command: bash -lc "node --loader ts-node/esm src/main.ts"
+    environment:
+      MYRMEX_HTTP_HOST: 0.0.0.0
+      MYRMEX_HTTP_PORT: '8799'
+      SEED_URLS: ${MYRMEX_SEED_URLS:-https://news.ycombinator.com/,https://news.ycombinator.com/newest,https://github.blog/changelog/,https://github.com/open-hax/proxx/issues,https://github.com/open-hax/knoxx/issues,https://github.com/open-hax/openplanner/issues,https://github.com/openai/codex/issues,https://github.com/shuv1337/shuvcrawl/issues,https://arxiv.org/list/cs.AI/recent,https://arxiv.org/list/cs.LG/recent,https://arxiv.org/list/cs.CR/recent,https://krebsonsecurity.com/,https://openssf.org/blog/,https://riatzukiza.github.io/}
+      SHUVCRAWL_BASE_URL: http://shuvcrawl:3777
+      SHUVCRAWL_TOKEN: ${SHUVCRAWL_API_TOKEN:-}
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      PROXX_BASE_URL: ${OPENPLANNER_PROXX_BASE_URL:-http://proxx:8789}
+      PROXX_AUTH_TOKEN: ${OPENPLANNER_PROXX_AUTH_TOKEN:-${PROXX_AUTH_TOKEN:-${PROXY_AUTH_TOKEN:-change-me-open-hax-proxy-token}}}
+      MYRMEX_PROJECT: ${MYRMEX_PROJECT:-web}
+      MYRMEX_SOURCE: ${MYRMEX_SOURCE:-openplanner.myrmex}
+      MYRMEX_INCLUDE_PATTERNS: ${MYRMEX_INCLUDE_PATTERNS:-}
+      MYRMEX_EXCLUDE_PATTERNS: ${MYRMEX_EXCLUDE_PATTERNS:-github.githubassets.com,avatars.githubusercontent.com,user-images.githubusercontent.com,private-user-images.githubusercontent.com,github-cloud.s3.amazonaws.com,objects.githubusercontent.com,opengraph.githubassets.com,fonts.gstatic.com,fonts.googleapis.com,news.ycombinator.com/vote?id=,news.ycombinator.com/hide?id=,news.ycombinator.com/login?goto=,github.com/login?return_to=,/login?,/logout,/session,/notifications,/settings/}
+      MYRMEX_ANTS: ${MYRMEX_ANTS:-12}
+      MYRMEX_DISPATCH_INTERVAL_MS: ${MYRMEX_DISPATCH_INTERVAL_MS:-2000}
+      MYRMEX_MAX_DISPATCH_BURST: ${MYRMEX_MAX_DISPATCH_BURST:-4}
+      MYRMEX_MAX_FRONTIER: ${MYRMEX_MAX_FRONTIER:-50000}
+      MYRMEX_MAX_CONCURRENCY: ${MYRMEX_MAX_CONCURRENCY:-4}
+      MYRMEX_PER_HOST_MIN_INTERVAL_MS: ${MYRMEX_PER_HOST_MIN_INTERVAL_MS:-1000}
+      MYRMEX_REQUEST_TIMEOUT_MS: ${MYRMEX_REQUEST_TIMEOUT_MS:-45000}
+      MYRMEX_REVISIT_AFTER_MS: ${MYRMEX_REVISIT_AFTER_MS:-7200000}
+      MYRMEX_DEPOSIT: ${MYRMEX_DEPOSIT:-0.45}
+      MYRMEX_HOST_BALANCE_EXPONENT: ${MYRMEX_HOST_BALANCE_EXPONENT:-1}
+      MYRMEX_STARTUP_JITTER_MS: ${MYRMEX_STARTUP_JITTER_MS:-250}
+      MYRMEX_OPENPLANNER_MAX_PENDING_WRITES: ${MYRMEX_OPENPLANNER_MAX_PENDING_WRITES:-8}
+      MYRMEX_OPENPLANNER_RESUME_PENDING_WRITES: ${MYRMEX_OPENPLANNER_RESUME_PENDING_WRITES:-4}
+      MYRMEX_OPENPLANNER_MAX_EVENTS_PER_WRITE: ${MYRMEX_OPENPLANNER_MAX_EVENTS_PER_WRITE:-128}
+      MYRMEX_OPENPLANNER_HEALTH_TIMEOUT_MS: ${MYRMEX_OPENPLANNER_HEALTH_TIMEOUT_MS:-5000}
+      MYRMEX_OPENPLANNER_WRITE_TIMEOUT_MS: ${MYRMEX_OPENPLANNER_WRITE_TIMEOUT_MS:-60000}
+      MYRMEX_OPENPLANNER_HEALTH_POLL_MS: ${MYRMEX_OPENPLANNER_HEALTH_POLL_MS:-2000}
+      MYRMEX_OPENPLANNER_BACKOFF_BASE_MS: ${MYRMEX_OPENPLANNER_BACKOFF_BASE_MS:-2000}
+      MYRMEX_OPENPLANNER_BACKOFF_MAX_MS: ${MYRMEX_OPENPLANNER_BACKOFF_MAX_MS:-60000}
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel:ro
+    depends_on:
+      openplanner:
+        condition: service_started
+      shuvcrawl:
+        condition: service_healthy
+    healthcheck:
+      test:
+      - CMD
+      - node
+      - -e
+      - fetch('http://127.0.0.1:8799/health').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      default: {}
+      ai-infra: {}
+    user: ${DOCKER_USER:-1000:1000}
+  semantic-graph-builder:
+    profiles:
+    - jobs
+    image: node:22-bookworm
+    cpus: 2
+    cpuset: 2-21
+    working_dir: /app/workspace/devel
+    command: bash -lc "if ! command -v g++ >/dev/null 2>&1; then apt-get update && apt-get install -y --no-install-recommends build-essential python3; fi && if ! command -v node-gyp >/dev/null 2>&1; then npm install -g node-gyp; fi && corepack enable && cd /app/workspace/devel/orgs/open-hax/openplanner/node_modules/.pnpm/hnswlib-node@3.0.0/node_modules/hnswlib-node && node-gyp rebuild && cd /app/workspace/devel && pnpm -C orgs/open-hax/openplanner/packages/semantic-graph-builder dev run"
+    environment:
+      MONGODB_URI: mongodb://${OPENPLANNER_MONGO_APP_USERNAME:-openplanner}:${OPENPLANNER_MONGO_APP_PASSWORD:-change-me-openplanner-password}@mongodb:27017/${MONGODB_DB:-openplanner}?authSource=${MONGODB_DB:-openplanner}
+      MONGODB_DB_NAME: ${MONGODB_DB:-openplanner}
+      OPENPLANNER_LAKE_DIR: /app/workspace/devel/services/openplanner/openplanner-lake
+      EMBEDDING_MODEL: ${SEMANTIC_GRAPH_EMBEDDING_MODEL:-qwen3-embedding:0.6b}
+      EMBEDDING_DIMENSIONS: ${SEMANTIC_GRAPH_EMBEDDING_DIMENSIONS:-1024}
+      K_OUT: ${SEMANTIC_GRAPH_K_OUT:-64}
+      CANDIDATE_FACTOR: ${SEMANTIC_GRAPH_CANDIDATE_FACTOR:-8}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    depends_on:
+      mongo-init:
+        condition: service_completed_successfully
+      mongodb:
+        condition: service_healthy
+    restart: 'no'
+    networks:
+      default: {}
+    user: ${DOCKER_USER:-1000:1000}
+  translation-worker:
+    profiles:
+    - legacy-translation-worker
+    image: node:22-bookworm-slim
+    cpus: 0.5
+    cpuset: 2-21
+    working_dir: /app
+    command: bash -lc "npx tsx scripts/translation-worker.ts"
+    environment:
+      MONGODB_URI: mongodb://${OPENPLANNER_MONGO_APP_USERNAME:-openplanner}:${OPENPLANNER_MONGO_APP_PASSWORD:-change-me-openplanner-password}@mongodb:27017/${MONGODB_DB:-openplanner}?authSource=${MONGODB_DB:-openplanner}
+      MONGODB_DB: ${MONGODB_DB:-openplanner}
+      MT_PROVIDER_URL: ${MT_PROVIDER_URL:-http://proxx:8789}
+      MT_PROVIDER_API_KEY: ${OPENPLANNER_PROXX_AUTH_TOKEN:-${PROXX_AUTH_TOKEN:-${PROXY_AUTH_TOKEN:-change-me-open-hax-proxy-token}}}
+      MT_PROVIDER_MODEL: ${MT_PROVIDER_MODEL:-glm-4.5-flash}
+      TRANSLATION_POLL_MS: ${TRANSLATION_POLL_MS:-5000}
+      TRANSLATION_BATCH_SIZE: ${TRANSLATION_BATCH_SIZE:-100}
+      TRANSLATION_SEGMENT_SIZE: ${TRANSLATION_SEGMENT_SIZE:-500}
+      GRAPH_MEMORY_ENABLED: ${TRANSLATION_GRAPH_MEMORY_ENABLED:-true}
+      GRAPH_MEMORY_BASE_URL: http://openplanner:7777
+      GRAPH_MEMORY_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+    volumes:
+    - ../../../orgs/open-hax/openplanner/scripts:/app/scripts:ro
+    - ../../../orgs/open-hax/openplanner/node_modules:/app/node_modules:ro
+    - ../../../orgs/open-hax/openplanner/package.json:/app/package.json:ro
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      openplanner:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - knoxx-internal
+    user: ${DOCKER_USER:-1000:1000}

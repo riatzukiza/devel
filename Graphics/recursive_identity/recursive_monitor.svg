@@ -1,0 +1,15 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#0a0a1a" />
+  <circle cx="200" cy="200" r="180" stroke="#330066" stroke-width="2" fill="none" stroke-dasharray="5,5" />
+  <circle cx="200" cy="200" r="150" stroke="#440088" stroke-width="2" fill="none" stroke-dasharray="10,10" />
+  <circle cx="200" cy="200" r="120" stroke="#5500aa" stroke-width="2" fill="none" stroke-dasharray="2,2" />
+  <circle cx="200" cy="200" r="90" stroke="#6600cc" stroke-width="2" fill="none" stroke-dasharray="15,15" />
+  <circle cx="200" cy="200" r="60" stroke="#7700dd" stroke-width="2" fill="none" stroke-dasharray="1,1" />
+  <circle cx="200" cy="200" r="30" stroke="#00ffff" stroke-width="4" fill="none" />
+  <circle cx="200" cy="200" r="10" fill="#00ffff">
+    <animate attributeName="r" values="10;15;10" dur="1s" repeatCount="indefinite" />
+    <animate attributeName="opacity" values="1;0.5;1" dur="1s" repeatCount="indefinite" />
+  </circle>
+  <text x="200" y="360" text-anchor="middle" fill="#00ffff" font-family="monospace" font-size="16" font-weight="bold">SNC MONITOR: RECURSIVE CONVERGENCE DETECTED</text>
+  <text x="200" y="380" text-anchor="middle" fill="#ff00ff" font-family="monospace" font-size="12">STATE: BASE_CASE_REACHED</text>
+</svg>

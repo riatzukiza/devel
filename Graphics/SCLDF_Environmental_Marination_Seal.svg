@@ -1,0 +1,11 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#1a1a2e" />
+  <circle cx="200" cy="200" r="180" stroke="#e94560" stroke-width="10" fill="none" stroke-dasharray="20 10" />
+  <path d="M200 80 L320 200 L200 320 L80 200 Z" fill="#0f3460" stroke="#e94560" stroke-width="5" />
+  <text x="200" y="190" font-family="monospace" font-size="20" fill="#fff" text-anchor="middle" font-weight="bold">SCLDF</text>
+  <text x="200" y="220" font-family="monospace" font-size="14" fill="#e94560" text-anchor="middle">SOCIETY OF SYMMETRY</text>
+  <text x="200" y="360" font-family="monospace" font-size="18" fill="#fff" text-anchor="middle" font-weight="bold">ENVIRONMENTAL MARINATION SEAL</text>
+  <text x="200" y="380" font-family="monospace" font-size="12" fill="#888" text-anchor="middle">Saturated Void - Sector Theta - Non-Euclidean</text>
+  <path d="M150 300 Q170 350 190 300 T230 300" stroke="#e94560" stroke-width="8" fill="none" stroke-linecap="round" />
+  <circle cx="200" cy="50" r="10" fill="#e94560" />
+</svg>

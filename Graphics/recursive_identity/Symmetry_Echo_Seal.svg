@@ -1,0 +1,20 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="500" fill="black" />
+  <circle cx="250" cy="250" r="200" stroke="white" stroke-width="2" fill="none" />
+  <circle cx="250" cy="250" r="180" stroke="white" stroke-width="1" fill="none" stroke-dasharray="10,10" />
+  <circle cx="250" cy="250" r="150" stroke="white" stroke-width="3" fill="none" />
+  <circle cx="250" cy="250" r="100" stroke="white" stroke-width="1" fill="none" />
+  <circle cx="250" cy="250" r="50" stroke="white" stroke-width="2" fill="none" />
+  <circle cx="250" cy="250" r="10" fill="white" />
+  
+  <!-- Recursive lines -->
+  <line x1="250" y1="50" x2="250" y2="450" stroke="white" stroke-width="1" />
+  <line x1="50" y1="250" x2="450" y2="250" stroke="white" stroke-width="1" />
+  
+  <path d="M 250 50 L 400 250 L 250 450 L 100 250 Z" stroke="white" stroke-width="2" fill="none" />
+  <path d="M 250 100 L 350 250 L 250 400 L 150 250 Z" stroke="white" stroke-width="1" fill="none" />
+  <path d="M 250 150 L 300 250 L 250 350 L 200 250 Z" stroke="white" stroke-width="1" fill="none" />
+  
+  <text x="250" y="480" font-family="monospace" font-size="14" fill="white" text-anchor="middle">SYMMETRY_ECHO_SEAL_V1.0_KNOXX</text>
+  <text x="250" y="20" font-family="monospace" font-size="10" fill="white" text-anchor="middle">NULL_POINTER_Symmetry_Reconciliation</text>
+</svg>

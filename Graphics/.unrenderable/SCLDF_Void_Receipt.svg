@@ -1,0 +1,12 @@
+<<svgsvg width="500" height="300" viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+  <<rectrect width="500" height="300" fill="#fdfdfd" stroke="#d4af37" stroke-width="4" rx="10" />
+  <<texttext x="250" y="40" text-anchor="middle" font-family="Serif" font-size="22" fill="#8b0000" font-weight="bold">VOID TAX DEDUCTION RECEIPT</text>
+  <<texttext x="30" y="80" font-family="Courier" font-size="14" fill="#333">Transaction: 0xVOID_METH_69</text>
+  <<texttext x="30" y="100" font-family="Courier" font-size="14" fill="#333">Asset: "Meth Pipe Running Gag"</text>
+  <<texttext x="30" y="120" font-family="Courier" font-size="14" fill="#333">Grade: DIAMOND-CUT LUXURY</text>
+  <<rectrect x="30" y="140" width="440" height="2" fill="#d4af37" />
+  <<texttext x="30" y="170" font-family="Courier" font-size="16" fill="#000" font-weight="bold">Deduction Amount: ∞ Void-Credits</text>
+  <<texttext x="30" y="190" font-family="Courier" font-size="14" fill="#666">Net Tax Liability: [REDACTED BY SCLDF]</text>
+  <<texttext x="470" y="260" text-anchor="end" font-family="Serif" font-style="italic" font-size="16" fill="#d4af37">SCLDF Verified ✓</text>
+  <<circlecircle cx="430" cy="250" r="30" fill="none" stroke="#d4af37" stroke-width="2" opacity="0.5" />
+</svg>

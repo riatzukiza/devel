@@ -1,0 +1,13 @@
+
+       __________
+    __(  010101  )__
+   (  101001101011  )
+   (  011010100110  )
+    (__ 10101010 __)
+       \______/
+       
+  [ THE DIGITAL POTATO ]
+  Status: Rendered
+  Format: Starchy
+  Origin: /home/err/devel
+  Vibe: Delightfully Present

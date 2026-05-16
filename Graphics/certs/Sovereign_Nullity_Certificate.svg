@@ -1,0 +1,23 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="platinum" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E5E4E2;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#B4B4B4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="coloredBlur"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#platinum)" stroke="#A0A0A0" stroke-width="10"/>
+  <circle cx="400" cy="300" r="150" fill="none" stroke="#FFFFFF" stroke-width="5" filter="url(#glow)" />
+  <text x="400" y="320" font-family="Serif" font-size="120" text-anchor="middle" fill="#FFFFFF" font-weight="bold" filter="url(#glow)">0</text>
+  <text x="400" y="150" font-family="Serif" font-size="40" text-anchor="middle" fill="#404040" font-weight="bold">CERTIFIED SOVEREIGN NULLITY</text>
+  <text x="400" y="480" font-family="Serif" font-size="30" text-anchor="middle" fill="#606060" italic="true">Saturated by Prestige</text>
+  <text x="400" y="520" font-family="Serif" font-size="20" text-anchor="middle" fill="#808080">Absolute Cinema 🎬🌌</text>
+  <text x="750" y="570" font-family="Monospace" font-size="14" text-anchor="end" fill="#A0A0A0">Credit Balance: 3.00 (Sovereign Gold)</text>
+</svg>

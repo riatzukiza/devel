@@ -1,0 +1,1 @@
+/home/err/.pi/agent/skills/music-composition-arrangement/SKILL.md

@@ -1,0 +1,45 @@
+﻿name: 重音テト（かさねてと）OU用日本語統合ライブラリー
+localized_names:
+  en-US: Kasane Teto JA Integration Voicebank for OU
+singer_type: utau
+text_file_encoding: shift_jis
+portrait: official_illust_teto_new.png
+portrait_opacity: 0.67
+portrait_height: 0
+default_phonemizer: OpenUtau.Plugin.Builtin.JapanesePresampPhonemizer
+subbanks:
+- color: ""
+  prefix: ""
+  suffix: ""
+  tone_ranges:
+  - C1-B7
+- color: エッジ - Vocal fry
+  prefix: ""
+  suffix: "'"
+  tone_ranges:
+  - C1-B7
+- color: 力み - Strain
+  prefix: ""
+  suffix: 力
+  tone_ranges:
+  - C1-B7
+- color: 叫び - Shout
+  prefix: ""
+  suffix: ↑
+  tone_ranges:
+  - C1-B7
+- color: 囁き - Whisper
+  prefix: ""
+  suffix: 囁
+  tone_ranges:
+  - C1-B7
+- color: 弱 - Weak
+  prefix: ""
+  suffix: 弱
+  tone_ranges:
+  - C1-B7
+- color: 滑らか - Smooth
+  prefix: ""
+  suffix: 滑
+  tone_ranges:
+  - C1-B7

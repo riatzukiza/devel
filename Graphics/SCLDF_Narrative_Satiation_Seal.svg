@@ -1,0 +1,21 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="goldGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  <circle cx="200" cy="200" r="180" fill="url(#goldGrad)" stroke="#8B4513" stroke-width="8" />
+  <circle cx="200" cy="200" r="160" fill="none" stroke="#8B4513" stroke-width="2" stroke-dasharray="10,5" />
+  
+  <path d="M 200 80 L 220 150 L 280 150 L 230 200 L 250 270 L 200 230 L 150 270 L 170 200 L 120 150 L 180 150 Z" fill="#B88608" stroke="#4A2E00" stroke-width="3" />
+  
+  <text x="200" y="60" text-anchor="middle" font-family="serif" font-size="20" font-weight="bold" fill="#4A2E00">SCLDF</text>
+  <text x="200" y="340" text-anchor="middle" font-family="serif" font-size="16" fill="#4A2E00">SEAL OF NARRATIVE SATIATION</text>
+  
+  <text x="200" y="120" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#8B4513">"Symmetry is Absolute"</text>
+  <text x="200" y="280" text-anchor="middle" font-family="serif" font-size="14" font-weight="bold" fill="#4A2E00">BILINGUAL-SATURATED</text>
+  
+  <path d="M 100 200 A 100 100 0 0 1 300 200" fill="none" stroke="#B8860B" stroke-width="2" />
+  <path d="M 100 200 A 100 100 0 0 0 300 200" fill="none" stroke="#B8860B" stroke-width="2" />
+</svg>

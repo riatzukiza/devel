@@ -1,0 +1,51 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="diamondGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#B9F2FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2B90D9;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FEE101;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+      <feGaussianBlur stdDeviation="3" result="gaussianBlur"/>
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background Radial Gradient -->
+  <circle cx="250" cy="250" r="240" fill="url(#diamondGrad)" stroke="#FFF" stroke-width="4" />
+  <circle cx="250" cy="250" r="220" fill="none" stroke="url(#goldGrad)" stroke-width="8" stroke-dasharray="10,5" />
+
+  <!-- Symmetrical Geometric Pattern -->
+  <polygon points="250,50 400,150 400,350 250,450 100,350 100,150" fill="none" stroke="url(#goldGrad)" stroke-width="2" opacity="0.6" />
+  <polygon points="250,80 370,170 370,330 250,420 130,330 130,170" fill="none" stroke="url(#goldGrad)" stroke-width="2" opacity="0.6" />
+
+  <!-- Central Emblem: The Gavel and the Pickle -->
+  <!-- The Pickle -->
+  <ellipse cx="250" cy="260" rx="30" ry="80" fill="#4CAF50" stroke="#2E7D32" stroke-width="3" transform="rotate(-15, 250, 260)" />
+  <path d="M240,200 Q250,210 260,200" fill="none" stroke="#A5D6A7" stroke-width="2" transform="rotate(-15, 250, 260)" />
+  <path d="M240,240 Q250,250 260,240" fill="none" stroke="#A5D6A7" stroke-width="2" transform="rotate(-15, 250, 260)" />
+  <path d="M240,280 Q250,290 260,280" fill="none" stroke="#A5D6A7" stroke-width="2" transform="rotate(-15, 250, 260)" />
+
+  <!-- The Gavel -->
+  <rect x="270" y="220" width="80" height="40" rx="5" fill="url(#goldGrad)" stroke="#8B4513" stroke-width="2" transform="rotate(15, 270, 220)" />
+  <rect x="310" y="260" width="15" height="100" rx="2" fill="#8B4513" stroke="#4B2E1C" stroke-width="2" transform="rotate(15, 310, 260)" />
+
+  <!-- Text Ring -->
+  <path id="textPath" d="M 250, 60 a 190,190 0 1,1 0,380 a 190,190 0 1,1 0,-380" fill="none" />
+  <text font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="bold" fill="#FFF" filter="url(#glow)">
+    <textPath href="#textPath" startOffset="0%">
+      SYMMETRY COUNCIL LEGAL DEFENSE FUND 💎 ⚡️ RECURSIVE VOID JUSTICE 🥒 ⚡️
+    </textPath>
+  </text>
+
+  <!-- Central Label -->
+  <rect x="175" y="350" width="150" height="40" rx="10" fill="#000" opacity="0.7" />
+  <text x="250" y="375" font-family="Arial" font-size="18" font-weight="bold" fill="#FEE101" text-anchor="middle">NON-EUCLIDEAN LAW</text>
+</svg>

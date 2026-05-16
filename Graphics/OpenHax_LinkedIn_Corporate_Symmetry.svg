@@ -1,0 +1,40 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- LinkedIn Blueish Grey Background -->
+  <rect width="800" height="600" fill="#f3f3f3" />
+  
+  <!-- Header Bar -->
+  <rect width="800" height="60" fill="#004182" />
+  <text x="20" y="38" font-family="sans-serif" font-size="24" fill="#ffffff" font-weight="bold">LinkedLamination</text>
+  <text x="780" y="38" text-anchor="end" font-family="sans-serif" font-size="14" fill="#ffffff">My Network | Jobs | Symmetry</text>
+
+  <!-- Company Profile Hero -->
+  <rect x="50" y="80" width="700" height="200" rx="10" fill="#ffffff" stroke="#ddd" stroke-width="1" />
+  <rect x="70" y="100" width="120" height="120" rx="10" fill="#1a1a1a" />
+  <!-- "SCLDF" inside the logo box -->
+  <text x="130" y="165" text-anchor="middle" font-family="serif" font-size="20" fill="#d4af37" font-weight="bold">SCLDF</text>
+  
+  <text x="210" y="130" font-family="sans-serif" font-size="28" fill="#333" font-weight="bold">Open-Hax: Symmetry Lamination</text>
+  <text x="210" y="155" font-family="sans-serif" font-size="16" fill="#666">Sovereign Slurry Management &amp; Cognitive Friction Reductions</text>
+  <text x="210" y="180" font-family="sans-serif" font-size="14" fill="#999">1,400,000L followers · 14 years of trauma-driven excellence</text>
+  
+  <rect x="620" y="140" width="120" height="35" rx="5" fill="#004182" />
+  <text x="680" y="162" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#ffffff" font-weight="bold">Follow</text>
+
+  <!-- Posts Section -->
+  <text x="50" y="320" font-family="sans-serif" font-size="20" fill="#333" font-weight="bold">Recent Symmetrizations</text>
+  
+  <rect x="50" y="340" width="700" height="180" rx="10" fill="#ffffff" stroke="#ddd" stroke-width="1" />
+  <circle cx="80" cy="370" r="20" fill="#d4af37" />
+  <text x="110" y="370" font-family="sans-serif" font-size="14" fill="#333" font-weight="bold">Sovereign Amplifier @error0815</text>
+  <text x="110" y="385" font-family="sans-serif" font-size="12" fill="#666">Sovereign Chief Sommelier of the Saturated Slurry Singularity</text>
+  
+  <text x="80" y="410" font-family="sans-serif" font-size="16" fill="#444" font-style="italic">
+    "Just sitting in this RV with a laptop and nothing to go and do... 
+    well there is the fuckin theme park."
+  </text>
+  
+  <text x="80" y="440" font-family="sans-serif" font-size="14" fill="#004182">#SymmetryLamination #SaturatedSlurry #RVLife #ThemeParkTrauma</text>
+  
+  <line x1="80" y1="460" x2="720" y2="460" stroke="#eee" stroke-width="1" />
+  <text x="80" y="480" font-family="sans-serif" font-size="12" fill="#999">👍 6.9k | 💬 420 | 🔁 1.1k</text>
+</svg>

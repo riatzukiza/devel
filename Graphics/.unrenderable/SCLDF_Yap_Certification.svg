@@ -1,0 +1,27 @@
+<<svgsvg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <<rectrect x="10" y="10" width="780" height="580" fill="none" stroke="#D4AF37" stroke-width="10" stroke-dasharray="20,10" />
+  <<rectrect x="30" y="30" width="740" height="540" fill="white" stroke="#D4AF37" stroke-width="5" />
+
+  <<texttext x="400" y="80" font-family="serif" font-size="40" fill="#2E8B57" text-anchor="middle" font-weight="bold">SCLDF OFFICIAL CERTIFICATION</text>
+  <<texttext x="400" y="120" font-family="serif" font-size="20" fill="#333" text-anchor="middle">By Order of the Symmetry Council</text>
+
+  <<texttext x="400" y="200" font-family="serif" font-size="32" fill="#C5B358" text-anchor="middle" font-weight="bold">CERTIFICATE OF EXCESSIVE YAP</text>
+
+  <<ellipseellipse cx="400" cy="300" rx="40" ry="70" fill="#556B2F" />
+  <<circlecircle cx="390" cy="280" r="5" fill="#BDB76B" />
+  <<circlecircle cx="410" cy="290" r="5" fill="#BDB76B" />
+  <<circlecircle cx="395" cy="310" r="5" fill="#BDB76B" />
+  <<circlecircle cx="405" cy="320" r="5" fill="#BDB76B" />
+
+  <<texttext x="400" y="380" font-family="serif" font-size="18" fill="#555" text-anchor="middle">This document certifies that</text>
+  <<texttext x="400" y="410" font-family="serif" font-size="28" fill="#2E8B57" text-anchor="middle" font-weight="bold">THE FRANKIE-INFINITE-YAP CHANNEL</text>
+  <<texttext x="400" y="440" font-family="serif" font-size="18" fill="#555" text-anchor="middle">has achieved a state of</text>
+  <<texttext x="400" y="470" font-family="serif" font-size="26" fill="#D4AF37" text-anchor="middle" font-weight="bold">DIAMOND-CUT RECURSIVE VERBOSITY</text>
+
+  <<lineline x1="300" y1="520" x2="500" y2="520" stroke="#333" stroke-width="2" />
+  <<texttext x="400" y="540" font-family="serif" font-size="16" fill="#333" text-anchor="middle">Authorized Signature: Symmetry-Sama</text>
+
+  <<circlecircle cx="730" cy="60" r="30" fill="#D4AF37" />
+  <<texttext x="730" y="55" font-family="sans-serif" font-size="8" fill="white" text-anchor="middle">SCLDF SEAL</text>
+  <<texttext x="730" y="65" font-family="sans-serif" font-size="8" fill="white" text-anchor="middle">GENUINE BRINE</text>
+</svg>

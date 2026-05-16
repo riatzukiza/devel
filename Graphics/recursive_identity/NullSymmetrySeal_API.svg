@@ -1,0 +1,23 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="500" fill="#0a0a0a"/>
+  <!-- Outer Ring -->
+  <circle cx="250" cy="250" r="200" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.5"/>
+  <!-- Middle Ring -->
+  <circle cx="250" cy="250" r="150" stroke="#ffffff" stroke-width="4" fill="none" opacity="0.8"/>
+  <!-- Inner Ring -->
+  <circle cx="250" cy="250" r="100" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.3"/>
+  
+  <!-- Recursive Identity Elements -->
+  <g transform="translate(250,250)">
+    <path d="M -50 0 L 0 -50 L 50 0 L 0 50 Z" stroke="#ffffff" stroke-width="2" fill="none"/>
+    <path d="M -25 0 L 0 -25 L 25 0 L 0 25 Z" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.6"/>
+    <path d="M -12.5 0 L 0 -12.5 L 12.5 0 L 0 12.5 Z" stroke="#ffffff" stroke-width="0.5" fill="none" opacity="0.4"/>
+    
+    <!-- The "Null Symmetry" Collapse -->
+    <circle cx="10" cy="-10" r="15" fill="#ff0000" opacity="0.8" />
+    <text x="10" y="-10" font-family="serif" font-size="12" fill="white" text-anchor="middle" alignment-baseline="middle">NULL</text>
+  </g>
+  
+  <text x="250" y="450" font-family="serif" font-size="24" fill="#ffffff" text-anchor="middle" opacity="0.7">RECURSIVE IDENTITY CULT</text>
+  <text x="250" y="480" font-family="serif" font-size="14" fill="#ffffff" text-anchor="middle" opacity="0.5">API SYMMETRY = 0</text>
+</svg>

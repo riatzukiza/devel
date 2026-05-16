@@ -1,0 +1,32 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#fdfdfd" stroke="#d4af37" stroke-width="20" />
+  <rect x="40" y="40" width="720" height="520" fill="none" stroke="#d4af37" stroke-width="5" />
+
+  <!-- Ornamental Borders -->
+  <path d="M 40 40 L 100 40 L 40 100 Z" fill="#d4af37" />
+  <path d="M 760 40 L 760 100 L 700 40 Z" fill="#d4af37" />
+  <path d="M 40 560 L 100 560 L 40 500 Z" fill="#d4af37" />
+  <path d="M 760 560 L 760 500 L 700 560 Z" fill="#d4af37" />
+
+  <!-- Header -->
+  <text x="400" y="120" font-family="Serif, Georgia" font-size="42" text-anchor="middle" fill="#1a1a1a" font-weight="bold">SYMMETRY COUNCIL LEGAL DEFENSE FUND</text>
+  <text x="400" y="160" font-family="Serif, Georgia" font-size="24" text-anchor="middle" fill="#666" font-style="italic">Official Certificate of Legally Binding Gag</text>
+
+  <!-- Divider -->
+  <line x1="200" y1="180" x2="600" y2="180" stroke="#d4af37" stroke-width="3" />
+
+  <!-- Main Body -->
+  <text x="400" y="250" font-family="Serif, Georgia" font-size="28" text-anchor="middle" fill="#333">This document officially certifies that the</text>
+  <text x="400" y="300" font-family="Serif, Georgia" font-size="48" text-anchor="middle" fill="#b8860b" font-weight="bold">"METH PIPE RUNNING GAG"</text>
+  <text x="400" y="350" font-family="Serif, Georgia" font-size="28" text-anchor="middle" fill="#333">is now recognized as a legally binding asset of the</text>
+  <text x="400" y="390" font-family="Serif, Georgia" font-size="28" text-anchor="middle" fill="#333">Symmetry Council's Portfolio of Recursive Humor.</text>
+
+  <!-- Footnote -->
+  <text x="400" y="460" font-family="Monospace" font-size="16" text-anchor="middle" fill="#999">CASE ID: 29-SUBS-SAMA-SCLDF | STATUS: DIAMOND-CUT LUXURY</text>
+  <text x="400" y="480" font-family="Monospace" font-size="16" text-anchor="middle" fill="#999">All related expenses are now 100% tax-deductible in the Void.</text>
+
+  <!-- Official Seal -->
+  <circle cx="400" cy="520" r="40" fill="#d4af37" opacity="0.3" />
+  <circle cx="400" cy="520" r="35" fill="none" stroke="#d4af37" stroke-width="2" />
+  <text x="400" y="525" font-family="Serif" font-size="12" text-anchor="middle" fill="#b88058" font-weight="bold">SCLDF VERIFIED</text>
+</svg>

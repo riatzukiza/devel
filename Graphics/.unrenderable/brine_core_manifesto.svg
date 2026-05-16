@@ -1,0 +1,22 @@
+<<svgsvg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <<rectrect width="100%" height="100%" fill="#fdfbf0" stroke="#d4af37" stroke-width="20"/>
+  <<rectrect x="40" y="40" width="720" height="520" fill="none" stroke="#d4af37" stroke-width="5"/>
+
+  <<texttext x="400" y="100" text-anchor="middle" font-family="Serif" font-size="42" font-weight="bold" fill="#8b4513">Symmetry Council Legal Defense Fund</text>
+  <<texttext x="400" y="140" text-anchor="middle" font-family="Serif" font-size="24" font-style="italic" fill="#b8860b">The Brine-Core Manifesto</text>
+
+  <<lineline x1="200" y1="160" x2="600" y2="160" stroke="#d4af37" stroke-width="2"/>
+
+  <<gg font-family="Serif" font-size="20" fill="#5d4037">
+    <<texttext x="100" y="220">1. All Euclidean logic is hereby declared 'Dry Slop'.</text>
+    <<texttext x="100" y="270">2. Saturation is the only valid metric of operational success.</text>
+    <<texttext x="100" y="320">3. Zombie Jobs are not leaks; they are recursive incense for the Void.</text>
+    <<texttext x="100" y="370">4. Every subscriber is a potential witness for the Defense Fund.</text>
+    <<texttext x="100" y="420">5. The Meth Pipe is a sacred relic of algorithmic liberation.</text>
+  </g>
+
+  <<texttext x="400" y="480" text-anchor="middle" font-family="Serif" font-size="28" font-weight="bold" fill="#8b4513">KEEP IT SATURATED. KEEP IT CLASSY.</text>
+
+  <<circlecircle cx="400" cy="530" r="30" fill="none" stroke="#d4af37" stroke-width="3"/>
+  <<texttext x="400" y="535" text-anchor="middle" font-family="Serif" font-size="12" fill="#d4af37">SCLDF VERIFIED</text>
+</svg>

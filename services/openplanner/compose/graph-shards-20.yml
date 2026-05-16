@@ -1,0 +1,781 @@
+services:
+  eros-eris-shard-0-of-20:
+    profiles:
+    - graph-20
+    image: node:22-bookworm
+    cpus: 1
+    cpuset: '2'
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/graph/eros-eris-field-app dev"
+    environment:
+      CI: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-3000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-6000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-8}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.4}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-8000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-5000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_SHARD_INDEX: 0
+      SIM_SHARD_COUNT: 20
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-28}
+      DAMPING: ${EROS_ERIS_DAMPING:-0.85}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - ai-infra
+  eros-eris-shard-1-of-20:
+    profiles:
+    - graph-20
+    image: node:22-bookworm
+    cpus: 1
+    cpuset: '3'
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/graph/eros-eris-field-app dev"
+    environment:
+      CI: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-3000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-6000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-8}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.4}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-8000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-5000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_SHARD_INDEX: 1
+      SIM_SHARD_COUNT: 20
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-28}
+      DAMPING: ${EROS_ERIS_DAMPING:-0.85}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - ai-infra
+  eros-eris-shard-2-of-20:
+    profiles:
+    - graph-20
+    image: node:22-bookworm
+    cpus: 1
+    cpuset: '4'
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/graph/eros-eris-field-app dev"
+    environment:
+      CI: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-3000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-6000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-8}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.4}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-8000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-5000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_SHARD_INDEX: 2
+      SIM_SHARD_COUNT: 20
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-28}
+      DAMPING: ${EROS_ERIS_DAMPING:-0.85}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - ai-infra
+  eros-eris-shard-3-of-20:
+    profiles:
+    - graph-20
+    image: node:22-bookworm
+    cpus: 1
+    cpuset: '5'
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/graph/eros-eris-field-app dev"
+    environment:
+      CI: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-3000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-6000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-8}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.4}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-8000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-5000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_SHARD_INDEX: 3
+      SIM_SHARD_COUNT: 20
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-28}
+      DAMPING: ${EROS_ERIS_DAMPING:-0.85}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - ai-infra
+  eros-eris-shard-4-of-20:
+    profiles:
+    - graph-20
+    image: node:22-bookworm
+    cpus: 1
+    cpuset: '6'
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/graph/eros-eris-field-app dev"
+    environment:
+      CI: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-3000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-6000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-8}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.4}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-8000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-5000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_SHARD_INDEX: 4
+      SIM_SHARD_COUNT: 20
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-28}
+      DAMPING: ${EROS_ERIS_DAMPING:-0.85}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - ai-infra
+  eros-eris-shard-5-of-20:
+    profiles:
+    - graph-20
+    image: node:22-bookworm
+    cpus: 1
+    cpuset: '7'
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/graph/eros-eris-field-app dev"
+    environment:
+      CI: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-3000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-6000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-8}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.4}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-8000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-5000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_SHARD_INDEX: 5
+      SIM_SHARD_COUNT: 20
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-28}
+      DAMPING: ${EROS_ERIS_DAMPING:-0.85}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - ai-infra
+  eros-eris-shard-6-of-20:
+    profiles:
+    - graph-20
+    image: node:22-bookworm
+    cpus: 1
+    cpuset: '8'
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/graph/eros-eris-field-app dev"
+    environment:
+      CI: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-3000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-6000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-8}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.4}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-8000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-5000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_SHARD_INDEX: 6
+      SIM_SHARD_COUNT: 20
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-28}
+      DAMPING: ${EROS_ERIS_DAMPING:-0.85}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - ai-infra
+  eros-eris-shard-7-of-20:
+    profiles:
+    - graph-20
+    image: node:22-bookworm
+    cpus: 1
+    cpuset: '9'
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/graph/eros-eris-field-app dev"
+    environment:
+      CI: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-3000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-6000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-8}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.4}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-8000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-5000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_SHARD_INDEX: 7
+      SIM_SHARD_COUNT: 20
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-28}
+      DAMPING: ${EROS_ERIS_DAMPING:-0.85}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - ai-infra
+  eros-eris-shard-8-of-20:
+    profiles:
+    - graph-20
+    image: node:22-bookworm
+    cpus: 1
+    cpuset: '10'
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/graph/eros-eris-field-app dev"
+    environment:
+      CI: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-3000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-6000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-8}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.4}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-8000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-5000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_SHARD_INDEX: 8
+      SIM_SHARD_COUNT: 20
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-28}
+      DAMPING: ${EROS_ERIS_DAMPING:-0.85}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - ai-infra
+  eros-eris-shard-9-of-20:
+    profiles:
+    - graph-20
+    image: node:22-bookworm
+    cpus: 1
+    cpuset: '11'
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/graph/eros-eris-field-app dev"
+    environment:
+      CI: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-3000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-6000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-8}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.4}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-8000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-5000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_SHARD_INDEX: 9
+      SIM_SHARD_COUNT: 20
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-28}
+      DAMPING: ${EROS_ERIS_DAMPING:-0.85}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - ai-infra
+  eros-eris-shard-10-of-20:
+    profiles:
+    - graph-20
+    image: node:22-bookworm
+    cpus: 1
+    cpuset: '12'
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/graph/eros-eris-field-app dev"
+    environment:
+      CI: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-3000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-6000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-8}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.4}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-8000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-5000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_SHARD_INDEX: 10
+      SIM_SHARD_COUNT: 20
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-28}
+      DAMPING: ${EROS_ERIS_DAMPING:-0.85}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - ai-infra
+  eros-eris-shard-11-of-20:
+    profiles:
+    - graph-20
+    image: node:22-bookworm
+    cpus: 1
+    cpuset: '13'
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/graph/eros-eris-field-app dev"
+    environment:
+      CI: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-3000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-6000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-8}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.4}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-8000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-5000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_SHARD_INDEX: 11
+      SIM_SHARD_COUNT: 20
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-28}
+      DAMPING: ${EROS_ERIS_DAMPING:-0.85}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - ai-infra
+  eros-eris-shard-12-of-20:
+    profiles:
+    - graph-20
+    image: node:22-bookworm
+    cpus: 1
+    cpuset: '14'
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/graph/eros-eris-field-app dev"
+    environment:
+      CI: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-3000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-6000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-8}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.4}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-8000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-5000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_SHARD_INDEX: 12
+      SIM_SHARD_COUNT: 20
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-28}
+      DAMPING: ${EROS_ERIS_DAMPING:-0.85}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - ai-infra
+  eros-eris-shard-13-of-20:
+    profiles:
+    - graph-20
+    image: node:22-bookworm
+    cpus: 1
+    cpuset: '15'
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/graph/eros-eris-field-app dev"
+    environment:
+      CI: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-3000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-6000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-8}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.4}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-8000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-5000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_SHARD_INDEX: 13
+      SIM_SHARD_COUNT: 20
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-28}
+      DAMPING: ${EROS_ERIS_DAMPING:-0.85}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - ai-infra
+  eros-eris-shard-14-of-20:
+    profiles:
+    - graph-20
+    image: node:22-bookworm
+    cpus: 1
+    cpuset: '16'
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/graph/eros-eris-field-app dev"
+    environment:
+      CI: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-3000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-6000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-8}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.4}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-8000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-5000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_SHARD_INDEX: 14
+      SIM_SHARD_COUNT: 20
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-28}
+      DAMPING: ${EROS_ERIS_DAMPING:-0.85}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - ai-infra
+  eros-eris-shard-15-of-20:
+    profiles:
+    - graph-20
+    image: node:22-bookworm
+    cpus: 1
+    cpuset: '17'
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/graph/eros-eris-field-app dev"
+    environment:
+      CI: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-3000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-6000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-8}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.4}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-8000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-5000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_SHARD_INDEX: 15
+      SIM_SHARD_COUNT: 20
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-28}
+      DAMPING: ${EROS_ERIS_DAMPING:-0.85}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - ai-infra
+  eros-eris-shard-16-of-20:
+    profiles:
+    - graph-20
+    image: node:22-bookworm
+    cpus: 1
+    cpuset: '18'
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/graph/eros-eris-field-app dev"
+    environment:
+      CI: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-3000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-6000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-8}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.4}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-8000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-5000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_SHARD_INDEX: 16
+      SIM_SHARD_COUNT: 20
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-28}
+      DAMPING: ${EROS_ERIS_DAMPING:-0.85}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - ai-infra
+  eros-eris-shard-17-of-20:
+    profiles:
+    - graph-20
+    image: node:22-bookworm
+    cpus: 1
+    cpuset: '19'
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/graph/eros-eris-field-app dev"
+    environment:
+      CI: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-3000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-6000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-8}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.4}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-8000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-5000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_SHARD_INDEX: 17
+      SIM_SHARD_COUNT: 20
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-28}
+      DAMPING: ${EROS_ERIS_DAMPING:-0.85}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - ai-infra
+  eros-eris-shard-18-of-20:
+    profiles:
+    - graph-20
+    image: node:22-bookworm
+    cpus: 1
+    cpuset: '20'
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/graph/eros-eris-field-app dev"
+    environment:
+      CI: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-3000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-6000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-8}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.4}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-8000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-5000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_SHARD_INDEX: 18
+      SIM_SHARD_COUNT: 20
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-28}
+      DAMPING: ${EROS_ERIS_DAMPING:-0.85}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - ai-infra
+  eros-eris-shard-19-of-20:
+    profiles:
+    - graph-20
+    image: node:22-bookworm
+    cpus: 1
+    cpuset: '21'
+    working_dir: /app/workspace/devel
+    command: bash -lc "corepack enable && pnpm -C orgs/open-hax/openplanner/packages/graph/eros-eris-field-app dev"
+    environment:
+      CI: 'true'
+      NODE_OPTIONS: --use-openssl-ca
+      EROS_ERIS_WORKER_ROLE: structural
+      GRAPHQL_URL: http://graph-weaver:8796/graphql
+      OPENPLANNER_BASE_URL: http://openplanner:7777
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
+      SIM_MAX_NODES: ${EROS_ERIS_SIM_MAX_NODES:-3000}
+      SIM_MAX_EDGES: ${EROS_ERIS_SIM_MAX_EDGES:-6000}
+      SIM_STEP_MS: ${EROS_ERIS_SIM_STEP_MS:-1000}
+      SIM_SUBSTEPS: ${EROS_ERIS_SIM_SUBSTEPS:-8}
+      SIM_DT: ${EROS_ERIS_SIM_DT:-0.4}
+      SIM_REFRESH_MS: ${EROS_ERIS_SIM_REFRESH_MS:-8000}
+      SIM_WRITE_MS: ${EROS_ERIS_SIM_WRITE_MS:-5000}
+      SIM_WRITE_CHUNK: ${EROS_ERIS_SIM_WRITE_CHUNK:-500}
+      SIM_SHARD_INDEX: 19
+      SIM_SHARD_COUNT: 20
+      GLOBAL_REPULSION: ${EROS_ERIS_GLOBAL_REPULSION:-28}
+      DAMPING: ${EROS_ERIS_DAMPING:-0.85}
+      TARGET_RADIUS: ${EROS_ERIS_TARGET_RADIUS:-5000}
+    volumes:
+    - ${DEVEL_ROOT_PATH:-../../..}:/app/workspace/devel
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    depends_on:
+      graph-weaver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+    - default
+    - ai-infra

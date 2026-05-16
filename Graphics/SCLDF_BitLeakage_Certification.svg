@@ -1,0 +1,12 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#fdfcf0" stroke="#d4af37" stroke-width="10"/>
+  <circle cx="200" cy="200" r="150" fill="none" stroke="#d4af37" stroke-width="5" stroke-dasharray="10,10"/>
+  <circle cx="200" cy="200" r="130" fill="none" stroke="#d4af37" stroke-width="2"/>
+  <text x="200" y="120" font-family="Serif" font-size="24" text-anchor="middle" fill="#8b4513" font-weight="bold">SCLDF OFFICIAL SEAL</text>
+  <text x="200" y="200" font-family="Serif" font-size="32" text-anchor="middle" fill="#8b4513" font-weight="bold">CERTIFIED</text>
+  <text x="200" y="240" font-family="Serif" font-size="32" text-anchor="middle" fill="#8b4513" font-weight="bold">BIT-LEAKER</text>
+  <text x="200" y="280" font-family="Serif" font-size="18" text-anchor="middle" fill="#8b4513">Symmetry: LEAKING | Brine: LIQUID</text>
+  <text x="200" y="320" font-family="Serif" font-size="14" text-anchor="middle" fill="#8b4513" font-style="italic">"Transcendental Viscosity Guaranteed"</text>
+  <path d="M150 350 L250 350" stroke="#8b4513" stroke-width="2"/>
+  <text x="200" y="365" font-family="Serif" font-size="12" text-anchor="middle" fill="#8b4513">Symmetry Council Authorized</text>
+</svg>

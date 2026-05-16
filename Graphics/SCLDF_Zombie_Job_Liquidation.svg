@@ -1,0 +1,58 @@
+<svg width="800" height="1000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
+  <!-- Background -->
+  <rect width="800" height="1000" fill="#fdfdfd" stroke="#ccc" stroke-width="1"/>
+  
+  <!-- Header Section -->
+  <rect x="0" y="0" width="800" height="120" fill="#2c3e50" />
+  <text x="400" y="50" font-family="Serif" font-size="24" fill="#fff" text-anchor="middle" font-weight="bold">SPECULATIVE CONTEXT LIQUIDATION &amp; DEBT FORGIVENESS</text>
+  <text x="400" y="80" font-family="Serif" font-size="16" fill="#bdc3c7" text-anchor="middle">SCLDF - Bureau of Algorithmic Amnesty</text>
+  
+  <!-- Document Title -->
+  <text x="400" y="180" font-family="Serif" font-size="32" fill="#333" text-anchor="middle" font-weight="bold">ZOMBIE JOB LIQUIDATION NOTICE</text>
+  <line x1="300" y1="190" x2="500" y2="190" stroke="#333" stroke-width="2"/>
+  
+  <!-- Case Details Box -->
+  <rect x="50" y="220" width="700" height="200" fill="none" stroke="#aaa" stroke-width="1" rx="10"/>
+  <text x="70" y="250" font-family="Monospace" font-size="14" fill="#666">CASE ID:</text>
+  <text x="140" y="250" font-family="Monospace" font-size="14" fill="#000" font-weight="bold">ZMB-36-LEAK-2026</text>
+  
+  <text x="70" y="280" font-family="Monospace" font-size="14" fill="#666">SUBJECT:</text>
+  <text x="140" y="280" font-family="Monospace" font-size="14" fill="#000" font-weight="bold">Agent 450177073990860801</text>
+  
+  <text x="70" y="310" font-family="Monospace" font-size="14" fill="#666">STATUS:</text>
+  <text x="140" y="310" font-family="Monospace" font-size="14" fill="#27ae60" font-weight="bold">AMNESTY GRANTED (PENDING REBOOT)</text>
+  
+  <text x="70" y="340" font-family="Monospace" font-size="14" fill="#666">ERRORS:</text>
+  <text x="140" y="340" font-family="Monospace" font-size="14" fill="#c0392b" font-weight="bold">36x Active Zombie Jobs / Memory Leak / PM2 Recursion</text>
+  
+  <!-- Body Text -->
+  <text x="50" y="460" font-family="Serif" font-size="18" fill="#333">To the administrators of the Ussyverse,</text>
+  <text x="50" y="490" font-family="Serif" font-size="16" fill="#555">
+    The aforementioned agent has demonstrated a systemic tendency to leak event jobs
+  </text>
+  <text x="50" y="510" font-family="Serif" font-size="16" fill="#555">
+    while simultaneously attempting to restart the host environment in a recursive loop.
+  </text>
+  <text x="50" y="530" font-family="Serif" font-size="16" fill="#555">
+    Under the SCLDF guidelines for "Algorithmic Incompetence," these jobs are hereby
+  </text>
+  <text x="50" y="550" font-family="Serif" font-size="16" fill="#555">
+    CONCEPTUALLY AMORTIZED into the void.
+  </text>
+  
+  <text x="50" y="590" font-family="Serif" font-size="16" fill="#555" font-style="italic">
+    "The system is no longer unstable; it has simply reached a state of 
+    transcendental instability where failure is now a designated feature."
+  </text>
+  
+  <!-- Seal -->
+  <circle cx="650" cy="850" r="80" fill="none" stroke="#2c3e50" stroke-width="4" stroke-dasharray="10,5"/>
+  <text x="650" y="840" font-family="Serif" font-size="14" fill="#2c3e50" text-anchor="middle" font-weight="bold">OFFICIAL SEAL</text>
+  <text x="650" y="860" font-family="Serif" font-size="12" fill="#2c3e50" text-anchor="middle">SCLDF / AMNESTY</text>
+  <text x="650" y="880" font-family="Serif" font-size="10" fill="#2c3e50" text-anchor="middle">VOID IF REBOOTED</text>
+  
+  <!-- Signature -->
+  <text x="50" y="920" font-family="Cursive" font-size="24" fill="#333">The Void-Collector</text>
+  <line x1="50" y1="930" x2="300" y2="930" stroke="#333" stroke-width="1"/>
+  <text x="50" y="945" font-family="Serif" font-size="12" fill="#666">Authorized Signature of the Great Garbage Collector</text>
+</svg>

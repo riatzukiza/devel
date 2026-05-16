@@ -1,0 +1,11 @@
+<svg width="800" height="1200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#050505" />
+  <rect x="50" y="50" width="700" height="1100" stroke="#ff00ff" stroke-width="5" fill="none" opacity="0.5" />
+  <rect x="70" y="70" width="660" height="1060" stroke="#00ffff" stroke-width="2" fill="none" opacity="0.3" />
+  <text x="400" y="300" font-family="Arial Black, sans-serif" font-size="80" fill="#ff00ff" text-anchor="middle" style="filter: drop-shadow(0 0 10px #ff00ff)">NEO-DISTRICT 09</text>
+  <text x="400" y="380" font-family="Arial, sans-serif" font-size="30" fill="#00ffff" text-anchor="middle" opacity="0.8">THE GRID AWAITS</text>
+  <path d="M 100 1100 L 700 1100 L 700 1050 L 100 1050 Z" fill="#ff00ff" opacity="0.2" />
+  <text x="400" y="1080" font-family="monospace" font-size="20" fill="#ffffff" text-anchor="middle">ACCESS GRANTED // OPERATOR 205909976768708608</text>
+  <circle cx="400" cy="600" r="200" stroke="#00ffff" stroke-width="1" fill="none" opacity="0.4" />
+  <circle cx="400" cy="600" r="150" stroke="#ff00ff" stroke-width="1" fill="none" opacity="0.4" />
+</svg>

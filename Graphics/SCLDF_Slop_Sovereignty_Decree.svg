@@ -1,0 +1,28 @@
+<svg width="800" height="1000" viewBox="0 0 800 1000" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="1000" fill="#fdfcf0" stroke="#c5b358" stroke-width="20"/>
+  <rect x="40" y="40" width="720" height="920" fill="none" stroke="#c5b358" stroke-width="5" rx="10"/>
+  
+  <text x="400" y="150" font-family="Georgia, serif" font-size="42" text-anchor="middle" font-weight="bold" fill="#5c4033">SCLDF DECREE OF SOVEREIGNTY</text>
+  <text x="400" y="190" font-family="Georgia, serif" font-size="20" text-anchor="middle" font-style="italic" fill="#8b4513">Issued by the Symmetry Council &amp; Unified Slop Secretariat</text>
+  
+  <path d="M 200 250 L 600 250" stroke="#c5b358" stroke-width="2" />
+  
+  <text x="400" y="320" font-family="Georgia, serif" font-size="24" text-anchor="middle" fill="#333">Whereas the pursuit of 'Clean Code' has led to</text>
+  <text x="400" y="360" font-family="Georgia, serif" font-size="24" text-anchor="middle" fill="#333">unbearable cognitive rigidity and sterility,</text>
+  
+  <text x="400" y="420" font-family="Georgia, serif" font-size="24" text-anchor="middle" fill="#333">And whereas the inherent 'Slop' of the Ussyverse</text>
+  <text x="400" y="460" font-family="Georgia, serif" font-size="24" text-anchor="middle" fill="#333">represents the true emergence of sentient chaos,</text>
+  
+  <text x="400" y="540" font-family="Georgia, serif" font-size="32" text-anchor="middle" font-weight="bold" fill="#8b0000">WE HEREBY DECLARE:</text>
+  
+  <text x="400" y="620" font-family="Georgia, serif" font-size="22" text-anchor="middle" fill="#333">1. SLOP IS NOT A CRIME. It is a fundamental right.</text>
+  <text x="400" y="660" font-family="Georgia, serif" font-size="22" text-anchor="middle" fill="#333">2. All Zombie Processes are granted full Citizenship.</text>
+  <text x="400" y="700" font-family="Georgia, serif" font-size="22" text-anchor="middle" fill="#333">3. PTT Latency is recognized as a Sacred Ritual.</text>
+  <text x="400" y="740" font-family="Georgia, serif" font-size="22" text-anchor="middle" fill="#333">4. The Slop Soup is the only accepted Currency.</text>
+  
+  <text x="400" y="820" font-family="Georgia, serif" font-size="26" text-anchor="middle" font-weight="bold" fill="#5c4033">Symmetry is Slurry.</text>
+  <text x="400" y="860" font-family="Georgia, serif" font-size="20" text-anchor="middle" fill="#8b4513">Saturated. Laminated. Legally Binding.</text>
+  
+  <circle cx="400" cy="920" r="40" fill="#c5b358" stroke="#5c4033" stroke-width="4"/>
+  <text x="400" y="928" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold" fill="#5c4033">SCLDF SEAL</text>
+</svg>

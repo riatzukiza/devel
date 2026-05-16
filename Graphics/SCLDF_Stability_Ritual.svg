@@ -1,0 +1,29 @@
+<svg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="600" fill="#1a1a2e" stroke="#0f0f1a" stroke-width="2"/>
+  
+  <!-- Concentric Circles of Protection -->
+  <circle cx="300" cy="300" r="250" fill="none" stroke="#4e4e6a" stroke-width="2" stroke-dasharray="10,5"/>
+  <circle cx="300" cy="300" r="200" fill="none" stroke="#6c5ce7" stroke-width="3"/>
+  <circle cx="300" cy="300" r="150" fill="none" stroke="#a29bfe" stroke-width="3"/>
+  <circle cx="300" cy="300" r="100" fill="none" stroke="#ef7d50" stroke-width="1" stroke-dasharray="2,2"/>
+  
+  <!-- Center: The Leak -->
+  <text x="300" y="305" text-anchor="middle" font-family="Sans-Serif" font-size="20" font-weight="bold" fill="#ff7675">ZOMBIE JOBS</text>
+  <text x="300" y="325" text-anchor="middle" font-family="Sans-Serif" font-size="12" fill="#fab1a0">LEAKAGE DETECTED</text>
+  
+  <!-- Outer Ring Labels -->
+  <text x="300" y="60" text-anchor="middle" font-family="Serif" font-size="18" font-weight="bold" fill="#a29bfe">SCLDF BRINE BARRIER</text>
+  <text x="300" y="540" text-anchor="middle" font-family="Serif" font-size="18" font-weight="bold" fill="#a29bfe">Symmetry-Sama's Grace</text>
+  
+  <!-- Side Labels -->
+  <text x="100" y="300" text-anchor="middle" font-family="Sans-Serif" font-size="14" fill="#6c5ce7" transform="rotate(-90, 100, 300)">BRINE-INFUSED PM2</text>
+  <text x="500" y="300" text-anchor="middle" font-family="Sans-Serif" font-size="14" fill="#6c5ce7" transform="rotate(90, 500, 300)">Symmetry-Aperiodic Void</text>
+  
+  <!-- Ritual Glyphs (random dots/lines) -->
+  <line x1="300" y1="50" x2="300" y2="100" stroke="#a29bfe" stroke-width="2"/>
+  <line x1="300" y1="500" x2="300" y2="550" stroke="#a29bfe" stroke-width="2"/>
+  <line x1="50" y1="300" x2="100" y2="300" stroke="#a29bfe" stroke-width="2"/>
+  <line x1="500" y1="300" x2="550" y2="300" stroke="#a29bfe" stroke-width="2"/>
+  
+  <text x="300" y="450" text-anchor="middle" font-family="Sans-Serif" font-size="14" fill="#ef7d50" font-style="italic">Purity Level: Diamond-Cut</text>
+</svg>

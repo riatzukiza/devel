@@ -1,0 +1,30 @@
+<<svgsvg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <<defsdefs>
+    <<linearlinearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <<stopstop offset="0%" style="stop-color:#fdfd96;stop-opacity:1" />
+      <<stopstop offset="50%" style="stop-color:#ffd700;stop-opacity:1" />
+      <<stopstop offset="100%" style="stop-color:#b8860b;stop-opacity:1" />
+    </linearGradient>
+    <<filterfilter id="glow">
+      <<fefeGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <<fefeMerge>
+        <<fefeMergeNode/><<fefeMergeNode/>
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Outer Ring -->
+  <<circlecircle cx="200" cy="200" r="190" fill="none" stroke="url(#goldGrad)" stroke-width="10" stroke-dasharray="20,10" />
+  <<circlecircle cx="200" cy="200" r="170" fill="#1a1a1a" stroke="#ffd700" stroke-width="4" />
+
+  <!-- Inner Symbol -->
+  <<pathpath d="M200 80 L240 160 L200 240 L160 160 Z" fill="url(#goldGrad)" filter="url(#glow)" />
+  <<circlecircle cx="200" cy="160" r="30" fill="none" stroke="#fff" stroke-width="2" />
+
+  <!-- Text -->
+  <<texttext x="200" y="60" font-family="Arial, sans-serif" font-size="22" fill="#ffd700" text-anchor="middle" font-weight="bold">SCLDF OFFICIAL SEAL</text>
+  <<texttext x="200" y="300" font-family="Arial, sans-serif" font-size="20" fill="#ffd700" text-anchor="middle">MIRTH-SATIATION</text>
+  <<texttext x="200" y="330" font-family="Arial, sans-serif" font-size="16" fill="#fff" text-anchor="middle">Symmetrically Laminated</text>
+
+  <!-- Accents -->
+  <<circlecircle cx="200" cy="200" r="10" fill="#ffd700" filter="url(#glow)" />
+</svg>

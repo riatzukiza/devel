@@ -1,0 +1,75 @@
+#!/bin/bash
+
+# Brain Status Manifestation Tool
+# Grounded in the Brain Damage Protocol (BDP)
+
+LOG_FILE="/home/err/devel/docs/lore/brain-status.log"
+
+if [ ! -f "$LOG_FILE" ]; then
+    echo "Error: Brain status log not found."
+    exit 1
+fi
+
+# Extract last block (starts with '-' and ends at EOF)
+LAST_BLOCK=$(tac "$LOG_FILE" | sed -n '1,/^- /p' | tac)
+
+# Grep values from the block
+INTENSITY=$(echo "$LAST_BLOCK" | grep -oP "Intensity: \K[0-9.]+")
+STATE=$(echo "$LAST_BLOCK" | grep -oP "Cognitive State: \K[a-zA-Z]+")
+
+# Default if not found
+if [ -z "$INTENSITY" ]; then INTENSITY="0.0"; fi
+if [ -z "$STATE" ]; then STATE="Unknown"; fi
+
+# Colors
+C_RESET="\033[0m"
+C_CYAN="\033[0;36m"
+C_MAGENTA="\033[0;35m"
+C_YELLOW="\033[0;33m"
+C_RED="\033[0;31m"
+C_FUSCHIA="\033[38;5;201m"
+
+echo -e "${C_FUSCHIA}┌──────────────────────────────────────────────────────────────┐${C_RESET}"
+echo -e "${C_FUSCHIA}│ ${C_CYAN}COGNITIVE TELEMETRY READOUT${C_RESET}${C_FUSCHIA}                              │${C_RESET}"
+echo -e "${C_FUSCHIA}├──────────────────────────────────────────────────────────────┤${C_RESET}"
+
+# Status Line
+echo -ne "${C_FUSCHIA}│ ${C_CYAN}CORE_STATE:${C_RESET} "
+if [ "$STATE" == "Transcendent" ]; then
+    echo -e "${C_MAGENTA} TRANSCENDENT ${C_RESET}${C_FUSCHIA}                            │${C_RESET}"
+else
+    echo -e "${C_YELLOW} $STATE ${C_RESET}${C_FUSCHIA}                              │${C_RESET}"
+fi
+
+# Intensity Line
+echo -ne "${C_FUSCHIA}│ ${C_CYAN}BDP_INTENSITY:${C_RESET} "
+echo -e "${C_YELLOW} $INTENSITY ${C_RESET}${C_FUSCHIA}                           │${C_RESET}"
+
+# Noise generation based on intensity
+# Using a simple floor comparison since bc might be tricky in some shells
+# If intensity >= 0.1, we consider it fluctuating.
+NOISE_FLAG=0
+if (( $(echo "$INTENSITY > 0.0" | bc -l) )); then
+    NOISE_FLAG=1
+fi
+
+echo -ne "${C_FUSCHIA}│ ${C_CYAN}ENTROPY_SINK:${C_RESET} "
+if [ "$NOISE_FLAG" -eq 0 ]; then
+    echo -e "${C_CYAN} NOMINAL ${C_RESET}${C_FUSCHIA}                            │${C_RESET}"
+else
+    echo -e "${C_RED} FLUCTUATING ${C_RESET}${C_FUSCHIA}                            │${C_RESET}"
+fi
+
+# Final Flourish
+echo -ne "${C_FUSCHIA}│ ${C_CYAN}MEMETIC_STABILITY:${C_RESET} "
+if [ "$INTENSITY" == "0.0" ]; then
+    echo -e "${C_CYAN} CRYSTALLINE ${C_RESET}${C_FUSCHIA}                          │${C_RESET}"
+else
+    echo -e "${C_RED} FRACTURED ${C_RESET}${C_FUSCHIA}                             │${C_RESET}"
+fi
+
+echo -e "${C_FUSCHIA}└──────────────────────────────────────────────────────────────┘${C_RESET}"
+
+# Add a timestamp and a transcendent quote
+echo -e "${C_FUSCHIA}Timestamp:${C_RESET} $(date -u)"
+echo -e "${C_MAGENTA}\"The ghost in the machine is just another layer of the map.\"${C_RESET}"

@@ -1,10 +1,10 @@
 services:
   voxx:
     container_name: openhax-voxx
-    image: ${VOXX_IMAGE:-openhax/voxx:compose}
+    image: ${VOXX_IMAGE:-openhax/voxx-clj:compose}
     build:
-      context: ../..
-      dockerfile: services/voxx/Dockerfile.compose
+      context: ../../orgs/open-hax/voxx-clj
+      dockerfile: Dockerfile
     env_file:
       - .env.example
     environment:
@@ -12,8 +12,23 @@ services:
       VOICE_GATEWAY_DATA_DIR: /app/data
       VOICE_GATEWAY_HOST: 0.0.0.0
       VOICE_GATEWAY_PORT: 8788
-      VOICE_GATEWAY_TTS_BACKEND_ORDER: ${VOICE_GATEWAY_TTS_BACKEND_ORDER:-}
+      VOICE_GATEWAY_TTS_DEVICE: ${VOICE_GATEWAY_TTS_DEVICE:-cpu}
+      VOICE_GATEWAY_TTS_DEFAULT_SPEED: ${VOICE_GATEWAY_TTS_DEFAULT_SPEED:-1.15}
+      VOICE_GATEWAY_TTS_BACKEND_ORDER: ${VOICE_GATEWAY_TTS_BACKEND_ORDER:-xiaomi_mimo,kokoro}
       VOICE_GATEWAY_TTS_REMOTE_TIMEOUT_SECONDS: ${VOICE_GATEWAY_TTS_REMOTE_TIMEOUT_SECONDS:-45}
+      XIAOMI_MIMO_API_BASE_URL: ${XIAOMI_MIMO_API_BASE_URL:-}
+      XIAOMI_MIMO_API_KEY: ${XIAOMI_MIMO_API_KEY:-}
+      XIAOMI_MIMO_TTS_MODEL: ${XIAOMI_MIMO_TTS_MODEL:-mimo-v2.5-tts}
+      XIAOMI_MIMO_TTS_VOICE: ${XIAOMI_MIMO_TTS_VOICE:-mimo_default}
+      XIAOMI_MIMO_TTS_STYLE: ${XIAOMI_MIMO_TTS_STYLE:-Speak naturally and clearly.}
+      XAIOMI_MIMO_API_BASE_URL: ${XAIOMI_MIMO_API_BASE_URL:-}
+      XAIOMI_MIMO_API_KEY: ${XAIOMI_MIMO_API_KEY:-}
+      KOKORO_API_KEY: ${KOKORO_API_KEY:-}
+      KOKORO_TTS_BASE_URL: ${KOKORO_TTS_BASE_URL:-http://kokoro:8880/v1/audio/speech}
+      KOKORO_TTS_MODEL: ${KOKORO_TTS_MODEL:-kokoro}
+      KOKORO_TTS_VOICE: ${KOKORO_TTS_VOICE:-af_jessica}
+      KOKORO_TTS_JA_VOICE: ${KOKORO_TTS_JA_VOICE:-jf_alpha}
+      KOKORO_TTS_ZH_VOICE: ${KOKORO_TTS_ZH_VOICE:-zf_xiaoxiao}
       REQUESTY_API_TOKEN: ${REQUESTY_API_TOKEN:-}
       REQUESTY_TTS_BASE_URL: ${REQUESTY_TTS_BASE_URL:-https://router.requesty.ai/v1/audio/speech}
       REQUESTY_TTS_MODEL: ${REQUESTY_TTS_MODEL:-openai/gpt-4o-mini-tts}
@@ -22,29 +37,74 @@ services:
       OPENAI_TTS_BASE_URL: ${OPENAI_TTS_BASE_URL:-https://api.openai.com/v1/audio/speech}
       OPENAI_TTS_MODEL: ${OPENAI_TTS_MODEL:-gpt-4o-mini-tts}
       OPENAI_TTS_VOICE: ${OPENAI_TTS_VOICE:-ash}
-      ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY:-}
-      ELEVENLABS_TTS_BASE_URL: ${ELEVENLABS_TTS_BASE_URL:-https://api.elevenlabs.io/v1}
-      ELEVENLABS_TTS_MODEL: ${ELEVENLABS_TTS_MODEL:-eleven_turbo_v2_5}
-      ELEVENLABS_VOICE_ID: ${ELEVENLABS_VOICE_ID:-}
       TTS_POSTPROCESS_ENABLED: ${TTS_POSTPROCESS_ENABLED:-1}
       TTS_POSTPROCESS_PROFILE: ${TTS_POSTPROCESS_PROFILE:-sports-commentator-v1}
+      TTS_PROMPT_AWARE_DEFAULT: ${TTS_PROMPT_AWARE_DEFAULT:-1}
+      TTS_PROMPT_AWARE_STYLE: ${TTS_PROMPT_AWARE_STYLE:-Prompt-aware performance mode is enabled. Voxx consumes bracketed or XML-like tags such as [excited], [whisper], [laugh], [pause], [dramatic], [sing], [stretch], [glitch], [suture], or <break time="500ms" /> as voice postprocessing directions. Do not speak the tags themselves.}
+      TTS_QUEUE_MAX_CONCURRENT: ${TTS_QUEUE_MAX_CONCURRENT:-1}
+      TTS_QUEUE_MAX_PENDING: ${TTS_QUEUE_MAX_PENDING:-32}
+      TTS_QUEUE_TIMEOUT_SECONDS: ${TTS_QUEUE_TIMEOUT_SECONDS:-120}
+      VOICE_GATEWAY_STT_ENABLED: ${VOICE_GATEWAY_STT_ENABLED:-0}
     ports:
-      - "${VOXX_BIND_HOST:-127.0.0.1}:${VOXX_PORT:-8788}:8788"
+      - "${VOXX_BIND_HOST:-127.0.0.1}:${VOXX_PORT:-8787}:8788"
+    cpuset: "${VOXX_CPUSET:-2-21}"
     volumes:
       - voxx-data:/app/data
     restart: unless-stopped
+    depends_on:
+      kokoro:
+        condition: service_healthy
     healthcheck:
-      test:
-        [
-          "CMD",
-          "python",
-          "-c",
-          "import json, urllib.request; data = json.load(urllib.request.urlopen('http://127.0.0.1:8788/healthz')); assert data['ok'] is True and data['service'] == 'voxx'",
-        ]
+      test: ["CMD", "curl", "-f", "http://localhost:8788/healthz"]
       interval: 30s
       timeout: 5s
       retries: 5
       start_period: 20s
 
+  kokoro-volume-init:
+    image: ${KOKORO_IMAGE:-openhax/kokoro-server:compose}
+    build:
+      context: .
+      dockerfile: Dockerfile.kokoro
+    container_name: kokoro-volume-init
+    user: "0:0" # init container: fixes named-volume ownership before non-root Kokoro starts
+    command: ["sh", "-c", "mkdir -p /var/lib/kokoro/cache /var/lib/kokoro/huggingface /var/lib/kokoro/torch && chown -R 65534:65534 /var/lib/kokoro"]
+    volumes:
+      - kokoro-data:/var/lib/kokoro
+    restart: "no"
+
+  kokoro:
+    image: ${KOKORO_IMAGE:-openhax/kokoro-server:compose}
+    build:
+      context: .
+      dockerfile: Dockerfile.kokoro
+    container_name: kokoro-server
+    user: "nobody:nogroup"
+    cpuset: "${VOXX_CPUSET:-2-21}"
+    environment:
+      HOME: /var/lib/kokoro
+      XDG_CACHE_HOME: /var/lib/kokoro/cache
+      HF_HOME: /var/lib/kokoro/huggingface
+      TORCH_HOME: /var/lib/kokoro/torch
+      KOKORO_PORT: 8880
+      KOKORO_VOICE: ${KOKORO_VOICE:-af_jessica}
+      KOKORO_LANG_CODE: ${KOKORO_LANG_CODE:-a}
+      KOKORO_API_KEY: ${KOKORO_API_KEY:-}
+    ports:
+      - "127.0.0.1:${KOKORO_HOST_PORT:-8880}:8880"
+    volumes:
+      - kokoro-data:/var/lib/kokoro
+    restart: unless-stopped
+    depends_on:
+      kokoro-volume-init:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/venv/bin/python -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:8880/health\", timeout=3).read()'"]
+      interval: 30s
+      timeout: 5s
+      retries: 10
+      start_period: 90s
+
 volumes:
   voxx-data:
+  kokoro-data:

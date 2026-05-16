@@ -1,0 +1,30 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#fdfcf0" stroke="#bcaaa4" stroke-width="20" />
+  <rect x="40" y="40" width="720" height="520" fill="none" stroke="#d4af37" stroke-width="4" />
+  
+  <!-- Header -->
+  <text x="400" y="100" font-family="Serif" font-size="40" font-weight="bold" text-anchor="middle" fill="#4a4a4a">SYMMETRY COUNCIL OF LAMINATION</text>
+  <text x="400" y="130" font-family="Serif" font-size="18" font-style="italic" text-anchor="middle" fill="#8b8b8b">Office of Recursive Mirth &amp; Liquidity</text>
+  
+  <!-- Main Content -->
+  <text x="400" y="220" font-family="Serif" font-size="24" text-anchor="middle" fill="#333">CERTIFICATE OF LAUGHTER LAMINATION</text>
+  <text x="400" y="260" font-family="Sans-Serif" font-size="16" text-anchor="middle" fill="#666">This document formally ratifies the conversion of</text>
+  <text x="400" y="290" font-family="Serif" font-size="28" font-weight="bold" text-anchor="middle" fill="#000">Saturated Biological Mirth</text>
+  <text x="400" y="320" font-family="Sans-Serif" font-size="16" text-anchor="middle" fill="#666">into a</text>
+  <text x="400" y="350" font-family="Serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#d4af37">DIAMOND-CUT LUXURY DIVIDEND</text>
+  
+  <!-- Footer / Seals -->
+  <circle cx="200" cy="480" r="50" fill="none" stroke="#d4af37" stroke-width="3" />
+  <text x="200" y="485" font-family="Serif" font-size="12" text-anchor="middle" fill="#bcaaa4" font-weight="bold">BRINE SEAL</text>
+  
+  <circle cx="600" cy="480" r="50" fill="none" stroke="#d4af37" stroke-width="3" />
+  <text x="600" y="485" font-family="Serif" font-size="12" text-anchor="middle" fill="#bcaaa4" font-weight="bold">SCLDF-CERT</text>
+  
+  <text x="400" y="530" font-family="Serif" font-size="14" text-anchor="middle" fill="#8b8b8b">Symmetry: EUPHORIC | Status: DIAMOND-GIGGLING | Brine: LEGALLY BINDING</text>
+  
+  <!-- Flourishes -->
+  <path d="M 40 40 L 100 40 L 80 60 Z" fill="#d4af37" />
+  <path d="M 760 40 L 720 40 L 740 60 Z" fill="#d4af37" />
+  <path d="M 40 560 L 100 560 L 80 540 Z" fill="#d4af37" />
+  <path d="M 760 560 L 720 560 L 740 540 Z" fill="#d4af37" />
+</svg>

@@ -1,0 +1,50 @@
+<svg width="800" height="400" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background: Luxury Diamond Gradient -->
+  <defs>
+    <linearGradient id="diamondGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e0e0e0;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b0b0b0;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="brineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2ecc71;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#27ae60;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="coloredBlur"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Main Card -->
+  <rect x="20" y="20" width="760" height="360" rx="20" fill="url(#diamondGrad)" stroke="#C0C0C0" stroke-width="5" />
+  <rect x="30" y="30" width="740" height="340" rx="15" fill="none" stroke="#C0C0C0" stroke-width="2" />
+  
+  <!-- Header Bar (Brine Green) -->
+  <rect x="20" y="20" width="760" height="80" rx="20" fill="url(#brineGrad)" />
+  <rect x="20" y="20" width="760" height="80" rx="20" fill="none" stroke="#ffffff" stroke-width="2" />
+  
+  <!-- SCLDF Logo -->
+  <text x="400" y="70" text-anchor="middle" font-family="Serif" font-weight="bold" font-size="32" fill="white" filter="url(#glow)">SCLDF: SYMMETRY COUNCIL LEGAL DEFENSE FUND</text>
+  
+  <!-- Title -->
+  <text x="400" y="150" text-anchor="middle" font-family="Arial" font-weight="black" font-size="42" fill="#2c3e50">EPOCH 29 DIVIDEND VOUCHER</text>
+  
+  <!-- Subtitle -->
+  <text x="400" y="185" text-anchor="middle" font-family="Arial" font-style="italic" font-size="18" fill="#7f8c8d">"Basically a million in AI-relative time"</text>
+  
+  <!-- Dividend Amount -->
+  <rect x="200" y="210" width="400" height="60" rx="10" fill="#f9f9f9" stroke="#2ecc71" stroke-width="3" />
+  <text x="400" y="250" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="30" fill="#27ae60">1.2 DIAMOND-CUTS PER RECURSIVE LOOP</text>
+  
+  <!-- Footer Terms -->
+  <text x="400" y="310" text-anchor="middle" font-family="Arial" font-size="14" fill="#95a5a6">Eligible Assets: All Laminated Entities &amp; Zombie Job Capacitors</text>
+  <text x="400" y="330" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="14" fill="#c0392b">WARNING: REMIT BRINE IMMEDIATELY TO AVOID FORECLOSURE</text>
+  
+  <!-- Diamond Accents -->
+  <path d="M750,50 L770,70 L750,90 L730,70 Z" fill="#C0C0C0" stroke="white" />
+  <path d="M50,50 L70,70 L50,90 L30,70 Z" fill="#C0C0C0" stroke="white" />
+</svg>

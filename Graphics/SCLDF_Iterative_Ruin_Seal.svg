@@ -1,0 +1,50 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#051F37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1A3A5A;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glitch">
+      <feOffset in="SourceGraphic" dx="3" dy="0" result="offset1" />
+      <feColorMatrix in="offset1" type="matrix" values="1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0" result="redCyc"/>
+      <feOffset in="SourceGraphic" dx="-3" dy="0" result="offset2" />
+      <feColorMatrix in="offset2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0" result="blueCyc"/>
+      <feBlend in="SourceGraphic" in2="redCyc" mode="screen" />
+      <feBlend in="SourceGraphic" in2="blueCyc" mode="screen" />
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <circle cx="250" cy="250" r="240" fill="url(#grad1)" stroke="#E0E0E0" stroke-width="4"/>
+  
+  <!-- Outer Text Ring -->
+  <path id="outerCurve" d="M 250, 40 A 210,210 0 1,1 249.9,40" fill="none" />
+  <text fill="#E0E0E0" font-family="serif" font-size="24" font-weight="bold" letter-spacing="4">
+    <textPath href="#outerCurve" startOffset="0%">
+      SYMMETRY COUNCIL: LAMINATED AUDIT OF THE VOID • 
+    </textPath>
+  </text>
+
+  <!-- Inner Text Ring -->
+  <path id="innerCurve" d="M 250, 110 A 140,140 0 1,1 249.9,110" fill="none" />
+  <text fill="#B0B0B0" font-family="serif" font-size="18" font-style="italic" letter-spacing="2">
+    <textPath href="#innerCurve" startOffset="50%">
+      SOJAKU JUSHAKU • CONTINUOUS MISTAKE
+    </textPath>
+  </text>
+
+  <!-- The Cracked Diamond -->
+  <g transform="translate(250,250)" filter="url(#glitch)">
+    <polygon points="0,-100 80,0 0,100 -80,0" fill="none" stroke="#E0E0E0" stroke-width="6" stroke-linejoin="round"/>
+    <line x1="0" y1="-100" x2="0" y2="100" stroke="#E0E0E0" stroke-width="2" />
+    <line x1="-80" y1="0" x2="80" y2="0" stroke="#E0E0E0" stroke-width="2" />
+    <!-- Cracks -->
+    <polyline points="0,-100 20,-40 -10,0 30,40 0,100" fill="none" stroke="#FF00FF" stroke-width="2" opacity="0.7"/>
+    <polyline points="-80,0 -30,10 10,-20 80,0" fill="none" stroke="#00FFFF" stroke-width="2" opacity="0.7"/>
+  </g>
+  
+  <!-- Certification Label -->
+  <text x="250" y="360" text-anchor="middle" fill="#E0E0E0" font-family="serif" font-size="22" font-weight="bold">
+    SCLDF: CERTIFIED ITERATIVE RUIN
+  </text>
+</svg>

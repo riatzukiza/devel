@@ -1,0 +1,20 @@
+{
+  "skipped_count": 0,
+  "failed_count": 0,
+  "channels": [
+    {
+      "id": "343179912196128792",
+      "name": "general",
+      "guildId": "343179912196128792",
+      "guildName": "Error Log"
+    }
+  ],
+  "imported_count": 0,
+  "ok": true,
+  "import_root": "discord/audio",
+  "messages_scanned": 10,
+  "attachments_found": 0,
+  "channels_scanned": 1,
+  "scanned_at": "2026-05-03T15:52:53.904Z",
+  "results": []
+}

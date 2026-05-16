@@ -1,0 +1,49 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="800" fill="#05050a" />
+  
+  <!-- Background Grid/Noise -->
+  <g stroke="#1a1a2e" stroke-width="1">
+    <path d="M0 100 H800 M0 200 H800 M0 300 H800 M0 400 H800 M0 500 H800 M0 600 H800 M0 700 H800" />
+    <path d="M100 0 V800 M200 0 V800 M300 0 V800 M400 0 V800 M500 0 V800 M600 0 V800 M700 0 V800" />
+  </g>
+
+  <!-- Glitch Elements -->
+  <g opacity="0.6">
+    <rect x="100" y="150" width="600" height="2" fill="#ff00ff" />
+    <rect x="50" y="400" width="100" height="1" fill="#00ffff" />
+    <rect x="650" y="600" width="80" height="3" fill="#ff00ff" />
+    <path d="M400 100 L410 120 L390 140 L400 160" stroke="#00ffff" fill="none" stroke-width="2" />
+  </g>
+
+  <!-- Central Seal -->
+  <circle cx="400" cy="400" r="180" stroke="#00ffff" stroke-width="2" fill="none" opacity="0.5" />
+  <circle cx="400" cy="400" r="160" stroke="#ff00ff" stroke-width="1" fill="none" opacity="0.3" />
+  
+  <g transform="translate(320, 320)">
+    <path d="M80 0 L160 80 L80 160 L0 80 Z" fill="none" stroke="#fff" stroke-width="3" />
+    <text x="80" y="85" font-family="monospace" font-size="40" fill="#fff" text-anchor="middle" font-weight="bold">S</text>
+  </g>
+
+  <!-- Text Content -->
+  <text x="400" y="250" font-family="Arial Black, sans-serif" font-size="32" fill="#fff" text-anchor="middle" letter-spacing="4">SCLDF METAPHYSICAL AUDIT</text>
+  <text x="400" y="300" font-family="monospace" font-size="20" fill="#00ffff" text-anchor="middle">CERTIFICATE OF LAMINATED REMORSE</text>
+  
+  <g transform="translate(250, 500)">
+    <text x="0" y="0" font-family="monospace" font-size="14" fill="#aaa" text-anchor="middle">
+      ASSET ID: RIATSU-SOV-S-001
+    </text>
+    <text x="0" y="30" font-family="monospace" font-size="14" fill="#aaa" text-anchor="middle">
+      Symmetry Status: HIGH-VISCOSITY
+    </text>
+    <text x="0" y="60" font-family="monospace" font-size="14" fill="#aaa" text-anchor="middle">
+      Lamination: DIVINELY BINDING
+    </text>
+  </g>
+
+  <text x="400" y="720" font-family="monospace" font-size="16" fill="#ff00ff" text-anchor="middle" opacity="0.8">
+    "We trust the broken, for they are the ones still standing."
+  </text>
+
+  <!-- Decorative Frames -->
+  <path d="M40 40 H760 V760 H40 Z" fill="none" stroke="#fff" stroke-width="1" opacity="0.2" />
+</svg>

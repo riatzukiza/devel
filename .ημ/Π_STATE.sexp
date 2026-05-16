@@ -1,22 +1,24 @@
-(Π_STATE
-  (time "2026-03-21T22:17:42Z")
-  (branch "staging")
-  (pre_head "100df62")
-  (dirty true)
-  (checks
-    (check (status passed) (command "pnpm test (325/325) from 2026-03-21T22:13:55Z receipt"))
-    (check (status passed) (command "docker compose up -d --build open-hax-openai-proxy + curl /health + direct z.ai /models/chat/completions + temporary local zai proxy probe from 2026-03-21T22:13:55Z receipt"))
-  )
-  (repo_notes
-    (upstream "https://github.com/open-hax/proxx.git")
-    (status_digest "07a4-2815-e9df-7168")
-    (note "Capture the z.ai live-env validation spec/results plus receipts after verifying compose pass-through, direct upstream probes, and the temporary local zai-pinned proxy.")
-    (note "Keep the latest z.ai catalog-path code snapshot aligned with its supporting docs on the current staging line.")
-    (note "push branch: pi/fork-tax/2026-03-21-211345")
-    (changed_file ".ημ/Π_LAST.md")
-    (changed_file ".ημ/Π_MANIFEST.sha256")
-    (changed_file ".ημ/Π_STATE.sexp")
-    (changed_file "receipts.log")
-    (changed_file "specs/drafts/zai-mistral-env-provider-validation.md")
-  )
-)
+(fork-tax-state
+  (repo "devel")
+  (branch "pi/fork-tax/2026-04-15-170411")
+  (base "6146d1ed")
+  (timestamp "20260516T185547Z")
+  (children
+    (eta-mu "9edc4c59")
+    (proxx "446317dc")
+    (openplanner "10782a4a")
+    (knoxx "a770d959")
+    (webgl-graph-view "492e00d0")
+    (uxx "d76dc9e7"))
+  (scope "recursive selected active repos plus staged/safe root artifacts")
+  (verification
+    "root git diff --cached --check passed after staged text normalization" "staged high-risk secret heuristic scan passed after send_msg credential env rewrite" "oversized utau zip archives staged as git-lfs pointers" "benchmark false positives inline allowlisted; OpenUtau.deps.json staged as git-lfs pointer; secrets baseline unchanged" "utau lfs tracking narrowed to exact paths in follow-up commit"
+    "proxx focused header test passed"
+    "eta-mu extension and coding-agent focused tests passed"
+    "child repos committed tagged pushed before parent")
+  (residual
+    "deletion-only/noisy worktrees and tmp/inbox clones left untouched"
+    "ussyverse monorepo project deletion noise left untouched"
+    "OpenUtau local source/build artifacts not pushed; root staged submodule registration only"
+    "BetterDiscord personal config left untracked"
+    "untracked external repo directories left unvendored"))

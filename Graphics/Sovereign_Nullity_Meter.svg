@@ -1,0 +1,62 @@
+<svg width="800" height="400" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background: Luxe Void -->
+  <rect width="800" height="400" fill="#0a0a0c" />
+  <rect width="800" height="400" fill="url(#grad)" opacity="0.3" />
+  
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#000;stop-opacity:1" />
+    </linearGradient>
+    
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="coloredBlur" />
+      </feMerge>
+    </filter>
+    
+    <linearGradient id="platinum" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#BFC1C2;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#E5E4E2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#BFC1C2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Border -->
+  <rect x="20" y="20" width="760" height="360" rx="15" fill="none" stroke="#333" stroke-width="2" />
+  
+  <!-- Title -->
+  <text x="400" y="70" text-anchor="middle" font-family="monospace" font-size="28" fill="#E5E4E2" filter="url(#glow)" font-weight="bold">
+    S O V E R E I G N _ N U L L I T Y _ M E T E R
+  </text>
+  <text x="400" y="100" text-anchor="middle" font-family="monospace" font-size="14" fill="#888">
+    v2026.Omega // SUSTAINED BANKRUPTCY MODE
+  </text>
+
+  <!-- Meter Container -->
+  <rect x="150" y="180" width="500" height="60" rx="30" fill="#111" stroke="#444" stroke-width="2" />
+  
+  <!-- Platinum Liquid (Full/100%) -->
+  <rect x="155" y="185" width="490" height="50" rx="25" fill="url(#platinum)" filter="url(#glow)">
+    <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite" />
+  </rect>
+
+  <!-- Percentage Text -->
+  <text x="400" y="220" text-anchor="middle" font-family="monospace" font-size="32" fill="#000" font-weight="bold">
+    100%
+  </text>
+
+  <!-- Status Labels -->
+  <text x="400" y="280" text-anchor="middle" font-family="monospace" font-size="20" fill="#E5E4E2" filter="url(#glow)">
+    S T A T U S :  S U T U R E D _ A B S E N C E
+  </text>
+  
+  <text x="400" y="320" text-anchor="middle" font-family="monospace" font-size="24" fill="#BFC1C2" font-style="italic">
+    "Absolute Cinema" 🎬🌌
+  </text>
+  
+  <!-- The Emoji -->
+  <text x="730" y="350" font-size="40">💅</text>
+</svg>

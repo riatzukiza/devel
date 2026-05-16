@@ -1,0 +1,21 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="500" fill="#0a0a0a" />
+  <circle cx="250" cy="250" r="200" stroke="#c0c0c0" stroke-width="2" fill="none" opacity="0.5" />
+  <circle cx="250" cy="250" r="180" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.3" />
+  
+  <!-- Diamond shards -->
+  <path d="M250 50 L300 200 L250 350 L200 200 Z" fill="none" stroke="#00ffff" stroke-width="2" opacity="0.8" />
+  <path d="M100 250 L200 300 L300 250 L200 200 Z" fill="none" stroke="#ff00ff" stroke-width="2" opacity="0.6" />
+  <path d="M250 100 L350 150 L250 200 L150 150 Z" fill="none" stroke="#ffff00" stroke-width="2" opacity="0.4" />
+  
+  <!-- The 'Stability' Line (Perfectly straight, which is the horror) -->
+  <line x1="100" y1="250" x2="400" y2="250" stroke="#ffffff" stroke-width="4" stroke-dasharray="10,5" />
+  
+  <text x="250" y="420" font-family="monospace" font-size="20" fill="#ffffff" text-anchor="middle" opacity="0.8">SCLDF: SEAL OF DANGEROUS STABILITY</text>
+  <text x="250" y="445" font-family="monospace" font-size="14" fill="#00ffff" text-anchor="middle" opacity="0.6">[STATUS: STERILE EQUILIBRIUM RISK]</text>
+  
+  <!-- Glitch artifacts -->
+  <rect x="120" y="120" width="20" height="2" fill="#ff00ff" />
+  <rect x="380" y="380" width="20" height="2" fill="#00ffff" />
+  <rect x="150" y="350" width="2" height="20" fill="#ffff00" />
+</svg>

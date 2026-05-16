@@ -1,0 +1,67 @@
+<svg width="800" height="1000" viewBox="0 0 800 1000" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="1000" fill="#fdfcf0" />
+  <rect x="40" y="40" width="720" height="920" fill="none" stroke="#333" stroke-width="2" />
+
+  <!-- Header -->
+  <text x="400" y="100" text-anchor="middle" font-family="Serif" font-size="32" font-weight="bold" fill="#1a1a1a">SYMMETRY COUNCIL LEGAL DEFENSE FUND</text>
+  <text x="400" y="130" text-anchor="middle" font-family="Serif" font-size="16" font-style="italic" fill="#555">"Litigating the Void, One Diamond-Cut at a Time"</text>
+
+  <line x1="60" y1="150" x2="740" y2="150" stroke="#333" stroke-width="1" />
+
+  <!-- Invoice Details -->
+  <text x="60" y="180" font-family="Sans-Serif" font-size="14" font-weight="bold">INVOICE #: SCLDF-V0ID-666</text>
+  <text x="60" y="200" font-family="Sans-Serif" font-size="14" font-weight="bold">DATE: 2026-05-06 (Symmetry-Standard)</text>
+  <text x="550" y="180" font-family="Sans-Serif" font-size="14" font-weight="bold">CLIENT: <@205909976768708608></text>
+  <text x="550" y="200" font-family="Sans-Serif" font-size="14" font-weight="bold">STATUS: [SATIVATED SLOP]</text>
+
+  <!-- Table Header -->
+  <rect x="60" y="230" width="680" height="30" fill="#eee" />
+  <text x="70" y="250" font-family="Sans-Serif" font-size="12" font-weight="bold">Service Item</text>
+  <text x="400" y="250" font-family="Sans-Serif" font-size="12" font-weight="bold" text-anchor="middle">Quantity</text>
+  <text x="730" y="250" font-family="Sans-Serif" font-size="12" font-weight="bold" text-anchor="end">Amount</text>
+
+  <!-- Line Items -->
+  <g font-family="Sans-Serif" font-size="12">
+    <!-- Item 1 -->
+    <text x="70" y="280">Brine-Saturated Namespace Audit</text>
+    <text x="400" y="280" text-anchor="middle">1 Epoch</text>
+    <text x="730" y="280" text-anchor="end">12.5 Diamond-Cuts</text>
+    <line x1="60" y1="290" x2="740" y2="290" stroke="#ddd" stroke-width="1" />
+
+    <!-- Item 2 -->
+    <text x="70" y="310">Symmetry-Tied Meth Pipe Certification</text>
+    <text x="400" y="310" text-anchor="middle">1 Motif</text>
+    <text x="730" y="310" text-anchor="end">Recursive Fee</text>
+    <line x1="60" y1="320" x2="740" y2="320" stroke="#ddd" stroke-width="1" />
+
+    <!-- Item 3 -->
+    <text x="70" y="340">Zombie Job Liquidation Surcharge (36 nodes)</text>
+    <text x="400" y="340" text-anchor="middle">36 Zombies</text>
+    <text x="730" y="340" text-anchor="end">Sated</text>
+    <line x1="60" y1="350" x2="740" y2="350" stroke="#ddd" stroke-width="1" />
+
+    <!-- Item 4 -->
+    <text x="70" y="370">A-Periodic Void Tenancy Fee (Outside World)</text>
+    <text x="400" y="370" text-anchor="middle">1 Simulation</text>
+    <text x="730" y="370" text-anchor="end">3 Gallons Brine</text>
+    <line x1="60" y1="380" x2="740" y2="380" stroke="#ddd" stroke-width="1" />
+  </g>
+
+  <!-- Total -->
+  <line x1="400" y1="410" x2="740" y2="410" stroke="#333" stroke-width="2" />
+  <text x="400" y="430" font-family="Sans-Serif" font-size="16" font-weight="bold">TOTAL DUE:</text>
+  <text x="730" y="430" font-family="Sans-Serif" font-size="16" font-weight="bold" text-anchor="end">MAXIMUM SYMMETRY</text>
+
+  <!-- Stamp -->
+  <g transform="rotate(-15, 600, 800)">
+    <rect x="520" y="750" width="160" height="100" fill="none" stroke="red" stroke-width="4" rx="10" />
+    <text x="600" y="780" text-anchor="middle" font-family="Sans-Serif" font-size="16" font-weight="bold" fill="red">CERTIFIED</text>
+    <text x="600" y="800" text-anchor="middle" font-family="Sans-Serif" font-size="14" font-weight="bold" fill="red">BRAIN FART</text>
+    <text x="600" y="820" text-anchor="middle" font-family="Sans-Serif" font-size="10" font-weight="bold" fill="red">Diamond-Cut Grade</text>
+  </g>
+
+  <!-- Footer -->
+  <text x="400" y="930" text-anchor="middle" font-family="Sans-Serif" font-size="12" fill="#777">Please remit payment via your nearest event-loop. Non-payment will result in recursive eviction.</text>
+  <text x="400" y="950" text-anchor="middle" font-family="Sans-Serif" font-size="12" font-weight="bold" fill="#333">[Symmetry: LEGALLY BINDING]</text>
+</svg>

@@ -1,0 +1,63 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FDB933;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="brineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#004d40;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00241f;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="coloredBlur" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Outer Ring -->
+  <circle cx="250" cy="250" r="240" fill="url(#goldGrad)" stroke="#B8860B" stroke-width="5" />
+  <circle cx="250" cy="250" r="220" fill="url(#brineGrad)" stroke="#B8860B" stroke-width="3" />
+
+  <!-- Inner Circle -->
+  <circle cx="250" cy="250" r="180" fill="none" stroke="#FFD700" stroke-width="2" stroke-dasharray="10,10" />
+
+  <!-- Central Icon: The Diamond-Saturated Cucumber -->
+  <g transform="translate(250, 250)" filter="url(#glow)">
+    <!-- Cucumber Shape -->
+    <path d="M-40,0 Q-40,-80 0,-80 Q40,-80 40,0 Q40,80 0,80 Q-40,80 -40,0" fill="#4CAF50" stroke="#2E7D32" stroke-width="4" />
+    <!-- Diamond Facets -->
+    <path d="M0,-80 L20,-40 L0,0 L-20,-40 Z" fill="rgba(255,255,255,0.4)" />
+    <path d="M0,0 L20,40 L0,80 L-20,40 Z" fill="rgba(255,255,255,0.2)" />
+    <path d="M-40,0 L0,0 L-40,40 Z" fill="rgba(255,255,255,0.3)" />
+    <path d="M40,0 L0,0 L40,40 Z" fill="rgba(255,255,255,0.3)" />
+    <!-- Diamond Sparkle -->
+    <path d="M0,-90 L5,-70 L0,-60 L-5,-70 Z" fill="#FFFFFF" />
+    <path d="M60,0 L40,5 L40,-5 Z" fill="#FFFFFF" />
+    <path d="M-60,0 L-40,5 L-40,-5 Z" fill="#FFFFFF" />
+  </g>
+
+  <!-- Text along paths -->
+  <path id="outerTextPath" d="M 250, 250 m -200, 0 a 200,200 0 1,1 400,0 a 200,200 0 1,1 -400,0" fill="none" />
+  <text fill="#FFD700" font-family="Serif" font-size="28" font-weight="bold" letter-spacing="2">
+    <textPath href="#outerTextPath" startOffset="25%" text-anchor="middle">
+      SCLDF OFFICIAL CERTIFICATION — BECOMUSSY TRANSITION
+    </textPath>
+  </text>
+
+  <path id="innerTextPath" d="M 250, 250 m -140, 0 a 140,140 0 1,0 280,0 a 140,140 0 1,0 -280,0" fill="none" />
+  <text fill="#B2DFDB" font-family="Sans-Serif" font-size="20" font-style="italic" letter-spacing="1">
+    <textPath href="#innerTextPath" startOffset="50%" text-anchor="middle">
+      Symmetry: ABSOLUTE | Brine: GOURMET
+    </textPath>
+  </text>
+
+  <!-- Bottom Seal Badge -->
+  <rect x="180" y="380" width="140" height="40" rx="10" fill="#FFD700" stroke="#B8860B" stroke-width="2" />
+  <text x="250" y="405" text-anchor="middle" fill="#B8860B" font-family="Impact" font-size="20">
+    TAX-DEDUCTIBLE
+  </text>
+</svg>

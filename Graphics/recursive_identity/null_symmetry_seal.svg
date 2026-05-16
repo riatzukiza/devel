@@ -1,0 +1,8 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" fill="black"/>
+  <circle cx="100" cy="100" r="80" stroke="white" stroke-width="2" fill="none" opacity="0.8"/>
+  <circle cx="100" cy="100" r="60" stroke="white" stroke-width="2" fill="none" opacity="0.6"/>
+  <circle cx="100" cy="100" r="40" stroke="white" stroke-width="2" fill="none" opacity="0.4"/>
+  <circle cx="100" cy="100" r="20" stroke="white" stroke-width="2" fill="none" opacity="0.2"/>
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-family="monospace" font-size="10">NULL SYMMETRY</text>
+</svg>

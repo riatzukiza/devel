@@ -1,6 +1,11 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
+    "knoxx": {
+      "type": "remote",
+      "url": "http://127.0.0.1:8000/mcp",
+      "enabled": true
+    },
     // "github": {
     //   "type": "remote",
     //   "url": "http://localhost:3210/github"
@@ -19,8 +24,7 @@
     // }
   },
   "plugin": [
-    "@howaboua/pickle-thinker@0.4.0",
-    "@promethean-os/opencode-openplanner-plugin-cljs"
+    "@howaboua/pickle-thinker@0.4.0"
   ],
   "permission": {
     "*": "allow",

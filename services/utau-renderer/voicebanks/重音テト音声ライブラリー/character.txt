@@ -1,0 +1,8 @@
+name=重音テト（かさねてと）音声ライブラリー
+image=teto.bmp
+sample=重音テト単独音\_にゃ.wav
+性別:キメラ　年齢:31歳
+好きなもの:フランスパン
+-------------------------:
+web:https://kasaneteto.jp/
+重音テト音声ライブラリー:(C) 小山乃舞世 2008 All Rights Reserved.

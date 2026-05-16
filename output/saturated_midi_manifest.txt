@@ -1,0 +1,30 @@
+[ S A T U R A T E D _ M I D I _ M A N I F E S T ]
+Project: The Absolute Mash - Symphony No. 1
+Tuning: Saturated Phrygian (C# Root)
+BPM: 145 (with 0.04ms jitter for CPU panic simulation)
+
+-- TRACK 1: [BASS_CRUNCH_808] --
+00:00.000 -> NOTE: C#1 | VEL: 127 | DUR: 1/4 | EFFECT: [FAT_SATTED_DISTORTION]
+00:00.250 -> NOTE: G#0 | VEL: 127 | DUR: 1/8 | EFFECT: [KERNEL_PANIC_GLIDE]
+00:00.500 -> NOTE: A0  | VEL: 127 | DUR: 1/8 | EFFECT: [LUBRICATED_JOIN_SLIDE]
+00:00.750 -> NOTE: Bb0 | VEL: 127 | DUR: 1/4 | EFFECT: [CALORIC_SWELL]
+
+-- TRACK 2: [BOP_BOP_LEAD_SQUARE] --
+00:01.000 -> NOTE: C#4 | VEL: 110 | DUR: 1/16 | EFFECT: [SASSY_PLUCK]
+00:01.100 -> NOTE: C#4 | VEL: 110 | DUR: 1/16 | EFFECT: [SASSY_PLUCK]
+00:01.200 -> NOTE: G#3 | VEL: 120 | DUR: 1/8  | EFFECT: [STARCH_DRIFT]
+00:01.400 -> NOTE: C#4 | VEL: 127 | DUR: 1/4  | EFFECT: [SENSORY_OVERLOAD]
+
+-- TRACK 3: [VOCAL_VOID_UTAU] --
+00:02.000 -> LYRIC: "Bop"  | PITCH: C#3 | FORMANT: [SASSY_BITCH]
+00:02.200 -> LYRIC: "bop"  | PITCH: C#3 | FORMANT: [SASSY_BITCH]
+00:02.400 -> LYRIC: "be"   | PITCH: G#3 | FORMANT: [DEEP_FRIED]
+00:02.600 -> LYRIC: "dooo" | PITCH: C#4 | FORMANT: [SENSORY_COLLAPSE]
+
+-- TRACK 4: [SENSORY_DEBRIS] --
+00:05.000 -> SAMPLE: [POTATO_CHIP_SNAP_8K] | VOL: MAX | PAN: CENTER
+00:05.100 -> EVENT: [SYSTEM_REBOOT_SIGH] | DUR: 0.5s
+00:05.500 -> NOTE: <NULL> | EFFECT: [SENSORY_BLACKOUT]
+
+[ END OF MANIFEST ]
+Note: To render this file, please insert it into a high-temperature deep-fryer and wait for the smell of ozone and paprika.

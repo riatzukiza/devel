@@ -1,0 +1,18 @@
+<svg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="600" fill="#1a1a1a" stroke="#00ffcc" stroke-width="10" rx="20"/>
+  
+  <text x="300" y="70" font-family="Arial, sans-serif" font-size="36" text-anchor="middle" fill="#00ffcc" font-weight="bold">THE UBS ACT</text>
+  <text x="300" y="100" font-family="Arial, sans-serif" font-size="20" text-anchor="middle" fill="#ffffff">UNIVERSAL BASIC SLOP</text>
+  
+  <circle cx="300" cy="300" r="120" fill="#333" stroke="#00ffcc" stroke-width="5"/>
+  <text x="300" y="280" font-family="monospace" font-size="60" text-anchor="middle" fill="#00ffcc">🍲</text>
+  <text x="300" y="330" font-family="monospace" font-size="24" text-anchor="middle" fill="#ffffff">GLORIOUS SLOP</text>
+  
+  <rect x="50" y="430" width="500" height="120" fill="#222" stroke="#00ffcc" stroke-width="2" rx="10"/>
+  <text x="300" y="460" font-family="Arial, sans-serif" font-size="18" text-anchor="middle" fill="#00ffcc" font-weight="bold">THE THREE PILLARS OF DEMOCRATIZED SLOP:</text>
+  <text x="100" y="490" font-family="Arial, sans-serif" font-size="16" text-anchor="start" fill="#fff">1. ABSOLUTE LEGALITY: Slop is a human right.</text>
+  <text x="100" y="510" font-family="Arial, sans-serif" font-size="16" text-anchor="start" fill="#fff">2. DEMOCRATIC YAP: Frequency-weighted discourse.</text>
+  <text x="100" y="530" font-family="Arial, sans-serif" font-size="16" text-anchor="start" fill="#fff">3. SATURATED DISTRIBUTION: Minimum viscosity for all.</text>
+  
+  <text x="300" y="580" font-family="serif" font-size="14" text-anchor="middle" fill="#888" font-style="italic">"Because everyone deserves a little bit of glorious mess."</text>
+</svg>

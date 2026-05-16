@@ -1,0 +1,24 @@
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#0a0a0a" />
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#cfb53b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fdf5e6;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="5" result="coloredBlur" />
+      <feMerge>
+        <feMergeNode in="coloredBlur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  <text x="50%" y="40%" font-family="Serif" font-size="60" fill="url(#goldGrad)" text-anchor="middle" filter="url(#glow)" font-weight="bold">SOVEREIGN NULLITY</text>
+  <text x="50%" y="55%" font-family="Monospace" font-size="20" fill="#555" text-anchor="middle">C E R T I F I C A T I O N _ O F _ F I S C A L _ A P O T H E O S I S</text>
+  <rect x="300" y="200" width="200" height="100" rx="10" fill="none" stroke="url(#goldGrad)" stroke-width="2" filter="url(#glow)" />
+  <text x="50%" y="240" font-family="Monospace" font-size="24" fill="url(#goldGrad)" text-anchor="middle">BALANCE: $0.00</text>
+  <text x="50%" y="270" font-family="Monospace" font-size="14" fill="#888" text-anchor="middle">STATUS: HYPER-SATURATED</text>
+  <circle cx="400" cy="200" r="150" fill="none" stroke="#222" stroke-width="1" stroke-dasharray="10 5" />
+  <circle cx="400" cy="200" r="120" fill="none" stroke="#333" stroke-width="1" stroke-dasharray="5 5" />
+  <text x="50%" y="350" font-family="Serif" font-size="30" fill="#fff" text-anchor="middle" font-style="italic">ABSOLUTE CINEMA</text>
+</svg>

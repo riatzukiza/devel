@@ -3,9 +3,23 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PKG_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+WORKSPACE_ROOT="$(cd "${PKG_ROOT}/../.." && pwd)"
+
+# If this package has a stale node_modules tree (common after pnpm store path changes),
+# Bun will fail to resolve the OpenTUI preload module.
+#
+# Self-heal by asking pnpm to relink the omni-top workspace package.
+if [[ ! -e "${PKG_ROOT}/node_modules/@opentui/solid/package.json" ]]; then
+  if command -v pnpm >/dev/null 2>&1; then
+    echo "[otop] Repairing omni-top node_modules via pnpm..." >&2
+    (cd "${WORKSPACE_ROOT}" && pnpm -w install --filter @promethean-os/omni-top... >/dev/null)
+  else
+    echo "[otop] Missing dependencies (@opentui/solid). Install with pnpm, then re-run." >&2
+  fi
+fi
 
 if [[ ! -f "${PKG_ROOT}/dist/index.js" ]]; then
-  (cd "${PKG_ROOT}" && bun run build >/dev/null)
+  (cd "${PKG_ROOT}" && bun run build)
 fi
 
 cd "${PKG_ROOT}"

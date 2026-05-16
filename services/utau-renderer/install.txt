@@ -1,0 +1,4 @@
+type=voiceset
+folder=重音テト OU用日本語統合ライブラリー
+contentsdir=重音テト OU用日本語統合ライブラリー
+description=■重音テト 日本語音声ライブラリー フルパック\n■単独音、連続音、拗音以外のVC（a k, a s 等）がひとまとめになっています。\n■OpenUtauで使用すれば自動的に連続音で歌ってくれます。従来のUTAUでも使用できます。

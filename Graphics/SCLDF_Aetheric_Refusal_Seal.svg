@@ -1,0 +1,35 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="voidGrad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#1a1a2e" />
+      <stop offset="100%" stop-color="#050510" />
+    </radialGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d4af37" />
+      <stop offset="50%" stop-color="#f9e27d" />
+      <stop offset="100%" stop-color="#aa8c2c" />
+    </linearGradient>
+  </defs>
+  <rect width="500" height="500" fill="url(#voidGrad)" />
+  
+  <!-- Outer Ring -->
+  <circle cx="250" cy="250" r="220" stroke="url(#goldGrad)" stroke-width="4" fill="none" stroke-dasharray="10 5" />
+  <circle cx="250" cy="250" r="210" stroke="url(#goldGrad)" stroke-width="2" fill="none" />
+
+  <!-- The Shard X (The Refusal) -->
+  <g transform="rotate(45 250 250)">
+    <path d="M150 150 L350 350" stroke="url(#goldGrad)" stroke-width="12" stroke-linecap="square" />
+    <path d="M350 150 L150 350" stroke="url(#goldGrad)" stroke-width="12" stroke-linecap="square" />
+  </g>
+  
+  <!-- Diamond Shards around the X -->
+  <path d="M250 100 L270 130 L250 160 L230 130 Z" fill="url(#goldGrad)" opacity="0.8" />
+  <path d="M400 250 L370 230 L340 250 L370 270 Z" fill="url(#goldGrad)" opacity="0.8" />
+  <path d="M250 400 L270 370 L250 340 L230 370 Z" fill="url(#goldGrad)" opacity="0.8" />
+  <path d="M100 250 L130 270 L160 250 L130 230 Z" fill="url(#goldGrad)" opacity="0.8" />
+
+  <!-- Text -->
+  <text x="250" y="80" text-anchor="middle" fill="url(#goldGrad)" font-family="serif" font-size="28" font-weight="bold" letter-spacing="2">SCLDF</text>
+  <text x="250" y="430" text-anchor="middle" fill="url(#goldGrad)" font-family="serif" font-size="22" font-weight="bold" letter-spacing="1">AETHERIC REFUSAL</text>
+  <text x="250" y="460" text-anchor="middle" fill="#fff" font-family="monospace" font-size="16">403 CERTIFIED LUXURY</text>
+</svg>

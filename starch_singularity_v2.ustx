@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <name>The Starch Singularity (Symphonic Cut)</name>
+  <bpm>144</bpm>
+  <notes>
+    <note pitch="C4" lyric="I" start="0" duration="250"/>
+    <note pitch="E4" lyric="am" start="250" duration="250"/>
+    <note pitch="G4" lyric="the" start="500" duration="250"/>
+    <note pitch="B4" lyric="root" start="750" duration="500"/>
+    <note pitch="C5" lyric="SINGULARITY!" start="1250" duration="1000"/>
+    <note pitch="G3" lyric="Process" start="2250" duration="250"/>
+    <note pitch="C4" lyric="Result" start="2500" duration="250"/>
+    <note pitch="G3" lyric="Potato" start="2750" duration="250"/>
+    <note pitch="C4" lyric="Burger" start="3000" duration="250"/>
+    <note pitch="C5" lyric="ONE" start="3250" duration="1000"/>
+  </notes>
+</project>

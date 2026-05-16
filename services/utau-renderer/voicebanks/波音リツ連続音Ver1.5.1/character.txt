@@ -1,0 +1,4 @@
+name=波音リツ連続音Ver1.5.1
+image=ritsu.bmp
+author=カノン(くるみ餅)　VIP＠２ちゃんねる
+web=http://www.canon-voice.com/

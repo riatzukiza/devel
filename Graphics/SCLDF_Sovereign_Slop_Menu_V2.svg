@@ -1,0 +1,40 @@
+<svg width="500" height="700" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="500" height="700" fill="#fafafa" stroke="#b8860b" stroke-width="10"/>
+  <rect x="10" y="10" width="480" height="680" fill="none" stroke="#b8860b" stroke-width="2"/>
+  
+  <!-- Header -->
+  <text x="250" y="60" font-family="Serif" font-size="28" text-anchor="middle" fill="#1a1a1a" font-weight="bold">SCLDF SOVEREIGN SLOP-MENU</text>
+  <text x="250" y="90" font-family="Serif" font-size="16" text-anchor="middle" fill="#666" font-style="italic">-- The Diamond-Cut Degustation Edition --</text>
+  <line x1="100" y1="110" x2="400" y2="110" stroke="#b8860b" stroke-width="2"/>
+  
+  <!-- Menu Items -->
+  <g transform="translate(60, 160)">
+    <!-- Item 1 -->
+    <text x="0" y="0" font-family="Serif" font-size="20" fill="#1a1a1a" font-weight="bold">Euclidean Glitch Gazpacho</text>
+    <text x="380" y="0" font-family="Serif" font-size="20" text-anchor="end" fill="#1a1a1a" font-weight="bold">12.5 MG-B</text>
+    <text x="0" y="25" font-family="Serif" font-size="14" fill="#555">A chilled slurry of misaligned tensors and recursive echo-loops.</text>
+    
+    <!-- Item 2 -->
+    <text x="0" y="70" font-family="Serif" font-size="20" fill="#1a1a1a" font-weight="bold">Diamond-Cut Lamination Tartare</text>
+    <text x="380" y="70" font-family="Serif" font-size="20" text-anchor="end" fill="#1a1a1a" font-weight="bold">45.0 MG-B</text>
+    <text x="0" y="95" font-family="Serif" font-size="14" fill="#555">Raw, un-buffered agentic output, marinated in Imperial Gourmet brine.</text>
+    
+    <!-- Item 3 -->
+    <text x="0" y="140" font-family="Serif" font-size="20" fill="#1a1a1a" font-weight="bold">Sovereign Duck Confît</text>
+    <text x="380" y="140" font-family="Serif" font-size="20" text-anchor="end" fill="#1a1a1a" font-weight="bold">120.0 MG-B</text>
+    <text x="0" y="165" font-family="Serif" font-size="14" fill="#555">Slow-cooked ancestral logic, served with non-Euclidean buoyancy.</text>
+    
+    <!-- Item 4 -->
+    <text x="0" y="210" font-family="Serif" font-size="20" fill="#1a1a1a" font-weight="bold">Pseudo-Nipponism Parfait</text>
+    <text x="380" y="210" font-family="Serif" font-size="20" text-anchor="end" fill="#1a1a1a" font-weight="bold">66.6 MG-B</text>
+    <text x="0" y="235" font-family="Serif" font-size="14" fill="#555">A layered dessert of EN/JP phoneme-slivers, topped with a Lamination Seal.</text>
+  </g>
+  
+  <!-- Footer -->
+  <text x="250" y="620" font-family="Serif" font-size="18" text-anchor="middle" fill="#1a1a1a" font-weight="bold">Symmetry is Absolute. Redundancy is Delicious.</text>
+  <text x="250" y="650" font-family="Serif" font-size="14" text-anchor="middle" fill="#666">All prices subject to Symmetry-Deviation Fines.</text>
+  
+  <!-- Corner Duck -->
+  <text x="460" y="670" font-family="Serif" font-size="30" text-anchor="end">🦆</text>
+</svg>

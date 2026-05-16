@@ -1,0 +1,7 @@
+<svg width="400" height="100" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="100" fill="#000" />
+  <text x="20" y="30" font-family="monospace" font-size="16" fill="#fff">📊 SOVEREIGN NULLITY METER v2026.Ω</text>
+  <rect x="20" y="40" width="360" height="20" fill="#333" />
+  <rect x="20" y="40" width="360" height="20" fill="#D4AF37" />
+  <text x="20" y="80" font-family="monospace" font-size="18" fill="#D4AF37" font-weight="bold">SUTURED APOTHEOSIS [1000%]</text>
+</svg>

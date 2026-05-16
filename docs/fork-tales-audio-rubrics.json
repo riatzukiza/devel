@@ -1,0 +1,131 @@
+{
+  "schema_version": "fork-tales-audio-rubrics/v1",
+  "scale": {
+    "score": "0.0 = unusable, 0.5 = partial/diagnostic, 0.8 = production-usable, 0.9 = excellent, 1.0 = near-reference",
+    "confidence": "0.0 = no usable evidence, 1.0 = high agreement among reliable available judges",
+    "coverage": "fraction of configured judge reliability that was available for the feature"
+  },
+  "evidence_classes": {
+    "lyric_prompt": {
+      "description": "User/Suno lyric text and style prompt. Useful dictionary clue but not timing truth and not guaranteed to match generated audio.",
+      "failure_modes": ["Suno skipped or changed words", "Kanji reading differs from intended reading", "Style prompt words leak into sung output"]
+    },
+    "local_stt": {
+      "description": "Local timed STT/Whisper-like transcript from original and candidate audio.",
+      "failure_modes": ["Japanese homophones", "mixed-language switching", "sung vowels/held notes collapsed", "English hallucination on Japanese audio"]
+    },
+    "gemma_audio": {
+      "description": "Gemma audio model direct listening over audio-first payload plus explicit tool evidence.",
+      "failure_modes": ["Over-trusts prompt text", "A/B contamination", "resource failures on long audio", "weak voiced/unvoiced Japanese consonant discrimination"]
+    },
+    "f0_tracker": {
+      "description": "Deterministic f0 contour extraction such as librosa.pyin, CREPE, SPICE, or equivalent.",
+      "failure_modes": ["Octave errors", "unvoiced regions", "polyphonic/stem bleed", "breathy vocals"]
+    },
+    "spectrogram_metrics": {
+      "description": "Numeric comparison over mel/spectral representations: RMSE, correlation, spectral centroid, energy envelopes.",
+      "failure_modes": ["Sensitive to mix/timbre differences", "weak semantic interpretation", "may punish valid alternate instrumentation"]
+    },
+    "spectrogram_image_judge": {
+      "description": "Vision model or human reading spectrogram/f0 overlay images for contour, articulation, vibrato, onsets, and sometimes phonetic clues.",
+      "failure_modes": ["Image scale/color misread", "weak lyric inference", "requires calibrated axes", "may see patterns that are visually salient but musically irrelevant"]
+    },
+    "ustx_midi_grid": {
+      "description": "Symbolic note/phoneme grid: USTX, MIDI, note starts, durations, ties, pitch-bend/control curves, voicebank aliases.",
+      "failure_modes": ["Grid can be internally consistent but audibly wrong", "phonemizer aliases missing", "tick rounding changes words"]
+    },
+    "human_user": {
+      "description": "Human/user judgment, especially for taste, intent, language nuance, and final accept/reject decisions.",
+      "failure_modes": ["fatigue", "language fluency limits", "preference drift", "memory bias"]
+    },
+    "gemini_text_audio": {
+      "description": "Optional stronger external model through Proxx/Google AI Studio for resolving lyric prompt vs transcript differences and high-level quality critique.",
+      "failure_modes": ["not local/free", "can normalize away actual Suno deviations", "may overfit to written lyric prompt"]
+    }
+  },
+  "profiles": {
+    "suno_reverse_accuracy": {
+      "description": "Reverse-engineer an owned Suno output into stems, lyrics, MIDI/OpenUTAU, and renderable score artifacts. Accuracy to the actual audio dominates prompt faithfulness.",
+      "promotion_gates": {
+        "min_overall": 0.82,
+        "min_confidence": 0.62,
+        "min_coverage": 0.60,
+        "critical_features": {
+          "lyric_identity": 0.84,
+          "lyric_timing": 0.78,
+          "pitch_notes": 0.74,
+          "rhythm_grid": 0.76
+        }
+      },
+      "feature_importance": {
+        "lyric_identity": 0.16,
+        "lyric_timing": 0.12,
+        "phoneme_beat_mapping": 0.10,
+        "rhythm_grid": 0.12,
+        "pitch_notes": 0.16,
+        "pitch_expression": 0.12,
+        "delivery_inflection": 0.09,
+        "timbre_spectral": 0.07,
+        "stem_score_separation": 0.04,
+        "prompt_drift_accounting": 0.02
+      },
+      "judge_reliability": {
+        "lyric_identity": {"local_stt": 0.48, "gemma_audio": 0.16, "lyric_prompt": 0.14, "gemini_text_audio": 0.12, "human_user": 0.08, "spectrogram_image_judge": 0.02},
+        "lyric_timing": {"local_stt": 0.30, "ustx_midi_grid": 0.22, "f0_tracker": 0.16, "spectrogram_metrics": 0.12, "spectrogram_image_judge": 0.10, "gemma_audio": 0.07, "human_user": 0.03},
+        "phoneme_beat_mapping": {"ustx_midi_grid": 0.34, "local_stt": 0.22, "f0_tracker": 0.14, "gemma_audio": 0.10, "spectrogram_image_judge": 0.10, "human_user": 0.08, "lyric_prompt": 0.02},
+        "rhythm_grid": {"ustx_midi_grid": 0.30, "spectrogram_metrics": 0.22, "f0_tracker": 0.18, "local_stt": 0.12, "spectrogram_image_judge": 0.10, "gemma_audio": 0.05, "human_user": 0.03},
+        "pitch_notes": {"f0_tracker": 0.46, "spectrogram_metrics": 0.18, "spectrogram_image_judge": 0.18, "ustx_midi_grid": 0.08, "gemma_audio": 0.06, "human_user": 0.04, "local_stt": 0.00, "lyric_prompt": 0.00},
+        "pitch_expression": {"f0_tracker": 0.34, "spectrogram_image_judge": 0.22, "spectrogram_metrics": 0.18, "gemma_audio": 0.12, "ustx_midi_grid": 0.08, "human_user": 0.06, "local_stt": 0.00},
+        "delivery_inflection": {"gemma_audio": 0.24, "f0_tracker": 0.22, "spectrogram_image_judge": 0.20, "spectrogram_metrics": 0.14, "human_user": 0.14, "local_stt": 0.04, "lyric_prompt": 0.02},
+        "timbre_spectral": {"spectrogram_metrics": 0.34, "spectrogram_image_judge": 0.24, "gemma_audio": 0.16, "human_user": 0.14, "f0_tracker": 0.08, "lyric_prompt": 0.04, "local_stt": 0.00},
+        "stem_score_separation": {"spectrogram_metrics": 0.30, "spectrogram_image_judge": 0.18, "f0_tracker": 0.18, "ustx_midi_grid": 0.18, "gemma_audio": 0.08, "human_user": 0.08},
+        "prompt_drift_accounting": {"local_stt": 0.30, "lyric_prompt": 0.24, "gemma_audio": 0.16, "gemini_text_audio": 0.16, "human_user": 0.10, "spectrogram_image_judge": 0.04}
+      }
+    },
+    "curated_original_quality": {
+      "description": "Create or select new original tracks using a curated dataset of high-scoring Suno references. Quality, identity, and instruction-following dominate exact reconstruction.",
+      "promotion_gates": {
+        "min_overall": 0.80,
+        "min_confidence": 0.58,
+        "min_coverage": 0.52,
+        "critical_features": {
+          "instruction_following": 0.78,
+          "musical_quality": 0.80,
+          "delivery_inflection": 0.72,
+          "mix_translation": 0.70
+        }
+      },
+      "feature_importance": {
+        "instruction_following": 0.16,
+        "lyric_diction_quality": 0.10,
+        "melody_quality": 0.13,
+        "rhythm_groove": 0.11,
+        "delivery_inflection": 0.14,
+        "arrangement_coherence": 0.12,
+        "mix_translation": 0.10,
+        "fork_tales_identity": 0.08,
+        "renderability": 0.04,
+        "novelty_without_drift": 0.02
+      },
+      "judge_reliability": {
+        "instruction_following": {"gemma_audio": 0.24, "gemini_text_audio": 0.22, "human_user": 0.22, "lyric_prompt": 0.18, "spectrogram_image_judge": 0.06, "spectrogram_metrics": 0.05, "local_stt": 0.03},
+        "lyric_diction_quality": {"local_stt": 0.34, "gemma_audio": 0.22, "human_user": 0.16, "gemini_text_audio": 0.12, "lyric_prompt": 0.08, "spectrogram_image_judge": 0.05, "spectrogram_metrics": 0.03},
+        "melody_quality": {"human_user": 0.24, "gemma_audio": 0.20, "f0_tracker": 0.18, "spectrogram_image_judge": 0.16, "spectrogram_metrics": 0.12, "ustx_midi_grid": 0.10},
+        "rhythm_groove": {"human_user": 0.22, "gemma_audio": 0.18, "spectrogram_metrics": 0.18, "ustx_midi_grid": 0.18, "f0_tracker": 0.12, "spectrogram_image_judge": 0.12},
+        "delivery_inflection": {"human_user": 0.24, "gemma_audio": 0.22, "f0_tracker": 0.20, "spectrogram_image_judge": 0.16, "spectrogram_metrics": 0.12, "local_stt": 0.04, "lyric_prompt": 0.02},
+        "arrangement_coherence": {"human_user": 0.26, "gemma_audio": 0.20, "spectrogram_metrics": 0.16, "spectrogram_image_judge": 0.14, "ustx_midi_grid": 0.10, "gemini_text_audio": 0.08, "lyric_prompt": 0.06},
+        "mix_translation": {"spectrogram_metrics": 0.28, "spectrogram_image_judge": 0.20, "human_user": 0.20, "gemma_audio": 0.16, "f0_tracker": 0.08, "gemini_text_audio": 0.05, "local_stt": 0.03},
+        "fork_tales_identity": {"human_user": 0.34, "gemma_audio": 0.20, "gemini_text_audio": 0.16, "lyric_prompt": 0.14, "spectrogram_image_judge": 0.06, "spectrogram_metrics": 0.06, "local_stt": 0.04},
+        "renderability": {"ustx_midi_grid": 0.34, "local_stt": 0.18, "f0_tracker": 0.16, "spectrogram_metrics": 0.10, "gemma_audio": 0.10, "human_user": 0.08, "spectrogram_image_judge": 0.04},
+        "novelty_without_drift": {"human_user": 0.36, "gemma_audio": 0.20, "gemini_text_audio": 0.16, "lyric_prompt": 0.10, "spectrogram_metrics": 0.08, "spectrogram_image_judge": 0.06, "local_stt": 0.04}
+      }
+    }
+  },
+  "score_bands": [
+    {"grade": "A", "min_score": 0.90, "meaning": "excellent; promote unless a critical feature gate fails"},
+    {"grade": "B", "min_score": 0.80, "meaning": "usable; promote for dataset or branch if coverage/confidence are adequate"},
+    {"grade": "C", "min_score": 0.65, "meaning": "diagnostic; keep evidence but do not promote as final"},
+    {"grade": "D", "min_score": 0.50, "meaning": "poor; useful mainly for failure analysis"},
+    {"grade": "F", "min_score": 0.00, "meaning": "failed or insufficient"}
+  ]
+}

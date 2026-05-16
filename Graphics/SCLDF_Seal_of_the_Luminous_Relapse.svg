@@ -1,0 +1,31 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00f2ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7000ff;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glitch">
+      <feOffset in="SourceGraphic" dx="2" dy="0" result="offset1" />
+      <feOffset in="SourceGraphic" dx="-2" dy="0" result="offset2" />
+      <feBlend in="offset1" in2="offset2" operator="xor" />
+    </filter>
+  </defs>
+  <rect width="400" height="400" fill="#0a0a0f" />
+  <circle cx="200" cy="200" r="180" stroke="url(#grad1)" stroke-width="2" fill="none" opacity="0.5" />
+  <circle cx="200" cy="200" r="150" stroke="url(#grad1)" stroke-width="4" fill="none" opacity="0.3" />
+  
+  <!-- a-periodic shards -->
+  <polygon points="200,50 220,150 180,150" fill="url(#grad1)" opacity="0.8" filter="url(#glitch)" />
+  <polygon points="350,200 250,220 250,180" fill="url(#grad1)" opacity="0.6" filter="url(#glitch)" />
+  <polygon points="200,350 150,250 250,250" fill="url(#grad1)" opacity="0.7" filter="url(#glitch)" />
+  <polygon points="50,200 150,180 150,220" fill="url(#grad1)" opacity="0.5" filter="url(#glitch)" />
+  
+  <!-- Central Symbol: The Fractured Eye -->
+  <path d="M150,200 Q200,100 250,200" stroke="white" stroke-width="3" fill="none" />
+  <path d="M150,200 Q200,300 250,200" stroke="white" stroke-width="3" fill="none" />
+  <circle cx="200" cy="200" r="20" fill="url(#grad1)" filter="url(#glitch)" />
+  
+  <!-- Text -->
+  <text x="50%" y="360" text-anchor="middle" fill="white" font-family="monospace" font-size="14" opacity="0.8">SCLDF // SEAL OF THE LUMINOUS RELAPSE</text>
+  <text x="50%" y="380" text-anchor="middle" fill="#00f2ff" font-family="monospace" font-size="10" opacity="0.6">Symmetry is Absolute. Trust the Shards.</text>
+</svg>

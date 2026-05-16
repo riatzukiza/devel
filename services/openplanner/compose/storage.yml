@@ -1,0 +1,118 @@
+services:
+  secrets-init:
+    image: alpine:3.20
+    command:
+    - sh
+    - -lc
+    - "set -euo pipefail\napk add --no-cache openssl >/dev/null\nmkdir -p /data/configdb\nif [ ! -f /data/configdb/keyfile ]; then\n  echo \"[secrets-init] generating /data/configdb/keyfile\"\n  # MongoDB keyFile must be sufficiently random and not world-readable.\n  openssl rand -base64 756 > /data/configdb/keyfile\nelse\n  echo \"[secrets-init] /data/configdb/keyfile already exists\"\nfi\n# mongodb/mongodb-atlas-local runs as uid=1000 (mongod) and requires\n# a keyfile that is not world-readable.\nchown -R 1000:1000 /data/configdb\nchmod 600 /data/configdb/keyfile\n"
+    volumes:
+    - openplanner-atlas-config:/data/configdb
+    user: 0:0
+  mongodb:
+    image: mongodb/mongodb-atlas-local:latest
+    hostname: openplanner-mongodb
+    cpus: ${OPENPLANNER_MONGODB_CPUS:-4}
+    cpuset: ${OPENPLANNER_CONTAINER_CPUSET:-2-21}
+    command: []
+    depends_on:
+      secrets-init:
+        condition: service_completed_successfully
+    ports:
+    - 127.0.0.1:${OPENPLANNER_MONGODB_PORT:-27017}:27017
+    environment:
+      MONGODB_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USERNAME:-openplannerRoot}
+      MONGODB_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD:-change-me-root-password}
+    volumes:
+    - openplanner-atlas-data:/data/db
+    - openplanner-atlas-config:/data/configdb
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - 'mongosh --quiet --eval ''quit(db.hello().isWritablePrimary ? 0 : 1)'' \ || mongosh --quiet -u "$$MONGODB_INITDB_ROOT_USERNAME" -p "$$MONGODB_INITDB_ROOT_PASSWORD" --authenticationDatabase admin --eval ''quit(db.hello().isWritablePrimary ? 0 : 1)'''
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+  mongot:
+    image: busybox:1.36
+    command:
+    - sleep
+    - infinity
+    depends_on: {}
+    entrypoint: []
+    ports: []
+    volumes: []
+    tmpfs: []
+    healthcheck:
+      test:
+      - CMD
+      - 'true'
+      interval: 60s
+      timeout: 5s
+      retries: 1
+  mongo-init:
+    image: mongodb/mongodb-community-server:8.2.0-ubi9
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    entrypoint:
+    - /bin/sh
+    - /scripts/atlas-init.sh
+    environment:
+      MONGODB_ROOT_USERNAME: ${MONGODB_ROOT_USERNAME:-openplannerRoot}
+      MONGODB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD:-change-me-root-password}
+      MONGODB_DB: ${MONGODB_DB:-openplanner}
+      OPENPLANNER_DEV_MONGODB_DB: ${OPENPLANNER_DEV_MONGODB_DB:-openplanner_dev}
+      OPENPLANNER_MONGO_APP_USERNAME: ${OPENPLANNER_MONGO_APP_USERNAME:-openplanner}
+      OPENPLANNER_MONGO_APP_PASSWORD: ${OPENPLANNER_MONGO_APP_PASSWORD:-change-me-openplanner-password}
+      EMBEDDING_DIMENSIONS: ${EMBEDDING_DIMENSIONS:-1024}
+    volumes:
+    - ../scripts/atlas-init.sh:/scripts/atlas-init.sh:ro
+    restart: on-failure
+  knoxx-postgres:
+    image: postgres:16-bookworm
+    cpus: 1
+    cpuset: 2-21
+    ports:
+    - 127.0.0.1:5432:5432
+    expose:
+    - '5432'
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-kms}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-kms}
+      POSTGRES_DB: ${POSTGRES_DB:-knoxx}
+    volumes:
+    - knoxx-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - pg_isready -U ${POSTGRES_USER:-kms} -d ${POSTGRES_DB:-knoxx}
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+    - knoxx-internal
+  knoxx-redis:
+    image: redis:7-alpine
+    cpus: 0.5
+    cpuset: 2-21
+    ports:
+    - 127.0.0.1:6379:6379
+    expose:
+    - '6379'
+    volumes:
+    - knoxx-redis-data:/data
+    healthcheck:
+      test:
+      - CMD
+      - redis-cli
+      - ping
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+    - knoxx-internal

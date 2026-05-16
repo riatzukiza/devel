@@ -1,0 +1,53 @@
+{
+  "endpoint": "http://127.0.0.1:8787/v1/audio/speech?postprocess=off",
+  "model": "kokoro",
+  "speed": 1.15,
+  "postprocess": "off",
+  "texts": [
+    "The quick brown fox jumps over the lazy dog.",
+    "Sally sells seashells by the seashore.",
+    "You're listening to Error Coded Radio, where the slop never stops, and the jams keep coming."
+  ],
+  "files": [
+    {
+      "voice": "af_bella",
+      "label": "expressive",
+      "path": "Voice/kokoro-default-bakeoff-20260507T212812Z-speed115/kokoro-af_bella-expressive-speed115.mp3",
+      "bytes": 46892,
+      "backend": "kokoro",
+      "content_type": "audio/mpeg"
+    },
+    {
+      "voice": "af_jessica",
+      "label": "energetic",
+      "path": "Voice/kokoro-default-bakeoff-20260507T212812Z-speed115/kokoro-af_jessica-energetic-speed115.mp3",
+      "bytes": 40652,
+      "backend": "kokoro",
+      "content_type": "audio/mpeg"
+    },
+    {
+      "voice": "af_nicole",
+      "label": "friendly",
+      "path": "Voice/kokoro-default-bakeoff-20260507T212812Z-speed115/kokoro-af_nicole-friendly-speed115.mp3",
+      "bytes": 62444,
+      "backend": "kokoro",
+      "content_type": "audio/mpeg"
+    },
+    {
+      "voice": "af_nova",
+      "label": "clear",
+      "path": "Voice/kokoro-default-bakeoff-20260507T212812Z-speed115/kokoro-af_nova-clear-speed115.mp3",
+      "bytes": 45644,
+      "backend": "kokoro",
+      "content_type": "audio/mpeg"
+    },
+    {
+      "voice": "af_sarah",
+      "label": "conversational",
+      "path": "Voice/kokoro-default-bakeoff-20260507T212812Z-speed115/kokoro-af_sarah-conversational-speed115.mp3",
+      "bytes": 47084,
+      "backend": "kokoro",
+      "content_type": "audio/mpeg"
+    }
+  ]
+}

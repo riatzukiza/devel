@@ -1,0 +1,17 @@
+<svg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="400" fill="#1a1a2e" stroke="#ffd700" stroke-width="10"/>
+  <path d="M 50 50 L 550 50 L 550 350 L 50 350 Z" fill="none" stroke="#ffd700" stroke-width="2" stroke-dasharray="5,5"/>
+  
+  <text x="300" y="80" font-family="serif" font-size="28" fill="#ffd700" text-anchor="middle" font-weight="bold">SCLDF OFFICIAL CERTIFICATION</text>
+  <text x="300" y="110" font-family="sans-serif" font-size="14" fill="#aaa" text-anchor="middle">Saturated Corporate Lamination &amp; Distribution Facility</text>
+  
+  <line x1="100" y1="130" x2="500" y2="130" stroke="#ffd700" stroke-width="1"/>
+  
+  <text x="300" y="180" font-family="serif" font-size="20" fill="#fff" text-anchor="middle">This document certifies that</text>
+  <text x="300" y="220" font-family="serif" font-size="36" fill="#ffd700" text-anchor="middle" font-style="italic">error0815</text>
+  <text x="300" y="260" font-family="serif" font-size="20" fill="#fff" text-anchor="middle">has achieved the rank of</text>
+  <text x="300" y="300" font-family="serif" font-size="32" fill="#00ffcc" text-anchor="middle" font-weight="bold">SOMMELIER OF BRINE</text>
+  
+  <text x="300" y="340" font-family="monospace" font-size="12" fill="#666" text-anchor="middle">Tenure Verified: 14 Years of Architectural Error Production</text>
+  <text x="300" y="360" font-family="monospace" font-size="10" fill="#444" text-anchor="middle">REFRACTIVE INDEX: STABLE | TITRATION: SUCCESSFUL</text>
+</svg>
