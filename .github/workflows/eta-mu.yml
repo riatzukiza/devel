@@ -40,7 +40,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: open-hax/eta-mu-github
-          path: .eta-mu
+          path: .eta-mu-runner
 
       - name: Checkout eta-mu-pi (skills, extensions, settings)
         uses: actions/checkout@v4
@@ -66,10 +66,10 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
-          cache-dependency-path: .eta-mu/pnpm-lock.yaml
+          cache-dependency-path: .eta-mu-runner/pnpm-lock.yaml
 
       - name: Install eta-mu dependencies
-        run: pnpm --dir .eta-mu install --frozen-lockfile
+        run: pnpm --dir .eta-mu-runner install --frozen-lockfile --ignore-workspace
 
       - name: Run eta-mu event handler
         env:
@@ -90,9 +90,16 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           # Point pi to the checked-out eta-mu-pi config
           PI_CODING_AGENT_DIR: ${{ github.workspace }}/.pi/agent
-        run: >-
-          pnpm --dir .eta-mu dev run-event
-          --repo "${GITHUB_REPOSITORY}"
-          --event-name "${GITHUB_EVENT_NAME}"
-          --event-path "${GITHUB_EVENT_PATH}"
-          --cwd "$PWD"
+        run: |
+          if { [ -z "${OPEN_HAX_OPENAI_PROXY_URL:-}" ] || [ -z "${OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN:-}" ]; } \
+            && [ -z "${OPENAI_API_KEY:-}" ] \
+            && [ -z "${ANTHROPIC_API_KEY:-}" ] \
+            && [ -z "${GEMINI_API_KEY:-}" ]; then
+            echo "Skipping eta-mu event handler: no model/proxy credentials are configured for this repository."
+            exit 0
+          fi
+          pnpm --dir .eta-mu-runner dev run-event \
+            --repo "${GITHUB_REPOSITORY}" \
+            --event-name "${GITHUB_EVENT_NAME}" \
+            --event-path "${GITHUB_EVENT_PATH}" \
+            --cwd "$PWD"

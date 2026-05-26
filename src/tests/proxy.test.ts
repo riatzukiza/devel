@@ -4205,6 +4205,20 @@ test("tenant disabledProviderIds blocks local ollama usage", async () => {
   );
 });
 
+const TEST_DAY_MS = 24 * 60 * 60 * 1000;
+const TEST_HOUR_MS = 60 * 60 * 1000;
+const TODAY_UTC_START_MS = (() => {
+  const now = new Date();
+  return Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+})();
+const RECENT_TEST_DAY_START_MS = TODAY_UTC_START_MS - TEST_DAY_MS;
+const PREVIOUS_TEST_DAY_START_MS = RECENT_TEST_DAY_START_MS - TEST_DAY_MS;
+const RECENT_TEST_NOON_MS = RECENT_TEST_DAY_START_MS + 12 * TEST_HOUR_MS;
+const RECENT_TEST_13_MS = RECENT_TEST_DAY_START_MS + 13 * TEST_HOUR_MS;
+const RECENT_TEST_14_MS = RECENT_TEST_DAY_START_MS + 14 * TEST_HOUR_MS;
+const RECENT_TEST_15_MS = RECENT_TEST_DAY_START_MS + 15 * TEST_HOUR_MS;
+const PREVIOUS_TEST_NOON_MS = PREVIOUS_TEST_DAY_START_MS + 12 * TEST_HOUR_MS;
+
 test("weekly dashboard uses persisted daily model/account aggregates and reports incomplete coverage", async () => {
   const requestLogsPayload = {
     entries: [
@@ -4230,7 +4244,7 @@ test("weekly dashboard uses persisted daily model/account aggregates and reports
     hourlyBuckets: [],
     dailyBuckets: [
       {
-        startMs: Date.UTC(2026, 2, 17, 0, 0, 0),
+        startMs: PREVIOUS_TEST_DAY_START_MS,
         requestCount: 5,
         errorCount: 0,
         totalTokens: 1500,
@@ -4249,7 +4263,7 @@ test("weekly dashboard uses persisted daily model/account aggregates and reports
         waterEvaporatedMl: 0.075,
       },
       {
-        startMs: Date.UTC(2026, 2, 18, 0, 0, 0),
+        startMs: RECENT_TEST_DAY_START_MS,
         requestCount: 4,
         errorCount: 1,
         totalTokens: 900,
@@ -4270,7 +4284,7 @@ test("weekly dashboard uses persisted daily model/account aggregates and reports
     ],
     dailyModelBuckets: [
       {
-        startMs: Date.UTC(2026, 2, 17, 0, 0, 0),
+        startMs: PREVIOUS_TEST_DAY_START_MS,
         providerId: "openai",
         model: "gpt-5.4",
         requestCount: 5,
@@ -4291,7 +4305,7 @@ test("weekly dashboard uses persisted daily model/account aggregates and reports
         waterEvaporatedMl: 0.075,
       },
       {
-        startMs: Date.UTC(2026, 2, 18, 0, 0, 0),
+        startMs: RECENT_TEST_DAY_START_MS,
         providerId: "factory",
         model: "claude-sonnet-4-5",
         requestCount: 4,
@@ -4314,7 +4328,7 @@ test("weekly dashboard uses persisted daily model/account aggregates and reports
     ],
     dailyAccountBuckets: [
       {
-        startMs: Date.UTC(2026, 2, 17, 0, 0, 0),
+        startMs: PREVIOUS_TEST_DAY_START_MS,
         providerId: "openai",
         accountId: "acct-openai",
         authType: "oauth_bearer",
@@ -4335,13 +4349,13 @@ test("weekly dashboard uses persisted daily model/account aggregates and reports
         ttftCount: 5,
         tpsSum: 50,
         tpsCount: 5,
-        lastUsedAtMs: Date.UTC(2026, 2, 17, 12, 0, 0),
+        lastUsedAtMs: PREVIOUS_TEST_NOON_MS,
         costUsd: 1.5,
         energyJoules: 150,
         waterEvaporatedMl: 0.075,
       },
       {
-        startMs: Date.UTC(2026, 2, 18, 0, 0, 0),
+        startMs: RECENT_TEST_DAY_START_MS,
         providerId: "factory",
         accountId: "acct-factory",
         authType: "oauth_bearer",
@@ -4362,7 +4376,7 @@ test("weekly dashboard uses persisted daily model/account aggregates and reports
         ttftCount: 4,
         tpsSum: 40,
         tpsCount: 4,
-        lastUsedAtMs: Date.UTC(2026, 2, 18, 12, 0, 0),
+        lastUsedAtMs: RECENT_TEST_NOON_MS,
         costUsd: 0.9,
         energyJoules: 90,
         waterEvaporatedMl: 0.045,
@@ -4472,7 +4486,7 @@ test("provider-model analytics summarizes global models, providers, and provider
     dailyBuckets: [],
     dailyModelBuckets: [
       {
-        startMs: Date.UTC(2026, 2, 17, 0, 0, 0),
+        startMs: PREVIOUS_TEST_DAY_START_MS,
         providerId: "openai",
         model: "gpt-5.4",
         requestCount: 6,
@@ -4492,13 +4506,13 @@ test("provider-model analytics summarizes global models, providers, and provider
         ttftCount: 6,
         tpsSum: 72,
         tpsCount: 6,
-        lastUsedAtMs: Date.UTC(2026, 2, 17, 12, 0, 0),
+        lastUsedAtMs: PREVIOUS_TEST_NOON_MS,
         costUsd: 1.8,
         energyJoules: 180,
         waterEvaporatedMl: 0.09,
       },
       {
-        startMs: Date.UTC(2026, 2, 18, 0, 0, 0),
+        startMs: RECENT_TEST_DAY_START_MS,
         providerId: "factory",
         model: "gpt-5.4",
         requestCount: 4,
@@ -4518,13 +4532,13 @@ test("provider-model analytics summarizes global models, providers, and provider
         ttftCount: 4,
         tpsSum: 44,
         tpsCount: 4,
-        lastUsedAtMs: Date.UTC(2026, 2, 18, 12, 0, 0),
+        lastUsedAtMs: RECENT_TEST_NOON_MS,
         costUsd: 1.0,
         energyJoules: 100,
         waterEvaporatedMl: 0.05,
       },
       {
-        startMs: Date.UTC(2026, 2, 18, 0, 0, 0),
+        startMs: RECENT_TEST_DAY_START_MS,
         providerId: "factory",
         model: "claude-sonnet-4-5",
         requestCount: 3,
@@ -4544,7 +4558,7 @@ test("provider-model analytics summarizes global models, providers, and provider
         ttftCount: 3,
         tpsSum: 24,
         tpsCount: 3,
-        lastUsedAtMs: Date.UTC(2026, 2, 18, 15, 0, 0),
+        lastUsedAtMs: RECENT_TEST_15_MS,
         costUsd: 0.9,
         energyJoules: 90,
         waterEvaporatedMl: 0.045,
@@ -4601,7 +4615,7 @@ test("dashboard overview scopes usage to the requested tenant", async () => {
     entries: [
       {
         id: "entry-acme-openai",
-        timestamp: Date.UTC(2026, 2, 18, 12, 0, 0),
+        timestamp: RECENT_TEST_NOON_MS,
         tenantId: "acme",
         issuer: "local",
         keyId: "key-acme-1",
@@ -4622,7 +4636,7 @@ test("dashboard overview scopes usage to the requested tenant", async () => {
       },
       {
         id: "entry-acme-factory",
-        timestamp: Date.UTC(2026, 2, 18, 13, 0, 0),
+        timestamp: RECENT_TEST_13_MS,
         tenantId: "acme",
         issuer: "local",
         keyId: "key-acme-2",
@@ -4644,7 +4658,7 @@ test("dashboard overview scopes usage to the requested tenant", async () => {
       },
       {
         id: "entry-beta-openai",
-        timestamp: Date.UTC(2026, 2, 18, 14, 0, 0),
+        timestamp: RECENT_TEST_14_MS,
         tenantId: "beta",
         issuer: "local",
         keyId: "key-beta-1",
@@ -4707,7 +4721,7 @@ test("provider-model analytics scopes rollups to the requested tenant", async ()
     entries: [
       {
         id: "entry-acme-openai",
-        timestamp: Date.UTC(2026, 2, 18, 12, 0, 0),
+        timestamp: RECENT_TEST_NOON_MS,
         tenantId: "acme",
         issuer: "local",
         keyId: "key-acme-1",
@@ -4728,7 +4742,7 @@ test("provider-model analytics scopes rollups to the requested tenant", async ()
       },
       {
         id: "entry-acme-factory",
-        timestamp: Date.UTC(2026, 2, 18, 13, 0, 0),
+        timestamp: RECENT_TEST_13_MS,
         tenantId: "acme",
         issuer: "local",
         keyId: "key-acme-2",
@@ -4750,7 +4764,7 @@ test("provider-model analytics scopes rollups to the requested tenant", async ()
       },
       {
         id: "entry-beta-openai",
-        timestamp: Date.UTC(2026, 2, 18, 14, 0, 0),
+        timestamp: RECENT_TEST_14_MS,
         tenantId: "beta",
         issuer: "local",
         keyId: "key-beta-1",

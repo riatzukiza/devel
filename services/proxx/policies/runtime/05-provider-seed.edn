@@ -122,4 +122,4 @@
  {:contract/id :provider-route/llamacpp-embed
   :contract/kind :provider-route
   :provider/id "llamacpp-embed"
-  :provider/base-url "http://llamacpp-embed:8081"}]
+  :provider/base-url "http://127.0.0.1:8081"}]
