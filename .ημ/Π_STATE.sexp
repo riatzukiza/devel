@@ -1,50 +1,30 @@
 (fork-tax-state
   (repo "devel")
-  (branch "pi/fork-tax/2026-04-15-170411")
-  (timestamp "20260526T191143Z")
-  (scope "recursive submodule fork tax with blocked remote-wipe safeguards")
-  (children
-    ('.ημ/03_ARTIFACTS/narrative_audio' "commit-51a0086")
-    ('orgs/octave-commons/fork_tales/narrative_audio' "commit-f0175d0")
-    ('orgs/octave-commons/helm' "commit-d0c3782")
-    ('orgs/octave-commons/pantheon' "commit-eb84ad7c795b")
-    ('orgs/octave-commons/promethean' "commit-3078d50cda76")
-    ('orgs/octave-commons/shibboleth' "commit-f6405e12f1aa")
-    ('orgs/open-hax/commanoxx' "commit-13aa1bf69306")
-    ('orgs/open-hax/eta-mu' "commit-f38424c4")
-    ('orgs/open-hax/openplanner' "commit-a11a219")
-    ('orgs/open-hax/openplanner/packages/agents/knoxx' "commit-747f80db")
-    ('orgs/open-hax/proxx' "commit-13092c1")
-    ('orgs/open-hax/tooloxx/services/hormuz-clock-mcp' "commit-850666d")
-    ('orgs/riatzukiza/TANF-app' "commit-5090185b66ef")
-    ('orgs/riatzukiza/book-of-shadows' "commit-89185d7")
-    ('orgs/riatzukiza/desktop' "commit-0a280df")
-    ('orgs/riatzukiza/goblin-lessons' "commit-22f55abb7174")
-    ('orgs/riatzukiza/ollama-benchmarks' "commit-2f46bf93fdb2")
-    ('orgs/riatzukiza/riatzukiza.github.io' "commit-536940a")
-    ('orgs/shuv/Opencode-Extensions-TUI' "commit-d5751cc84749")
-    ('orgs/shuv/claude-code-plugins-plus-skills' "commit-fa0a7cbc0102")
-    ('orgs/shuv/dotfiles' "commit-66ba9b3cc0ca")
-    ('orgs/shuv/inbound' "commit-52cb1557a0e0")
-    ('orgs/shuv/maple' "commit-6111a4048071")
-    ('orgs/shuv/oc-manager' "commit-e3d62660717f")
-    ('orgs/shuv/oc-web' "commit-94dc0cc1d2ce")
-    ('orgs/shuv/openshuvussy' "commit-045b2220ea6b")
-    ('orgs/shuv/opentui' "commit-c5a9fcfc838a")
-    ('orgs/shuv/our-gpus' "commit-286f078d414b")
-    ('orgs/shuv/shuvcode' "commit-3a0e00dd7f91")
-    ('orgs/shuv/shuvcrawl' "commit-91ae873c53fa")
-    ('orgs/shuv/shuvgeist' "commit-f6fcf22e2ba8")
-    ('orgs/ussyverse/hermes-agent' "commit-005855d07ca1")
-    ('orgs/ussyverse/kanban' "commit-1df7e37")
-    ('orgs/ussyverse/llmproxy' "commit-3d5adefaa649")
-    ('orgs/ussyverse/psp2' "commit-f0ad9d302cff")
-    ('orgs/ussyverse/ralphussy' "commit-0e64dccaa0a1")
-    ('orgs/ussyverse/rooagussy' "commit-c0deae4fdd69")
-    ('orgs/ussyverse/routussy' "commit-c0a6c0c")
-    ('orgs/ussyverse/swarmussy' "commit-67b97bb6cd39")
-    ('orgs/ussyverse/voltronussy' "commit-b9d4c0fa9fcb"))
-  (root-pointers 13)
-  (blocked-repo-wipes 96)
-  (verification "secret heuristic scan for dirty child commits" "git diff --cached --check for dirty child commits" "push branch+tag attempted for actionable dirty/ahead repos")
-  (residual "ussyverse monorepo child project worktrees rehydrated; mcpussy inaccessible; ralphussy nested gitlinks missing mappings" "OpenUtau local-only commit due upstream permission" "fork_tales push blocked by >100MB historical blob" "strudel/OpenUtau upstream permission failures" "archived/read-only riatzukiza/openhax"))
+  (timestamp "20260526T204054Z")
+  (scope "knoxx host PM2 runtime decoupled into services/openplanner")
+  (mode "bottom-up nested submodule commit; path-scoped root staging; concurrent dirt preserved")
+  (branches
+    (root "pi/fork-tax/20260526T204054Z-knoxx-host-services")
+    (openplanner "pi/fork-tax/20260526T204054Z-openplanner-knoxx-host-services")
+    (knoxx "pi/fork-tax/20260526T204054Z-knoxx-host-services"))
+  (tags-recorded-in ".ημ/Π_LAST.md")
+  (commits
+    (knoxx "c066cf0b2069")
+    (openplanner "56d6effee7a8")
+    (root "pending"))
+  (verification
+    "node -c service and knoxx ecosystem configs"
+    "backend shadow-cljs compile test and server"
+    "frontend typecheck and vitest"
+    "ingestion clojure -M:test"
+    "PM2 service-owned restart, pm2 save, authenticated /health ok"
+    "hardcoded devel path/source scan passed")
+  (staged-root-paths
+    "services/openplanner/ecosystem.host.config.cjs"
+    "services/openplanner/README.md"
+    "orgs/open-hax/openplanner"
+    "receipts.edn"
+    ".ημ/Π_LAST.md"
+    ".ημ/Π_STATE.sexp"
+    ".ημ/Π_MANIFEST.sha256")
+  (residual "unrelated root workspace dirt left untouched; no repo-wide cleanup performed"))

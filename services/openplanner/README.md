@@ -61,7 +61,7 @@ MongoDB Community Server in standalone mode (no replica set) allows:
 ### Quick Start (Main API Only)
 
 ```bash
-cd /home/err/devel/services/openplanner
+cd services/openplanner
 
 # Starts default-profile services, including the main OpenPlanner API.
 # No prod profile is required.
@@ -75,11 +75,30 @@ curl http://localhost:${OPENPLANNER_PORT:-7777}/v1/health
 Run this only when you explicitly want a second watch-mode backend on a different port:
 
 ```bash
-cd /home/err/devel/services/openplanner
+cd services/openplanner
 docker compose up -d mongo-init        # grants app user access to the dev DB too
 docker compose --profile dev up -d openplanner-dev
 curl http://localhost:${OPENPLANNER_DEV_PORT:-7778}/v1/health
 ```
+
+### Knoxx Host PM2 Services
+
+Knoxx host runtime ownership lives here, in `services/openplanner`, not in the
+Knoxx source checkout. The ecosystem discovers the Knoxx source via
+`KNOXX_SOURCE_ROOT`, `OPENPLANNER_SOURCE_ROOT`, or the current checkout layout;
+the workspace root comes from `KNOXX_WORKSPACE_ROOT`, `WORKSPACE_ROOT`,
+`WORKSPACE_PATH`, or this service checkout's git top-level.
+
+```bash
+cd services/openplanner
+pm2 start ecosystem.host.config.cjs
+
+# To point at a detached Knoxx checkout:
+KNOXX_SOURCE_ROOT=/path/to/knoxx pm2 start ecosystem.host.config.cjs --update-env
+```
+
+The old `packages/agents/knoxx/ecosystem.config.cjs` is now only a deprecated
+shim; do not start host services from the Knoxx submodule.
 
 `openplanner-dev` is intentionally isolated from the main API:
 
