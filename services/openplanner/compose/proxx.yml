@@ -101,8 +101,6 @@ services:
       UPSTREAM_PROVIDER_ID: ${OPENPLANNER_PROXX_UPSTREAM_PROVIDER_ID:-zai}
       UPSTREAM_FALLBACK_PROVIDER_IDS: ${OPENPLANNER_PROXX_UPSTREAM_FALLBACK_PROVIDER_IDS:-llamacpp-embed,ollama-cloud,openai}
       UPSTREAM_BASE_URL: ${OPENPLANNER_PROXX_UPSTREAM_BASE_URL:-https://api.z.ai/api/paas/v4}
-      UPSTREAM_PROVIDER_BASE_URLS: ${OPENPLANNER_PROXX_UPSTREAM_PROVIDER_BASE_URLS:-llamacpp=http://llamacpp-chat:8080,llamacpp-embed=http://llamacpp-embed:8081,openai=https://chatgpt.com/backend-api,vivgrid=https://api.vivgrid.com,requesty=https://router.requesty.ai/v1,zai=https://api.z.ai/api/paas/v4}
-      EMBED_MODEL_PROVIDER_ALIASES: ${OPENPLANNER_PROXX_EMBED_MODEL_PROVIDER_ALIASES:-qwen3-embedding:0.6b=llamacpp-embed,qwen3-embedding-0.6b=llamacpp-embed}
       REQUESTY_API_TOKEN: ${REQUESTY_API_TOKEN:-}
       OPENAI_PROVIDER_ID: ${OPENAI_PROVIDER_ID:-openai}
       OPENAI_BASE_URL: ${OPENAI_BASE_URL:-https://chatgpt.com/backend-api}

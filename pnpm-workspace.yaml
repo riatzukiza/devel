@@ -2,6 +2,10 @@ packages:
   - orgs/octave-commons/**
   - orgs/open-hax/**
   - orgs/packages/**
+  - packages/aether
+  - packages/hermes
+  - packages/mcp-foundation
+  - packages/radar-core
   # - .
   # - packages/embedding
   # - packages/persistence
