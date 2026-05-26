@@ -2,7 +2,7 @@ const path = require("node:path");
 
 const serviceRoot = __dirname;
 const repoRoot = path.resolve(serviceRoot, "../../orgs/open-hax/proxx");
-const host = "127.0.0.1";
+const host = process.env.PROXX_HOST_PROXY_HOST ?? "127.0.0.1";
 const proxyPort = process.env.PROXX_HOST_PROXY_PORT ?? "18789";
 const webPort = process.env.PROXX_HOST_WEB_PORT ?? "15174";
 
@@ -21,10 +21,6 @@ const commonEnv = {
   PROXX_CLJS_POLICY_AUTHORITATIVE: "true",
   PROXX_CLJS_POLICY_MANIFEST: path.join(serviceRoot, "policies/runtime/00-manifest.edn"),
   OLLAMA_BASE_URL: process.env.OLLAMA_BASE_URL ?? "http://127.0.0.1:11434",
-  UPSTREAM_PROVIDER_BASE_URLS: process.env.UPSTREAM_PROVIDER_BASE_URLS
-    ?? "ollama-cloud=https://ollama.com,ollama-lan=http://192.168.12.68:11434,openai=https://chatgpt.com/backend-api,vivgrid=https://api.vivgrid.com,requesty=https://router.requesty.ai/v1,llamacpp=http://127.0.0.1:8082,llamacpp-embed=http://127.0.0.1:8081",
-  EMBED_MODEL_PROVIDER_ALIASES: process.env.EMBED_MODEL_PROVIDER_ALIASES
-    ?? "qwen3-embedding:0.6b=llamacpp-embed,qwen3-embedding-0.6b=llamacpp-embed",
   CHROMA_URL: process.env.CHROMA_URL ?? "http://127.0.0.1:8000",
   HOST_DASHBOARD_RUNTIME_ROOT: serviceRoot,
 };

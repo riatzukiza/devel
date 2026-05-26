@@ -16,6 +16,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
+      - run: git submodule update --init --depth 1 orgs/open-hax/eta-mu
       - uses: actions/setup-node@v5
         with:
           node-version: 22
@@ -28,6 +29,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
+      - run: git submodule update --init --depth 1 orgs/open-hax/eta-mu
       - uses: actions/setup-node@v5
         with:
           node-version: 22
@@ -40,4 +42,5 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
+      - run: git submodule update --init --depth 1 orgs/open-hax/eta-mu
       - run: docker compose --project-name eta-mu-staging-ci -f orgs/open-hax/eta-mu/services/eta-mu/compose.yaml config >/tmp/eta-mu-compose.txt
