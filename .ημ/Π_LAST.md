@@ -1,51 +1,43 @@
-# Π fork-tax snapshot — 20260610T042416Z
+# Π fork-tax snapshot — 20260611T191822Z
 
-- Repository: open-hax/axxium (origin remote)
+- Repository: **riatzukiza/devel** (git@github.com:riatzukiza/devel.git)
 - Source branch: `feat/ci-automation-1781026522`
-- Base: `origin/staging`
-- Snapshot commit: `784ef6cb62bb1e22d4e3613d99857833b86919be`
-- Π tag: `fork-tax/20260610-ci-automation`
+- Snapshot commit: `5153f528daa62518db71ef98d3aa34f1c6ac3238`
+- Π tag: `fork-tax/20260611-axxium-remote-guard`
 
-## Scope (33 tracked files, submodule pointers + policy + config)
+## Scope (12 tracked files)
 
-### Submodule pointer updates (20)
-- `orgs/octave-commons/daimoi`, `eros-eris-field`, `eros-eris-field-app`, `eta-mu-sol`, `fork_tales`, `gates-of-aker`, `lineara_conversation_export`, `promethean`, `promethean-agent-system`, `shibboleth`, `simulacron`
-- `orgs/open-hax/axxium`, `commanoxx`, `depenoxx`, `eta-mu`, `openplanner`, `privaxxy`, `proxx`, `uxx`, `vexx`
-- `orgs/agustif/codex-linux`, `orgs/riatzukiza/TANF-app`, `orgs/shuv/mcporter`
+### Submodule pointer updates (8)
+- `orgs/agustif/codex-linux`
+- `orgs/octave-commons/gates-of-aker`, `promethean`
+- `orgs/open-hax/eta-mu`, `openplanner`
+- `orgs/riatzukiza/TANF-app`
+- `orgs/shuv/mcporter`, `shuvgeist`
 
-### File changes
-- `.factory/skills/submodule-ops/SKILL.md` — removed (66 lines)
-- `.ημ/PRINCIPLE.edn` — minor edit
-- `AGENTS.md` — removed (54 lines)
-- `README.md` — removed (70 lines)
-- `bin/align-submodules` — removed (31 lines)
-- `bin/fork-tax-submodules` — removed (24 lines)
-- `services/openplanner/compose/proxx.yml` — config update
-- `services/proxx/policies/runtime/00-manifest.edn` — policy update
-- `services/proxx/policies/runtime/10-model-families.edn` — policy update
-- `spec.json` — schema update
+### Service file changes (3)
+- `services/llamacpp-stack/docker-compose.yml` — fix model dir env var
+- `services/openplanner/compose/proxx.yml` — fix DB URL interpolation
+- `services/openplanner/ecosystem.host.config.cjs` — add knoxx MongoDB config
+
+### Remote guard (1)
+- `.git/hooks/pre-push` — now blocks push if origin URL != riatzukiza/devel
+
+## Axxium fix
+
+Axxium is properly a submodule (`mode 160000`, `.gitmodules` → `git@github.com:open-hax/axxium.git`).
+Previous `Π_STATE.sexp` incorrectly recorded `(repo "open-hax/axxium")` — agents were
+reading that and setting the parent remote to axxium's URL. Now corrected to
+`(repo "riatzukiza/devel")` with explicit `(remote ...)` field.
+
+Pre-push hook added to block any future accidental remote changes.
 
 ## Excluded (secrets — NOT committed)
 
-- `passwords.csv` — contains website credentials, explicitly excluded
-- `services/proxx/cephalon-hive-accounts.json` — provider account data
-- `services/proxx/cephalon-hive-providers.json` — provider config
-- `services/proxx/proxx-federation-accounts.json` — federation accounts
-- `services/proxx/proxx-federation-providers.json` — federation providers
-- `services/openplanner/scripts/sync-runtime-secrets-env.sh` — secrets script
-- `services/openplanner/scripts/unfragile-mongo-reset.sh` — DB reset script
+- `passwords.csv`, provider account/federation JSONs, secrets scripts
 
 ## Concurrent dirt (intentionally untouched)
 
-- **1478 untracked files** not staged:
-  - ~452 audio files (Voice/TTS MP3s, WAVs)
-  - ~200+ Lore/fork-tales events, world-states, plot-logs, world-building docs
-  - ~100+ Graphics SVGs (Symmetry Council seals, emblems)
-  - ~100+ kanban drafts, service scaffolds
-  - Music/USTX files, narrative docs, notes
-  - Services: `services/eta-mu/kanban-cljs/`, `services/eta-mu/kanban/.eta-mu/`
-  - Orgs: `orgs/octave-commons/lyrical-engine/`, `orgs/octave-commons/markov_song_engine/`
-- Per fork-tax guardrails, untracked creative artifacts and secrets are left as documented residual.
+- ~1600 untracked files (audio, lore, graphics, kanban, music) — left as residual per guardrails.
 
 ## Handoff artifacts updated
 
