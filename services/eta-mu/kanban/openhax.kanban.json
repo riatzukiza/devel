@@ -1,5 +1,6 @@
 {
   "defaultProject": "knoxx",
+  "fsm": "promethean",
   "projects": [
     {
       "id": "knoxx",
