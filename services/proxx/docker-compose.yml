@@ -195,7 +195,7 @@ services:
       test:
         [
           "CMD",
-          "REDACTED_SECRET",
+          "node",
           "-e",
           "Promise.all([fetch('http://127.0.0.1:8789/health',{headers:{Authorization:'Bearer '+(process.env.PROXY_AUTH_TOKEN||'')}}), fetch('http://127.0.0.1:5174')]).then(([proxyResponse, webResponse]) => { if (!proxyResponse.ok || !webResponse.ok) { process.exit(1); } }).catch(() => process.exit(1))"
         ]

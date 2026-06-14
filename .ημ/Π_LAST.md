@@ -1,45 +1,45 @@
-# Π fork-tax snapshot — 20260611T191822Z
+# Π Fork Tax — 2026-06-13T22:18:00Z
 
-- Repository: **riatzukiza/devel** (git@github.com:riatzukiza/devel.git)
-- Source branch: `feat/ci-automation-1781026522`
-- Snapshot commit: `5153f528daa62518db71ef98d3aa34f1c6ac3238`
-- Π tag: `fork-tax/20260611-axxium-remote-guard`
+**Branch:** `feat/ci-automation-1781026522`
+**Agent:** MiMo-v2.5-pro
 
-## Scope (12 tracked files)
+## Summary
 
-### Submodule pointer updates (8)
-- `orgs/agustif/codex-linux`
-- `orgs/octave-commons/gates-of-aker`, `promethean`
-- `orgs/open-hax/eta-mu`, `openplanner`
-- `orgs/riatzukiza/TANF-app`
-- `orgs/shuv/mcporter`, `shuvgeist`
+Working tree snapshot. 6 root-owned files staged + 3 submodule pointers updated.
 
-### Service file changes (3)
-- `services/llamacpp-stack/docker-compose.yml` — fix model dir env var
-- `services/openplanner/compose/proxx.yml` — fix DB URL interpolation
-- `services/openplanner/ecosystem.host.config.cjs` — add knoxx MongoDB config
+## Root Changes Staged
 
-### Remote guard (1)
-- `.git/hooks/pre-push` — now blocks push if origin URL != riatzukiza/devel
+| File | Change |
+|------|--------|
+| `.gitignore` | 4 lines added (new artifact ignore patterns) |
+| `Lore/fork-tales/creative/README.md` | Minor story metadata edits |
+| `promethean` | Symlink deleted (convenience link removed; submodule at `orgs/octave-commons/promethean` preserved) |
+| `receipts.edn` | 1 line added (receipt river state) |
+| `services/proxx/docker-compose.yml` | 1 line change (service config) |
+| `services/proxx/ecosystem.host.config.cjs` | 1 line change (PM2 config) |
+| `CLAUDE.md` | Claude Code guidance file (new, tracked) |
 
-## Axxium fix
+## Submodule Pointer Updates
 
-Axxium is properly a submodule (`mode 160000`, `.gitmodules` → `git@github.com:open-hax/axxium.git`).
-Previous `Π_STATE.sexp` incorrectly recorded `(repo "open-hax/axxium")` — agents were
-reading that and setting the parent remote to axxium's URL. Now corrected to
-`(repo "riatzukiza/devel")` with explicit `(remote ...)` field.
+| Submodule | New Commits | Summary |
+|-----------|-------------|---------|
+| `orgs/open-hax/eta-mu` | 2 | CI guard fix + kanban comments parity |
+| `orgs/open-hax/openplanner` | 3 | CodeRabbit/Kimi PR#89 review fixes + fork-tax + EventAdmission EDN |
+| `orgs/open-hax/proxx` | 3 | Merge staging + header tests + review feedback |
 
-Pre-push hook added to block any future accidental remote changes.
+## Concurrent Dirt (Intentionally Untouched)
 
-## Excluded (secrets — NOT committed)
+18 submodules with dirty content or untracked files — other agents' work. Documented in `Π_STATE.sexp`.
 
-- `passwords.csv`, provider account/federation JSONs, secrets scripts
+## Skipped (Generated/Runtime/Credentials)
 
-## Concurrent dirt (intentionally untouched)
+- `.claude/scheduled_tasks.lock` — runtime lock
+- `Graphics_5000/` — ~300 generated art PNGs
+- `Symmetry_Council_*` — audio files
+- `services/proxx/*-accounts.json`, `*-providers.json` — credential files (NEVER stage)
+- `services/llamacpp-stack/models/` — large model file
+- Various untracked `docs/`, `kanban/`, `Music/` artifacts
 
-- ~1600 untracked files (audio, lore, graphics, kanban, music) — left as residual per guardrails.
+## Verification
 
-## Handoff artifacts updated
-
-- `.ημ/Π_LAST.md` — this file
-- `.ημ/Π_STATE.sexp` — machine-readable state
+- Skipped: no test suite applicable to this mixed-ownership snapshot.
