@@ -1,0 +1,21 @@
+services:
+  ghooxx-receiver:
+    image: node:22-alpine
+    container_name: ghooxx-receiver
+    network_mode: host
+    working_dir: /app
+    environment:
+      NODE_ENV: production
+      GHOOXX_HOST: ${GHOOXX_HOST:-127.0.0.1}
+      GHOOXX_PORT: ${GHOOXX_PORT:-7999}
+    volumes:
+      - ../../../orgs/open-hax/ghooxx:/app:ro
+      - /app/node_modules
+    command: ["node", "dist/server.cjs"]
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:${GHOOXX_PORT:-7999}/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
