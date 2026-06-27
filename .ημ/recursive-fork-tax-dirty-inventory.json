@@ -1,0 +1,673 @@
+{
+  "ahead_count": 32,
+  "ahead_summary": [
+    {
+      "ahead": 1,
+      "behind": 0,
+      "path": "."
+    },
+    {
+      "ahead": 2,
+      "behind": 0,
+      "path": ".\u03b7\u03bc/03_ARTIFACTS/narrative_audio"
+    },
+    {
+      "ahead": 49,
+      "behind": 3,
+      "path": "orgs/octave-commons/fork_tales"
+    },
+    {
+      "ahead": 1,
+      "behind": 0,
+      "path": "orgs/octave-commons/fork_tales/narrative_audio"
+    },
+    {
+      "ahead": 1,
+      "behind": 0,
+      "path": "orgs/octave-commons/helm"
+    },
+    {
+      "ahead": 1,
+      "behind": 0,
+      "path": "orgs/octave-commons/pantheon"
+    },
+    {
+      "ahead": 304,
+      "behind": 0,
+      "path": "orgs/octave-commons/promethean"
+    },
+    {
+      "ahead": 16,
+      "behind": 1,
+      "path": "orgs/octave-commons/shibboleth"
+    },
+    {
+      "ahead": 1,
+      "behind": 0,
+      "path": "orgs/open-hax/commanoxx"
+    },
+    {
+      "ahead": 2,
+      "behind": 0,
+      "path": "orgs/open-hax/tooloxx/services/hormuz-clock-mcp"
+    },
+    {
+      "ahead": 1,
+      "behind": 0,
+      "path": "orgs/riatzukiza/TANF-app"
+    },
+    {
+      "ahead": 5,
+      "behind": 1,
+      "path": "orgs/riatzukiza/book-of-shadows"
+    },
+    {
+      "ahead": 8,
+      "behind": 0,
+      "path": "orgs/riatzukiza/desktop"
+    },
+    {
+      "ahead": 4,
+      "behind": 1,
+      "path": "orgs/riatzukiza/goblin-lessons"
+    },
+    {
+      "ahead": 6,
+      "behind": 0,
+      "path": "orgs/riatzukiza/ollama-benchmarks"
+    },
+    {
+      "ahead": 1,
+      "behind": 0,
+      "path": "orgs/riatzukiza/openhax"
+    },
+    {
+      "ahead": 4,
+      "behind": 0,
+      "path": "orgs/riatzukiza/riatzukiza.github.io"
+    },
+    {
+      "ahead": 761,
+      "behind": 134,
+      "path": "orgs/shuv/dotfiles"
+    },
+    {
+      "ahead": 234,
+      "behind": 0,
+      "path": "orgs/shuv/oc-manager"
+    },
+    {
+      "ahead": 212,
+      "behind": 0,
+      "path": "orgs/shuv/oc-web"
+    },
+    {
+      "ahead": 38,
+      "behind": 242,
+      "path": "orgs/shuv/openshuvussy"
+    },
+    {
+      "ahead": 147,
+      "behind": 0,
+      "path": "orgs/shuv/opentui"
+    },
+    {
+      "ahead": 1,
+      "behind": 0,
+      "path": "orgs/shuv/our-gpus"
+    },
+    {
+      "ahead": 1115,
+      "behind": 2,
+      "path": "orgs/shuv/shuvcode"
+    },
+    {
+      "ahead": 1,
+      "behind": 0,
+      "path": "orgs/shuv/shuvcrawl"
+    },
+    {
+      "ahead": 17,
+      "behind": 0,
+      "path": "orgs/shuv/shuvgeist"
+    },
+    {
+      "ahead": 1,
+      "behind": 2157,
+      "path": "orgs/ussyverse/hermes-agent"
+    },
+    {
+      "ahead": 23,
+      "behind": 1,
+      "path": "orgs/ussyverse/kanban"
+    },
+    {
+      "ahead": 3,
+      "behind": 96,
+      "path": "orgs/ussyverse/llmproxy"
+    },
+    {
+      "ahead": 1,
+      "behind": 291,
+      "path": "orgs/ussyverse/monorepo"
+    },
+    {
+      "ahead": 4,
+      "behind": 0,
+      "path": "orgs/ussyverse/routussy"
+    },
+    {
+      "ahead": 1,
+      "behind": 0,
+      "path": "tools/strudel-music"
+    }
+  ],
+  "dirty_count": 100,
+  "dirty_summary": [
+    {
+      "category": "REDACTED_SECRET_unstaged_residual",
+      "path": ".",
+      "status_count": 16264
+    },
+    {
+      "category": "residual",
+      "path": "orgs/open-hax/eta-mu",
+      "status_count": 1
+    },
+    {
+      "category": "local_only_unpushed_generated_residual",
+      "path": "orgs/stakira/OpenUtau",
+      "status_count": 281
+    },
+    {
+      "category": "blocked_parent_dirty_children",
+      "path": "orgs/ussyverse/monorepo",
+      "status_count": 96
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/Beatrice",
+      "status_count": 55
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/becomussy",
+      "status_count": 121
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/clanker01",
+      "status_count": 219
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/clanker02",
+      "status_count": 120
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/clanker03",
+      "status_count": 83
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/clanker04",
+      "status_count": 31
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/clanker06",
+      "status_count": 134
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/clanker07",
+      "status_count": 112
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/devussy",
+      "status_count": 545
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/hermes-agent",
+      "status_count": 1491
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/ralphussy",
+      "status_count": 222
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/roguelitussy",
+      "status_count": 523
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/swarmussy",
+      "status_count": 1134
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/uberclawcontrol",
+      "status_count": 296
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/ai-agents/ussycode",
+      "status_count": 156
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/chat-bots/Tchaikovskussy",
+      "status_count": 27
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/chat-bots/botmanagussy",
+      "status_count": 7
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/chat-bots/diffusionchatussy",
+      "status_count": 27
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/chat-bots/gemini-nano-banana-discord-bot",
+      "status_count": 53
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/chat-bots/ragussy",
+      "status_count": 93
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/chat-bots/ussybot",
+      "status_count": 28
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/chat-bots/ussyring",
+      "status_count": 7
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/chat-bots/xcancelussybot",
+      "status_count": 20
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/alembicussy",
+      "status_count": 26
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/cavityussy",
+      "status_count": 28
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/churnmap",
+      "status_count": 19
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/dosemateussy",
+      "status_count": 30
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/hitchussy",
+      "status_count": 21
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/isobarussy",
+      "status_count": 22
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/kintsugiussy",
+      "status_count": 19
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/kompressiussy",
+      "status_count": 35
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/morsethussy",
+      "status_count": 32
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/snapshotussy",
+      "status_count": 30
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/stenography",
+      "status_count": 26
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/strudelussy",
+      "status_count": 8
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/tellussy",
+      "status_count": 27
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/topussy",
+      "status_count": 71
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/unconformity",
+      "status_count": 29
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/ussycodeproxy",
+      "status_count": 29
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/code-analysis/voltronussy",
+      "status_count": 106
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/creative/365cspadminussy",
+      "status_count": 28
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/creative/ArtistSiteussy",
+      "status_count": 99
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/creative/driftlineussy",
+      "status_count": 24
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/creative/fruityboofs",
+      "status_count": 33
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/creative/inkblotussy",
+      "status_count": 26
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/creative/llmproxy",
+      "status_count": 113
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/creative/partymemberbotussy",
+      "status_count": 14
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/creative/tarotussy",
+      "status_count": 21
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/data-science/aquiferussy",
+      "status_count": 24
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/data-science/bananagen",
+      "status_count": 85
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/data-science/broipussy",
+      "status_count": 99
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/data-science/cycloneussy",
+      "status_count": 22
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/data-science/endemicussy",
+      "status_count": 32
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/data-science/gamutussy",
+      "status_count": 35
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/data-science/ghstatsussy",
+      "status_count": 89
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/data-science/petrichorussy",
+      "status_count": 27
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/data-science/stemmaussy",
+      "status_count": 30
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/data-science/telegraphaussy",
+      "status_count": 31
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/BackupUSSY",
+      "status_count": 69
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/assayussy",
+      "status_count": 33
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/blinkslice",
+      "status_count": 30
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/circadiaussy",
+      "status_count": 21
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/coronerussy",
+      "status_count": 34
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/crystallossy",
+      "status_count": 24
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/designussy",
+      "status_count": 1591
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/fatigueussy",
+      "status_count": 29
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/fossilrecordussy",
+      "status_count": 26
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/geoffrussy",
+      "status_count": 223
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/mushinussy",
+      "status_count": 22
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/reverseoracleussy",
+      "status_count": 28
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/seralussy",
+      "status_count": 29
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/sigintussy",
+      "status_count": 65
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/stratagitussy",
+      "status_count": 26
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/terrariumussy",
+      "status_count": 44
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/timeloomussy",
+      "status_count": 24
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/dev-tools/ussybiot",
+      "status_count": 16
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/games/CONTAINERWARZ",
+      "status_count": 26
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/games/mudussy",
+      "status_count": 486
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/games/pawn-shop-pioneers",
+      "status_count": 61
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/games/rpg-dm-bot",
+      "status_count": 64
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/games/scoreboardussy",
+      "status_count": 168
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/games/stallionussy",
+      "status_count": 68
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/infra/dashboardussy",
+      "status_count": 32
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/infra/evenia-mudlet-llm",
+      "status_count": 1616
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/infra/familydashboardussy",
+      "status_count": 55
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/infra/warpussy",
+      "status_count": 25
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/media/mediageckussy",
+      "status_count": 267
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/media/weouthere",
+      "status_count": 188
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/security/365compromisesleuth",
+      "status_count": 10
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/security/fireslice",
+      "status_count": 200
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/security/mintussy",
+      "status_count": 29
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/security/openclawremoteussy",
+      "status_count": 12
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/security/openclawssy",
+      "status_count": 492
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/web-apps/iMaCoMpUtERussy",
+      "status_count": 63
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/web-apps/plan9webplumbussy",
+      "status_count": 17
+    },
+    {
+      "category": "blocked_remote_wipe_candidate",
+      "path": "orgs/ussyverse/monorepo/projects/web-apps/templeossy",
+      "status_count": 94
+    }
+  ],
+  "error_count": 0,
+  "generated": "2026-05-26T19:16:06Z",
+  "missing_count": 36,
+  "note": "Sanitized inventory: commit hashes, raw status samples, and hook output intentionally omitted to avoid entropy false positives and accidental secret retention. Raw working copy existed at /tmp/recursive_fork_tax_post_inventory_20260526.json during the run.",
+  "repo_count": 647
+}

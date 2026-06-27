@@ -1,0 +1,15 @@
+# Π manifest 20260529T022118Z main-softreset-all-dirt
+# sha256  path
+1cc059a1386079f099db0ac2e6b0d741816b81169b2f073f9b96c415b9219dd9  .ημ/Π_LAST.md
+bd707c678010be6515d9e7b67d2105d69bdc53b5e85bcd1ac9b13a4636988daf  .ημ/Π_STATE.sexp
+c243d32bacd10a06879c05d4ea3ad9b6bef9643b252c25dd0e08594d27601d0a  receipts.edn
+559382a708ee11bfe3c8d75cb8b3ed4252f8bc580b700d6f9308b213f1829aea  AGENTS.md
+ROOT_BASE 5cd6e46d66b3571e68bcb69095f9219cea7cbdce
+ROOT_PRE_FINAL_CORRECTION_HEAD b05adefba33d09cd7d31fe1d0779b8b8bbac887c
+SUBMODULE orgs/open-hax/openplanner/packages/agents/knoxx 3695e3f15d68c64a430dc7cd04fad5f359d3e8e3
+SUBMODULE orgs/open-hax/openplanner 4b1b737337c5a5ade6bfe47ba5449606cb57fba1
+SUBMODULE orgs/open-hax/eta-mu 84f5b4834aa8bac90ef6f9f01ab138f3d4037869
+SUBMODULE orgs/stakira/OpenUtau 38ab6a42585e4099ec959f98fa2770fa8de7cdf6
+SUBMODULE orgs/open-hax/proxx 297e05150986856544c0794432b8f9f73fd11767
+SUBMODULE orgs/octave-commons/bitch-tracker 457383e74792799c8d8b4c5cbd6da9ab8aceb607
+SUBMODULE orgs/open-hax/eta-mu-sol a0f2150df5124cc249bbf278e0223cd37876b85b
