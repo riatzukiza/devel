@@ -1,10 +1,10 @@
 (Π_STATE
-  (time "2026-06-27T05:02:39Z")
+  (time "2026-06-27T05:32:33Z")
   (branch "main")
-  (pre_head "0fa7edd6e832acfcce02007a36e05c1cda2a1674")
-  (session "182a9959-3c8c-4b3c-8f06-9bac9f0cb5a4")
+  (pre_head "68f8455c26d2b3502b378538da2f8da2749893d6")
+  (session "3b27dfdb-b643-4df7-8a82-08053084fd47")
   (actor "fork-tax-actor")
-  (dirty false)
+  (dirty true)
   (checks
     (check (status skipped) (command "no verification run; only .ημ/ handoff artifacts changed and no repo verification script applies"))
     (check (status passed) (command ".env files and keys.json/models.json patterns remain ignored"))

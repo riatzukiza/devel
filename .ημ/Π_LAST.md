@@ -4,14 +4,14 @@
 |-------|-------|
 | Repo | `/home/err/devel` |
 | Branch | `main` |
-| Session | `182a9959-3c8c-4b3c-8f06-9bac9f0cb5a4` |
+| Session | `3b27dfdb-b643-4df7-8a82-08053084fd47` |
 | Actor | `fork-tax-actor` |
-| Timestamp | `2026-06-27T05:02:39Z` |
-| Pre-Π HEAD | `0fa7edd6e832acfcce02007a36e05c1cda2a1674` |
+| Timestamp | `2026-06-27T05:32:33Z` |
+| Pre-Π HEAD | `68f8455c26d2b3502b378538da2f8da2749893d6` |
 
 ## Trigger Stats
 
-- `changed`: 4
+- `changed`: 1
 - `untracked`: 1
 - `large_changed`: 0
 - `important_changed`: 0
@@ -37,5 +37,5 @@ Owned `.ημ/` handoff artifacts:
 
 ## Notes
 
-- Residual blocker from initial fork tax persists; submodule still lacks a checked-out commit.
+- Residual blocker from prior fork tax persists; submodule still lacks a checked-out commit.
 - Deterministic Π tag applied after this commit.
