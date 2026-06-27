@@ -80,6 +80,10 @@ desktop.ini
 *.swp
 *.swo
 *~
+Voice/
+*.svg
+Lore/
+Audio/
 
 # Docker volumes / runtime secrets
 services/openplannerREDACTED_SECRET/

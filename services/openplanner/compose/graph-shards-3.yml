@@ -3,7 +3,7 @@ services:
     profiles:
     - graph
     - graph-3
-    image: REDACTED_SECRET:22-bookworm
+    image: node:22-bookworm
     cpus: 1.5
     cpuset: 2-21
     working_dir: /app/workspace/devel
@@ -15,7 +15,7 @@ services:
       EROS_ERIS_WORKER_ROLE: structural
       GRAPHQL_URL: http://graph-weaver:8796/graphql
       OPENPLANNER_BASE_URL: http://openplanner:7777
-      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:REDACTED_SECRET}
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
       EMBED_PROVIDER_MODEL: ${EROS_ERIS_EMBED_PROVIDER_MODEL:-qwen3-embedding:0.6b}
       VEXX_BASE_URL: ${VEXX_BASE_URL:-http://host.docker.internal:8787}
       VEXX_API_KEY: ${VEXX_API_KEY:-}
@@ -84,7 +84,7 @@ services:
     profiles:
     - graph
     - graph-3
-    image: REDACTED_SECRET:22-bookworm
+    image: node:22-bookworm
     cpus: 1.5
     cpuset: 2-21
     working_dir: /app/workspace/devel
@@ -96,7 +96,7 @@ services:
       EROS_ERIS_WORKER_ROLE: structural
       GRAPHQL_URL: http://graph-weaver:8796/graphql
       OPENPLANNER_BASE_URL: http://openplanner:7777
-      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:REDACTED_SECRET}
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
       EMBED_PROVIDER_MODEL: ${EROS_ERIS_EMBED_PROVIDER_MODEL:-qwen3-embedding:0.6b}
       VEXX_BASE_URL: ${VEXX_BASE_URL:-http://host.docker.internal:8787}
       VEXX_API_KEY: ${VEXX_API_KEY:-}
@@ -159,7 +159,7 @@ services:
     profiles:
     - graph
     - graph-3
-    image: REDACTED_SECRET:22-bookworm
+    image: node:22-bookworm
     cpus: 1.5
     cpuset: 2-21
     working_dir: /app/workspace/devel
@@ -171,7 +171,7 @@ services:
       EROS_ERIS_WORKER_ROLE: structural
       GRAPHQL_URL: http://graph-weaver:8796/graphql
       OPENPLANNER_BASE_URL: http://openplanner:7777
-      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:REDACTED_SECRET}
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
       EMBED_PROVIDER_MODEL: ${EROS_ERIS_EMBED_PROVIDER_MODEL:-qwen3-embedding:0.6b}
       VEXX_BASE_URL: ${VEXX_BASE_URL:-http://host.docker.internal:8787}
       VEXX_API_KEY: ${VEXX_API_KEY:-}

@@ -21,7 +21,7 @@ services:
     - 127.0.0.1:${OPENPLANNER_MONGODB_PORT:-27017}:27017
     environment:
       MONGODB_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USERNAME:-openplannerRoot}
-      MONGODB_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD:REDACTED_SECRET-REDACTED_SECRET-password}
+      MONGODB_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD:-change-me-root-password}
     volumes:
     - openplanner-atlas-data:/data/db
     - openplanner-atlas-config:/data/configdb
@@ -60,11 +60,11 @@ services:
     - /scripts/atlas-init.sh
     environment:
       MONGODB_ROOT_USERNAME: ${MONGODB_ROOT_USERNAME:-openplannerRoot}
-      MONGODB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD:REDACTED_SECRET-REDACTED_SECRET-password}
+      MONGODB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD:-change-me-root-password}
       MONGODB_DB: ${MONGODB_DB:-openplanner}
       OPENPLANNER_DEV_MONGODB_DB: ${OPENPLANNER_DEV_MONGODB_DB:-openplanner_dev}
       OPENPLANNER_MONGO_APP_USERNAME: ${OPENPLANNER_MONGO_APP_USERNAME:-openplanner}
-      OPENPLANNER_MONGO_APP_PASSWORD: ${OPENPLANNER_MONGO_APP_PASSWORD:REDACTED_SECRET-openplanner-password}
+      OPENPLANNER_MONGO_APP_PASSWORD: ${OPENPLANNER_MONGO_APP_PASSWORD:-change-me-openplanner-password}
       EMBEDDING_DIMENSIONS: ${EMBEDDING_DIMENSIONS:-1024}
     volumes:
     - ../scripts/atlas-init.sh:/scripts/atlas-init.sh:ro
@@ -78,15 +78,15 @@ services:
     expose:
     - '5432'
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:REDACTED_SECRET}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:REDACTED_SECRET}
+      POSTGRES_USER: ${POSTGRES_USER:-kms}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB:-knoxx}
     volumes:
     - knoxx-postgres-data:/var/lib/postgresql/data
     healthcheck:
       test:
       - CMD-SHELL
-      - pg_isready -U ${POSTGRES_USER:REDACTED_SECRET} -d ${POSTGRES_DB:-knoxx}
+      - pg_isready -U ${POSTGRES_USER:-kms} -d ${POSTGRES_DB:-knoxx}
       interval: 10s
       timeout: 5s
       retries: 10

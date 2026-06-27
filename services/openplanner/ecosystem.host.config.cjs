@@ -341,6 +341,14 @@ const apps = [
         KNOXX_PROVIDER_BASE_URLS: hostEnv.KNOXX_PROVIDER_BASE_URLS || 'llamacpp=http://127.0.0.1:8082',
         KNOXX_PROVIDER_AUTH_TOKENS: hostEnv.KNOXX_PROVIDER_AUTH_TOKENS || 'llamacpp=LLAMACPP_API_KEY',
         LLAMACPP_API_KEY: hostEnv.LLAMACPP_API_KEY || 'no-key',
+        // MongoDB (knoxx policy store — same cluster as OpenPlanner, host-accessible)
+        // replicaSet=rs0 → directConnection=true: replica set discovery uses Docker-internal
+        // hostnames which are unreachable from the host; directConnection bypasses topology lookup.
+        MONGODB_URI: envValue('KNOXX_MONGODB_URI',
+          (envValue('MONGODB_URI', ''))
+            .replace(/@mongodb:/g, '@127.0.0.1:')
+            .replace(/replicaSet=[^&]*/g, 'directConnection=true')),
+        MONGODB_DB: envValue('MONGODB_DB', 'openplanner'),
         // OpenPlanner (on host via compose port-forward)
         OPENPLANNER_BASE_URL: 'http://127.0.0.1:7777',
         OPENPLANNER_API_KEY: hostEnv.OPENPLANNER_API_KEY || 'change-me',
