@@ -1,26 +1,41 @@
-# Π handoff
+# Π Last — /home/err/devel
 
-- time: 2026-06-27T04:23:27Z
-- branch: main
-- pre-Π HEAD: none (initial commit)
-- Π HEAD: pending at capture time; resolved by the final commit after artifact assembly
+| Field | Value |
+|-------|-------|
+| Repo | `/home/err/devel` |
+| Branch | `main` |
+| Session | `182a9959-3c8c-4b3c-8f06-9bac9f0cb5a4` |
+| Actor | `fork-tax-actor` |
+| Timestamp | `2026-06-27T05:02:39Z` |
+| Pre-Π HEAD | `0fa7edd6e832acfcce02007a36e05c1cda2a1674` |
 
-## Summary
+## Trigger Stats
 
-- Initial Π fork tax for `/home/err/devel` on branch `main`.
-- Repository had no prior commits and 152 untracked paths.
-- Only `.gitignore` and `.ημ/` handoff artifacts were committed to establish the handoff baseline.
-- All 152 untracked paths were intentionally left unstaged because ownership was unspecified and concurrent dirt must be respected.
+- `changed`: 4
+- `untracked`: 1
+- `large_changed`: 0
+- `important_changed`: 0
+- `hours_since_tax`: 495149
 
-## Concurrent / blocker paths (not absorbed)
+## What was committed
 
-- Runtime/generated: `node_modules/`, `.worktrees/`, `.cpcache/`, `.clobber/`, `.config/`, `.pm2/`, `.pi/`, `.opencode/`, `.sisyphus/`, `hormuz_clock_v4_bundle/`
-- Other top-level untracked files/directories: see `git status` output for the full list.
+Owned `.ημ/` handoff artifacts:
+
+- `.ημ/REPO_STATE_HASH`
+- `.ημ/Π_LAST.md`
+- `.ημ/Π_MANIFEST.sha256`
+- `.ημ/Π_STATE.sexp`
+
+## Concurrent / blocker paths (left unstaged)
+
+- `orgs/octave-commons/gates-of-truth/` — uninitialized submodule; no valid HEAD, cannot be staged as a gitlink.
 
 ## Verification
 
-- skipped: no verification run; ownership of working-tree paths is unresolved.
+- Skipped: no verification run because only handoff artifacts changed and no applicable repo verification script was defined.
+- Secret patterns (`.env`, `keys.json`, `models.json`) remain ignored and were not staged.
 
-## Next
+## Notes
 
-- Review untracked paths, determine ownership, and pay a follow-up Π that stages owned repo-relevant paths.
+- Residual blocker from initial fork tax persists; submodule still lacks a checked-out commit.
+- Deterministic Π tag applied after this commit.
