@@ -1,0 +1,12 @@
+{:endpoint "http://localhost:11434"
+ :models   ["qwen3:4b" "llama3.2:latest" "llama3.1:latest" "gemma3:latest" "PetrosStav/gemma3-tools:4b" "PetrosStav/gemma3-tools:12b" "gpt-oss:20b" "qwen3:8b" "gpt-oss:120b-cloud" "qwen3-coder:480b-cloud"]
+ :prompts  ["Hello world"
+            "Explain babashka in two sentences."
+            "Write a simple Python function to calculate factorial."
+            "What are the main differences between functional and object-oriented programming?"
+            "Summarize the key events of World War II in three paragraphs."
+            "Explain quantum computing in simple terms for a beginner."
+            "Create a JSON schema for a simple blog post API."
+            "Write a haiku about artificial intelligence."
+            "How would you optimize database queries for a large e-commerce site?"
+            "What are the ethical implications of autonomous vehicles?"]}

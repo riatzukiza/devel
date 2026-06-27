@@ -1,0 +1,185 @@
+[ {
+  "model" : "qwen3:4b",
+  "prompt" : "Hello world",
+  "runs" : [ {
+    "duration_ms" : 4135,
+    "total_duration_ns" : 3767635942,
+    "load_duration_ns" : 150814724,
+    "eval_count" : 266,
+    "eval_duration_ns" : 3385474442,
+    "prompt" : "Hello world",
+    "tps" : 78.57096680453982,
+    "ok" : true,
+    "prompt_eval_duration_ns" : 67631782,
+    "model" : "qwen3:4b",
+    "prompt_eval_count" : 10
+  }, {
+    "duration_ms" : 2866,
+    "total_duration_ns" : 2855784623,
+    "load_duration_ns" : 154702744,
+    "eval_count" : 203,
+    "eval_duration_ns" : 2553081864,
+    "prompt" : "Hello world",
+    "tps" : 79.51174729742235,
+    "ok" : true,
+    "prompt_eval_duration_ns" : 15239839,
+    "model" : "qwen3:4b",
+    "prompt_eval_count" : 10
+  }, {
+    "duration_ms" : 5536,
+    "total_duration_ns" : 5522333017,
+    "load_duration_ns" : 157451587,
+    "eval_count" : 401,
+    "eval_duration_ns" : 5096078852,
+    "prompt" : "Hello world",
+    "tps" : 78.68795041164329,
+    "ok" : true,
+    "prompt_eval_duration_ns" : 12281563,
+    "model" : "qwen3:4b",
+    "prompt_eval_count" : 10
+  } ],
+  "summary" : {
+    "runs_total" : 3,
+    "runs_ok" : 3,
+    "mean_tps" : 78.92355483786848,
+    "mean_duration_ms" : 4179.0
+  }
+}, {
+  "model" : "qwen3:4b",
+  "prompt" : "Explain babashka in two sentences.",
+  "runs" : [ {
+    "duration_ms" : 13510,
+    "total_duration_ns" : 13500100970,
+    "load_duration_ns" : 195018552,
+    "eval_count" : 977,
+    "eval_duration_ns" : 12676379934,
+    "prompt" : "Explain babashka in two sentences.",
+    "tps" : 77.0724769284909,
+    "ok" : true,
+    "prompt_eval_duration_ns" : 17238437,
+    "model" : "qwen3:4b",
+    "prompt_eval_count" : 17
+  }, {
+    "duration_ms" : 18208,
+    "total_duration_ns" : 18198616948,
+    "load_duration_ns" : 167191893,
+    "eval_count" : 1307,
+    "eval_duration_ns" : 17218067725,
+    "prompt" : "Explain babashka in two sentences.",
+    "tps" : 75.90863393470593,
+    "ok" : true,
+    "prompt_eval_duration_ns" : 15840407,
+    "model" : "qwen3:4b",
+    "prompt_eval_count" : 17
+  }, {
+    "duration_ms" : 16787,
+    "total_duration_ns" : 16775917413,
+    "load_duration_ns" : 145355069,
+    "eval_count" : 1209,
+    "eval_duration_ns" : 15889894484,
+    "prompt" : "Explain babashka in two sentences.",
+    "tps" : 76.08609366269722,
+    "ok" : true,
+    "prompt_eval_duration_ns" : 15555529,
+    "model" : "qwen3:4b",
+    "prompt_eval_count" : 17
+  } ],
+  "summary" : {
+    "runs_total" : 3,
+    "runs_ok" : 3,
+    "mean_tps" : 76.35573484196469,
+    "mean_duration_ms" : 16168.333333333334
+  }
+}, {
+  "model" : "gemma3:latest",
+  "prompt" : "Hello world",
+  "runs" : [ {
+    "duration_ms" : 6569,
+    "total_duration_ns" : 6562383239,
+    "load_duration_ns" : 5913584088,
+    "eval_count" : 37,
+    "eval_duration_ns" : 515584353,
+    "prompt" : "Hello world",
+    "tps" : 71.76323289236824,
+    "ok" : true,
+    "prompt_eval_duration_ns" : 38244307,
+    "model" : "gemma3:latest",
+    "prompt_eval_count" : 11
+  }, {
+    "duration_ms" : 958,
+    "total_duration_ns" : 951154402,
+    "load_duration_ns" : 420771706,
+    "eval_count" : 36,
+    "eval_duration_ns" : 467256715,
+    "prompt" : "Hello world",
+    "tps" : 77.04544171184357,
+    "ok" : true,
+    "prompt_eval_duration_ns" : 13536197,
+    "model" : "gemma3:latest",
+    "prompt_eval_count" : 11
+  }, {
+    "duration_ms" : 917,
+    "total_duration_ns" : 908511065,
+    "load_duration_ns" : 365307476,
+    "eval_count" : 36,
+    "eval_duration_ns" : 467517674,
+    "prompt" : "Hello world",
+    "tps" : 77.00243648970584,
+    "ok" : true,
+    "prompt_eval_duration_ns" : 15099477,
+    "model" : "gemma3:latest",
+    "prompt_eval_count" : 11
+  } ],
+  "summary" : {
+    "runs_total" : 3,
+    "runs_ok" : 3,
+    "mean_tps" : 75.27037036463922,
+    "mean_duration_ms" : 2814.6666666666665
+  }
+}, {
+  "model" : "gemma3:latest",
+  "prompt" : "Explain babashka in two sentences.",
+  "runs" : [ {
+    "duration_ms" : 1380,
+    "total_duration_ns" : 1371876732,
+    "load_duration_ns" : 341091665,
+    "eval_count" : 70,
+    "eval_duration_ns" : 930224663,
+    "prompt" : "Explain babashka in two sentences.",
+    "tps" : 75.25063867286434,
+    "ok" : true,
+    "prompt_eval_duration_ns" : 18578778,
+    "model" : "gemma3:latest",
+    "prompt_eval_count" : 17
+  }, {
+    "duration_ms" : 1317,
+    "total_duration_ns" : 1310340381,
+    "load_duration_ns" : 419045712,
+    "eval_count" : 61,
+    "eval_duration_ns" : 803676570,
+    "prompt" : "Explain babashka in two sentences.",
+    "tps" : 75.90117999831698,
+    "ok" : true,
+    "prompt_eval_duration_ns" : 15000731,
+    "model" : "gemma3:latest",
+    "prompt_eval_count" : 17
+  }, {
+    "duration_ms" : 1423,
+    "total_duration_ns" : 1417370452,
+    "load_duration_ns" : 345545923,
+    "eval_count" : 73,
+    "eval_duration_ns" : 969253300,
+    "prompt" : "Explain babashka in two sentences.",
+    "tps" : 75.3157095260857,
+    "ok" : true,
+    "prompt_eval_duration_ns" : 13412118,
+    "model" : "gemma3:latest",
+    "prompt_eval_count" : 17
+  } ],
+  "summary" : {
+    "runs_total" : 3,
+    "runs_ok" : 3,
+    "mean_tps" : 75.48917606575567,
+    "mean_duration_ms" : 1373.3333333333333
+  }
+} ]

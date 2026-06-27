@@ -1,0 +1,65 @@
+
+(import  Table "/shared/data-structures/table.js")
+
+(import Tree "/shared/data-structures/trees/base.js")
+
+(define Trie Tree
+(doc-string "null"
+                "Defines null")
+
+  (init (value parent (*children (.spawn Table))))
+
+  (def get (key) (get (.find this key) 'value))
+
+  (def-generic set ((key null) (value null) ) (set (.insert this  key) 'value value))
+  (doc-string "(key null"
+                  "Defines (key null")
+
+
+
+  (def-generic clear (value *children (tree this))
+  (doc-string "value *children (tree this"
+                  "Defines value *children (tree this")
+
+    (each *children (child) (.despawn child))
+
+    (assign tree.value null)
+    (assign tree.parent null)
+    (assign tree.key null)
+
+    )
+
+  (def-generic add (key (tree this) (*children tree.*children))
+  (doc-string "key (tree this"
+                  "Defines key (tree this")
+
+    (var node (or (*children.get key) (.spawn Trie undefined tree)))
+    (assign node.key key)
+    node)
+
+  (def-generic delete (seq (tree this) )
+  (doc-string "seq (tree this"
+                  "Defines seq (tree this")
+
+
+    ;; don't need r keys, the nodes should retain their key.
+    (var node (.find tree seq))
+    (.delete node.parent.*children (last seq))
+    (.despawn node)
+    )
+
+  (def-generic *find (seq (node (this.*children.get (first seq))))
+  (doc-string "seq (node (this.*children.get (first seq"
+                  "Defines seq (node (this.*children.get (first seq")
+
+
+    (if node (.find node (rest seq))
+        false))
+
+  (def-generic *insert (seq *children (tree this) (node (.add tree (first seq))))
+  (doc-string "seq *children (tree this"
+                  "Defines seq *children (tree this")
+
+    (*children.set (first seq) node )
+    node))
+(export Trie)

@@ -1,0 +1,15 @@
+{:source-paths ["src"]
+ :dependencies []
+ :builds
+ {:personality-system
+  {:target :node-library
+   :exports {:IPersonalitySystem promethean.personality.system/IPersonalitySystem
+             :make-circuit promethean.personality.system/make-circuit
+             :make-persona promethean.personality.system/make-persona
+             :register-system! promethean.personality.system/register-system!
+             :get-system promethean.personality.system/get-system
+             :list-systems promethean.personality.system/list-systems
+             :priority-order promethean.personality.system/priority-order
+             :higher-priority? promethean.personality.system/higher-priority?}
+   :output-to "dist/promethean/personality/system.js"
+   :output-dir "dist/promethean/personality/system"}}}

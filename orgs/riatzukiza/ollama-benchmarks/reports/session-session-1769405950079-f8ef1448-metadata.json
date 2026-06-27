@@ -1,0 +1,56 @@
+{
+  "session/completed-runs" : 8,
+  "session/results" : {
+    "qwen3:4b|Hello world" : [ {
+      "duration_ms" : 8171,
+      "total_duration_ns" : 8162275853,
+      "load_duration_ns" : 142849517,
+      "eval_count" : 601,
+      "eval_duration_ns" : 7683518621,
+      "prompt" : "Hello world",
+      "tps" : 78.21937183276854,
+      "ok" : true,
+      "prompt_eval_duration_ns" : 15098002,
+      "model" : "qwen3:4b",
+      "prompt_eval_count" : 10
+    } ],
+    "qwen3:4b|Explain babashka in two sentences." : [ {
+      "duration_ms" : 10123,
+      "total_duration_ns" : 10115661339,
+      "load_duration_ns" : 159397538,
+      "eval_count" : 742,
+      "eval_duration_ns" : 9541587018,
+      "prompt" : "Explain babashka in two sentences.",
+      "tps" : 77.76484127852451,
+      "ok" : true,
+      "prompt_eval_duration_ns" : 17400077,
+      "model" : "qwen3:4b",
+      "prompt_eval_count" : 17
+    } ],
+    "qwen3:4b|Explain babashka in two sentences." : [ {
+      "duration_ms" : 8215,
+      "total_duration_ns" : 8207125236,
+      "load_duration_ns" : 157527400,
+      "eval_count" : 601,
+      "eval_duration_ns" : 7705629528,
+      "prompt" : "Explain babashka in two sentences.",
+      "tps" : 77.9949253745125,
+      "ok" : true,
+      "prompt_eval_duration_ns" : 15150364,
+      "model" : "qwen3:4b",
+      "prompt_eval_count" : 17
+    } ]
+  },
+  "session/total-runs" : 0,
+  "session/last-updated" : 1769406094585,
+  "session/benchmark-type" : "basic",
+  "session/output-directory" : "reports",
+  "session/start-time" : 1769405950085,
+  "session/config" : {
+    "endpoint" : "http://localhost:11434",
+    "models" : [ "qwen3:4b", "gemma3:latest" ],
+    "prompts" : [ "Hello world", "Explain babashka in two sentences." ],
+    "n" : 3
+  },
+  "session/id" : "session-1769405950079-f8ef1448"
+}

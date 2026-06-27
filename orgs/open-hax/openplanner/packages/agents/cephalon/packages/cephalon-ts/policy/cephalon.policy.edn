@@ -1,0 +1,5 @@
+{:models
+ {:actor {:name "qwen3.5:4b-q8_0"
+           :max-context-tokens 131072
+           :tool-call-strict? true}
+   :fallbacks []}

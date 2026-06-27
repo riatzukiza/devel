@@ -1,0 +1,11 @@
+{:paths ["src" "resources" "classes"]
+ :mvn/local-repo "/tmp/clojure-home/.m2/repository"
+ :deps {org.clojure/clojure {:mvn/version "1.12.1"}
+        cheshire/cheshire {:mvn/version "5.13.0"}
+        org.apache.kafka/kafka-clients {:mvn/version "3.9.0"}
+        org.mongodb/mongodb-driver-sync {:mvn/version "5.2.1"}}
+ :aliases
+ {:audit {:main-opts ["-m" "openplanner.kafka.jobs" "audit"]}
+  :replay {:main-opts ["-m" "openplanner.kafka.jobs" "replay"]}
+  :graph-edges-backfill {:main-opts ["-m" "openplanner.kafka.jobs" "graph-edges-backfill"]}
+  :check {:main-opts ["-m" "openplanner.kafka.jobs" "check"]}}}

@@ -1,0 +1,47 @@
+{
+  "defaults": {
+    "timeout": 100000,
+    "threshold": 2,
+    "wait": 1000
+  },
+  "level": "error",
+  "standard": "WCAG2AA",
+  "ignore": [
+      "notice",
+      "warning",
+      "WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Fail",
+      "WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2"
+      ],
+  "viewport": {
+      "width": 1000,
+      "height": 1000
+    },
+  "urls": [
+    {
+      "url": "http://localhost:3000",
+      "screenCapture": "pa11y-screenshots/homepage.png"
+    },
+    {
+      "actions":[
+        "wait for element #private-template-container to be visible"
+      ],
+      "url": "http://localhost:3000/profile",
+      "screenCapture": "pa11y-screenshots/profile.png"
+    },
+    {
+      "actions":[
+        "wait for element #private-template-container to be visible"
+      ],
+      "url": "http://localhost:3000/data-files",
+      "screenCapture": "pa11y-screenshots/data-files.png"
+    },
+
+    {
+      "actions":[
+        "wait for element #private-template-container to be visible"
+      ],
+      "url": "http://localhost:3000/home",
+      "screenCapture": "pa11y-screenshots/home.png"
+    }
+  ]
+}

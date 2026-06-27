@@ -1,0 +1,35 @@
+{
+  "name": "@promethean-os/lisp-fixer",
+  "version": "0.1.0",
+  "license": "GPL-3.0-only",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p .",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "uvu -r tsx src test",
+    "scan": "tsx src/buildset.ts",
+    "mutate": "tsx src/mutate.ts",
+    "dataset": "tsx src/dataset.ts",
+    "infer": "tsx src/infer.ts",
+    "demo": "tsx src/demo.ts"
+  },
+  "dependencies": {
+    "@types/node": "^20.11.0",
+    "fast-glob": "^3.3.2",
+    "jsonlines": "^0.1.1",
+    "minimist": "^1.2.8",
+    "picocolors": "^1.0.0",
+    "tsx": "^4.19.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "uvu": "^0.5.6",
+    "eslint": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "@eslint/js": "^9.0.0",
+    "@types/minimist": "^1.2.5",
+    "@types/jsonlines": "^0.1.4"
+  }
+}

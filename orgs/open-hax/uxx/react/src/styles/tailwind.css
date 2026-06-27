@@ -1,0 +1,108 @@
+/* @open-hax/uxx styles */
+
+/* Default theme aliases (Monokai) */
+:root {
+  --color-bg-default: #272822;
+  --color-bg-lighter: #3e3d32;
+  --color-bg-darker: #1e1f1c;
+  --color-bg-selection: #414339;
+  
+  /* Foreground */
+  --color-fg-default: #f8f8f2;
+  --color-fg-muted: #75715e;
+  --color-fg-subtle: #49483e;
+  
+  /* Accent Colors */
+  --color-accent-yellow: #e6db74;
+  --color-accent-orange: #fd971f;
+  --color-accent-red: #f92672;
+  --color-accent-magenta: #ae81ff;
+  --color-accent-blue: #66d9ef;
+  --color-accent-cyan: #66d9ef;
+  --color-accent-green: #a6e22e;
+  
+  /* Semantic */
+  --color-success: var(--color-accent-green);
+  --color-warning: var(--color-accent-orange);
+  --color-error: var(--color-accent-red);
+  --color-info: var(--color-accent-blue);
+  
+  /* Spacing (4px base) */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  
+  /* Typography */
+  --font-sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', Monaco, Consolas, monospace;
+  
+  /* Motion */
+  --duration-fast: 100ms;
+  --duration-normal: 200ms;
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
+
+.theme-monokai,
+[data-theme='monokai'] {
+  background-color: var(--color-bg-default);
+  color: var(--color-fg-default);
+}
+
+.theme-night-owl,
+[data-theme='night-owl'] {
+  --color-bg-default: #011627;
+  --color-bg-lighter: #0b2942;
+  --color-bg-darker: #01111d;
+  --color-bg-selection: #1d3b53;
+
+  --color-fg-default: #d6deeb;
+  --color-fg-muted: #5f7e97;
+  --color-fg-subtle: #4b6479;
+
+  --color-accent-yellow: #ffeb95;
+  --color-accent-orange: #f78c6c;
+  --color-accent-red: #ef5350;
+  --color-accent-magenta: #c792ea;
+  --color-accent-blue: #82aaff;
+  --color-accent-cyan: #80cbc4;
+  --color-accent-green: #c5e478;
+
+  --color-success: var(--color-accent-green);
+  --color-warning: #ffca28;
+  --color-error: var(--color-accent-red);
+  --color-info: var(--color-accent-blue);
+
+  background-color: var(--color-bg-default);
+  color: var(--color-fg-default);
+}
+
+/* Animation keyframes */
+@keyframes devel-ui-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Base reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

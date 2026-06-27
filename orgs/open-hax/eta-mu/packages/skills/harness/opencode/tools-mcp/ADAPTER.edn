@@ -1,0 +1,30 @@
+;; Harness adapter: opencode → tools-mcp
+;; Restructured from pi/agent/skills/opencode-tools-mcp/CONTRACT.edn
+
+(harness-adapter
+  (harness :opencode)
+  (skill "tools-mcp")
+  (core-ref "packages/skills/domain/opencode/sdk/CONTRACT.edn")
+  (install-path ".opencode/skills/tools-mcp/CONTRACT.edn")
+
+  (protocol
+    (mcp-registration
+      "opencode.json mcp{}: map of server name → { command, args, env? }"
+      "Example: { \"github\": { \"command\": \"npx\", \"args\": [\"-y\", \"@modelcontextprotocol/server-github\"] } }")
+    (eta-mu-mcp-servers
+      (:receipt-river
+        "packages/eta-mu-extensions/src/mcp/receipt-river-server.ts"
+        "Tools: receipt_river/append, receipt_river/tail, receipt_river/bootstrap")
+      (:promptdb
+        "packages/presence-core/src/mcp/promptdb-server.ts"
+        "Tools: promptdb/embed, promptdb/search, promptdb/say, promptdb/truth")
+      (:kanban
+        "packages/kanban/src/mcp/kanban-server.ts"
+        "Tools: kanban/card, kanban/move, kanban/list, kanban/fsm-transition"))
+    (authoring-rules
+      ["Every MCP server must expose a /health endpoint."
+       "Register in opencode.json mcp{} AND in packages/skills/harness/opencode/plugins/ADAPTER.edn inventory."
+       "MCP tools that write state must emit a receipt via receipt_river/append."]))
+
+  (notes
+    "MCP server framework: @modelcontextprotocol/sdk. See packages/eta-mu-extensions."))

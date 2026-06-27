@@ -1,0 +1,28 @@
+{:source-paths ["src" "test"]
+ :dependencies []
+ :builds
+ {:lib
+  {:target :esm
+   :output-dir "dist"
+   :modules {:index {:entries [openplanner.stores.cache.boundary]
+                     :exports {:createMemoryLruCache openplanner.stores.cache.boundary/create-memory-lru-cache
+                               :createRedisCache openplanner.stores.cache.boundary/create-redis-cache
+                               :createLmdbCache openplanner.stores.cache.boundary/create-lmdb-cache
+                               :createLayeredCache openplanner.stores.cache.boundary/create-layered-cache
+                               :cacheGet openplanner.stores.cache.boundary/cache-get-js
+                               :cachePut openplanner.stores.cache.boundary/cache-put-js
+                               :cacheEvict openplanner.stores.cache.boundary/cache-evict-js
+                               :cacheTouch openplanner.stores.cache.boundary/cache-touch-js
+                               :cacheCleanup openplanner.stores.cache.boundary/cache-cleanup-js
+                               :cacheStats openplanner.stores.cache.boundary/cache-stats-js
+                               :cacheEntry openplanner.stores.cache.boundary/cache-entry-js
+                               :explainCacheEntry openplanner.stores.cache.boundary/explain-cache-entry-js
+                               :projectionEnvelope openplanner.stores.cache.boundary/projection-envelope-js
+                               :explainProjectionEnvelope openplanner.stores.cache.boundary/explain-projection-envelope-js}}}
+   :compiler-options {:output-feature-set :es-next}}
+
+  :test
+  {:target :node-script
+   :output-to "target/test.cjs"
+   :main openplanner.stores.cache-test/-main
+   :compiler-options {:output-feature-set :es-next}}}}

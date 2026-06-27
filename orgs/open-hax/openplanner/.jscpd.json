@@ -1,0 +1,59 @@
+{
+  "$schema": "https://raw.githubusercontent.com/kucherenko/jscpd/master/schemas/jscpd-schema.json",
+  "path": [
+    "src",
+    "packages",
+    "tests",
+    "scripts",
+    "config"
+  ],
+  "format": [
+    "javascript",
+    "typescript",
+    "jsx",
+    "tsx",
+    "clojure"
+  ],
+  "mode": "mild",
+  "minLines": 8,
+  "minTokens": 80,
+  "reporters": [
+    "console",
+    "html",
+    "json"
+  ],
+  "output": "reports/jscpd",
+  "ignore": [
+    "**/node_modules/**",
+    "**/.venv/**",
+    "**/dist/**",
+    "**/dist-dev/**",
+    "**/build/**",
+    "**/coverage/**",
+    "**/.git/**",
+    "**/.worktrees/**",
+    "**/.eta-mu/**",
+    "**/.ημ/**",
+    "**/.shadow-cljs/**",
+    "**/.clj-kondo/**",
+    "**/.cpcache/**",
+    "**/.lsp/**",
+    "**/.vite/**",
+    "**/target/**",
+    "**/.target/**",
+    "**/public/cljs/**",
+    "**/public/renderer/**",
+    "**/openplanner-lake/**",
+    "**/data/**",
+    "**/package-lock.json",
+    "**/pnpm-lock.yaml",
+    "**/*.tsbuildinfo",
+    "**/*.timestamp-*.mjs",
+    "**/*.d.ts",
+    "**/*.min.js",
+    "**/*.map"
+  ],
+  "gitignore": true,
+  "absolute": false,
+  "blame": false
+}

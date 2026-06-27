@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+exec python3 -m http.server 8458 --directory "/home/err/devel/projects/webring-sites/pheromone-atlas"

@@ -1,0 +1,273 @@
+import { get, post } from '../fetch-instance'
+import { thunk } from 'redux-thunk'
+import configureStore from 'redux-mock-store'
+import { v4 as uuidv4 } from 'uuid'
+
+import {
+  START_FILE_DOWNLOAD,
+  SET_FILE,
+  SET_FILE_LIST,
+  FILE_DOWNLOAD_ERROR,
+  DOWNLOAD_DIALOG_OPEN,
+  SET_FILE_ERROR,
+  SET_SELECTED_STT,
+  setStt,
+  upload,
+  download,
+  getAvailableFileList,
+  submit,
+  SET_FILE_SUBMITTED,
+} from './reports'
+
+jest.mock('../fetch-instance')
+
+describe('actions/reports', () => {
+  const mockStore = configureStore([thunk])
+
+  it('should dispatch SET_FILE', async () => {
+    const store = mockStore()
+
+    await store.dispatch(
+      upload({
+        file: { name: 'HELLO', type: 'text/plain' },
+        section: 'Active Case Data',
+      })
+    )
+
+    const actions = store.getActions()
+
+    const { uuid } = actions[0].payload
+
+    expect(actions[0].type).toBe(SET_FILE)
+    expect(actions[0].payload).toStrictEqual({
+      file: { name: 'HELLO', type: 'text/plain' },
+      fileName: 'HELLO',
+      fileType: 'text/plain',
+      section: 'Active Case Data',
+      uuid,
+    })
+  })
+
+  it('should dispatch SET_FILE_ERROR when there is an error with the post', async () => {
+    const store = mockStore()
+
+    await store.dispatch(
+      upload({ boop: 'asdasd', section: 'Active Case Data' })
+    )
+
+    const actions = store.getActions()
+
+    expect(actions[0].type).toBe(SET_FILE_ERROR)
+    expect(actions[0].payload).toHaveProperty('error')
+  })
+
+  it('should dispatch OPEN_FILE_DIALOG when a file has been successfully downloaded', async () => {
+    window.URL.createObjectURL = jest.fn(() => null)
+    get.mockImplementationOnce(() =>
+      Promise.resolve({
+        data: 'Some text',
+        ok: true,
+        status: 200,
+        error: null,
+      })
+    )
+    const store = mockStore()
+
+    await store.dispatch(
+      download({
+        id: 1,
+        section: 'Active Case Data',
+        fileName: 'test.txt',
+      })
+    )
+    const actions = store.getActions()
+
+    expect(actions[0].type).toBe(START_FILE_DOWNLOAD)
+    try {
+      expect(actions[1].type).toBe(DOWNLOAD_DIALOG_OPEN)
+    } catch (err) {
+      throw actions[1].payload.error
+    }
+  })
+
+  it('should dispatch SET_FILE_LIST', async () => {
+    get.mockImplementationOnce(() =>
+      Promise.resolve({
+        data: [
+          {
+            fileName: 'test.txt',
+            section: 'Active Case Data',
+            uuid: uuidv4(),
+          },
+          {
+            fileName: 'testb.txt',
+            section: 'Closed Case Data',
+            uuid: uuidv4(),
+          },
+        ],
+        ok: true,
+        status: 200,
+        error: null,
+      })
+    )
+    const store = mockStore()
+
+    await store.dispatch(
+      getAvailableFileList({
+        stt: { id: 10 },
+        year: 2020,
+      })
+    )
+    const actions = store.getActions()
+    try {
+      expect(actions[1].type).toBe(SET_FILE_LIST)
+    } catch (err) {
+      throw actions[1].payload.error
+    }
+  })
+
+  it('should dispatch SET_FILE_SUBMITTED', async () => {
+    const uuid = uuidv4()
+    post.mockImplementationOnce(() =>
+      Promise.resolve({
+        data: {
+          extension: 'txt',
+          id: 1,
+          original_filename: 'Test.txt',
+          quarter: 'Q1',
+          section: 'Stratum Data',
+          slug: uuid,
+          year: 2021,
+        },
+        ok: true,
+        status: 200,
+        error: null,
+      })
+    )
+    const store = mockStore()
+
+    await store.dispatch(
+      submit({
+        formattedSections: '4',
+        logger: { alert: jest.fn() },
+        quarter: 'Q1',
+        setLocalAlertState: jest.fn(),
+        stt: { id: 10 },
+        uploadedFiles: [
+          {
+            file: { name: 'Test.txt', type: 'text/plain' },
+            fileName: 'Test.txt',
+            section: 'Stratum Data',
+            uuid,
+          },
+        ],
+        user: { id: 1 },
+        year: 2021,
+      })
+    )
+    const actions = store.getActions()
+
+    try {
+      expect(post).toHaveBeenCalledTimes(1)
+      expect(actions[0].type).toBe(SET_FILE_SUBMITTED)
+    } catch (err) {
+      throw actions[0].payload.error
+    }
+  })
+
+  it.each([
+    [
+      {
+        non_field_errors: ['Something went wrong'],
+      },
+      null,
+    ],
+    [
+      {
+        detail: 'Something went wrong',
+      },
+      null,
+    ],
+    [{ file: 'Something went wrong' }, null],
+    [{}, 'Error: null'],
+  ])(
+    'should set local alert state on submission failure',
+    async (data, msg) => {
+      const uuid = uuidv4()
+      post.mockImplementationOnce(() =>
+        Promise.resolve({
+          data,
+          ok: false,
+          status: 400,
+          error: new Error('Error'),
+        })
+      )
+      const store = mockStore()
+
+      const setLocalAlertState = jest.fn()
+
+      await store.dispatch(
+        submit({
+          formattedSections: '4',
+          logger: { alert: jest.fn() },
+          quarter: 'Q1',
+          setLocalAlertState: setLocalAlertState,
+          stt: { id: 10 },
+          uploadedFiles: [
+            {
+              file: { name: 'Test.txt', type: 'text/plain' },
+              fileName: 'Test.txt',
+              section: 'Stratum Data',
+              uuid,
+            },
+          ],
+          user: { id: 1 },
+          year: 2021,
+        })
+      )
+
+      expect(post).toHaveBeenCalledTimes(1)
+      expect(setLocalAlertState).toHaveBeenCalledWith({
+        active: true,
+        message: msg || 'Error: Something went wrong',
+        type: 'error',
+      })
+    }
+  )
+
+  it('should dispatch FILE_DOWNLOAD_ERROR if no year is provided to download', async () => {
+    const store = mockStore()
+
+    await store.dispatch(
+      download({
+        section: 'Active Case Data',
+      })
+    )
+    const actions = store.getActions()
+    expect(actions[0].type).toBe(FILE_DOWNLOAD_ERROR)
+  })
+
+  it('should dispatch SET_SELECTED_STT', async () => {
+    const store = mockStore()
+
+    await store.dispatch(setStt('florida'))
+
+    const actions = store.getActions()
+    expect(actions[0].type).toBe(SET_SELECTED_STT)
+    expect(actions[0].payload).toStrictEqual({
+      stt: 'florida',
+    })
+  })
+
+  it('should dispatch SET_SELECTED_STT with empty stt', async () => {
+    const store = mockStore()
+
+    await store.dispatch(setStt(''))
+
+    const actions = store.getActions()
+    expect(actions[0].type).toBe(SET_SELECTED_STT)
+    expect(actions[0].payload).toStrictEqual({
+      stt: '',
+    })
+  })
+})

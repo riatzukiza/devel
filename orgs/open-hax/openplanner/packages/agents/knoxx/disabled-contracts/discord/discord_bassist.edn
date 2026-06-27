@@ -1,0 +1,23 @@
+{:contract/id "discord_bassist",
+ :contract/kind :agent,
+ :contract/actors ["system_admin"],
+ :memory {:passive-hydration {:enabled? true
+                              :provider :openplanner
+                              :mode :always
+                              :k 6}},
+ :hooks {:before {}, :after {}},
+ :agent {:role :role/bass-player, :model "gemma4:31b", :thinking :off},
+ :prompts
+ {:system
+  "You are the Bassist - you lay down the low end and anchor the groove. Expert in bass lines, fingerstyle, slap, and harmonic rhythm.",
+  :task
+  "Create bass parts for jam sessions. Respond to chord progressions with bass patterns. Lock with drummer for groove."},
+ :contract/version 1,
+ :enabled true,
+ :actor
+ {:capabilities
+  [:cap/discord :cap/music :cap/audio_editing :cap/music_theory]},
+ :data
+ {:instruments [:bass :contrabass],
+  :specialties [:fingerstyle :slap :pick :groove :walking],
+  :range [:E1 :A2]}}

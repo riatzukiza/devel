@@ -1,0 +1,29 @@
+\system uses a staged dataset build pipeline designed to produce replayable artifacts rather than ad hoc CSV snapshots. The current repository framing defines seven stages: fetch, canonicalize, embed and cluster, split, tier-1 multilingual generation, tier-2 multilingual generation, evaluation-suite transforms, and integrity verification \citep{shibbolethdraft2026}.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{ll}
+\toprule
+Stage & Purpose \\
+\midrule
+0. Fetch & pin source snapshots and checksums \\
+1. Canonicalize & normalize text and assign stable source ids \\
+2. Embed + cluster & construct semantic groups for leakage-safe splitting \\
+3. Split & assign train/dev/test at cluster level \\
+4. Tier-1 variants & generate high-priority multilingual variants \\
+5. Tier-2 variants & extend language coverage under budget control \\
+6. Eval suites & generate code-mix, homoglyph, and exhaustion masks \\
+7. Verify & enforce invariants and write manifests \\
+\bottomrule
+\end{tabular}
+\caption{The seven-stage \system pipeline as a reproducible benchmark grammar.}
+\end{table}
+
+The key invariant is \emph{split before transform}. Canonical prompts are clustered and assigned to train, development, and evaluation partitions before translation or robustness transformations are applied. Every derived variant retains a pointer back to its originating source prompt. This design is intended to prevent semantic leakage across splits, especially in multilingual settings where translation can otherwise create near-duplicate evaluation items.
+
+The pipeline also treats transforms as first-class objects rather than incidental scripts. Machine translation, code-mixing, homoglyph substitution, and exhaustion-style perturbations should all be generated with explicit configuration, seeded randomness where appropriate, and recorded provenance. This makes the benchmark grammar extensible: new transforms or attack families can be registered without rewriting the entire build system.
+
+At the schema level, the benchmark is intentionally split into canonical prompts, derived variants, and eventually session traces. This keeps provenance explicit and makes it possible to compare single-turn and multi-turn evaluations without collapsing everything into one overloaded table. It also aligns the benchmark with broader dataset-governance expectations that emphasize documentation, lineage, and reproducibility rather than only raw scale \citep{gebru2021datasheets}.
+
+For the paper, the remaining implementation work is to connect this declarative framing to a frozen build artifact and an auditable manifest chain. Once that exists, the paper can report not only the dataset contents but also the invariants that guarantee how those contents were produced.

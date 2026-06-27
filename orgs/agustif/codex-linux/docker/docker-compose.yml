@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  build:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ../codex-oss:/build/codex-oss:cached
+      - ../codex-linux-fork:/build/codex-linux-fork:cached
+      - output:/output
+      - cargo-cache:/root/.cargo
+      - npm-cache:/root/.npm
+    environment:
+      - CARGO_BUILD_JOBS=4
+      - NODE_ENV=production
+    working_dir: /build
+
+  # Build specific targets
+  build-deb:
+    extends:
+      service: build
+    command: /bin/bash -c "/build/build.sh && cd /build/codex-linux-fork && cp dist/*.deb /output/"
+
+  build-appimage:
+    extends:
+      service: build
+    command: /bin/bash -c "/build/build.sh && cd /build/codex-linux-fork && cp dist/*.AppImage /output/"
+
+  # Development shell
+  dev:
+    extends:
+      service: build
+    volumes:
+      - ../codex-oss:/build/codex-oss:cached
+      - ../codex-linux-fork:/build/codex-linux-fork:cached
+    command: /bin/bash
+    stdin_open: true
+    tty: true
+
+volumes:
+  output:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/release
+  cargo-cache:
+  npm-cache:

@@ -1,0 +1,11 @@
+{:endpoint "http://localhost:11434"
+ :models   ["qwen3:4b" "llama3.2:latest" "gemma3:latest"]
+ :prompts  ["Calculate the age of someone born in 1990. Use the calculate_age tool."
+            "What's the weather like in Tokyo? Use the get_weather tool."
+            "Create a file called 'hello.txt' with the content 'Hello World'."
+            "Send an email to john@example.com with subject 'Meeting' and body 'See you tomorrow'."
+            "Query the users table for all active users."
+            "Generate Python code to calculate fibonacci numbers."
+            "Analyze the sentiment of 'I love this product!'" 
+            "Convert 100 USD to EUR."
+            "What tools are available? Choose one and demonstrate its use."]}

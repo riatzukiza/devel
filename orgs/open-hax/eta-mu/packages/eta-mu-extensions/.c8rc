@@ -1,0 +1,25 @@
+{
+  "exclude": [
+    "target/**",
+    ".shadow-cljs/**",
+    "scripts/**",
+    "externs/**",
+    "lib/**",
+    "src/eta_mu/build/**",
+    "**/goog/**",
+    "**/cljs/core*",
+    "**/cljs/pprint*",
+    "**/cljs/reader*",
+    "**/cljs/tools/**",
+    "**/shadow/test/**",
+    "**/shadow/module/**",
+    "**/*.js"
+  ],
+  "include": [
+    "src/eta_mu/extensions/**/*.cljs",
+    "lib/eta_mu/**/*.cljs",
+    "lib/eta_mu/**/*.cljc"
+  ],
+  "all": true,
+  "src": "src"
+}

@@ -1,0 +1,109 @@
+name: eta-mu-extensions-tests
+
+on:
+  pull_request:
+    paths:
+      - 'packages/eta-mu-extensions/**'
+      - 'packages/eta-mu-extensions-e2e/**'
+      - '.github/workflows/eta-mu-extensions-tests.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/eta-mu-extensions/**'
+      - 'packages/eta-mu-extensions-e2e/**'
+      - '.github/workflows/eta-mu-extensions-tests.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.14.0'
+          run_install: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Get pnpm store path
+        id: pnpm-cache
+        run: echo "store=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.store }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
+
+      - name: Install workspace deps
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build extensions
+        working-directory: packages/eta-mu-extensions
+        run: pnpm build
+
+      - name: Deploy runtimes to e2e extensions dir
+        working-directory: packages/eta-mu-extensions
+        run: |
+          node scripts/deploy-ci.mjs
+
+      - name: Smoke test — pi loads all extensions
+        working-directory: packages/eta-mu-extensions-e2e
+        run: |
+          output=$(pnpm exec pi -p "smoke" 2>&1 || true)
+          echo "$output"
+          if echo "$output" | grep -q "Failed to load extension"; then
+            echo "FAIL: one or more extensions failed to load"
+            echo "$output" | grep "Failed to load extension"
+            exit 1
+          fi
+          echo "OK: all extensions loaded cleanly"
+
+      - name: Compile ClojureScript tests
+        working-directory: packages/eta-mu-extensions
+        run: pnpm exec shadow-cljs --verbose compile node-test
+
+      - name: Run tests
+        working-directory: packages/eta-mu-extensions
+        run: node target/test.cjs
+
+      - name: Test summary
+        if: always()
+        working-directory: packages/eta-mu-extensions
+        run: |
+          echo '## Test Results' >> $GITHUB_STEP_SUMMARY
+          node target/test.cjs 2>&1 | tee /tmp/test-output.txt || true
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat /tmp/test-output.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload Clojure error reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: clojure-error-reports
+          path: /tmp/clojure-*.edn
+          if-no-files-found: ignore
+
+      - name: Upload shadow-cljs logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shadow-cljs-logs
+          path: packages/eta-mu-extensions/.shadow-cljs/
+          if-no-files-found: ignore

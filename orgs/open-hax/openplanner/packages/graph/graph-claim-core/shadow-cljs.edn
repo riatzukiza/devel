@@ -1,0 +1,28 @@
+{:source-paths ["src" "test"]
+ :dependencies []
+ :builds
+ {:lib
+  {:target :esm
+   :output-dir "dist"
+   :modules {:index {:entries [openplanner.graph.claims.boundary
+                                      openplanner.graph.claims.adapters.mongo
+                                      openplanner.graph.claims.lifecycle]
+                     :exports {:normalizeEdgeClaimStatus openplanner.graph.claims.boundary/normalize-edge-claim-status-js
+                               :normalizeEdgeClaimDirection openplanner.graph.claims.boundary/normalize-edge-claim-direction-js
+                               :normalizeEdgeClaimScope openplanner.graph.claims.boundary/normalize-edge-claim-scope-js
+                               :buildEdgeClaimId openplanner.graph.claims.boundary/build-edge-claim-id-js
+                               :normalizeEdgeClaimInput openplanner.graph.claims.boundary/normalize-edge-claim-input-js
+                               :claimProjectable openplanner.graph.claims.boundary/claim-projectable-js
+                               :projectEdgeClaim openplanner.graph.claims.boundary/project-edge-claim-js
+                               :projectEdgeClaims openplanner.graph.claims.boundary/project-edge-claims-js
+                               :explainEdgeClaim openplanner.graph.claims.boundary/explain-edge-claim-js
+                               :evaluateEdgeClaim openplanner.graph.claims.boundary/evaluate-edge-claim-js
+                               :projectMongoEdgeClaims openplanner.graph.claims.adapters.mongo/project-mongo-edge-claims-js
+                               :planEdgeClaimTransition openplanner.graph.claims.lifecycle/transition-plan-js}}}
+   :compiler-options {:output-feature-set :es-next}}
+
+  :test
+  {:target :node-script
+   :output-to "target/test.cjs"
+   :main openplanner.graph.claims.core-test/-main
+   :compiler-options {:output-feature-set :es-next}}}}

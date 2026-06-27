@@ -1,0 +1,27 @@
+;; Harness adapter: opencode → plugin-authoring
+;; Restructured from pi/agent/skills/opencode-plugin-authoring/CONTRACT.edn
+
+(harness-adapter
+  (harness :opencode)
+  (skill "plugin-authoring")
+  (core-ref "packages/skills/domain/opencode/sdk/CONTRACT.edn")
+  (install-path ".opencode/skills/plugin-authoring/CONTRACT.edn")
+
+  (protocol
+    (plugin-anatomy
+      (registration "opencode.json plugins[] → path to .ts or .js module")
+      (exports "Default export: { hooks: { [HookEvent]: HookHandler } }")
+      (hook-signature "(ctx: PluginContext) => void | Promise<void>")
+      (context-shape
+        {:session "Current session state"
+         :message "Current message (if in message hook)"
+         :tool    "Tool name + args (if in tool hook)"
+         :emit    "Function to emit a receipt or log entry"}))
+    (authoring-rules
+      ["One responsibility per plugin — receipt-river hook, session summarizer, etc."
+       "Never mutate session state directly — use ctx.emit for side effects."
+       "Plugins that write files must call receipt_river via ctx.emit."
+       "Keep plugins under 80 lines. Larger logic belongs in an MCP tool."]))
+
+  (notes
+    "Plugin TS types: import type { Plugin, PluginContext } from '@opencode-ai/sdk'."))

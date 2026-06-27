@@ -1,0 +1,119 @@
+;; Tooltip Component Contract
+;; Defines the API for hover/focus tooltip overlays
+
+{:component :tooltip
+ :version "1.0.0"
+ 
+ :description
+ "Tooltip overlay that appears on hover or focus, with configurable positioning."
+ 
+ :props
+ {:content
+  {:type :node
+   :required true
+   :description "Content to display in the tooltip"}
+  
+  :placement
+  {:type :enum
+   :values [:top :bottom :left :right :top-start :top-end :bottom-start :bottom-end]
+   :default :top
+   :description "Preferred placement of the tooltip relative to trigger"}
+  
+  :trigger
+  {:type :enum
+   :values [:hover :focus :hover-focus :click]
+   :default :hover
+   :description "Event that triggers the tooltip"}
+  
+  :delay
+  {:type :number
+   :default 200
+   :description "Delay in milliseconds before showing tooltip"}
+  
+  :hide-delay
+  {:type :number
+   :default 0
+   :description "Delay in milliseconds before hiding tooltip"}
+  
+  :disabled
+  {:type :boolean
+   :default false
+   :description "Whether the tooltip is disabled"}
+  
+  :offset
+  {:type :number
+   :default 8
+   :description "Distance in pixels from trigger to tooltip"}
+  
+  :arrow
+  {:type :boolean
+   :default true
+   :description "Whether to show an arrow pointing to trigger"}
+  
+  :interactive
+  {:type :boolean
+   :default false
+   :description "Whether the tooltip content is interactive"}}
+ 
+ :slots
+ {:children
+  {:type :node
+   :required true
+   :description "The trigger element that shows the tooltip"}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :accessibility
+ {:role :tooltip
+  :aria
+  {:describedby :tooltip-id}
+  :keyboard
+  {:show-on-focus true
+   :hide-on-blur true
+   :hide-on-escape true}}
+ 
+ :behavior
+ {:hover
+  {:show-on-mouse-enter true
+   :hide-on-mouse-leave true}
+  
+  :focus
+  {:show-on-focus true
+   :hide-on-blur true}
+  
+  :positioning
+  {:auto-flip true
+   :auto-shift true
+   :boundary-viewport true}}
+ 
+ :styling
+ {:data-attributes
+  {:data-component "tooltip"
+   :data-placement :placement
+   :data-visible :visible}
+  
+  :css-custom-properties
+  ["--tooltip-bg"
+   "--tooltip-color"
+   "--tooltip-radius"
+   "--tooltip-padding"
+   "--tooltip-shadow"]}
+ 
+ :tokens
+ {:colors
+  {:bg :colors.background/inverse
+   :text :colors.text/inverse}
+  
+  :spacing
+  {:padding :spacing/2}
+  
+  :radius
+  :spacing/1
+  
+  :shadow
+  :shadow/md
+  
+  :typography
+  {:font-size :font-size/xs
+   :line-height :line-height/tight}}

@@ -1,0 +1,364 @@
+{
+  "main": {
+    "id": "8c939ebedf4f0359",
+    "type": "split",
+    "children": [
+      {
+        "id": "33a4bd13e97b4d0f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a66e5de5ee07ff77",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "notes/daily/2025-07-02.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "2025-07-02"
+            }
+          },
+          {
+            "id": "4a3db340eceaee36",
+            "type": "leaf",
+            "state": {
+              "type": "kanban",
+              "state": {
+                "file": "kanban/board.md",
+                "kanbanViewState": {
+                  "kanban-plugin": "board",
+                  "list-collapse": [
+                    true,
+                    true,
+                    true,
+                    false,
+                    false,
+                    true,
+                    true,
+                    true,
+                    true,
+                    false,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ]
+                }
+              },
+              "icon": "lucide-trello",
+              "title": "board"
+            }
+          },
+          {
+            "id": "361469d95690f756",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "notes/daily/2025-07-27.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "2025-07-27"
+            }
+          },
+          {
+            "id": "d34e8a8a1f684759",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "notes/daily/2025-02-25.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "2025-02-25"
+            }
+          },
+          {
+            "id": "9a8080321a46a9c9",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "notes/daily/2025-02-24.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "2025-02-24"
+            }
+          },
+          {
+            "id": "ff29eba188521e70",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "conflict-files-obsidian-git.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "conflict-files-obsidian-git"
+            }
+          }
+        ],
+        "currentTab": 2
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "84f4a106e1eb714f",
+    "type": "split",
+    "children": [
+      {
+        "id": "426523ac780be632",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9fbed87703fc0ffa",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "5eede38067e5c374",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "delete",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "e19d246c1decd9f1",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          },
+          {
+            "id": "d8912b5d28154545",
+            "type": "leaf",
+            "state": {
+              "type": "tagfolder-view",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Plugin no longer active"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "cb509b7f274d7b5e",
+    "type": "split",
+    "children": [
+      {
+        "id": "c120c2bb854a582e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a0801797e85f3cd1",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "docs/readme.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for readme"
+            }
+          },
+          {
+            "id": "485155227f903cc1",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "docs/readme.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from readme"
+            }
+          },
+          {
+            "id": "40a1ca6bff8639aa",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "5510a2484e4f1d10",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "kanban/board.md"
+              },
+              "icon": "lucide-list",
+              "title": "Outline of board"
+            }
+          },
+          {
+            "id": "23d1381c34adbda8",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "629287df2f1d8462",
+            "type": "leaf",
+            "state": {
+              "type": "todo",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Plugin no longer active"
+            }
+          },
+          {
+            "id": "5ff5ed2df8f7125f",
+            "type": "leaf",
+            "state": {
+              "type": "todo",
+              "state": {},
+              "icon": "checkmark",
+              "title": "Todo List"
+            }
+          },
+          {
+            "id": "e5071d2afcf3667b",
+            "type": "leaf",
+            "state": {
+              "type": "code-execute-manage-executors",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Plugin no longer active"
+            }
+          }
+        ],
+        "currentTab": 6
+      }
+    ],
+    "direction": "horizontal",
+    "width": 295.5,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "smart-second-brain:Open S2B Chat": false,
+      "audio-recorder:Start/stop recording": false,
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "markdown-importer:Open format converter": false,
+      "publish:Publish changes...": false,
+      "random-note:Open random note": false,
+      "zk-prefixer:Create new unique note": false,
+      "workspaces:Manage workspace layouts": false,
+      "obsidian-kanban:Create new board": false,
+      "obsidian-git:Open Git source control": false,
+      "githobs:Manage a github issue": false,
+      "webpage-html-export:Export Vault to HTML": false,
+      "obisidian-note-linker:Note Linker": false
+    }
+  },
+  "active": "361469d95690f756",
+  "lastOpenFiles": [
+    "notes/daily/2025-03-21.md",
+    "notes/daily/2025-07-27.md",
+    "kanban/board.md",
+    "notes/daily/2025-07-02.md",
+    "notes/unique/2025-05-22-09.11.08.md",
+    "notes/daily/2025-06-30.md",
+    "notes/daily/2025-06-18.md",
+    "notes/daily/2025-05-28.md",
+    "notes/daily/2025-05-29.md",
+    "paralellism and multithreading game systems.md",
+    "Tasks Plugin - Review and check your Statuses 2024-12-18 14-28-29.md",
+    "kanban/process.md",
+    "notes/daily/2025-05-23.md",
+    "notes/unique/2025-05-21-06.07.23.md",
+    "notes/unique/2025-05-22-09.00.02.md",
+    "notes/daily/2025-04-24.md",
+    "kanban/tasks/Process.md",
+    "notes/unique/2025-05-21-06.35.12.md",
+    "notes/unique/2025-05-21-06.07.10.md",
+    "notes/daily/2025-05-21.md",
+    "notes/daily/2025-05-11.md",
+    "kanban/tasks/Threaded game systems.md",
+    "notes/daily/2025-05-08.md",
+    "notes/daily/2025-04-27.md",
+    "notes/daily/2025-04-26.md",
+    "notes/daily/2025-02-05.md",
+    "notes/unique",
+    "Chats",
+    "notes/daily",
+    "notes",
+    "src/client/red-black-tree-visualization/main.sibilant",
+    "src/client/red-black-tree-visualization",
+    "static/docs/readme.html",
+    "static/docs/_index_of_docs.html",
+    "static/docs/shared/_index_of_shared.html",
+    "static/docs/shared/ecs/componentsystem/_index_of_componentsystem.html",
+    "Untitled.canvas"
+  ]
+}

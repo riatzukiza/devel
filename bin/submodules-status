@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
+cd "$repo_root"
+
+recursive_flag=()
+for arg in "$@"; do
+  if [ "$arg" = "--recursive" ]; then
+    recursive_flag=("--recursive")
+  else
+    printf 'Unknown argument: %s\n' "$arg" >&2
+    exit 1
+  fi
+done
+
+printf '[submodules-status] pinned commits\n'
+git submodule status "${recursive_flag[@]}" || true
+
+echo
+printf '[submodules-status] dirty worktrees\n'
+if [ -n "${recursive_flag[*]:-}" ]; then
+  git submodule foreach --recursive 'short_status=$(git status --short)
+if [ -n "$short_status" ]; then
+  printf "\n[%s]\n%s\n" "$name" "$short_status"
+fi'
+else
+  git submodule foreach 'short_status=$(git status --short)
+if [ -n "$short_status" ]; then
+  printf "\n[%s]\n%s\n" "$name" "$short_status"
+fi'
+fi

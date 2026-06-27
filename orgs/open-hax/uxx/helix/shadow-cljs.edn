@@ -1,0 +1,76 @@
+{:source-paths ["src"]
+
+ :dependencies
+ [[lilactown/helix "0.2.2"]]
+
+ :js-options
+ {:js-package-dirs ["../node_modules" "../vendor"]}
+
+ :builds
+ {:ui-helix
+  {:target :esm
+   :output-dir "dist"
+   :modules {:index {:entries [devel.ui.helix.core]
+                     :exports {:ThemeProvider devel.ui.helix.core/theme-provider
+                               :ToastProvider devel.ui.helix.core/toast-provider
+                               :Button devel.ui.helix.core/button
+                               :Badge devel.ui.helix.core/badge
+                               :Spinner devel.ui.helix.core/spinner
+                               :Card devel.ui.helix.core/card
+                               :CardHeader devel.ui.helix.core/card-header
+                               :CardBody devel.ui.helix.core/card-body
+                               :CardFooter devel.ui.helix.core/card-footer
+                               :Modal devel.ui.helix.core/modal
+                               :ModalHeader devel.ui.helix.core/modal-header
+                               :ModalBody devel.ui.helix.core/modal-body
+                               :ModalFooter devel.ui.helix.core/modal-footer
+                               :Tooltip devel.ui.helix.core/tooltip
+                               :Input devel.ui.helix.core/input
+                               :Select devel.ui.helix.core/select
+                               :Textarea devel.ui.helix.core/textarea
+                               :Progress devel.ui.helix.core/progress
+                               :ResizablePane devel.ui.helix.core/resizable-pane
+                               :WhichKeyPopup devel.ui.helix.core/which-key-popup
+                               :InspectorPane devel.ui.helix.core/inspector-pane
+                               :ContextSection devel.ui.helix.core/context-section
+                               :PinnedTabsBar devel.ui.helix.core/pinned-tabs-bar
+                               :PermissionCard devel.ui.helix.core/permission-card
+                               :PromptCard devel.ui.helix.core/prompt-card
+                               :PermissionPrompts devel.ui.helix.core/permission-prompts
+                               :ReactReagentSeam devel.ui.helix.core/react-reagent-seam
+                               :CommandPalette devel.ui.helix.core/command-palette
+                               :Chat devel.ui.helix.core/chat
+                               :Toast devel.ui.helix.core/toast
+                               :FileTree devel.ui.helix.core/file-tree
+                               :Tabs devel.ui.helix.core/tabs
+                               :SearchableSelect devel.ui.helix.core/searchable-select
+                               :CollapsiblePanel devel.ui.helix.core/collapsible-panel
+                               :KeyValueSection devel.ui.helix.core/key-value-section
+                               :SurfaceHero devel.ui.helix.core/surface-hero
+                               :PanelHeader devel.ui.helix.core/panel-header
+                               :MetricTile devel.ui.helix.core/metric-tile
+                               :MetricTileGrid devel.ui.helix.core/metric-tile-grid
+                               :FilterToolbar devel.ui.helix.core/filter-toolbar
+                               :ActionStrip devel.ui.helix.core/action-strip
+                               :StatusChipStack devel.ui.helix.core/status-chip-stack
+                               :DataTableShell devel.ui.helix.core/data-table-shell
+                               :Pagination devel.ui.helix.core/pagination
+                               :Feed devel.ui.helix.core/feed
+                               :Markdown devel.ui.helix.core/markdown
+                               :CodeBlock devel.ui.helix.core/code-block
+                               :DiffViewer devel.ui.helix.core/diff-viewer
+                               :MarkdownEditor devel.ui.helix.core/markdown-editor
+                               :RichTextEditor devel.ui.helix.core/rich-text-editor
+                               :useToast devel.ui.helix.core/use-toast
+                               :useAdapter devel.ui.helix.core/use-adapter
+                               :useUxxTheme devel.ui.helix.core/use-uxx-theme
+                               :useResolvedTheme devel.ui.helix.core/use-resolved-theme
+                               :useThemeName devel.ui.helix.core/use-theme-name
+                               :paginateItems devel.ui.helix.core/paginate-items
+                               :calculateTotalPages devel.ui.helix.core/calculate-total-pages
+                               :components devel.ui.helix.core/components
+                               :providers devel.ui.helix.core/providers
+                               :hooks devel.ui.helix.core/hooks
+                               :utilities devel.ui.helix.core/utilities}}}
+   :compiler-options {:output-feature-set :es-next
+                      :source-map true}}}}

@@ -1,0 +1,48 @@
+codecov:
+  require_ci_to_pass: yes
+
+coverage:
+  precision: 2
+  round: down
+  status:
+    project:
+      default:
+        target: 90% #overall project/ repo coverage
+      frontend:
+        target: 90%
+        flags:
+          - frontend
+      backend:
+        target: 90%
+        flags:
+          - backend
+    patch: off
+
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no
+
+comment:
+  layout: "reach,diff,flags,files,footer"
+  behavior: default
+  require_changes: no
+
+flags:
+  frontend:
+    paths:
+      - ./tdrs-frontend/src
+    carryforward: true
+  backend:
+    paths:
+      - ./tdrs-backend/tdpservice
+    carryforward: true
+
+ignore:
+  - "tdrs-backend/tdpservice/scheduling/db_backup.py"
+  - "tdrs-backend/tdpservice/search_indexes/admin/mulitselect_filter.py"
+  - "tdrs-backend/tdpservice/email/helpers/account_access_requests.py"
+  - "tdrs-backend/tdpservice/search_indexes/admin/filters.py"

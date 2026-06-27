@@ -1,0 +1,137 @@
+# my global config
+global:
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds.
+  evaluation_interval: 60s # Evaluate rules every 60 seconds.
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - path_prefix: /alerts
+      static_configs:
+        - targets:
+          - alertmanager.apps.internal:8080
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  - "django-rules.yml"
+  - "alerts.yml"
+
+remote_write:
+ - url: http://mimir.apps.internal:8080/api/v1/push
+
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:8080"]
+        labels:
+          service: "prometheus"
+          env: "production"
+
+  - job_name: "tdp-backend-raft"
+    metrics_path: "/prometheus/metrics"
+    static_configs:
+      - targets: ["tdp-backend-raft.apps.internal:8080"]
+        labels:
+          service: "tdp-backend"
+          env: "dev"
+
+  - job_name: "tdp-celery-raft"
+    static_configs:
+      - targets: ["tdp-celery-raft.apps.internal:9808"]
+        labels:
+          service: "tdp-celery"
+          env: "dev"
+
+  - job_name: "tdp-backend-qasp"
+    metrics_path: "/prometheus/metrics"
+    static_configs:
+      - targets: ["tdp-backend-qasp.apps.internal:8080"]
+
+  - job_name: "tdp-celery-qasp"
+    static_configs:
+      - targets: ["tdp-celery-qasp.apps.internal:9808"]
+        labels:
+          service: "tdp-celery"
+          env: "qasp"
+
+  - job_name: "tdp-backend-develop"
+    metrics_path: "/prometheus/metrics"
+    static_configs:
+      - targets: ["tdp-backend-develop.apps.internal:8080"]
+        labels:
+          service: "tdp-backend"
+          env: "dev"
+
+  - job_name: "tdp-celery-develop"
+    static_configs:
+      - targets: ["tdp-celery-develop.apps.internal:9808"]
+        labels:
+          service: "tdp-celery"
+          env: "dev"
+
+  - job_name: "tdp-backend-staging"
+    metrics_path: "/prometheus/metrics"
+    static_configs:
+      - targets: ["tdp-backend-staging.apps.internal:8080"]
+        labels:
+          service: "tdp-backend"
+          env: "staging"
+
+  - job_name: "tdp-celery-staging"
+    static_configs:
+      - targets: ["tdp-celery-staging.apps.internal:9808"]
+        labels:
+          service: "tdp-celery"
+          env: "staging"
+
+  - job_name: "tdp-backend-prod"
+    metrics_path: "/prometheus/metrics"
+    static_configs:
+      - targets: ["tdp-backend-prod.apps.internal:8080"]
+        labels:
+          service: "tdp-backend"
+          env: "production"
+
+  - job_name: "tdp-celery-prod"
+    static_configs:
+      - targets: ["tdp-celery-prod.apps.internal:9808"]
+        labels:
+          service: "tdp-celery"
+          env: "production"
+
+  - job_name: postgres-dev
+    static_configs:
+      - targets: ["pg-exporter-dev.apps.internal:9187"]
+        labels:
+          service: "postgres"
+          env: "dev"
+
+  - job_name: postgres-staging
+    static_configs:
+      - targets: ["pg-exporter-staging.apps.internal:9187"]
+        labels:
+          service: "postgres"
+          env: "staging"
+
+  - job_name: postgres-production
+    static_configs:
+      - targets: ["pg-exporter-production.apps.internal:9187"]
+        labels:
+          service: "postgres"
+          env: "production"
+
+  - job_name: loki
+    static_configs:
+      - targets: ["loki.apps.internal:8080"]
+        labels:
+          service: "loki"
+          env: "production"
+
+  - job_name: grafana
+    metrics_path: /grafana/metrics
+    static_configs:
+      - targets: ["grafana.apps.internal:8080"]
+        labels:
+          service: "grafana"
+          env: "production"

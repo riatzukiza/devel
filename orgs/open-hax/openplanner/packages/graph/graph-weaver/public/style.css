@@ -1,0 +1,471 @@
+:root {
+  --bg: #020714;
+  --panel: rgba(16, 31, 56, 0.74);
+  --text: rgba(225, 244, 255, 0.96);
+  --muted: rgba(168, 203, 232, 0.72);
+  --edge: rgba(120, 210, 255, 0.35);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap;
+}
+
+.title h1 {
+  margin: 0;
+  font-size: 1.1rem;
+  letter-spacing: 0.03em;
+}
+
+.sub {
+  margin: 0.2rem 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.status {
+  color: var(--muted);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.status.sync-failed {
+  color: #ffd166;
+  background: rgba(214, 40, 40, 0.18);
+  border: 1px solid rgba(214, 40, 40, 0.55);
+  border-radius: 6px;
+  padding: 0.15rem 0.45rem;
+  font-weight: 600;
+}
+
+.links a {
+  color: rgba(255, 255, 255, 0.78);
+  text-decoration: none;
+  font-size: 0.85rem;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.links a:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.main {
+  display: grid;
+  grid-template-columns: 1fr 22rem;
+  height: calc(100% - 58px);
+}
+
+.canvasWrap {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(70, 160, 255, 0.07), transparent 32%),
+    radial-gradient(circle at 60% 55%, rgba(255, 72, 220, 0.05), transparent 28%),
+    linear-gradient(180deg, rgba(5, 13, 28, 0.98), rgba(2, 7, 20, 0.98));
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.labelLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.graphLabel {
+  position: absolute;
+  padding: 0.12rem 0.4rem;
+  border-radius: 999px;
+  border: 1px solid rgba(125, 230, 255, 0.2);
+  background: rgba(4, 16, 32, 0.38);
+  color: rgba(208, 245, 255, 0.94);
+  font-size: 0.66rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  text-shadow:
+    0 0 6px rgba(93, 207, 255, 0.75),
+    0 0 18px rgba(93, 207, 255, 0.35);
+  box-shadow:
+    inset 0 0 16px rgba(119, 228, 255, 0.08),
+    0 0 18px rgba(119, 228, 255, 0.08);
+  backdrop-filter: blur(8px);
+  opacity: 0.92;
+}
+
+.graphLabel.selected {
+  color: rgba(255, 220, 248, 0.98);
+  border-color: rgba(255, 116, 225, 0.42);
+  text-shadow:
+    0 0 8px rgba(255, 116, 225, 0.86),
+    0 0 22px rgba(255, 116, 225, 0.42);
+  box-shadow:
+    inset 0 0 20px rgba(255, 116, 225, 0.12),
+    0 0 22px rgba(255, 116, 225, 0.14);
+}
+
+.side {
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--panel);
+  padding: 0.9rem;
+  overflow: auto;
+}
+
+.side h2 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+}
+
+.mt {
+  margin-top: 1rem;
+}
+
+.side pre {
+  margin: 0;
+  padding: 0.7rem;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  white-space: pre-wrap;
+}
+
+/* --- node inspector --- */
+
+.nodeCard {
+  margin: 0;
+  padding: 0.7rem;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+}
+
+.nodeEmpty {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.nodeHeader {
+  display: grid;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.nodeTitle {
+  font-size: 0.9rem;
+  font-weight: 650;
+  line-height: 1.15;
+}
+
+.nodeMeta {
+  font-size: 0.74rem;
+  color: var(--muted);
+  word-break: break-word;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.1rem;
+}
+
+.badge {
+  font-size: 0.7rem;
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.nodeActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.4rem 0 0.7rem;
+}
+
+.nodeActions a,
+.nodeActions button {
+  font-size: 0.78rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 10px;
+}
+
+.nodeActions a {
+  color: rgba(255, 255, 255, 0.86);
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.nodeActions a:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.nodeSectionTitle {
+  margin: 0.85rem 0 0.35rem;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.78rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.chip:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.chip .k {
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.72rem;
+}
+
+.nodeBody {
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.nodeBody a {
+  color: rgba(120, 210, 255, 0.92);
+}
+
+.nodeBody p {
+  margin: 0.45rem 0;
+}
+
+.nodeBody pre {
+  overflow: auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
+
+.nodeBody pre code {
+  display: block;
+  padding: 0.7rem;
+  font-size: 0.78rem;
+}
+
+.nodeBody code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.nodeBody details {
+  margin-top: 0.6rem;
+}
+
+.nodeBody summary {
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.controls {
+  margin-top: 0.8rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.panel {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.legendSection {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.legendTitle {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.58);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.legendItems,
+.filterGroup {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.legendItem,
+.filterOption {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.swatch {
+  display: inline-flex;
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 0.28rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.18) inset;
+}
+
+.swatchEdge {
+  height: 0.28rem;
+  border-radius: 999px;
+}
+
+.legendNote {
+  font-size: 0.76rem;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.filterOption input {
+  margin: 0;
+}
+
+.row label {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin-bottom: 0.25rem;
+}
+
+.row input[type="range"],
+.row input[type="search"] {
+  width: 100%;
+}
+
+.row input[type="search"] {
+  box-sizing: border-box;
+  color: var(--text);
+  background: rgba(0, 0, 0, 0.26);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 0.42rem 0.55rem;
+}
+
+.row.compact {
+  gap: 0.25rem;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.82rem;
+}
+
+.auditDivider {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 0.35rem 0;
+}
+
+.auditSummary {
+  padding: 0.5rem 0.6rem;
+  border-radius: 10px;
+  background: rgba(90, 70, 255, 0.12);
+  border: 1px solid rgba(170, 150, 255, 0.16);
+  color: rgba(226, 220, 255, 0.9);
+  font-size: 0.78rem;
+}
+
+.auditList {
+  display: grid;
+  gap: 0.35rem;
+  max-height: 14rem;
+  overflow: auto;
+}
+
+.auditItem {
+  display: grid;
+  gap: 0.18rem;
+  text-align: left;
+  padding: 0.45rem 0.55rem;
+  border-color: rgba(170, 150, 255, 0.18);
+  background: rgba(74, 54, 190, 0.12);
+}
+
+.auditTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.78rem;
+}
+
+.auditMeta {
+  color: rgba(205, 195, 255, 0.68);
+  font-size: 0.7rem;
+}
+
+.v {
+  color: rgba(255, 255, 255, 0.9);
+  font-variant-numeric: tabular-nums;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+}
+
+button {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text);
+  padding: 0.45rem 0.7rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}

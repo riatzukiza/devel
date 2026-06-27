@@ -1,0 +1,49 @@
+# Build artifacts
+dist/
+dist.root-owned.*/
+*.tsbuildinfo
+*.tsbuildinfo.*
+
+# Coverage reports (regenerable)
+coverage/
+
+# Duplication scan reports (regenerable)
+reports/jscpd/
+
+# Public renderer (CLJS build output)
+public/renderer/
+
+# Dependencies
+node_modules/
+
+# Data lake / database artifacts (regenerable)
+openplanner-lake/
+
+# Editor / LSP caches
+.clj-kondo/
+.cpcache/
+.shadow-cljs/
+.lsp/
+
+# CLJS build output
+.target/
+target/
+.shadow-cljs/
+
+# Vite cache
+.vite/
+.vite-vitest/
+
+# LevelDB / local DB artifacts (regenerable)
+.reconstitute/
+
+# Package lock files in nested repos (root lock is canonical)
+package-lock.json
+
+# Backup / scratch files
+*.bak
+*.backup
+.projectile
+
+# OS
+.DS_Store

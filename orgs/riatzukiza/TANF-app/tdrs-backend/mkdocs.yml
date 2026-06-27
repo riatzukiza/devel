@@ -1,0 +1,11 @@
+site_name: tdpservice
+site_description: Backend API Service TDP
+repo_url: https://github.com/raft-tech/TANF-app/develop
+site_dir: site
+copyright: Copyright &copy; 2020.
+dev_addr: 0.0.0.0:8001
+
+nav:
+  - API:
+    - Authentication: 'test_api/authentication.md'
+    - Users: 'test_api/login.md'

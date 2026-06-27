@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UXX browser perf harness</title>
+    <link rel="stylesheet" crossorigin href="/assets/index-BCjlQVln.css">
+  </head>
+  <body>
+    <main>
+      <div class="card">
+        <h1>UXX browser perf harness</h1>
+        <p>
+          Use these pages to profile <code>FileTree</code> in an actual browser environment with DevTools.
+          Each page loads only one framework binding to avoid runtime conflicts between Shadow CLJS bundles.
+        </p>
+        <nav>
+          <ul>
+            <li><a href="./react.html">React harness</a></li>
+            <li><a href="./helix.html">Helix harness</a></li>
+            <li><a href="./reagent.html">Reagent harness</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="card">
+        <h2>Run</h2>
+        <pre>cd orgs/open-hax/uxx
+pnpm exec vite docs/perf-browser --host 127.0.0.1 --port 4173</pre>
+      </div>
+    </main>
+  </body>
+</html>

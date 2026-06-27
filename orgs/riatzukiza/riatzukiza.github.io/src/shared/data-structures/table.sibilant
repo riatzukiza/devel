@@ -1,0 +1,34 @@
+(import  Pooled-data-structure "./pooled.js")
+
+(define Table Pooled-data-structure
+(doc-string "null"
+                "Defines null")
+
+  (init ((iterable null) *map)
+        (unless *map (assign this.*map (new Map ))))
+
+  (def clear ()
+    (.clear this.*map)
+    this)
+  (def-generic get ((key null) *map) (.get *map key))
+  (doc-string "(key null"
+                  "Defines (key null")
+
+  (def-generic set ((key null) (value null) *map) (.set *map key value))
+  (doc-string "(key null"
+                  "Defines (key null")
+
+  (def-generic has ((key null) *map) (.has *map key))
+  (doc-string "(key null"
+                  "Defines (key null")
+
+  (def-generic delete ((key null) *map) (.delete *map key))
+  (doc-string "(key null"
+                  "Defines (key null")
+
+  (def-generic each ((f null) *map) (.each *map f)))
+  (doc-string "(f null"
+                  "Defines (f null")
+
+
+(export Table)

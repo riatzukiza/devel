@@ -1,0 +1,59 @@
+;; ημ.skill/opencode-sdk@0.2.0
+;; Migrated from pi/agent/skills/opencode-sdk/CONTRACT.edn
+;; opencode-specific domain knowledge. Not harness-agnostic.
+
+(skill-contract
+  (name "opencode-sdk")
+  (v "ημ.skill/opencode-sdk@0.2.0")
+
+  (intent
+    "Knowledge of the opencode TypeScript SDK: session lifecycle, tool registration,
+     agent authoring, plugin/command/tool APIs, model provider config.
+     Primary reference for building opencode extensions in this monorepo.")
+
+  (activation
+    (priority 60)
+    (explicit ["skill:opencode-sdk"])
+    (triggers ["opencode sdk" "opencode api" "opencode typescript" "opencode session"
+               "opencode tool" "opencode plugin" "opencode command"])
+    (autoload false))
+
+  (governance
+    (touch-layer :semi-stable)
+    (non-override [:mission :directives :safety :license])
+    (requires-user-approval false))
+
+  (effects
+    (writes false)
+    (network false)
+    (commits false))
+
+  (protocol
+    (reference
+      (package "@opencode-ai/sdk")
+      (config-file "opencode.json")
+      (agents-dir ".opencode/agents/")
+      (skills-dir ".opencode/skills/")
+      (rules-dir ".opencode/rules/")
+      (commands-dir ".opencode/commands/")
+      (state-dir ".opencode/state/"))
+
+    (authoring-surfaces
+      ["Agent: .opencode/agents/<name>.md — system prompt fragments, autoloaded by share/mode"
+       "Skill: .opencode/skills/<name>/CONTRACT.edn — typed protocol contracts (this system)"
+       "Rule: .opencode/rules/<name>.md — always-on constraints, injected every turn"
+       "Command: .opencode/commands/<name>.md — slash-command with $ARGUMENTS substitution"
+       "Plugin: opencode.json plugins[] — TS module with hooks: sessionStart, afterTool, etc."
+       "Tool: opencode.json tools[] — MCP server or inline JS function tool"])
+
+    (hook-events
+      [:sessionStart :sessionEnd :beforeTool :afterTool
+       :messageReceived :messageSent :error])
+
+    (model-config
+      "Models configured in opencode.json under models[]"
+      "Each model entry: id, provider, temperature, maxTokens, contextLength"
+      "Model variants allow A/B between providers without changing agent prompts")))
+
+  (output
+    (must-include ["Reference the SDK API before authoring any opencode extension"])))

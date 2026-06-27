@@ -1,0 +1,316 @@
+:root{
+  --bg0:#0b0c10;
+  --bg1:#12141b;
+  --bg2:#1a1d27;
+  --fg0:#f2f2f2;
+  --fg1:#cfd6e6;
+  --muted:#8a92a6;
+  --accent:#9b87f5;
+  --accent2:#5de4c7;
+  --border:#2a2f3e;
+  --card:#0f1118;
+}
+
+*{ box-sizing:border-box; }
+
+html,body{ height:100%; }
+
+body{
+  margin:0;
+  background: radial-gradient(1200px 800px at 10% 15%, rgba(155,135,245,0.12), transparent 55%),
+              radial-gradient(900px 600px at 70% 45%, rgba(93,228,199,0.10), transparent 55%),
+              linear-gradient(180deg, var(--bg0), var(--bg1));
+  color:var(--fg0);
+  font-family: "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+a{ color:var(--fg1); text-decoration:none; }
+a:hover{ color:var(--fg0); text-decoration:underline; }
+
+header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background: rgba(15,17,24,0.86);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px 16px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+
+.brand{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+
+.brand h1{
+  font-size:18px;
+  font-weight:700;
+  margin:0;
+  letter-spacing:0.4px;
+}
+
+.brand .sub{
+  font-size:12px;
+  color:var(--muted);
+}
+
+nav{
+  margin-left:auto;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.nav-pill{
+  border: 1px solid var(--border);
+  background: rgba(18,20,27,0.6);
+  padding: 8px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+main{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px 16px 28px;
+}
+
+.hero{
+  border:1px solid var(--border);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(155,135,245,0.10), rgba(15,17,24,0.90));
+  padding: 18px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.hero h2{
+  margin:0;
+  font-size: 16px;
+}
+
+.hero p{
+  margin:0;
+  color:var(--fg1);
+  line-height:1.45;
+  font-size: 13px;
+}
+
+.grid{
+  margin-top: 16px;
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.card{
+  border:1px solid var(--border);
+  background: rgba(15,17,24,0.78);
+  border-radius: 14px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+
+.card .preview{
+  aspect-ratio: 16 / 10;
+  background: rgba(0,0,0,0.20);
+  border-bottom: 1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.card .preview img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter: saturate(0.9) contrast(1.05);
+}
+
+.card .body{
+  padding: 12px;
+  display:flex;
+  flex-direction:column;
+  gap: 8px;
+}
+
+.card .title{
+  font-weight:700;
+  font-size: 13px;
+}
+
+.card .desc{
+  color:var(--fg1);
+  font-size: 12px;
+  line-height:1.45;
+}
+
+.tags{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.tag{
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border:1px solid var(--border);
+  color: var(--muted);
+  background: rgba(18,20,27,0.45);
+}
+
+.card .actions{
+  margin-top: 2px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  border: 1px solid var(--border);
+  background: rgba(18,20,27,0.6);
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  color: var(--fg1);
+}
+
+.btn.primary{
+  border-color: rgba(155,135,245,0.45);
+  background: rgba(155,135,245,0.16);
+  color: var(--fg0);
+}
+
+.viewer{
+  display:grid;
+  grid-template-columns: 320px 1fr;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+@media (max-width: 880px){
+  .viewer{ grid-template-columns: 1fr; }
+}
+
+.panel{
+  border:1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(15,17,24,0.78);
+}
+
+.panel .panel-head{
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+  display:flex;
+  flex-direction:column;
+  gap: 8px;
+}
+
+.panel .panel-title{
+  font-weight:700;
+  font-size: 13px;
+}
+
+.panel .panel-body{
+  padding: 12px;
+}
+
+select, input[type="text"]{
+  width:100%;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(10,11,16,0.9);
+  color: var(--fg0);
+  padding: 10px 12px;
+  outline: none;
+}
+
+.list{
+  display:flex;
+  flex-direction:column;
+  gap: 6px;
+}
+
+.list a{
+  display:block;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(18,20,27,0.4);
+  font-size: 12px;
+}
+
+.list a.active{
+  border-color: rgba(155,135,245,0.55);
+  background: rgba(155,135,245,0.14);
+  color: var(--fg0);
+}
+
+.svg-stage{
+  height: calc(100vh - 190px);
+  min-height: 520px;
+  overflow: hidden;
+  position:relative;
+}
+
+.svg-stage .hint{
+  position:absolute;
+  top:10px;
+  right:10px;
+  font-size: 11px;
+  color: var(--muted);
+  background: rgba(15,17,24,0.72);
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+.svg-stage .canvas{
+  width:100%;
+  height:100%;
+}
+
+/* Graphviz SVG theming (override hardcoded attributes where possible) */
+.svg-stage svg{
+  width:100%;
+  height:100%;
+}
+
+/* Graph background polygon */
+.svg-stage svg polygon[fill="#fcfcff"]{
+  fill: #0f1118 !important;
+}
+
+/* Default Graphviz text is black; force readable light text on dark background */
+.svg-stage svg text{
+  fill: #e6e6ef !important;
+}
+
+/* Edge labels use Times in Graphviz; keep them readable */
+.svg-stage svg .edge text{
+  fill: #cfd6e6 !important;
+}
+
+.node.highlight > ellipse,
+.node.highlight > polygon,
+.node.highlight > path{
+  stroke: var(--accent2) !important;
+  stroke-width: 3px !important;
+}
+
+.node.dim{
+  opacity: 0.20;
+}

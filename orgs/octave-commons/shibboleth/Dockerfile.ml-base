@@ -1,0 +1,91 @@
+## Reusable CUDA-capable ML base image for promptbench/shibboleth-style workflows.
+##
+## Why this base:
+## - We need the CUDA/cuDNN user-space runtime to avoid container-side failures
+##   like `libcusparseLt.so.0` missing when torch/sentence-transformers import.
+## - Starting from an official PyTorch CUDA runtime image is lower-risk than
+##   trying to bolt the full CUDA stack onto a plain Debian/Java image.
+##
+## Build + push to a local registry:
+##   docker build -f Dockerfile.ml-base -t localhost:5000/shibboleth/ml-base:cuda12.4-2026-03-18 .
+##   docker push localhost:5000/shibboleth/ml-base:cuda12.4-2026-03-18
+##
+## Then use it in this repo:
+##   PROMPTBENCH_BASE_IMAGE=localhost:5000/shibboleth/ml-base:cuda12.4-2026-03-18 docker compose build
+
+FROM eclipse-temurin:21-jdk-jammy AS jdk
+
+FROM pytorch/pytorch:2.4.1-cuda12.4-cudnn9-runtime
+
+ENV JAVA_HOME=/opt/java/openjdk
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
+ENV DEBIAN_FRONTEND=noninteractive
+ENV HF_HOME=/opt/cache/huggingface
+ENV TRANSFORMERS_CACHE=/opt/cache/huggingface/transformers
+ENV SENTENCE_TRANSFORMERS_HOME=/opt/cache/huggingface/sentence-transformers
+ENV PIP_DISABLE_PIP_VERSION_CHECK=1
+ENV PYTHONUNBUFFERED=1
+
+COPY --from=jdk /opt/java/openjdk /opt/java/openjdk
+
+WORKDIR /opt/ml
+
+# Runtime/tooling layer: keep it broad and practical for local ML workflows.
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+     bash \
+     build-essential \
+     ca-certificates \
+     curl \
+     git \
+     jq \
+     python3-dev \
+     python3-venv \
+     rlwrap \
+     tini \
+     unzip \
+     wget \
+  && rm -rf /var/lib/apt/lists/*
+
+# Clojure CLI for repo workflows inside the ML image.
+RUN curl -fsSL https://download.clojure.org/install/linux-install-1.11.1.1413.sh -o /tmp/install-clojure.sh \
+  && chmod +x /tmp/install-clojure.sh \
+  && /tmp/install-clojure.sh \
+  && rm -f /tmp/install-clojure.sh
+
+# Normalize python/pip names because the base image sometimes favors conda-only paths.
+RUN ln -sf /opt/conda/bin/python /usr/local/bin/python3 \
+  && ln -sf /opt/conda/bin/python /usr/local/bin/python \
+  && ln -sf /opt/conda/bin/pip /usr/local/bin/pip3 \
+  && ln -sf /opt/conda/bin/pip /usr/local/bin/pip
+
+# Broad ML toolbox for local experimentation, embeddings, parquet IO, and inference.
+RUN pip install --no-cache-dir \
+    "accelerate>=0.33" \
+    "datasets>=2.20" \
+    "einops>=0.8" \
+    "hdbscan>=0.8" \
+    "jupyterlab>=4.2" \
+    "matplotlib>=3.9" \
+    "numpy>=1.26" \
+    "pandas>=2.2" \
+    "polars>=1.6" \
+    "pyarrow>=17" \
+    "scikit-learn>=1.5" \
+    "scipy>=1.13" \
+    "sentence-transformers>=3.0" \
+    "tokenizers>=0.19" \
+    "transformers>=4.44" \
+    "uvicorn>=0.30" \
+    "fastapi>=0.112"
+
+RUN mkdir -p /opt/cache/huggingface/transformers /opt/cache/huggingface/sentence-transformers
+
+# Optional: preload common embedding model weights at build time.
+ARG PRELOAD_E5=0
+RUN if [ "${PRELOAD_E5}" = "1" ]; then \
+      python3 -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('intfloat/multilingual-e5-large')"; \
+    fi
+
+ENTRYPOINT ["/usr/bin/tini", "--"]
+CMD ["bash"]

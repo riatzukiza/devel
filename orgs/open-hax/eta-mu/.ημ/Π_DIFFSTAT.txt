@@ -1,0 +1,85 @@
+Π diffstat before origin/main merge (20260529T224313Z)
+branch: pi/fork-tax/20260529T022118Z-main-softreset-all-dirt-eta-mu
+pre-merge-head: 839dd0edfc7c9a89ef6f124a2587adb3c474f755
+origin/main: 80cd987885f0e98388fe256087cabe08805ba0ba
+
+Tracked diffstat:
+ .gitignore                                         |    1 +
+ ".\316\267\316\274/\316\240_DIFFSTAT.txt"          |   31 +-
+ ".\316\267\316\274/\316\240_LAST.md"               |   21 +-
+ ".\316\267\316\274/\316\240_STATE.sexp"            |   13 +-
+ package.json                                       |    8 +-
+ packages/agent/package.json                        |    2 +-
+ packages/ai/package.json                           |  224 +-
+ packages/ai/src/models.generated.ts                | 2759 +++++++-------------
+ packages/coding-agent/README.md                    |    2 +-
+ packages/coding-agent/package.json                 |    5 +-
+ .../coding-agent/src/core/extensions/loader.ts     |   30 +-
+ packages/eta-mu-docs/package.json                  |    2 +-
+ packages/eta-mu-extensions-e2e/package.json        |    2 +-
+ packages/eta-mu-extensions/package.json            |    2 +-
+ packages/eta-mu-github/package.json                |    4 +-
+ packages/eta-mu-github/src/cli.ts                  |    2 +-
+ packages/eta-mu-github/src/pi-agent.ts             |    3 +-
+ packages/eta-mu-github/src/runtime-batch.ts        |    2 +-
+ packages/eta-mu-runtime/README.md                  |    4 +-
+ packages/eta-mu-runtime/package.json               |   17 +-
+ packages/eta-mu-truth/package.json                 |    2 +-
+ packages/kanban/package.json                       |   26 +-
+ packages/mom/README.md                             |    4 +-
+ packages/mom/docs/new.md                           |    6 +-
+ packages/mom/package.json                          |    4 +-
+ packages/opencode-reactant/package.json            |    2 +-
+ packages/output-contract-gate/package.json         |    2 +-
+ packages/pods/README.md                            |    4 +-
+ packages/pods/package.json                         |    4 +-
+ packages/presence-core/package.json                |    2 +-
+ packages/tui/package.json                          |  100 +-
+ packages/web-ui/CHANGELOG.md                       |   12 +-
+ packages/web-ui/README.md                          |   34 +-
+ packages/web-ui/example/README.md                  |    2 +-
+ packages/web-ui/example/index.html                 |    2 +-
+ packages/web-ui/example/package.json               |    2 +-
+ packages/web-ui/example/src/custom-messages.ts     |    4 +-
+ packages/web-ui/example/src/main.ts                |    2 +-
+ packages/web-ui/example/tsconfig.json              |    2 +-
+ packages/web-ui/package.json                       |    4 +-
+ packages/web-ui/src/components/Messages.ts         |    2 +-
+ pnpm-lock.yaml                                     |   15 +-
+ pnpm-workspace.yaml                                |    2 +
+ receipts.edn                                       |    9 +
+ services/agentd/package.json                       |    2 +-
+ services/eta-mu-truth-workbench/package.json       |    2 +-
+ 46 files changed, 1294 insertions(+), 2092 deletions(-)
+
+Untracked files:
+docs/cljs-runtime-rewrite-architecture-inventory.md
+docs/cljs-runtime-rewrite-boundary-adapter-plan.md
+docs/cljs-runtime-rewrite-runtime-core-plan.md
+docs/cljs-runtime-rewrite-shadow-spine-plan.md
+kanban/epics/eta-mu-cljs-runtime-rewrite.md
+kanban/tasks/eta-mu-cljs-rewrite-architecture-inventory.md
+kanban/tasks/eta-mu-cljs-rewrite-boundary-adapters.md
+kanban/tasks/eta-mu-cljs-rewrite-cutover-ratchet.md
+kanban/tasks/eta-mu-cljs-rewrite-runtime-core.md
+kanban/tasks/eta-mu-cljs-rewrite-shadow-spine.md
+kanban/tasks/eta-mu-cljs-rewrite-surface-parity.md
+packages/eta-mu-extensions/src/eta_mu/extensions/apply_patch.cljs
+packages/eta-mu-runtime/scripts/check-cljs-boundaries.mjs
+packages/eta-mu-runtime/scripts/smoke-cljs-runtime.mjs
+packages/eta-mu-runtime/shadow-cljs.edn
+packages/eta-mu-runtime/src/cljs/eta_mu/runtime/domain/breath.cljs
+packages/eta-mu-runtime/src/cljs/eta_mu/runtime/domain/candidate.cljs
+packages/eta-mu-runtime/src/cljs/eta_mu/runtime/domain/envelope.cljs
+packages/eta-mu-runtime/src/cljs/eta_mu/runtime/domain/planner.cljs
+packages/eta-mu-runtime/src/cljs/eta_mu/runtime/domain/state.cljs
+packages/eta-mu-runtime/src/cljs/eta_mu/runtime/facade.cljs
+packages/eta-mu-runtime/src/cljs/eta_mu/runtime/law/candidate.cljs
+packages/eta-mu-runtime/src/cljs/eta_mu/runtime/law/core.cljs
+packages/eta-mu-runtime/src/cljs/eta_mu/runtime/law/planning.cljs
+packages/eta-mu-runtime/src/cljs/eta_mu/runtime/law/state.cljs
+packages/eta-mu-runtime/src/cljs/eta_mu/runtime/law/types.cljs
+packages/eta-mu-runtime/src/cljs/eta_mu/runtime/shape/compat.cljs
+packages/eta-mu-runtime/test/cljs/eta_mu/runtime/domain/planner_test.cljs
+packages/eta-mu-runtime/test/cljs/eta_mu/runtime/domain/state_test.cljs
+packages/eta-mu-runtime/test/cljs/eta_mu/runtime/facade_test.cljs

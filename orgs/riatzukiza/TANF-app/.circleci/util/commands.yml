@@ -1,0 +1,76 @@
+# commands:
+  docker-set-registry-owner:
+    steps:
+      - run:
+          name: Set registry_owner
+          description: "Sets registry for docker commands by precedence: ENV variable, pipeline parameter, pipeline parameter. (default is 'hhs')"
+          command: |
+            export REGISTRY_OWNER=${REGISTRY_OWNER:-<< pipeline.parameters.registry_owner >>}
+            echo "export REGISTRY_OWNER=$REGISTRY_OWNER" >> $BASH_ENV
+            echo "REGISTRY_OWNER=$REGISTRY_OWNER"
+  docker-compose-check:
+    steps:
+      - run:
+          name: Ensure docker-compose exists, otherwise install it.
+          command: ./scripts/docker-compose-check.sh
+
+  docker-compose-up-backend:
+    steps:
+      - run:
+          name: Build and spin-up Django API service
+          command: |
+            cd tdrs-backend
+            docker network create external-net
+            docker-compose up web -d --build
+
+  docker-compose-up-frontend:
+    steps:
+      - run:
+          name: Build and spin-up React application
+          command: |
+            cd tdrs-frontend
+            if [ $(docker network inspect external-net 2>&1 | grep -c Scope) == 0 ]; then
+            docker network create external-net
+            fi
+            docker-compose up -d --build
+
+  cf-check:
+    steps:
+      - run:
+          name: Ensure cf cli is installed, otherwise install it.
+          command: sudo ./scripts/cf-check.sh
+
+  # This allows us to use the orb stanza for node/install within other commands
+  # NOTE: This doesn't work correctly on machine executors
+  install-nodejs: node/install
+
+  sudo-check:
+    steps:
+      - run:
+          name: Ensure sudo is installed, otherwise install it.
+          command: ./scripts/sudo-check.sh
+
+  login-cloud-dot-gov:
+    description: Authenticates with Cloud.gov and sets org and space targets
+    parameters:
+      cf-password:
+        type: env_var_name
+        default: CF_PASSWORD_DEV
+      cf-org:
+        type: env_var_name
+        default: CF_ORG
+      cf-space:
+        type: string
+        default: tanf-dev
+      cf-username:
+        type: env_var_name
+        default: CF_USERNAME_DEV
+    steps:
+      - run:
+          name: Login to Cloud.gov and set application targets
+          command: |
+            cf login -a https://api.fr.cloud.gov \
+              -u ${<<parameters.cf-username>>} \
+              -p ${<<parameters.cf-password>>} \
+              -o ${<<parameters.cf-org>>} \
+              -s <<parameters.cf-space>>

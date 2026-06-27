@@ -1,0 +1,39 @@
+# Build artifacts
+data/raw/
+data/build/
+data/canonicalized/
+data/embedded/
+data/manifests/
+data/split/
+data/variants/
+data/runs/
+.cpcache/
+target/
+
+# Environment secrets
+.env
+
+# Editor / IDE
+.nrepl-port
+.lsp/
+.clj-kondo/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+classes/
+
+# Local notes / scratch
+docs/notes/
+docs/dev/
+
+# UI build artifacts
+ui/node_modules/
+ui/dist/
+ui/*.tsbuildinfo

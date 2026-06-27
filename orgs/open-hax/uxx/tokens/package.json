@@ -1,0 +1,25 @@
+{
+  "name": "@open-hax/uxx-tokens-internal",
+  "private": false,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Internal design token source package for @open-hax/uxx",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./css": "./dist/tokens.css",
+    "./cljs": "./dist/tokens.cljs"
+  },
+  "scripts": {
+    "build": "tsc && node scripts/generate-css.mjs && node scripts/generate-cljs.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "license": "LGPL-3.0-or-later"
+}

@@ -1,0 +1,38 @@
+services:
+  openclawssy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    environment:
+      # REQUIRED: Z.AI API Key for GLM-4.7 Coding Plan
+      # Get your key at: https://z.ai/subscribe
+      # The ZAI Coding Plan uses endpoint: https://api.z.ai/api/coding/paas/v4
+      - ZAI_API_KEY=${ZAI_API_KEY}
+      
+      # Optional: Server authentication token (default: change-me)
+      - OPENCLAWSSY_TOKEN=${OPENCLAWSSY_TOKEN:-change-me}
+      
+      # Optional: Discord bot token for Discord integration
+      # - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
+    volumes:
+      # Persist configuration and secrets across runs
+      - ./.openclawssy:/app/.openclawssy
+      # Persist runtime workspace files across container restarts
+      - ./workspace:/app/workspace
+      # Docker socket — required so the backend can spawn sandbox containers.
+      # This is a Unix socket mount, not HTTP. The docker CLI inside the
+      # container talks to the host daemon directly through this socket.
+      - /var/run/docker.sock:/var/run/docker.sock
+    # Optional: enable advanced network diagnostics (tcpdump, some nmap modes)
+    # cap_add:
+    #   - NET_ADMIN
+    #   - NET_RAW
+    # Health check
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/dashboard"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s

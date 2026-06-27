@@ -1,0 +1,15 @@
+;; ActionStrip Component Contract
+;; Horizontal strip for action buttons.
+
+{:component :action-strip
+ :version "1.0.0"
+
+ :description
+ "Horizontal strip for grouping action buttons (refresh, submit, cancel, etc.). Supports alignment control for positioning actions within a panel or toolbar."
+
+ :props
+ {:children {:type :node :required true}
+  :align {:type :enum :values [:start :end :center] :default :end}}
+
+ :styling
+ {:data-attributes {:data-component "action-strip"}}}

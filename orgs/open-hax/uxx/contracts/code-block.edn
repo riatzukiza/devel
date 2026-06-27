@@ -1,0 +1,186 @@
+;; CodeBlock Component Contract
+;; Defines the API for syntax highlighted code blocks with file extension awareness
+
+{:component :code-block
+ :version "1.0.0"
+ 
+ :description
+ "Syntax highlighted code block with language detection, file extension awareness, and IDE-style features."
+ 
+ :props
+ {:code
+  {:type :string
+   :required true
+   :description "Source code to display"}
+  
+  :language
+  {:type :string
+   :required false
+   :description "Language for syntax highlighting (auto-detected if not provided)"}
+  
+  :filename
+  {:type :string
+   :required false
+   :description "Filename for extension-based language detection"}
+  
+  :theme
+  {:type :enum
+   :values [:monokai :night-owl :dark :light :auto]
+   :default :dark
+   :description "Color theme or theme preference"}
+  
+  :line-numbers
+  {:type :boolean
+   :default true
+   :description "Show line numbers"}
+  
+  :highlight-lines
+  {:type :array
+   :items :number
+   :required false
+   :description "Lines to highlight (1-indexed)"}
+  
+  :start-line
+  {:type :number
+   :default 1
+   :description "Starting line number"}
+  
+  :max-lines
+  {:type :number
+   :required false
+   :description "Max lines before collapse"}
+  
+  :show-copy
+  {:type :boolean
+   :default true
+   :description "Show copy button"}
+  
+  :show-language
+  {:type :boolean
+   :default true
+   :description "Show language badge"}
+  
+  :collapsible
+  {:type :boolean
+   :default false
+   :description "Allow collapsing the block"}
+  
+  :default-collapsed
+  {:type :boolean
+   :default false
+   :description "Start collapsed"}
+  
+  :wrap
+  {:type :boolean
+   :default false
+   :description "Wrap long lines"}
+  
+  :tab-size
+  {:type :number
+   :default 2
+   :description "Tab width in spaces"}
+  
+  :diff
+  {:type :enum
+   :values [:none :add :remove]
+   :default :none
+   :description "Show as diff addition or removal"}
+  
+  :on-copy
+  {:type :function
+   :signature "() => void"
+   :required false
+   :description "Callback when code is copied"}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :language-detection
+ {:extension-map
+  {".ts" :typescript
+   ".tsx" :tsx
+   ".js" :javascript
+   ".jsx" :jsx
+   ".mjs" :javascript
+   ".cjs" :javascript
+   ".py" :python
+   ".rs" :rust
+   ".go" :go
+   ".clj" :clojure
+   ".cljs" :clojure
+   ".cljc" :clojure
+   ".edn" :edn
+   ".java" :java
+   ".kt" :kotlin
+   ".swift" :swift
+   ".scala" :scala
+   ".rb" :ruby
+   ".php" :php
+   ".c" :c
+   ".cpp" :cpp
+   ".h" :c
+   ".hpp" :cpp
+   ".cs" :csharp
+   ".html" :html
+   ".htm" :html
+   ".css" :css
+   ".scss" :scss
+   ".less" :less
+   ".json" :json
+   ".yaml" :yaml
+   ".yml" :yaml
+   ".toml" :toml
+   ".xml" :xml
+   ".sql" :sql
+   ".sh" :bash
+   ".bash" :bash
+   ".zsh" :bash
+   ".dockerfile" :docker
+   ".makefile" :makefile
+   ".md" :markdown
+   ".mdx" :mdx
+   ".graphql" :graphql
+   ".gql" :graphql
+   ".proto" :proto
+   ".diff" :diff
+   ".patch" :diff}
+  
+  :shebang-detection true
+  :fallback :text}
+ 
+ :accessibility
+ {:role :code
+  :aria
+  {:label "Code block"}}
+ 
+ :styling
+ {:data-attributes
+  {:data-component "code-block"
+   :data-language :language
+   :data-diff :diff}
+  
+  :css-custom-properties
+  ["--code-bg"
+   "--code-border"
+   "--code-line-numbers"
+   "--code-highlight"]}
+ 
+ :tokens
+ {:colors
+  {:bg :colors.background/elevated
+   :text :colors.text/default
+   :line-number :colors.text/subtle
+   :border :colors.border/subtle
+   :highlight-bg :colors.accent/cyan
+   :highlight-opacity 0.1
+   :diff-add-bg :colors.accent/cyan
+   :diff-remove-bg :colors.accent/red}
+  
+  :typography
+  {:font-family "JetBrains Mono, Fira Code, monospace"
+   :font-size 13
+   :line-height 1.6}
+  
+  :spacing
+  {:padding :spacing/4
+   :border-radius :spacing/2}}}

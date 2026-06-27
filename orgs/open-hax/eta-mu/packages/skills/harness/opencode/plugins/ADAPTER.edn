@@ -1,0 +1,27 @@
+;; Harness adapter: opencode → plugins inventory
+;; Restructured from pi/agent/skills/opencode-plugins/CONTRACT.edn
+
+(harness-adapter
+  (harness :opencode)
+  (skill "plugins")
+  (core-ref "packages/skills/domain/opencode/sdk/CONTRACT.edn")
+  (install-path ".opencode/skills/plugins/CONTRACT.edn")
+
+  (protocol
+    (inventory
+      "Live inventory of plugins registered in opencode.json for this workspace."
+      "Each plugin entry: { path, hooks[], description, status }"
+      "Status: :active | :disabled | :error")
+    (eta-mu-plugins
+      (:receipt-river-hook
+        "packages/opencode-reactant/src/plugins/receipt-river.ts"
+        "Hooks: afterTool, sessionEnd. Warns if substantive turn had no receipt.")
+      (:skill-loader
+        "packages/opencode-reactant/src/plugins/skill-loader.ts"
+        "Hooks: sessionStart. Loads skill-registry.edn, injects autoload skills.")
+      (:session-summarizer
+        "packages/opencode-reactant/src/plugins/session-summarizer.ts"
+        "Hooks: sessionEnd. Writes session summary to .opencode/state/sessions/index.")))
+
+  (notes
+    "Register new plugins in opencode.json AND add an entry here for discoverability."))

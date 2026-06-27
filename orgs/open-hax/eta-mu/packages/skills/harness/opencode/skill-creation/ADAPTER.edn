@@ -1,0 +1,32 @@
+;; Harness adapter: opencode → skill-creation
+;; Restructured from pi/agent/skills/opencode-skill-creation/CONTRACT.edn
+;; Cross-references: packages/skills/core/work-cycle, packages/skills/skill-registry.edn
+
+(harness-adapter
+  (harness :opencode)
+  (skill "skill-creation")
+  (core-ref "packages/skills/domain/opencode/sdk/CONTRACT.edn")
+  (install-path ".opencode/skills/skill-creation/CONTRACT.edn")
+
+  (protocol
+    (workflow
+      ["1. Identify the need: what repeated cognitive pattern is being codified?"
+       "2. Check skill-registry.edn — does a similar skill exist? If yes, extend; don't fork."
+       "3. Author packages/skills/core/<name>/CONTRACT.edn (harness-agnostic)."
+       "4. If opencode-specific: author packages/skills/domain/opencode/<name>/CONTRACT.edn instead."
+       "5. Add harness adapters for each relevant harness in packages/skills/harness/."
+       "6. Add entry to packages/skills/skill-registry.edn."
+       "7. Pay fork tax: commit + push on feat/skill-<name> branch, open PR."])
+    (contract-schema
+      (required [:name :v :intent :activation :governance :effects :protocol])
+      (optional [:output :driver :memory-injection :cross-reference])
+      (versioning "ημ.skill/<name>@<semver> — bump minor for new fields, patch for wording"))
+    (quality-bar
+      ["Intent is one sentence, specific, not generic."
+       "Triggers are the exact phrases that should activate it."
+       "Protocol is actionable: agent can follow it without further clarification."
+       "Priority reflects load order: core=80-100, domain=50-79, meta=20-49."]))
+
+  (notes
+    "This adapter IS the opencode-skill-creation skill, restructured.
+     Use it to onboard any new skill into the ημΠ monorepo."))

@@ -1,0 +1,270 @@
+# commands:
+  init-deploy:
+    steps:
+      - checkout
+      - sudo-check
+      - cf-check
+
+  deploy-cloud-dot-gov:
+    parameters:
+      environment:
+        description: The environment to deploy to.
+        type: enum
+        enum: [ "development", "production" ]
+        default: development
+      backend-appname:
+        default: tdp-backend
+        type: string
+      cf-password:
+        default: CF_PASSWORD_DEV
+        type: env_var_name
+      cf-org:
+        default: CF_ORG
+        type: env_var_name
+      cf-space:
+        default: tanf-dev
+        type: string
+      cf-username:
+        default: CF_USERNAME_DEV
+        type: env_var_name
+      frontend-appname:
+        default: tdp-frontend
+        type: string
+    steps:
+      - login-cloud-dot-gov:
+          cf-password: <<parameters.cf-password>>
+          cf-org: <<parameters.cf-org>>
+          cf-space: <<parameters.cf-space>>
+          cf-username: <<parameters.cf-username>>
+      - deploy-backend:
+          backend-appname: <<parameters.backend-appname>>
+          frontend-appname: <<parameters.frontend-appname>>
+          cf-space: <<parameters.cf-space>>
+      - deploy-frontend:
+          environment: <<parameters.environment>>
+          backend-appname: <<parameters.backend-appname>>
+          frontend-appname: <<parameters.frontend-appname>>
+          cf-space: <<parameters.cf-space>>
+
+  clamav-cloud-dot-gov:
+    parameters:
+      backend-appname:
+        default: tdp-backend
+        type: string
+      cf-password:
+        default: CF_PASSWORD_DEV
+        type: env_var_name
+      cf-org:
+        default: CF_ORG
+        type: env_var_name
+      cf-space:
+        default: tanf-dev
+        type: string
+      cf-username:
+        default: CF_USERNAME_DEV
+        type: env_var_name
+    steps:
+      - checkout
+      - sudo-check
+      - cf-check
+      - login-cloud-dot-gov:
+          cf-password: <<parameters.cf-password>>
+          cf-org: <<parameters.cf-org>>
+          cf-space: <<parameters.cf-space>>
+          cf-username: <<parameters.cf-username>>
+      - deploy-clamav
+
+  deploy-backend:
+    parameters:
+      backend-appname:
+        default: tdp-backend
+        type: string
+      frontend-appname:
+        default: tdp-frontend
+        type: string
+      cf-space:
+        default: tanf-dev
+        type: string
+    steps:
+      - get-app-deploy-strategy:
+          appname: <<parameters.backend-appname>>
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt update
+            sudo apt-get install -y wget
+            sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.42.1/yq_linux_amd64 && chmod +x /usr/local/bin/yq
+      - run:
+          name: Apply database config
+          no_output_timeout: 1h
+          command: |
+            bash ./scripts/apply-database-config.sh <<parameters.backend-appname>> <<parameters.cf-space>>
+      - run:
+          name: Deploy backend application
+          command: |
+            bash ./scripts/deploy-backend.sh \
+              $DEPLOY_STRATEGY \
+              <<parameters.frontend-appname>> \
+              <<parameters.backend-appname>> \
+              <<parameters.cf-space>>
+
+  deploy-clamav:
+    steps:
+      - run:
+          name: Deploy ClamAV REST application
+          command: |
+            cf push clamav-rest -f tdrs-backend/manifest.clamav.yml \
+              --var cf-space=tanf-prod
+
+  deploy-frontend:
+    parameters:
+      environment:
+        description: The environment to deploy to.
+        type: enum
+        enum: [ "development", "production" ]
+        default: development
+      backend-appname:
+        default: tdp-backend
+        type: string
+      frontend-appname:
+        default: tdp-frontend
+        type: string
+# So the frontend knows what space its in for the banner.
+# I am unclear if the domain is a reliable metric to make this function
+# It seems like it might not be working
+      cf-space:
+        default: dev
+        type: string
+    steps:
+      - install-nodejs:
+          node-version: "16.13"
+      - disable-npm-audit
+      - install-nodejs-packages:
+          app-dir: tdrs-frontend
+          override-ci-command: npm ci --omit=dev --no-fund
+      - get-app-deploy-strategy:
+          appname: <<parameters.frontend-appname>>
+      - run:
+          name: Deploy frontend application
+          command: |
+            bash ./scripts/deploy-frontend.sh \
+              $DEPLOY_STRATEGY \
+              <<parameters.frontend-appname>> \
+              <<parameters.backend-appname>> \
+              <<parameters.cf-space>> \
+              <<parameters.environment>>
+
+  get-app-deploy-strategy:
+    parameters:
+      appname:
+        type: string
+    steps:
+      - run:
+          name: Determine deploy strategy
+          command: |
+            # NOTE: The || true is a no-op included to suppress exit codes which
+            #       would cause the step to exit early due to use of pipefail
+            APP_GUID=$(cf app <<parameters.appname>> --guid || true)
+            if [ "$APP_GUID" == "FAILED" ]; then
+              echo "export DEPLOY_STRATEGY=initial" >> $BASH_ENV
+            else
+              echo "export DEPLOY_STRATEGY=rolling" >> $BASH_ENV
+            fi
+
+  deploy-infrastructure:
+    parameters:
+      tf-path:
+        type: string
+        default: ./terraform/dev
+      cf-password:
+        type: env_var_name
+        default: CF_PASSWORD_DEV
+      cf-username:
+        type: env_var_name
+        default: CF_USERNAME_DEV
+      cf-space:
+        type: string
+        default: tanf-dev
+      cf-org:
+        type: env_var_name
+        default: CF_ORG
+      cf-app:
+        type: string
+        default: CF_APP
+    steps:
+      - checkout
+      - sudo-check
+      - cf-check
+      - login-cloud-dot-gov:
+          cf-password: <<parameters.cf-password>>
+          cf-username: <<parameters.cf-username>>
+          cf-space: <<parameters.cf-space>>
+      - run:
+          name: Export S3 Credentials for TFState
+          command: |
+            S3_CREDENTIALS=$(cf service-key tdp-tf-states tdp-tf-key | tail -n +2)
+            {
+              echo "access_key = \"$(echo "${S3_CREDENTIALS}" | jq -r .credentials.access_key_id)\""
+              echo "secret_key = \"$(echo "${S3_CREDENTIALS}" | jq -r .credentials.secret_access_key)\""
+              echo "region = \"$(echo "${S3_CREDENTIALS}" | jq -r '.credentials.region')\""
+              echo "bucket = \"$(echo "${S3_CREDENTIALS}" | jq -r '.credentials.bucket')\""
+            } >> ./backend_config.tfvars
+      - run:
+          name: Prepare Terraform Variables
+          command: |
+            {
+              echo "cf_password = \"$<<parameters.cf-password>>\""
+              echo "cf_user = \"$<<parameters.cf-username>>\""
+              echo "cf_space_name = \"<<parameters.cf-space>>\""
+              echo "cf_app_name = \"<<parameters.cf-app>>\""
+            } >> ./variables.tfvars
+      - terraform/init:
+          path: <<parameters.tf-path>>
+          backend_config_file: ./backend_config.tfvars
+      - terraform/validate:
+          path: <<parameters.tf-path>>
+      - terraform/fmt:
+          path: <<parameters.tf-path>>
+      - terraform/plan:
+          path: <<parameters.tf-path>>
+          var_file: ./variables.tfvars
+      - terraform/apply:
+          path: <<parameters.tf-path>>
+          var_file: ./variables.tfvars
+
+  enable-s3-versioning:
+    parameters:
+      target_env:
+        type: string
+      cf-password:
+        type: env_var_name
+      cf-username:
+        type: env_var_name
+      cf-space:
+        type: string
+    steps:
+      - checkout
+      - cf-check
+      - login-cloud-dot-gov:
+          cf-password: <<parameters.cf-password>>
+          cf-username: <<parameters.cf-username>>
+          cf-space: <<parameters.cf-space>>
+      - run:
+          name: Ensure s3 versioning key exists
+          # use cf to check if a service key exists for tdp-datafiles-dev(or prod)
+          # exit 0 if it does, create it if it doesn't
+          command: |
+            chmod +x ./scripts/create_s3_versioning_key.sh
+            ./scripts/create_s3_versioning_key.sh tdp-datafiles-<<parameters.target_env>> s3-versioning-key
+      - run:
+          name: Set up aws credentials
+          command: |
+            S3_CREDENTIALS=$(cf service-key tdp-datafiles-<<parameters.target_env>> s3-versioning-key | tail -n +2)
+            aws configure set aws_access_key_id $(echo "${S3_CREDENTIALS}" | jq -r .access_key_id)
+            aws configure set aws_secret_access_key $(echo "${S3_CREDENTIALS}" | jq -r .secret_access_key)
+            aws configure set default.region $(echo "${S3_CREDENTIALS}" | jq -r '.region')
+      - run:
+          name: Enable S3 Versioning
+          command: |
+            S3_BUCKET_ID=cg-$(cf service tdp-datafiles-<<parameters.target_env>> --guid)
+            aws s3api put-bucket-versioning --bucket ${S3_BUCKET_ID} --versioning-configuration Status=Enabled

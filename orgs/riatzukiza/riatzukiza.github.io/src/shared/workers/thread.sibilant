@@ -1,0 +1,9 @@
+
+(define Thread Web-worker
+(doc-string "null"
+                "Defines null")
+
+  (init (url (promise (Promise.resolve)))
+        (.call Web-worker.init this))
+  (send send-thread))
+(export Thread)

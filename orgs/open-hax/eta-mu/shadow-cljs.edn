@@ -1,0 +1,28 @@
+{:source-paths ["packages/opencode-reactant/src"]
+ :dependencies [[reagent           "1.2.0"]
+                [cljs-ajax         "0.8.4"]
+                [binaryage/devtools "1.0.7"]
+                [metosin/reitit    "0.7.0"]
+                [metosin/reitit-frontend "0.7.0"]]
+
+ :nrepl {:port 7002
+         :host "127.0.0.1"}
+
+ :builds
+ {:app
+  {:target           :browser
+   :output-dir       "packages/opencode-reactant/resources/public/js"
+   :asset-path       "/js"
+   :modules          {:main {:init-fn opencode.ui.core/init}}
+   :compiler-options {:warnings-as-errors true
+                      :elide-asserts     false}
+   :devtools         {:http-root   "packages/opencode-reactant/resources/public"
+                      :http-port   8700
+                      :shadow-port 7890
+                      :hud         {:errors :warnings
+                                    :progress true}
+                      :autoload    true
+                      :preloads    [devtools.preload]}
+   :build-hooks      [(shadow.cljs.build-report/hook {:output-to "packages/opencode-reactant/target/build-report.html"})]
+   :closure-defines  {opencode.ui.state/REPO_SLUG #shadow/env "REPO_SLUG"}}}
+}

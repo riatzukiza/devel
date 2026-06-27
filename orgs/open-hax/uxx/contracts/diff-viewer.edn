@@ -1,0 +1,149 @@
+;; DiffViewer Component Contract
+;; Defines the API for displaying file diffs with syntax highlighting
+
+{:component :diff-viewer
+ :version "1.0.0"
+ 
+ :description
+ "Unified and split diff viewer with syntax highlighting for comparing file versions."
+ 
+ :props
+ {:original
+  {:type :string
+   :required true
+   :description "Original content (left side or old version)"}
+  
+  :modified
+  {:type :string
+   :required true
+   :description "Modified content (right side or new version)"}
+  
+  :filename
+  {:type :string
+   :required false
+   :description "Filename for language detection"}
+  
+  :language
+  {:type :string
+   :required false
+   :description "Language for syntax highlighting"}
+  
+  :mode
+  {:type :enum
+   :values [:unified :split]
+   :default :unified
+   :description "Diff display mode"}
+  
+  :theme
+  {:type :enum
+   :values [:monokai :night-owl :dark :light :auto]
+   :default :dark
+   :description "Color theme or theme preference"}
+  
+  :line-numbers
+  {:type :boolean
+   :default true
+   :description "Show line numbers"}
+  
+  :show-stats
+  {:type :boolean
+   :default true
+   :description "Show additions/deletions stats"}
+  
+  :show-filename
+  {:type :boolean
+   :default true
+   :description "Show filename header"}
+  
+  :fold-threshold
+  {:type :number
+   :default 100
+   :description "Lines before auto-collapse unchanged sections"}
+  
+  :highlight-lines
+  {:type :object
+   :keys {:original {:type :array :items :number}
+          :modified {:type :array :items :number}}
+   :required false
+   :description "Specific lines to highlight"}
+  
+  :on-line-click
+  {:type :function
+   :signature "(line: LineInfo, side: 'original' | 'modified') => void"
+   :required false
+   :description "Callback when a line is clicked"}
+  
+  :on-hunk-click
+  {:type :function
+   :signature "(hunk: HunkInfo) => void"
+   :required false
+   :description "Callback when a hunk header is clicked"}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :types
+ {:line-info
+  {:type :number
+   :content :string
+   :change {:type :enum :values [:unchanged :added :removed]}
+   :old-line {:type :number :required false}
+   :new-line {:type :number :required false}}
+  
+  :hunk-info
+  {:old-start :number
+   :old-lines :number
+   :new-start :number
+   :new-lines :number
+   :header :string}}
+ 
+ :behavior
+ {:unified-mode
+  {:combine-adjacent-unchanged true
+   :show-change-markers true}
+  
+  :split-mode
+  {:sync-scroll true
+   :align-unchanged true}
+  
+  :folding
+  {:enabled true
+   :min-context-lines 3
+   :indicator-style "arrow"}}
+ 
+ :accessibility
+ {:role :region
+  :aria
+  {:label "Diff viewer"}}
+ 
+ :styling
+ {:data-attributes
+  {:data-component "diff-viewer"
+   :data-mode :mode}
+  
+  :css-custom-properties
+  ["--diff-add-bg"
+   "--diff-add-line-bg"
+   "--diff-remove-bg"
+   "--diff-remove-line-bg"
+   "--diff-border"]}
+ 
+ :tokens
+ {:colors
+  {:bg :transparent
+   :text :colors.text/default
+   :line-number :colors.text/subtle
+   :add-bg "rgba(102, 217, 239, 0.1)"
+   :add-line-bg "rgba(102, 217, 239, 0.15)"
+   :add-border :colors.accent/cyan
+   :remove-bg "rgba(249, 38, 114, 0.1)"
+   :remove-line-bg "rgba(249, 38, 114, 0.15)"
+   :remove-border :colors.accent/red
+   :hunk-header-bg :colors.background/surface}
+  
+  :typography
+  {:font-family "JetBrains Mono, monospace"
+   :font-size 13}
+  
+  :spacing
+  {:padding :spacing/4}}}

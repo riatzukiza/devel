@@ -1,0 +1,157 @@
+;; PermissionPrompts Component Contract
+;; Permission and input request handling
+
+{:component :permission-prompts
+ :version "1.0.0"
+ 
+ :description
+ "A panel for handling permission requests and input prompts from an AI agent or system, with options for one-time approval, persistent approval, and rejection."
+ 
+ :props
+ {:permissions
+  {:type :array
+   :items :permission-request
+   :default []
+   :description "Pending permission requests"}
+  
+  :prompts
+  {:type :array
+   :items :input-prompt
+   :default []
+   :description "Pending input prompts"}
+  
+  :on-permission-response
+  {:type :function
+   :signature "(id: string, response: :once | :always | :reject) => void"
+   :required true
+   :description "Callback for permission response"}
+  
+  :on-prompt-response
+  {:type :function
+   :signature "(id: string, response: string) => void"
+   :required true
+   :description "Callback for input prompt response"}
+  
+  :auto-focus-input
+  {:type :boolean
+   :default true
+   :description "Whether to auto-focus the input field"}
+  
+  :show-metadata
+  {:type :boolean
+   :default true
+   :description "Whether to show permission metadata"}
+  
+  :group-by-session
+  {:type :boolean
+   :default false
+   :description "Whether to group prompts by session"}}
+ 
+ :types
+ {:permission-request
+  {:id :string
+   :title {:type :string :required false}
+   :session-id {:type :string :required false}
+   :metadata {:type :object :required false}
+   :timeout-ms {:type :number :required false}
+   :default-response {:type :enum :values [:once :always :reject] :required false}}
+  
+  :input-prompt
+  {:id :string
+   :title {:type :string :required false}
+   :body {:type :object :required false}
+   :placeholder {:type :string :required false}
+   :multiline {:type :boolean :default false}
+   :session-id {:type :string :required false}}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :accessibility
+ {:role :region
+  :aria
+  {:label "Pending requests"
+   :live "polite"}
+  :keyboard
+  {:submit :enter
+   :cancel :escape
+   :tab-between-actions true}}
+ 
+ :behavior
+ {:permission
+  {:once-label "Allow Once"
+   :always-label "Always Allow"
+   :reject-label "Reject"
+   :color-map {:once :default
+               :always :success
+               :reject :danger}}
+  
+  :prompt
+  {:submit-on-enter true
+   :clear-on-submit true
+   :preserve-focus true}
+  
+  :ordering
+  {:sort-by-time true
+   :newest-first true}}
+ 
+ :styling
+ {:css-custom-properties
+  ["--prompts-bg"
+   "--prompts-border"
+   "--prompt-card-bg"
+   "--prompt-dim"
+   "--once-color"
+   "--always-color"
+   "--reject-color"]
+  
+  :data-attributes
+  {:data-component "permission-prompts"
+   :data-pending-count "(count permissions + count prompts)"}}
+ 
+ :tokens
+ {:colors
+  {:bg :colors.background/surface
+   :border :colors.border/default
+   :card-bg :colors.background/default
+   :dim :colors.text/secondary
+   :once-fg :colors.text/primary
+   :always-fg :colors.accent/green
+   :reject-fg :colors.accent/pink}
+  
+  :spacing
+  {:panel-padding :spacing/3
+   :card-padding :spacing/2
+   :gap :spacing/2}
+  
+  :radius
+  :spacing/1}
+ 
+ :examples
+ {:cljs
+  [permission-prompts
+   {:permissions [{:id "perm-1"
+                   :title "Read file"
+                   :session-id "sess-123"
+                   :metadata {:path "/src/core.cljs"}}]
+    :prompts [{:id "prompt-1"
+               :title "Input required"
+               :body {:prompt "What is your name?"}}]
+    :on-permission-response #(handle-permission %1 %2)
+    :on-prompt-response #(handle-prompt %1 %2)}]
+  
+  :tsx
+  [:PermissionPrompts
+   {:permissions={[{
+     :id: "perm-1",
+     :title: "Read file",
+     :sessionId: "sess-123",
+     :metadata: {:path: "/src/core.cljs"}
+   }]}
+    :prompts={[{
+      :id: "prompt-1",
+      :title: "Input required",
+      :body: {:prompt: "What is your name?"}
+    }]}
+    :onPermissionResponse={(id, resp) => handlePermission(id, resp)}
+    :onPromptResponse={(id, resp) => handlePrompt(id, resp)}}]}}

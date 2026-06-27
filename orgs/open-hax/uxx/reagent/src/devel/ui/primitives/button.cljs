@@ -1,0 +1,137 @@
+(ns devel.ui.primitives.button
+  "Button component implementing the button.edn contract.
+   
+   Provides consistent button styling across Reagent applications.
+   
+   Usage:
+   ```clojure
+   [button {:variant :primary :on-click #(js/alert \"Clicked!\")}
+    \"Click me\"]
+   ```"
+  (:require [devel.ui.tokens :as tokens]
+            [reagent.core :as r]))
+
+;; Types derived from contract
+;; :variant - :primary | :secondary | :ghost | :danger
+;; :size - :sm | :md | :lg
+
+(defn- variant-styles [variant]
+  (case variant
+    :primary {:background-color (:bg (get-in tokens/colors [:button :primary]))
+              :color (:fg (get-in tokens/colors [:button :primary]))
+              :border "none"}
+    :secondary {:background-color (:bg (get-in tokens/colors [:button :secondary]))
+                :color (:fg (get-in tokens/colors [:button :secondary]))
+                :border (str "1px solid " (:default (:border tokens/colors)))}
+    :ghost {:background-color "transparent"
+            :color (:fg (get-in tokens/colors [:button :ghost]))
+            :border "none"}
+    :danger {:background-color (:bg (get-in tokens/colors [:button :danger]))
+             :color (:fg (get-in tokens/colors [:button :danger]))
+             :border "none"}
+    ;; default
+    {:background-color (:bg (get-in tokens/colors [:button :secondary]))
+     :color (:fg (get-in tokens/colors [:button :secondary]))
+     :border (str "1px solid " (:default (:border tokens/colors)))}))
+
+(defn- size-styles [size]
+  (case size
+    :sm {:padding (str (get-in tokens/spacing [1.5]) "px " (get-in tokens/spacing [3]) "px")
+         :font-size (get-in tokens/typography [:bodySm :fontSize])
+         :gap (str (get-in tokens/spacing [1]) "px")}
+    :lg {:padding (str (get-in tokens/spacing [3]) "px " (get-in tokens/spacing [6]) "px")
+         :font-size (get-in tokens/typography [:body :fontSize])
+         :gap (str (get-in tokens/spacing [2]) "px")}
+    ;; default :md
+    {:padding (str (get-in tokens/spacing [2]) "px " (get-in tokens/spacing [4]) "px")
+     :font-size (get-in tokens/typography [:body :fontSize])
+     :gap (str (get-in tokens/spacing [2]) "px")}))
+
+(def ^:private base-styles
+  {:display "inline-flex"
+   :align-items "center"
+   :justify-content "center"
+   :font-weight (:medium tokens/font-weight)
+   :line-height (:none tokens/line-height)
+   :border-radius (str (get-in tokens/spacing [1.5]) "px")
+   :cursor "pointer"
+   :transition (:colors tokens/transitions)
+   :outline "none"
+   :font-family (:sans tokens/font-family)})
+
+(defn- loading-spinner [size]
+  (let [spinner-size (case size
+                       :sm 14
+                       :lg 20
+                       16)]
+    [:svg {:width spinner-size
+           :height spinner-size
+           :view-box "0 0 24 24"
+           :fill "none"
+           :stroke "currentColor"
+           :stroke-width 2
+           :stroke-linecap "round"
+           :stroke-linejoin "round"
+           :style {:animation "spin 1s linear infinite"}}
+     [:path {:d "M21 12a9 9 0 11-6.219-8.56"}]]))
+
+(defn button
+  "Button component with variants, sizes, and loading state.
+   
+   Props:
+   - :variant - :primary | :secondary | :ghost | :danger (default: :secondary)
+   - :size - :sm | :md | :lg (default: :md)
+   - :disabled - boolean (default: false)
+   - :loading - boolean, shows spinner and disables click (default: false)
+   - :full-width - boolean, makes button full width (default: false)
+   - :icon-start - hiccup element for icon before text
+   - :icon-end - hiccup element for icon after text
+   - :on-click - click handler function
+   - :type - :button | :submit | :reset (default: :button)
+   
+   Example:
+   ```clojure
+   [button {:variant :primary :on-click #(js/alert \"Hi!\")}
+    \"Click me\"]
+   
+   [button {:variant :danger :loading true}
+    \"Deleting...\"
+   ```"
+  [_props & children]
+  (let [props (r/atom {})]
+    (fn [{:keys [variant size disabled loading full-width icon-start icon-end on-click type]
+          :or {variant :secondary
+               size :md
+               disabled false
+               loading false
+               full-width false
+               type :button}
+          :as p}
+         & children]
+      (let [is-disabled (or disabled loading)
+            styles (merge base-styles
+                          (variant-styles variant)
+                          (size-styles size)
+                          {:width (when full-width "100%")
+                           :opacity (when is-disabled 0.6)
+                           :cursor (if is-disabled "not-allowed" "pointer")})]
+        [:button
+         (merge
+          {:type (name type)
+           :disabled is-disabled
+           :data-component "button"
+           :data-variant (name variant)
+           :data-size (name size)
+           :data-loading (when loading true)
+           :data-full-width (when full-width true)
+           :aria-busy loading
+           :style styles}
+          (when on-click
+            {:on-click (when-not is-disabled on-click)}))
+         (when loading
+           [loading-spinner size])
+         (when (and (not loading) icon-start)
+           icon-start)
+         children
+         (when (and (not loading) icon-end)
+           icon-end)]))))

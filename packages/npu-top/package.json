@@ -1,0 +1,42 @@
+{
+  "name": "@promethean-os/npu-top",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./src/index.tsx",
+  "exports": {
+    ".": {
+      "types": "./src/index.tsx",
+      "default": "./dist/index.js"
+    },
+    "./npu": {
+      "types": "./src/npu.ts",
+      "default": "./dist/npu.js"
+    }
+  },
+  "bin": {
+    "npu-top": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "bun run scripts/build.ts",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "dev": "bun src/index.tsx --demo",
+    "start": "bun dist/index.js"
+  },
+  "dependencies": {
+    "@opentui/core": "0.1.79",
+    "@opentui/solid": "0.1.79",
+    "solid-js": "1.9.9"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "typescript": "^5.9.3"
+  }
+}

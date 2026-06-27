@@ -1,0 +1,17 @@
+;; Harness adapter: pi
+;; Core skill: ημ.skill/receipt-river@0.2.0
+
+(harness-adapter
+  (harness :pi)
+  (skill "receipt-river")
+  (core-ref "packages/skills/core/receipt-river/CONTRACT.edn")
+  (install-path "~/.pi/agent/skills/receipt-river/CONTRACT.edn")
+  (driver :fs)
+  (driver-config
+    (state-root "~/.ημ/state/receipt-river/")
+    (legacy-root "~/.pi/agent/state/receipt-river/")
+    (events-file "events.jsonl")
+    (receipts-file "receipts.log"))
+  (notes
+    "Canonical personal install. receipts.log is discovered by the local
+     ingestion engine and flows into semantic memory."))

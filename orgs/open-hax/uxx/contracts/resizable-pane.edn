@@ -1,0 +1,158 @@
+;; ResizablePane Component Contract
+;; Bidirectional drag-resize panel with persistence
+
+{:component :resizable-pane
+ :version "1.0.0"
+ 
+ :description
+ "A panel that supports bidirectional drag-resize with min/max constraints and optional persistence to localStorage."
+ 
+ :props
+ {:width
+  {:type :number
+   :default 240
+   :description "Current width of the pane in pixels"}
+  
+  :min-width
+  {:type :number
+   :default 100
+   :description "Minimum width constraint"}
+  
+  :max-width
+  {:type :number
+   :default 800
+   :description "Maximum width constraint"}
+  
+  :direction
+  {:type :enum
+   :values [:left :right]
+   :default :right
+   :description "Which edge has the resize handle (left = handle on right, right = handle on left)"}
+  
+  :persistence-key
+  {:type :string
+   :required false
+   :description "localStorage key for persisting width across sessions"}
+  
+  :on-resize
+  {:type :function
+   :signature "(newWidth: number) => void"
+   :required false
+   :description "Callback when width changes"}
+  
+  :collapsible
+  {:type :boolean
+   :default false
+   :description "Whether the pane can be collapsed"}
+  
+  :collapsed
+  {:type :boolean
+   :default false
+   :description "Whether the pane is currently collapsed"}
+  
+  :on-collapse
+  {:type :function
+   :signature "(collapsed: boolean) => void"
+   :required false
+   :description "Callback when collapse state changes"}
+  
+  :handle-width
+  {:type :number
+   :default 3
+   :description "Width of the resize handle in pixels"}
+  
+  :show-handle
+  {:type :boolean
+   :default true
+   :description "Whether to show the resize handle"}
+  
+  :narrow-layout-breakpoint
+  {:type :number
+   :default 820
+   :description "Window width below which resizing is disabled"}}
+ 
+ :slots
+ {:children
+  {:type :node
+   :required true
+   :description "Content to render inside the pane"}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :accessibility
+ {:role :region
+  :aria
+  {:label "Resizable panel"}
+  :keyboard
+  {:resize {:keys [:arrow-left :arrow-right]
+            :modifier :alt
+            :step 10}}}
+ 
+ :behavior
+ {:drag
+  {:cursor "col-resize"
+   :prevent-default true
+   :throttle-ms 16}
+  
+  :bounds
+  {:clamp-to-min-max true
+   :respect-container true}
+  
+  :persistence
+  {:debounce-ms 100
+   :restore-on-mount true
+   :validate-on-restore true}
+  
+  :collapse
+  {:animate true
+   :duration-ms 150
+   :easing "ease-out"}}
+ 
+ :styling
+ {:css-custom-properties
+  ["--pane-bg"
+   "--pane-border"
+   "--handle-bg"
+   "--handle-hover-bg"
+   "--handle-active-bg"]
+  
+  :data-attributes
+  {:data-component "resizable-pane"
+   :data-direction :direction
+   :data-collapsed :collapsed
+   :data-resizing :dragging}}
+ 
+ :tokens
+ {:colors
+  {:handle-bg "transparent"
+   :handle-hover :colors.accent/cyan
+   :handle-active :colors.accent/cyan}
+  
+  :spacing
+  {:handle-width :spacing/1}
+  
+  :motion
+  {:transition :transitions/colors
+   :collapse-duration :duration/fast}}
+ 
+ :examples
+ {:cljs
+  [resizable-pane
+   {:width 280
+    :min-width 180
+    :max-width 500
+    :direction :left
+    :persistence-key "sidebar-width"
+    :on-resize #(reset! width %)}
+   [sidebar-content]]
+  
+  :tsx
+  [:ResizablePane
+   {:width={280}
+    :minWidth={180}
+    :maxWidth={500}
+    :direction="left"
+    :persistenceKey="sidebar-width"
+    :onResize={(w) => setWidth(w)}}
+   <SidebarContent />]}}

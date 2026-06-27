@@ -1,0 +1,164 @@
+;; Chat Component Contract
+;; Defines the API for AI conversation interfaces
+
+{:component :chat
+ :version "1.1.0"
+ 
+ :description
+ "AI conversation interface with messages, input, typing indicators, session context, and connection status."
+ 
+ :props
+ {:messages
+  {:type :array
+   :items :chat-message
+   :required true
+   :description "List of chat messages"}
+  
+  :on-send
+  {:type :function
+   :signature "(message: string, attachments?: File[]) => void"
+   :required true
+   :description "Callback when user sends a message"}
+  
+  :placeholder
+  {:type :string
+   :default "Type a message..."
+   :description "Placeholder for input field"}
+  
+  :loading
+  {:type :boolean
+   :default false
+   :description "Whether AI is generating a response"}
+  
+  :typing-indicator
+  {:type :boolean
+   :default true
+   :description "Whether to show typing indicator when loading"}
+  
+  :avatar
+  {:type :node
+   :required false
+   :description "Custom avatar for AI messages"}
+  
+  :user-avatar
+  {:type :node
+   :required false
+   :description "Custom avatar for user messages"}
+  
+  :max-height
+  {:type :string
+   :default "500px"
+   :description "Maximum height of message container"}
+  
+  :show-timestamps
+  {:type :boolean
+   :default false
+   :description "Whether to show message timestamps"}
+  
+  :allow-attachments
+  {:type :boolean
+   :default false
+   :description "Whether file attachments are allowed"}
+  
+  :allow-markdown
+  {:type :boolean
+   :default true
+   :description "Whether to render markdown in messages"}
+  
+  :empty-state
+  {:type :node
+   :required false
+   :description "Content to show when no messages"}
+  
+  :on-message-action
+  {:type :function
+   :signature "(action: string, message: ChatMessage) => void"
+   :required false
+   :description "Callback for message actions (copy, regenerate, etc)"}
+  
+  ;; Story 7: Session/Connection enhancements
+  :session-id
+  {:type :string
+   :required false
+   :description "Session identifier to display in header"}
+  
+  :connected
+  {:type :boolean
+   :default true
+   :description "Connection status indicator (true = connected, false = disconnected)"}
+  
+  :pending-message
+  {:type :chat-message
+   :required false
+   :description "Message currently being sent (shows as pending in UI)"}
+  
+  :show-header
+  {:type :boolean
+   :default false
+   :description "Whether to show the header with session info and connection status"}}
+ 
+ :types
+ {:chat-message
+  {:id :string
+   :role {:type :enum :values [:user :assistant :system]}
+   :content :string
+   :timestamp {:type :date :required false}
+   :attachments {:type :array :items :file :required false}
+   :metadata {:type :object :required false}
+   :actions {:type :array :items :string :required false}}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :accessibility
+ {:role :log
+  :aria
+  {:live "polite"
+   :label "Chat conversation"}
+  :keyboard
+  {:send :enter
+   :newline :shift-enter
+   :focus-input :escape}}
+ 
+ :behavior
+ {:scroll
+  {:auto-scroll-on-new true
+   :auto-scroll-if-at-bottom true
+   :scroll-threshold-px 100
+   :scroll-to-bottom-on-send true}
+  
+  :input
+  {:auto-grow true
+   :max-rows 6
+   :submit-on-enter true
+   :preserve-newlines true}}
+ 
+ :styling
+ {:data-attributes
+  {:data-component "chat"
+   :data-loading :loading}
+  
+  :css-custom-properties
+  ["--chat-bg"
+   "--message-user-bg"
+   "--message-ai-bg"
+   "--input-bg"]}
+ 
+ :tokens
+ {:colors
+  {:bg :colors.background/default
+   :user-message-bg :colors.background/surface
+   :ai-message-bg :transparent
+   :user-text :colors.text/default
+   :ai-text :colors.text/default
+   :input-bg :colors.background/surface
+   :border :colors.border/default
+   :code-bg :colors.background/elevated}
+  
+  :spacing
+  {:message-gap :spacing/4
+   :message-padding :spacing/4
+   :input-padding :spacing/3}
+  
+  :radius
+  :spacing/2}}

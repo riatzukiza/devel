@@ -1,0 +1,45 @@
+services:
+  - type: web
+    name: ussyverse-trello-relay
+    runtime: node
+    plan: free
+    rootDir: services/trello-relay
+    buildCommand: npm ci
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: PORT
+        value: "8787"
+      - key: HOST
+        value: "0.0.0.0"
+
+      # Trello
+      - key: TRELLO_API_KEY
+        sync: false
+      - key: TRELLO_API_TOKEN
+        sync: false
+      - key: TRELLO_BOARD_URL
+        value: "https://trello.com/b/Mu2BmeDE/ussyverse"
+      - key: TRELLO_BOARD_SHORTLINK
+        value: "Mu2BmeDE"
+
+      # Used to verify webhook signature (Power-Up app secret)
+      - key: TRELLO_APP_SECRET
+        sync: false
+
+      # Must be the public https callback URL for /webhooks/trello
+      # Trello will HEAD this and requires 200.
+      - key: WEBHOOK_CALLBACK_URL
+        sync: false
+
+      # GitHub dispatch target (to trigger Trello->main pull workflow)
+      - key: GITHUB_REPO
+        value: "open-hax/ussyverse-kanban"
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: GITHUB_EVENT_TYPE
+        value: "trello_webhook"
+
+      - key: DISPATCH_DEBOUNCE_MS
+        value: "1500"

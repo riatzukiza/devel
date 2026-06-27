@@ -1,0 +1,10 @@
+.build/
+.build
+.shadow-cljs/
+.shadow-cljs
+state/
+state
+.clj-kondo/
+.clj-kondo
+node_modules/
+shadow-cljs.edn

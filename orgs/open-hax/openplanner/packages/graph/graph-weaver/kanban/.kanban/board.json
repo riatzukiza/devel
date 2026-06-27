@@ -1,0 +1,121 @@
+{
+  "generatedAt": "2026-05-29T04:01:37.194Z",
+  "totalTasks": 3,
+  "columns": [
+    {
+      "status": "icebox",
+      "title": "Icebox",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "incoming",
+      "title": "Incoming",
+      "taskCount": 3,
+      "tasks": [
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-graph-graph-weaver-kanban-orgs-open-hax-openplanner-packages-graph-graph-weaver-specs-graph-layers-and-storage-md",
+          "title": "Graph Layers and Storage Spec",
+          "slug": "graph-layers-and-storage-spec",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:36.376Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/graph/graph-weaver/specs/graph-layers-and-storage.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/graph/graph-weaver/kanban/graph-layers-and-storage.md`\n\n# Graph Layers and Storage Spec\n\n## Purpose\n\nMake the internal graph layering explicit.\n\n## Graph layers\n\n### 1. Local layer\nProduced by repo scan.\n\nSources:\n- tracked files\n- markdown links\n- JS/TS imports\n- Python imports\n- Clojure requires\n\nCharacteristics:\n- deterministic rebuild from repo state\n- `layer: local`\n- seeds external URLs found in markdown\n\n### 2. Web layer\nProduced by crawler events coming from `graph-weaver-aco`.\n\nCharacteristics:\n- `url:*` nodes\n- outgoing web edges\n- page/error metadata\n- persisted to Mongo under store `web`\n\n### 3. User layer\nProduced by explicit user mutations.\n\nCharacteristics:\n- overlay nodes and edges\n- layout position overrides\n- user-authored graph edits\n- persisted to Mongo under store `user`\n\n### 4. Semantic layer\nProduced by OpenPlanner semantic exports and daimoi reinforcement.\n\nCharacteristics:\n- `layer: semantic`\n- semantic edges are transient circuit edges, not durable truth claims\n- every semantic edge must carry `data.similarity` with the cosine score between connected nodes\n- reinforced edges increase `data.conductance`; unreinforced edges decay by half-life into `broken` and then are pruned\n- durable truth still belongs to OpenPlanner edge claims, not semantic edges\n\n### 5. Presence layer\nProduced by presence GraphQL mutations and future OpenPlanner runtime sync.\n\nCharacteristics:\n- `kind: presence`, `layer: presence`\n- `data.presence_class` is `resource`, `muse`, or `transient`\n- `data.saturation`, `data.emission_threshold`, and `data.refractory_ms` model neuron-like emission\n- resource presences represent CPU cores, NPU, GPU, RAM, or other system resources/processes\n- muse presences represent an LLM actor's autonomic graph interface\n- transient presences represent bounded effects such as memory-tool query emission events\n\n## Merge model\n\nThe runtime merges:\n- `localStore`\n- `webStore`\n- `userStore`\n\nSemantic and presence layers currently persist through `userStore` unless they are\nimported from OpenPlanner export, but they keep their own `layer` values so the\nGraphQL schema and renderer can distinguish them.\n\nMerged graph is cached until invalidated by a dirty mark.\n\n## Storage backends\n\n### In-memory\nAll three layers are active in memory via `GraphStore`.\n\n### MongoDB\n`MongoGraphStore` persists:\n- nodes by `store + id`\n- edges by `store + id`\n- indexes on `store/id`, `store/source`, `store/target`\n\n### Runtime files\nConfig and legacy user graph state live in runtime paths such as:\n- `.opencode/runtime/devel-graph-weaver.config.json`\n- `.opencode/runtime/devel-graph-weaver.user-graph.json`\n\n## Design consequence\n\nThis repo is not a pure cache or a pure derivation engine.\nIt is a layered graph instrument that intentionally combines:\n- rebuildable derivation\n- discovered external state\n- human-authored overlay\n- transient semantic circuits\n- presence-driven intent/resource nodes",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/graph/graph-weaver/kanban/graph-layers-and-storage.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-graph-graph-weaver-kanban-orgs-open-hax-openplanner-packages-graph-graph-weaver-specs-query-preview-and-mutation-md",
+          "title": "Query, Preview, and Mutation Spec",
+          "slug": "query-preview-and-mutation-spec",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:36.376Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/graph/graph-weaver/specs/query-preview-and-mutation.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/graph/graph-weaver/kanban/query-preview-and-mutation.md`\n\n# Query, Preview, and Mutation Spec\n\n## Purpose\n\nDocument the three kinds of interaction this service supports:\n- inspect\n- preview\n- alter\n\n## Inspect\n\n### Query surfaces\n- status/config\n- graphView\n- node(id)\n- edge(id)\n- edges(filter)\n- neighbors(id)\n- searchNodes(query)\n\nThese all operate against the merged graph view.\n\n## Preview\n\n### File preview\nFor file nodes, the service reads a bounded head of the file and labels it as:\n- markdown\n- code\n- text\n- binary\n- error\n\n### URL preview\nFor URL nodes, the service fetches a bounded preview of the remote resource using the configured timeout.\n\n### Metadata preview\nFor non-file/non-url nodes, the node itself is rendered as JSON code.\n\n## Alter\n\n### Runtime config mutation\n`configUpdate` can change render, crawl, and scan behavior.\nIf weaver config changes, the crawler is restarted.\nIf scan config changes, the rescan timer is reset.\n\n### Graph mutation\nUser layer supports:\n- upsert node\n- upsert edge\n- remove node\n- remove edge\n- bulk layout position updates\n\n### Rescan and reseed\n- `rescanNow` rebuilds local layer and reseeds discovered URLs\n- `weaverSeed` adds URLs to crawler frontier\n\n## Security posture\n\nIf `GRAPH_WEAVER_ADMIN_TOKEN` is set, mutation paths require a bearer token.\nWithout it, the service remains open for local/dev mutation.\n\n## UX reading\n\nThis service is designed to let a human move between:\n- map view\n- object inspection\n- quick previews\n- direct graph intervention\nwithout leaving the same instrument.",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/graph/graph-weaver/kanban/query-preview-and-mutation.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-graph-graph-weaver-kanban-orgs-open-hax-openplanner-packages-graph-graph-weaver-specs-service-surface-md",
+          "title": "Service Surface Spec",
+          "slug": "service-surface-spec",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:36.375Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/graph/graph-weaver/specs/service-surface.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/graph/graph-weaver/kanban/service-surface.md`\n\n# Service Surface Spec\n\n## Purpose\n\nDescribe the live surfaces this repo exposes today.\n\n## HTTP endpoints\n\n### GraphQL\n- `POST /graphql`\n\nProvides queries and mutations over the merged graph.\n\n### Status\n- `GET /api/status`\n\nReturns:\n- node count\n- edge count\n- seed count\n- weaver frontier / in-flight counts\n- render config\n- scan config\n\n### Graph snapshot\n- `GET /api/graph`\n\nReturns a sampled/layouted graph view suitable for rendering.\n\n### Static/UI\n- `/`\n- `/graphiql`\n- `/app.js`\n- `/style.css`\n- `/vendor/webgl-graph-view/*`\n\n### WebSocket\n- `GET /ws` via upgrade\n\nCurrent behavior: push the literal message `changed` whenever the merged graph becomes dirty.\n\n## GraphQL capabilities\n\nQueries and mutations include:\n- status/config\n- sampled graph view\n- node/edge lookup\n- neighbor and edge listing\n- search\n- node preview\n- rescan\n- weaver seeding\n- config update\n- user node/edge upserts/removals\n- layout position updates\n\n## Design position\n\nThis repo is a **graph workbench service** rather than only a crawler service.\nIt exposes:\n- graph query surfaces\n- graph mutation surfaces\n- a small UI\n- a minimal websocket invalidation signal",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/graph/graph-weaver/kanban/service-surface.md"
+        }
+      ]
+    },
+    {
+      "status": "accepted",
+      "title": "Accepted",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "breakdown",
+      "title": "Breakdown",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "blocked",
+      "title": "Blocked",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "ready",
+      "title": "Ready",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "todo",
+      "title": "Todo",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "in_progress",
+      "title": "In Progress",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "review",
+      "title": "Review",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "document",
+      "title": "Document",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "done",
+      "title": "Done",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "rejected",
+      "title": "Rejected",
+      "taskCount": 0,
+      "tasks": []
+    }
+  ]
+}

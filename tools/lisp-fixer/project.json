@@ -1,0 +1,57 @@
+{
+  "name": "lisp-fixer",
+  "$schema": "node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm --filter @promethean-os/lisp-fixer build"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm --filter @promethean-os/lisp-fixer lint"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm --filter @promethean-os/lisp-fixer typecheck"
+      }
+    },
+    "test": {
+      "executor": "@nx/js:run-commands",
+      "options": {
+        "command": "uvu -r tsx src test"
+      }
+    },
+    "scan": {
+      "executor": "@nx/js:run-commands",
+      "options": {
+        "command": "tsx src/buildset.ts"
+      }
+    },
+    "mutate": {
+      "executor": "@nx/js:run-commands",
+      "options": {
+        "command": "tsx src/mutate.ts"
+      }
+    },
+    "dataset": {
+      "executor": "@nx/js:run-commands",
+      "options": {
+        "command": "tsx src/dataset.ts"
+      }
+    },
+    "infer": {
+      "executor": "@nx/js:run-commands",
+      "options": {
+        "command": "tsx src/infer.ts"
+      }
+    }
+  },
+  "tags": ["tool", "lisp", "ml"]
+}

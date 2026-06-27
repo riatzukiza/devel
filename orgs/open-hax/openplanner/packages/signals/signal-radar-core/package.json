@@ -1,0 +1,25 @@
+{
+  "name": "@open-hax/signal-radar-core",
+  "version": "0.1.0",
+  "private": true,
+  "license": "LGPL-3.0-or-later",
+  "type": "module",
+  "main": "./index.cjs",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js",
+      "require": "./index.cjs"
+    }
+  },
+  "files": [
+    "index.js",
+    "index.cjs",
+    "index.d.ts",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test tests/*.test.cjs"
+  }
+}

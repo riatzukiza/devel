@@ -1,0 +1,40 @@
+{:source-paths ["src/cljs" "test/cljs"]
+ :dependencies [[metosin/malli "0.16.4"]]
+ :js-options {:js-provider :import}
+ :builds
+ {:runtime
+  {:target :esm
+   :runtime :node
+   :output-dir "dist-cljs"
+   :modules {:index {:exports {:createEtaBelief eta-mu.runtime.facade/create-eta-belief
+                                :createBreathEpisode eta-mu.runtime.facade/create-breath-episode
+                                :createEtaMuState eta-mu.runtime.facade/create-eta-mu-state
+                                :selectPanelsFromContext eta-mu.runtime.facade/select-panels-from-context
+                                :rankCheapMuCandidates eta-mu.runtime.facade/rank-cheap-mu-candidates
+                                :recommendBreath eta-mu.runtime.facade/recommend-breath
+                                :createActionBatch eta-mu.runtime.facade/create-action-batch
+                                :createTextContent eta-mu.runtime.facade/create-text-content
+                                :createImageContent eta-mu.runtime.facade/create-image-content
+                                :createAudioContent eta-mu.runtime.facade/create-audio-content
+                                :createBashExecutionMessage eta-mu.runtime.facade/create-bash-execution-message
+                                :createCustomMessage eta-mu.runtime.facade/create-custom-message
+                                :createBranchSummaryMessage eta-mu.runtime.facade/create-branch-summary-message
+                                :createCompactionSummaryMessage eta-mu.runtime.facade/create-compaction-summary-message
+                                :convertToLlmMessages eta-mu.runtime.facade/convert-to-llm-messages
+                                :createToolDescriptor eta-mu.runtime.facade/create-tool-descriptor
+                                :composeToolDescriptors eta-mu.runtime.facade/compose-tool-descriptors
+                                :selectCompatibleModels eta-mu.runtime.facade/select-compatible-models
+                                :createSessionContext eta-mu.runtime.facade/create-session-context
+                                :createSurfaceCommandResult eta-mu.runtime.facade/create-surface-command-result}}}
+   :compiler-options {:output-feature-set :es-next
+                      :optimizations :simple
+                      :source-map true}}
+
+  :test
+  {:target :node-test
+   :output-to "target/cljs-test.cjs"
+   :ns-regexp "-test$"
+   :autorun false
+   :compiler-options {:output-feature-set :es-next
+                      :optimizations :none
+                      :source-map true}}}}

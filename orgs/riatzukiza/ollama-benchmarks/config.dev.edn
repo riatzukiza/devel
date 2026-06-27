@@ -1,0 +1,4 @@
+{:endpoint "http://localhost:11434"
+ :models   ["qwen3:4b" "gemma3:latest"]
+ :prompts  ["Hello world"
+            "Explain babashka in two sentences."]}

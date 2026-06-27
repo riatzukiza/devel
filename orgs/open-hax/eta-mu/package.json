@@ -1,0 +1,33 @@
+{
+  "name": "@open-hax/eta-mu-monorepo",
+  "version": "0.1.0",
+  "description": "Canonical eta-mu monorepo spanning GitHub automation, truth/docs kernels, Promethean runtime, and absorbed OpenHax surfaces",
+  "private": false,
+  "license": "GPL-3.0-only",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"pnpm --filter @open-hax/agentd dev\" \"pnpm --filter @open-hax/opencode-reactant dev\"",
+    "build": "pnpm -r --no-bail build",
+    "test": "pnpm --dir packages/eta-mu-runtime test && pnpm --dir packages/eta-mu-github test && node --test packages/eta-mu-docs/tests/*.test.cjs && node --test packages/eta-mu-truth/tests/*.test.cjs && pnpm --dir packages/presence-core test && pnpm --dir packages/kanban test && node --test packages/signal-contracts/tests/*.test.cjs && node --test packages/signal-radar-core/tests/*.test.cjs && node --test packages/signal-source-utils/tests/*.test.cjs && node --test packages/signal-watchlists/tests/*.test.cjs",
+    "typecheck": "pnpm --dir packages/eta-mu-runtime typecheck && pnpm --dir packages/eta-mu-github typecheck && pnpm --dir packages/presence-core typecheck && pnpm --dir packages/kanban exec tsc -p tsconfig.json --noEmit",
+    "docs:ts": "pnpm --filter @open-hax/agentd doc",
+    "docs:cljs": "clojure -X:codox",
+    "docs": "pnpm docs:ts && pnpm docs:cljs",
+    "coverage": "pnpm --dir packages/eta-mu-runtime cljs:coverage",
+    "start": "pnpm --filter @open-hax/agentd start",
+    "clean": "pnpm --recursive clean",
+    "install:all": "pnpm install && pnpm --recursive install"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.3.5",
+    "@typescript/native-preview": "7.0.0-dev.20260120.1",
+    "concurrently": "^8.2.2",
+    "shx": "^0.4.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "packageManager": "pnpm@10.14.0",
+  "dependencies": {
+    "@open-hax/eta-mu-monorepo": "link:"
+  }
+}

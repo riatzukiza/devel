@@ -1,0 +1,26 @@
+;; Harness adapter: claude-code
+;; Core skill: ημ.skill/receipt-river@0.2.0
+;; Status: STUB — claude-code hooks API still experimental as of 2026-04
+
+(harness-adapter
+  (harness :claude-code)
+  (skill "receipt-river")
+  (core-ref "packages/skills/core/receipt-river/CONTRACT.edn")
+  (install-path ".claude/skills/receipt-river/CONTRACT.edn")
+  (driver :fs)
+  (driver-config
+    (receipts-file "receipts.log")
+    (state-root ".claude/state/receipt-river/"))
+  (hooks
+    ;; PostToolUse: after any write-class tool, check if receipt_river was called
+    ;; Stop: inject receipt reminder into next session if pending
+    (post-tool-use "mark substantive work; set pending-reminder if no receipt")
+    (stop "persist pending-reminder flag to .claude/state/receipt-river/state.json"))
+  (delivery
+    (method :claude-md-injection)
+    (file "CLAUDE.md")
+    (section "## receipt-river skill")
+    (content-source "packages/skills/core/receipt-river/CONTRACT.edn"))
+  (notes
+    "MCP tool `receipt_river` must be available in claude-code MCP config.
+     See packages/eta-mu-extensions for the MCP tool implementation."))

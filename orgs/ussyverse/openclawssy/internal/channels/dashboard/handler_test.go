@@ -1,0 +1,1561 @@
+package dashboard
+
+import (
+	"bytes"
+	"context"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"os"
+	"path/filepath"
+	"strings"
+	"testing"
+	"time"
+
+	httpchannel "openclawssy/internal/channels/http"
+	"openclawssy/internal/chatstore"
+	"openclawssy/internal/config"
+	"openclawssy/internal/memory"
+	memorystore "openclawssy/internal/memory/store"
+	"openclawssy/internal/scheduler"
+	"openclawssy/internal/secrets"
+)
+
+func TestDashboardRouteServesStaticShell(t *testing.T) {
+	h := New(t.TempDir(), httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/dashboard", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected %d, got %d", http.StatusOK, rr.Code)
+	}
+	body := rr.Body.String()
+	if !strings.Contains(body, "Open Legacy Dashboard") {
+		t.Fatalf("expected shell footer link in body, got %q", body)
+	}
+	if strings.Contains(body, dashboardHTML) {
+		t.Fatal("expected /dashboard to serve new shell, not legacy HTML")
+	}
+}
+
+func TestDashboardLegacyRouteServesExistingHTMLExactly(t *testing.T) {
+	h := New(t.TempDir(), httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/dashboard-legacy", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected %d, got %d", http.StatusOK, rr.Code)
+	}
+	if rr.Body.String() != dashboardHTML {
+		t.Fatal("expected /dashboard-legacy body to exactly match legacy dashboard HTML")
+	}
+}
+
+func TestDashboardStaticAssetRouteServesEmbeddedFiles(t *testing.T) {
+	h := New(t.TempDir(), httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/dashboard/static/styles.css", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected %d, got %d", http.StatusOK, rr.Code)
+	}
+	if got := rr.Header().Get("Content-Type"); !strings.HasPrefix(got, "text/css") {
+		t.Fatalf("expected css content type, got %q", got)
+	}
+	if !strings.Contains(rr.Body.String(), ".shell-grid") {
+		t.Fatalf("expected stylesheet content, got %q", rr.Body.String())
+	}
+}
+
+func TestDashboardStaticAssetRouteServesToolSchemasJSON(t *testing.T) {
+	h := New(t.TempDir(), httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/dashboard/static/src/data/tool_schemas.json", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected %d, got %d", http.StatusOK, rr.Code)
+	}
+	if got := rr.Header().Get("Content-Type"); !strings.HasPrefix(got, "application/json") {
+		t.Fatalf("expected json content type, got %q", got)
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(rr.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("decode schema payload: %v", err)
+	}
+	if _, ok := payload["fs.read"].(map[string]any); !ok {
+		t.Fatalf("expected fs.read schema entry, got %#v", payload["fs.read"])
+	}
+	if _, ok := payload["shell.exec"].(map[string]any); !ok {
+		t.Fatalf("expected shell.exec schema entry, got %#v", payload["shell.exec"])
+	}
+	fsRead := payload["fs.read"].(map[string]any)
+	required, ok := fsRead["required"].([]any)
+	if !ok || len(required) == 0 || required[0] != "path" {
+		t.Fatalf("expected fs.read.required to include path, got %#v", fsRead["required"])
+	}
+}
+
+func TestDashboardStaticAssetRouteServesHelpMarkdown(t *testing.T) {
+	h := New(t.TempDir(), httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/dashboard/static/help/getting-started.md", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected %d, got %d", http.StatusOK, rr.Code)
+	}
+	if !strings.Contains(rr.Body.String(), "title: Getting Started") {
+		t.Fatalf("expected help markdown body, got %q", rr.Body.String())
+	}
+}
+
+func TestAdminWorkspaceEntriesListsDirectoriesAndFiles(t *testing.T) {
+	root := t.TempDir()
+	workspaceRoot := filepath.Join(root, "workspace")
+	if err := os.MkdirAll(filepath.Join(workspaceRoot, "project", "nested"), 0o755); err != nil {
+		t.Fatalf("mkdir workspace tree: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(workspaceRoot, "project", "notes.txt"), []byte("hello workspace\n"), 0o644); err != nil {
+		t.Fatalf("write file: %v", err)
+	}
+
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/api/admin/workspace/entries?path=project", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected %d, got %d (%s)", http.StatusOK, rr.Code, rr.Body.String())
+	}
+	var payload struct {
+		Path       string                  `json:"path"`
+		ParentPath string                  `json:"parent_path"`
+		Entries    []workspaceEntryPayload `json:"entries"`
+	}
+	if err := json.Unmarshal(rr.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("decode response: %v", err)
+	}
+	if payload.Path != "project" {
+		t.Fatalf("expected path project, got %#v", payload.Path)
+	}
+	if payload.ParentPath != "" {
+		t.Fatalf("expected empty parent path for top-level child, got %#v", payload.ParentPath)
+	}
+	if len(payload.Entries) != 2 {
+		t.Fatalf("expected two entries, got %#v", payload.Entries)
+	}
+	if payload.Entries[0].Kind != "dir" || payload.Entries[0].Name != "nested" {
+		t.Fatalf("expected nested dir first, got %#v", payload.Entries[0])
+	}
+	if payload.Entries[1].Kind != "file" || payload.Entries[1].Path != "project/notes.txt" {
+		t.Fatalf("unexpected file entry %#v", payload.Entries[1])
+	}
+	if payload.Entries[1].SizeBytes == 0 {
+		t.Fatalf("expected non-zero file size, got %#v", payload.Entries[1])
+	}
+}
+
+func TestAdminWorkspaceFileReadsTextAndRejectsTraversal(t *testing.T) {
+	root := t.TempDir()
+	workspaceRoot := filepath.Join(root, "workspace")
+	if err := os.MkdirAll(filepath.Join(workspaceRoot, "project"), 0o755); err != nil {
+		t.Fatalf("mkdir workspace: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(workspaceRoot, "project", "notes.txt"), []byte("line one\nline two\n"), 0o644); err != nil {
+		t.Fatalf("write file: %v", err)
+	}
+
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	readReq := httptest.NewRequest(http.MethodGet, "/api/admin/workspace/file?path=project/notes.txt", nil)
+	readResp := httptest.NewRecorder()
+	mux.ServeHTTP(readResp, readReq)
+	if readResp.Code != http.StatusOK {
+		t.Fatalf("expected %d, got %d (%s)", http.StatusOK, readResp.Code, readResp.Body.String())
+	}
+	var payload struct {
+		Path      string `json:"path"`
+		IsText    bool   `json:"is_text"`
+		Content   string `json:"content"`
+		Truncated bool   `json:"truncated"`
+	}
+	if err := json.Unmarshal(readResp.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("decode file payload: %v", err)
+	}
+	if payload.Path != "project/notes.txt" || !payload.IsText {
+		t.Fatalf("unexpected file payload %#v", payload)
+	}
+	if !strings.Contains(payload.Content, "line two") || payload.Truncated {
+		t.Fatalf("expected full text preview, got %#v", payload)
+	}
+
+	denyReq := httptest.NewRequest(http.MethodGet, "/api/admin/workspace/file?path=../outside.txt", nil)
+	denyResp := httptest.NewRecorder()
+	mux.ServeHTTP(denyResp, denyReq)
+	if denyResp.Code != http.StatusBadRequest {
+		t.Fatalf("expected %d, got %d", http.StatusBadRequest, denyResp.Code)
+	}
+}
+
+func TestDashboardWorkspaceRootFallsBackToContainerWorkspaceWhenConfiguredAbsolutePathMissing(t *testing.T) {
+	root := t.TempDir()
+	defaultWorkspace := filepath.Join(root, "workspace")
+	if err := os.MkdirAll(defaultWorkspace, 0o755); err != nil {
+		t.Fatalf("mkdir default workspace: %v", err)
+	}
+	cfg := config.Default()
+	cfg.Workspace.Root = "/definitely/missing/host/workspace"
+	if err := config.Save(filepath.Join(root, ".openclawssy", "config.json"), cfg); err != nil {
+		t.Fatalf("save config: %v", err)
+	}
+
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	if got := h.dashboardWorkspaceRoot(); got != defaultWorkspace {
+		t.Fatalf("expected fallback workspace %q, got %q", defaultWorkspace, got)
+	}
+}
+
+func TestDashboardStaticAssetRouteMissingToolSchemasFileNotFound(t *testing.T) {
+	h := New(t.TempDir(), httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/dashboard/static/src/data/tool_schemas_missing.json", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusNotFound {
+		t.Fatalf("expected %d, got %d", http.StatusNotFound, rr.Code)
+	}
+}
+
+func TestDebugRunTraceEndpoint(t *testing.T) {
+	store := httpchannel.NewInMemoryRunStore()
+	_, err := store.Create(context.Background(), httpchannel.Run{
+		ID:        "run_1",
+		AgentID:   "default",
+		Message:   "hello",
+		Status:    "completed",
+		Trace:     map[string]any{"run_id": "run_1", "prompt_length": float64(42)},
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
+	})
+	if err != nil {
+		t.Fatalf("create run: %v", err)
+	}
+
+	h := New(".", store)
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/api/admin/debug/runs/run_1/trace", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected %d, got %d", http.StatusOK, rr.Code)
+	}
+
+	var payload map[string]any
+	if err := json.Unmarshal(rr.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("decode response: %v", err)
+	}
+	trace, ok := payload["trace"].(map[string]any)
+	if !ok {
+		t.Fatalf("expected trace map, got %#v", payload["trace"])
+	}
+	if trace["run_id"] != "run_1" {
+		t.Fatalf("unexpected run_id in trace: %#v", trace["run_id"])
+	}
+}
+
+func TestAdminStatusEndpoint(t *testing.T) {
+	store := httpchannel.NewInMemoryRunStore()
+	_, err := store.Create(context.Background(), httpchannel.Run{ID: "run_a", AgentID: "default", Message: "hello", Status: "completed", CreatedAt: time.Now().UTC(), UpdatedAt: time.Now().UTC()})
+	if err != nil {
+		t.Fatalf("create run: %v", err)
+	}
+
+	h := New(t.TempDir(), store)
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/api/admin/status", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected %d, got %d", http.StatusOK, rr.Code)
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(rr.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("decode response: %v", err)
+	}
+	if payload["run_count"] != float64(1) {
+		t.Fatalf("expected run_count=1, got %#v", payload["run_count"])
+	}
+}
+
+func TestAdminStatusEndpointIncludesConfiguredModelStamp(t *testing.T) {
+	root := t.TempDir()
+	cfg := config.Default()
+	cfg.Model.Provider = "openai"
+	cfg.Model.Name = "gpt-4.1-mini"
+	if err := config.Save(filepath.Join(root, ".openclawssy", "config.json"), cfg); err != nil {
+		t.Fatalf("save config: %v", err)
+	}
+
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/api/admin/status", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected %d, got %d", http.StatusOK, rr.Code)
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(rr.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("decode response: %v", err)
+	}
+	model, ok := payload["model"].(map[string]any)
+	if !ok {
+		t.Fatalf("expected model map in payload, got %#v", payload["model"])
+	}
+	if model["provider"] != "openai" || model["name"] != "gpt-4.1-mini" {
+		t.Fatalf("unexpected model stamp: %#v", model)
+	}
+}
+
+func TestAdminMemoryEndpointReturnsHealthAndItems(t *testing.T) {
+	root := t.TempDir()
+	dbPath := filepath.Join(root, ".openclawssy", "agents", "default", "memory", "memory.db")
+	store, err := memorystore.OpenSQLite(dbPath, "default")
+	if err != nil {
+		t.Fatalf("open sqlite store: %v", err)
+	}
+	_, err = store.Upsert(context.Background(), memory.MemoryItem{
+		Kind:       "preference",
+		Title:      "Notifications",
+		Content:    "User prefers proactive notifications.",
+		Importance: 4,
+		Confidence: 0.9,
+	})
+	if err != nil {
+		t.Fatalf("upsert memory item: %v", err)
+	}
+	_ = store.Close()
+
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/api/admin/memory/default", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected %d, got %d", http.StatusOK, rr.Code)
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(rr.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("decode response: %v", err)
+	}
+	if payload["agent_id"] != "default" {
+		t.Fatalf("expected default agent id, got %#v", payload["agent_id"])
+	}
+	if _, ok := payload["health"].(map[string]any); !ok {
+		t.Fatalf("expected health payload, got %#v", payload["health"])
+	}
+	if _, ok := payload["active_items"].([]any); !ok {
+		t.Fatalf("expected active_items array, got %#v", payload["active_items"])
+	}
+	embeddingStats, ok := payload["embedding_stats"].(map[string]any)
+	if !ok {
+		t.Fatalf("expected embedding_stats object, got %#v", payload["embedding_stats"])
+	}
+	if _, ok := embeddingStats["vector_count"].(float64); !ok {
+		t.Fatalf("expected numeric vector_count, got %#v", embeddingStats["vector_count"])
+	}
+	if _, ok := embeddingStats["semantic_search_available"].(bool); !ok {
+		t.Fatalf("expected semantic_search_available bool, got %#v", embeddingStats["semantic_search_available"])
+	}
+}
+
+func TestAdminMemoryEndpointRejectsInvalidAgentID(t *testing.T) {
+	h := New(t.TempDir(), httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/api/admin/memory/default/extra", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusBadRequest {
+		t.Fatalf("expected %d, got %d", http.StatusBadRequest, rr.Code)
+	}
+}
+
+func TestAdminConfigEndpointRedactsSecrets(t *testing.T) {
+	root := t.TempDir()
+	configPath := filepath.Join(root, ".openclawssy", "config.json")
+	cfg := config.Default()
+	cfg.Providers.OpenAI.APIKey = "super-secret"
+	cfg.Providers.Generic.APIKey = "generic-secret"
+	cfg.Discord.Token = "discord-secret"
+	if err := config.Save(configPath, cfg); err != nil {
+		t.Fatalf("save config: %v", err)
+	}
+
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/api/admin/config", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected %d, got %d", http.StatusOK, rr.Code)
+	}
+	var out config.Config
+	if err := json.Unmarshal(rr.Body.Bytes(), &out); err != nil {
+		t.Fatalf("decode config response: %v", err)
+	}
+	if out.Providers.OpenAI.APIKey != "" || out.Providers.Generic.APIKey != "" || out.Discord.Token != "" {
+		t.Fatalf("expected sensitive values redacted, got %+v", out)
+	}
+}
+
+func TestAdminConfigPatchMergesAndValidateReturnsFieldErrors(t *testing.T) {
+	root := t.TempDir()
+	if err := os.MkdirAll(filepath.Join(root, ".openclawssy"), 0o755); err != nil {
+		t.Fatalf("mkdir config dir: %v", err)
+	}
+	path := filepath.Join(root, ".openclawssy", "config.json")
+	cfg := config.Default()
+	cfg.Chat.DefaultAgentID = "alpha"
+	if err := config.Save(path, cfg); err != nil {
+		t.Fatalf("save config: %v", err)
+	}
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	patchReq := httptest.NewRequest(http.MethodPatch, "/api/admin/config", bytes.NewBufferString(`{"model":{"provider":"zai","name":"glm-4.7"}}`))
+	patchReq.Header.Set("Content-Type", "application/json")
+	patchResp := httptest.NewRecorder()
+	mux.ServeHTTP(patchResp, patchReq)
+	if patchResp.Code != http.StatusOK {
+		t.Fatalf("expected patch status 200, got %d (%s)", patchResp.Code, patchResp.Body.String())
+	}
+	updated, err := config.Load(path)
+	if err != nil {
+		t.Fatalf("load updated config: %v", err)
+	}
+	if updated.Chat.DefaultAgentID != "alpha" {
+		t.Fatalf("expected unrelated field preserved, got %q", updated.Chat.DefaultAgentID)
+	}
+	if updated.Model.Provider != "zai" || updated.Model.Name != "glm-4.7" {
+		t.Fatalf("expected model patch applied, got %+v", updated.Model)
+	}
+
+	validateReq := httptest.NewRequest(http.MethodPost, "/api/admin/config/validate", bytes.NewBufferString(`{"model":{"provider":"bad-provider","name":""}}`))
+	validateReq.Header.Set("Content-Type", "application/json")
+	validateResp := httptest.NewRecorder()
+	mux.ServeHTTP(validateResp, validateReq)
+	if validateResp.Code != http.StatusOK {
+		t.Fatalf("expected validate status 200, got %d (%s)", validateResp.Code, validateResp.Body.String())
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(validateResp.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("decode validate response: %v", err)
+	}
+	if ok, _ := payload["ok"].(bool); ok {
+		t.Fatalf("expected ok=false for invalid validate payload, got %#v", payload)
+	}
+	fieldErrors, _ := payload["field_errors"].(map[string]any)
+	if _, ok := fieldErrors["model.provider"]; !ok {
+		t.Fatalf("expected model.provider field error, got %#v", fieldErrors)
+	}
+	if _, ok := fieldErrors["model.name"]; !ok {
+		t.Fatalf("expected model.name field error, got %#v", fieldErrors)
+	}
+}
+
+func TestAdminProviderModelsUsesStoredHatzSecret(t *testing.T) {
+	root := t.TempDir()
+	masterPath := filepath.Join(root, ".openclawssy", "master.key")
+	if _, err := secrets.GenerateAndWriteMasterKey(masterPath); err != nil {
+		t.Fatalf("generate master key: %v", err)
+	}
+
+	hatzServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/chat/models" {
+			t.Fatalf("unexpected path: %s", r.URL.Path)
+		}
+		if got := r.Header.Get("Authorization"); got != "Bearer hatz-secret" {
+			t.Fatalf("unexpected auth header: %q", got)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"data": []map[string]any{{"id": "hatz-coder"}, {"id": "hatz-reasoner"}},
+		})
+	}))
+	defer hatzServer.Close()
+
+	configPath := filepath.Join(root, ".openclawssy", "config.json")
+	cfg := config.Default()
+	cfg.Secrets.MasterKeyFile = masterPath
+	cfg.Secrets.StoreFile = filepath.Join(root, ".openclawssy", "secrets.enc")
+	cfg.Providers.Hatz.BaseURL = hatzServer.URL
+	cfg.Providers.Hatz.APIKey = ""
+	cfg.Providers.Hatz.APIKeyEnv = ""
+	if err := config.Save(configPath, cfg); err != nil {
+		t.Fatalf("save config: %v", err)
+	}
+
+	store, err := secrets.NewStore(cfg)
+	if err != nil {
+		t.Fatalf("new secret store: %v", err)
+	}
+	if err := store.Set("provider/hatz/api_key", "hatz-secret"); err != nil {
+		t.Fatalf("store hatz secret: %v", err)
+	}
+
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/api/admin/providers/models?provider=hatz", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected status 200, got %d (%s)", rr.Code, rr.Body.String())
+	}
+
+	var payload map[string]any
+	if err := json.Unmarshal(rr.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("decode provider models response: %v", err)
+	}
+	if payload["provider"] != "hatz" {
+		t.Fatalf("unexpected provider payload: %#v", payload["provider"])
+	}
+	models, ok := payload["models"].([]any)
+	if !ok || len(models) != 2 || models[0] != "hatz-coder" || models[1] != "hatz-reasoner" {
+		t.Fatalf("unexpected models payload: %#v", payload["models"])
+	}
+}
+
+func TestDashboardLayoutsEndpointRejectsOversizedLayout(t *testing.T) {
+	root := t.TempDir()
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	createReq := httptest.NewRequest(http.MethodPost, "/api/admin/dashboards", bytes.NewBufferString(`{"name":"Ops"}`))
+	createReq.Header.Set("Content-Type", "application/json")
+	createResp := httptest.NewRecorder()
+	mux.ServeHTTP(createResp, createReq)
+	if createResp.Code != http.StatusOK {
+		t.Fatalf("expected create status 200, got %d (%s)", createResp.Code, createResp.Body.String())
+	}
+	var createPayload struct {
+		Dashboard dashboardLayoutRecord `json:"dashboard"`
+	}
+	if err := json.Unmarshal(createResp.Body.Bytes(), &createPayload); err != nil {
+		t.Fatalf("decode create response: %v", err)
+	}
+	layout := make([]map[string]any, 0, maxDashboardWidgets+1)
+	for i := 0; i < maxDashboardWidgets+1; i++ {
+		layout = append(layout, map[string]any{"widget_key": "runtime.status", "widget_instance_id": fmt.Sprintf("w%d", i), "x": 0, "y": i, "w": 3, "h": 2})
+	}
+	body, err := json.Marshal(map[string]any{"name": "Ops", "layout": layout})
+	if err != nil {
+		t.Fatalf("marshal oversized layout: %v", err)
+	}
+	updateReq := httptest.NewRequest(http.MethodPut, "/api/admin/dashboards/"+createPayload.Dashboard.ID, bytes.NewReader(body))
+	updateReq.Header.Set("Content-Type", "application/json")
+	updateResp := httptest.NewRecorder()
+	mux.ServeHTTP(updateResp, updateReq)
+	if updateResp.Code != http.StatusBadRequest {
+		t.Fatalf("expected update status 400, got %d (%s)", updateResp.Code, updateResp.Body.String())
+	}
+}
+
+func TestAdminSecretsEndpointSetAndList(t *testing.T) {
+	root := t.TempDir()
+	masterPath := filepath.Join(root, ".openclawssy", "master.key")
+	if _, err := secrets.GenerateAndWriteMasterKey(masterPath); err != nil {
+		t.Fatalf("generate master key: %v", err)
+	}
+
+	configPath := filepath.Join(root, ".openclawssy", "config.json")
+	cfg := config.Default()
+	cfg.Secrets.MasterKeyFile = masterPath
+	cfg.Secrets.StoreFile = filepath.Join(root, ".openclawssy", "secrets.enc")
+	if err := config.Save(configPath, cfg); err != nil {
+		t.Fatalf("save config: %v", err)
+	}
+
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	setReq := httptest.NewRequest(http.MethodPost, "/api/admin/secrets", bytes.NewBufferString(`{"name":"discord/token","value":"abc"}`))
+	setReq.Header.Set("Content-Type", "application/json")
+	setResp := httptest.NewRecorder()
+	mux.ServeHTTP(setResp, setReq)
+	if setResp.Code != http.StatusOK {
+		t.Fatalf("expected set secret status %d, got %d (%s)", http.StatusOK, setResp.Code, setResp.Body.String())
+	}
+
+	listReq := httptest.NewRequest(http.MethodGet, "/api/admin/secrets", nil)
+	listResp := httptest.NewRecorder()
+	mux.ServeHTTP(listResp, listReq)
+	if listResp.Code != http.StatusOK {
+		t.Fatalf("expected list secrets status %d, got %d (%s)", http.StatusOK, listResp.Code, listResp.Body.String())
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(listResp.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("decode secrets response: %v", err)
+	}
+	keys, ok := payload["keys"].([]any)
+	if !ok || len(keys) != 1 {
+		t.Fatalf("expected one stored secret key, got %#v", payload["keys"])
+	}
+	if keys[0] != "discord/token" {
+		t.Fatalf("unexpected key entry: %#v", keys[0])
+	}
+}
+
+func TestAdminSecretsEndpointValidatesInputAndDeletesKeys(t *testing.T) {
+	root := t.TempDir()
+	masterPath := filepath.Join(root, ".openclawssy", "master.key")
+	if _, err := secrets.GenerateAndWriteMasterKey(masterPath); err != nil {
+		t.Fatalf("generate master key: %v", err)
+	}
+
+	configPath := filepath.Join(root, ".openclawssy", "config.json")
+	cfg := config.Default()
+	cfg.Secrets.MasterKeyFile = masterPath
+	cfg.Secrets.StoreFile = filepath.Join(root, ".openclawssy", "secrets.enc")
+	if err := config.Save(configPath, cfg); err != nil {
+		t.Fatalf("save config: %v", err)
+	}
+
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	tooLongName := strings.Repeat("a", maxAdminSecretKeyLen+1)
+	tooLongValue := strings.Repeat("b", maxAdminSecretValueLen+1)
+	tests := []struct {
+		name string
+		body string
+	}{
+		{name: "blank name", body: `{"name":"   ","value":"abc"}`},
+		{name: "control chars", body: "{\"name\":\"discord\\nkey\",\"value\":\"abc\"}"},
+		{name: "name too long", body: `{"name":"` + tooLongName + `","value":"abc"}`},
+		{name: "value too long", body: `{"name":"discord/bot_token","value":"` + tooLongValue + `"}`},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			req := httptest.NewRequest(http.MethodPost, "/api/admin/secrets", bytes.NewBufferString(tc.body))
+			req.Header.Set("Content-Type", "application/json")
+			resp := httptest.NewRecorder()
+			mux.ServeHTTP(resp, req)
+			if resp.Code != http.StatusBadRequest {
+				t.Fatalf("expected 400, got %d (%s)", resp.Code, resp.Body.String())
+			}
+		})
+	}
+
+	setReq := httptest.NewRequest(http.MethodPost, "/api/admin/secrets", bytes.NewBufferString(`{"name":" discord/bot_token ","value":"abc"}`))
+	setReq.Header.Set("Content-Type", "application/json")
+	setResp := httptest.NewRecorder()
+	mux.ServeHTTP(setResp, setReq)
+	if setResp.Code != http.StatusOK {
+		t.Fatalf("expected set status 200, got %d (%s)", setResp.Code, setResp.Body.String())
+	}
+	setOtherReq := httptest.NewRequest(http.MethodPost, "/api/admin/secrets", bytes.NewBufferString(`{"name":"OPENAI_API_KEY","value":"xyz"}`))
+	setOtherReq.Header.Set("Content-Type", "application/json")
+	setOtherResp := httptest.NewRecorder()
+	mux.ServeHTTP(setOtherResp, setOtherReq)
+	if setOtherResp.Code != http.StatusOK {
+		t.Fatalf("expected second set status 200, got %d (%s)", setOtherResp.Code, setOtherResp.Body.String())
+	}
+
+	deleteReq := httptest.NewRequest(http.MethodDelete, "/api/admin/secrets/discord%2Fbot_token", nil)
+	deleteResp := httptest.NewRecorder()
+	mux.ServeHTTP(deleteResp, deleteReq)
+	if deleteResp.Code != http.StatusOK {
+		t.Fatalf("expected delete status 200, got %d (%s)", deleteResp.Code, deleteResp.Body.String())
+	}
+
+	listReq := httptest.NewRequest(http.MethodGet, "/api/admin/secrets", nil)
+	listResp := httptest.NewRecorder()
+	mux.ServeHTTP(listResp, listReq)
+	if listResp.Code != http.StatusOK {
+		t.Fatalf("expected list status 200, got %d (%s)", listResp.Code, listResp.Body.String())
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(listResp.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("decode secrets response: %v", err)
+	}
+	keys, ok := payload["keys"].([]any)
+	if !ok {
+		t.Fatalf("expected keys array, got %#v", payload["keys"])
+	}
+	if len(keys) != 1 || keys[0] != "OPENAI_API_KEY" {
+		t.Fatalf("expected delete to preserve other keys, got %#v", keys)
+	}
+
+	deleteMissingReq := httptest.NewRequest(http.MethodDelete, "/api/admin/secrets/discord%2Fbot_token", nil)
+	deleteMissingResp := httptest.NewRecorder()
+	mux.ServeHTTP(deleteMissingResp, deleteMissingReq)
+	if deleteMissingResp.Code != http.StatusNotFound {
+		t.Fatalf("expected 404 for missing key, got %d (%s)", deleteMissingResp.Code, deleteMissingResp.Body.String())
+	}
+}
+
+func TestDashboardLayoutsEndpointsPersistRecords(t *testing.T) {
+	root := t.TempDir()
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	createReq := httptest.NewRequest(http.MethodPost, "/api/admin/dashboards", bytes.NewBufferString(`{"name":"Ops"}`))
+	createReq.Header.Set("Content-Type", "application/json")
+	createResp := httptest.NewRecorder()
+	mux.ServeHTTP(createResp, createReq)
+	if createResp.Code != http.StatusOK {
+		t.Fatalf("expected create status 200, got %d (%s)", createResp.Code, createResp.Body.String())
+	}
+	var createPayload struct {
+		Dashboard dashboardLayoutRecord `json:"dashboard"`
+	}
+	if err := json.Unmarshal(createResp.Body.Bytes(), &createPayload); err != nil {
+		t.Fatalf("decode create response: %v", err)
+	}
+	if createPayload.Dashboard.ID == "" {
+		t.Fatal("expected created dashboard id")
+	}
+
+	updateReq := httptest.NewRequest(http.MethodPut, "/api/admin/dashboards/"+createPayload.Dashboard.ID, bytes.NewBufferString(`{"name":"Ops Board","layout":[{"widget_key":"runtime.status","widget_instance_id":"w1","x":0,"y":0,"w":4,"h":2}]}`))
+	updateReq.Header.Set("Content-Type", "application/json")
+	updateResp := httptest.NewRecorder()
+	mux.ServeHTTP(updateResp, updateReq)
+	if updateResp.Code != http.StatusOK {
+		t.Fatalf("expected update status 200, got %d (%s)", updateResp.Code, updateResp.Body.String())
+	}
+
+	listReq := httptest.NewRequest(http.MethodGet, "/api/admin/dashboards", nil)
+	listResp := httptest.NewRecorder()
+	mux.ServeHTTP(listResp, listReq)
+	if listResp.Code != http.StatusOK {
+		t.Fatalf("expected list status 200, got %d (%s)", listResp.Code, listResp.Body.String())
+	}
+	var listPayload struct {
+		Dashboards []dashboardLayoutRecord `json:"dashboards"`
+	}
+	if err := json.Unmarshal(listResp.Body.Bytes(), &listPayload); err != nil {
+		t.Fatalf("decode list response: %v", err)
+	}
+	if len(listPayload.Dashboards) != 1 || listPayload.Dashboards[0].Name != "Ops Board" {
+		t.Fatalf("unexpected dashboards payload: %#v", listPayload.Dashboards)
+	}
+	if len(listPayload.Dashboards[0].Layout) != 1 || listPayload.Dashboards[0].Layout[0].WidgetKey != "runtime.status" {
+		t.Fatalf("unexpected layout payload: %#v", listPayload.Dashboards[0].Layout)
+	}
+
+	deleteReq := httptest.NewRequest(http.MethodDelete, "/api/admin/dashboards/"+createPayload.Dashboard.ID, nil)
+	deleteResp := httptest.NewRecorder()
+	mux.ServeHTTP(deleteResp, deleteReq)
+	if deleteResp.Code != http.StatusOK {
+		t.Fatalf("expected delete status 200, got %d (%s)", deleteResp.Code, deleteResp.Body.String())
+	}
+}
+
+func TestAdminAgentDocsEndpointListAndSave(t *testing.T) {
+	root := t.TempDir()
+	agentDir := filepath.Join(root, ".openclawssy", "agents", "default")
+	if err := os.MkdirAll(agentDir, 0o755); err != nil {
+		t.Fatalf("mkdir agent dir: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(agentDir, "SOUL.md"), []byte("# SOUL\nold"), 0o600); err != nil {
+		t.Fatalf("write soul doc: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(agentDir, "HANDOFF.md"), []byte("# HANDOFF\nold"), 0o600); err != nil {
+		t.Fatalf("write handoff doc: %v", err)
+	}
+
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	listReq := httptest.NewRequest(http.MethodGet, "/api/admin/agent/docs?agent_id=default", nil)
+	listResp := httptest.NewRecorder()
+	mux.ServeHTTP(listResp, listReq)
+	if listResp.Code != http.StatusOK {
+		t.Fatalf("expected list status %d, got %d (%s)", http.StatusOK, listResp.Code, listResp.Body.String())
+	}
+	var listPayload struct {
+		AgentID   string            `json:"agent_id"`
+		Documents []agentDocPayload `json:"documents"`
+	}
+	if err := json.Unmarshal(listResp.Body.Bytes(), &listPayload); err != nil {
+		t.Fatalf("decode docs list: %v", err)
+	}
+	if listPayload.AgentID != "default" {
+		t.Fatalf("unexpected agent id: %q", listPayload.AgentID)
+	}
+	if len(listPayload.Documents) < 7 {
+		t.Fatalf("expected editable docs payload, got %d docs", len(listPayload.Documents))
+	}
+
+	var heartbeatDoc *agentDocPayload
+	for i := range listPayload.Documents {
+		doc := &listPayload.Documents[i]
+		if doc.Name == "HEARTBEAT.md" {
+			heartbeatDoc = doc
+			break
+		}
+	}
+	if heartbeatDoc == nil {
+		t.Fatal("expected HEARTBEAT.md entry in documents")
+	}
+	if heartbeatDoc.AliasFor != "HANDOFF.md" {
+		t.Fatalf("expected heartbeat alias to handoff, got %q", heartbeatDoc.AliasFor)
+	}
+
+	setHeartbeatReq := httptest.NewRequest(http.MethodPost, "/api/admin/agent/docs", bytes.NewBufferString(`{"agent_id":"default","name":"HEARTBEAT.md","content":"# HEARTBEAT\nupdated"}`))
+	setHeartbeatReq.Header.Set("Content-Type", "application/json")
+	setHeartbeatResp := httptest.NewRecorder()
+	mux.ServeHTTP(setHeartbeatResp, setHeartbeatReq)
+	if setHeartbeatResp.Code != http.StatusOK {
+		t.Fatalf("expected set heartbeat status %d, got %d (%s)", http.StatusOK, setHeartbeatResp.Code, setHeartbeatResp.Body.String())
+	}
+
+	rawHandoff, err := os.ReadFile(filepath.Join(agentDir, "HANDOFF.md"))
+	if err != nil {
+		t.Fatalf("read handoff after heartbeat update: %v", err)
+	}
+	if string(rawHandoff) != "# HEARTBEAT\nupdated" {
+		t.Fatalf("expected heartbeat write to update HANDOFF.md, got %q", string(rawHandoff))
+	}
+
+	setSoulReq := httptest.NewRequest(http.MethodPost, "/api/admin/agent/docs", bytes.NewBufferString(`{"agent_id":"default","name":"SOUL.md","content":"# SOUL\nnew"}`))
+	setSoulReq.Header.Set("Content-Type", "application/json")
+	setSoulResp := httptest.NewRecorder()
+	mux.ServeHTTP(setSoulResp, setSoulReq)
+	if setSoulResp.Code != http.StatusOK {
+		t.Fatalf("expected set soul status %d, got %d (%s)", http.StatusOK, setSoulResp.Code, setSoulResp.Body.String())
+	}
+	rawSoul, err := os.ReadFile(filepath.Join(agentDir, "SOUL.md"))
+	if err != nil {
+		t.Fatalf("read soul after update: %v", err)
+	}
+	if string(rawSoul) != "# SOUL\nnew" {
+		t.Fatalf("unexpected SOUL.md content: %q", string(rawSoul))
+	}
+}
+
+func TestAdminAgentDocsEndpointRejectsInvalidInput(t *testing.T) {
+	h := New(t.TempDir(), httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	invalidDocReq := httptest.NewRequest(http.MethodPost, "/api/admin/agent/docs", bytes.NewBufferString(`{"agent_id":"default","name":"README.md","content":"x"}`))
+	invalidDocReq.Header.Set("Content-Type", "application/json")
+	invalidDocResp := httptest.NewRecorder()
+	mux.ServeHTTP(invalidDocResp, invalidDocReq)
+	if invalidDocResp.Code != http.StatusBadRequest {
+		t.Fatalf("expected invalid doc status %d, got %d", http.StatusBadRequest, invalidDocResp.Code)
+	}
+
+	invalidAgentReq := httptest.NewRequest(http.MethodGet, "/api/admin/agent/docs?agent_id=../../etc", nil)
+	invalidAgentResp := httptest.NewRecorder()
+	mux.ServeHTTP(invalidAgentResp, invalidAgentReq)
+	if invalidAgentResp.Code != http.StatusBadRequest {
+		t.Fatalf("expected invalid agent status %d, got %d", http.StatusBadRequest, invalidAgentResp.Code)
+	}
+}
+
+func TestAdminSkillsInstallAndActivation(t *testing.T) {
+	root := t.TempDir()
+	if err := os.MkdirAll(filepath.Join(root, "workspace"), 0o755); err != nil {
+		t.Fatalf("mkdir workspace: %v", err)
+	}
+	if err := config.Save(filepath.Join(root, ".openclawssy", "config.json"), config.Default()); err != nil {
+		t.Fatalf("save config: %v", err)
+	}
+
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	listReq := httptest.NewRequest(http.MethodGet, "/api/admin/skills?agent_id=default", nil)
+	listResp := httptest.NewRecorder()
+	mux.ServeHTTP(listResp, listReq)
+	if listResp.Code != http.StatusOK {
+		t.Fatalf("expected list status %d, got %d (%s)", http.StatusOK, listResp.Code, listResp.Body.String())
+	}
+	var listPayload map[string]any
+	if err := json.Unmarshal(listResp.Body.Bytes(), &listPayload); err != nil {
+		t.Fatalf("decode list payload: %v", err)
+	}
+	installable, ok := listPayload["installable"].([]any)
+	if !ok {
+		t.Fatalf("expected installable skills list, got %#v", listPayload["installable"])
+	}
+	foundClawDefuckifier := false
+	for _, item := range installable {
+		entry, ok := item.(map[string]any)
+		if !ok {
+			continue
+		}
+		if entry["name"] == "clawdefuckifier" {
+			foundClawDefuckifier = true
+			break
+		}
+	}
+	if !foundClawDefuckifier {
+		t.Fatalf("expected clawdefuckifier in installable skills, got %#v", listPayload["installable"])
+	}
+
+	installReq := httptest.NewRequest(http.MethodPost, "/api/admin/skills", bytes.NewBufferString(`{"action":"install","name":"playwrite","agent_id":"default"}`))
+	installReq.Header.Set("Content-Type", "application/json")
+	installResp := httptest.NewRecorder()
+	mux.ServeHTTP(installResp, installReq)
+	if installResp.Code != http.StatusOK {
+		t.Fatalf("expected install status %d, got %d (%s)", http.StatusOK, installResp.Code, installResp.Body.String())
+	}
+
+	if _, err := os.Stat(filepath.Join(root, "workspace", "skills", "playwrite.md")); err != nil {
+		t.Fatalf("expected installed playwrite skill file: %v", err)
+	}
+
+	activateReq := httptest.NewRequest(http.MethodPost, "/api/admin/skills", bytes.NewBufferString(`{"action":"activate","name":"playwrite","agent_id":"default"}`))
+	activateReq.Header.Set("Content-Type", "application/json")
+	activateResp := httptest.NewRecorder()
+	mux.ServeHTTP(activateResp, activateReq)
+	if activateResp.Code != http.StatusOK {
+		t.Fatalf("expected activate status %d, got %d (%s)", http.StatusOK, activateResp.Code, activateResp.Body.String())
+	}
+
+	rawTools, err := os.ReadFile(filepath.Join(root, ".openclawssy", "agents", "default", "TOOLS.md"))
+	if err != nil {
+		t.Fatalf("read TOOLS.md: %v", err)
+	}
+	toolsText := string(rawTools)
+	if !strings.Contains(toolsText, "OPENCLAWSSY_ACTIVATED_SKILLS_START") || !strings.Contains(toolsText, "- playwrite") {
+		t.Fatalf("expected TOOLS.md activated skills block, got %q", toolsText)
+	}
+
+	verifyReq := httptest.NewRequest(http.MethodGet, "/api/admin/skills?agent_id=default", nil)
+	verifyResp := httptest.NewRecorder()
+	mux.ServeHTTP(verifyResp, verifyReq)
+	if verifyResp.Code != http.StatusOK {
+		t.Fatalf("expected verify status %d, got %d (%s)", http.StatusOK, verifyResp.Code, verifyResp.Body.String())
+	}
+	var verifyPayload map[string]any
+	if err := json.Unmarshal(verifyResp.Body.Bytes(), &verifyPayload); err != nil {
+		t.Fatalf("decode verify payload: %v", err)
+	}
+	activatedAny, ok := verifyPayload["activated_skills"].([]any)
+	if !ok || len(activatedAny) != 1 || activatedAny[0] != "playwrite" {
+		t.Fatalf("expected activated playwrite skill, got %#v", verifyPayload["activated_skills"])
+	}
+
+	deactivateReq := httptest.NewRequest(http.MethodPost, "/api/admin/skills", bytes.NewBufferString(`{"action":"deactivate","name":"playwrite","agent_id":"default"}`))
+	deactivateReq.Header.Set("Content-Type", "application/json")
+	deactivateResp := httptest.NewRecorder()
+	mux.ServeHTTP(deactivateResp, deactivateReq)
+	if deactivateResp.Code != http.StatusOK {
+		t.Fatalf("expected deactivate status %d, got %d (%s)", http.StatusOK, deactivateResp.Code, deactivateResp.Body.String())
+	}
+
+	rawTools, err = os.ReadFile(filepath.Join(root, ".openclawssy", "agents", "default", "TOOLS.md"))
+	if err != nil {
+		t.Fatalf("read TOOLS.md after deactivate: %v", err)
+	}
+	if strings.Contains(string(rawTools), "- playwrite") {
+		t.Fatalf("expected playwrite to be removed after deactivate, got %q", string(rawTools))
+	}
+}
+
+func TestDebugRunTraceEndpointReturnsNotFoundWithoutTrace(t *testing.T) {
+	store := httpchannel.NewInMemoryRunStore()
+	_, err := store.Create(context.Background(), httpchannel.Run{ID: "run_2", AgentID: "default", Message: "hello", Status: "completed", CreatedAt: time.Now().UTC(), UpdatedAt: time.Now().UTC()})
+	if err != nil {
+		t.Fatalf("create run: %v", err)
+	}
+
+	h := New(".", store)
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/api/admin/debug/runs/run_2/trace", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusNotFound {
+		t.Fatalf("expected %d, got %d", http.StatusNotFound, rr.Code)
+	}
+}
+
+func TestListChatSessionsEndpoint(t *testing.T) {
+	root := t.TempDir()
+	store, err := chatstore.NewStore(filepath.Join(root, ".openclawssy", "agents"))
+	if err != nil {
+		t.Fatalf("new chat store: %v", err)
+	}
+	_, err = store.CreateSession(chatstore.CreateSessionInput{AgentID: "default", Channel: "dashboard", UserID: "dashboard_user", RoomID: "dashboard"})
+	if err != nil {
+		t.Fatalf("create session: %v", err)
+	}
+
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/api/admin/chat/sessions?agent_id=default&user_id=dashboard_user&room_id=dashboard&channel=dashboard", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected %d, got %d", http.StatusOK, rr.Code)
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(rr.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("decode response: %v", err)
+	}
+	sessions, ok := payload["sessions"].([]any)
+	if !ok || len(sessions) != 1 {
+		t.Fatalf("expected one session, got %#v", payload["sessions"])
+	}
+}
+
+func TestListChatSessionsEndpointPagination(t *testing.T) {
+	root := t.TempDir()
+	store, err := chatstore.NewStore(filepath.Join(root, ".openclawssy", "agents"))
+	if err != nil {
+		t.Fatalf("new chat store: %v", err)
+	}
+	for i := 0; i < 3; i++ {
+		if _, err := store.CreateSession(chatstore.CreateSessionInput{AgentID: "default", Channel: "dashboard", UserID: "dashboard_user", RoomID: "dashboard"}); err != nil {
+			t.Fatalf("create session %d: %v", i, err)
+		}
+	}
+
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/api/admin/chat/sessions?agent_id=default&user_id=dashboard_user&room_id=dashboard&channel=dashboard&limit=1&offset=1", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected %d, got %d", http.StatusOK, rr.Code)
+	}
+	var payload struct {
+		Sessions []any `json:"sessions"`
+		Total    int   `json:"total"`
+		Limit    int   `json:"limit"`
+		Offset   int   `json:"offset"`
+	}
+	if err := json.Unmarshal(rr.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("decode response: %v", err)
+	}
+	if payload.Total != 3 || payload.Limit != 1 || payload.Offset != 1 {
+		t.Fatalf("unexpected pagination metadata: %+v", payload)
+	}
+	if len(payload.Sessions) != 1 {
+		t.Fatalf("expected one paged session, got %d", len(payload.Sessions))
+	}
+}
+
+func TestAdminAgentsEndpointListAndSetActive(t *testing.T) {
+	root := t.TempDir()
+	enabled := true
+	cfg := config.Default()
+	cfg.Agents.AllowInterAgentMessaging = true
+	cfg.Agents.AllowAgentModelOverrides = true
+	cfg.Agents.SelfImprovementEnabled = true
+	cfg.Agents.Profiles = map[string]config.AgentProfile{
+		"alpha": {
+			Enabled:         &enabled,
+			SelfImprovement: true,
+			Model: config.ModelConfig{
+				Provider:  "openai",
+				Name:      "gpt-4.1-mini",
+				MaxTokens: 1024,
+				TimeoutMS: 180000,
+			},
+		},
+		"reviewer": {},
+	}
+	cfg.Agents.EnabledAgentIDs = []string{"planner"}
+	cfg.Chat.DefaultAgentID = "default"
+	cfg.Discord.DefaultAgentID = "discord-bot"
+	if err := config.Save(filepath.Join(root, ".openclawssy", "config.json"), cfg); err != nil {
+		t.Fatalf("save config: %v", err)
+	}
+
+	store, err := chatstore.NewStore(filepath.Join(root, ".openclawssy", "agents"))
+	if err != nil {
+		t.Fatalf("new chat store: %v", err)
+	}
+	if _, err := store.CreateSession(chatstore.CreateSessionInput{AgentID: "default", Channel: "dashboard", UserID: "dashboard_user", RoomID: "dashboard"}); err != nil {
+		t.Fatalf("create default session: %v", err)
+	}
+	if _, err := store.CreateSession(chatstore.CreateSessionInput{AgentID: "alpha", Channel: "dashboard", UserID: "dashboard_user", RoomID: "dashboard"}); err != nil {
+		t.Fatalf("create alpha session: %v", err)
+	}
+
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	listReq := httptest.NewRequest(http.MethodGet, "/api/admin/agents?channel=dashboard&user_id=dashboard_user&room_id=dashboard", nil)
+	listResp := httptest.NewRecorder()
+	mux.ServeHTTP(listResp, listReq)
+	if listResp.Code != http.StatusOK {
+		t.Fatalf("expected list agents status 200, got %d (%s)", listResp.Code, listResp.Body.String())
+	}
+	var listed map[string]any
+	if err := json.Unmarshal(listResp.Body.Bytes(), &listed); err != nil {
+		t.Fatalf("decode list payload: %v", err)
+	}
+	if listed["selected_agent"] != "default" {
+		t.Fatalf("expected selected_agent default on first list, got %#v", listed["selected_agent"])
+	}
+	agentSummaries, ok := listed["agent_summaries"].(map[string]any)
+	if !ok {
+		t.Fatalf("expected agent_summaries object, got %#v", listed["agent_summaries"])
+	}
+	agents, ok := listed["agents"].([]any)
+	if !ok {
+		t.Fatalf("expected agents array, got %#v", listed["agents"])
+	}
+	seen := map[string]bool{}
+	for _, item := range agents {
+		seen[strings.TrimSpace(fmt.Sprint(item))] = true
+	}
+	for _, want := range []string{"default", "alpha", "reviewer", "planner", "discord-bot"} {
+		if !seen[want] {
+			t.Fatalf("expected agent %q in unified list, got %#v", want, listed["agents"])
+		}
+	}
+	alphaSummary, ok := agentSummaries["alpha"].(map[string]any)
+	if !ok {
+		t.Fatalf("expected alpha summary object, got %#v", agentSummaries["alpha"])
+	}
+	if alphaSummary["self_improvement_ready"] != true {
+		t.Fatalf("expected alpha self_improvement_ready=true, got %#v", alphaSummary)
+	}
+	activatedSkills, ok := alphaSummary["activated_skills"].([]any)
+	if !ok {
+		activatedSkills = []any{}
+	}
+	if len(activatedSkills) != 0 {
+		t.Fatalf("expected no activated skills for alpha in fixture, got %#v", activatedSkills)
+	}
+
+	setReq := httptest.NewRequest(http.MethodPost, "/api/admin/agents", bytes.NewBufferString(`{"channel":"dashboard","user_id":"dashboard_user","room_id":"dashboard","agent_id":"alpha"}`))
+	setReq.Header.Set("Content-Type", "application/json")
+	setResp := httptest.NewRecorder()
+	mux.ServeHTTP(setResp, setReq)
+	if setResp.Code != http.StatusOK {
+		t.Fatalf("expected set active agent status 200, got %d (%s)", setResp.Code, setResp.Body.String())
+	}
+
+	verifyReq := httptest.NewRequest(http.MethodGet, "/api/admin/agents?channel=dashboard&user_id=dashboard_user&room_id=dashboard", nil)
+	verifyResp := httptest.NewRecorder()
+	mux.ServeHTTP(verifyResp, verifyReq)
+	if verifyResp.Code != http.StatusOK {
+		t.Fatalf("expected verify status 200, got %d", verifyResp.Code)
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(verifyResp.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("decode verify payload: %v", err)
+	}
+	if payload["active_agent"] != "alpha" {
+		t.Fatalf("expected active_agent alpha, got %#v", payload["active_agent"])
+	}
+	if payload["selected_agent"] != "alpha" {
+		t.Fatalf("expected selected_agent alpha, got %#v", payload["selected_agent"])
+	}
+	profileContext, ok := payload["profile_context"].(map[string]any)
+	if !ok {
+		t.Fatalf("expected profile_context object, got %#v", payload["profile_context"])
+	}
+	if profileContext["agent_id"] != "alpha" || profileContext["exists"] != true {
+		t.Fatalf("unexpected profile context header: %#v", profileContext)
+	}
+	if profileContext["model_provider"] != "openai" || profileContext["model_name"] != "gpt-4.1-mini" {
+		t.Fatalf("expected profile model override fields, got %#v", profileContext)
+	}
+	if profileContext["model_timeout_ms"] != float64(180000) {
+		t.Fatalf("expected profile timeout override field, got %#v", profileContext)
+	}
+	agentsConfig, ok := payload["agents_config"].(map[string]any)
+	if !ok {
+		t.Fatalf("expected agents_config object, got %#v", payload["agents_config"])
+	}
+	if agentsConfig["allow_agent_model_overrides"] != true || agentsConfig["self_improvement_enabled"] != true {
+		t.Fatalf("unexpected agents_config payload: %#v", agentsConfig)
+	}
+}
+
+type stubDashboardRunCanceller struct {
+	tracked map[string]bool
+	called  []string
+}
+
+func (s *stubDashboardRunCanceller) Cancel(runID string) error {
+	s.called = append(s.called, runID)
+	if s.tracked[runID] {
+		return nil
+	}
+	return errors.New("not tracked")
+}
+
+func (s *stubDashboardRunCanceller) IsTracked(runID string) bool {
+	return s.tracked[runID]
+}
+
+func TestMonitorRunsEndpointListsMainAndSubagentAuditRuns(t *testing.T) {
+	root := t.TempDir()
+	auditDir := filepath.Join(root, ".openclawssy", "agents", "alpha", "audit")
+	if err := os.MkdirAll(auditDir, 0o755); err != nil {
+		t.Fatalf("mkdir audit dir: %v", err)
+	}
+	auditBody := strings.Join([]string{
+		`{"ts":"2026-03-05T10:00:00Z","type":"run.start","run_id":"run-main","agent_id":"alpha","payload":{"source":"dashboard","message":"main task","task_id":"cdf-main-1","model_provider":"hatz","model_name":"hatz-coder"}}`,
+		`{"ts":"2026-03-05T10:00:02Z","type":"run.end","run_id":"run-main","agent_id":"alpha","payload":{"artifact_path":"/tmp/run-main","checkpoint_path":"clawdefuckifier/alpha/runs/run-main.md"}}`,
+		`{"ts":"2026-03-05T10:01:00Z","type":"run.start","run_id":"run-sub","agent_id":"alpha","payload":{"source":"subagent/delegation","message":"sub task","task_id":"cdf-diagnose-2","model_provider":"hatz","model_name":"hatz-coder"}}`,
+		`{"ts":"2026-03-05T10:01:04Z","type":"run.end","run_id":"run-sub","agent_id":"alpha","payload":{"error":"timeout","checkpoint_path":"clawdefuckifier/alpha/runs/run-sub.md"}}`,
+	}, "\n") + "\n"
+	if err := os.WriteFile(filepath.Join(auditDir, "events.jsonl"), []byte(auditBody), 0o600); err != nil {
+		t.Fatalf("write audit log: %v", err)
+	}
+
+	h := NewWithOptions(root, httpchannel.NewInMemoryRunStore(), Options{RunCanceller: &stubDashboardRunCanceller{tracked: map[string]bool{"run-sub": true}}})
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/api/admin/monitor/runs", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected 200, got %d (%s)", rr.Code, rr.Body.String())
+	}
+	var payload struct {
+		Runs []monitorRunRecord `json:"runs"`
+	}
+	if err := json.Unmarshal(rr.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("decode payload: %v", err)
+	}
+	if len(payload.Runs) != 2 {
+		t.Fatalf("expected 2 monitor runs, got %+v", payload.Runs)
+	}
+	if payload.Runs[0].RunID != "run-sub" || payload.Runs[0].Role != "subagent" || payload.Runs[0].Status != "failed" {
+		t.Fatalf("unexpected subagent run record: %+v", payload.Runs[0])
+	}
+	if payload.Runs[0].TaskID != "cdf-diagnose-2" || payload.Runs[0].ModelProvider != "hatz" || payload.Runs[0].ModelName != "hatz-coder" {
+		t.Fatalf("expected task/model metadata on subagent run, got %+v", payload.Runs[0])
+	}
+	if payload.Runs[0].CheckpointPath != "clawdefuckifier/alpha/runs/run-sub.md" {
+		t.Fatalf("expected checkpoint path on subagent run, got %+v", payload.Runs[0])
+	}
+	if payload.Runs[1].RunID != "run-main" || payload.Runs[1].Role != "main" || payload.Runs[1].Status != "completed" {
+		t.Fatalf("unexpected main run record: %+v", payload.Runs[1])
+	}
+	if payload.Runs[1].TaskID != "cdf-main-1" || payload.Runs[1].ModelProvider != "hatz" || payload.Runs[1].ModelName != "hatz-coder" {
+		t.Fatalf("expected task/model metadata on main run, got %+v", payload.Runs[1])
+	}
+	if payload.Runs[1].CheckpointPath != "clawdefuckifier/alpha/runs/run-main.md" {
+		t.Fatalf("expected checkpoint path on main run, got %+v", payload.Runs[1])
+	}
+}
+
+func TestListChatSessionsEndpointInvalidLimit(t *testing.T) {
+	root := t.TempDir()
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/api/admin/chat/sessions?limit=0", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusBadRequest {
+		t.Fatalf("expected %d, got %d", http.StatusBadRequest, rr.Code)
+	}
+}
+
+func TestChatSessionMessagesEndpoint(t *testing.T) {
+	root := t.TempDir()
+	store, err := chatstore.NewStore(filepath.Join(root, ".openclawssy", "agents"))
+	if err != nil {
+		t.Fatalf("new chat store: %v", err)
+	}
+	session, err := store.CreateSession(chatstore.CreateSessionInput{AgentID: "default", Channel: "dashboard", UserID: "dashboard_user", RoomID: "dashboard"})
+	if err != nil {
+		t.Fatalf("create session: %v", err)
+	}
+	if err := store.AppendMessage(session.SessionID, chatstore.Message{Role: "user", Content: "hello"}); err != nil {
+		t.Fatalf("append message: %v", err)
+	}
+
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/api/admin/chat/sessions/"+session.SessionID+"/messages?limit=10", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected %d, got %d", http.StatusOK, rr.Code)
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(rr.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("decode response: %v", err)
+	}
+	msgs, ok := payload["messages"].([]any)
+	if !ok || len(msgs) != 1 {
+		t.Fatalf("expected one message, got %#v", payload["messages"])
+	}
+}
+
+func TestChatSessionMessagesEndpointIncludesToolMetadata(t *testing.T) {
+	root := t.TempDir()
+	store, err := chatstore.NewStore(filepath.Join(root, ".openclawssy", "agents"))
+	if err != nil {
+		t.Fatalf("new chat store: %v", err)
+	}
+	session, err := store.CreateSession(chatstore.CreateSessionInput{AgentID: "default", Channel: "dashboard", UserID: "dashboard_user", RoomID: "dashboard"})
+	if err != nil {
+		t.Fatalf("create session: %v", err)
+	}
+	if err := store.AppendMessage(session.SessionID, chatstore.Message{
+		Role:       "tool",
+		Content:    `{"tool":"fs.list","id":"tool-json-1","output":"{\"entries\":[\"a.txt\"]}"}`,
+		RunID:      "run_42",
+		ToolCallID: "tool-json-1",
+		ToolName:   "fs.list",
+	}); err != nil {
+		t.Fatalf("append tool message: %v", err)
+	}
+
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/api/admin/chat/sessions/"+session.SessionID+"/messages?limit=10", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected %d, got %d", http.StatusOK, rr.Code)
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(rr.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("decode response: %v", err)
+	}
+	msgs, ok := payload["messages"].([]any)
+	if !ok || len(msgs) != 1 {
+		t.Fatalf("expected one message, got %#v", payload["messages"])
+	}
+	msg, ok := msgs[0].(map[string]any)
+	if !ok {
+		t.Fatalf("unexpected message shape: %#v", msgs[0])
+	}
+	if msg["role"] != "tool" {
+		t.Fatalf("expected role=tool, got %#v", msg["role"])
+	}
+	if msg["tool_name"] != "fs.list" || msg["tool_call_id"] != "tool-json-1" {
+		t.Fatalf("expected tool metadata to round-trip, got %#v", msg)
+	}
+	if msg["run_id"] != "run_42" {
+		t.Fatalf("expected run id to round-trip, got %#v", msg["run_id"])
+	}
+}
+
+func TestChatSessionMessagesEndpointPreservesMultiStepOrder(t *testing.T) {
+	root := t.TempDir()
+	store, err := chatstore.NewStore(filepath.Join(root, ".openclawssy", "agents"))
+	if err != nil {
+		t.Fatalf("new chat store: %v", err)
+	}
+	session, err := store.CreateSession(chatstore.CreateSessionInput{AgentID: "default", Channel: "dashboard", UserID: "dashboard_user", RoomID: "dashboard"})
+	if err != nil {
+		t.Fatalf("create session: %v", err)
+	}
+	sequence := []chatstore.Message{
+		{Role: "user", Content: "list files"},
+		{Role: "tool", Content: `{"tool":"fs.list","id":"tool-json-1","output":"{\"entries\":[\"a.txt\"]}"}`, ToolCallID: "tool-json-1", ToolName: "fs.list", RunID: "run_1"},
+		{Role: "tool", Content: `{"tool":"fs.read","id":"tool-json-2","output":"hello"}`, ToolCallID: "tool-json-2", ToolName: "fs.read", RunID: "run_1"},
+		{Role: "assistant", Content: "I found a.txt and read it."},
+	}
+	for _, msg := range sequence {
+		if err := store.AppendMessage(session.SessionID, msg); err != nil {
+			t.Fatalf("append message: %v", err)
+		}
+	}
+
+	h := New(root, httpchannel.NewInMemoryRunStore())
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	req := httptest.NewRequest(http.MethodGet, "/api/admin/chat/sessions/"+session.SessionID+"/messages?limit=10", nil)
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected %d, got %d", http.StatusOK, rr.Code)
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(rr.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("decode response: %v", err)
+	}
+	msgs, ok := payload["messages"].([]any)
+	if !ok || len(msgs) != 4 {
+		t.Fatalf("expected four messages, got %#v", payload["messages"])
+	}
+
+	roleAt := func(i int) string {
+		item, _ := msgs[i].(map[string]any)
+		if item == nil {
+			return ""
+		}
+		v, _ := item["role"].(string)
+		return v
+	}
+	if roleAt(0) != "user" || roleAt(1) != "tool" || roleAt(2) != "tool" || roleAt(3) != "assistant" {
+		t.Fatalf("unexpected message ordering: %#v", msgs)
+	}
+	tool1, _ := msgs[1].(map[string]any)
+	tool2, _ := msgs[2].(map[string]any)
+	if tool1["tool_call_id"] != "tool-json-1" || tool2["tool_call_id"] != "tool-json-2" {
+		t.Fatalf("expected distinct tool call ids in order, got %#v and %#v", tool1, tool2)
+	}
+}
+
+func TestSchedulerAdminEndpointsCRUDAndPauseResume(t *testing.T) {
+	root := t.TempDir()
+	jobStore, err := scheduler.NewStore(filepath.Join(root, ".openclawssy", "scheduler", "jobs.json"))
+	if err != nil {
+		t.Fatalf("new scheduler store: %v", err)
+	}
+
+	h := New(root, httpchannel.NewInMemoryRunStore(), jobStore)
+	mux := http.NewServeMux()
+	h.Register(mux)
+
+	addReq := httptest.NewRequest(http.MethodPost, "/api/admin/scheduler/jobs", bytes.NewBufferString(`{"schedule":"@every 1m","message":"status ping"}`))
+	addResp := httptest.NewRecorder()
+	mux.ServeHTTP(addResp, addReq)
+	if addResp.Code != http.StatusOK {
+		t.Fatalf("expected add job 200, got %d (%s)", addResp.Code, addResp.Body.String())
+	}
+	var addPayload map[string]any
+	if err := json.Unmarshal(addResp.Body.Bytes(), &addPayload); err != nil {
+		t.Fatalf("decode add response: %v", err)
+	}
+	jobID, _ := addPayload["id"].(string)
+	if jobID == "" {
+		t.Fatalf("expected returned job id, got %#v", addPayload)
+	}
+
+	listReq := httptest.NewRequest(http.MethodGet, "/api/admin/scheduler/jobs", nil)
+	listResp := httptest.NewRecorder()
+	mux.ServeHTTP(listResp, listReq)
+	if listResp.Code != http.StatusOK {
+		t.Fatalf("expected list jobs 200, got %d", listResp.Code)
+	}
+	var listPayload map[string]any
+	if err := json.Unmarshal(listResp.Body.Bytes(), &listPayload); err != nil {
+		t.Fatalf("decode list response: %v", err)
+	}
+	jobs, ok := listPayload["jobs"].([]any)
+	if !ok || len(jobs) != 1 {
+		t.Fatalf("expected one scheduler job, got %#v", listPayload["jobs"])
+	}
+	stored := jobStore.List()[0]
+	if stored.Channel != "dashboard" || stored.UserID != "dashboard_user" || stored.RoomID != "dashboard" {
+		t.Fatalf("expected dashboard default delivery metadata, got %+v", stored)
+	}
+
+	pauseReq := httptest.NewRequest(http.MethodPost, "/api/admin/scheduler/control", bytes.NewBufferString(`{"action":"pause"}`))
+	pauseResp := httptest.NewRecorder()
+	mux.ServeHTTP(pauseResp, pauseReq)
+	if pauseResp.Code != http.StatusOK {
+		t.Fatalf("expected global pause 200, got %d", pauseResp.Code)
+	}
+	if !jobStore.IsPaused() {
+		t.Fatal("expected scheduler paused state after pause action")
+	}
+
+	jobPauseReq := httptest.NewRequest(http.MethodPost, "/api/admin/scheduler/control", bytes.NewBufferString(`{"action":"pause","job_id":"`+jobID+`"}`))
+	jobPauseResp := httptest.NewRecorder()
+	mux.ServeHTTP(jobPauseResp, jobPauseReq)
+	if jobPauseResp.Code != http.StatusOK {
+		t.Fatalf("expected per-job pause 200, got %d", jobPauseResp.Code)
+	}
+	if jobStore.List()[0].Enabled {
+		t.Fatalf("expected paused job to be disabled: %+v", jobStore.List()[0])
+	}
+
+	jobResumeReq := httptest.NewRequest(http.MethodPost, "/api/admin/scheduler/control", bytes.NewBufferString(`{"action":"resume","job_id":"`+jobID+`"}`))
+	jobResumeResp := httptest.NewRecorder()
+	mux.ServeHTTP(jobResumeResp, jobResumeReq)
+	if jobResumeResp.Code != http.StatusOK {
+		t.Fatalf("expected per-job resume 200, got %d", jobResumeResp.Code)
+	}
+	if !jobStore.List()[0].Enabled {
+		t.Fatalf("expected resumed job to be enabled: %+v", jobStore.List()[0])
+	}
+
+	deleteReq := httptest.NewRequest(http.MethodDelete, "/api/admin/scheduler/jobs/"+jobID, nil)
+	deleteResp := httptest.NewRecorder()
+	mux.ServeHTTP(deleteResp, deleteReq)
+	if deleteResp.Code != http.StatusOK {
+		t.Fatalf("expected delete job 200, got %d", deleteResp.Code)
+	}
+	if len(jobStore.List()) != 0 {
+		t.Fatalf("expected empty scheduler after deletion, got %+v", jobStore.List())
+	}
+}

@@ -1,0 +1,42 @@
+name: Sync to Trello
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  KANBAN_CLI_VERSION: '3ca349759ece976e754d68d3d2ff2fd1a09eacb1'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Clone kanban CLI (pinned)
+        run: |
+          git clone --depth 1 --branch feature/kanban-package https://github.com/open-hax/openhax.git /tmp/openhax
+          git -C /tmp/openhax checkout ${{ env.KANBAN_CLI_VERSION }}
+      
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      
+      - name: Install CLI dependencies
+        run: cd /tmp/openhax && pnpm install --filter @openhax/kanban --no-frozen-lockfile
+      
+      - name: Build CLI
+        run: cd /tmp/openhax && pnpm --filter @openhax/kanban build
+      
+      - name: Sync to Trello
+        run: |
+          node /tmp/openhax/packages/kanban/dist/cli.js sync trello \
+            --config ussyverse.kanban.json
+        env:
+          TRELLO_API_KEY: ${{ secrets.TRELLO_API_KEY }}
+          TRELLO_API_TOKEN: ${{ secrets.TRELLO_API_TOKEN }}

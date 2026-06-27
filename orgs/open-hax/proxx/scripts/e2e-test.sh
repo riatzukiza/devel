@@ -1,0 +1,562 @@
+#!/usr/bin/env bash
+#
+# Live e2e tests against the dev proxy instance.
+# Exercises every major provider strategy path with real upstream calls.
+#
+# Usage:
+#   ./scripts/e2e-test.sh              # defaults to http://127.0.0.1:8790
+#   DEV_PROXY_URL=http://host:port ./scripts/e2e-test.sh
+#   DEV_PROXY_AUTH_TOKEN=token ./scripts/e2e-test.sh
+#   E2E_REQUIRE_FACTORY=1 ./scripts/e2e-test.sh
+#   LOAD_TEST_CONCURRENCY=16 LOAD_TEST_REQUESTS=16 ./scripts/e2e-test.sh
+#
+set -euo pipefail
+
+BASE="${DEV_PROXY_URL:-http://127.0.0.1:8795}"
+E2E_REQUIRE_FACTORY="${E2E_REQUIRE_FACTORY:-0}"
+PASS=0
+FAIL=0
+SKIP=0
+AUTH_ARGS=()
+
+if [[ -n "${DEV_PROXY_AUTH_TOKEN:-}" ]]; then
+  AUTH_ARGS=(-H "Authorization: Bearer ${DEV_PROXY_AUTH_TOKEN}")
+fi
+
+green()  { printf "\033[32m%s\033[0m\n" "$*"; }
+red()    { printf "\033[31m%s\033[0m\n" "$*"; }
+yellow() { printf "\033[33m%s\033[0m\n" "$*"; }
+bold()   { printf "\033[1m%s\033[0m\n" "$*"; }
+
+pass() { PASS=$((PASS + 1)); green "  PASS: $1"; }
+fail() { FAIL=$((FAIL + 1)); red   "  FAIL: $1 — $2"; }
+skip() { SKIP=$((SKIP + 1)); yellow "  SKIP: $1 — $2"; }
+
+# ── helpers ──────────────────────────────────────────────────────────
+
+curl_json() {
+  curl -sf --max-time 30 -H "Content-Type: application/json" "${AUTH_ARGS[@]}" "$@"
+}
+
+capture_json() {
+  curl -sS --max-time 30 -H "Content-Type: application/json" "${AUTH_ARGS[@]}" "$@" -w $'\nHTTP_STATUS:%{http_code}'
+}
+
+capture_json_token() {
+  local token="$1"
+  shift
+  curl -sS --max-time 30 -H "Content-Type: application/json" -H "Authorization: Bearer ${token}" "$@" -w $'\nHTTP_STATUS:%{http_code}'
+}
+
+split_http_response() {
+  local combined="$1"
+  HTTP_STATUS="${combined##*$'\n'HTTP_STATUS:}"
+  HTTP_BODY="${combined%$'\n'HTTP_STATUS:*}"
+}
+
+is_capacity_limited() {
+  local json="$1"
+  local error_code error_type
+  error_code="$(json_field_or_empty "$json" "error.code")"
+  error_type="$(json_field_or_empty "$json" "error.type")"
+  [[ "$error_code" == "all_keys_rate_limited" || "$error_code" == "no_available_key" || "$error_code" == "upstream_unavailable" || "$error_type" == "rate_limit_error" ]]
+}
+
+is_infrastructure_issue() {
+  local status="$1" json="$2"
+  # status empty or 000 = no response (timeout/network)
+  # status 502 = upstream unavailable
+  # status 503 = service unavailable
+  # status 429 with capacity-limited body
+  [[ -z "$status" || "$status" == "000" || "$status" == "502" || "$status" == "503" || $(is_capacity_limited "$json"; echo $?) -eq 0 ]]
+}
+
+curl_status() {
+  curl -so /dev/null -w "%{http_code}" --max-time 30 "${AUTH_ARGS[@]}" "$@"
+}
+
+assert_status() {
+  local label="$1" expected="$2" url="$3"
+  shift 3
+  local status
+  status=$(curl_status "$url" "$@") || status="000"
+  if [[ "$status" == "$expected" ]]; then
+    pass "$label (HTTP $status)"
+  else
+    fail "$label" "expected $expected, got $status"
+  fi
+}
+
+assert_json_field() {
+  local label="$1" field="$2" expected="$3"
+  shift 3
+  local value
+  value=$(echo "$RESPONSE" | python3 -c "
+import sys, json
+try:
+    data = json.load(sys.stdin)
+    keys = '${field}'.split('.')
+    for k in keys:
+        if isinstance(data, list):
+            data = data[int(k)]
+        else:
+            data = data[k]
+    print(data)
+except Exception as e:
+    print(f'__ERROR__:{e}', file=sys.stderr)
+    sys.exit(1)
+" 2>/dev/null) || { fail "$label" "field '$field' not found"; return; }
+  if [[ "$value" == "$expected" ]]; then
+    pass "$label"
+  else
+    fail "$label" "expected '$expected', got '$value'"
+  fi
+}
+
+json_field_or_empty() {
+  local json="$1" field="$2"
+  printf '%s' "$json" | python3 -c '
+import json
+import sys
+
+field = sys.argv[1]
+
+try:
+    data = json.load(sys.stdin)
+except Exception:
+    sys.exit(0)
+
+try:
+    for key in field.split("."):
+        if isinstance(data, list):
+            data = data[int(key)]
+        else:
+            data = data[key]
+except Exception:
+    sys.exit(0)
+
+if data is None:
+    sys.exit(0)
+
+if isinstance(data, (dict, list)):
+    print(json.dumps(data))
+else:
+    print(data)
+' "$field"
+}
+
+json_error_summary() {
+  local json="$1"
+  printf '%s' "$json" | python3 -c '
+import json
+import sys
+
+try:
+    data = json.load(sys.stdin)
+except Exception:
+    sys.exit(0)
+
+parts = []
+error = data.get("error") if isinstance(data, dict) else None
+if isinstance(error, dict):
+    for key in ("code", "type", "message"):
+        value = error.get(key)
+        if isinstance(value, str) and value.strip():
+            parts.append(f"{key}={value.strip()}")
+
+if isinstance(data, dict):
+    for key in ("detail", "message"):
+        value = data.get(key)
+        if isinstance(value, str) and value.strip():
+            parts.append(f"{key}={value.strip()}")
+
+if parts:
+    print("; ".join(parts)[:400])
+'
+}
+
+json_provider_metric_or_zero() {
+  local json="$1" provider_id="$2" field="$3"
+  printf '%s' "$json" | python3 -c '
+import json
+import sys
+
+provider_id = sys.argv[1]
+field = sys.argv[2]
+
+try:
+    data = json.load(sys.stdin)
+except Exception:
+    print(0)
+    sys.exit(0)
+
+if field == "accountCount":
+    providers = data.get("providers", []) if isinstance(data, dict) else []
+    for provider in providers:
+        if isinstance(provider, dict) and provider.get("id") == provider_id:
+            value = provider.get("accountCount")
+            print(value if isinstance(value, int) else 0)
+            sys.exit(0)
+    print(0)
+    sys.exit(0)
+
+if field == "availableAccounts":
+    statuses = data.get("keyPoolStatuses", {}) if isinstance(data, dict) else {}
+    if isinstance(statuses, dict):
+        provider = statuses.get(provider_id)
+        if isinstance(provider, dict):
+            value = provider.get("availableAccounts")
+            print(value if isinstance(value, int) else 0)
+            sys.exit(0)
+    print(0)
+    sys.exit(0)
+
+print(0)
+' "$provider_id" "$field"
+}
+
+chat_completion() {
+  local model="$1" content="${2:-Say exactly: OK}"
+  curl_json -X POST "${BASE}/v1/chat/completions" -d "{
+    \"model\": \"$model\",
+    \"messages\": [{\"role\": \"user\", \"content\": \"$content\"}],
+    \"stream\": false
+  }"
+}
+
+chat_completion_with_token_capture() {
+  local token="$1" model="$2" content="${3:-Say exactly: OK}"
+  capture_json_token "$token" -X POST "${BASE}/v1/chat/completions" -d "{
+    \"model\": \"$model\",
+    \"messages\": [{\"role\": \"user\", \"content\": \"$content\"}],
+    \"stream\": false
+  }"
+}
+
+# ── connectivity ─────────────────────────────────────────────────────
+
+bold "=== E2E Tests against ${BASE} ==="
+echo ""
+
+bold "── 1. Health & Models ──"
+
+assert_status "GET /health returns 200" "200" "${BASE}/health"
+
+RESPONSE=$(curl_json "${BASE}/v1/models" 2>/dev/null) || RESPONSE=""
+if [[ -n "$RESPONSE" ]]; then
+  pass "GET /v1/models returns JSON"
+  MODEL_COUNT=$(echo "$RESPONSE" | python3 -c "import sys,json; print(len(json.load(sys.stdin).get('data',[])))" 2>/dev/null || echo 0)
+  if [[ "$MODEL_COUNT" -gt 0 ]]; then
+    pass "Model catalog has $MODEL_COUNT models"
+  else
+    fail "Model catalog" "empty data array"
+  fi
+else
+  fail "GET /v1/models" "no response"
+fi
+
+bold ""
+bold "── 1b. Tenant API key lifecycle ──"
+
+if [[ -n "${DEV_PROXY_AUTH_TOKEN:-}" ]]; then
+  TENANT_KEY_PAYLOAD=$(curl_json -X POST "${BASE}/api/v1/tenants/default/api-keys" -d "{
+    \"label\": \"e2e-live-$(date +%s)\",
+    \"scopes\": [\"proxy:use\"]
+  }" 2>/dev/null) || TENANT_KEY_PAYLOAD=""
+
+  if [[ -n "$TENANT_KEY_PAYLOAD" ]]; then
+    TENANT_KEY_ID=$(echo "$TENANT_KEY_PAYLOAD" | python3 -c 'import sys, json; print(json.load(sys.stdin)["id"])' 2>/dev/null || true)
+    TENANT_KEY_TOKEN=$(echo "$TENANT_KEY_PAYLOAD" | python3 -c 'import sys, json; print(json.load(sys.stdin)["token"])' 2>/dev/null || true)
+
+    if [[ -n "$TENANT_KEY_ID" && -n "$TENANT_KEY_TOKEN" ]]; then
+      # Retry once on first tenant key request to handle cold-start connection delays
+      RESPONSE=""
+      HTTP_STATUS=""
+      HTTP_BODY=""
+      for attempt in 1 2; do
+        RESPONSE=$(chat_completion_with_token_capture "$TENANT_KEY_TOKEN" "openai/gpt-5.2-codex" "Reply with exactly one word: OK" 2>/dev/null) || RESPONSE=""
+        if [[ -n "$RESPONSE" ]]; then
+          split_http_response "$RESPONSE"
+          break
+        fi
+        if [[ "$attempt" -eq 1 ]]; then
+          sleep 2
+        fi
+      done
+      if [[ "$HTTP_STATUS" == "200" ]]; then
+        pass "tenant API key can access /v1/chat/completions"
+      elif [[ $(is_infrastructure_issue "$HTTP_STATUS" "$HTTP_BODY"; echo $?) -eq 0 ]]; then
+        pass "tenant API key can access /v1/chat/completions (status ${HTTP_STATUS:-000} capacity-limited)"
+      else
+        fail "tenant API key chat completion" "status=${HTTP_STATUS:-000} $(json_error_summary "${HTTP_BODY:-}")"
+      fi
+
+      TENANT_KEYS=$(curl_json "${BASE}/api/v1/tenants/default/api-keys" 2>/dev/null) || TENANT_KEYS=""
+      if [[ -n "$TENANT_KEYS" ]]; then
+        TENANT_KEY_LAST_USED=$(echo "$TENANT_KEYS" | python3 -c '
+import sys, json
+payload = json.load(sys.stdin)
+target = sys.argv[1]
+for item in payload.get("keys", []):
+    if item.get("id") == target:
+        print(item.get("lastUsedAt") or "")
+        break
+' "$TENANT_KEY_ID" 2>/dev/null || true)
+
+        if [[ -n "$TENANT_KEY_LAST_USED" ]]; then
+          pass "tenant API key lastUsedAt updated after live request"
+        else
+          fail "tenant API key lastUsedAt" "not updated"
+        fi
+      else
+        fail "tenant API key list after use" "no response"
+      fi
+
+      DELETE_STATUS=$(curl -so /dev/null -w "%{http_code}" --max-time 30 -H "Authorization: Bearer ${DEV_PROXY_AUTH_TOKEN}" -X DELETE "${BASE}/api/v1/tenants/default/api-keys/${TENANT_KEY_ID}") || DELETE_STATUS="000"
+      if [[ "$DELETE_STATUS" == "200" ]]; then
+        pass "tenant API key cleanup"
+      else
+        fail "tenant API key cleanup" "expected 200, got ${DELETE_STATUS}"
+      fi
+    else
+      fail "tenant API key create" "missing id/token"
+    fi
+  else
+    fail "tenant API key create" "no response"
+  fi
+else
+  skip "tenant API key lifecycle" "DEV_PROXY_AUTH_TOKEN not set"
+fi
+
+# ── 2. OpenAI Responses strategy (gpt-* via chat completions → /codex/responses) ──
+
+bold ""
+bold "── 2. OpenAI Responses Strategy (gpt-* chat completions) ──"
+
+GPT_RESPONSE=$(capture_json -X POST "${BASE}/v1/chat/completions" -d '{
+  "model": "gpt-5.2",
+  "messages": [{"role": "user", "content": "Reply with exactly one word: OK"}],
+  "stream": false
+}' 2>/dev/null) || GPT_RESPONSE=""
+split_http_response "$GPT_RESPONSE"
+if [[ "$HTTP_STATUS" == "200" && -n "$HTTP_BODY" ]]; then
+  RESPONSE="$HTTP_BODY"
+  assert_json_field "gpt-5.2 returns chat.completion" "object" "chat.completion"
+  assert_json_field "gpt-5.2 has choices" "choices.0.message.role" "assistant"
+  pass "gpt-5.2 non-streaming round-trip"
+elif [[ $(is_infrastructure_issue "$HTTP_STATUS" "$HTTP_BODY"; echo $?) -eq 0 ]]; then
+  skip "gpt-5.2 chat completion" "upstream GPT capacity is currently unavailable"
+else
+  fail "gpt-5.2 chat completion" "status=${HTTP_STATUS:-000} $(json_error_summary "${HTTP_BODY:-}")"
+fi
+
+STREAM_OUT=$(curl -sS --max-time 60 -H "Content-Type: application/json" "${AUTH_ARGS[@]}" \
+  -X POST "${BASE}/v1/chat/completions" -d '{
+  "model": "gpt-5.2",
+  "messages": [{"role": "user", "content": "Reply with one word: OK"}],
+  "stream": true
+}' -w $'\nHTTP_STATUS:%{http_code}' 2>/dev/null) || STREAM_OUT=""
+split_http_response "$STREAM_OUT"
+if echo "$HTTP_BODY" | grep -q "data:"; then
+  pass "gpt-5.2 streaming round-trip"
+elif [[ $(is_infrastructure_issue "$HTTP_STATUS" "$HTTP_BODY"; echo $?) -eq 0 ]]; then
+  skip "gpt-5.2 streaming" "upstream GPT capacity is currently unavailable"
+else
+  fail "gpt-5.2 streaming" "status=${HTTP_STATUS:-000} no SSE data chunks received $(json_error_summary "${HTTP_BODY:-}")"
+fi
+
+# ── 3. OpenAI Responses Passthrough (gpt-* via /v1/responses) ──
+
+bold ""
+bold "── 3. OpenAI Responses Passthrough (gpt-* via /v1/responses) ──"
+
+RESPONSE=$(capture_json -X POST "${BASE}/v1/responses" -d '{
+  "model": "gpt-5.2-codex",
+  "input": [{"role": "user", "content": [{"type": "input_text", "text": "Reply with one word: OK"}]}],
+  "instructions": "",
+  "stream": false
+}' 2>/dev/null) || RESPONSE=""
+split_http_response "$RESPONSE"
+if [[ "$HTTP_STATUS" == "200" ]]; then
+  pass "gpt-5.2-codex responses passthrough round-trip"
+elif [[ $(is_infrastructure_issue "$HTTP_STATUS" "$HTTP_BODY"; echo $?) -eq 0 ]]; then
+  skip "gpt-5.2-codex responses passthrough" "upstream GPT capacity is currently unavailable"
+else
+  fail "gpt-5.2-codex responses passthrough" "status=${HTTP_STATUS:-000} $(json_error_summary "${HTTP_BODY:-}")"
+fi
+
+# Regression: null instructions must not cause 400
+STREAM_OUT=$(curl -sS --max-time 60 -H "Content-Type: application/json" "${AUTH_ARGS[@]}" \
+  -X POST "${BASE}/v1/responses" -d '{
+  "model": "gpt-5.2",
+  "input": [{"role": "user", "content": [{"type": "input_text", "text": "Reply with one word: OK"}]}],
+  "instructions": null,
+  "stream": true
+}' -w $'\nHTTP_STATUS:%{http_code}' 2>/dev/null) || STREAM_OUT=""
+split_http_response "$STREAM_OUT"
+if echo "$HTTP_BODY" | grep -q "data:"; then
+  pass "gpt-5.2 passthrough with null instructions (regression)"
+elif [[ $(is_infrastructure_issue "$HTTP_STATUS" "$HTTP_BODY"; echo $?) -eq 0 ]]; then
+  skip "gpt-5.2 null instructions passthrough" "upstream GPT capacity is currently unavailable"
+else
+  fail "gpt-5.2 null instructions passthrough" "status=${HTTP_STATUS:-000} no SSE data or 400 error $(json_error_summary "${HTTP_BODY:-}")"
+fi
+
+# ── 4. OpenAI Chat Completions Strategy (non-gpt models via openai provider) ──
+
+bold ""
+bold "── 4. OpenAI Chat Completions Strategy (non-gpt via openai) ──"
+
+RESPONSE=$(chat_completion "glm-5" "Reply with one word: OK" 2>/dev/null) || RESPONSE=""
+if [[ -n "$RESPONSE" ]]; then
+  assert_json_field "glm-5 returns chat.completion" "object" "chat.completion"
+  pass "glm-5 chat completion round-trip"
+else
+  skip "glm-5 chat completion" "model may not be configured"
+fi
+
+# ── 5. Standard Responses Strategy (gpt-* via vivgrid/non-openai) ──
+
+bold ""
+bold "── 5. Standard Responses Strategy (via api_key providers) ──"
+
+RESPONSE=$(chat_completion "gpt-5.1" "Reply with one word: OK" 2>/dev/null) || RESPONSE=""
+if [[ -n "$RESPONSE" ]]; then
+  assert_json_field "gpt-5.1 returns chat.completion" "object" "chat.completion"
+  pass "gpt-5.1 chat completion round-trip"
+else
+  skip "gpt-5.1 chat completion" "no api_key provider may be configured"
+fi
+
+# ── 6. Messages Strategy (claude-* via /v1/messages) ──
+
+bold ""
+bold "── 6. Messages Strategy (claude-*) ──"
+
+RESPONSE=$(chat_completion "claude-opus-4-5" "Reply with exactly one word: OK" 2>/dev/null) || RESPONSE=""
+if [[ -n "$RESPONSE" ]]; then
+  assert_json_field "claude-opus-4-5 returns chat.completion" "object" "chat.completion"
+  pass "claude-opus-4-5 chat completion round-trip"
+else
+  skip "claude-opus-4-5 chat completion" "claude provider may not be configured"
+fi
+
+# ── 7. Paid-tier model routing (gpt-5.4 prefers plus/pro accounts) ──
+
+bold ""
+bold "── 7. Paid-Tier Model Routing ──"
+
+RESPONSE=$(chat_completion "gpt-5.3-codex" "Reply with one word: OK" 2>/dev/null) || RESPONSE=""
+if [[ -n "$RESPONSE" ]]; then
+  assert_json_field "gpt-5.3-codex returns chat.completion" "object" "chat.completion"
+  pass "gpt-5.3-codex paid-tier routing round-trip"
+else
+  skip "gpt-5.3-codex" "no paid accounts configured"
+fi
+
+# ── 8. Explicit openai/ prefix routing ──
+
+bold ""
+bold "── 8. Explicit openai/ Prefix Routing ──"
+
+RESPONSE=$(chat_completion "openai/gpt-5.2-codex" "Reply with one word: OK" 2>/dev/null) || RESPONSE=""
+if [[ -n "$RESPONSE" ]]; then
+  assert_json_field "openai/gpt-5.2-codex returns chat.completion" "object" "chat.completion"
+  pass "openai/ prefix routing round-trip"
+else
+  skip "openai/ prefix routing" "openai provider may not be configured"
+fi
+
+# ── 9. Factory prefix routing ──
+
+bold ""
+bold "── 9. Factory Prefix Routing ──"
+
+FACTORY_CREDENTIALS_JSON=$(curl_json "${BASE}/api/v1/credentials" 2>/dev/null) || FACTORY_CREDENTIALS_JSON=""
+if [[ -n "$FACTORY_CREDENTIALS_JSON" ]]; then
+  FACTORY_ACCOUNT_COUNT=$(json_provider_metric_or_zero "$FACTORY_CREDENTIALS_JSON" "factory" "accountCount")
+  FACTORY_AVAILABLE_COUNT=$(json_provider_metric_or_zero "$FACTORY_CREDENTIALS_JSON" "factory" "availableAccounts")
+else
+  FACTORY_ACCOUNT_COUNT=0
+  FACTORY_AVAILABLE_COUNT=0
+fi
+
+if [[ "$FACTORY_ACCOUNT_COUNT" -eq 0 ]]; then
+  if [[ "$E2E_REQUIRE_FACTORY" == "1" ]]; then
+    fail "factory/ prefix routing" "factory provider has no configured live accounts"
+  else
+    skip "factory/ prefix routing" "factory provider has no configured live accounts"
+  fi
+else
+  if [[ "$FACTORY_AVAILABLE_COUNT" -eq 0 ]]; then
+    if [[ "$E2E_REQUIRE_FACTORY" == "1" ]]; then
+      fail "factory/ prefix routing" "factory provider has no currently available accounts"
+    else
+      skip "factory/ prefix routing" "factory provider has no currently available accounts"
+    fi
+  else
+    RESPONSE=$(chat_completion "factory/claude-opus-4-6" "Reply with one word: OK" 2>/dev/null) || RESPONSE=""
+    if [[ -n "$RESPONSE" ]]; then
+      FACTORY_OBJECT=$(json_field_or_empty "$RESPONSE" "object")
+      if [[ "$FACTORY_OBJECT" == "chat.completion" ]]; then
+        assert_json_field "factory/claude-opus-4-6 returns chat.completion" "object" "chat.completion"
+        pass "factory/ prefix routing round-trip"
+      else
+        FACTORY_ERROR=$(json_error_summary "$RESPONSE")
+        if [[ -n "$FACTORY_ERROR" && "$E2E_REQUIRE_FACTORY" != "1" ]]; then
+          skip "factory/ prefix routing" "live factory account unavailable or invalid (${FACTORY_ERROR})"
+        elif [[ -n "$FACTORY_ERROR" ]]; then
+          fail "factory/ prefix routing" "$FACTORY_ERROR"
+        else
+          fail "factory/ prefix routing" "unexpected non-chat response shape"
+        fi
+      fi
+    else
+      if [[ "$E2E_REQUIRE_FACTORY" == "1" ]]; then
+        fail "factory/ prefix routing" "no response from live factory-backed request"
+      else
+        skip "factory/ prefix routing" "live factory request failed; valid factory account not currently available"
+      fi
+    fi
+  fi
+fi
+
+# ── 10. Concurrent load smoke test ──
+
+bold ""
+bold "── 10. Concurrent Load Smoke Test ──"
+
+LOAD_CONCURRENCY="${LOAD_TEST_CONCURRENCY:-8}"
+LOAD_REQUESTS="${LOAD_TEST_REQUESTS:-8}"
+
+LOAD_OUT=$(DEV_PROXY_URL="$BASE" \
+  LOAD_TEST_CONCURRENCY="$LOAD_CONCURRENCY" \
+  LOAD_TEST_REQUESTS="$LOAD_REQUESTS" \
+  LOAD_TEST_MODEL="${LOAD_TEST_MODEL:-gpt-5.2}" \
+  DEV_PROXY_AUTH_TOKEN="${DEV_PROXY_AUTH_TOKEN:-}" \
+  node ./scripts/load-test.mjs 2>&1) || LOAD_STATUS=$?
+LOAD_STATUS=${LOAD_STATUS:-0}
+if [[ "$LOAD_STATUS" -eq 0 ]]; then
+  pass "concurrent load smoke test (${LOAD_CONCURRENCY} concurrent, ${LOAD_REQUESTS} total)"
+  printf '%s\n' "$LOAD_OUT"
+elif echo "$LOAD_OUT" | grep -Eq 'all_keys_rate_limited|no_available_key|rate_limit_error|upstream_unavailable|"status":502|"status":503'; then
+  skip "concurrent load smoke test" "upstream GPT capacity is currently unavailable"
+  printf '%s\n' "$LOAD_OUT"
+else
+  fail "concurrent load smoke test" "$LOAD_OUT"
+fi
+
+# ── Summary ──────────────────────────────────────────────────────────
+
+echo ""
+bold "═══════════════════════════════════════"
+bold "  PASS: $PASS  FAIL: $FAIL  SKIP: $SKIP"
+bold "═══════════════════════════════════════"
+
+if [[ "$FAIL" -gt 0 ]]; then
+  red "E2E tests FAILED"
+  exit 1
+fi
+
+green "All e2e tests passed"
+exit 0

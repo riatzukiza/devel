@@ -1,0 +1,7 @@
+{:paths ["." "src"]
+ :deps {org.babashka/cli {:mvn/version "0.8.62"}
+        babashka/fs {:mvn/version "0.5.24"}
+        cheshire/cheshire {:mvn/version "5.11.0"}
+        org.clojure/tools.logging {:mvn/version "1.2.4"}
+        octave-commons/promethean-agent-system {:git/url "git@github.com:octave-commons/promethean-agent-system.git"
+                                                 :git/sha "ddf85dcfbd350ae33855f556afb0ae9ee3f287b8"}}}

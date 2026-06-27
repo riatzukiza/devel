@@ -1,0 +1,27 @@
+{
+  "name": "orgs-octave-commons-promethean-pipelines-codepack",
+  "projectType": "application",
+  "tags": [
+    "submodule"
+  ],
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/octave-commons/promethean/pipelines/codepack\" test"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/octave-commons/promethean/pipelines/codepack\" build"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/octave-commons/promethean/pipelines/codepack\" typecheck"
+      }
+    }
+  }
+}

@@ -1,0 +1,150 @@
+;; FileTree Component Contract
+;; Defines the API for hierarchical file navigation
+
+{:component :file-tree
+ :version "1.0.0"
+ 
+ :description
+ "Hierarchical file tree with expand/collapse, selection, and context actions."
+ 
+ :props
+ {:items
+  {:type :array
+   :items :file-tree-item
+   :required true
+   :description "Tree items to render"}
+  
+  :selected-id
+  {:type :string
+   :required false
+   :description "ID of currently selected item"}
+  
+  :expanded-ids
+  {:type :array
+   :items :string
+   :required false
+   :description "IDs of expanded folders"}
+  
+  :on-select
+  {:type :function
+   :signature "(item: FileTreeItem) => void"
+   :required false
+   :description "Callback when item is selected"}
+  
+  :on-expand
+  {:type :function
+   :signature "(item: FileTreeItem) => void"
+   :required false
+   :description "Callback when folder is expanded"}
+  
+  :on-collapse
+  {:type :function
+   :signature "(item: FileTreeItem) => void"
+   :required false
+   :description "Callback when folder is collapsed"}
+  
+  :on-double-click
+  {:type :function
+   :signature "(item: FileTreeItem) => void"
+   :required false
+   :description "Callback when item is double-clicked (open file)"}
+  
+  :on-context-menu
+  {:type :function
+   :signature "(item: FileTreeItem, event: MouseEvent) => void"
+   :required false
+   :description "Callback for context menu"}
+  
+  :show-icons
+  {:type :boolean
+   :default true
+   :description "Whether to show file/folder icons"}
+  
+  :show-size
+  {:type :boolean
+   :default false
+   :description "Whether to show file sizes"}
+  
+  :indent-size
+  {:type :number
+   :default 16
+   :description "Indentation in pixels per level"}
+  
+  :search
+  {:type :string
+   :required false
+   :description "Search query to filter/highlight items"}
+  
+  :multi-select
+  {:type :boolean
+   :default false
+   :description "Whether multiple items can be selected"}}
+ 
+ :types
+ {:file-tree-item
+  {:id :string
+   :name :string
+   :type {:type :enum :values [:file :folder]}
+   :icon {:type :node :required false}
+   :children {:type :array :items :file-tree-item :required false}
+   :meta {:type :object :required false}
+   :badge {:type :string :required false}
+   :modified {:type :date :required false}
+   :size {:type :number :required false}}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :accessibility
+ {:role :tree
+  :aria
+  {:expanded :expanded
+   :selected :selected
+   :level :depth}
+  :keyboard
+  {:expand :arrow-right
+   :collapse :arrow-left
+   :navigate :arrow-up-down
+   :select :enter
+   :context-menu :menu-key}}
+ 
+ :behavior
+ {:expand
+  {:single-click false
+   :double-click true
+   :recursive false}
+  
+  :selection
+  {:follow-focus true
+   :remember-selection true}}
+ 
+ :styling
+ {:data-attributes
+  {:data-component "file-tree"
+   :data-type :type
+   :data-selected :selected
+   :data-expanded :expanded}
+  
+  :css-custom-properties
+  ["--tree-bg"
+   "--item-hover-bg"
+   "--item-selected-bg"
+   "--folder-icon"
+   "--file-icon"]}
+ 
+ :tokens
+ {:colors
+  {:bg :transparent
+   :hover-bg :colors.background/surface
+   :selected-bg :colors.background/selection
+   :text :colors.text/default
+   :muted :colors.text/muted}
+  
+  :spacing
+  {:item-padding :spacing/2
+   :item-gap :spacing/1
+   :indent-base :spacing/4}
+  
+  :typography
+  {:font-size :font-size/sm
+   :line-height :line-height/tight}}}

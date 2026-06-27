@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Taco illustration</title>
+  <desc id="desc">A colorful cartoon taco with shell, lettuce, tomato, cheese, and meat.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff8e8"/>
+      <stop offset="100%" stop-color="#ffe7bf"/>
+    </linearGradient>
+    <linearGradient id="shell" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f6d35f"/>
+      <stop offset="100%" stop-color="#d79a28"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#ad7a20" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+
+  <g filter="url(#shadow)">
+    <ellipse cx="512" cy="785" rx="300" ry="58" fill="#e7c58a" opacity="0.55"/>
+
+    <!-- fillings -->
+    <path d="M265 520 C320 450 410 410 512 410 C615 410 705 450 760 520 L730 590 C665 520 595 480 512 480 C430 480 360 520 295 590 Z" fill="#5cae43"/>
+    <path d="M280 545 C340 470 420 440 512 440 C605 440 685 470 745 545 L715 605 C650 540 590 510 512 510 C435 510 375 540 310 605 Z" fill="#76d95d"/>
+
+    <g fill="#d14c42">
+      <circle cx="350" cy="555" r="26"/>
+      <circle cx="405" cy="515" r="24"/>
+      <circle cx="470" cy="550" r="23"/>
+      <circle cx="545" cy="500" r="26"/>
+      <circle cx="610" cy="548" r="24"/>
+      <circle cx="675" cy="525" r="25"/>
+    </g>
+
+    <g fill="#f6de69">
+      <path d="M332 600 l45 -35 l25 15 l-58 48 z"/>
+      <path d="M410 610 l40 -48 l25 15 l-52 60 z"/>
+      <path d="M495 610 l32 -42 l28 14 l-44 55 z"/>
+      <path d="M575 610 l34 -44 l25 12 l-45 58 z"/>
+      <path d="M650 605 l35 -36 l25 14 l-50 49 z"/>
+      <path d="M372 655 l42 -35 l25 12 l-54 45 z"/>
+      <path d="M462 660 l35 -38 l24 12 l-44 50 z"/>
+      <path d="M555 660 l35 -36 l24 11 l-45 49 z"/>
+      <path d="M635 652 l37 -31 l22 10 l-45 40 z"/>
+    </g>
+
+    <g fill="#7a4c2a">
+      <ellipse cx="370" cy="635" rx="48" ry="26"/>
+      <ellipse cx="445" cy="608" rx="44" ry="24"/>
+      <ellipse cx="530" cy="640" rx="50" ry="28"/>
+      <ellipse cx="615" cy="615" rx="45" ry="24"/>
+      <ellipse cx="690" cy="640" rx="42" ry="24"/>
+      <ellipse cx="405" cy="685" rx="46" ry="26"/>
+      <ellipse cx="500" cy="700" rx="54" ry="28"/>
+      <ellipse cx="605" cy="685" rx="46" ry="25"/>
+    </g>
+
+    <!-- shell -->
+    <path d="M790 755 C790 580 666 455 512 455 C358 455 234 580 234 755 C234 755 324 706 512 706 C700 706 790 755 790 755 Z" fill="url(#shell)"/>
+    <path d="M758 741 C758 589 650 485 512 485 C374 485 266 589 266 741 C266 741 351 700 512 700 C673 700 758 741 758 741 Z" fill="#f0c34b" opacity="0.55"/>
+
+    <!-- shell dots -->
+    <g fill="#c8871f" opacity="0.75">
+      <circle cx="320" cy="690" r="8"/>
+      <circle cx="360" cy="735" r="7"/>
+      <circle cx="420" cy="640" r="8"/>
+      <circle cx="470" cy="760" r="7"/>
+      <circle cx="535" cy="665" r="9"/>
+      <circle cx="595" cy="750" r="7"/>
+      <circle cx="650" cy="655" r="8"/>
+      <circle cx="705" cy="710" r="8"/>
+      <circle cx="560" cy="790" r="6"/>
+      <circle cx="405" cy="795" r="6"/>
+    </g>
+
+    <!-- shell edge -->
+    <path d="M234 755 C234 755 324 706 512 706 C700 706 790 755 790 755" fill="none" stroke="#bb7a14" stroke-width="20" stroke-linecap="round"/>
+  </g>
+</svg>

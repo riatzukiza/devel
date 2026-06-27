@@ -1,0 +1,163 @@
+{
+  "generatedAt": "2026-05-29T04:01:38.689Z",
+  "totalTasks": 6,
+  "columns": [
+    {
+      "status": "icebox",
+      "title": "Icebox",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "incoming",
+      "title": "Incoming",
+      "taskCount": 6,
+      "tasks": [
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-graph-graph-weaver-aco-kanban-orgs-open-hax-openplanner-packages-graph-graph-weaver-aco-specs-core-engine-contract-md",
+          "title": "Core Engine Contract",
+          "slug": "core-engine-contract",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:37.934Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/graph/graph-weaver-aco/specs/core-engine-contract.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/graph/graph-weaver-aco/kanban/core-engine-contract.md`\n\n# Core Engine Contract\n\n## Purpose\n\nDefine the contract of `GraphWeaverAco` as a reusable engine rather than as a whole application.\n\n## Public surface\n\n### Constructor\n```ts\nnew GraphWeaverAco(options?: GraphWeaverAcoOptions)\n```\n\n### Inputs\n- seed URLs via `seed(urls)`\n- runtime options for:\n  - ants\n  - dispatch cadence\n  - concurrency\n  - per-host delay\n  - revisit horizon\n  - ACO weights\n  - frontier cap\n  - fetch backend\n\n### Outputs\n- `page` events\n- `error` events\n- frontier/in-flight stats via `stats()`\n\n### Lifecycle\n- `start()`\n- `stop()`\n- `onEvent(cb)`\n\n## Event contract\n\n### `page`\n```ts\n{\n  type: \"page\",\n  url,\n  status,\n  contentType,\n  fetchedAt,\n  outgoing,\n  content?,\n  title?,\n  metadata?\n}\n```\n\n### `error`\n```ts\n{\n  type: \"error\",\n  url,\n  fetchedAt,\n  message\n}\n```\n\n## Behavioral invariants\n\n1. seeds are normalized before entering the frontier\n2. host pacing is enforced before dispatch\n3. robots denial reduces repeated attempts instead of hard-crashing the loop\n4. failed fetches decay pheromone\n5. successful visits update outgoing links and frontier state\n6. the engine can run forever with bounded frontier size\n\n## Architectural position\n\nThis engine is responsible for **choosing and attempting** visits.\nIt is not responsible for:\n- graph persistence\n- UI rendering\n- REST/GraphQL endpoints\n- search indexing\n- high-level orchestration\n\n## Adjacent bindings\n\n- default backend: `SimpleFetchBackend`\n- richer backend: supplied externally (e.g. Myrmex → ShuvCrawl)\n- service host: `octave-commons/graph-weaver`\n- orchestration host: `octave-commons/myrmex`",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/graph/graph-weaver-aco/kanban/core-engine-contract.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-graph-graph-weaver-aco-kanban-orgs-open-hax-openplanner-packages-graph-graph-weaver-aco-specs-ethical-crawling-contract-md",
+          "title": "Ethical Crawling Contract",
+          "slug": "ethical-crawling-contract",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:37.933Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/graph/graph-weaver-aco/specs/ethical-crawling-contract.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/graph/graph-weaver-aco/kanban/ethical-crawling-contract.md`\n\n# Ethical Crawling Contract\n\n## Purpose\n\nMake the engine's compliance stance explicit so future extensions do not quietly mutate it into a hostile scraper.\n\n## Source anchors\n\n- `fork_tales` presence contract for Web Graph Weaver\n- current `RobotsCache` usage\n- current host pacing logic\n\n## Hard rules\n\n1. obey robots gating before fetch\n2. enforce per-host minimum interval\n3. avoid parallel in-flight requests to the same host\n4. use explicit user-agent\n5. default to skip/fail-safe on uncertainty\n6. emit errors instead of hiding failures\n\n## Non-goals\n\nThe engine is not for:\n- credential capture\n- paywall circumvention by itself\n- rate-limit evasion\n- stealth scraping\n\n## Relationship to richer systems\n\nA downstream system like `myrmex` may use a stronger fetch backend, but the ethical posture of the traversal engine should remain visible and intentional.\n\n## Required surfaces for any serious extension\n\nIf someone extends this engine, they should preserve or improve:\n- robots visibility\n- host pacing visibility\n- explicit skip/error outcomes\n- a reasoned user-agent string\n\n## Stop line\n\nIf a modification increases crawl power while decreasing inspectability or compliance legibility, it violates the extraction intent.",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/graph/graph-weaver-aco/kanban/ethical-crawling-contract.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-graph-graph-weaver-aco-kanban-orgs-open-hax-openplanner-packages-graph-graph-weaver-aco-specs-fetch-backend-contract-md",
+          "title": "Fetch Backend Contract",
+          "slug": "fetch-backend-contract",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:37.935Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/graph/graph-weaver-aco/specs/fetch-backend-contract.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/graph/graph-weaver-aco/kanban/fetch-backend-contract.md`\n\n# Fetch Backend Contract\n\n## Purpose\n\nDocument the pluggable seam that lets `graph-weaver-aco` stay small while downstream systems attach richer extraction strategies.\n\n## Interface\n\n```ts\ninterface FetchBackend {\n  fetch(url, options?): Promise<FetchResult>\n  discoverLinks?(url, options?): Promise<string[]>\n}\n```\n\n## Required `fetch` output\n\nA backend should return:\n- `url`\n- `status`\n- `contentType`\n- optional `html`\n- optional `content`\n- optional `title`\n- optional `metadata`\n- optional `outgoing`\n- optional `error`\n\n## Built-in backend\n\n`SimpleFetchBackend`:\n- uses plain `fetch()`\n- follows redirects\n- extracts outgoing links from HTML\n- returns an error payload instead of throwing through the engine loop\n\n## Downstream backend example\n\n`octave-commons/myrmex` provides `ShuvCrawlFetchBackend`, which:\n- uses ShuvCrawl for rendered / cleaned content\n- returns extracted markdown/content\n- exposes richer metadata\n- still conforms to the same event payload shape expected by the engine\n\n## Design reason\n\nThis seam prevents the engine from collapsing into one oversized crawler.\nThe traversal brain stays reusable while the extraction mouth can vary.\n\n## Invariant\n\nBackends may become richer, but they should not force the engine to know about service-specific internals.\nThe engine consumes a small normalized result shape and emits generic page/error events.",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/graph/graph-weaver-aco/kanban/fetch-backend-contract.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-graph-graph-weaver-aco-kanban-orgs-open-hax-openplanner-packages-graph-graph-weaver-aco-specs-frontier-and-pheromone-model-md",
+          "title": "Frontier and Pheromone Model",
+          "slug": "frontier-and-pheromone-model",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:37.934Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/graph/graph-weaver-aco/specs/frontier-and-pheromone-model.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/graph/graph-weaver-aco/kanban/frontier-and-pheromone-model.md`\n\n# Frontier and Pheromone Model\n\n## Purpose\n\nExplain how the extracted engine stores URL state, scores candidates, and stays bounded over long runs.\n\n## Frontier state\n\nEach URL is tracked as:\n\n```ts\n{\n  url,\n  host,\n  discoveredAt,\n  lastVisitedAt,\n  visits,\n  pheromone,\n  outgoing: Set<url>\n}\n```\n\n## Heuristic\n\nThe current heuristic combines:\n- **novelty** = `1 / (1 + visits)`\n- **staleness** = fraction of revisit horizon elapsed\n\nWeighted blend:\n```text\nheuristic = novelty * 0.85 + staleness * 0.25\n```\n\nThis means the engine prefers new URLs strongly, but slowly reopens old ones once enough time has passed.\n\n## Choice rule\n\nFor a candidate URL:\n\n```text\nweight = pheromone^alpha * heuristic^beta\n```\n\nThen the next URL is chosen by weighted random choice over candidates that survive gating.\n\n## Gating before choice\n\nA candidate must first pass:\n- host pacing\n- no active in-flight request on that host\n- minimal revisit guard (`lastVisitedAt` not too recent)\n\n## Pheromone updates\n\n### On seed\nA seed gets a small bump so the colony has somewhere sane to begin.\n\n### On success\n- visited URL gets pheromone deposit weighted by novelty\n- previous URL gets a smaller supportive bump when there is a path relation\n\n### On failure\nfailed URLs lose pheromone more aggressively.\n\n### On global evaporation\nEvery minute, frontier pheromone decays by configured evaporation rate.\n\n## Bounded frontier\n\nThe frontier enforces `maxFrontier`.\nWhen exceeded, it drops the least relevant URLs using a score that penalizes:\n- many visits\n- age\n- low pheromone\n\nThis is important because the engine is designed for **long-running crawl memory** without unbounded growth.\n\n## Why this matters\n\nThe extracted engine is not trying to be optimal in a single short batch.\nIt is trying to be a **small enduring colony**:\n- curious\n- bounded\n- polite\n- capable of remembering where food used to be",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/graph/graph-weaver-aco/kanban/frontier-and-pheromone-model.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-graph-graph-weaver-aco-kanban-orgs-open-hax-openplanner-packages-graph-graph-weaver-aco-specs-pluggable-fetch-backend-md",
+          "title": "GraphWeaver ACO Pluggable Fetch Backend",
+          "slug": "graphweaver-aco-pluggable-fetch-backend",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:37.935Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/graph/graph-weaver-aco/specs/pluggable-fetch-backend.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/graph/graph-weaver-aco/kanban/pluggable-fetch-backend.md`\n\n# GraphWeaver ACO Pluggable Fetch Backend\n\n## Status\nDraft\n\n## Summary\nAdd a pluggable fetch backend interface to GraphWeaver ACO so it can use ShuvCrawl (or any other extractor) instead of the built-in simple `fetch()`. This enables paywall bypass, JS rendering, and rich content extraction while keeping the ACO algorithm unchanged.\n\n## Problem statement\nGraphWeaver ACO currently uses `fetch()` directly in `fetchOne()` to retrieve pages. This works for basic HTML but:\n- Can't handle JavaScript-rendered pages\n- Can't bypass paywalls\n- Doesn't extract structured content (just raw HTML)\n- Can't get rich metadata (author, publish date, etc.)\n\nThe ACO algorithm itself is solid — the limitation is only in how pages are fetched and what data is extracted from them.\n\n## Goals\n1. Define a `FetchBackend` interface that abstracts page fetching.\n2. Keep the existing `fetch()` implementation as the default backend.\n3. Allow Myrmex to inject a ShuvCrawl-based backend.\n4. Emit enriched page events with content when the backend supports it.\n5. No breaking changes to existing users of GraphWeaver ACO.\n\n## Non-goals\n- Rewriting the ACO algorithm.\n- Adding ShuvCrawl as a dependency to GraphWeaver ACO (the backend is injected).\n- Changing the frontier or pheromone logic.\n\n## Interface\n\n```typescript\n/**\n * Result from fetching a URL.\n * Simple backends return just URL + status + HTML.\n * Rich backends (ShuvCrawl) return extracted content + metadata + links.\n */\nexport interface FetchResult {\n  url: string;\n  status: number;\n  contentType: string;\n  html?: string;           // raw HTML (for link extraction fallback)\n  content?: string;        // extracted markdown (rich backends)\n  title?: string;          // page title\n  metadata?: Record<string, unknown>;  // author, date, etc.\n  outgoing?: string[];     // discovered links (rich backends extract these)\n  error?: string;          // error message if fetch failed\n}\n\n/**\n * A fetch backend that retrieves and extracts page content.\n * GraphWeaver ACO uses this instead of raw fetch().\n */\nexport interface FetchBackend {\n  /**\n   * Fetch a URL and return the result.\n   * Must respect the AbortController signal for cancellation.\n   */\n  fetch(url: string, options?: {\n    signal?: AbortSignal;\n    timeout?: number;\n    userAgent?: string;\n  }): Promise<FetchResult>;\n\n  /**\n   * Discover outgoing links from a URL.\n   * Simple backends can return empty array (ACO will extract from HTML).\n   * Rich backends can use sitemap, link mapping, etc.\n   */\n  discoverLinks?(url: string, options?: {\n    signal?: AbortSignal;\n    timeout?: number;\n  }): Promise<string[]>;\n}\n\n/**\n * Default fetch backend using raw fetch() + HTML link extraction.\n * This is the existing behavior — kept as the default.\n */\nexport class SimpleFetchBackend implements FetchBackend {\n  private readonly userAgent: string;\n\n  constructor(options?: { userAgent?: string }) {\n    this.userAgent = options?.userAgent ?? \"graph-weaver/0.1\";\n  }\n\n  async fetch(url: string, options?: { signal?: AbortSignal; timeout?: number; userAgent?: string }): Promise<FetchResult> {\n    // ... existing fetchOne() logic moved here\n  }\n\n  discoverLinks(url: string): Promise<string[]> {\n    // Not supported — ACO extracts links from HTML in fetch()\n    return Promise.resolve([]);\n  }\n}\n```\n\n## GraphWeaverAco changes\n\n### Constructor\n```typescript\nexport interface GraphWeaverAcoOptions {\n  // ... existing options ...\n\n  /**\n   * Custom fetch backend. Defaults to SimpleFetchBackend.\n   * Pass a ShuvCrawl-backed implementation for paywall bypass.\n   */\n  fetchBackend?: FetchBackend;\n}\n```\n\n### Internal changes\n- `fetchOne()` delegates to `this.fetchBackend.fetch()` instead of raw `fetch()`\n- If backend returns `outgoing` links, use those directly instead of HTML extraction\n- If backend returns `content`, include it in the page event\n- If backend returns `metadata`, include it in the page event\n- Link discovery: if backend has `discoverLinks()`, use it for richer link mapping\n\n### Event type extension\n```typescript\nexport type WeaverPageEvent = {\n  type: \"page\";\n  url: WeaverUrl;\n  status: number;\n  contentType: string;\n  fetchedAt: number;\n  outgoing: WeaverUrl[];\n  // New fields (optional, populated by rich backends):\n  content?: string;        // extracted markdown\n  title?: string;          // page title\n  metadata?: Record<string, unknown>;\n};\n```\n\n## Affected files\n\n### GraphWeaver ACO changes\n- `orgs/octave-commons/graph-weaver-aco/src/types.ts` — add `FetchBackend`, `FetchResult`, extended `WeaverPageEvent`\n- `orgs/octave-commons/graph-weaver-aco/src/GraphWeaverAco.ts` — accept `fetchBackend` option, delegate to backend\n- `orgs/octave-commons/graph-weaver-aco/src/fetch-backend.ts` — new: `SimpleFetchBackend` implementation (extracted from existing code)\n- `orgs/octave-commons/graph-weaver-aco/src/index.ts` — export new types and `SimpleFetchBackend`\n\n### Myrmex changes\n- `orgs/octave-commons/myrmex/src/shuvcrawl-client.ts` — implement `FetchBackend` using ShuvCrawl API\n- `orgs/octave-commons/myrmex/src/Myrmex.ts` — inject ShuvCrawl backend into GraphWeaver ACO\n\n## Verification\n- GraphWeaver ACO works unchanged with default `SimpleFetchBackend`\n- GraphWeaver ACO accepts custom `FetchBackend` and uses it for fetching\n- ShuvCrawl-backed backend returns enriched content, metadata, and links\n- Page events include `content` and `metadata` when provided by backend\n- No breaking changes to existing API surface\n\n## Definition of done\n- `FetchBackend` interface defined and exported\n- `SimpleFetchBackend` implementation extracted from existing code\n- GraphWeaver ACO accepts optional `fetchBackend` constructor option\n- Existing behavior unchanged when no backend is provided\n- Myrmex can inject ShuvCrawl backend for rich extraction\n\n## Related specs\n- `myrmex-orchestrator.md` — Myrmex injects ShuvCrawl backend\n- `myrmex-graph-epic.md` — parent epic",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/graph/graph-weaver-aco/kanban/pluggable-fetch-backend.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-graph-graph-weaver-aco-kanban-orgs-open-hax-openplanner-packages-graph-graph-weaver-aco-specs-myrmex-orchestrator-md",
+          "title": "Myrmex Orchestrator",
+          "slug": "myrmex-orchestrator",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:37.935Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/graph/graph-weaver-aco/specs/myrmex-orchestrator.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/graph/graph-weaver-aco/kanban/myrmex-orchestrator.md`\n\n# Myrmex Orchestrator\n\n## Status\nDraft\n\n## Summary\nMyrmex is the foraging intelligence that combines GraphWeaver ACO's traversal algorithm with ShuvCrawl's browser-based content extraction. It sends ants into the web, cracks paywalls and renders JS through ShuvCrawl, and returns enriched page events with full content and link graphs to OpenPlanner via Proxx.\n\n## Name\n**Myrmex** (Greek: μύρμηξ, \"ant\") — the colony's foraging intelligence. Fits the Proxx/Voxx naming convention. Carries the ACO lineage.\n\n## Problem statement\nGraphWeaver ACO (`orgs/octave-commons/graph-weaver-aco`) is a lightweight TypeScript crawler with intelligent URL selection via ant colony optimization, but it only does simple `fetch()` — no JS rendering, no paywall bypass, no content extraction.\n\nShuvCrawl (`shuv1337/shuvcrawl`) is a browser-based scraper with Patchright + BPC extension that extracts clean markdown from paywalled/JS-heavy pages, but has naive BFS/Sitemap crawl strategy with no long-term graph growth intelligence.\n\nNeither is sufficient alone for building a rich, traversable knowledge graph. Myrmex combines them.\n\n## Goals\n1. Use GraphWeaver ACO as the traversal brain (which URLs to visit, pheromone-based novelty selection).\n2. Use ShuvCrawl as the extraction engine (paywall bypass, JS rendering, markdown extraction).\n3. Emit enriched page events with full content, metadata, and outgoing links.\n4. Persist graph state (nodes, edges, pheromones, frontier) to OpenPlanner.\n5. Run as a managed service behind Proxx's gateway.\n6. Support crash recovery via checkpointed frontier state.\n\n## Non-goals\n- Rewriting GraphWeaver ACO's pheromone algorithm.\n- Rewriting ShuvCrawl's browser engine or BPC integration.\n- Building a general-purpose web search engine.\n\n## Architecture\n\n```\n┌─────────────────────────────────────────────┐\n│                 Myrmex                       │\n│                                              │\n│  ┌──────────────┐    ┌──────────────────┐   │\n│  │ GraphWeaver  │───▶│ ShuvCrawl Client │   │\n│  │ ACO Engine   │    │ (POST /scrape)   │   │\n│  │ (ants,       │    │ (POST /map)      │   │\n│  │  pheromones, │    └────────┬─────────┘   │\n│  │  frontier)   │             │              │\n│  └──────────────┘             │              │\n│                               │              │\n│                    ┌──────────▼──────────┐   │\n│                    │   Event Router      │   │\n│                    │ (page events to     │   │\n│                    │  OpenPlanner via    │   │\n│                    │  Proxx)             │   │\n│                    └──────────┬──────────┘   │\n│                               │              │\n│                    ┌──────────▼──────────┐   │\n│                    │   Graph Store       │   │\n│                    │ (checkpoint state   │   │\n│                    │  to OpenPlanner)    │   │\n│                    └─────────────────────┘   │\n└─────────────────────────────────────────────┘\n```\n\n## API\n\n### Orchestrator class\n```typescript\ninterface MyrmexConfig {\n  // GraphWeaver ACO params\n  ants: number;                    // default: 4\n  dispatchIntervalMs: number;      // default: 15000\n  maxFrontier: number;             // default: 20000\n  alpha: number;                   // default: 1.2\n  beta: number;                    // default: 3.0\n  evaporation: number;             // default: 0.03\n\n  // ShuvCrawl connection\n  shuvCrawlBaseUrl: string;        // http://shuvcrawl:3777\n  shuvCrawlToken?: string;\n\n  // Proxx/OpenPlanner connection\n  proxxBaseUrl: string;            // http://proxx:8789\n  proxxAuthToken: string;\n\n  // Content filtering\n  includePatterns: string[];\n  excludePatterns: string[];\n  maxContentLength: number;        // default: 500000\n  allowedContentTypes: string[];   // default: [\"text/html\"]\n\n  // Graph persistence\n  checkpointIntervalMs: number;    // default: 60000\n  graphStoreUrl: string;           // OpenPlanner endpoint\n}\n\nclass Myrmex {\n  constructor(config: MyrmexConfig);\n  seed(urls: string[]): void;\n  start(): void;\n  stop(): void;\n  pause(): void;\n  resume(): void;\n  stats(): MyrmexStats;\n  restoreCheckpoint(): Promise<void>;\n  onEvent(cb: (ev: MyrmexEvent) => void): () => void;\n}\n```\n\n### Event types\n```typescript\ntype MyrmexPageEvent = {\n  type: \"page\";\n  url: string;\n  title: string;\n  content: string;           // extracted markdown\n  contentHash: string;       // sha256\n  metadata: {\n    author?: string;\n    publishedAt?: string;\n    bypassMethod: \"bpc-extension\" | \"direct\" | \"failed\";\n    status: \"success\" | \"partial\" | \"failed\";\n    elapsed: number;\n  };\n  outgoing: string[];        // discovered links\n  graphNodeId: string;\n  fetchedAt: number;\n};\n\ntype MyrmexErrorEvent = {\n  type: \"error\";\n  url: string;\n  message: string;\n  fetchedAt: number;\n};\n\ntype MyrmexCheckpointEvent = {\n  type: \"checkpoint\";\n  frontierSize: number;\n  nodeCount: number;\n  edgeCount: number;\n  savedAt: number;\n};\n\ntype MyrmexEvent = MyrmexPageEvent | MyrmexErrorEvent | MyrmexCheckpointEvent;\n```\n\n## ShuvCrawl integration\n\n### Endpoints used\n- `POST /scrape` — extract content from a URL (with paywall bypass)\n- `POST /map` — discover URLs on a page (links + sitemap)\n- `GET /health` — health check\n\n### Request format\n```json\n{\n  \"url\": \"https://example.com/article\",\n  \"options\": {\n    \"wait\": \"networkidle\",\n    \"onlyMainContent\": true\n  }\n}\n```\n\n### Response format\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"url\": \"https://example.com/article\",\n    \"content\": \"# Article Title\\n\\nArticle body...\",\n    \"html\": \"<article>...</article>\",\n    \"metadata\": {\n      \"title\": \"Article Title\",\n      \"bypassMethod\": \"bpc-extension\",\n      \"status\": \"success\",\n      \"elapsed\": 2341\n    },\n    \"links\": [\"https://example.com/related-1\", ...]\n  }\n}\n```\n\n## OpenPlanner integration\n\n### Graph storage\nNodes and edges stored as structured events:\n\n**Node event:**\n```json\n{\n  \"kind\": \"graph.node\",\n  \"url\": \"https://example.com/article\",\n  \"title\": \"Article Title\",\n  \"contentHash\": \"sha256:abc123\",\n  \"discoveredAt\": \"2026-04-01T18:00:00Z\",\n  \"lastVisitedAt\": \"2026-04-01T18:05:00Z\",\n  \"visitCount\": 3,\n  \"pheromone\": 1.5\n}\n```\n\n**Edge event:**\n```json\n{\n  \"kind\": \"graph.edge\",\n  \"source\": \"https://example.com/article\",\n  \"target\": \"https://example.com/related\",\n  \"discoveredAt\": \"2026-04-01T18:00:00Z\",\n  \"linkText\": \"related article\"\n}\n```\n\n### Checkpoint format\n```json\n{\n  \"version\": 1,\n  \"savedAt\": \"2026-04-01T18:00:00Z\",\n  \"frontier\": {\n    \"urls\": {\n      \"https://example.com/1\": { \"pheromone\": 1.5, \"visits\": 0, \"lastVisitedAt\": null, \"outgoing\": [] },\n      ...\n    }\n  },\n  \"ants\": [\n    { \"id\": 0, \"at\": \"https://example.com/1\" },\n    ...\n  ],\n  \"hostState\": {\n    \"example.com\": { \"lastRequestAt\": 1712000000000, \"inFlight\": 0 }\n  }\n}\n```\n\n## Deployment\n\n### Package location\n`orgs/octave-commons/myrmex/` — TypeScript package, Bun runtime\n\n### Compose service\n```yaml\nservices:\n  myrmex:\n    build: ../../orgs/octave-commons/myrmex\n    networks:\n      - gateway\n    depends_on:\n      - shuvcrawl\n      - proxx\n    environment:\n      - SHUVCRAWL_BASE_URL=http://shuvcrawl:3777\n      - PROXX_BASE_URL=http://proxx:8789\n      - PROXX_AUTH_TOKEN=${PROXY_AUTH_TOKEN}\n      - SEED_URLS=https://example.com,https://example.org\n      - MYRMEX_ANTS=4\n      - MYRMEX_DISPATCH_INTERVAL_MS=15000\n      - MYRMEX_MAX_FRONTIER=20000\n```\n\n## Affected files\n\n### New: Myrmex package\n- `orgs/octave-commons/myrmex/` — new package\n- `orgs/octave-commons/myrmex/src/Myrmex.ts` — main orchestrator class\n- `orgs/octave-commons/myrmex/src/shuvcrawl-client.ts` — ShuvCrawl API client\n- `orgs/octave-commons/myrmex/src/graph-store.ts` — graph persistence to OpenPlanner\n- `orgs/octave-commons/myrmex/src/event-router.ts` — event routing to Proxx\n- `orgs/octave-commons/myrmex/src/checkpoint.ts` — checkpoint save/restore\n- `orgs/octave-commons/myrmex/src/config.ts` — configuration management\n- `orgs/octave-commons/myrmex/src/types.ts` — type definitions\n- `orgs/octave-commons/myrmex/src/index.ts` — public API\n- `orgs/octave-commons/myrmex/package.json`\n- `orgs/octave-commons/myrmex/tsconfig.json`\n- `orgs/octave-commons/myrmex/Dockerfile`\n\n### GraphWeaver ACO changes\n- `orgs/octave-commons/graph-weaver-aco/src/GraphWeaverAco.ts` — add pluggable fetch backend interface\n- `orgs/octave-commons/graph-weaver-aco/src/types.ts` — add content-rich page event type\n- No breaking changes — existing simple `fetch()` remains default\n\n## Phases\n\n### Phase 1: ShuvCrawl as Fetch Backend\n- Add pluggable fetch backend interface to GraphWeaver ACO\n- Implement ShuvCrawl client that calls `POST /scrape` and `POST /map`\n- Replace simple `fetch()` with ShuvCrawl extraction in Myrmex\n- Test: GraphWeaver discovers URLs, ShuvCrawl extracts content\n\n### Phase 2: Event Ingestion to OpenPlanner\n- Implement event router that sends page events to OpenPlanner via Proxx\n- Define graph event schema (`graph.node`, `graph.edge`)\n- Store content, generate embeddings, index for FTS\n- Test: crawled content searchable through OpenPlanner\n\n### Phase 3: Graph Persistence + Checkpointing\n- Implement graph state persistence to OpenPlanner\n- Checkpoint frontier state for crash recovery\n- Implement graph restore from persisted state\n- Test: restart preserves graph state and frontier\n\n### Phase 4: Proxx Management Surface\n- Expose Myrmex through Proxx's `/api/v1/graph/*` surface\n- Add management endpoints (start/stop/pause/resume/stats)\n- Build graph management UI in web console\n\n## Verification\n- Myrmex selects URLs via ACO, ShuvCrawl extracts content with paywall bypass\n- Extracted content appears in OpenPlanner with embeddings and FTS index\n- `POST /api/v1/lake/search/vector?q=...` returns relevant crawled content\n- `GET /api/v1/graph/stats` returns accurate node/edge counts\n- `POST /api/v1/graph/crawl/start` begins crawling, `stop` halts it\n- Graph state survives restart (frontier, pheromones, visited URLs)\n- Unauthenticated requests to `/api/v1/graph/*` return 401\n\n## Definition of done\n- Myrmex package combines ACO traversal with ShuvCrawl extraction\n- All crawled content is ingested into OpenPlanner through Proxx\n- `/api/v1/graph/*` provides full graph management and query surface\n- Content from crawled pages is searchable via semantic and FTS search\n- Graph state persists across restarts\n- Compose stack deploys Proxx + OpenPlanner + Myrmex + ShuvCrawl together\n\n## Risks\n- ShuvCrawl browser pool memory usage on resource-constrained hosts\n- Paywall bypass reliability varies by site (BPC doesn't cover everything)\n- Graph size growth unbounded without pruning policy\n- Pheromone graph persistence adds complexity to crash recovery\n- Rate limiting and politeness when crawling at scale\n- ShuvCrawl is a private repo — dependency management and updates\n- Browser pool concurrency limits throughput vs ant count\n\n## Related specs\n- `proxx-graph-weaver-shuvcrawl.md` — parent epic in devel/specs\n- `proxx-openplanner-integration.md` — OpenPlanner data lake integration\n- `proxx-mcp-gateway.md` — MCP server gateway integration",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/graph/graph-weaver-aco/kanban/myrmex-orchestrator.md"
+        }
+      ]
+    },
+    {
+      "status": "accepted",
+      "title": "Accepted",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "breakdown",
+      "title": "Breakdown",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "blocked",
+      "title": "Blocked",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "ready",
+      "title": "Ready",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "todo",
+      "title": "Todo",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "in_progress",
+      "title": "In Progress",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "review",
+      "title": "Review",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "document",
+      "title": "Document",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "done",
+      "title": "Done",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "rejected",
+      "title": "Rejected",
+      "taskCount": 0,
+      "tasks": []
+    }
+  ]
+}

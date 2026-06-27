@@ -1,0 +1,46 @@
+;; PanelHeader Component Contract
+;; Shared header strip for panels/tables with title, description, and action region.
+
+{:component :panel-header
+ :version "1.0.0"
+
+ :description
+ "Shared header strip for card/panel sections with title, description, optional kicker, and an actions region."
+
+ :props
+ {:title
+  {:type :string
+   :required true
+   :description "Primary header title"}
+
+  :description
+  {:type :string
+   :required false
+   :description "Supporting descriptive text"}
+
+  :kicker
+  {:type :string
+   :required false
+   :description "Optional small uppercase context label"}
+
+  :meta
+  {:type :node
+   :required false
+   :description "Optional metadata/status region beneath title block"}
+
+  :actions
+  {:type :node
+   :required false
+   :description "Right-side actions / filters / controls"}}
+
+ :slots
+ {:actions {:type :node :required false}
+  :meta {:type :node :required false}}
+
+ :accessibility
+ {:role :group}
+
+ :styling
+ {:data-attributes
+  {:data-component "panel-header"}}
+}

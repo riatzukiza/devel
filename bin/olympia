@@ -1,0 +1,3 @@
+#!/usr/bin/env bb
+(load-file "/home/err/devel/orgs/riatzukiza/ollama-benchmarks/olympia.clj")
+(apply olympia/-main *command-line-args*)

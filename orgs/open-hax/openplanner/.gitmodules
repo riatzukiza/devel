@@ -1,0 +1,10 @@
+[submodule "packages/vexx"]
+	path = packages/vexx
+	url = git@github.com:open-hax/vexx.git
+[submodule "packages/agents/knoxx"]
+	path = packages/agents/knoxx
+	url = git@github.com:open-hax/knoxx.git
+	branch = merge/openplanner-knoxx
+[submodule "packages/stores/migrations/openplanner-migration-tools"]
+	path = packages/stores/migrations/openplanner-migration-tools
+	url = file:///home/err/devel/orgs/open-hax/openplanner-migration-tools

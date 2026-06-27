@@ -1,0 +1,42 @@
+---
+title: "Continuation: dedupe rules + summary GC contract + tool schemas #cephalon #memory #gc #dedupe #summaries"
+status: incoming
+source_note: "services/cephalon-cljs/docs/notes/cephalon/cephalon-dedupe-gc-rules.md"
+extracted_at: "2026-02-12T03:01:25Z"
+uuid: "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-dedupe-gc-rules-md"
+priority: P3
+labels: ["specs", "migrated-spec"]
+created_at: "2026-05-29T04:01:26.906Z"
+source: "orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-dedupe-gc-rules.md"
+category: "specs"
+---
+
+> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-dedupe-gc-rules.md`
+> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-dedupe-gc-rules.md`
+# Continuation: dedupe rules + summary GC contract + tool schemas #cephalon #memory #gc #dedupe #summaries
+
+## Context
+- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-dedupe-gc-rules.md`
+- Category: `cephalon`
+
+## Draft Requirements
+- **Unicode + whitespace**
+- NFKC normalize
+- convert CRLF → LF
+- collapse runs of spaces/tabs
+- trim
+- **Strip volatile noise**
+- remove timestamps like `2026-01-31 12:34:56`, `12:34 PM`, etc
+- remove counters like `(#1234)` or `run=987` *(only if the prefix/suffix pattern is known to be spammy)*
+- **URL canonicalization**
+- lowercase scheme/host
+- remove tracking params (`utm_*`, `ref`, `fbclid`, etc)
+- optionally drop fragments (`#...`) for known spam URLs
+
+## Summary Snippets
+- You want this to be *useful cleanup*, not “silence everything”.
+- Apply in this order:
+
+## Open Questions
+- What should be implemented first from this note?
+- Which parts are exploratory versus actionable?

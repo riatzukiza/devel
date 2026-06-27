@@ -1,0 +1,146 @@
+;; CommandPalette Component Contract
+;; Defines the API for quick action search (Spotlight/Command+K style)
+
+{:component :command-palette
+ :version "1.0.0"
+ 
+ :description
+ "Quick action search palette with keyboard navigation, grouping, and fuzzy search."
+ 
+ :props
+ {:open
+  {:type :boolean
+   :default false
+   :description "Whether the palette is currently open"}
+  
+  :on-close
+  {:type :function
+   :signature "() => void"
+   :required true
+   :description "Callback fired when palette should close"}
+  
+  :on-select
+  {:type :function
+   :signature "(item: CommandItem) => void"
+   :required true
+   :description "Callback fired when an item is selected"}
+  
+  :placeholder
+  {:type :string
+   :default "Type a command or search..."
+   :description "Placeholder text for the search input"}
+  
+  :items
+  {:type :array
+   :items :command-item
+   :required true
+   :description "List of command items to search"}
+  
+  :groups
+  {:type :array
+   :items :command-group
+   :required false
+   :description "Optional grouping of commands"}
+  
+  :recent-items
+  {:type :array
+   :items :command-item
+   :required false
+   :description "Recently used items shown at top"}
+  
+  :max-results
+  {:type :number
+   :default 50
+   :description "Maximum number of results to show"}
+  
+  :empty-state
+  {:type :node
+   :required false
+   :description "Content to show when no results found"}
+  
+  :loading
+  {:type :boolean
+   :default false
+   :description "Whether commands are loading"}
+  
+  :shortcut
+  {:type :string
+   :default "⌘K"
+   :description "Keyboard shortcut hint"}}
+ 
+ :types
+ {:command-item
+  {:id :string
+   :label :string
+   :description {:type :string :required false}
+   :icon {:type :node :required false}
+   :shortcut {:type :string :required false}
+   :category {:type :string :required false}
+   :action {:type :function :required false}
+   :disabled {:type :boolean :default false}}
+  
+  :command-group
+  {:id :string
+   :label :string
+   :items [:ref :command-item]}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :accessibility
+ {:role :dialog
+  :aria
+  {:modal true
+   :label "Command palette"}
+  :keyboard
+  {:navigate [:arrow-up :arrow-down]
+   :select :enter
+   :close :escape
+   :open :command-k}}
+ 
+ :behavior
+ {:search
+  {:fuzzy true
+   :highlight-matches true
+   :debounce 150}
+  
+  :navigation
+  {:cycle true
+   :type-ahead true}
+  
+  :selection
+  {:close-on-select true
+   :execute-immediate true}}
+ 
+ :styling
+ {:data-attributes
+  {:data-component "command-palette"
+   :data-open :open}
+  
+  :css-custom-properties
+  ["--palette-bg"
+   "--palette-border"
+   "--palette-shadow"
+   "--item-hover-bg"
+   "--item-active-bg"]}
+ 
+ :tokens
+ {:colors
+  {:backdrop "rgba(0, 0, 0, 0.6)"
+   :palette-bg :colors.background/elevated
+   :palette-border :colors.border/subtle
+   :item-hover-bg :colors.background/surface
+   :item-active-bg :colors.background/selection
+   :text-muted :colors.text/muted
+   :shortcut-bg :colors.background/surface}
+  
+  :shadow
+  :shadow/2xl
+  
+  :radius
+  :spacing/3
+  
+  :spacing
+  {:input-padding :spacing/4
+   :item-padding :spacing/3
+   :group-gap :spacing/2}}}

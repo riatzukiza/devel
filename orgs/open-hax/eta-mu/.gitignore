@@ -1,0 +1,49 @@
+# Build artifacts
+dist/
+dist-cljs/
+build/
+lib/
+!packages/eta-mu-extensions/lib/
+!packages/eta-mu-extensions/lib/**
+!packages/eta-mu-extensions/src/eta_mu/build/
+!packages/eta-mu-extensions/src/eta_mu/build/**
+*.tsbuildinfo
+**/coverage/
+
+# Dependencies
+node_modules/
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Shadow-CLJS build caches
+**/.shadow-cljs/
+
+# Local tool state
+**/.cpcache/
+**/.serena/
+**/.clj-kondo/.cache/
+**/.lsp/
+packages/opencode-reactant/resources/public/js/main.js.map
+
+# Playwright artifacts
+packages/kanban/test-results/
+packages/kanban/playwright-report/
+
+
+**/target/

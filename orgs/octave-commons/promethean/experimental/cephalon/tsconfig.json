@@ -1,0 +1,23 @@
+{
+  "extends": "../../config/tsconfig.service.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "baseUrl": ".",
+    "paths": {
+      "@promethean/persistence": ["../persistence/dist/index"],
+      "@promethean/persistence/*": ["../persistence/dist/*"],
+      "@promethean-os/pantheon-ecs": ["../pantheon-ecs/dist/index"],
+      "@promethean-os/pantheon-ecs/*": ["../pantheon-ecs/dist/*"],
+      "@promethean/llm": ["../llm/dist/index"],
+      "@promethean/llm/*": ["../llm/dist/*"],
+      "@promethean/legacy/*": ["../legacy/*"],
+      "@promethean/enso-protocol": ["../enso-protocol/dist/index"],
+      "@promethean/enso-protocol/*": ["../enso-protocol/dist/*"]
+    },
+    "types": ["node"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["dist"],
+  "references": [{ "path": "../security" }]
+}

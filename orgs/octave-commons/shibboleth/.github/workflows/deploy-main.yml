@@ -1,0 +1,42 @@
+name: Deploy production
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+concurrency:
+  group: shibboleth-production-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+      - name: Configure ssh
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "${PRODUCTION_SSH_PRIVATE_KEY}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf 'Host *\n  IdentityFile ~/.ssh/deploy_key\n  IdentitiesOnly yes\n' > ~/.ssh/config
+          chmod 600 ~/.ssh/config
+          ssh-keyscan -H "${PRODUCTION_HOST}" >> ~/.ssh/known_hosts
+        env:
+          PRODUCTION_HOST: ${{ vars.SHIBBOLETH_PRODUCTION_HOST || 'ussy.promethean.rest' }}
+          PRODUCTION_SSH_PRIVATE_KEY: ${{ secrets.SHIBBOLETH_PRODUCTION_DEPLOY_SSH_KEY }}
+      - name: Sync and deploy production runtime
+        run: |
+          chmod +x scripts/*.sh
+          ./scripts/deploy-remote.sh
+        env:
+          DEPLOY_HOST: ${{ vars.SHIBBOLETH_PRODUCTION_HOST || 'ussy.promethean.rest' }}
+          DEPLOY_USER: ${{ vars.SHIBBOLETH_PRODUCTION_USER || 'error' }}
+          DEPLOY_PATH: ${{ vars.SHIBBOLETH_PRODUCTION_DEPLOY_PATH || '~/devel/services/shibboleth' }}
+          DEPLOY_ENV_FILE: ${{ secrets.SHIBBOLETH_PRODUCTION_ENV_FILE }}
+          DEPLOY_PROXY_AUTH_ENV: ${{ secrets.SHIBBOLETH_PRODUCTION_PROXY_AUTH_ENV }}
+          VERIFY_API_HEALTH_URL: ${{ vars.SHIBBOLETH_PRODUCTION_API_HEALTH_URL || 'http://127.0.0.1:8787/api/health' }}
+          VERIFY_UI_HEALTH_URL: ${{ vars.SHIBBOLETH_PRODUCTION_UI_HEALTH_URL || 'http://127.0.0.1:5197/' }}

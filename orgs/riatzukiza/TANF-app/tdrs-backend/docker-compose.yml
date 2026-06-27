@@ -1,0 +1,315 @@
+# Base Docker compose for all environments
+services:
+  zaproxy:
+    platform: linux/amd64
+    image: ghcr.io/${REGISTRY_OWNER:-hhs}/zap-stable:2.14.0
+    command: sleep 3600
+    depends_on:
+      - web
+    volumes:
+      - ./reports:/zap/wrk/:rw
+      - ../scripts/zap-hook.py:/zap/scripts/zap-hook.py:ro
+
+  postgres:
+    image: postgres:15.7
+    environment:
+      - PGDATA=/var/lib/postgresql/data/
+      - POSTGRES_DB=tdrs_test
+      - POSTGRES_PASSWORD=something_secure
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=tdpuser
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/:rw
+
+  grafana-pg:
+    image: postgres:15.7
+    environment:
+      - PGDATA=/var/lib/postgresql/data/
+      - POSTGRES_DB=grafana
+      - POSTGRES_PASSWORD=something_secure
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=grafana
+    ports:
+      - "5433:5432"
+    volumes:
+      - grafana_pg_data:/var/lib/postgresql/data/:rw
+
+  clamav-rest:
+    image: rafttech/clamav-rest:0.103.2
+    environment:
+      - MAX_FILE_SIZE=200M
+    ports:
+      - "9000:9000"
+
+  localstack:
+    image: localstack/localstack:0.13.3
+    environment:
+      - SERVICES=s3
+      - DATA_DIR=/tmp/localstack/data
+      - AWS_BUCKET=tdp-datafiles-localstack
+      - AWS_REGION_NAME=us-gov-west-1
+    ports:
+      - "4566:4566"
+    volumes:
+      - localstack_data:/tmp/localstack
+      # Copy in the Localstack setup script to configure any buckets needed
+      - ../scripts/localstack-setup.sh:/docker-entrypoint-initaws.d/localstack-setup.sh
+
+  grafana:
+    restart: always
+    image: grafana/grafana:12.0.2
+    ports:
+      - 9400:9400
+    environment:
+      - GF_PATHS_PROVISIONING=/usr/share/grafana/conf/provisioning
+      - GF_SERVER_HTTP_PORT=9400
+    volumes:
+      - ./plg/grafana/datasources.local.yml:/usr/share/grafana/conf/provisioning/datasources/datasources.yml
+      - ./plg/grafana/providers.local.yml:/usr/share/grafana/conf/provisioning/dashboards/providers.yml
+      - ./plg/grafana/dashboards:/var/lib/grafana/dashboards
+      - ./plg/grafana/custom.local.ini:/usr/share/grafana/conf/custom.ini
+      - grafana_data:/var/lib/grafana
+    command: --config /usr/share/grafana/conf/custom.ini
+    depends_on:
+      - grafana-pg
+
+  alertmanager:
+    restart: always
+    image: prom/alertmanager:v0.27.0
+    ports:
+      - 9093:9093
+    volumes:
+      - ./plg/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    command: --config.file=/etc/alertmanager/alertmanager.yml --storage.path=/alertmanager --log.level=debug --web.external-url=http://localhost:3000/alerts --web.route-prefix=/alerts --cluster.listen-address=""
+
+  mimir:
+    image: grafana/mimir:2.15.1
+    ports:
+      - 9009:9009
+    volumes:
+      - ./plg/mimir/mimir.local.yml:/etc/mimir/mimir.yml
+    command: --config.file=/etc/mimir/mimir.yml
+    depends_on:
+      - localstack
+
+  prometheus:
+    restart: always
+    image: prom/prometheus:v2.54.1
+    ports:
+      - 9090:9090
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --web.enable-remote-write-receiver
+      - --enable-feature=exemplar-storage
+      - --enable-feature=native-histograms
+    volumes:
+      - ./plg/prometheus/prometheus.local.yml:/etc/prometheus/prometheus.yml
+      - ./plg/prometheus/django-rules.yml:/etc/prometheus/django-rules.yml
+      - ./plg/prometheus/alerts.local.yml:/etc/prometheus/alerts.yml
+      - prometheus_data:/prometheus
+    depends_on:
+      - web
+      - celery-exporter
+      - postgres-exporter
+      - alertmanager
+      - mimir
+
+  alloy:
+    restart: always
+    image: grafana/alloy:v1.8.0
+    ports:
+      - 12345:12345
+      - 12346:12346
+    volumes:
+      - ./plg/alloy:/etc/alloy
+      - ~/tdp-logs/nginx:/var/log/nginx
+      - logs:/logs
+    command: run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /etc/alloy/alloy.local.config
+
+  tempo:
+    restart: always
+    image: grafana/tempo:latest
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - ./plg/tempo/tempo.local.yml:/etc/tempo.yaml
+      - tempo-data:/var/tempo
+    ports:
+      - "3200:3200"   # tempo
+      - "9095:9095" # tempo grpc
+      - "4317:4317"  # otlp grpc
+      - "4318:4318"  # otlp http
+    depends_on:
+      - prometheus
+      - localstack
+      - alloy
+
+  loki:
+    restart: always
+    image: grafana/loki:3.1.1
+    ports:
+      - 3100:3100
+    volumes:
+      - loki_data:/loki
+      - ./plg/loki/loki.local.yml:/loki/loki.yml
+    command: -config.file=/loki/loki.yml
+
+  celery-exporter:
+    restart: always
+    image: danihodovic/celery-exporter:0.11.1
+    ports:
+      - 9808:9808
+    environment:
+      - CE_BROKER_URL=redis://redis-server:6379/0
+    depends_on:
+      - web
+
+  postgres-exporter:
+    restart: always
+    image: prometheuscommunity/postgres-exporter:v0.15.0
+    ports:
+      - 9187:9187
+    environment:
+      - DATA_SOURCE_NAME=postgres://tdpuser:something_secure@postgres:5432/tdrs_test?sslmode=disable
+    depends_on:
+      - web
+
+  web:
+    restart: always
+    environment:
+      - CLAMAV_NEEDED
+      - AV_SCAN_URL=http://clamav-rest:9000/scan
+      - DB_HOST=postgres
+      - DB_NAME=tdrs_test
+      - DB_PASSWORD=something_secure
+      - DB_PORT=5432
+      - DB_USER=tdpuser
+      - DJANGO_CONFIGURATION=${DJANGO_CONFIGURATION:-Local}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-tdp-dev-insecure}
+      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-tdpservice.settings.local}
+      - LOCALSTACK_HOST=localstack
+      - DJANGO_SU_NAME
+      - JWT_CERT_TEST
+      - JWT_KEY
+      - USE_LOCALSTACK
+      - LOGGING_LEVEL
+      - AMS_CLIENT_ID
+      - AMS_CLIENT_SECRET
+      - AMS_CONFIGURATION_ENDPOINT
+      - REDIS_URI=redis://redis-server:6379
+      - REDIS_SERVER_LOCAL=TRUE
+      - CYPRESS_TOKEN
+      - DJANGO_DEBUG
+      - SENDGRID_API_KEY
+      - GENERATE_TRAILER_ERRORS=True
+      - BYPASS_OFA_AUTH
+      - FRA_PILOT_STATES
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_S3_BUCKET_NAME
+      - AWS_S3_LOGS_PREFIX
+      - GRAFANA_PASSWORD
+      - GRAFANA_USER
+      - OFA_DB_PASSWORD
+      - OFA_DB_USER
+      - OTEL_PYTHON_DJANGO_EXCLUDED_URLS
+      - CGAPPNAME_BACKEND
+      - SENTRY_DSN
+    volumes:
+      - .:/tdpapp
+      - logs:/tmp
+
+    build:
+      context: .
+      args:
+        REGISTRY_OWNER: ${REGISTRY_OWNER:-hhs}
+    command: >
+      bash -c "./wait_for_services.sh &&
+      ./manage.py makemigrations &&
+      ./manage.py migrate &&
+      ./manage.py populate_stts &&
+      python ./plg/grafana_views/generate_views.py --all &&
+      ./manage.py runscript apply_grafana_views &&
+      ./gunicorn_start.sh"
+    ports:
+      - "5555:5555"
+      - "8989:8080"
+    tty: true
+    depends_on:
+      - clamav-rest
+      - localstack
+      - postgres
+      - redis-server
+      - celery
+
+  redis-server:
+    image: redis:alpine
+    command: redis-server /tdpapp/redis.conf
+    ports:
+      - "6379:6379"
+    volumes:
+      - .:/tdpapp
+
+  celery:
+    restart: always
+    environment:
+      - CLAMAV_NEEDED
+      - AV_SCAN_URL=http://clamav-rest:9000/scan
+      - DB_HOST=postgres
+      - DB_NAME=tdrs_test
+      - DB_PASSWORD=something_secure
+      - DB_PORT=5432
+      - DB_USER=tdpuser
+      - DJANGO_CONFIGURATION=${DJANGO_CONFIGURATION:-Local}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-tdp-dev-insecure}
+      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-tdpservice.settings.local}
+      - LOCALSTACK_HOST=localstack
+      - DJANGO_SU_NAME
+      - JWT_CERT_TEST
+      - JWT_KEY
+      - USE_LOCALSTACK
+      - LOGGING_LEVEL
+      - AMS_CLIENT_ID
+      - AMS_CLIENT_SECRET
+      - AMS_CONFIGURATION_ENDPOINT
+      - REDIS_URI=redis://redis-server:6379
+      - REDIS_SERVER_LOCAL=TRUE
+      - CYPRESS_TOKEN
+      - DJANGO_DEBUG
+      - SENDGRID_API_KEY
+      - GENERATE_TRAILER_ERRORS=True
+      - BYPASS_OFA_AUTH
+      - FRA_PILOT_STATES
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_S3_BUCKET_NAME
+      - AWS_S3_LOGS_PREFIX
+    volumes:
+      - .:/tdpapp
+      - logs:/tmp
+    image: tdp
+    build:
+      context: .
+      args:
+        REGISTRY_OWNER: ${REGISTRY_OWNER:-hhs}
+    command: bash -c "./wait_for_services.sh && ./celery_start.sh"
+    depends_on:
+      - localstack
+      - postgres
+      - redis-server
+
+volumes:
+  localstack_data:
+  postgres_data:
+  grafana_pg_data:
+  prometheus_data:
+  grafana_data:
+  loki_data:
+  logs:
+  tempo-data:
+
+networks:
+  default:
+      name: external-net
+      external: true

@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>devel-graph-weaver</title>
+    <link rel="stylesheet" href="/style.css" />
+
+    <!-- markdown + code rendering (lightweight, CDN) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/monokai-sublime.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@14.1.4/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/turndown@7.2.0/dist/turndown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/turndown-plugin-gfm@1.0.2/dist/turndown-plugin-gfm.js"></script>
+  </head>
+  <body>
+    <header class="top">
+      <div class="title">
+        <h1>devel graph weaver</h1>
+        <p class="sub">local file graph + slow ACO web weave</p>
+      </div>
+      <div class="status" id="status">loading…</div>
+      <nav class="links">
+        <a href="/graphiql" target="_blank" rel="noreferrer">GraphiQL</a>
+      </nav>
+    </header>
+
+    <main class="main">
+      <div class="canvasWrap">
+        <canvas id="canvas"></canvas>
+        <div id="labelLayer" class="labelLayer"></div>
+      </div>
+      <aside class="side">
+        <h2>node</h2>
+        <div id="node" class="nodeCard">
+          <div class="nodeEmpty">click a node…</div>
+        </div>
+
+        <h2 class="mt">legend</h2>
+        <div id="legend" class="panel"></div>
+
+        <h2 class="mt">simulation audit</h2>
+        <div class="panel" id="daimoiPanel">
+          <label class="check"><input id="showDaimoi" type="checkbox" /> show daimoi trail snapshots</label>
+          <div class="row compact">
+            <label>snapshot limit <span class="v" id="v-daimoiLimit"></span></label>
+            <input id="daimoiLimit" type="range" min="10" max="500" step="10" />
+          </div>
+          <div class="row compact">
+            <label>min activation <span class="v" id="v-daimoiActivation"></span></label>
+            <input id="daimoiActivation" type="range" min="0" max="1" step="0.01" />
+          </div>
+          <div class="row compact">
+            <label>lookback (min) <span class="v" id="v-daimoiLookback"></span></label>
+            <input id="daimoiLookback" type="range" min="1" max="1440" step="1" />
+          </div>
+          <div class="row compact">
+            <label>query filter</label>
+            <input id="daimoiQuery" type="search" placeholder="optional query substring" />
+          </div>
+          <div class="buttons">
+            <button id="refreshDaimoi">refresh snapshots</button>
+          </div>
+          <div id="daimoiSummary" class="auditSummary">snapshots hidden</div>
+          <div id="daimoiList" class="auditList"></div>
+          <hr class="auditDivider" />
+          <label class="check"><input id="showSemanticField" type="checkbox" /> show semantic field cells</label>
+          <div class="row compact">
+            <label>field profile</label>
+            <input id="semanticFieldProfile" type="search" placeholder="latest profile" />
+          </div>
+          <div class="row compact">
+            <label>cell limit <span class="v" id="v-semanticFieldCellLimit"></span></label>
+            <input id="semanticFieldCellLimit" type="range" min="50" max="5000" step="50" />
+          </div>
+          <div class="row compact">
+            <label>force sample limit <span class="v" id="v-semanticFieldSampleLimit"></span></label>
+            <input id="semanticFieldSampleLimit" type="range" min="50" max="20000" step="50" />
+          </div>
+          <div class="buttons">
+            <button id="refreshSemanticField">refresh field</button>
+          </div>
+          <div id="semanticFieldSummary" class="auditSummary">field hidden</div>
+          <div id="semanticFieldList" class="auditList"></div>
+        </div>
+
+        <h2 class="mt">filters</h2>
+        <div id="filters" class="panel"></div>
+
+        <h2 class="mt">controls</h2>
+        <div class="panel" id="controls">
+          <div class="row">
+            <label>render nodes <span class="v" id="v-renderNodes"></span></label>
+            <input id="renderNodes" type="range" min="200" max="60000" step="100" />
+          </div>
+          <div class="row">
+            <label>render edges <span class="v" id="v-renderEdges"></span></label>
+            <input id="renderEdges" type="range" min="200" max="240000" step="200" />
+          </div>
+
+          <div class="row">
+            <label>ants <span class="v" id="v-ants"></span></label>
+            <input id="ants" type="range" min="1" max="64" step="1" />
+          </div>
+          <div class="row">
+            <label>dispatch (s) <span class="v" id="v-dispatch"></span></label>
+            <input id="dispatch" type="range" min="1" max="120" step="1" />
+          </div>
+          <div class="row">
+            <label>max concurrency <span class="v" id="v-concurrency"></span></label>
+            <input id="concurrency" type="range" min="1" max="32" step="1" />
+          </div>
+          <div class="row">
+            <label>per-host min (s) <span class="v" id="v-perHost"></span></label>
+            <input id="perHost" type="range" min="0" max="60" step="1" />
+          </div>
+          <div class="row">
+            <label>revisit after (h) <span class="v" id="v-revisit"></span></label>
+            <input id="revisit" type="range" min="1" max="168" step="1" />
+          </div>
+
+          <div class="row">
+            <label>rescan interval (min) <span class="v" id="v-rescan"></span></label>
+            <input id="rescan" type="range" min="1" max="180" step="1" />
+          </div>
+
+          <div class="buttons">
+            <button id="apply">apply</button>
+            <button id="rescanNow">rescan</button>
+            <button id="fit">fit</button>
+            <button id="reload">reload</button>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

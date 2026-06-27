@@ -1,0 +1,18 @@
+;; Harness adapter: opencode
+;; Core skill: ημ.skill/work-cycle@0.2.0
+
+(harness-adapter
+  (harness :opencode)
+  (skill "work-cycle")
+  (core-ref "packages/skills/core/work-cycle/CONTRACT.edn")
+  (install-path ".opencode/skills/work-cycle/CONTRACT.edn")
+  (registry-ref "packages/skills/skill-registry.edn")
+  (overrides nil)
+  (hooks
+    ;; opencode exposes session/turn hooks via opencode.json agents config
+    (session_start "load packages/skills/skill-registry.edn, inject autoload skills as system context")
+    (turn_start    "inject prnpa-loop reminder if >3 turns without a P-phase restatement"))
+  (notes
+    "opencode loads skills via .opencode/agents/*.md or system prompt injection.
+     This adapter assumes CONTRACT.edn is read by an eta-mu skill loader plugin
+     that translates it into opencode agent context."))

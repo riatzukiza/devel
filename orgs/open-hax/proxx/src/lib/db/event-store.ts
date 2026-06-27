@@ -1,0 +1,582 @@
+import { randomUUID } from "node:crypto";
+import type { Sql } from "./index.js";
+
+export type EventKind = "request" | "response" | "error" | "label" | "metric";
+
+export interface ProxyEvent {
+  readonly id: string;
+  readonly ts: Date;
+  readonly kind: EventKind;
+  readonly entryId: string;
+  readonly providerId?: string;
+  readonly accountId?: string;
+  readonly model?: string;
+  readonly status?: number;
+  readonly tags: readonly string[];
+  readonly meta: Record<string, unknown>;
+  readonly payload: Record<string, unknown> | null;
+  readonly payloadBytes?: number;
+}
+
+export interface EventInsert {
+  readonly kind: EventKind;
+  readonly entryId: string;
+  readonly providerId?: string;
+  readonly accountId?: string;
+  readonly model?: string;
+  readonly status?: number;
+  readonly tags?: readonly string[];
+  readonly meta?: Record<string, unknown>;
+  readonly payload?: Record<string, unknown> | null;
+}
+
+export interface EventQuery {
+  readonly kind?: EventKind;
+  readonly entryId?: string;
+  readonly providerId?: string;
+  readonly model?: string;
+  readonly status?: number;
+  readonly statusGte?: number;
+  readonly statusLt?: number;
+  readonly tag?: string;
+  readonly since?: Date;
+  readonly until?: Date;
+  readonly limit?: number;
+  readonly offset?: number;
+  readonly orderDesc?: boolean;
+  readonly includePayload?: boolean;
+}
+
+export interface EventLabeler {
+  readonly id: string;
+  applies(event: EventInsert): boolean;
+  label(event: EventInsert): string[];
+}
+
+interface EventRow {
+  id: string;
+  ts: Date | string;
+  kind: string;
+  entry_id: string;
+  provider_id: string | null;
+  account_id: string | null;
+  model: string | null;
+  status: number | null;
+  tags: string[] | string | null;
+  meta: Record<string, unknown> | string | null;
+  payload?: Record<string, unknown> | string | null;
+  payload_bytes?: number | null;
+}
+
+function parseRow(row: EventRow): ProxyEvent {
+  const tags = typeof row.tags === "string" ? JSON.parse(row.tags) : (row.tags ?? []);
+  const meta = typeof row.meta === "string" ? JSON.parse(row.meta) : (row.meta ?? {});
+  const payload = row.payload === undefined
+    ? null
+    : typeof row.payload === "string"
+      ? JSON.parse(row.payload)
+      : (row.payload ?? null);
+
+  return {
+    id: row.id,
+    ts: typeof row.ts === "string" ? new Date(row.ts) : row.ts,
+    kind: row.kind as EventKind,
+    entryId: row.entry_id,
+    providerId: row.provider_id ?? undefined,
+    accountId: row.account_id ?? undefined,
+    model: row.model ?? undefined,
+    status: row.status ?? undefined,
+    tags,
+    meta,
+    payload,
+    payloadBytes: row.payload_bytes ?? undefined,
+  };
+}
+
+const MAX_PAYLOAD_BYTES = 2 * 1024 * 1024; // 2MB safety limit per event
+const DEFAULT_EVENT_TTL_MS = 24 * 60 * 60 * 1000;
+const DEFAULT_TTL_SWEEP_INTERVAL_MS = 60 * 60 * 1000;
+
+export interface EventStoreOptions {
+  readonly flushIntervalMs?: number;
+  readonly maxBufferSize?: number;
+  /** Retention window for SQL events. Set to 0 to disable pruning. */
+  readonly ttlMs?: number;
+  /** Background prune interval. Set to 0 to prune only during init/manual calls. */
+  readonly ttlSweepIntervalMs?: number;
+  readonly now?: () => Date;
+}
+
+export class EventStore {
+  private readonly buffer: EventInsert[] = [];
+  private readonly labelers: EventLabeler[] = [];
+  private readonly flushIntervalMs: number;
+  private readonly maxBufferSize: number;
+  private readonly ttlMs: number;
+  private readonly ttlSweepIntervalMs: number;
+  private readonly now: () => Date;
+  private flushTimer: ReturnType<typeof setInterval> | null = null;
+  private ttlSweepTimer: ReturnType<typeof setInterval> | null = null;
+  private flushing = false;
+  private ttlSweeping = false;
+
+  public constructor(
+    private readonly sql: Sql,
+    options: EventStoreOptions = {},
+  ) {
+    this.flushIntervalMs = Math.max(0, Math.trunc(options.flushIntervalMs ?? 3000));
+    this.maxBufferSize = Math.max(1, Math.trunc(options.maxBufferSize ?? 200));
+    this.ttlMs = Math.max(0, Math.trunc(options.ttlMs ?? DEFAULT_EVENT_TTL_MS));
+    this.ttlSweepIntervalMs = Math.max(0, Math.trunc(options.ttlSweepIntervalMs ?? DEFAULT_TTL_SWEEP_INTERVAL_MS));
+    this.now = options.now ?? (() => new Date());
+  }
+
+  public async init(): Promise<void> {
+    await this.sql.unsafe(`
+      CREATE TABLE IF NOT EXISTS events (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        ts TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        kind TEXT NOT NULL,
+        entry_id TEXT NOT NULL,
+        provider_id TEXT,
+        account_id TEXT,
+        model TEXT,
+        status INTEGER,
+        tags JSONB DEFAULT '[]'::jsonb,
+        meta JSONB DEFAULT '{}'::jsonb,
+        payload JSONB,
+        payload_bytes INTEGER
+      );
+    `);
+
+    await this.sql.unsafe(`CREATE INDEX IF NOT EXISTS idx_events_entry ON events(entry_id);`);
+    await this.sql.unsafe(`CREATE INDEX IF NOT EXISTS idx_events_ts ON events(ts DESC);`);
+    await this.sql.unsafe(`CREATE INDEX IF NOT EXISTS idx_events_kind ON events(kind);`);
+    await this.sql.unsafe(`CREATE INDEX IF NOT EXISTS idx_events_model ON events(model);`);
+    await this.sql.unsafe(`CREATE INDEX IF NOT EXISTS idx_events_tags ON events USING GIN(tags);`);
+    await this.sql.unsafe(`CREATE INDEX IF NOT EXISTS idx_events_provider_status ON events(provider_id, status);`);
+
+    await this.sql.unsafe(`
+      CREATE TABLE IF NOT EXISTS labels (
+        id TEXT PRIMARY KEY,
+        category TEXT NOT NULL,
+        description TEXT,
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      );
+    `);
+
+    await this.pruneExpired();
+    this.startFlushTimer();
+    this.startTtlSweepTimer();
+  }
+
+  public registerLabeler(labeler: EventLabeler): void {
+    this.labelers.push(labeler);
+  }
+
+  public emit(event: EventInsert): string {
+    const id = randomUUID();
+
+    const autoTags: string[] = [];
+    for (const labeler of this.labelers) {
+      if (labeler.applies(event)) {
+        autoTags.push(...labeler.label(event));
+      }
+    }
+
+    const merged: EventInsert = autoTags.length > 0
+      ? { ...event, tags: [...(event.tags ?? []), ...autoTags] }
+      : event;
+
+    this.buffer.push(merged);
+
+    if (this.buffer.length >= this.maxBufferSize) {
+      this.flush().catch(() => {});
+    }
+
+    return id;
+  }
+
+  public emitRequest(
+    entryId: string,
+    providerId: string,
+    accountId: string,
+    model: string,
+    upstreamPayload: Record<string, unknown>,
+    meta?: Record<string, unknown>,
+  ): void {
+    this.emit({
+      kind: "request",
+      entryId,
+      providerId,
+      accountId,
+      model,
+      tags: [],
+      meta: meta ?? {},
+      payload: sanitizePayload(upstreamPayload),
+    });
+  }
+
+  public emitResponse(
+    entryId: string,
+    providerId: string,
+    accountId: string,
+    model: string,
+    status: number,
+    responsePayload: Record<string, unknown> | null,
+    meta?: Record<string, unknown>,
+  ): void {
+    this.emit({
+      kind: "response",
+      entryId,
+      providerId,
+      accountId,
+      model,
+      status,
+      tags: [],
+      meta: meta ?? {},
+      payload: responsePayload ? sanitizePayload(responsePayload) : null,
+    });
+  }
+
+  public emitError(
+    entryId: string,
+    providerId: string,
+    accountId: string,
+    model: string,
+    status: number,
+    errorPayload: Record<string, unknown>,
+    meta?: Record<string, unknown>,
+  ): void {
+    this.emit({
+      kind: "error",
+      entryId,
+      providerId,
+      accountId,
+      model,
+      status,
+      tags: [],
+      meta: meta ?? {},
+      payload: sanitizePayload(errorPayload),
+    });
+  }
+
+  public async query(filters: EventQuery): Promise<ProxyEvent[]> {
+    const conditions: string[] = [];
+    const values: unknown[] = [];
+    let paramIndex = 1;
+
+    if (filters.kind) {
+      conditions.push(`kind = $${paramIndex++}`);
+      values.push(filters.kind);
+    }
+    if (filters.entryId) {
+      conditions.push(`entry_id = $${paramIndex++}`);
+      values.push(filters.entryId);
+    }
+    if (filters.providerId) {
+      conditions.push(`provider_id = $${paramIndex++}`);
+      values.push(filters.providerId);
+    }
+    if (filters.model) {
+      conditions.push(`model = $${paramIndex++}`);
+      values.push(filters.model);
+    }
+    if (filters.status !== undefined) {
+      conditions.push(`status = $${paramIndex++}`);
+      values.push(filters.status);
+    }
+    if (filters.statusGte !== undefined) {
+      conditions.push(`status >= $${paramIndex++}`);
+      values.push(filters.statusGte);
+    }
+    if (filters.statusLt !== undefined) {
+      conditions.push(`status < $${paramIndex++}`);
+      values.push(filters.statusLt);
+    }
+    if (filters.tag) {
+      conditions.push(`tags ? $${paramIndex++}`);
+      values.push(filters.tag);
+    }
+    if (filters.since) {
+      conditions.push(`ts >= $${paramIndex++}`);
+      values.push(filters.since.toISOString());
+    }
+    if (filters.until) {
+      conditions.push(`ts < $${paramIndex++}`);
+      values.push(filters.until.toISOString());
+    }
+
+    const where = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+    const order = filters.orderDesc === false ? "ASC" : "DESC";
+    const limit = Math.min(filters.limit ?? 100, 1000);
+    const offset = filters.offset ?? 0;
+
+    const selectColumns = filters.includePayload
+      ? "*"
+      : "id, ts, kind, entry_id, provider_id, account_id, model, status, tags, meta, payload_bytes";
+    const query = `SELECT ${selectColumns} FROM events ${where} ORDER BY ts ${order} LIMIT $${paramIndex++} OFFSET $${paramIndex++}`;
+    values.push(limit, offset);
+
+    const rows = await this.sql.unsafe<EventRow[]>(query, values as (string | number | null | Date)[]);
+    return rows.map(parseRow);
+  }
+
+  public async count(filters: Omit<EventQuery, "limit" | "offset" | "orderDesc" | "includePayload">): Promise<number> {
+    const conditions: string[] = [];
+    const values: Array<string | number | null> = [];
+    let paramIndex = 1;
+
+    if (filters.kind) {
+      conditions.push(`kind = $${paramIndex++}`);
+      values.push(filters.kind);
+    }
+    if (filters.entryId) {
+      conditions.push(`entry_id = $${paramIndex++}`);
+      values.push(filters.entryId);
+    }
+    if (filters.providerId) {
+      conditions.push(`provider_id = $${paramIndex++}`);
+      values.push(filters.providerId);
+    }
+    if (filters.model) {
+      conditions.push(`model = $${paramIndex++}`);
+      values.push(filters.model);
+    }
+    if (filters.status !== undefined) {
+      conditions.push(`status = $${paramIndex++}`);
+      values.push(filters.status);
+    }
+    if (filters.statusGte !== undefined) {
+      conditions.push(`status >= $${paramIndex++}`);
+      values.push(filters.statusGte);
+    }
+    if (filters.statusLt !== undefined) {
+      conditions.push(`status < $${paramIndex++}`);
+      values.push(filters.statusLt);
+    }
+    if (filters.tag) {
+      conditions.push(`tags ? $${paramIndex++}`);
+      values.push(filters.tag);
+    }
+    if (filters.since) {
+      conditions.push(`ts >= $${paramIndex++}`);
+      values.push(filters.since.toISOString());
+    }
+    if (filters.until) {
+      conditions.push(`ts < $${paramIndex++}`);
+      values.push(filters.until.toISOString());
+    }
+
+    const where = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+    const query = `SELECT COUNT(*) as count FROM events ${where}`;
+
+    const rows = await this.sql.unsafe<Array<{ count: string }>>(query, values);
+    const first = rows[0];
+    return first ? Number.parseInt(first.count, 10) : 0;
+  }
+
+  public async getById(eventId: string): Promise<ProxyEvent | null> {
+    const rows = await this.sql.unsafe<EventRow[]>(
+      "SELECT * FROM events WHERE id = $1::uuid LIMIT 1",
+      [eventId],
+    );
+    const row = rows[0];
+    return row ? parseRow(row) : null;
+  }
+
+  public async addTag(eventId: string, tag: string): Promise<void> {
+    const tagArray = JSON.stringify([tag]);
+    await this.sql`UPDATE events SET tags = tags || ${tagArray}::jsonb WHERE id = ${eventId}::uuid AND NOT tags ? ${tag}`;
+  }
+
+  public async removeTag(eventId: string, tag: string): Promise<void> {
+    await this.sql`UPDATE events SET tags = tags - ${tag} WHERE id = ${eventId}::uuid`;
+  }
+
+  public async countByTag(since?: Date): Promise<Record<string, number>> {
+    const params = since ? [since.toISOString()] : [];
+    const timeFilter = since ? `AND e.ts >= $1` : "";
+    const rows = await this.sql.unsafe<Array<{ tag: string; count: string }>>(
+      `SELECT tag, COUNT(*) as count FROM events e, LATERAL jsonb_array_elements_text(e.tags) AS tag WHERE e.tags IS NOT NULL AND jsonb_typeof(e.tags) = 'array' ${timeFilter} GROUP BY tag ORDER BY count DESC`,
+      params,
+    );
+    const result: Record<string, number> = {};
+    for (const row of rows) {
+      result[row.tag] = parseInt(row.count, 10);
+    }
+    return result;
+  }
+
+  public async pruneExpired(referenceDate: Date = this.now()): Promise<number> {
+    if (this.ttlMs <= 0) {
+      return 0;
+    }
+
+    const cutoff = new Date(referenceDate.getTime() - this.ttlMs);
+    const rows = await this.sql.unsafe<Array<{ count: string }>>(
+      `
+        WITH deleted AS (
+          DELETE FROM events
+          WHERE ts < $1::timestamptz
+          RETURNING 1
+        )
+        SELECT COUNT(*)::text AS count FROM deleted
+      `,
+      [cutoff.toISOString()],
+    );
+    const first = rows[0];
+    return first ? Number.parseInt(first.count, 10) : 0;
+  }
+
+  public async flush(): Promise<void> {
+    if (this.flushing || this.buffer.length === 0) {
+      return;
+    }
+
+    this.flushing = true;
+    try {
+      const batch = this.buffer.splice(0, this.buffer.length);
+      await this.writeBatch(batch);
+    } finally {
+      this.flushing = false;
+    }
+  }
+
+  private async writeBatch(events: EventInsert[]): Promise<void> {
+    if (events.length === 0) return;
+
+    const BATCH_SIZE = 50;
+    for (let i = 0; i < events.length; i += BATCH_SIZE) {
+      const chunk = events.slice(i, i + BATCH_SIZE);
+      try {
+        await this.writeChunk(chunk);
+      } catch (err) {
+        // Log but don't throw -- don't block the proxy for event storage failures
+        console.error("EventStore: failed to write batch", err);
+      }
+    }
+  }
+
+  private async writeChunk(events: EventInsert[]): Promise<void> {
+    if (events.length === 0) return;
+
+    for (const ev of events) {
+      const payloadBytes = ev.payload ? Buffer.byteLength(JSON.stringify(ev.payload), "utf8") : null;
+      // postgres.js auto-serializes JS objects/arrays to JSONB when using tagged templates.
+      const tags = [...(ev.tags ?? [])] as string[];
+      const meta = { ...(ev.meta ?? {}) };
+      const payload = ev.payload ? { ...ev.payload } : null;
+
+      await this.sql`
+        INSERT INTO events (id, ts, kind, entry_id, provider_id, account_id, model, status, tags, meta, payload, payload_bytes)
+        VALUES (
+          gen_random_uuid(), NOW(),
+          ${ev.kind},
+          ${ev.entryId},
+          ${ev.providerId ?? null},
+          ${ev.accountId ?? null},
+          ${ev.model ?? null},
+          ${ev.status ?? null},
+          ${this.sql.json(tags as never)},
+          ${this.sql.json(meta as never)},
+          ${payload ? this.sql.json(payload as never) : null},
+          ${payloadBytes}
+        )
+      `;
+    }
+  }
+
+  private startFlushTimer(): void {
+    if (this.flushTimer || this.flushIntervalMs <= 0) return;
+    this.flushTimer = setInterval(() => {
+      this.flush().catch(() => {});
+    }, this.flushIntervalMs);
+  }
+
+  private startTtlSweepTimer(): void {
+    if (this.ttlSweepTimer || this.ttlMs <= 0 || this.ttlSweepIntervalMs <= 0) return;
+    this.ttlSweepTimer = setInterval(() => {
+      if (this.ttlSweeping) {
+        return;
+      }
+
+      this.ttlSweeping = true;
+      this.pruneExpired()
+        .catch((err) => {
+          console.error("EventStore: failed to prune expired events", err);
+        })
+        .finally(() => {
+          this.ttlSweeping = false;
+        });
+    }, this.ttlSweepIntervalMs);
+  }
+
+  public async close(): Promise<void> {
+    if (this.flushTimer) {
+      clearInterval(this.flushTimer);
+      this.flushTimer = null;
+    }
+    if (this.ttlSweepTimer) {
+      clearInterval(this.ttlSweepTimer);
+      this.ttlSweepTimer = null;
+    }
+    await this.flush();
+  }
+}
+
+function extractUrls(value: unknown): string[] {
+  const urls: string[] = [];
+  if (typeof value === "string") {
+    // Look for http(s) URLs, especially media/asset URLs
+    if (/^https?:\/\//.test(value)) {
+      urls.push(value);
+    }
+  } else if (Array.isArray(value)) {
+    for (const item of value) {
+      urls.push(...extractUrls(item));
+    }
+  } else if (typeof value === "object" && value !== null) {
+    for (const v of Object.values(value as Record<string, unknown>)) {
+      urls.push(...extractUrls(v));
+    }
+  }
+  return urls;
+}
+
+function sanitizePayload(payload: Record<string, unknown>): Record<string, unknown> {
+  const json = JSON.stringify(payload);
+  if (Buffer.byteLength(json, "utf8") > MAX_PAYLOAD_BYTES) {
+    const urls = extractUrls(payload);
+    return {
+      _truncated: true,
+      _originalBytes: Buffer.byteLength(json, "utf8"),
+      model: payload["model"],
+      _messageCount: Array.isArray(payload["messages"]) ? payload["messages"].length : undefined,
+      _inputCount: Array.isArray(payload["input"]) ? payload["input"].length : undefined,
+      ...(urls.length > 0 ? { _urls: urls } : {}),
+    };
+  }
+  return stripInvalidJsonChars(payload) as Record<string, unknown>;
+}
+
+function stripInvalidJsonChars(obj: unknown): unknown {
+  if (obj === null || obj === undefined) return obj;
+  if (typeof obj === "string") {
+    // eslint-disable-next-line no-control-regex
+    return obj.replace(new RegExp("\\x00", "g"), "").replace(new RegExp("[\\x01-\\x1F]", "g"), (c) =>
+      c === "\x1F" ? "\u241F" : c
+    );
+  }
+  if (Array.isArray(obj)) {
+    return obj.map(stripInvalidJsonChars);
+  }
+  if (typeof obj === "object") {
+    const result: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {
+      result[key] = stripInvalidJsonChars(value);
+    }
+    return result;
+  }
+  return obj;
+}

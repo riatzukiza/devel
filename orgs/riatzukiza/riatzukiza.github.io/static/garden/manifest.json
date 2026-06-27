@@ -1,0 +1,198 @@
+{
+  "generatedAt": "2026-03-28T05:18:02.223Z",
+  "projects": [
+    {
+      "id": "cephalon-ts",
+      "title": "Cephalon Hive — Cephalon TS",
+      "subtitle": "File import graphs (packages/cephalon-ts/src)",
+      "description": "A quartz-garden view of the Cephalon runtime: subsystems map + entrypoint slices + full file-level import lattice.",
+      "tags": [
+        "typescript",
+        "agents",
+        "discord",
+        "llm",
+        "graph"
+      ],
+      "graphs": [
+        {
+          "id": "subsystems",
+          "title": "Subsystems map",
+          "kind": "subsystems",
+          "svg": "graphs/cephalon-ts/subsystems.svg",
+          "png": "graphs/cephalon-ts/subsystems.png",
+          "json": "graphs/cephalon-ts/subsystems.json"
+        },
+        {
+          "id": "entry-main",
+          "title": "Entrypoint: main.ts",
+          "kind": "entry",
+          "svg": "graphs/cephalon-ts/entry.main.svg",
+          "png": "graphs/cephalon-ts/entry.main.png"
+        },
+        {
+          "id": "entry-app",
+          "title": "Entrypoint: app.ts",
+          "kind": "entry",
+          "svg": "graphs/cephalon-ts/entry.app.svg",
+          "png": "graphs/cephalon-ts/entry.app.png"
+        },
+        {
+          "id": "entry-cli",
+          "title": "Entrypoint: cli.ts",
+          "kind": "entry",
+          "svg": "graphs/cephalon-ts/entry.cli.svg",
+          "png": "graphs/cephalon-ts/entry.cli.png"
+        },
+        {
+          "id": "entry-hive-cli",
+          "title": "Entrypoint: hive-cli.ts",
+          "kind": "entry",
+          "svg": "graphs/cephalon-ts/entry.hive-cli.svg",
+          "png": "graphs/cephalon-ts/entry.hive-cli.png"
+        },
+        {
+          "id": "imports",
+          "title": "Full file import graph",
+          "kind": "files",
+          "svg": "graphs/cephalon-ts/imports.svg",
+          "png": "graphs/cephalon-ts/imports.png",
+          "json": "graphs/cephalon-ts/imports.json"
+        }
+      ]
+    },
+    {
+      "id": "openplanner",
+      "title": "OpenPlanner",
+      "subtitle": "File import graphs (services/openplanner/src)",
+      "description": "OpenPlanner’s internal wiring: routes, plugins, and the event/search surface that feeds the hive.",
+      "tags": [
+        "typescript",
+        "search",
+        "server",
+        "chroma",
+        "events"
+      ],
+      "graphs": [
+        {
+          "id": "subsystems",
+          "title": "Subsystems map",
+          "kind": "subsystems",
+          "svg": "graphs/openplanner/subsystems.svg",
+          "png": "graphs/openplanner/subsystems.png",
+          "json": "graphs/openplanner/subsystems.json"
+        },
+        {
+          "id": "entry-main",
+          "title": "Entrypoint: main.ts",
+          "kind": "entry",
+          "svg": "graphs/openplanner/entry.main.svg",
+          "png": "graphs/openplanner/entry.main.png"
+        },
+        {
+          "id": "entry-app",
+          "title": "Entrypoint: app.ts",
+          "kind": "entry",
+          "svg": "graphs/openplanner/entry.app.svg",
+          "png": "graphs/openplanner/entry.app.png"
+        },
+        {
+          "id": "imports",
+          "title": "Full file import graph",
+          "kind": "files",
+          "svg": "graphs/openplanner/imports.svg",
+          "png": "graphs/openplanner/imports.png",
+          "json": "graphs/openplanner/imports.json"
+        }
+      ]
+    },
+    {
+      "id": "proxx-api",
+      "title": "Proxx API",
+      "subtitle": "File import graphs (orgs/open-hax/proxx/src)",
+      "description": "Proxy + federation internals: request routing, provider adapters, auth, and the control plane.",
+      "tags": [
+        "typescript",
+        "proxy",
+        "oauth",
+        "federation",
+        "postgres"
+      ],
+      "graphs": [
+        {
+          "id": "subsystems",
+          "title": "Subsystems map",
+          "kind": "subsystems",
+          "svg": "graphs/proxx-api/subsystems.svg",
+          "png": "graphs/proxx-api/subsystems.png",
+          "json": "graphs/proxx-api/subsystems.json"
+        },
+        {
+          "id": "entry-main",
+          "title": "Entrypoint: main.ts",
+          "kind": "entry",
+          "svg": "graphs/proxx-api/entry.main.svg",
+          "png": "graphs/proxx-api/entry.main.png"
+        },
+        {
+          "id": "entry-app",
+          "title": "Entrypoint: app.ts",
+          "kind": "entry",
+          "svg": "graphs/proxx-api/entry.app.svg",
+          "png": "graphs/proxx-api/entry.app.png"
+        },
+        {
+          "id": "imports",
+          "title": "Full file import graph",
+          "kind": "files",
+          "svg": "graphs/proxx-api/imports.svg",
+          "png": "graphs/proxx-api/imports.png",
+          "json": "graphs/proxx-api/imports.json"
+        }
+      ]
+    },
+    {
+      "id": "proxx-web",
+      "title": "Proxx Web",
+      "subtitle": "File import graphs (orgs/open-hax/proxx/web/src)",
+      "description": "Web UI wiring: pages, lib utilities, and the frontend entrypoints.",
+      "tags": [
+        "typescript",
+        "react",
+        "web",
+        "ui"
+      ],
+      "graphs": [
+        {
+          "id": "subsystems",
+          "title": "Subsystems map",
+          "kind": "subsystems",
+          "svg": "graphs/proxx-web/subsystems.svg",
+          "png": "graphs/proxx-web/subsystems.png",
+          "json": "graphs/proxx-web/subsystems.json"
+        },
+        {
+          "id": "entry-main",
+          "title": "Entrypoint: main.tsx",
+          "kind": "entry",
+          "svg": "graphs/proxx-web/entry.main.svg",
+          "png": "graphs/proxx-web/entry.main.png"
+        },
+        {
+          "id": "entry-app",
+          "title": "Entrypoint: App.tsx",
+          "kind": "entry",
+          "svg": "graphs/proxx-web/entry.app.svg",
+          "png": "graphs/proxx-web/entry.app.png"
+        },
+        {
+          "id": "imports",
+          "title": "Full file import graph",
+          "kind": "files",
+          "svg": "graphs/proxx-web/imports.svg",
+          "png": "graphs/proxx-web/imports.png",
+          "json": "graphs/proxx-web/imports.json"
+        }
+      ]
+    }
+  ]
+}

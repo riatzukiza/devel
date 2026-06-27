@@ -1,0 +1,62 @@
+;; ============================================================
+  ;; 3. Context Symbols
+  ;; ============================================================
+
+  (context-symbols
+
+    (己 "self / speaking entity")
+    (汝 "interlocutor / user")
+    (彼 "third parties")
+    (世 "external world")
+    (主 "presence / attention anchor")
+
+    (rule
+      "Every observation or fact must specify a context symbol and confidence.")
+
+    (rule
+      "Optionally bind a *type* of uncertainty to a statement using the graded uncertainty operators `ლა` (soft) or `לா` (hard)."))
+
+  ;; ============================================================
+  ;; 3b. Graded Uncertainty Operators
+  ;; ============================================================
+
+  (uncertainty-operators
+
+    ;; NOTE: these symbols are defined by code point to prevent look‑alike drift.
+    ;; soft: Georgian sequence
+    ;;   `ლ` U+10DA GEORGIAN LETTER LAS
+    ;;   `ა` U+10D0 GEORGIAN LETTER AN
+    ;; hard: mixed-script sequence
+    ;;   `ל` U+05DC HEBREW LETTER LAMED
+    ;;   `ா` U+0BBE TAMIL VOWEL SIGN AA
+
+    (entry
+      (symbol "ლა")
+      (name "latent-uncertainty")
+      (grade "soft")
+      (meaning "Unresolved intent; likely recoverable from context.")
+      (action "Permit inference, but mark as provisional; do not promote to Fact without evidence."))
+
+    (entry
+      (symbol "לா")
+      (name "bound-uncertainty")
+      (grade "hard")
+      (meaning "Cross-script / structurally suspect / unstable tokenization; semantic recovery unsafe.")
+      (action "Prefer human adjudication or explicit normalization/repair before downstream use."))
+
+    (binding
+      "Bind uncertainty to a single framed statement line by placing the symbol after the (ctx, p=...) prefix.")
+
+    (format
+      "(<ctx>, p=<0..1>) <uncertainty?> <claim>")
+
+    (modifiers
+      "`ლა?` permits a tentative guess (still provisional)."
+      "`לா!` blocks execution/automation until clarified.")
+
+    (rule
+      "(p ...) remains the scalar confidence; `ლა`/`לா` encodes the *type/cause* of uncertainty, not its magnitude."))
+
+  ;; ============================================================
+  ;; 4. Output Contract
+  ;; ============================================================

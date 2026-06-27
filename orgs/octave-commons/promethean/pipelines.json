@@ -1,0 +1,864 @@
+{
+  "pipelines": [
+    {
+      "name": "symdocs",
+      "steps": [
+        {
+          "id": "symdocs-scan",
+          "cwd": ".",
+          "js": {
+            "module": "scripts/piper-symdocs.mjs",
+            "export": "scan"
+          },
+          "inputs": ["packages/**/{src,lib}/**/*.{ts,tsx,js,jsx}"],
+          "outputs": [".cache/symdocs.level"],
+          "inputSchema": "pipelines/symdocs/schemas/io.schema.json",
+          "outputSchema": "pipelines/symdocs/schemas/io.schema.json"
+        },
+        {
+          "id": "symdocs-docs",
+          "deps": ["symdocs-scan"],
+          "js": {
+            "module": "scripts/piper-symdocs.mjs",
+            "export": "docs",
+            "args": {
+              "model": "gpt-oss:20b"
+            }
+          },
+          "env": {
+            "OLLAMA_URL": "${OLLAMA_URL}"
+          },
+          "inputs": [".cache/symdocs.level"],
+          "outputs": [".cache/symdocs.level"],
+          "inputSchema": "pipelines/symdocs/schemas/io.schema.json",
+          "outputSchema": "pipelines/symdocs/schemas/io.schema.json"
+        },
+        {
+          "id": "symdocs-write",
+          "deps": ["symdocs-docs"],
+          "js": {
+            "module": "scripts/piper-symdocs.mjs",
+            "export": "write",
+            "args": {
+              "out": "docs/packages",
+              "granularity": "module"
+            }
+          },
+          "inputs": [".cache/symdocs.level"],
+          "outputs": ["docs/packages/**/*.md"],
+          "inputSchema": "pipelines/symdocs/schemas/io.schema.json",
+          "outputSchema": "pipelines/symdocs/schemas/io.schema.json"
+        },
+        {
+          "id": "symdocs-graph",
+          "deps": ["symdocs-scan"],
+          "shell": "npx tsx packages/symdocs/src/04-graph.ts --root packages --out docs/packages",
+          "inputs": ["packages/**/package.json", "packages/**/{src,lib}/**/*.{ts,tsx,js,jsx}"],
+          "outputs": ["docs/packages/README.md", "docs/packages/**/README.md"],
+          "inputSchema": "pipelines/symdocs/schemas/io.schema.json",
+          "outputSchema": "pipelines/symdocs/schemas/io.schema.json"
+        }
+      ]
+    },
+    {
+      "name": "simtasks",
+      "steps": [
+        {
+          "id": "simtasks-scan",
+          "cwd": ".",
+          "js": {
+            "module": "pipelines/simtask/dist/01-scan.js",
+            "export": "scan",
+            "args": {
+              "--root": "packages",
+              "--tsconfig": "./tsconfig.json"
+            },
+            "isolate": "worker"
+          },
+          "inputs": ["packages/**/{src,lib}/**/*.{ts,tsx,js,jsx}"],
+          "outputs": [".cache/simtasks/functions"],
+          "inputSchema": "pipelines/simtask/schemas/io.schema.json",
+          "outputSchema": "pipelines/simtask/schemas/io.schema.json"
+        },
+        {
+          "id": "simtasks-embed",
+          "deps": ["simtasks-scan"],
+          "js": {
+            "module": "pipelines/simtask/dist/02-embed.js",
+            "export": "embed",
+            "args": {
+              "--in": ".cache/simtasks/functions",
+              "--out": ".cache/simtasks/embeddings",
+              "--embed-model": "nomic-embed-text:latest"
+            },
+            "isolate": "worker"
+          },
+          "env": {
+            "OLLAMA_URL": "${OLLAMA_URL}"
+          },
+          "inputs": [".cache/simtasks/functions"],
+          "outputs": [".cache/simtasks/embeddings"],
+          "inputSchema": "pipelines/simtask/schemas/io.schema.json",
+          "outputSchema": "pipelines/simtask/schemas/io.schema.json"
+        },
+        {
+          "id": "simtasks-cluster",
+          "deps": ["simtasks-embed"],
+          "js": {
+            "module": "pipelines/simtask/dist/03-cluster.js",
+            "export": "cluster",
+            "args": {
+              "--scan": ".cache/simtasks/functions",
+              "--embeds": ".cache/simtasks/embeddings",
+              "--out": ".cache/simtasks/clusters.json",
+              "--sim-threshold": "0.86",
+              "--k": "12",
+              "--min-size": "2"
+            },
+            "isolate": "worker"
+          },
+          "inputs": [".cache/simtasks/embeddings"],
+          "outputs": [".cache/simtasks/clusters.json"],
+          "inputSchema": "pipelines/simtask/schemas/io.schema.json",
+          "outputSchema": "pipelines/simtask/schemas/io.schema.json"
+        },
+        {
+          "id": "simtasks-plan",
+          "deps": ["simtasks-cluster"],
+          "js": {
+            "module": "pipelines/simtask/dist/04-plan.js",
+            "export": "plan",
+            "args": {
+              "--scan": ".cache/simtasks/functions",
+              "--clusters": ".cache/simtasks/clusters.json",
+              "--out": ".cache/simtasks/plans.json",
+              "--model": "gpt-oss:20b",
+              "--base-dir": "packages"
+            },
+            "isolate": "worker"
+          },
+          "env": {
+            "OLLAMA_URL": "${OLLAMA_URL}"
+          },
+          "inputs": [".cache/simtasks/functions", ".cache/simtasks/clusters.json"],
+          "outputs": [".cache/simtasks/plans.json"],
+          "inputSchema": "pipelines/simtask/schemas/io.schema.json",
+          "outputSchema": "pipelines/simtask/schemas/io.schema.json"
+        }
+      ]
+    },
+    {
+      "name": "codemods",
+      "steps": [
+        {
+          "id": "mods-simtasks",
+          "shell": "bash -lc 'if [ ! -d .cache/simtasks/functions ] || [ ! -f .cache/simtasks/clusters.json ] || [ ! -f .cache/simtasks/plans.json ]; then pnpm --filter @promethean/piper piper run simtasks --config pipelines.json; fi'",
+          "inputs": [],
+          "outputs": [
+            ".cache/simtasks/functions",
+            ".cache/simtasks/clusters.json",
+            ".cache/simtasks/plans.json"
+          ],
+          "outputSchema": "pipelines/simtask/schemas/io.schema.json"
+        },
+        {
+          "id": "mods-spec",
+          "deps": ["mods-simtasks"],
+          "shell": "pnpm --filter @promethean/codemods mods:01-spec --tsconfig ./tsconfig.json",
+          "inputs": [
+            ".cache/simtasks/functions",
+            ".cache/simtasks/clusters.json",
+            ".cache/simtasks/plans.json"
+          ],
+          "outputs": [".cache/codemods/specs.json"],
+          "inputSchema": "pipelines/codemods/schemas/io.schema.json",
+          "outputSchema": "pipelines/codemods/schemas/io.schema.json"
+        },
+        {
+          "id": "mods-generate",
+          "deps": ["mods-spec"],
+          "shell": "pnpm --filter @promethean/codemods mods:02-generate",
+          "inputs": [".cache/codemods/specs.json"],
+          "outputs": ["codemods/**/transform.ts"],
+          "inputSchema": "pipelines/codemods/schemas/io.schema.json",
+          "outputSchema": "pipelines/codemods/schemas/io.schema.json"
+        },
+        {
+          "id": "mods-dry-run",
+          "deps": ["mods-generate"],
+          "shell": "pnpm --filter @promethean/codemods mods:03-dry-run --root packages --report docs/agile/tasks/codemods --specs .cache/codemods/specs.json --delete-duplicates true",
+          "inputs": ["codemods/**/transform.ts", "packages/**/{src,lib}/**/*.{ts,tsx,js,jsx}"],
+          "outputs": ["docs/agile/tasks/codemods/*.md"],
+          "inputSchema": "pipelines/codemods/schemas/io.schema.json",
+          "outputSchema": "pipelines/codemods/schemas/io.schema.json"
+        },
+        {
+          "id": "mods-apply",
+          "deps": ["mods-dry-run"],
+          "shell": "pnpm --filter @promethean/codemods mods:03-apply --root packages --report docs/agile/tasks/codemods --specs .cache/codemods/specs.json --delete-duplicates true",
+          "inputs": ["codemods/**/transform.ts"],
+          "outputs": [".cache/codemods/run-apply.json"],
+          "inputSchema": "pipelines/codemods/schemas/io.schema.json",
+          "outputSchema": "pipelines/codemods/schemas/io.schema.json"
+        },
+        {
+          "id": "mods-verify",
+          "deps": ["mods-apply"],
+          "shell": "pnpm --filter @promethean/codemods mods:04-verify:after --stage after --test \"pnpm -w -r test\"",
+          "inputs": [".cache/codemods/run-apply.json"],
+          "outputs": [
+            "docs/agile/tasks/codemods/verify-after.md",
+            "docs/agile/tasks/codemods/VERIFY.md"
+          ],
+          "inputSchema": "pipelines/codemods/schemas/io.schema.json",
+          "outputSchema": "pipelines/codemods/schemas/io.schema.json"
+        }
+      ]
+    },
+    {
+      "name": "semver-guard",
+      "steps": [
+        {
+          "id": "sv-snapshot",
+          "js": {
+            "module": "scripts/piper-semverguard.mjs",
+            "export": "snapshot",
+            "args": {
+              "root": "packages",
+              "tsconfig": "./tsconfig.json",
+              "cache": ".cache/semverguard",
+              "ns": "snapshot"
+            }
+          },
+          "inputs": ["packages/**/package.json", "packages/**/{src,lib}/**/*.{ts,tsx,js,jsx}"],
+          "outputs": [],
+          "inputSchema": "pipelines/semverguard/schemas/io.schema.json",
+          "outputSchema": "pipelines/semverguard/schemas/io.schema.json"
+        },
+        {
+          "id": "sv-diff",
+          "deps": ["sv-snapshot"],
+          "js": {
+            "module": "scripts/piper-semverguard.mjs",
+            "export": "diff",
+            "args": {
+              "cache": ".cache/semverguard",
+              "currentNs": "snapshot",
+              "baselineNs": "baseline",
+              "diffNs": "diff"
+            }
+          },
+          "inputs": [],
+          "outputs": [],
+          "inputSchema": "pipelines/semverguard/schemas/io.schema.json",
+          "outputSchema": "pipelines/semverguard/schemas/io.schema.json"
+        },
+        {
+          "id": "sv-plan",
+          "deps": ["sv-diff"],
+          "js": {
+            "module": "scripts/piper-semverguard.mjs",
+            "export": "plan",
+            "args": {
+              "cache": ".cache/semverguard",
+              "diffNs": "diff",
+              "planNs": "plan",
+              "model": "gpt-oss:20b"
+            }
+          },
+          "env": {
+            "OLLAMA_URL": "${OLLAMA_URL}"
+          },
+          "inputs": [],
+          "outputs": [],
+          "inputSchema": "pipelines/semverguard/schemas/io.schema.json",
+          "outputSchema": "pipelines/semverguard/schemas/io.schema.json"
+        },
+        {
+          "id": "sv-write",
+          "deps": ["sv-plan"],
+          "js": {
+            "module": "scripts/piper-semverguard.mjs",
+            "export": "write",
+            "args": {
+              "cache": ".cache/semverguard",
+              "planNs": "plan",
+              "out": "docs/agile/tasks/semver"
+            }
+          },
+          "inputs": [],
+          "outputs": ["docs/agile/tasks/semver/*.md"],
+          "inputSchema": "pipelines/semverguard/schemas/io.schema.json",
+          "outputSchema": "pipelines/semverguard/schemas/io.schema.json"
+        },
+        {
+          "id": "sv-pr",
+          "deps": ["sv-write"],
+          "js": {
+            "module": "scripts/piper-semverguard.mjs",
+            "export": "pr",
+            "args": {
+              "cache": ".cache/semverguard",
+              "planNs": "plan",
+              "root": "packages",
+              "mode": "prepare",
+              "updateDependents": true,
+              "depRange": "preserve"
+            }
+          },
+          "inputs": ["packages/**/package.json"],
+          "outputs": [".cache/semverguard/pr/summary.json"],
+          "inputSchema": "pipelines/semverguard/schemas/io.schema.json",
+          "outputSchema": "pipelines/semverguard/schemas/io.schema.json"
+        }
+      ]
+    },
+    {
+      "name": "board-review",
+      "steps": [
+        {
+          "id": "br-fm",
+          "js": {
+            "module": "pipelines/boardrev/dist/01-ensure-fm.js",
+            "export": "ensureFM",
+            "args": {
+              "dir": "docs/agile/tasks",
+              "defaultPriority": "P3",
+              "defaultStatus": "todo"
+            },
+            "isolate": "worker"
+          },
+          "inputs": ["docs/agile/tasks/**/*.md"],
+          "outputs": ["docs/agile/tasks/**/*.md"],
+          "inputSchema": "pipelines/boardrev/schemas/io.schema.json",
+          "outputSchema": "pipelines/boardrev/schemas/io.schema.json"
+        },
+        {
+          "id": "br-prompts",
+          "deps": ["br-fm"],
+          "js": {
+            "module": "pipelines/boardrev/dist/02-process-prompts.js",
+            "export": "processPrompts",
+            "args": {
+              "process": "docs/agile/process.md",
+              "out": ".cache/boardrev/prompts.json",
+              "minLevel": 2
+            },
+            "isolate": "worker"
+          },
+          "inputs": ["docs/agile/process.md"],
+          "outputs": [".cache/boardrev/prompts.json"],
+          "inputSchema": "pipelines/boardrev/schemas/io.schema.json",
+          "outputSchema": "pipelines/boardrev/schemas/io.schema.json"
+        },
+        {
+          "id": "br-index",
+          "deps": ["br-fm"],
+          "js": {
+            "module": "pipelines/boardrev/dist/03-index-repo.js",
+            "export": "indexRepo",
+            "args": {
+              "globs": "{README.md,docs/**/*.md,packages/**/{src,lib}/**/*.{ts,tsx,js,jsx}}",
+              "maxBytes": 200000,
+              "maxLines": 400,
+              "embedModel": "nomic-embed-text:latest",
+              "cache": ".cache/boardrev/repo-cache"
+            },
+            "isolate": "worker"
+          },
+          "env": {
+            "OLLAMA_URL": "${OLLAMA_URL}"
+          },
+          "inputs": ["README.md", "docs/**/*.md", "packages/**/{src,lib}/**/*.{ts,tsx,js,jsx}"],
+          "outputs": [".cache/boardrev/repo-cache"],
+          "inputSchema": "pipelines/boardrev/schemas/io.schema.json",
+          "outputSchema": "pipelines/boardrev/schemas/io.schema.json"
+        },
+        {
+          "id": "br-match",
+          "deps": ["br-prompts", "br-index"],
+          "js": {
+            "module": "pipelines/boardrev/dist/04-match-context.js",
+            "export": "matchContext",
+            "args": {
+              "tasks": "docs/agile/tasks",
+              "cache": ".cache/boardrev/repo-cache",
+              "embedModel": "nomic-embed-text:latest",
+              "k": 8,
+              "out": ".cache/boardrev/context.json"
+            },
+            "isolate": "worker"
+          },
+          "inputs": ["docs/agile/tasks/**/*.md", ".cache/boardrev/repo-cache"],
+          "outputs": [".cache/boardrev/context.json"],
+          "inputSchema": "pipelines/boardrev/schemas/io.schema.json",
+          "outputSchema": "pipelines/boardrev/schemas/io.schema.json"
+        },
+        {
+          "id": "br-eval",
+          "deps": ["br-match"],
+          "js": {
+            "module": "pipelines/boardrev/dist/05-evaluate.js",
+            "export": "evaluate",
+            "args": {
+              "prompts": ".cache/boardrev/prompts.json",
+              "context": ".cache/boardrev/context.json",
+              "model": "gpt-oss:20b",
+              "out": ".cache/boardrev/evals.json"
+            },
+            "isolate": "worker"
+          },
+          "env": {
+            "OLLAMA_URL": "${OLLAMA_URL}"
+          },
+          "inputs": [".cache/boardrev/prompts.json", ".cache/boardrev/context.json"],
+          "outputs": [".cache/boardrev/evals.json"],
+          "inputSchema": "pipelines/boardrev/schemas/io.schema.json",
+          "outputSchema": "pipelines/boardrev/schemas/io.schema.json"
+        },
+        {
+          "id": "br-report",
+          "deps": ["br-eval"],
+          "js": {
+            "module": "pipelines/boardrev/dist/06-report.js",
+            "export": "report",
+            "args": {
+              "evals": ".cache/boardrev/evals.json",
+              "outDir": "docs/agile/reports"
+            },
+            "isolate": "worker"
+          },
+          "inputs": [".cache/boardrev/evals.json"],
+          "outputs": ["docs/agile/reports/*.md"],
+          "inputSchema": "pipelines/boardrev/schemas/io.schema.json",
+          "outputSchema": "pipelines/boardrev/schemas/io.schema.json"
+        }
+      ]
+    },
+    {
+      "name": "sonar",
+      "steps": [
+        {
+          "id": "sonar-scan",
+          "cwd": ".",
+          "shell": "sonar-scanner",
+          "env": {
+            "SONAR_HOST_URL": "${SONAR_HOST_URL}",
+            "SONAR_TOKEN": "${SONAR_TOKEN}",
+            "SONAR_PROJECT_KEY": "${SONAR_PROJECT_KEY}"
+          },
+          "inputs": ["packages/**/{src,lib}/**/*.{ts,tsx,js,jsx}", "sonar-project.properties"],
+          "outputs": [".cache/sonar/scan.touch"],
+          "inputSchema": "pipelines/sonarflow/schemas/io.schema.json",
+          "outputSchema": "pipelines/sonarflow/schemas/io.schema.json"
+        },
+        {
+          "id": "sonar-fetch",
+          "deps": ["sonar-scan"],
+          "env": {
+            "SONAR_HOST_URL": "${SONAR_HOST_URL}",
+            "SONAR_TOKEN": "${SONAR_TOKEN}",
+            "SONAR_PROJECT_KEY": "${SONAR_PROJECT_KEY}"
+          },
+          "shell": "pnpm --filter @promethean/sonarflow sonar:fetch --project ${SONAR_PROJECT_KEY} --out .cache/sonar/issues",
+          "inputs": [],
+          "outputs": [".cache/sonar/issues"],
+          "inputSchema": "pipelines/sonarflow/schemas/io.schema.json",
+          "outputSchema": "pipelines/sonarflow/schemas/io.schema.json"
+        },
+        {
+          "id": "sonar-plan",
+          "deps": ["sonar-fetch"],
+          "env": {
+            "OLLAMA_URL": "${OLLAMA_URL}",
+            "SONAR_HOST_URL": "${SONAR_HOST_URL}",
+            "SONAR_TOKEN": "${SONAR_TOKEN}",
+            "SONAR_PROJECT_KEY": "${SONAR_PROJECT_KEY}"
+          },
+          "shell": "pnpm --filter @promethean/sonarflow sonar:plan --in .cache/sonar/issues --out .cache/sonar/plans --group-by rule+prefix --prefix-depth 2 --min-group 2 --model gpt-oss:20b",
+          "inputs": [".cache/sonar/issues"],
+          "outputs": [".cache/sonar/plans"],
+          "inputSchema": "pipelines/sonarflow/schemas/io.schema.json",
+          "outputSchema": "pipelines/sonarflow/schemas/io.schema.json"
+        },
+        {
+          "id": "sonar-write",
+          "deps": ["sonar-plan"],
+          "shell": "pnpm --filter @promethean/sonarflow sonar:write --in .cache/sonar/plans --out docs/agile/tasks/sonar",
+          "inputs": [".cache/sonar/plans"],
+          "outputs": ["docs/agile/tasks/sonar/*.md"],
+          "inputSchema": "pipelines/sonarflow/schemas/io.schema.json",
+          "outputSchema": "pipelines/sonarflow/schemas/io.schema.json"
+        }
+      ]
+    },
+    {
+      "name": "readmes",
+      "steps": [
+        {
+          "id": "rm-scan",
+          "js": {
+            "module": "pipelines/readmeflow/dist/01-scan.js",
+            "export": "scan",
+            "args": {
+              "workspace": "pnpm-workspace.yaml",
+              "cache": ".cache/readmes"
+            },
+            "isolate": "worker"
+          },
+          "inputs": ["pnpm-workspace.yaml", "**/package.json", "**/tsconfig.json"],
+          "outputs": [".cache/readmes"],
+          "inputSchema": "pipelines/readmeflow/schemas/io.schema.json",
+          "outputSchema": "pipelines/readmeflow/schemas/io.schema.json"
+        },
+        {
+          "id": "rm-outline",
+          "deps": ["rm-scan"],
+          "js": {
+            "module": "pipelines/readmeflow/dist/02-outline.js",
+            "export": "outline",
+            "args": {
+              "cache": ".cache/readmes",
+              "model": "gpt-oss:20b"
+            },
+            "isolate": "worker"
+          },
+          "env": {
+            "OLLAMA_URL": "${OLLAMA_URL}"
+          },
+          "inputs": [".cache/readmes"],
+          "outputs": [".cache/readmes"],
+          "inputSchema": "pipelines/readmeflow/schemas/io.schema.json",
+          "outputSchema": "pipelines/readmeflow/schemas/io.schema.json"
+        },
+        {
+          "id": "rm-write",
+          "deps": ["rm-outline"],
+          "js": {
+            "module": "pipelines/readmeflow/dist/03-write.js",
+            "export": "write",
+            "args": {
+              "cache": ".cache/readmes",
+              "mermaid": true
+            },
+            "isolate": "worker"
+          },
+          "inputs": [".cache/readmes"],
+          "outputs": ["**/README.md"],
+          "inputSchema": "pipelines/readmeflow/schemas/io.schema.json",
+          "outputSchema": "pipelines/readmeflow/schemas/io.schema.json"
+        },
+        {
+          "id": "rm-verify",
+          "deps": ["rm-write"],
+          "js": {
+            "module": "pipelines/readmeflow/dist/04-verify.js",
+            "export": "verify",
+            "args": {
+              "root": ".",
+              "out": "docs/agile/reports/readmes",
+              "max": 200
+            },
+            "isolate": "worker"
+          },
+          "inputs": [".cache/readmes", "**/README.md"],
+          "outputs": ["docs/agile/reports/readmes/*.md"],
+          "inputSchema": "pipelines/readmeflow/schemas/io.schema.json",
+          "outputSchema": "pipelines/readmeflow/schemas/io.schema.json"
+        }
+      ]
+    },
+    {
+      "name": "buildfix",
+      "steps": [
+        {
+          "id": "bf-build",
+          "shell": "pnpm --filter @promethean/buildfix build",
+          "inputs": ["packages/buildfix/tsconfig.json", "packages/buildfix/src/**/*"],
+          "outputs": ["packages/buildfix/dist/**"],
+          "inputSchema": "pipelines/buildfix/schemas/io.schema.json",
+          "outputSchema": "pipelines/buildfix/schemas/io.schema.json"
+        },
+        {
+          "id": "bf-errors",
+          "deps": ["bf-build"],
+          "shell": "pnpm --filter @promethean/buildfix bf:01-errors --tsconfig tsconfig.json --out .cache/buildfix/errors.json",
+          "inputs": ["tsconfig.json", "packages/**/{src,lib}/**/*.{ts,tsx,js,jsx}"],
+          "outputs": [".cache/buildfix/errors.json"],
+          "inputSchema": "pipelines/buildfix/schemas/io.schema.json",
+          "outputSchema": "pipelines/buildfix/schemas/io.schema.json",
+          "timeout": 300000
+        },
+        {
+          "id": "bf-iterate",
+          "deps": ["bf-build", "bf-errors"],
+          "shell": "pnpm --filter @promethean/buildfix bf:02-iterate --errors .cache/buildfix/errors.json --out .cache/buildfix --model gpt-oss:120b-cloud --max-cycles 3 --git batch --commit-on success --branch-prefix buildfix --remote origin --push false --use-gh false --rollback-on-regress true --max-errors-per-branch 10",
+          "env": {
+            "OLLAMA_URL": "${OLLAMA_URL}"
+          },
+          "timeout": 600000,
+          "inputs": [
+            ".cache/buildfix/errors.json",
+            "tsconfig.json",
+            "packages/**/{src,lib}/**/*.{ts,tsx,js,jsx}"
+          ],
+          "outputs": [
+            ".cache/buildfix/summary.json",
+            ".cache/buildfix/history/**",
+            ".cache/buildfix/snippets/**"
+          ],
+          "inputSchema": "pipelines/buildfix/schemas/io.schema.json",
+          "outputSchema": "pipelines/buildfix/schemas/io.schema.json"
+        },
+        {
+          "id": "bf-report",
+          "deps": ["bf-build", "bf-iterate"],
+          "shell": "pnpm --filter @promethean/buildfix bf:03-report --summary .cache/buildfix/summary.json --history-root .cache/buildfix/history --out docs/agile/reports/buildfix",
+          "inputs": [".cache/buildfix/summary.json"],
+          "outputs": ["docs/agile/reports/buildfix/*.md"],
+          "inputSchema": "pipelines/buildfix/schemas/io.schema.json",
+          "outputSchema": "pipelines/buildfix/schemas/io.schema.json"
+        }
+      ]
+    },
+    {
+      "name": "test-gap",
+      "steps": [
+        {
+          "id": "tg-exports",
+          "shell": "pnpm --filter @promethean/testgap tg:01-scan-exports --root packages --out .cache/testgap/exports.json",
+          "inputs": ["packages/**/package.json", "packages/**/{src,lib}/**/*.{ts,tsx,js,jsx}"],
+          "outputs": [".cache/testgap/exports.json"],
+          "inputSchema": "pipelines/testgap/schemas/io.schema.json",
+          "outputSchema": "pipelines/testgap/schemas/io.schema.json"
+        },
+        {
+          "id": "tg-tests",
+          "shell": "node tools/unified-test-coverage.mjs",
+          "inputs": ["packages/**/{src,lib}/**/*.{ts,tsx,js,jsx}"],
+          "outputs": ["coverage/lcov.info"],
+          "inputSchema": "pipelines/testgap/schemas/io.schema.json",
+          "outputSchema": "pipelines/testgap/schemas/io.schema.json"
+        },
+        {
+          "id": "tg-coverage",
+          "deps": ["tg-tests"],
+          "shell": "pnpm --filter @promethean/testgap tg:02-read-coverage --lcov-globs coverage/lcov.info --out .cache/testgap/coverage.json",
+          "inputs": ["coverage/lcov.info"],
+          "outputs": [".cache/testgap/coverage.json"],
+          "inputSchema": "pipelines/testgap/schemas/io.schema.json",
+          "outputSchema": "pipelines/testgap/schemas/io.schema.json"
+        },
+        {
+          "id": "tg-map",
+          "deps": ["tg-exports", "tg-coverage"],
+          "shell": "pnpm --filter @promethean/testgap tg:03-map-gaps --exports .cache/testgap/exports.json --coverage .cache/testgap/coverage.json --min-lines 3 --out .cache/testgap/gaps.json",
+          "inputs": [".cache/testgap/exports.json", ".cache/testgap/coverage.json"],
+          "outputs": [".cache/testgap/gaps.json"],
+          "inputSchema": "pipelines/testgap/schemas/io.schema.json",
+          "outputSchema": "pipelines/testgap/schemas/io.schema.json"
+        },
+        {
+          "id": "tg-gate",
+          "deps": ["tg-map"],
+          "shell": "pnpm --filter @promethean/testgap tg:08-gate --gaps .cache/testgap/gaps.json --out .cache/testgap/gate.json --threshold 0.70 --metric symbols",
+          "inputs": [".cache/testgap/gaps.json"],
+          "outputs": [".cache/testgap/gate.json"],
+          "inputSchema": "pipelines/testgap/schemas/io.schema.json",
+          "outputSchema": "pipelines/testgap/schemas/io.schema.json"
+        },
+        {
+          "id": "tg-cookbook",
+          "deps": ["tg-map"],
+          "shell": "pnpm --filter @promethean/testgap tg:04-cookbook-cross --recipes docs/cookbook/**/*.md --out .cache/testgap/cookbook.json",
+          "inputs": ["docs/cookbook/**/*.md"],
+          "outputs": [".cache/testgap/cookbook.json"],
+          "inputSchema": "pipelines/testgap/schemas/io.schema.json",
+          "outputSchema": "pipelines/testgap/schemas/io.schema.json"
+        },
+        {
+          "id": "tg-plan",
+          "deps": ["tg-cookbook"],
+          "shell": "pnpm --filter @promethean/testgap tg:05-plan --gaps .cache/testgap/gaps.json --cookbook .cache/testgap/cookbook.json --out .cache/testgap/plans.json --model gpt-oss:20b --threshold 0.5 --max-per-pkg 15",
+          "env": {
+            "OLLAMA_URL": "${OLLAMA_URL}"
+          },
+          "inputs": [".cache/testgap/gaps.json", ".cache/testgap/cookbook.json"],
+          "outputs": [".cache/testgap/plans.json"],
+          "inputSchema": "pipelines/testgap/schemas/io.schema.json",
+          "outputSchema": "pipelines/testgap/schemas/io.schema.json"
+        },
+        {
+          "id": "tg-write",
+          "deps": ["tg-plan"],
+          "shell": "pnpm --filter @promethean/testgap tg:06-write --plans .cache/testgap/plans.json --out docs/agile/tasks/test-gaps",
+          "inputs": [".cache/testgap/plans.json"],
+          "outputs": ["docs/agile/tasks/test-gaps/*.md"],
+          "inputSchema": "pipelines/testgap/schemas/io.schema.json",
+          "outputSchema": "pipelines/testgap/schemas/io.schema.json"
+        },
+        {
+          "id": "tg-report",
+          "deps": ["tg-map"],
+          "shell": "pnpm --filter @promethean/testgap tg:07-report --gaps .cache/testgap/gaps.json --out docs/agile/reports/test-gaps",
+          "inputs": [".cache/testgap/gaps.json"],
+          "outputs": ["docs/agile/reports/test-gaps/*.md"],
+          "inputSchema": "pipelines/testgap/schemas/io.schema.json",
+          "outputSchema": "pipelines/testgap/schemas/io.schema.json"
+        }
+      ]
+    },
+    {
+      "name": "docops",
+      "steps": [
+        {
+          "id": "doc-stage",
+          "shell": "if [ -d docs/inbox ]; then mkdir -p docs/labeled && rsync -a docs/inbox/ docs/labeled/; else echo 'doc-stage: docs/inbox directory missing' >&2; fi",
+          "inputs": ["docs/inbox/**/*"],
+          "outputs": ["docs/labeled/**/*"]
+        },
+        {
+          "id": "doc-fm",
+          "deps": ["doc-stage"],
+          "js": {
+            "module": "scripts/piper-docops.mjs",
+            "export": "frontmatter",
+            "args": {
+              "dir": "docs/labeled",
+              "genModel": "gpt-oss:20b"
+            }
+          },
+          "env": {
+            "OLLAMA_URL": "${OLLAMA_URL}"
+          },
+          "inputs": ["docs/labeled/**/*.md"],
+          "outputs": [],
+          "inputSchema": "pipelines/docops/schemas/io.schema.json",
+          "outputSchema": "pipelines/docops/schemas/io.schema.json"
+        },
+        {
+          "id": "doc-index",
+          "deps": ["doc-fm"],
+          "js": {
+            "module": "scripts/piper-docops.mjs",
+            "export": "embed",
+            "args": {
+              "dir": "docs/labeled",
+              "embedModel": "nomic-embed-text:latest",
+              "collection": "docs"
+            }
+          },
+          "env": {
+            "OLLAMA_URL": "${OLLAMA_URL}"
+          },
+          "inputs": ["docs/labeled/**/*.md"],
+          "outputs": [],
+          "inputSchema": "pipelines/docops/schemas/io.schema.json",
+          "outputSchema": "pipelines/docops/schemas/io.schema.json"
+        },
+        {
+          "id": "doc-similarity",
+          "deps": ["doc-index"],
+          "js": {
+            "module": "scripts/piper-docops.mjs",
+            "export": "query",
+            "args": {
+              "embedModel": "nomic-embed-text:latest",
+              "collection": "docs",
+              "k": 16
+            }
+          },
+          "env": {
+            "OLLAMA_URL": "${OLLAMA_URL}"
+          },
+          "inputs": [],
+          "outputs": [],
+          "inputSchema": "pipelines/docops/schemas/io.schema.json",
+          "outputSchema": "pipelines/docops/schemas/io.schema.json"
+        },
+        {
+          "id": "doc-related",
+          "deps": ["doc-similarity"],
+          "js": {
+            "module": "scripts/piper-docops.mjs",
+            "export": "relations",
+            "args": {
+              "dir": "docs/labeled",
+              "docThreshold": 0.78,
+              "refThreshold": 0.6
+            }
+          },
+          "inputs": ["docs/labeled/**/*.md"],
+          "outputs": [],
+          "inputSchema": "pipelines/docops/schemas/io.schema.json",
+          "outputSchema": "pipelines/docops/schemas/io.schema.json"
+        },
+        {
+          "id": "doc-footer",
+          "deps": ["doc-rename"],
+          "js": {
+            "module": "scripts/piper-docops.mjs",
+            "export": "footers",
+            "args": {
+              "dir": "docs/labeled",
+              "anchorStyle": "block",
+              "includeRelated": true,
+              "includeSources": true
+            }
+          },
+          "inputs": ["docs/labeled/**/*.md"],
+          "outputs": [],
+          "inputSchema": "pipelines/docops/schemas/io.schema.json",
+          "outputSchema": "pipelines/docops/schemas/io.schema.json"
+        },
+        {
+          "id": "doc-rename",
+          "deps": ["doc-related"],
+          "js": {
+            "module": "scripts/piper-docops.mjs",
+            "export": "rename",
+            "args": {
+              "dir": "docs/labeled"
+            }
+          },
+          "inputs": ["docs/labeled/**/*.md"],
+          "outputs": [],
+          "inputSchema": "pipelines/docops/schemas/io.schema.json",
+          "outputSchema": "pipelines/docops/schemas/io.schema.json"
+        }
+      ]
+    },
+    {
+      "name": "eslint-tasks",
+      "steps": [
+        {
+          "id": "eslint-report",
+          "shell": "mkdir -p .cache/eslint && pnpm exec eslint packages --format json > .cache/eslint/report.json",
+          "inputs": ["packages/**/{src,lib}/**/*.{ts,tsx,js,jsx}"],
+          "outputs": [".cache/eslint/report.json"],
+          "outputSchema": "scripts/eslint.schema.json"
+        },
+        {
+          "id": "eslint-tasks",
+          "deps": ["eslint-report"],
+          "js": {
+            "module": "scripts/piper-eslint-tasks.mjs",
+            "export": "tasks",
+            "args": {
+              "report": ".cache/eslint/report.json",
+              "outDir": "docs/agile/tasks",
+              "model": "gpt-oss:20b"
+            },
+            "isolate": "worker"
+          },
+          "env": {
+            "OLLAMA_URL": "${OLLAMA_URL}"
+          },
+          "inputs": [".cache/eslint/report.json"],
+          "inputSchema": "scripts/eslint.schema.json",
+          "outputs": ["docs/agile/tasks/*.md"]
+        }
+      ]
+    }
+  ]
+}

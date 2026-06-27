@@ -1,0 +1,24 @@
+;; Harness adapter: opencode → command-authoring
+;; Restructured from pi/agent/skills/opencode-command-authoring/CONTRACT.edn
+
+(harness-adapter
+  (harness :opencode)
+  (skill "command-authoring")
+  (core-ref "packages/skills/domain/opencode/sdk/CONTRACT.edn")
+  (install-path ".opencode/skills/command-authoring/CONTRACT.edn")
+
+  (protocol
+    (command-anatomy
+      (dir ".opencode/commands/")
+      (file "<name>.md")
+      (invocation "/name [args]")
+      (arguments "$ARGUMENTS substituted from slash command input")
+      (body "Markdown template — rendered as user message when command invoked"))
+    (authoring-rules
+      ["Commands are composable templates — they call skills, not implement logic."
+       "Keep commands under 20 lines. Long logic belongs in an agent or plugin."
+       "Use $ARGUMENTS for required input; provide defaults in the template body for optional."
+       "Always end with an action directive: 'Now execute the above plan step by step.'"]))
+
+  (notes
+    "Commands fire as user messages. For turn hooks (before/after tool), use plugin-authoring instead."))

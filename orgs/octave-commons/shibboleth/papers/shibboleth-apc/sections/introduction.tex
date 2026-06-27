@@ -1,0 +1,17 @@
+Large language models deployed behind toolchains and policy routers face an adversarial input problem that is broader than classic jailbreak detection. Attackers may seek harmful outputs, prompt leakage, tool abuse, or policy mapping, but they may also degrade system usefulness through repeated refusals, latency inflation, and token exhaustion. In practice, these attacks are multilingual, iterative, and often obfuscated by code-mixing or Unicode tricks.
+
+Current evaluation practice leaves several gaps. First, many prompt safety corpora are effectively English-only or rely on post hoc translation rather than native adversarial coverage \citep{wildjailbreak2024,ayaredteaming2024,xsafety2024}. Second, dataset construction often permits semantic leakage when translation and augmentation occur before split assignment. Third, evaluation reports tend to collapse the problem into safety-only metrics while underreporting utility and efficiency costs. These gaps make it difficult to defend front-door classifier claims in production settings where multilingual traffic and operational overhead both matter.
+
+\system is intended as a benchmark grammar rather than a one-shot dataset snapshot. The central claim is that adversarial prompt classifier evaluation should be built around reproducible generation rules, provenance-preserving dataset construction, and explicit tradeoff measurement across safety, utility, and efficiency. The resulting benchmark can regenerate as attack styles evolve while preserving stable receipts about how each artifact was built.
+
+This paper makes five concrete contributions.
+
+\begin{enumerate}[leftmargin=1.5em]
+  \item It defines a production-facing threat model for multilingual adversarial prompt classification with both safety and availability failure modes.
+  \item It introduces a deterministic build pipeline with cluster-level split-before-transform invariants that aim to prevent cross-lingual leakage.
+  \item It frames multilingual and obfuscation transforms as governed benchmark operators rather than ad hoc augmentation scripts.
+  \item It organizes evaluation into direct attack, benign lookalike, obfuscation, and resource-exhaustion partitions.
+  \item It proposes Security--Utility--Efficiency tradeoff analysis as the right reporting surface for front-door prompt classification.
+\end{enumerate}
+
+The rest of the paper develops these claims from the current repository design. The intended paper identity is therefore a benchmark and evaluation paper, not a claim that one classifier architecture has already won the problem.

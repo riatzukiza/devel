@@ -1,0 +1,19 @@
+;; MetricTile Component Contract
+;; Compact summary tile for dashboards with label, value, detail, and loading state.
+
+{:component :metric-tile
+ :version "1.0.0"
+
+ :description
+ "Compact summary tile for dashboards, analytics, and status boards. Supports label, prominent value, optional detail text, and loading state."
+
+ :props
+ {:label {:type :string :required true}
+  :value {:type [:string :number :node] :required true}
+  :detail {:type [:string :node] :required false}
+  :loading {:type :boolean :default false}
+  :variant {:type :enum :values [:default :info :success :warning :error] :default :default}}
+
+ :styling
+ {:data-attributes {:data-component "metric-tile" :data-variant :variant}}
+}

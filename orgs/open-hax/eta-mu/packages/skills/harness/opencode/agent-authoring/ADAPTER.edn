@@ -1,0 +1,28 @@
+;; Harness adapter: opencode → agent-authoring
+;; Restructured from pi/agent/skills/opencode-agent-authoring/CONTRACT.edn
+;; Core knowledge: packages/skills/domain/opencode/sdk/CONTRACT.edn
+
+(harness-adapter
+  (harness :opencode)
+  (skill "agent-authoring")
+  (core-ref "packages/skills/domain/opencode/sdk/CONTRACT.edn")
+  (install-path ".opencode/skills/agent-authoring/CONTRACT.edn")
+
+  (protocol
+    (agent-anatomy
+      (file ".opencode/agents/<name>.md")
+      (frontmatter [:description :share :model :rules])
+      (share-values
+        (:always "Injected into every session as system context")
+        (:manual "Only when explicitly invoked")
+        (:auto   "opencode selects based on task context"))
+      (body "Markdown system prompt. Supports {variable} substitution from session state."))
+
+    (authoring-rules
+      ["Keep agent prompts focused on one role — delegate via task-router for cross-domain."
+       "Always reference skill:work-cycle in planning agents."
+       "Always reference skill:receipt-river in any agent that writes files or commits."
+       "Use share: auto for domain agents; share: manual for utility/one-shot agents."]))
+
+  (notes
+    "See packages/skills/domain/opencode/sdk/CONTRACT.edn for full authoring surface reference."))

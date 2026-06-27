@@ -1,0 +1,11 @@
+@use "uswds-core" as *;
+@use "./assets/uswds/_variables" as *;
+
+.usa-footer__primary-section,
+.usa-footer__secondary-section {
+  background-color: $primary-light-pale-blue;
+}
+
+.usa-footer__primary-link {
+  color: $primary-acf-blue
+}

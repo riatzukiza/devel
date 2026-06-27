@@ -1,0 +1,76 @@
+{:source-paths ["src"]
+
+ :dependencies
+ [[reagent/reagent "1.2.0"]]
+
+ :js-options
+ {:js-package-dirs ["../node_modules" "../vendor"]}
+
+ :builds
+ {:ui-reagent
+  {:target :esm
+   :output-dir "dist"
+   :modules {:index {:entries [devel.ui.core]
+                     :exports {:ThemeProvider devel.ui.core/theme-provider
+                               :ToastProvider devel.ui.core/toast-provider
+                               :Button devel.ui.core/button
+                               :Badge devel.ui.core/badge
+                               :Spinner devel.ui.core/spinner
+                               :Card devel.ui.core/card
+                               :CardHeader devel.ui.core/card-header
+                               :CardBody devel.ui.core/card-body
+                               :CardFooter devel.ui.core/card-footer
+                               :Modal devel.ui.core/modal
+                               :ModalHeader devel.ui.core/modal-header
+                               :ModalBody devel.ui.core/modal-body
+                               :ModalFooter devel.ui.core/modal-footer
+                               :Tooltip devel.ui.core/tooltip
+                               :Input devel.ui.core/input
+                               :Select devel.ui.core/select
+                               :Textarea devel.ui.core/textarea
+                               :Progress devel.ui.core/progress
+                               :ResizablePane devel.ui.core/resizable-pane
+                               :WhichKeyPopup devel.ui.core/which-key-popup
+                               :InspectorPane devel.ui.core/inspector-pane
+                               :ContextSection devel.ui.core/context-section
+                               :PinnedTabsBar devel.ui.core/pinned-tabs-bar
+                               :PermissionCard devel.ui.core/permission-card
+                               :PromptCard devel.ui.core/prompt-card
+                               :PermissionPrompts devel.ui.core/permission-prompts
+                               :ReactReagentSeam devel.ui.core/react-reagent-seam
+                               :CommandPalette devel.ui.core/command-palette
+                               :Chat devel.ui.core/chat
+                               :Toast devel.ui.core/toast
+                               :FileTree devel.ui.core/file-tree
+                               :Tabs devel.ui.core/tabs
+                               :SearchableSelect devel.ui.core/searchable-select
+                               :CollapsiblePanel devel.ui.core/collapsible-panel
+                               :KeyValueSection devel.ui.core/key-value-section
+                               :SurfaceHero devel.ui.core/surface-hero
+                               :PanelHeader devel.ui.core/panel-header
+                               :MetricTile devel.ui.core/metric-tile
+                               :MetricTileGrid devel.ui.core/metric-tile-grid
+                               :FilterToolbar devel.ui.core/filter-toolbar
+                               :ActionStrip devel.ui.core/action-strip
+                               :StatusChipStack devel.ui.core/status-chip-stack
+                               :DataTableShell devel.ui.core/data-table-shell
+                               :Pagination devel.ui.core/pagination
+                               :Feed devel.ui.core/feed
+                               :Markdown devel.ui.core/markdown
+                               :CodeBlock devel.ui.core/code-block
+                               :DiffViewer devel.ui.core/diff-viewer
+                               :MarkdownEditor devel.ui.core/markdown-editor
+                               :RichTextEditor devel.ui.core/rich-text-editor
+                               :useToast devel.ui.core/use-toast
+                               :useAdapter devel.ui.core/use-adapter
+                               :useUxxTheme devel.ui.core/use-uxx-theme
+                               :useResolvedTheme devel.ui.core/use-resolved-theme
+                               :useThemeName devel.ui.core/use-theme-name
+                               :paginateItems devel.ui.core/paginate-items
+                               :calculateTotalPages devel.ui.core/calculate-total-pages
+                               :components devel.ui.core/components
+                               :providers devel.ui.core/providers
+                               :hooks devel.ui.core/hooks
+                               :utilities devel.ui.core/utilities}}}
+   :compiler-options {:output-feature-set :es-next
+                      :source-map true}}}}

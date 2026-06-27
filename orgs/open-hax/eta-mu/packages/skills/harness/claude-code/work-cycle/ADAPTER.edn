@@ -1,0 +1,25 @@
+;; Harness adapter: claude-code
+;; Core skill: ημ.skill/work-cycle@0.2.0
+;; Status: STUB — claude-code hooks API still experimental as of 2026-04
+
+(harness-adapter
+  (harness :claude-code)
+  (skill "work-cycle")
+  (core-ref "packages/skills/core/work-cycle/CONTRACT.edn")
+  (install-path ".claude/skills/work-cycle/CONTRACT.edn")
+  (overrides nil)
+  (hooks
+    ;; claude-code hook events (experimental API):
+    ;; PreToolUse, PostToolUse, Stop, SubagentStop, Notification
+    (pre-tool-use "check loop phase before any write-class tool call")
+    (stop         "verify phase completion; emit receipt if substantive work done"))
+  (delivery
+    ;; Skills surface as CLAUDE.md injections until native skill loader exists
+    (method :claude-md-injection)
+    (file "CLAUDE.md")
+    (section "## work-cycle skill")
+    (content-source "packages/skills/core/work-cycle/CONTRACT.edn"))
+  (notes
+    "Claude Code MCP packages live in packages/codex-mcp/ (shared with codex).
+     This adapter handles the CLAUDE.md injection path.
+     Upgrade path: replace :claude-md-injection with native loader when hooks API stabilizes."))

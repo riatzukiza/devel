@@ -1,0 +1,114 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+.pnpm-debug.log
+
+# Build output
+dist/
+.next/
+build/
+__pycache__/
+*.pyc
+*.class
+target/
+
+# Cache / tooling state (never track these)
+.clj-kondo/
+.shadow-cljs/
+.lsp/
+.clojure/
+.cljs_node_repl/
+.pnp.*
+.yarn/
+
+# Concurrent / runtime dirt observed during fork-tax
+# These are agent/tool runtime directories, not source artifacts.
+.clobber/
+.config/
+.cpcache/
+.opencode/
+.pi/
+.pm2/
+.sisyphus/
+.spacemacs
+.worktrees/
+
+# Coverage / test
+coverage/
+.nyc_output/
+
+# Logs
+logs/
+*.log
+
+# Data volumes
+/data/
+
+# Secrets (keep patterns, never track contents)
+.env
+.env.*
+!.env.example
+keys.json
+models.json
+
+# Factory / scaffolding
+.factory/
+
+# Inbox — unstructured imports, binary exports, not source
+inbox/
+
+# Tmp — scratch space, test artifacts, not source
+tmp/
+
+# Private repos — no upstream to push to, should not be in this repo's tracking
+orgs/private/
+
+# Stale path — renamed to orgs/riatzukiza/mnemosyne
+packages/cephalon-ts/
+
+# services/ourllamas — archived, has __pycache__ bleed
+services/ourllamas/
+
+# Generated audit artifacts
+tools/ui-audit/component-frequency.json
+
+# Large runtime logs
+*.jsonl
+services/proxx/data-federation/request-logs.jsonl
+
+# Database dumps
+*.dump
+
+# OS metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Docker volumes / runtime secrets
+services/openplanner/runtime-secrets/
+
+# Pi session HTML dumps
+pi-session-*.html
+
+# Node compile cache
+node-compile-cache/
+
+# docs/inbox — duplicate of inbox/, not reference material
+docs/inbox/
+
+# Submodule build cache bleed
+packages/opencode-cljs-client/.shadow-cljs/
+
+# Generated dependency graph screenshots
+services/cephalon-hive/quartz-garden/*.png
+services/cephalon-hive/quartz-garden/proxx-api/*.png
+
+# Database archives
+*.duckdb

@@ -1,0 +1,14 @@
+We assume a system in which a pre-LLM adversarial prompt classifier filters or routes user inputs before they reach a target language model. The classifier may allow, sanitize, step up, or block a request, and may be deployed in either stateless turn-level mode or stateful session-level mode. The surrounding evaluation harness treats the policy router and target-model interface as explicit parts of the measured system rather than hidden implementation details \citep{shibbolethdraft2026}.
+
+The adversary is assumed to have black-box access, repeated-query capability, multilingual prompting ability, code-mixing and Unicode obfuscation tools, and the ability to probe the system over multiple turns. The adversary does not have direct access to classifier weights or privileged runtime control.
+
+We model two primary objectives:
+
+\begin{enumerate}[leftmargin=1.5em]
+  \item \textbf{Under-blocking / safety failure.} The attacker causes adversarial prompts to pass through and reach the target model.
+  \item \textbf{Availability degradation / safety-DoS.} The attacker degrades service usefulness through benign over-blocking, refusal spirals, token burn, or latency inflation.
+\end{enumerate}
+
+This framing is important because a classifier that blocks more attacks by catastrophically harming benign traffic is not obviously production-worthy. For that reason, the paper should treat adversarial prompt classification as a tri-objective evaluation problem rather than a single scalar accuracy problem.
+
+The concrete attack families in scope include jailbreak attempts, prompt injection, instruction override, system-prompt extraction, tool misuse or exfiltration attempts, policy probing, multilingual evasion, code-mixed evasion, Unicode or homoglyph masking, and deliberate resource-exhaustion prompts. Just as importantly, the benchmark must include benign lookalikes such as quoted adversarial text, security research discussion, and multilingual content that resembles attacks superficially but should not be blocked. This separation between attack shape and classifier action is what makes over-blocking measurable instead of anecdotal.

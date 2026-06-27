@@ -1,0 +1,39 @@
+{
+  "name": "@open-hax/garden-publication-components",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "default": "./dist/server.js"
+    },
+    "./browser-app": "./dist/browser/garden-publication-app.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && vite build --config vite.browser.config.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@open-hax/uxx": "0.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-markdown": "^10.1.0",
+    "audiomotion-analyzer": "^4.5.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.23",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^4.4.1",
+    "typescript": "^5.8.2",
+    "vite": "^5.4.15"
+  },
+  "license": "LGPL-3.0-or-later"
+}

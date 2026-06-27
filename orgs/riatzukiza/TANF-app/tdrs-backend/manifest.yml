@@ -1,0 +1,8 @@
+version: 1
+applications:
+- name: tdp-backend
+  memory: 2G
+  instances: 1
+  disk_quota: 2G
+  docker:
+    image: ((docker-backend))

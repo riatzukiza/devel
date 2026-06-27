@@ -1,0 +1,4 @@
+.git
+.cpcache
+*.log
+/tmp

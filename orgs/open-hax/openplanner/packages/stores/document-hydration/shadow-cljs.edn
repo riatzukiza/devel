@@ -1,0 +1,29 @@
+{:source-paths ["src" "test" "../cache/src"]
+ :dependencies []
+ :builds
+ {:lib
+  {:target :esm
+   :output-dir "dist"
+   :modules {:index {:entries [openplanner.stores.document-hydration]
+                     :exports {:documentNeedsHydration openplanner.stores.document-hydration/document-needs-hydration
+                               :documentSourceRef openplanner.stores.document-hydration/document-source-ref
+                               :documentCacheKey openplanner.stores.document-hydration/document-cache-key
+                               :hydrateDocumentRow openplanner.stores.document-hydration/hydrate-document-row
+                               :rowToDocument openplanner.stores.document-hydration/row-to-document
+                               :createMemoryLruCache openplanner.stores.document-hydration/create-memory-lru-cache
+                               :createRedisCache openplanner.stores.document-hydration/create-redis-cache
+                               :createLmdbCache openplanner.stores.document-hydration/create-lmdb-cache
+                               :createLayeredCache openplanner.stores.document-hydration/create-layered-cache
+                               :cacheGet openplanner.stores.document-hydration/cache-get-js
+                               :cachePut openplanner.stores.document-hydration/cache-put-js
+                               :cacheEvict openplanner.stores.document-hydration/cache-evict-js
+                               :cacheTouch openplanner.stores.document-hydration/cache-touch-js
+                               :cacheCleanup openplanner.stores.document-hydration/cache-cleanup-js
+                               :cacheStats openplanner.stores.document-hydration/cache-stats-js}}}
+   :compiler-options {:output-feature-set :es-next}}
+
+  :test
+  {:target :node-script
+   :output-to "target/test.cjs"
+   :main openplanner.stores.document-hydration-test/-main
+   :compiler-options {:output-feature-set :es-next}}}}

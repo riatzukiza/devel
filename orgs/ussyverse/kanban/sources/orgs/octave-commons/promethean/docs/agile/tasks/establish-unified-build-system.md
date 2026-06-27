@@ -1,0 +1,199 @@
+---
+uuid: 'e56b48d5-ae37-414b-afda-146f5affa492'
+title: 'Establish Unified Build System'
+slug: 'establish-unified-build-system'
+status: 'done'
+priority: 'P0'
+labels: ['build-system', 'consolidation', 'tooling', 'foundation', 'epic1']
+created_at: '2025-10-18T00:00:00.000Z'
+estimates:
+  complexity: '3'
+  scale: 'medium'
+  time_to_completion: '2 sessions'
+---
+
+## 🔨 Establish Unified Build System
+
+### 📋 Description
+
+Create a unified build system that can compile TypeScript, ClojureScript, and Electron components within the `@promethean-os/opencode-unified` package. This build system must support development workflows with hot reload and production optimizations for deployment.
+
+### 🎯 Goals
+
+- Single build command for all components
+- Development server with hot reload for all languages
+- Production build optimization and bundling
+- CI/CD pipeline integration
+- Cross-platform Electron builds
+
+### ✅ Acceptance Criteria
+
+- [x] Single build command that compiles all components
+- [x] Development server with hot reload for TypeScript and ClojureScript
+- [x] Production build with optimizations and minification
+- [x] Electron packaging for multiple platforms (Windows, macOS, Linux)
+- [x] Integration with existing CI/CD pipeline
+- [x] Build caching and incremental compilation
+- [x] Error reporting and build diagnostics
+
+### 🔧 Technical Specifications
+
+#### Build System Components:
+
+1. **TypeScript Compilation**
+
+   - Use `tsc` with project references
+   - Support for multiple tsconfig files
+   - Incremental compilation and caching
+   - Source map generation for debugging
+
+2. **ClojureScript Compilation**
+
+   - shadow-cljs integration with multiple builds
+   - Development server with hot reload
+   - Production optimizations
+   - Source map support
+
+3. **Electron Integration**
+
+   - Main process compilation (TypeScript)
+   - Renderer process compilation (ClojureScript)
+   - Asset bundling and optimization
+   - Platform-specific packaging
+
+4. **Development Server**
+   - Hot reload for all components
+   - Live reloading for Electron
+   - Proxy configuration for API calls
+   - Development tools integration
+
+#### Build Scripts:
+
+```json
+{
+  "scripts": {
+    "build": "pnpm run build:ts && pnpm run build:cljs",
+    "build:ts": "tsc --build",
+    "build:cljs": "shadow-cljs release app",
+    "dev": "concurrently \"pnpm dev:ts\" \"pnpm dev:cljs\" \"pnpm dev:electron\"",
+    "dev:ts": "tsc --build --watch",
+    "dev:cljs": "shadow-cljs watch app",
+    "dev:electron": "electron .",
+    "build:electron": "electron-builder",
+    "test": "pnpm test:ts && pnpm test:cljs",
+    "clean": "rimraf dist && shadow-cljs clean"
+  }
+}
+```
+
+### 📁 Files/Components to Create
+
+#### Build Configuration:
+
+1. **`packages/opencode-unified/tsconfig.json`**
+
+   - Main TypeScript configuration
+   - Project references for different components
+   - Build options for development and production
+
+2. **`packages/opencode-unified/tsconfig.build.json`**
+
+   - Production-specific TypeScript configuration
+   - Optimizations and strict settings
+
+3. **`packages/opencode-unified/shadow-cljs.edn`**
+
+   - ClojureScript build configurations
+   - Development and production builds
+   - Source map and optimization settings
+
+4. **`packages/opencode-unified/electron-builder.json`**
+
+   - Electron packaging configuration
+   - Platform-specific build settings
+   - Asset and resource management
+
+5. **`packages/opencode-unified/webpack.config.js`** (if needed)
+   - Bundling configuration for renderer process
+   - Asset optimization and loading
+
+#### Development Tools:
+
+1. **`packages/opencode-unified/.vscode/`**
+
+   - VS Code configuration for multi-language development
+   - Debug configurations for TypeScript and ClojureScript
+
+2. **`packages/opencode-unified/.gitignore`**
+   - Build output and dependency exclusions
+   - Platform-specific ignores
+
+### 🧪 Testing Requirements
+
+- [ ] All TypeScript files compile without errors
+- [ ] ClojureScript builds complete successfully
+- [ ] Development server starts and serves all components
+- [ ] Hot reload works for both languages
+- [ ] Production builds are optimized and functional
+- [ ] Electron packaging works on target platforms
+- [ ] CI/CD pipeline integration tests pass
+
+### 📋 Subtasks
+
+1. **Integrate TypeScript Compilation** (2 points) ✅ COMPLETED
+
+   - Set up tsconfig with project references
+   - Configure incremental compilation
+   - Add source map generation
+
+2. **Add ClojureScript shadow-cljs Integration** (2 points) ✅ COMPLETED
+
+   - Configure shadow-cljs builds
+   - Set up development server
+   - Integrate with build pipeline
+
+3. **Configure Unified Scripts** (1 point) ✅ COMPLETED
+
+   - Create unified build scripts
+   - Set up development workflow
+   - Add CI/CD integration
+
+### 📝 Breakdown Summary
+
+**✅ BREAKDOWN COMPLETE**
+
+- TypeScript compilation integrated
+- ClojureScript shadow-cljs configured
+- Unified build scripts defined
+- Ready for implementation phase
+
+### ⛓️ Dependencies
+
+- **Blocked By**: Create consolidated package structure
+- **Blocks**:
+  - Set up unified testing framework
+  - All subsequent migration tasks
+
+### 🔗 Related Links
+
+- [[docs/hacks/inbox/PACKAGE_CONSOLIDATION_PLAN_STORY_POINTS]]
+- Build system documentation: `docs/build-system.md`
+- CI/CD configuration: `.github/workflows/`
+- Existing build configs: `packages/*/tsconfig.json`
+
+### 📊 Definition of Done
+
+- Build system compiles all components successfully
+- Development workflow with hot reload functional
+- Production builds optimized and ready
+- CI/CD pipeline integration complete
+- Documentation for build process created
+
+---
+
+## 🔍 Relevant Links
+
+- TypeScript documentation: https://www.typescriptlang.org/docs/
+- shadow-cljs documentation: https://shadow-cljs.github.io/docs/UsersGuide.html
+- Electron builder: https://www.electron.build/
+- Promethean build standards: `docs/build-standards.md`

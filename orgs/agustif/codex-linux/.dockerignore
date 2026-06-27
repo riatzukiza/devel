@@ -1,0 +1,16 @@
+.git
+.github
+release
+target-cache
+extracted
+Codex.dmg
+theseus
+
+codex-oss/.git
+codex-oss/codex-rs/target
+
+codex-linux-fork/dist
+codex-linux-fork/node_modules
+codex-linux-fork/bin
+
+**/.DS_Store

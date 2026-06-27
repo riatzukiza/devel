@@ -1,0 +1,53 @@
+"""Define API views for user class."""
+
+import logging
+
+from django.conf import settings
+from django.db.models import Prefetch
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+
+from tdpservice.stts.models import STT, Region
+
+from .serializers import RegionSerializer, STTSerializer
+
+logger = logging.getLogger(__name__)
+
+
+class RegionAPIView(generics.ListAPIView):
+    """Simple view to get all regions and STTs, without pagination."""
+
+    pagination_class = None
+    permission_classes = [IsAuthenticated]
+    queryset = Region.objects.prefetch_related(
+        Prefetch("stts", queryset=STT.objects.select_related("state").order_by("name"))
+    ).order_by("id")
+    serializer_class = RegionSerializer
+
+
+class STTApiAlphaView(generics.ListAPIView):
+    """Simple view to get all STTs alphabetized."""
+
+    pagination_class = None
+    permission_classes = [IsAuthenticated]
+    queryset = STT.objects.order_by("name")
+    serializer_class = STTSerializer
+
+    @method_decorator(
+        cache_page(settings.DEFAULT_CACHE_TIMEOUT, cache="stts", key_prefix="alpha")
+    )
+    def list(self, request):
+        """Get the stt list from the cache if available, else fetch the queryset."""
+        return super().list(request)
+
+
+class STTApiView(generics.ListAPIView):
+    """Simple view to get all STTs."""
+
+    pagination_class = None
+    permission_classes = [IsAuthenticated]
+    queryset = STT.objects
+    serializer_class = STTSerializer

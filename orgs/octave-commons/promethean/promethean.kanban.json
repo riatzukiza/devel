@@ -1,0 +1,276 @@
+{
+  "_comment": "Promethean Kanban Configuration - Human & Agent Documentation",
+  "_description": "This config drives the kanban board generation from task files. The board is a finite state machine (FSM) with states = columns. See docs/agile/process.md for the complete FSM specification and transition rules.",
+  "_usage": "Never edit board files directly. Tasks drive board generation. Use 'pnpm kanban regenerate' to rebuild board from tasks.",
+  "_wip_note": "WIP limits are enforced by transitions - a move to a column fails if that column's WIP cap is full.",
+
+  "tasksDir": "docs/agile/tasks",
+  "indexFile": "docs/agile/boards/index.jsonl",
+  "boardFile": "docs/agile/boards/generated.md",
+  "cachePath": "docs/agile/boards/.cache",
+  "exts": [".md"],
+
+  "requiredFields": ["title", "status", "priority", "storyPoints", "lastCommitSha"],
+
+  "statusValues": [
+    "icebox",
+    "incoming",
+    "accepted",
+    "breakdown",
+    "blocked",
+    "ready",
+    "todo",
+    "in_progress",
+    "testing",
+    "review",
+    "document",
+    "done",
+    "rejected",
+    "archived"
+  ],
+
+  "priorityValues": ["P0", "P1", "P2", "P3", "p3", "low", "medium", "high", "critical"],
+
+  "_status_descriptions": {
+    "icebox": "🧊 Ice Box - Deferred/archived tasks, not actively being worked on (brainstorm lane)",
+    "incoming": "💭 Incoming - New tasks enter here (initial state) (brainstorm lane)",
+    "accepted": "✅ Accepted - Triage complete, ready for breakdown analysis (planning lane)",
+    "breakdown": "🧩 Breakdown - Task being broken into small, testable slices with Fibonacci story points (planning lane)",
+    "blocked": "🚧 Blocked - Explicit dependency on another task (bidirectional links required) (planning lane)",
+    "ready": "🛠 Ready - Scoped, estimated (≤5), ready for execution queue (execution lane)",
+    "todo": "🟢 To Do - Prioritized in execution queue, ready to pull (execution lane)",
+    "in_progress": "🟡 In Progress - Actively being worked on (WIP limited) (execution lane)",
+    "testing": "🧪 Testing - Implementation complete, undergoing automated and manual testing (execution lane)",
+    "review": "🔍 In Review - Coherent, reviewable change exists (execution lane)",
+    "document": "📚 Document - Recording evidence and summaries (execution lane)",
+    "done": "✅ Done - Complete with documentation/evidence (execution lane)",
+    "rejected": "❌ Rejected - Non-viable, may be moved to Ice Box (abandoned lane)",
+    "archived": "📦 Archived - Preserved completed or obsolete tasks, preferred over deletion for historical reference (terminal state)"
+  },
+
+  "wipLimits": {
+    "accepted": 40,
+    "breakdown": 50,
+    "blocked": 15,
+    "ready": 100,
+    "todo": 75,
+    "in_progress": 50,
+    "testing": 40,
+    "review": 40,
+    "document": 40,
+    "done": 500,
+    "rejected": 9999,
+    "icebox": 9999,
+    "incoming": 9999,
+    "archived": 9999
+  },
+  "_wip_rationale": "Scaled for supportive multi-agent workflow: accepted(40), breakdown(50), blocked(15), ready(100), todo(75), in_progress(50), testing(40), review(40), document(40), done(500), rejected(9999); icebox/incoming/archived unbounded. Designed to support 30-50 AI agents working in parallel while maintaining flow and providing flexibility for work that happens outside formal processes.",
+
+  "transitionRules": {
+    "enabled": true,
+    "enforcement": "supportive",
+    "dslPath": "docs/agile/rules/kanban_transitions.clj",
+    "rules": [
+      {
+        "from": ["icebox"],
+        "to": ["incoming"],
+        "description": "Activate deferred task",
+        "check": "task-requires-attention?"
+      },
+      {
+        "from": ["incoming"],
+        "to": ["icebox", "accepted"],
+        "description": "Triage incoming task (accept or defer)",
+        "check": "task-triaged?"
+      },
+      {
+        "from": ["accepted"],
+        "to": ["breakdown", "incoming"],
+        "description": "Break down task or return for more info",
+        "check": "task-ready-for-breakdown?"
+      },
+      {
+        "from": ["breakdown"],
+        "to": ["ready", "accepted", "blocked"],
+        "description": "Complete breakdown, return for clarification, or block",
+        "check": "task-properly-broken-down?"
+      },
+      {
+        "from": ["blocked"],
+        "to": ["breakdown", "ready"],
+        "description": "Unblock task after dependency resolved",
+        "check": "dependencies-resolved?"
+      },
+      {
+        "from": ["ready"],
+        "to": ["todo", "breakdown"],
+        "description": "Queue task or return for re-estimation",
+        "check": "task-ready-for-execution?"
+      },
+      {
+        "from": ["todo"],
+        "to": ["in_progress"],
+        "description": "Pull task for active work",
+        "check": "task-selected-for-work?"
+      },
+      {
+        "from": ["in_progress"],
+        "to": ["testing", "todo", "breakdown"],
+        "description": "Move to testing, pause, or return for planning",
+        "check": "implementation-complete?"
+      },
+      {
+        "from": ["testing"],
+        "to": ["review", "in_progress", "todo"],
+        "description": "Submit for review with comprehensive testing validation, fix bugs, or return for rework",
+        "check": "comprehensive-testing-validation?"
+      },
+      {
+        "from": ["review"],
+        "to": ["document", "in_progress", "todo"],
+        "description": "Approve for documentation, request changes, or queue for rework",
+        "check": "change-approved?"
+      },
+      {
+        "from": ["document"],
+        "to": ["done", "review"],
+        "description": "Complete documentation or return for additional review",
+        "check": "documentation-complete?"
+      },
+      {
+        "from": ["done"],
+        "to": ["icebox"],
+        "description": "Archive completed task (rare)",
+        "check": "task-needs-archiving?"
+      },
+      {
+        "from": [
+          "accepted",
+          "breakdown",
+          "blocked",
+          "ready",
+          "todo",
+          "in_progress",
+          "review",
+          "document"
+        ],
+        "to": ["rejected"],
+        "description": "Reject non-viable task",
+        "check": "task-non-viable?"
+      },
+      {
+        "from": [
+          "accepted",
+          "breakdown",
+          "blocked",
+          "ready",
+          "todo",
+          "in_progress",
+          "testing",
+          "review",
+          "document",
+          "rejected"
+        ],
+        "to": ["icebox"],
+        "description": "Send task to icebox regardless of current state",
+        "check": "always-allow?"
+      },
+      {
+        "from": [
+          "icebox",
+          "incoming",
+          "accepted",
+          "breakdown",
+          "blocked",
+          "ready",
+          "todo",
+          "in_progress",
+          "testing",
+          "review",
+          "document",
+          "done",
+          "rejected"
+        ],
+        "to": ["archived"],
+        "description": "Archive task from any status (preferred over deletion)",
+        "check": "always-allow?"
+      }
+    ],
+    "customChecks": {
+      "task-requires-attention?": {
+        "description": "Task requires immediate attention",
+        "impl": "(<= (get-priority-numeric (:priority task)) 1)"
+      },
+      "task-triaged?": {
+        "description": "Task has been triaged and accepted",
+        "impl": "(<= (get-priority-numeric (:priority task)) 2)"
+      },
+      "task-ready-for-breakdown?": {
+        "description": "Task is properly scoped for breakdown analysis",
+        "impl": "(contains? task :title)"
+      },
+      "implementation-complete?": {
+        "description": "Implementation is complete and ready for testing",
+        "impl": "(and (:title task) (<= (get-priority-numeric (:priority task)) 2))"
+      },
+      "tests-passing?": {
+        "description": "All automated and manual tests are passing",
+        "impl": "(and (:title task) (<= (get-priority-numeric (:priority task)) 2))"
+      },
+      "comprehensive-testing-validation?": {
+        "description": "Comprehensive testing validation with coverage (90%), quality (75%), AI analysis, and requirement mapping",
+        "impl": "(comprehensive-testing-validation? task board)"
+      },
+      "reviewable-change-exists?": {
+        "description": "A coherent, reviewable change exists",
+        "impl": "(and (:title task) (<= (get-priority-numeric (:priority task)) 2))"
+      },
+      "task-properly-broken-down?": {
+        "description": "Task is broken down into small, testable slices",
+        "impl": "(and (:estimates task) (<= (get-in task [:estimates :complexity]) 5))"
+      },
+      "dependencies-resolved?": {
+        "description": "All blocking dependencies have been resolved",
+        "impl": "(empty? (get-blocking-dependencies task board))"
+      },
+      "task-ready-for-execution?": {
+        "description": "Task is ready to enter the execution queue",
+        "impl": "(task-ready-for-execution? task board)"
+      },
+      "task-non-viable?": {
+        "description": "Task is marked as non-viable (duplicate, placeholder, etc.)",
+        "impl": "(task-non-viable? task board)"
+      },
+      "always-allow?": {
+        "description": "Always allow transition",
+        "impl": "true"
+      },
+      "task-selected-for-work?": {
+        "description": "Task has been selected for active work",
+        "impl": "(task-selected-for-work? task board)"
+      },
+      "change-approved?": {
+        "description": "Review has been approved and changes can proceed",
+        "impl": "(review-approved? task board)"
+      },
+      "documentation-complete?": {
+        "description": "Documentation and evidence are complete",
+        "impl": "(documentation-complete? task board)"
+      },
+      "task-needs-archiving?": {
+        "description": "Task should be archived to icebox",
+        "impl": "(task-needs-archiving? task board)"
+      }
+    },
+    "globalRules": [
+      {
+        "name": "wip-limits",
+        "description": "Enforce WIP limits for all columns",
+        "enabled": true,
+        "impl": "check-wip-limits"
+      }
+    ]
+  },
+
+  "_transition_rules_note": "See docs/agile/process.md for complete FSM transition rules. Key flow: Incoming→Accepted→Breakdown→Ready→Todo→In Progress→Testing→Review→Document→Done. Tasks with score >5 cycle back through Breakdown until slice is small enough (≤5). The board is a supportive map - when work happens outside the flow, we create retrospective cards to honor it and learn how to better support our natural workflow. Archived is a terminal state accessible from any status, preferred over deletion for historical preservation."
+}

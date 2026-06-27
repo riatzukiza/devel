@@ -1,0 +1,42 @@
+;; ημ.skill/opencode-configs@0.2.0
+;; Migrated from pi/agent/skills/opencode-configs/CONTRACT.edn
+
+(skill-contract
+  (name "opencode-configs")
+  (v "ημ.skill/opencode-configs@0.2.0")
+
+  (intent
+    "Authoritative reference for opencode.json configuration schema.
+     Use when reading, writing, or validating opencode.json in any workspace.")
+
+  (activation
+    (priority 58)
+    (explicit ["skill:opencode-configs"])
+    (triggers ["opencode.json" "opencode config" "opencode configuration" "opencode settings"])
+    (autoload false))
+
+  (governance
+    (touch-layer :semi-stable)
+    (non-override [:mission :directives :safety :license])
+    (requires-user-approval false))
+
+  (effects
+    (writes false)
+    (network false)
+    (commits false))
+
+  (protocol
+    (schema
+      (top-level-keys
+        [:$schema :model :models :providers :agents :plugins :tools
+         :rules :mcp :keybindings :theme :experimental])
+      (model "Default model id string")
+      (models "Array of ModelConfig: {id, provider, temperature?, maxTokens?, contextLength?}")
+      (providers "Provider overrides: {openai?, anthropic?, google?, ollama?, ...}")
+      (agents "Array of AgentConfig: {name, description, share?, model?, rules?}")
+      (plugins "Array of plugin module paths or inline configs")
+      (tools "Array of tool configs: MCP server refs or inline tool defs")
+      (mcp "MCP server map: {<name>: {command, args, env?}}"))))
+
+  (output
+    (must-include ["Validate opencode.json against this schema before committing"])))

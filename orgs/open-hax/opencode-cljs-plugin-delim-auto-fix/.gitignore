@@ -1,0 +1,5 @@
+node_modules/
+dist/
+.opencode/
+.shadow-cljs/
+.DS_Store

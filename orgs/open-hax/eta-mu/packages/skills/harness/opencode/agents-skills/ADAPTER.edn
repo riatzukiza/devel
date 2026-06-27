@@ -1,0 +1,23 @@
+;; Harness adapter: opencode → agents-skills integration
+;; Restructured from pi/agent/skills/opencode-agents-skills/CONTRACT.edn
+
+(harness-adapter
+  (harness :opencode)
+  (skill "agents-skills")
+  (core-ref "packages/skills/domain/opencode/sdk/CONTRACT.edn")
+  (install-path ".opencode/skills/agents-skills/CONTRACT.edn")
+
+  (protocol
+    (skill-loading
+      "Skills in .opencode/skills/<name>/CONTRACT.edn are loaded by the eta-mu skill loader."
+      "Skill loader reads CONTRACT.edn, checks activation triggers and priority."
+      "Autoloaded skills are injected as system prompt prefix every turn."
+      "Triggered skills are injected when trigger phrase appears in user message or tool output.")
+    (skill-harness-bridge
+      "This adapter connects the opencode session lifecycle to the ηµΠ skill registry."
+      "On sessionStart: load skill-registry.edn, inject all autoload:true skills."
+      "On each turn: scan for trigger phrases, inject matching skills."
+      "On sessionEnd: emit skill-load-summary receipt to receipt river."))
+
+  (notes
+    "Implementation lives in packages/opencode-reactant. This adapter is the config layer."))

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.shadow-cljs/
+.clj-kondo/
+.cpcache/
+.lsp/
+.stryker-tmp/
+coverage/
+.DS_Store

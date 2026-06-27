@@ -1,0 +1,17 @@
+node_modules/
+dist/
+logs/
+/data/
+coverage/
+
+# Duplication scan reports (regenerable)
+reports/jscpd/
+
+target/
+.shadow-cljs/
+.clj-kondo/.cache/
+.factory/
+
+.env
+keys.json
+models.json

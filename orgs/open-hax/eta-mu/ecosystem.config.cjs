@@ -1,0 +1,38 @@
+module.exports = {
+  apps: [
+    {
+      name: 'agentd',
+      cwd: 'services/agentd',
+      script: 'dist/index.js',
+      interpreter: 'node',
+      exec_mode: 'fork',
+      instances: 1,
+      env_file: 'services/agentd/.env',
+      env: {
+        NODE_ENV: 'production',
+        WEB_PORT: '8787'
+      },
+      max_restarts: 5,
+      restart_delay: 2000,
+      autorestart: true,
+      watch: false
+    },
+    {
+      name: 'opencode-reactant',
+      cwd: 'packages/opencode-reactant',
+      script: 'pnpm',
+      args: 'dev',
+      interpreter: 'none',
+      exec_mode: 'fork',
+      instances: 1,
+      env: {
+        NODE_ENV: 'development',
+        REPO_SLUG: process.env.REPO_SLUG || 'sst/opencode'
+      },
+      max_restarts: 5,
+      restart_delay: 2000,
+      autorestart: true,
+      watch: false
+    }
+  ]
+};

@@ -1,0 +1,148 @@
+;; Feed Component Contract
+;; Defines the API for activity streams and timelines
+
+{:component :feed
+ :version "1.0.0"
+ 
+ :description
+ "Activity stream for displaying chronological events, notifications, or agent actions."
+ 
+ :props
+ {:items
+  {:type :array
+   :items :feed-item
+   :required true
+   :description "List of feed items to display"}
+  
+  :variant
+  {:type :enum
+   :values [:timeline :cards :list :compact]
+   :default :timeline
+   :description "Visual style of the feed"}
+  
+  :group-by
+  {:type :enum
+   :values [:none :date :hour :session :agent]
+   :default :date
+   :description "How to group items"}
+  
+  :show-timestamp
+  {:type :boolean
+   :default true
+   :description "Whether to show timestamps"}
+  
+  :relative-time
+  {:type :boolean
+   :default true
+   :description "Use relative time (2 minutes ago)"}
+  
+  :infinite-scroll
+  {:type :boolean
+   :default false
+   :description "Enable infinite scroll loading"}
+  
+  :on-load-more
+  {:type :function
+   :signature "() => void"
+   :required false
+   :description "Callback to load more items"}
+  
+  :on-item-click
+  {:type :function
+   :signature "(item: FeedItem) => void"
+   :required false
+   :description "Callback when item is clicked"}
+  
+  :on-item-action
+  {:type :function
+   :signature "(action: string, item: FeedItem) => void"
+   :required false
+   :description "Callback for item actions"}
+  
+  :empty-state
+  {:type :node
+   :required false
+   :description "Content when no items"}
+  
+  :loading
+  {:type :boolean
+   :default false
+   :description "Whether more items are loading"}
+  
+  :mark-read
+  {:type :function
+   :signature "(itemIds: string[]) => void"
+   :required false
+   :description "Mark items as read"}}
+ 
+ :types
+ {:feed-item
+  {:id :string
+   :type {:type :enum :values [:message :file :commit :agent :system :user :notification]}
+   :title {:type :string :required false}
+   :content :string
+   :timestamp :date
+   :author {:type :object :keys {:name :string :avatar :string :role :string}}
+   :icon {:type :node :required false}
+   :badge {:type :string :required false}
+   :actions {:type :array :items :string}
+   :meta {:type :object :required false}
+   :read {:type :boolean :default false}
+   :file {:type :object :keys {:name :string :path :string :status :string} :required false}
+   :diff {:type :object :keys {:additions :number :deletions :number} :required false}}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :accessibility
+ {:role :feed
+  :aria
+  {:live "polite"
+   :label "Activity feed"}
+  :keyboard
+  {:navigate :arrow-keys
+   :activate :enter
+   :mark-read :space}}
+ 
+ :behavior
+ {:virtualization
+  {:enabled true
+   :overscan 5
+   :item-height :auto}
+  
+  :grouping
+  {:sticky-headers true
+   :show-count true}
+  
+  :realtime
+  {:prepend-new true
+   :highlight-duration 2000}}
+ 
+ :styling
+ {:data-attributes
+  {:data-component "feed"
+   :data-variant :variant
+   :data-loading :loading}
+  
+  :css-custom-properties
+  ["--feed-bg"
+   "--item-bg"
+   "--item-hover-bg"
+   "--unread-indicator"]}
+ 
+ :tokens
+ {:colors
+  {:bg :colors.background/default
+   :item-bg :transparent
+   :item-hover-bg :colors.background/surface
+   :border :colors.border/default
+   :unread :colors.accent/cyan
+   :muted :colors.text/muted}
+  
+  :spacing
+  {:item-padding :spacing/4
+   :item-gap :spacing/3
+   :group-gap :spacing/6}
+  
+  :radius
+  :spacing/2}}

@@ -1,0 +1,143 @@
+;; Tabs Component Contract
+;; Defines the API for tabbed content organization
+
+{:component :tabs
+ :version "1.0.0"
+ 
+ :description
+ "Tabbed content organization with keyboard navigation and lazy rendering."
+ 
+ :props
+ {:value
+  {:type :string
+   :required false
+   :description "ID of currently active tab (controlled)"}
+  
+  :default-value
+  {:type :string
+   :required false
+   :description "ID of default active tab (uncontrolled)"}
+  
+  :on-change
+  {:type :function
+   :signature "(value: string) => void"
+   :required false
+   :description "Callback when tab changes"}
+  
+  :items
+  {:type :array
+   :items :tab-item
+   :required true
+   :description "List of tab items"}
+  
+  :variant
+  {:type :enum
+   :values [:default :pills :underline :enclosed]
+   :default :default
+   :description "Visual style variant"}
+  
+  :size
+  {:type :enum
+   :values [:sm :md :lg]
+   :default :md
+   :description "Size of tabs"}
+  
+  :orientation
+  {:type :enum
+   :values [:horizontal :vertical]
+   :default :horizontal
+   :description "Orientation of tabs"}
+  
+  :lazy
+  {:type :boolean
+   :default true
+   :description "Whether to lazy render tab content"}
+  
+  :keep-mounted
+  {:type :boolean
+   :default false
+   :description "Whether to keep inactive tabs mounted"}
+  
+  :show-close
+  {:type :boolean
+   :default false
+   :description "Whether to show close button on tabs"}
+  
+  :on-close
+  {:type :function
+   :signature "(tabId: string) => void"
+   :required false
+   :description "Callback when tab close button is clicked"}
+  
+  :addable
+  {:type :boolean
+   :default false
+   :description "Whether to show add button"}
+  
+  :on-add
+  {:type :function
+   :signature "() => void"
+   :required false
+   :description "Callback when add button is clicked"}}
+ 
+ :types
+ {:tab-item
+  {:id :string
+   :label :string
+   :icon {:type :node :required false}
+   :content {:type :node :required false}
+   :disabled {:type :boolean :default false}
+   :badge {:type :string :required false}
+   :closable {:type :boolean :default true}}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :accessibility
+ {:role :tablist
+  :aria
+  {:orientation :orientation
+   :labelledby :tab-id
+   :controls :panel-id}
+  :keyboard
+  {:navigate [:arrow-left :arrow-right :arrow-up :arrow-down]
+   :activate :enter
+   :focus :tab}}
+ 
+ :behavior
+ {:selection
+  {:follow-focus true
+   :activate-on-focus false}
+  
+  :rendering
+  {:lazy true
+   :keep-mounted false}}
+ 
+ :styling
+ {:data-attributes
+  {:data-component "tabs"
+   :data-variant :variant
+   :data-orientation :orientation}
+  
+  :css-custom-properties
+  ["--tabs-border"
+   "--tab-hover-bg"
+   "--tab-active-bg"
+   "--tab-active-border"]}
+ 
+ :tokens
+ {:colors
+  {:border :colors.border/default
+   :hover-bg :colors.background/surface
+   :active-bg :colors.background/selection
+   :active-border :colors.accent/cyan
+   :text :colors.text/default
+   :muted :colors.text/muted}
+  
+  :spacing
+  {:tab-padding-x :spacing/4
+   :tab-padding-y :spacing/2
+   :gap :spacing/2}
+  
+  :radius
+  :spacing/1}}

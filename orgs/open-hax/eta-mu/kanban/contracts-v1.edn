@@ -1,0 +1,115 @@
+;; eta-mu contract schema additions — v1
+;; Delta on top of fork_tales/specs/schema.edn
+;; Promotes to octave-commons/fork_tales when stable.
+
+{;; ─── new enums ────────────────────────────────────────────────
+ :contract-kind    [:enum :agent :policy :intent :fulfillment
+                    :trigger :role :capability]
+ :fulfillment-mode [:enum :strict :loose :judge
+                    :deterministic/strict :deterministic/loose]
+ :intent-mode      [:enum :strict :loose :custom]
+ :actor-kind       [:enum :human :agent :service :cron]
+ :actor-status     [:enum :active :suspended :retired]
+ :verdict          [:enum :held :failed :partial]
+
+ ;; ─── capability ───────────────────────────────────────────────
+ :capability [:map {:closed false}
+              [:capability/id    :namespaced]
+              [:capability/doc   {:optional true} :string]
+              [:capability/tools {:optional true} [:vector :tool]]
+              [:capability/data  {:optional true} :data]]
+
+ ;; ─── role ─────────────────────────────────────────────────────
+ :role [:map {:closed false}
+        [:role/id           :namespaced]
+        [:role/doc          {:optional true} :string]
+        [:role/system       {:optional true} :prompt-value]
+        [:role/capabilities {:optional true} [:vector :namespaced]]]
+
+ ;; ─── actor ────────────────────────────────────────────────────
+ :actor [:map {:closed false}
+         [:actor/id           :id]
+         [:actor/kind         :actor-kind]
+         [:actor/role         {:optional true} :namespaced]
+         [:actor/roles        {:optional true} [:vector :namespaced]]
+         [:actor/org-id       {:optional true} :string]
+         [:actor/status       :actor-status]
+         [:actor/capabilities [:vector :namespaced]]
+         [:model              {:optional true} :string]
+         [:thinking           {:optional true} :thinking]
+         [:system             {:optional true} :prompt-value]]
+
+ ;; ─── intent contract ──────────────────────────────────────────
+ :intent-contract [:map {:closed false}
+                   [:contract/id   :id]
+                   [:contract/kind [:= :intent]]
+                   [:contract/doc  {:optional true} :string]
+                   [:contract/uses {:optional true} [:vector :id]]
+                   [:intent/mode   :intent-mode]
+                   [:intent/check  :hook]]
+
+ ;; ─── fulfillment check (two modes) ───────────────────────────
+ :fulfillment-check
+ [:or
+  [:map {:closed false} [:expr :any]]                   ;; deterministic
+  [:map {:closed false}                                 ;; judge
+   [:actor-id  :id]
+   [:model     {:optional true} :string]
+   [:thinking  {:optional true} :thinking]
+   [:system    {:optional true} :prompt-value]
+   [:task      {:optional true} :prompt-value]]]
+
+ ;; ─── fulfillment contract ────────────────────────────────────
+ :fulfillment-contract [:map {:closed false}
+                        [:contract/id            :id]
+                        [:contract/kind          [:= :fulfillment]]
+                        [:contract/doc           {:optional true} :string]
+                        [:contract/uses          {:optional true} [:vector :id]]
+                        [:fulfillment/mode        :fulfillment-mode]
+                        [:fulfillment/check       :fulfillment-check]]
+
+ ;; ─── policy contract ─────────────────────────────────────────
+ :policy-check [:map {:closed false}
+                [:id        :id]
+                [:severity  [:enum :block :warn :note]]
+                [:message   :string]
+                [:check     {:expr :maybe ;; an expression that evaluates to a boolean
+                             :rule :named-rule}]]
+
+ :policy-contract [:map {:closed false}
+                   [:contract/id       :id]
+                   [:contract/kind     [:= :policy]]
+                   [:contract/doc      {:optional true} :string]
+                   [:contract/scope    {:optional true} :string]
+                   [:contract/uses     {:optional true} [:vector :id]]
+                   [:policy/invariants {:optional true} [:vector :policy-check]]
+                   [:policy/required   {:optional true} [:vector :policy-check]]
+                   [:policy/checked-by {:optional true} :keyword]]
+
+ ;; ─── agent contract (flattened, replaces :contract sub-block) ─
+ :agent-contract [:map {:closed false}
+                  [:contract/id      :id]
+                  [:contract/kind    [:= :agent]]
+                  [:contract/uses    {:optional true} [:vector :id]]
+                  [:actor-id         :id]
+                  [:additional-roles {:optional true} [:vector :namespaced]]
+                  [:roles-override   {:optional true} [:vector :namespaced]]
+                  [:model            {:optional true} :string]
+                  [:thinking         {:optional true} :thinking]
+                  [:system           {:optional true} :prompt-value]
+                  [:task             {:optional true} :prompt-value]
+                  [:sinks            {:optional true} [:vector :sink-kind]]
+                  [:lake             {:optional true} :string]
+                  [:before/hooks     {:optional true} [:map-of :keyword :hook]]
+                  [:after/hooks      {:optional true} [:map-of :keyword :hook]]]
+
+ ;; ─── execution verdict record (extends :event-record) ─────────
+ :verdict-record [:map {:closed false}
+                  [:id              :uuid]
+                  [:kind            [:= :contract/verdict]]
+                  [:contract-id     :id]
+                  [:fulfillment-id  {:optional true} :id]
+                  [:verdict         :verdict]
+                  [:rationale       {:optional true} :string]
+                  [:receipt-refs    {:optional true} [:vector :uuid]]
+                  [:occurred-at     :inst]]}

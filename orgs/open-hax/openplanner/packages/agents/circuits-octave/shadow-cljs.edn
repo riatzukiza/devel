@@ -1,0 +1,17 @@
+{:source-paths ["src" "../personality-system/src"]
+ :dependencies []
+ :builds
+ {:circuits-octave
+  {:target :node-library
+   :exports {:OctavePersonalitySystem promethean.circuits.octave/OctavePersonalitySystem
+             :make-octave-system promethean.circuits.octave/make-octave-system
+             :get-default-system promethean.circuits.octave/get-default-system
+             :all-circuits promethean.circuits.octave/all-circuits
+             :all-personas promethean.circuits.octave/all-personas
+             :get-circuit promethean.circuits.octave/get-circuit
+             :get-persona promethean.circuits.octave/get-persona
+             :resolve-all-circuits promethean.circuits.octave/resolve-all-circuits
+             :default-circuits promethean.circuits.octave/default-circuits
+             :default-personas promethean.circuits.octave/default-personas}
+   :output-to "dist/promethean/circuits/octave.js"
+   :output-dir "dist/promethean/circuits/octave"}}}

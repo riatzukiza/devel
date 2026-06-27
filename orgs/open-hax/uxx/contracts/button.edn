@@ -1,0 +1,162 @@
+;; Button Component Contract
+;; Defines the API that both React and Reagent implementations must follow
+
+{:component :button
+ :version "1.0.0"
+ 
+ :description
+ "Interactive button component with variant styles, sizes, and loading state."
+ 
+ :props
+ {:variant
+  {:type :enum
+   :values [:primary :secondary :ghost :danger]
+   :default :secondary
+   :description "Visual style variant of the button"}
+  
+  :size
+  {:type :enum
+   :values [:sm :md :lg]
+   :default :md
+   :description "Size of the button"}
+  
+  :disabled
+  {:type :boolean
+   :default false
+   :description "Whether the button is disabled"}
+  
+  :loading
+  {:type :boolean
+   :default false
+   :description "Whether the button is in a loading state"}
+  
+  :full-width
+  {:type :boolean
+   :default false
+   :description "Whether the button should take full width"}
+  
+  :icon-start
+  {:type :element
+   :required false
+   :description "Icon to display before the button text"}
+  
+  :icon-end
+  {:type :element
+   :required false
+   :description "Icon to display after the button text"}
+  
+  :on-click
+  {:type :function
+   :signature "(event: MouseEvent) => void"
+   :required false
+   :description "Click handler"}
+  
+  :type
+  {:type :enum
+   :values [:button :submit :reset]
+   :default :button
+   :description "HTML button type attribute"}
+  
+  :form
+  {:type :string
+   :required false
+   :description "Associates the button with a form by id"}
+  
+  :name
+  {:type :string
+   :required false
+   :description "Name attribute for form submission"}
+  
+  :value
+  {:type :string
+   :required false
+   :description "Value attribute for form submission"}}
+ 
+ :slots
+ {:children
+  {:type :node
+   :required false
+   :description "Content to render inside the button"}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ ;; Reason: Use CSS custom properties or wrapper for custom styling
+ 
+ :accessibility
+ {:role :button
+  :keyboard
+  {:focusable true
+   :activatable true
+   :focus-visible true}
+  :aria
+  {:disabled :disabled
+   :busy :loading}}
+ 
+ :styling
+ {:css-custom-properties
+  ["--button-bg"
+   "--button-fg"
+   "--button-border"
+   "--button-radius"
+   "--button-padding"
+   "--button-font-size"
+   "--button-font-weight"
+   "--button-transition"]
+  
+  :data-attributes
+  {:data-component "button"
+   :data-variant :variant
+   :data-size :size
+   :data-loading :loading
+   :data-full-width :full-width}}
+ 
+ :behavior
+ {:loading
+  {:disables-click true
+   :shows-spinner true
+   :maintains-size true}
+  
+  :disabled
+  {:prevents-all-events true
+   :sets-tabindex -1}}
+ 
+ :examples
+ {:cljs
+  [:button
+   {:variant :primary
+    :on-click #(js/alert "Clicked!")}
+   "Click me"]
+  
+  :tsx
+  [:Button
+   {:variant "primary"
+    :onClick={() => alert('Clicked!')}
+   "Click me"]}
+ 
+ ;; Token references
+ :tokens
+ {:colors
+  {:primary {:bg :colors.button.primary/bg
+             :fg :colors.button.primary/fg}
+   :secondary {:bg :colors.button.secondary/bg
+               :fg :colors.button.secondary/fg}
+   :ghost {:bg :colors.button.ghost/bg
+           :fg :colors.button.ghost/fg}
+   :danger {:bg :colors.button.danger/bg
+            :fg :colors.button.danger/fg}}
+  
+  :spacing
+  {:sm {:padding-y :spacing/1.5
+        :padding-x :spacing/3}
+   :md {:padding-y :spacing/2
+        :padding-x :spacing/4}
+   :lg {:padding-y :spacing/3
+        :padding-x :spacing/6}}
+  
+  :typography
+  {:sm :typography/bodySm
+   :md :typography/body
+   :lg :typography/body}
+  
+  :motion
+  {:transition :transitions/colors}}}

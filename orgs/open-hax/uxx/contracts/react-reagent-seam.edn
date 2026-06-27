@@ -1,0 +1,137 @@
+;; ReactReagentSeam Component Contract
+;; Host/donor adapter for embedding Reagent in React apps
+
+{:component :react-reagent-seam
+ :version "1.0.0"
+ 
+ :description
+ "An adapter pattern for embedding Reagent (ClojureScript React wrapper) components inside a React host application, enabling bidirectional state sharing and event communication."
+ 
+ :props
+ {:host-ready?
+  {:type :atom-like
+   :required true
+   :description "Reactive container for host ready state"}
+  
+  :host-state
+  {:type :atom-like
+   :required true
+   :description "Reactive container for shared host/donor state"}
+  
+  :render-donor
+  {:type :function
+   :signature "(adapter: Adapter) => ReactNode"
+   :required true
+   :description "Function that renders the Reagent donor component(s)"}
+  
+  :render-host
+  {:type :function
+   :signature "(adapter: Adapter) => ReactNode"
+   :required true
+   :description "Function that renders the React host component(s)"}
+  
+  :scope-class
+  {:type :string
+   :default "react-host-seam-scope"
+   :description "CSS class for scoping styles"}
+  
+  :on-mount
+  {:type :function
+   :signature "() => void"
+   :required false
+   :description "Callback when seam is mounted"}
+  
+  :on-unmount
+  {:type :function
+   :signature "() => void"
+   :required false
+   :description "Callback when seam is unmounted"}}
+ 
+ :types
+ {:atom-like
+  {:description "Any reactive container supporting deref and swap!"
+   :methods [:deref :swap! :reset!]}
+  
+  :adapter
+  {:ready-state {:type :reaction :returns :string}
+   :host-count {:type :reaction :returns :number}
+   :event-count {:type :reaction :returns :number}
+   :increment-host-count! {:type :function :signature "() => void"}
+   :emit-donor-event! {:type :function :signature "() => void"}}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :accessibility
+ {:role :region
+  :aria
+  {:label "Hybrid React/Reagent container"}}
+ 
+ :behavior
+ {:lifecycle
+  {:set-mounted-on-did-mount true
+   :clear-mounted-on-unmount true}
+  
+  :state-sharing
+  {:host-can-read-donor true
+   :donor-can-read-host true
+   :host-can-modify-donor false
+   :donor-can-modify-host false
+   :shared-state-is-immutable-to-both true}
+  
+  :events
+  {:host-emits-to-shared true
+   :donor-emits-to-shared true
+   :event-bus-is-async true}}
+ 
+ :styling
+ {:css-custom-properties
+  ["--seam-bg"
+   "--seam-border"
+   "--seam-host-panel-bg"
+   "--seam-donor-panel-bg"
+   "--seam-accent"]
+  
+  :data-attributes
+  {:data-component "react-reagent-seam"
+   :data-host-ready :host-ready?}
+  
+  :scoped-styles
+  {:prefix ".react-host-seam-scope"
+   :isolate-children true}}
+ 
+ :tokens
+ {:colors
+  {:bg :colors.background/elevated
+   :border :colors.border/default
+   :host-panel-bg :colors.background/surface
+   :donor-panel-bg :colors.background/surface
+   :accent :colors.accent/cyan}
+  
+  :spacing
+  {:panel-padding :spacing/4
+   :gap :spacing/4}
+  
+  :radius
+  :spacing/2}
+ 
+ :examples
+ {:cljs
+  (let [host-state (r/atom {:mounted? false :host-count 0 :event-count 0})
+        adapter (create-adapter host-state)]
+    [:section {:class "react-host-seam-scope"}
+     [host-panel adapter]
+     [donor-panel adapter]])
+  
+  :tsx
+  ;; Note: This pattern requires Reagent interop
+  ;; The React host wraps the Reagent donor
+  const hostState = useReagentAtom({mounted: false, hostCount: 0, eventCount: 0});
+  const adapter = createAdapter(hostState);
+  
+  return (
+    [:section {:className: "react-host-seam-scope"}
+      <HostPanel adapter={adapter} />
+      <DonorPanel adapter={adapter} />
+    ]
+  )}}

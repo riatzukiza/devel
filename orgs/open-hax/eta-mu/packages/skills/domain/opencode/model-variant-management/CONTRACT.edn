@@ -1,0 +1,44 @@
+;; ημ.skill/opencode-model-variant-management@0.2.0
+;; Migrated from pi/agent/skills/opencode-model-variant-management/CONTRACT.edn
+
+(skill-contract
+  (name "opencode-model-variant-management")
+  (v "ημ.skill/opencode-model-variant-management@0.2.0")
+
+  (intent
+    "Manage multiple model variants in opencode.json for cost/quality tradeoffs.
+     Switch between providers per agent or per task type without changing prompt logic.")
+
+  (activation
+    (priority 54)
+    (explicit ["skill:opencode-model-variant-management"])
+    (triggers ["model variant" "model switching" "cost routing" "cheap model" "fast model"
+               "model per agent" "model per task"])
+    (autoload false))
+
+  (governance
+    (touch-layer :volatile)
+    (non-override [:mission :directives :safety :license])
+    (requires-user-approval false))
+
+  (effects
+    (writes true) ;; edits opencode.json
+    (network false)
+    (commits false))
+
+  (protocol
+    (patterns
+      (per-agent
+        "agents[].model overrides the top-level model for that agent only."
+        "Use expensive models (opus, o3) for planning agents."
+        "Use fast/cheap models (haiku, gpt-4o-mini, groq) for execution/scaffolding agents.")
+      (per-task
+        "task-router skill dispatches task type → model selection."
+        "Register task-type model preferences in opencode.json models[] array."
+        "Prefer model id stability over provider lock-in: wrap provider-specific ids in aliases.")
+      (cost-model
+        "Track cost per 1M tokens in receipts.log :decision entries."
+        "Flag when a session exceeds $5 in model spend.")))
+
+  (output
+    (must-include ["Always note model selection rationale in the receipt log"])))

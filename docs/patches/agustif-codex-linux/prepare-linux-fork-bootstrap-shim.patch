@@ -1,0 +1,45 @@
+diff --git a/scripts/prepare-linux-fork.sh b/scripts/prepare-linux-fork.sh
+index b54673c..80701ef 100644
+--- a/scripts/prepare-linux-fork.sh
++++ b/scripts/prepare-linux-fork.sh
+@@ -7,8 +7,22 @@ REPO_ROOT="$(dirname "$SCRIPT_DIR")"
+ APP_DIR="$REPO_ROOT/app"
+ FORK_DIR="$REPO_ROOT/codex-linux-fork"
+ 
+-if [ ! -f "$APP_DIR/.vite/build/main.js" ]; then
+-  echo "ERROR: extracted app shell missing at $APP_DIR/.vite/build/main.js"
++# The extracted Codex.app shell entrypoint has changed across versions.
++# Newer builds use `.vite/build/bootstrap.js` with hashed payload chunks.
++# Older builds used `.vite/build/main.js`.
++APP_BOOTSTRAP_JS="$APP_DIR/.vite/build/bootstrap.js"
++APP_MAIN_JS="$APP_DIR/.vite/build/main.js"
++
++if [ ! -f "$APP_BOOTSTRAP_JS" ] && [ ! -f "$APP_MAIN_JS" ]; then
++  echo "ERROR: extracted app shell missing at:"
++  echo "  - $APP_BOOTSTRAP_JS (new)"
++  echo "  - $APP_MAIN_JS (old)"
++  if [ -d "$APP_DIR/.vite/build" ]; then
++    echo ""
++    echo "Found $APP_DIR/.vite/build contents:"
++    ls -la "$APP_DIR/.vite/build" | sed -n '1,200p' || true
++  fi
++  echo ""
+   echo "Run ./scripts/ci-build.sh or extract Codex.app into $APP_DIR first."
+   exit 1
+ fi
+@@ -23,6 +37,15 @@ mkdir -p "$FORK_DIR/.vite" "$FORK_DIR/node_modules"
+ tar -C "$APP_DIR/.vite" -cf - build | tar -C "$FORK_DIR/.vite" -xf -
+ tar -C "$APP_DIR" -cf - webview | tar -C "$FORK_DIR" -xf -
+ 
++# Electron's entrypoint for this fork expects `.vite/build/main.js`.
++# If upstream provides `bootstrap.js` instead, write a tiny shim.
++if [ ! -f "$FORK_DIR/.vite/build/main.js" ] && [ -f "$FORK_DIR/.vite/build/bootstrap.js" ]; then
++  cat >"$FORK_DIR/.vite/build/main.js" <<'EOF'
++"use strict";
++require("./bootstrap.js");
++EOF
++fi
++
+ if [ -d "$APP_DIR/node_modules/tslib" ]; then
+   tar -C "$APP_DIR/node_modules" -cf - tslib | tar -C "$FORK_DIR/node_modules" -xf -
+ fi

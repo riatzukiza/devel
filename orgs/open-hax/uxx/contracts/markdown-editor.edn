@@ -1,0 +1,203 @@
+;; MarkdownEditor Component Contract
+;; Defines the API for split-pane markdown editing with live preview
+
+{:component :markdown-editor
+ :version "1.0.0"
+ 
+ :description
+ "Split-pane markdown editor with live preview, syntax highlighting, and IDE-style features."
+ 
+ :props
+ {:value
+  {:type :string
+   :required false
+   :default ""
+   :description "Markdown content"}
+  
+  :default-value
+  {:type :string
+   :required false
+   :description "Initial markdown content"}
+  
+  :preview-mode
+  {:type :enum
+   :values [:split :preview-only :editor-only :tabbed]
+   :default :split
+   :description "How to show editor and preview"}
+  
+  :preview-ratio
+  {:type :number
+   :default 0.5
+   :description "Ratio of preview pane (0-1) in split mode"}
+  
+  :toolbar
+  {:type :union
+   :types [:boolean :toolbar-config]
+   :default true
+   :description "Show toolbar"}
+  
+  :status-bar
+  {:type :boolean
+   :default true
+   :description "Show status bar with stats"}
+  
+  :line-numbers
+  {:type :boolean
+   :default true
+   :description "Show line numbers in editor"}
+  
+  :wrap
+  {:type :boolean
+   :default true
+   :description "Word wrap in editor"}
+  
+  :theme
+  {:type :enum
+   :values [:monokai :night-owl :dark :light :auto]
+   :default :dark
+   :description "Color theme or theme preference"}
+  
+  :highlight-active-line
+  {:type :boolean
+   :default true
+   :description "Highlight current line"}
+  
+  :match-brackets
+  {:type :boolean
+   :default true
+   :description "Highlight matching brackets"}
+  
+  :spellcheck
+  {:type :boolean
+   :default false
+   :description "Enable spell checking in editor"}
+  
+  :placeholder
+  {:type :string
+   :default "Write your markdown here..."
+   :description "Editor placeholder"}
+  
+  :image-upload
+  {:type :function
+   :signature "(file: File) => Promise<string>"
+   :required false
+   :description "Handle image upload"}
+  
+  :on-change
+  {:type :function
+   :signature "(value: string) => void"
+   :required false
+   :description "Content change callback"}
+  
+  :on-save
+  {:type :function
+   :signature "(value: string) => void"
+   :required false
+   :description "Save callback (Ctrl+S)"}
+  
+  :on-preview-click
+  {:type :function
+   :signature "(element: string, event: Event) => void"
+   :required false
+   :description "Click handler in preview pane"}
+  
+  :autosave
+  {:type :object
+   :keys {:enabled {:type :boolean :default false}
+          :key {:type :string :required false}
+          :delay {:type :number :default 1000}}
+   :default {:enabled false}
+   :description "Autosave configuration"}
+  
+  :reference
+  {:type :ref
+   :description "Ref to editor instance"}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :features
+ {:editor
+  {:syntax-highlight true
+   :auto-indent true
+   :auto-close-brackets true
+   :auto-close-tags true
+   :tab-size 2
+   :emacs-bindings false
+   :vim-bindings false}
+  
+  :preview
+  {:sync-scroll true
+   :scroll-animation true
+   :math false
+   :mermaid false
+   :emoji true}
+  
+  :toolbar
+  {:headings true
+   :formatting true
+   :links true
+   :images true
+   :tables true
+   :code true
+   :lists true
+   :quotes true
+   :hr true
+   :undo-redo true
+   :fullscreen true
+   :preview-toggle true}}
+ 
+ :status-bar
+ {:stats
+  {:lines true
+   :words true
+   :characters true
+   :selection true}
+  
+  :position
+  {:line true
+   :column true
+   :percentage true}}
+ 
+ :accessibility
+ {:role :application
+  :aria
+  {:label "Markdown editor"}
+  :keyboard
+  {:save "Ctrl+S"
+   :bold "Ctrl+B"
+   :italic "Ctrl+I"
+   :preview-toggle "Ctrl+P"
+   :fullscreen "F11"}}
+ 
+ :styling
+ {:data-attributes
+  {:data-component "markdown-editor"
+   :data-preview-mode :preview-mode
+   :data-focused :focused}
+  
+  :css-custom-properties
+  ["--editor-bg"
+   "--preview-bg"
+   "--editor-border"
+   "--gutter-bg"]}
+ 
+ :tokens
+ {:colors
+  {:editor-bg :colors.background/default
+   :preview-bg :colors.background/surface
+   :text :colors.text/default
+   :border :colors.border/default
+   :gutter-bg :colors.background/elevated
+   :active-line-bg "rgba(255, 255, 255, 0.05)"}
+  
+  :typography
+  {:editor-font "JetBrains Mono, monospace"
+   :editor-size 14
+   :preview-font "inherit"
+   :preview-size 14
+   :line-height 1.6}
+  
+  :spacing
+  {:padding :spacing/4
+   :gutter-width 48}}}

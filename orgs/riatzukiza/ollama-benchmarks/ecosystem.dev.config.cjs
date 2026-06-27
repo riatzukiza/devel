@@ -1,0 +1,35 @@
+module.exports = {
+  apps: [
+    {
+      name: "ollama-benchmarks-dev",
+      cwd: __dirname,
+      script: "bb",
+      args: [
+        "bench_ollama.clj",
+        "--config",
+        "config.dev.edn",
+        "--out-dir",
+        "reports-dev",
+        "-n",
+        "1",
+      ],
+      interpreter: "none",
+      watch: [".", "config.dev.edn"],
+      ignore_watch: [
+        "node_modules",
+        "logs",
+        ".clj-kondo",
+        ".cpcache",
+        "target",
+        "classes",
+        "reports",
+        "reports-dev",
+      ],
+      watch_delay: 1000,
+      out_file: "logs/pm2/dev.out.log",
+      error_file: "logs/pm2/dev.err.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss",
+      autorestart: true,
+    },
+  ],
+};

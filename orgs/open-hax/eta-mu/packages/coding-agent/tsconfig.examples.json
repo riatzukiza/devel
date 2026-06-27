@@ -1,0 +1,16 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"noEmit": true,
+		"paths": {
+			"@open-hax/eta-mu-cli": ["./src/index.ts"],
+			"@open-hax/eta-mu-cli/hooks": ["./src/core/hooks/index.ts"],
+			"@open-hax/eta-mu-tui": ["../tui/src/index.ts"],
+			"@open-hax/eta-mu-ai": ["../ai/src/index.ts"],
+			"typebox": ["../../node_modules/typebox"]
+		},
+		"skipLibCheck": true
+	},
+	"include": ["examples/**/*.ts"],
+	"exclude": ["node_modules", "dist"]
+}

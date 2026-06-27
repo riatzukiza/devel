@@ -1,0 +1,79 @@
+{
+  "mcpServers": {
+    "duckduckgo": {
+      "args": ["mcp-remote", "http://127.0.0.1:3210/duckduckgo"],
+      "command": "npx"
+    },
+    "file-system": {
+      "args": ["mcp-remote", "http://127.0.0.1:3210/filesystem"],
+      "command": "npx"
+    },
+    "github": {
+      "args": ["mcp-remote", "http://127.0.0.1:3210/github"],
+      "command": "npx"
+    }
+  },
+  "transport": "http",
+  "tools": [
+    "mcp.help",
+    "mcp.toolset",
+    "mcp.endpoints",
+    "mcp.validate-config",
+    "github.request",
+    "github.graphql",
+    "github.rate-limit",
+    "github.contents.write",
+    "files.list-directory",
+    "files.tree-directory",
+    "files.view-file",
+    "files.write-content",
+    "files.write-lines",
+    "files.search",
+    "apply_patch"
+  ],
+  "endpoints": {
+    "github": {
+      "tools": ["github.request", "github.graphql", "github.rate-limit", "github.contents.write"],
+      "includeHelp": true
+    },
+    "filesystem": {
+      "tools": [
+        "files.list-directory",
+        "files.tree-directory",
+        "files.view-file",
+        "files.write-content",
+        "files.write-lines",
+        "files.search",
+        "apply_patch"
+      ],
+      "includeHelp": true
+    }
+  },
+  "stdioMeta": {
+    "title": "Default MCP Endpoint",
+    "description": "Aggregated toolset available over stdio for local agents.",
+    "workflow": [
+      "mcp.toolset -> mcp.help",
+      "mcp.validate-config",
+      "files.search -> files.view-file -> apply_patch"
+    ],
+    "expectations": {
+      "usage": [
+        "Use mcp.toolset first to confirm endpoint scope",
+        "Call mcp.validate-config after editing promethan.mcp.json",
+        "Prefer files.write-lines for small edits"
+      ],
+      "pitfalls": [
+        "mcp.validate-config reports warnings for missing metadata",
+        "apply_patch expects unified diffs"
+      ],
+      "prerequisites": ["Ensure git workspace is clean before applying patches"]
+    }
+  },
+  "metadata": {
+    "generatedBy": "opencode-fix"
+  },
+  "version": "2025-01-09",
+  "stdioProxyConfig": "./packages/mcp/minimal-mcp.edn",
+  "includeHelp": true
+}

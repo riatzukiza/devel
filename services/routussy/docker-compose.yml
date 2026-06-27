@@ -1,0 +1,34 @@
+# Development instance of routussy proxy
+# Usage: cd services/routussy && docker compose up -d
+
+name: routussy-dev
+
+services:
+  routussy:
+    build:
+      context: ../..
+      dockerfile: services/routussy/Dockerfile
+    ports:
+      - "127.0.0.1:${ROUTUSSY_PORT:-3010}:3010"
+    environment:
+      NODE_ENV: production
+      PORT: "3010"
+      UPSTREAM_URL: "${UPSTREAM_URL:-https://api.z.ai/api/paas/v4}"
+      UPSTREAM_API_KEY: "${UPSTREAM_API_KEY}"
+      UPSTREAM_PREFIX: "${UPSTREAM_PREFIX:-}"
+      IMAGE_COST_CENTS: "${IMAGE_COST_CENTS:-1.5}"
+      DEV_GUILD: "dev-guild"
+      DEV_USER_ID: "dev-user"
+      DEV_USER_BUDGET: "${DEV_USER_BUDGET:-100000}"
+    volumes:
+      - routussy-data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3010/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  routussy-data:

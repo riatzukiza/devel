@@ -1,0 +1,41 @@
+services:
+  devel-graph-weaver:
+    image: node:22-bookworm
+    depends_on:
+      mongodb:
+        condition: service_started
+    working_dir: /workspace
+    command: >-
+      bash -lc "git config --global --add safe.directory /workspace && corepack enable && pnpm -C orgs/octave-commons/graph-weaver dev"
+    environment:
+      CI: "true"
+      NPM_CONFIG_CONFIRM_MODULES_PURGE: "false"
+      NODE_OPTIONS: "--use-openssl-ca"
+      HOST: 0.0.0.0
+      PORT: "8796"
+      REPO_ROOT: /workspace
+      MONGODB_URI: "mongodb://mongodb:27017"
+      MONGODB_DB: "devel_graph_weaver"
+
+      MAX_RENDER_NODES: "6000"
+      MAX_RENDER_EDGES: "12000"
+
+      WEAVER_ANTS: "4"
+      WEAVER_DISPATCH_INTERVAL_MS: "15000"
+      WEAVER_MAX_CONCURRENCY: "2"
+      WEAVER_PER_HOST_MIN_INTERVAL_MS: "4000"
+      WEAVER_REVISIT_AFTER_MS: "28800000"
+    volumes:
+      - ../../..:/workspace
+    ports:
+      - "127.0.0.1:8796:8796"
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:7
+    volumes:
+      - devel-graph-weaver-mongodb-data:/data/db
+    restart: unless-stopped
+
+volumes:
+  devel-graph-weaver-mongodb-data:

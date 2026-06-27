@@ -1,0 +1,37 @@
+[ {
+  "model" : "qwen3:4b",
+  "prompt" : "What is the temperature in New York? Use the get_weather tool.",
+  "runs" : [ {
+    "tools_used" : true,
+    "duration_ms" : 15958,
+    "total_duration_ns" : 15950302823,
+    "load_duration_ns" : 2055326158,
+    "eval_count" : 970,
+    "tool_calls" : [ {
+      "function" : {
+        "name" : "get_weather",
+        "arguments" : {
+          "location" : "New York",
+          "units" : "fahrenheit"
+        }
+      }
+    } ],
+    "eval_duration_ns" : 13434163539,
+    "prompt" : "What is the temperature in New York? Use the get_weather tool.",
+    "tps" : 72.20397438099104,
+    "ok" : true,
+    "prompt_eval_duration_ns" : 169490687,
+    "num_tool_calls" : 1,
+    "model" : "qwen3:4b",
+    "prompt_eval_count" : 787
+  } ],
+  "summary" : {
+    "runs_total" : 1,
+    "runs_ok" : 1,
+    "runs_with_tools" : 1,
+    "tool_success_rate" : 1.0,
+    "mean_tps" : 72.20397438099104,
+    "mean_duration_ms" : 15958.0,
+    "mean_tool_calls" : 1.0
+  }
+} ]

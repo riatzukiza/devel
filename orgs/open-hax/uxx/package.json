@@ -1,0 +1,109 @@
+{
+  "name": "@open-hax/uxx",
+  "version": "0.2.3",
+  "description": "Open Hax UI component library with React primitives, shared design tokens, reusable themes, and color palettes.",
+  "type": "module",
+  "license": "LGPL-3.0-or-later",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/open-hax/uxx.git"
+  },
+  "homepage": "https://github.com/open-hax/uxx",
+  "keywords": [
+    "design-tokens",
+    "themes",
+    "color-palettes",
+    "pi-package"
+  ],
+  "pi": {
+    "themes": [
+      "./dist/eta-mu-themes"
+    ]
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "contracts",
+    "docs"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
+    },
+    "./tokens": {
+      "types": "./dist/tokens/src/index.d.ts",
+      "import": "./dist/tokens/src/index.js"
+    },
+    "./eta-mu": {
+      "types": "./dist/tokens/src/eta-mu-theme.d.ts",
+      "import": "./dist/tokens/src/eta-mu-theme.js"
+    },
+    "./primitives": {
+      "types": "./dist/react/src/primitives/index.d.ts",
+      "import": "./dist/react/src/primitives/index.js"
+    },
+    "./css": "./dist/tokens.css",
+    "./cljs": "./dist/tokens.cljs"
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.json && node scripts/generate-css.mjs && node scripts/generate-cljs.mjs && node scripts/generate-eta-mu-themes.mjs",
+    "prepack": "npm run build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run --config react/vitest.config.ts",
+    "test:watch": "vitest --config react/vitest.config.ts",
+    "test:coverage": "vitest run --config react/vitest.config.ts --coverage",
+    "storybook": "cd react && npm run storybook",
+    "storybook:build": "cd react && npm run build-storybook",
+    "perf:browser": "vite docs/perf-browser --host 127.0.0.1 --port 4173",
+    "storybook:pm2:start": "pm2 start ./scripts/storybook-server.sh --name uxx-storybook --no-autorestart",
+    "storybook:pm2:stop": "pm2 stop uxx-storybook",
+    "storybook:pm2:delete": "pm2 delete uxx-storybook",
+    "storybook:pm2:logs": "pm2 logs uxx-storybook --lines 200"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "dependencies": {
+    "@open-hax/uxx-helix": "workspace:*",
+    "@open-hax/uxx-reagent": "workspace:*",
+    "@open-hax/uxx-tokens-internal": "workspace:*",
+    "clsx": "^2.1.1",
+    "devlop": "^1.0.0",
+    "prism-react-renderer": "^2.4.1",
+    "react-markdown": "^10.1.0",
+    "rehype-raw": "^7.0.0",
+    "remark-gfm": "^4.0.1",
+    "scheduler": "^0.23.2"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^8.6.18",
+    "@storybook/addon-interactions": "^8.6.18",
+    "@storybook/addon-links": "^8.6.18",
+    "@storybook/blocks": "^8.6.18",
+    "@storybook/react": "^8.6.18",
+    "@storybook/react-vite": "^8.6.18",
+    "@storybook/test": "^8.6.18",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^18.3.28",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.7.0",
+    "@vitest/coverage-v8": "^1.6.0",
+    "jsdom": "^29.0.1",
+    "pm2": "^5.4.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "storybook": "^8.6.18",
+    "typescript": "^5.9.3",
+    "vite": "^5.0.0",
+    "vitest": "^1.6.0"
+  }
+}

@@ -1,0 +1,15 @@
+;; FilterToolbar Component Contract
+;; Horizontal toolbar row for filters, selects, and search inputs.
+
+{:component :filter-toolbar
+ :version "1.0.0"
+
+ :description
+ "Horizontal toolbar row that wraps filter controls (inputs, selects, search) with consistent spacing. Used across dashboard pages for filtering and sorting controls."
+
+ :props
+ {:children {:type :node :required true}
+  :dense {:type :boolean :default false}}
+
+ :styling
+ {:data-attributes {:data-component "filter-toolbar" :data-dense :dense}}}

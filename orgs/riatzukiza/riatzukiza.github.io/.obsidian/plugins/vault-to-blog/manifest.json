@@ -1,0 +1,13 @@
+{
+	"id": "vault-to-blog",
+	"name": "Vault to blog",
+	"version": "0.0.6",
+	"minAppVersion": "1.5.8",
+	"description": "Publish the vault to a GitHub Pages blog.",
+	"author": "barkstone2",
+	"authorUrl": "https://barkstone2.github.io",
+	"fundingUrl": {
+		"Buy Me a Coffee": "https://buymeacoffee.com/barkstone2"
+	},
+	"isDesktopOnly": true
+}

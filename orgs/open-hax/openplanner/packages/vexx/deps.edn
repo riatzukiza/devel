@@ -1,0 +1,11 @@
+{:paths ["src" "resources"]
+ :deps {org.clojure/clojure {:mvn/version "1.12.0"}
+        ring/ring-core {:mvn/version "1.12.2"}
+        ring/ring-jetty-adapter {:mvn/version "1.12.2"}
+        metosin/reitit {:mvn/version "0.7.2"}
+        metosin/muuntaja {:mvn/version "0.6.10"}
+        ring-cors/ring-cors {:mvn/version "0.1.13"}
+        cheshire/cheshire {:mvn/version "5.13.0"}
+        com.microsoft.onnxruntime/onnxruntime_gpu {:mvn/version "1.22.0"}
+        net.java.dev.jna/jna {:mvn/version "5.14.0"}}
+ :aliases {:run {:main-opts ["-m" "vexx.server"]}}}

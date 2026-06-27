@@ -1,0 +1,58 @@
+;; Spinner Component Contract
+;; Defines the API for loading indicators
+
+{:component :spinner
+ :version "1.0.0"
+ 
+ :description
+ "Loading indicator with customizable size and color."
+ 
+ :props
+ {:size
+  {:type :enum
+   :values [:sm :md :lg :xl]
+   :default :md
+   :description "Size of the spinner"}
+  
+  :color
+  {:type :string
+   :default "currentColor"
+   :description "Color of the spinner (CSS color value)"}
+  
+  :thickness
+  {:type :number
+   :default 2.5
+   :description "Stroke thickness of the spinner ring"}
+  
+  :label
+  {:type :string
+   :required false
+   :description "Accessible label for screen readers"}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :accessibility
+ {:role :status
+  :aria
+  {:busy true
+   :label :label}}
+ 
+ :styling
+ {:data-attributes
+  {:data-component "spinner"
+   :data-size :size}}
+ 
+ :behavior
+ {:animation
+  {:name "spin"
+   :duration "1s"
+   :timing "linear"
+   :iteration "infinite"}}
+ 
+ :tokens
+ {:sizes
+  {:sm 14
+   :md 16
+   :lg 20
+   :xl 24}}}

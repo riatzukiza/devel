@@ -1,0 +1,163 @@
+;; InspectorPane Component Contract
+;; Entity inspection with comparison/pinning support
+
+{:component :inspector-pane
+ :version "1.0.0"
+ 
+ :description
+ "A panel for inspecting selected entities with context, detail view, and the ability to pin multiple entities for comparison."
+ 
+ :props
+ {:selection
+  {:type :entity
+   :required false
+   :description "Currently selected entity"}
+  
+  :context
+  {:type :array
+   :items :entity
+   :default []
+   :description "Related context entities"}
+  
+  :pinned
+  {:type :array
+   :items :pinned-entry
+   :default []
+   :description "List of pinned entities for comparison"}
+  
+  :active-pinned-key
+  {:type :string
+   :required false
+   :description "Key of the currently active pinned entity"}
+  
+  :error
+  {:type :error-state
+   :required false
+   :description "Error state if loading failed"}
+  
+  :on-pin
+  {:type :function
+   :signature "(entity: Entity) => void"
+   :required false
+   :description "Callback to pin the current selection"}
+  
+  :on-unpin
+  {:type :function
+   :signature "(key: string) => void"
+   :required false
+   :description "Callback to unpin an entity"}
+  
+  :on-set-active
+  {:type :function
+   :signature "(key: string) => void"
+   :required false
+   :description "Callback to set the active pinned entity"}
+  
+  :on-retry
+  {:type :function
+   :signature "() => void"
+   :required false
+   :description "Callback to retry after error"}
+  
+  :render-detail
+  {:type :function
+   :signature "(entity: Entity) => ReactNode"
+   :required false
+   :description "Custom renderer for entity detail view"}
+  
+  :render-context-item
+  {:type :function
+   :signature "(entity: Entity) => ReactNode"
+   :required false
+   :description "Custom renderer for context items"}}
+ 
+ :types
+ {:entity
+  {:id :string
+   :key {:type :string :required false}
+   :title :string
+   :type {:type :keyword :required false}
+   :text {:type :string :required false}
+   :time {:type :string :required false}
+   :timestamp {:type :number :required false}
+   :metadata {:type :object :required false}}
+  
+  :pinned-entry
+  {:key :string
+   :selection :entity
+   :context {:type :array :items :entity}}
+  
+  :error-state
+  {:message :string
+   :retryable {:type :boolean :default true}}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :accessibility
+ {:role :complementary
+  :aria
+  {:label "Inspector panel"}
+  :keyboard
+  {:cycle-pinned [:tab :shift-tab]
+   :unpin-active :delete}}
+ 
+ :behavior
+ {:pinning
+  {:max-pinned 5
+   :prevent-duplicate-keys true
+   :auto-activate-on-pin true}
+  
+  :comparison
+  {:show-diff-highlight false
+   :sync-scroll false}}
+ 
+ :styling
+ {:css-custom-properties
+  ["--inspector-bg"
+   "--inspector-border"
+   "--inspector-header-bg"
+   "--inspector-card-bg"
+   "--inspector-active-bg"]
+  
+  :data-attributes
+  {:data-component "inspector-pane"
+   :data-has-selection :selection
+   :data-has-pinned :pinned}}
+ 
+ :tokens
+ {:colors
+  {:bg :colors.background/surface
+   :border :colors.border/default
+   :header-bg :colors.background/surface
+   :card-bg :colors.background/elevated
+   :active-bg :colors.selection/default}
+  
+  :spacing
+  {:header-padding :spacing/3
+   :content-padding :spacing/3
+   :card-gap :spacing/2}
+  
+  :radius
+  :spacing/1}
+ 
+ :examples
+ {:cljs
+  [inspector-pane
+   {:selection @selected-entity
+    :context @context-entities
+    :pinned @pinned-entities
+    :active-pinned-key @active-key
+    :on-pin #(swap! pinned-entities conj {:key (entity-key %) :selection % :context []})
+    :on-unpin #(swap! pinned-entities filter (fn [e] (not= (:key e) %)))
+    :on-set-active #(reset! active-key %)}]
+  
+  :tsx
+  [:InspectorPane
+   {:selection={selectedEntity}
+    :context={contextEntities}
+    :pinned={pinnedEntities}
+    :activePinnedKey={activeKey}
+    :onPin={(e) => setPinned([...pinned, {key: e.key, selection: e, context: []}])}
+    :onUnpin={(k) => setPinned(pinned.filter(e => e.key !== k))}
+    :onSetActive={(k) => setActiveKey(k)}}]}}

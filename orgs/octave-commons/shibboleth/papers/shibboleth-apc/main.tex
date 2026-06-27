@@ -1,0 +1,62 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue,
+  pdftitle={Shibboleth: A Generative Multilingual Evaluation Framework for Adversarial Prompt Classifiers}
+}
+
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+\newcommand{\system}{\textsc{Shibboleth}}
+
+\title{\system: A Generative Multilingual Evaluation Framework for Adversarial Prompt Classifiers}
+\author{Octave Commons\\\normalsize Draft initialized from repository specs and research notes}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\input{sections/abstract}
+\end{abstract}
+
+\section{Introduction}
+\input{sections/introduction}
+
+\section{Related Work}
+\input{sections/related-work}
+
+\section{Threat Model}
+\input{sections/threat-model}
+
+\section{Dataset and Pipeline}
+\input{sections/dataset-pipeline}
+
+\section{Evaluation Framework}
+\input{sections/evaluation}
+
+\section{Limitations and Future Work}
+\input{sections/limitations}
+
+\section{Conclusion}
+\input{sections/conclusion}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}

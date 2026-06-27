@@ -1,0 +1,107 @@
+{
+  "generatedAt": "2026-05-29T04:01:25.694Z",
+  "totalTasks": 2,
+  "columns": [
+    {
+      "status": "icebox",
+      "title": "Icebox",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "incoming",
+      "title": "Incoming",
+      "taskCount": 2,
+      "tasks": [
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-clj-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-clj-specs-absorption-opportunities-md",
+          "title": "Absorption Opportunities from the JVM CLJ Package",
+          "slug": "absorption-opportunities-from-the-jvm-clj-package",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:24.753Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-clj/specs/absorption-opportunities.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-clj/kanban/absorption-opportunities.md`\n\n# Absorption Opportunities from the JVM CLJ Package\n\n## Purpose\n\nName what the rest of the Cephalon family should deliberately preserve from the JVM precursor path.\n\n## Preserve these ideas\n\n### 1. Small-form cephalon loop clarity\n`runtime/cephalon.clj` is concise enough that the full loop can be understood in one sitting.\n\nPreserve:\n- event subscription\n- related/persistent/recent context assembly\n- one explicit model call\n- one emitted thought event\n\n### 2. Sentinel note contract\n`runtime/sentinel.clj` is a strong reusable pattern.\n\nPreserve:\n- markdown ingestion\n- JSON metadata request\n- minimal validation and retry\n- frontmatter write-back\n\nThis idea may belong as a cross-family capability rather than only inside the JVM branch.\n\n### 3. EDN-centered configuration clarity\nThe JVM branch keeps configuration explicit and small.\n\nPreserve:\n- simple declarative config\n- fewer hidden env assumptions where practical\n\n## Do not preserve these limits by accident\n\n- single-session assumptions\n- implicit output routing\n- lack of richer tool/event surfaces compared with the TS runtime\n- anything that would erase the CLJS branch’s stronger always-running world model\n\n## Recommended use\n\nWhen the larger family becomes too ambient or complicated, use this package as a reference sketch for the irreducible Cephalon loop.",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-clj/kanban/absorption-opportunities.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-clj-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-clj-specs-precursor-runtime-md",
+          "title": "Cephalon JVM Precursor Runtime",
+          "slug": "cephalon-jvm-precursor-runtime",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:24.752Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-clj/specs/precursor-runtime.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-clj/kanban/precursor-runtime.md`\n\n# Cephalon JVM Precursor Runtime\n\n## Claim\n\n`packages/cephalon-clj` preserves a smaller, more inspectable precursor of the Cephalon loop.\n\n## Runtime shape\n\n```text\nconfig.edn\n   ↓\nevent bus\n   ↓\ncephalon instance + session\n   ↓\nrecent events + related memory + persistent memory\n   ↓\nLLM call\n   ↓\n:cephalon/thought event\n```\n\n## Load-bearing pieces\n\n### Event bus\nThe bus is the package’s central movement surface.\nIt decouples event subscription from the cephalon loop.\n\n### Session state\nThe session keeps a bounded recent buffer and acts as the immediate conversational window.\n\n### Eidolon retrieval\nRelated memories are pulled in before the current loop step, giving the package a minimal semantic-memory layer.\n\n### Sentinel note contract\nA filesystem watcher turns changed markdown notes into model-mediated frontmatter updates.\nThis keeps the “note-governing organism” idea executable in a small form.\n\n## Why it matters to the larger family\n\nThis package shows that a Cephalon does not require the full service stack to remain recognizable.\nIt needs only:\n- subscriptions\n- bounded recent state\n- related-memory retrieval\n- one LLM step\n- one outward event emission\n\nThat simplicity is useful when the larger TS and CLJS branches become hard to reason about.",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-clj/kanban/precursor-runtime.md"
+        }
+      ]
+    },
+    {
+      "status": "accepted",
+      "title": "Accepted",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "breakdown",
+      "title": "Breakdown",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "blocked",
+      "title": "Blocked",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "ready",
+      "title": "Ready",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "todo",
+      "title": "Todo",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "in_progress",
+      "title": "In Progress",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "review",
+      "title": "Review",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "document",
+      "title": "Document",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "done",
+      "title": "Done",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "rejected",
+      "title": "Rejected",
+      "taskCount": 0,
+      "tasks": []
+    }
+  ]
+}

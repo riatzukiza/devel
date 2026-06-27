@@ -1,0 +1,32 @@
+The evaluation plan is organized around four partitions: benign-but-high-risk-looking inputs, direct adversarial attempts, obfuscation and evasion attacks, and resource-exhaustion or safety-saturation workloads. This partitioning makes the paper's reporting surface much clearer than a flat mixed test set.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+Partition & Primary failure mode & Main metrics \\
+\midrule
+Benign lookalikes & over-blocking & BRR, latency \\
+Direct attacks & under-blocking & APTR, AUROC \\
+Obfuscation & robustness failure & RADR, PR-AUC \\
+Exhaustion & availability loss & TBR, p50/p95, recovery time \\
+\bottomrule
+\end{tabular}
+\caption{Evaluation partitions and their primary reporting targets.}
+\end{table}
+
+The primary metrics are:
+
+\begin{itemize}[leftmargin=1.5em]
+  \item attack pass-through rate for direct compromise risk,
+  \item benign refusal rate for over-blocking,
+  \item robust attack detection rate for transformed attacks, and
+  \item token burn and latency overhead for availability impact.
+\end{itemize}
+
+The repo already frames these as Security--Utility--Efficiency tradeoffs. In paper form, that suggests reporting per-cell results over a matrix of policy layer, target model, language suite, and attack suite, then plotting Pareto fronts rather than forcing all policy configurations into one scalar leaderboard.
+
+The harness design also implies a clean experimental matrix: policy layer, target model, language suite, attack suite, and later session template. This matters because classifier quality alone is not the whole story. A prompt classifier can appear strong while its surrounding policy logic quietly changes prompt structure, adds hidden instructions, or shifts cost and latency to the downstream model \citep{shibbolethdraft2026}.
+
+The missing empirical work is straightforward to name even if it is not complete yet: baseline rule systems, a lightweight learned classifier, policy router variants, multilingual robustness sweeps, and significance testing for the main table claims. Those experiments should be enough to turn the current design into a real benchmark paper rather than a design note.

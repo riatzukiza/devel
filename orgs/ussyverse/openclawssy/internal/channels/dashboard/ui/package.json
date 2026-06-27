@@ -1,0 +1,14 @@
+{
+  "name": "openclawssy-dashboard-ui-e2e",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@playwright/test": "^1.52.0"
+  },
+  "scripts": {
+    "e2e:install:linux": "playwright install-deps chromium && playwright install chromium",
+    "e2e:install": "playwright install chromium",
+    "e2e:test": "playwright test",
+    "e2e:test:headed": "playwright test --headed"
+  }
+}

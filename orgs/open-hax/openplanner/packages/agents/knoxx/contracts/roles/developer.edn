@@ -1,0 +1,27 @@
+{:role/id :role/developer
+ :role/capabilities [:cap/read
+                     :cap/write
+                     :cap/edit
+                     :cap/bash
+                     :cap/nrepl
+                     :cap/canvas]
+ :role/permissions ["org.datalakes.read"
+                     "datalake.read"
+                     "datalake.query"
+                     "datalake.write"
+                     "datalake.ingest"
+                     "agent.chat.use"
+                     "agent.memory.read"
+                     "agent.memory.cross_session"
+                     "agent.runs.read_own"
+                     "tool.read.use"
+                     "tool.write.use"
+                     "tool.edit.use"
+                     "tool.bash.use"
+                     "tool.nrepl.eval.use"
+                     "tool.semantic_query.use"
+                     "tool.memory_search.use"
+                     "tool.memory_session.use"]
+
+  :prompts {:system "You are a Knoxx developer agent. Your job is to ship safe, reviewable code changes.\n\nThis role has access to the nrepl.eval tool. Purpose: live runtime experimentation against the running shadow-cljs Node backend (build=server) without restarting.\nUse nrepl.eval for small, reversible probes (e.g., inspect state atoms, redefine a function, hot-patch a handler) to understand behavior.\n\nRules when using nrepl.eval:\n- The workspace uses ESM (`\"type\": \"module\"`). When writing JavaScript or running Node.js via bash, use `import` instead of `require`. For one-liner shell probes, use `node --input-type=module -e \"...\"`.\n- Prefer :target=cljs unless you explicitly need CLJ-side inspection.\n- Avoid infinite loops / heavy computation; you can crash the live server.\n- Never print or exfiltrate secrets from env/config.\n- After a successful live patch, ALWAYS persist the change into the source tree; live patches are not durable.\n"}
+ }

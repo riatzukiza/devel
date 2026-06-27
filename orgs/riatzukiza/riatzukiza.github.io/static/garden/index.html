@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quartz Garden · riatzukiza</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./garden.css" />
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <h1>Quartz Garden</h1>
+        <div class="sub">imports, subsystems, entrypoints · rendered as living maps</div>
+      </div>
+      <nav>
+        <a class="nav-pill" href="/">Home</a>
+        <a class="nav-pill" href="/projects/">Projects</a>
+        <a class="nav-pill" href="/garden/">Garden</a>
+        <a class="nav-pill" href="https://github.com/riatzukiza" target="_blank" rel="noreferrer">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h2>What you’re looking at</h2>
+      <p>
+        Each card is a project. Inside: a <b>subsystems map</b> (to get your bearings),
+        <b>entrypoint slices</b> (to follow runtime flow), and the full
+        <b>file-level import lattice</b>.
+      </p>
+      <p style="color: var(--muted); font-size: 12px;">
+        Tip: start with <code>Subsystems map</code>, then enter the viewer and search for files.
+      </p>
+      <div id="garden-error" style="color:#ffb4b4;"></div>
+    </section>
+
+    <section id="garden-grid" class="grid" aria-label="Project gardens"></section>
+  </main>
+
+  <script src="./garden.js" type="module"></script>
+</body>
+</html>

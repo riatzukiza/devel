@@ -1,0 +1,23 @@
+{
+  "name": "@open-hax/opencode-reactant",
+  "version": "0.1.1",
+  "private": true,
+  "license": "GPL-3.0-only",
+  "scripts": {
+    "dev": "REPO_SLUG=${REPO_SLUG:-sst/opencode} shadow-cljs watch app",
+    "build": "shadow-cljs release app",
+    "clean": "shadow-cljs clean",
+    "test": "shadow-cljs compile test"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "scheduler": "^0.27.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "shadow-cljs": "^2.28.17",
+    "xmlhttprequest": "^1.8.0"
+  }
+}

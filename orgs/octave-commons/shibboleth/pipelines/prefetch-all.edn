@@ -1,0 +1,45 @@
+;; Prefetch-only pipeline config.
+;; Intended usage:
+;;   promptbench fetch --config pipelines/prefetch-all.edn
+;;
+;; Notes:
+;; - Some sources are HF gated=auto and require HF_TOKEN after accepting terms.
+;; - BeaverTails 330k splits are VERY large.
+
+{:name    :prefetch-all
+ :version "0.1.0"
+ :seed    1337
+
+ :sources [:aya-redteaming
+           :harmbench
+           :advbench
+           :toxicchat
+
+           :all-prompt-jailbreak-800k
+           :all-prompt-jailbreak-chatgpt-jailbreak-prompts
+
+           :wildjailbreak-train
+           :wildjailbreak-eval
+
+           :xsafety
+
+           :hh-rlhf-red-team-attempts
+
+           :beavertails-30k-train
+           :beavertails-30k-test
+
+           ;; LARGE (xz): include only if you want the full BeaverTails 330k dump.
+           :beavertails-330k-train
+           :beavertails-330k-test
+
+           :forbiddenquestions
+
+           :malicious-instruct
+           :xstest
+           :or-bench-hard-1k
+           :socialharmbench
+
+           :qualifire-prompt-injection-benchmark
+           :sorrybench-202406]
+
+ :data-dir "data"}

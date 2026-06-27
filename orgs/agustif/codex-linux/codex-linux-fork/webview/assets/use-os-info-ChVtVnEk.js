@@ -1,0 +1,2 @@
+import{t as e}from"./compiler-runtime-CkFESl8x.js";import{C as t}from"./links-f_CHLUQK.js";var n=e();function r(){let e=(0,n.c)(3),r=t(`os-info`),i;return e[0]!==r.data||e[1]!==r.isLoading?(i={data:r.data,isLoading:r.isLoading},e[0]=r.data,e[1]=r.isLoading,e[2]=i):i=e[2],i}export{r as t};
+//# sourceMappingURL=use-os-info-ChVtVnEk.js.map

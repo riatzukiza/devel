@@ -1,0 +1,318 @@
+openapi: 3.1.0
+info:
+  title: vexx API
+  version: 1.0.0
+  summary: Local semantic fast lane for cosine matrix and top-k scoring.
+  description: |
+    `vexx` exposes accelerated cosine similarity primitives with explicit device
+    routing, explicit degraded fallback reporting, and optional bearer auth.
+servers:
+  - url: http://127.0.0.1:8788
+    description: Default local vexx endpoint
+security:
+  - BearerAuth: []
+  - {}
+tags:
+  - name: health
+  - name: cosine
+paths:
+  /v1/health:
+    get:
+      operationId: getHealth
+      tags: [health]
+      summary: Get vexx runtime health and default routing config
+      responses:
+        '200':
+          description: Health payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+  /v1/cosine/matrix:
+    post:
+      operationId: postCosineMatrix
+      tags: [cosine]
+      summary: Compute a cosine similarity matrix between two embedding batches
+      security:
+        - BearerAuth: []
+        - {}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CosineMatrixRequest'
+      responses:
+        '200':
+          description: Cosine matrix computed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CosineMatrixResponse'
+        '400':
+          description: Invalid matrix payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '503':
+          description: Requested device/provider unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+  /v1/cosine/topk:
+    post:
+      operationId: postCosineTopK
+      tags: [cosine]
+      summary: Score one query embedding against candidate embeddings and return top-k matches
+      security:
+        - BearerAuth: []
+        - {}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CosineTopKRequest'
+      responses:
+        '200':
+          description: Top-k cosine matches computed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CosineTopKResponse'
+        '400':
+          description: Invalid top-k payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '503':
+          description: Requested device/provider unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API key
+  schemas:
+    Device:
+      type: string
+      enum: [AUTO, CPU, GPU, NPU]
+    Attempt:
+      type: object
+      additionalProperties: false
+      required: [device, ok, error]
+      properties:
+        device:
+          $ref: '#/components/schemas/Device'
+        ok:
+          type: boolean
+        error:
+          type: string
+    ErrorEnvelope:
+      type: object
+      additionalProperties: false
+      required: [ok, service, error]
+      properties:
+        ok:
+          type: boolean
+          const: false
+        service:
+          type: string
+          const: vexx
+        error:
+          type: string
+        details:
+          oneOf:
+            - type: object
+              additionalProperties: true
+            - type: 'null'
+    HealthResponse:
+      type: object
+      additionalProperties: false
+      required: [ok, service, defaultDevice, autoOrder, requireAccel, modelPath]
+      properties:
+        ok:
+          type: boolean
+          const: true
+        service:
+          type: string
+          const: vexx
+        defaultDevice:
+          $ref: '#/components/schemas/Device'
+        autoOrder:
+          type: array
+          items:
+            $ref: '#/components/schemas/Device'
+        requireAccel:
+          type: boolean
+        modelPath:
+          type: string
+    CosineMatrixRequest:
+      type: object
+      additionalProperties: false
+      required: [left, right]
+      properties:
+        left:
+          $ref: '#/components/schemas/EmbeddingMatrix'
+        right:
+          $ref: '#/components/schemas/EmbeddingMatrix'
+        device:
+          $ref: '#/components/schemas/Device'
+        requireAccel:
+          type: boolean
+    CosineMatrixResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - ok
+        - service
+        - model-path
+        - requestedDevice
+        - attempts
+        - rows
+        - cols
+        - matrix
+        - degraded
+        - device
+        - provider
+      properties:
+        ok:
+          type: boolean
+          const: true
+        service:
+          type: string
+          const: vexx
+        model-path:
+          type: string
+        requestedDevice:
+          $ref: '#/components/schemas/Device'
+        attempts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attempt'
+        rows:
+          type: integer
+          minimum: 1
+        cols:
+          type: integer
+          minimum: 1
+        matrix:
+          type: array
+          items:
+            type: number
+        degraded:
+          type: boolean
+        device:
+          $ref: '#/components/schemas/Device'
+        provider:
+          type: string
+    CosineTopKCandidate:
+      type: object
+      additionalProperties: false
+      required: [id, embedding]
+      properties:
+        id:
+          type: string
+        embedding:
+          $ref: '#/components/schemas/EmbeddingVector'
+    CosineTopKRequest:
+      type: object
+      additionalProperties: false
+      required: [query, candidates, k]
+      properties:
+        query:
+          $ref: '#/components/schemas/EmbeddingVector'
+        candidates:
+          type: array
+          items:
+            $ref: '#/components/schemas/CosineTopKCandidate'
+        k:
+          type: integer
+          minimum: 1
+        device:
+          $ref: '#/components/schemas/Device'
+        requireAccel:
+          type: boolean
+    CosineTopKMatch:
+      type: object
+      additionalProperties: false
+      required: [id, rank, score]
+      properties:
+        id:
+          type: string
+        rank:
+          type: integer
+          minimum: 0
+        score:
+          type: number
+    CosineTopKResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - ok
+        - service
+        - model-path
+        - requestedDevice
+        - attempts
+        - matches
+        - degraded
+        - device
+        - provider
+        - inputCount
+      properties:
+        ok:
+          type: boolean
+          const: true
+        service:
+          type: string
+          const: vexx
+        model-path:
+          type: string
+        requestedDevice:
+          $ref: '#/components/schemas/Device'
+        attempts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attempt'
+        matches:
+          type: array
+          items:
+            $ref: '#/components/schemas/CosineTopKMatch'
+        degraded:
+          type: boolean
+        device:
+          $ref: '#/components/schemas/Device'
+        provider:
+          type: string
+        inputCount:
+          type: integer
+          minimum: 0
+    EmbeddingVector:
+      type: array
+      minItems: 1
+      items:
+        type: number
+    EmbeddingMatrix:
+      type: array
+      minItems: 1
+      items:
+        $ref: '#/components/schemas/EmbeddingVector'

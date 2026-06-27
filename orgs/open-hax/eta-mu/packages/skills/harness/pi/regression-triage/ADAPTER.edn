@@ -1,0 +1,16 @@
+;; Harness adapter: pi
+;; Core skill: ημ.skill/regression-triage@0.2.0
+;; Install path: ~/.pi/agent/skills/regression-triage/CONTRACT.edn
+
+(harness-adapter
+  (harness :pi)
+  (skill "regression-triage")
+  (core-ref "packages/skills/core/regression-triage/CONTRACT.edn")
+  (install-path "~/.pi/agent/skills/regression-triage/CONTRACT.edn")
+  (overrides
+    ;; git bisect is available on pi; no restrictions needed
+    (effects (writes true) (commits true)))
+  (notes
+    "Pi install has full git access. No capability restrictions needed.
+     receipt-river driver is :fs on pi (~/receipts/ or $ETA_MU_RECEIPT_DIR).
+     Install = symlink or copy core CONTRACT.edn to install-path."))

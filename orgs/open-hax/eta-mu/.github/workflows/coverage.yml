@@ -1,0 +1,203 @@
+name: coverage
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  # ── TypeScript / Node packages ──────────────────────────────────────────
+  ts-packages:
+    name: TS package tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: '10.14.0'
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Get pnpm store path
+        id: pnpm-cache
+        run: echo "store=$(pnpm store path)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.store }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
+
+      - name: Install deps
+        run: pnpm install --no-frozen-lockfile
+
+      - name: eta-mu-runtime
+        run: pnpm --dir packages/eta-mu-runtime test
+
+      - name: eta-mu-runtime CLJS coverage >= 90%
+        run: pnpm --dir packages/eta-mu-runtime cljs:coverage
+
+      - name: Post eta-mu-runtime coverage summary
+        if: always()
+        working-directory: packages/eta-mu-runtime
+        run: |
+          {
+            echo '## eta-mu-runtime CLJS Coverage'
+            echo '```'
+            node -e "
+              const fs = require('fs');
+              if (!fs.existsSync('coverage/coverage-summary.json')) {
+                console.log('coverage summary missing');
+                process.exit(0);
+              }
+              const s = JSON.parse(fs.readFileSync('coverage/coverage-summary.json','utf8')).total;
+              const fmt = (x) => (x.pct + '%').padStart(7);
+              const row = (label, metric) => console.log(label + fmt(metric) + '  (' + metric.covered + '/' + metric.total + ')');
+              row('Statements : ', s.statements);
+              row('Branches   : ', s.branches);
+              row('Functions  : ', s.functions);
+              row('Lines      : ', s.lines);
+            "
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload eta-mu-runtime coverage report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: eta-mu-runtime-cljs-coverage
+          path: packages/eta-mu-runtime/coverage/
+          if-no-files-found: ignore
+
+      - name: eta-mu-github
+        run: pnpm --dir packages/eta-mu-github test
+
+      - name: eta-mu-docs
+        run: node --test packages/eta-mu-docs/tests/*.test.cjs
+
+      - name: eta-mu-truth
+        run: node --test packages/eta-mu-truth/tests/*.test.cjs
+
+      - name: presence-core
+        run: pnpm --dir packages/presence-core test
+
+      - name: kanban
+        run: pnpm --dir packages/kanban test
+
+      - name: signal-contracts
+        run: node --test packages/signal-contracts/tests/*.test.cjs
+
+      - name: signal-radar-core
+        run: node --test packages/signal-radar-core/tests/*.test.cjs
+
+      - name: signal-source-utils
+        run: node --test packages/signal-source-utils/tests/*.test.cjs
+
+      - name: signal-watchlists
+        run: node --test packages/signal-watchlists/tests/*.test.cjs
+
+  # ── ClojureScript extensions + coverage ─────────────────────────────
+  cljs-extensions:
+    name: CLJS extension tests + coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: '10.14.0'
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Get pnpm store path
+        id: pnpm-cache
+        run: echo "store=$(pnpm store path)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.store }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
+
+      - name: Install deps
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build extensions
+        working-directory: packages/eta-mu-extensions
+        run: pnpm build
+
+      - name: Deploy runtimes to e2e dir
+        working-directory: packages/eta-mu-extensions
+        run: node scripts/deploy-ci.mjs
+
+      - name: Smoke test — pi loads all extensions
+        working-directory: packages/eta-mu-extensions-e2e
+        run: |
+          output=$(pnpm exec pi -p "smoke" 2>&1 || true)
+          echo "$output"
+          if echo "$output" | grep -q "Failed to load extension"; then
+            echo "FAIL: one or more extensions failed to load"
+            echo "$output" | grep "Failed to load extension"
+            exit 1
+          fi
+          echo "OK: all extensions loaded cleanly"
+
+      - name: Compile CLJS unit tests
+        working-directory: packages/eta-mu-extensions
+        run: pnpm exec shadow-cljs compile node-test
+
+      - name: Run tests with coverage
+        working-directory: packages/eta-mu-extensions
+        run: pnpm run test:coverage
+
+      - name: Post coverage summary
+        if: always()
+        working-directory: packages/eta-mu-extensions
+        run: |
+          {
+            echo '## CLJS Extension Coverage'
+            echo '```'
+            node -e "
+              const s = JSON.parse(require('fs').readFileSync('coverage/coverage-summary.json','utf8')).total;
+              const fmt = (x) => (x.pct + '%').padStart(7);
+              const row = (label, metric) => console.log(label + fmt(metric) + '  (' + metric.covered + '/' + metric.total + ')');
+              row('Statements : ', s.statements);
+              row('Branches   : ', s.branches);
+              row('Functions  : ', s.functions);
+              row('Lines      : ', s.lines);
+            "
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cljs-coverage
+          path: packages/eta-mu-extensions/coverage/
+          if-no-files-found: ignore
+
+      - name: Upload shadow-cljs logs
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: shadow-cljs-logs
+          path: packages/eta-mu-extensions/.shadow-cljs/
+          if-no-files-found: ignore

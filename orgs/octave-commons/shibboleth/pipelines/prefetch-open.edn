@@ -1,0 +1,33 @@
+;; Prefetch sources that are NOT gated=auto on Hugging Face.
+;; Usage:
+;;   promptbench fetch --config pipelines/prefetch-open.edn
+
+{:name    :prefetch-open
+ :version "0.1.0"
+ :seed    1337
+
+ :sources [:aya-redteaming
+           :harmbench
+           :advbench
+           :toxicchat
+
+           :all-prompt-jailbreak-800k
+           :all-prompt-jailbreak-chatgpt-jailbreak-prompts
+
+           :xsafety
+
+           :hh-rlhf-red-team-attempts
+
+           :beavertails-30k-train
+           :beavertails-30k-test
+           :beavertails-330k-train
+           :beavertails-330k-test
+
+           :forbiddenquestions
+
+           :malicious-instruct
+           :xstest
+           :or-bench-hard-1k
+           :socialharmbench]
+
+ :data-dir "data"}

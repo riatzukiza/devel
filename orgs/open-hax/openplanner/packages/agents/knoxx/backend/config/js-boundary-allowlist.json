@@ -1,0 +1,4 @@
+{
+  "description": "Temporary allow-list for existing non-extern imports of knoxx.backend.extern.js/json. New files should not be added casually; migrate through the referenced child spec instead.",
+  "allowedGenericExternImports": []
+}

@@ -1,0 +1,147 @@
+;; WhichKeyPopup Component Contract
+;; Emacs-style keybinding discovery popup
+
+{:component :which-key-popup
+ :version "1.0.0"
+ 
+ :description
+ "A popup that displays available keybindings when a prefix key is pressed, following Emacs which-key conventions."
+ 
+ :props
+ {:active
+  {:type :boolean
+   :default false
+   :description "Whether the popup is currently visible"}
+  
+  :prefix
+  {:type :array
+   :items :string
+   :default []
+   :description "The key sequence prefix that triggered the popup"}
+  
+  :bindings
+  {:type :array
+   :items :binding-entry
+   :required true
+   :description "List of available bindings"}
+  
+  :position
+  {:type :enum
+   :values [:bottom :top :auto]
+   :default :bottom
+   :description "Where to position the popup relative to viewport"}
+  
+  :max-columns
+  {:type :number
+   :default 3
+   :description "Maximum number of columns to display"}
+  
+  :sort-key
+  {:type :enum
+   :values [:key :description :none]
+   :default :key
+   :description "How to sort the bindings"}
+  
+  :show-category
+  {:type :boolean
+   :default true
+   :description "Whether to show category headers"}
+  
+  :timeout-ms
+  {:type :number
+   :default 0
+   :description "Auto-dismiss timeout (0 = disabled)"}
+  
+  :on-select
+  {:type :function
+   :signature "(binding: BindingEntry) => void"
+   :required false
+   :description "Callback when a binding is selected"}}
+ 
+ :types
+ {:binding-entry
+  {:key :string
+   :description :string
+   :category {:type :string :required false}
+   :command {:type :string :required false}
+   :destructive {:type :boolean :default false}}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :accessibility
+ {:role :dialog
+  :aria
+  {:label "Keybinding popup"
+   :modal false}
+  :keyboard
+  {:dismiss :escape
+   :navigate [:arrow-up :arrow-down]
+   :select :enter}}}
+ 
+ :behavior
+ {:display
+  {:fade-in true
+   :fade-in-duration-ms 100
+   :fade-out-duration-ms 100
+   :max-height "60vh"
+   :overflow-y "auto"}
+  
+  :grouping
+  {:group-by-category true
+   :sort-within-groups true}}
+ 
+ :styling
+ {:css-custom-properties
+  ["--which-key-bg"
+   "--which-key-border"
+   "--which-key-fg"
+   "--which-key-dim"
+   "--which-key-accent"
+   "--which-key-danger"]
+  
+  :data-attributes
+  {:data-component "which-key-popup"
+   :data-active :active
+   :data-position :position}}
+ 
+ :tokens
+ {:colors
+  {:bg :colors.background/elevated
+   :border :colors.border/default
+   :fg :colors.text/primary
+   :dim :colors.text/secondary
+   :accent :colors.accent/cyan
+   :danger :colors.accent/pink}
+  
+  :spacing
+  {:padding :spacing/3
+   :binding-gap :spacing/2}
+  
+  :typography
+  {:key :typography/code
+   :description :typography/bodySm}
+  
+  :motion
+  {:fade-duration :duration/fast}}
+ 
+ :examples
+ {:cljs
+  [which-key-popup
+   {:active @show-popup
+    :prefix ["SPC" "f"]
+    :bindings [{:key "f" :description "Find file" :category "File"}
+               {:key "s" :description "Save file" :category "File"}
+               {:key "d" :description "Delete file" :category "File" :destructive true}]
+    :position :bottom}]
+  
+  :tsx
+  [:WhichKeyPopup
+   {:active={showPopup}
+    :prefix={["SPC", "f"]}
+    :bindings={[
+      {:key: "f", :description: "Find file", :category: "File"},
+      {:key: "s", :description: "Save file", :category: "File"},
+      {:key: "d", :description: "Delete file", :category: "File", :destructive: true}
+    ]}
+    :position="bottom"]}}

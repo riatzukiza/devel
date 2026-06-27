@@ -1,0 +1,559 @@
+import type { Dispatch, MutableRefObject, SetStateAction } from "react";
+import { getAgentHistorySession, getMemorySession, listMemorySessions, searchMemory } from "../../lib/api";
+import type { ChatMessage, MemorySearchHit, MemorySessionSummary, RunDetail, RunEvent } from "../../lib/types";
+import { findPersistedChatSessionByConversation, listPersistedChatSessions, readPersistedChatSessionSnapshot, type ChatSessionSnapshot } from "./hooks";
+import type {
+  BrowseResponse,
+  IngestionSource,
+  PreviewResponse,
+  SemanticSearchMatch,
+  SemanticSearchResponse,
+  WorkspaceJob,
+} from "./types";
+import { isWorkspaceSource, memoryRowRunId, memoryRowsToMessages, selectWorkspaceJob } from "./utils";
+
+type SetState<T> = Dispatch<SetStateAction<T>>;
+
+const RECENT_SESSION_PAGE_SIZE = 20;
+const DEFAULT_EXCLUDED_SESSION_ACTOR = "eta-mu";
+
+function mergeSessionPages(primary: MemorySessionSummary[], secondary: MemorySessionSummary[]): MemorySessionSummary[] {
+  const statusScore = (item: MemorySessionSummary): number => {
+    if (item.has_active_stream) return 50;
+    const status = typeof item.active_status === "string" ? item.active_status : "";
+    if (status === "running") return 40;
+    if (status === "queued") return 35;
+    if (status === "waiting_input") return 30;
+    if (status === "failed") return 20;
+    if (status === "completed") return 10;
+    if (item.is_active) return 5;
+    return 0;
+  };
+
+  const parseTs = (value?: string | null): number => {
+    if (!value) return 0;
+    const parsed = Date.parse(value);
+    return Number.isFinite(parsed) ? parsed : 0;
+  };
+
+  const mergeEntry = (left: MemorySessionSummary, right: MemorySessionSummary): MemorySessionSummary => {
+    const leftScore = statusScore(left);
+    const rightScore = statusScore(right);
+    const live = leftScore >= rightScore ? left : right;
+    const lastTs = parseTs(left.last_ts ?? null) >= parseTs(right.last_ts ?? null) ? left.last_ts : right.last_ts;
+
+    return {
+      session: left.session,
+      title: left.title || right.title,
+      title_model: left.title_model ?? right.title_model ?? null,
+      last_ts: lastTs,
+      event_count: Math.max(left.event_count ?? 0, right.event_count ?? 0),
+
+      // Liveness should always prefer the most-active view (local snapshot or Redis-enriched remote row).
+      is_active: Boolean(live.is_active),
+      active_status: live.active_status ?? left.active_status ?? right.active_status,
+      has_active_stream: Boolean(live.has_active_stream),
+
+      // Prefer the active session id from whichever side is live; otherwise keep any known id.
+      active_session_id: live.active_session_id ?? left.active_session_id ?? right.active_session_id ?? null,
+
+      // Only truly local-only if both sides are local-only.
+      local_only: Boolean(left.local_only) && Boolean(right.local_only),
+    };
+  };
+
+  const byId = new Map<string, MemorySessionSummary>();
+  for (const item of primary) {
+    byId.set(item.session, item);
+  }
+  for (const item of secondary) {
+    const existing = byId.get(item.session);
+    byId.set(item.session, existing ? mergeEntry(existing, item) : item);
+  }
+  return [...byId.values()];
+}
+
+function sortSessions(items: MemorySessionSummary[]): MemorySessionSummary[] {
+  return [...items].sort((left, right) => {
+    const leftTime = Date.parse(left.last_ts ?? "") || 0;
+    const rightTime = Date.parse(right.last_ts ?? "") || 0;
+    if (rightTime !== leftTime) {
+      return rightTime - leftTime;
+    }
+    if (left.is_active !== right.is_active) {
+      return left.is_active ? -1 : 1;
+    }
+    return (left.title ?? left.session).localeCompare(right.title ?? right.session);
+  });
+}
+
+export function preferredSessionModelForResume(
+  snapshot: ChatSessionSnapshot | null,
+  transcript: ChatMessage[],
+): string {
+  const persisted = typeof snapshot?.selectedModel === "string" ? snapshot.selectedModel.trim() : "";
+  if (persisted) {
+    return persisted;
+  }
+
+  const transcriptModel = [...transcript]
+    .reverse()
+    .find((message) => message.role === "assistant" && typeof message.model === "string" && message.model.trim().length > 0)
+    ?.model;
+
+  return typeof transcriptModel === "string" ? transcriptModel.trim() : "";
+}
+
+export function persistedSessionVisibleForActor(
+  sessionStateKey: string,
+  summary: MemorySessionSummary,
+  activeActorId: string,
+  visibleAgentIds: ReadonlySet<string>,
+): boolean {
+  return persistedSessionVisibleForFilter(sessionStateKey, summary, activeActorId, false, visibleAgentIds);
+}
+
+function normalizedSessionActorFilter(actorId: string): string | null {
+  const trimmed = actorId.trim();
+  return trimmed.length > 0 && trimmed !== "all" ? trimmed : null;
+}
+
+function excludedSessionActorIds(actorFilter: string, excludeEtaMuSessions: boolean): string[] {
+  if (!excludeEtaMuSessions) return [];
+  return normalizedSessionActorFilter(actorFilter) === DEFAULT_EXCLUDED_SESSION_ACTOR
+    ? []
+    : [DEFAULT_EXCLUDED_SESSION_ACTOR];
+}
+
+export function persistedSessionVisibleForFilter(
+  sessionStateKey: string,
+  summary: MemorySessionSummary,
+  actorFilter: string,
+  excludeEtaMuSessions: boolean,
+  visibleAgentIds: ReadonlySet<string>,
+): boolean {
+  const snapshot = summary.active_session_id
+    ? readPersistedChatSessionSnapshot(sessionStateKey, summary.active_session_id)
+    : null;
+  const normalizedActiveActorId = normalizedSessionActorFilter(actorFilter);
+
+  // Remote sessions carry actor_id directly from the API; local-only drafts fall back to snapshot.
+  const sessionActorId = summary.actor_id
+    ?? (typeof snapshot?.activeActorId === "string" && snapshot.activeActorId.trim().length > 0
+      ? snapshot.activeActorId.trim()
+      : "chat_primary");
+
+  if (excludeEtaMuSessions && normalizedActiveActorId !== DEFAULT_EXCLUDED_SESSION_ACTOR && sessionActorId === DEFAULT_EXCLUDED_SESSION_ACTOR) {
+    return false;
+  }
+
+  if (!normalizedActiveActorId) {
+    return true;
+  }
+
+  const sessionAgentId = typeof snapshot?.activeAgentId === "string" ? snapshot.activeAgentId.trim() : "";
+  if (sessionAgentId && visibleAgentIds.size > 0) {
+    return visibleAgentIds.has(sessionAgentId);
+  }
+  return sessionActorId === normalizedActiveActorId;
+}
+
+type ChatWorkspaceActionParams = {
+  visibleAgentIds: ReadonlySet<string>;
+  currentPath: string;
+  showFiles: boolean;
+  browseData: BrowseResponse | null;
+  semanticQuery: string;
+  sessionActorFilter: string;
+  excludeEtaMuSessions: boolean;
+  setBrowseData: SetState<BrowseResponse | null>;
+  setPreviewData: SetState<PreviewResponse | null>;
+  setLoadingBrowse: SetState<boolean>;
+  setLoadingPreview: SetState<boolean>;
+  setSemanticResults: SetState<SemanticSearchMatch[]>;
+  setSemanticProjects: SetState<string[]>;
+  setSemanticSearching: SetState<boolean>;
+  setSessionSearchHits: SetState<MemorySearchHit[]>;
+  setSessionSearchMode: SetState<string>;
+  setSyncingWorkspace: SetState<boolean>;
+  setWorkspaceSourceId: SetState<string | null>;
+  setWorkspaceJob: SetState<WorkspaceJob | null>;
+  recentSessionsRef: MutableRefObject<MemorySessionSummary[]>;
+  remoteRecentSessionsRef: MutableRefObject<MemorySessionSummary[]>;
+  setRecentSessions: SetState<MemorySessionSummary[]>;
+  setRecentSessionsHasMore: SetState<boolean>;
+  setRecentSessionsTotal: SetState<number>;
+  setLoadingRecentSessions: SetState<boolean>;
+  setLoadingMoreRecentSessions: SetState<boolean>;
+  setLoadingMemorySessionId: SetState<string | null>;
+  setMessages: SetState<ChatMessage[]>;
+  setSelectedModel: SetState<string>;
+  setSessionId: SetState<string>;
+  setConversationId: SetState<string | null>;
+  setLatestRun: SetState<RunDetail | null>;
+  setRuntimeEvents: SetState<RunEvent[]>;
+  setLiveControlText: SetState<string>;
+  setIsSending: SetState<boolean>;
+  setConsoleLines: SetState<string[]>;
+  pendingAssistantIdRef: MutableRefObject<string | null>;
+  activeRunIdRef: MutableRefObject<string | null>;
+  makeId: () => string;
+  sessionStateKey: string;
+  fetchPreviewData: (path: string) => Promise<PreviewResponse>;
+  loadRunDetail: (runId: string) => void | Promise<void>;
+  defaultSyncIntervalMinutes: number;
+  defaultFileTypes: string[];
+  defaultExcludePatterns: string[];
+};
+
+export function createChatWorkspaceActions({
+  visibleAgentIds,
+  currentPath,
+  showFiles,
+  browseData,
+  semanticQuery,
+  sessionActorFilter,
+  excludeEtaMuSessions,
+  setBrowseData,
+  setPreviewData,
+  setLoadingBrowse,
+  setLoadingPreview,
+  setSemanticResults,
+  setSemanticProjects,
+  setSemanticSearching,
+  setSessionSearchHits,
+  setSessionSearchMode,
+  setSyncingWorkspace,
+  setWorkspaceSourceId,
+  setWorkspaceJob,
+  recentSessionsRef,
+  remoteRecentSessionsRef,
+  setRecentSessions,
+  setRecentSessionsHasMore,
+  setRecentSessionsTotal,
+  setLoadingRecentSessions,
+  setLoadingMoreRecentSessions,
+  setLoadingMemorySessionId,
+  setMessages,
+  setSelectedModel,
+  setSessionId,
+  setConversationId,
+  setLatestRun,
+  setRuntimeEvents,
+  setLiveControlText,
+  setIsSending,
+  setConsoleLines,
+  pendingAssistantIdRef,
+  activeRunIdRef,
+  makeId,
+  sessionStateKey,
+  fetchPreviewData,
+  loadRunDetail,
+  defaultSyncIntervalMinutes,
+  defaultFileTypes,
+  defaultExcludePatterns,
+}: ChatWorkspaceActionParams) {
+  const appendConsoleLine = (line: string) => {
+    setConsoleLines((prev) => [...prev.slice(-400), line]);
+  };
+
+  const loadDirectory = async (path = "") => {
+    setLoadingBrowse(true);
+    try {
+      const params = new URLSearchParams();
+      if (path) params.set("path", path);
+      const response = await fetch(`/api/ingestion/browse?${params.toString()}`);
+      if (!response.ok) throw new Error(`Browse failed: ${response.status}`);
+      const data = (await response.json()) as BrowseResponse;
+      setBrowseData(data);
+      setPreviewData(null);
+    } catch (error) {
+      appendConsoleLine(`[browse] failed: ${(error as Error).message}`);
+    } finally {
+      setLoadingBrowse(false);
+    }
+  };
+
+  const refreshWorkspaceStatus = async () => {
+    try {
+      const sourcesResponse = await fetch("/api/ingestion/sources");
+      if (!sourcesResponse.ok) return;
+      const sources = (await sourcesResponse.json()) as IngestionSource[];
+      const source = sources.find(isWorkspaceSource) ?? null;
+      setWorkspaceSourceId(source?.source_id ?? null);
+      if (!source) {
+        setWorkspaceJob(null);
+        return;
+      }
+
+      const jobsResponse = await fetch(`/api/ingestion/jobs?source_id=${encodeURIComponent(source.source_id)}&limit=10`);
+      if (!jobsResponse.ok) return;
+      const jobs = (await jobsResponse.json()) as WorkspaceJob[];
+      setWorkspaceJob(selectWorkspaceJob(jobs));
+      if (showFiles && browseData) {
+        void loadDirectory(currentPath);
+      }
+    } catch (error) {
+      appendConsoleLine(`[ingestion] status failed: ${(error as Error).message}`);
+    }
+  };
+
+  const runSemanticSearch = async (query: string, path = currentPath) => {
+    const trimmed = query.trim();
+    if (!trimmed) {
+      setSemanticResults([]);
+      setSemanticProjects([]);
+      setSessionSearchHits([]);
+      setSessionSearchMode("none");
+      return;
+    }
+
+    setSemanticSearching(true);
+    const actorId = normalizedSessionActorFilter(sessionActorFilter) ?? undefined;
+    const excludeActorIds = excludedSessionActorIds(sessionActorFilter, excludeEtaMuSessions);
+    try {
+      const [fileResult, sessionResult] = await Promise.all([
+        (async () => {
+          const response = await fetch("/api/ingestion/search", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ q: trimmed, role: "workspace", path, limit: 30 }),
+          });
+          if (!response.ok) throw new Error(`Semantic search failed: ${response.status}`);
+          return (await response.json()) as SemanticSearchResponse;
+        })(),
+        searchMemory({
+          query: trimmed,
+          k: 8,
+          actorId,
+          excludeActorIds,
+        }),
+      ]);
+      setSemanticResults(fileResult.rows);
+      setSemanticProjects(fileResult.projects);
+      setSessionSearchHits(sessionResult.hits);
+      setSessionSearchMode(sessionResult.mode);
+    } catch (error) {
+      appendConsoleLine(`[semantic] failed: ${(error as Error).message}`);
+    } finally {
+      setSemanticSearching(false);
+    }
+  };
+
+  const previewFile = async (path: string) => {
+    setLoadingPreview(true);
+    try {
+      const data = await fetchPreviewData(path);
+      setPreviewData(data);
+    } catch (error) {
+      appendConsoleLine(`[preview] failed: ${(error as Error).message}`);
+    } finally {
+      setLoadingPreview(false);
+    }
+  };
+
+  const ensureWorkspaceSync = async () => {
+    setSyncingWorkspace(true);
+    try {
+      // Ensure we have a workspace_root (absolute path) from the ingestion service.
+      // This must be used as the local driver root_path when running on the host.
+      let effectiveBrowse = browseData;
+      if (!effectiveBrowse) {
+        const resp = await fetch("/api/ingestion/browse");
+        if (resp.ok) {
+          effectiveBrowse = (await resp.json()) as BrowseResponse;
+          setBrowseData(effectiveBrowse);
+        }
+      }
+      const workspaceRoot = effectiveBrowse?.workspace_root;
+
+      const sourcesResponse = await fetch("/api/ingestion/sources");
+      if (!sourcesResponse.ok) throw new Error(`Failed to list sources: ${sourcesResponse.status}`);
+      const sources = (await sourcesResponse.json()) as IngestionSource[];
+      let source = sources.find(isWorkspaceSource);
+
+      if (!source) {
+        const createResponse = await fetch("/api/ingestion/sources", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            driver_type: "local",
+            name: "workspace",
+            config: {
+              root_path: workspaceRoot || "/app/workspace",
+              sync_interval_minutes: defaultSyncIntervalMinutes,
+              workspace_source: true,
+            },
+            collections: ["devel"],
+            file_types: defaultFileTypes,
+            exclude_patterns: defaultExcludePatterns,
+          }),
+        });
+        if (!createResponse.ok) throw new Error(`Failed to create source: ${createResponse.status}`);
+        const createdSource = (await createResponse.json()) as IngestionSource;
+        source = createdSource;
+        appendConsoleLine(`[ingestion] created workspace source ${createdSource.source_id} (root ${workspaceRoot || "unknown"})`);
+      }
+
+      if (!source) throw new Error("Failed to resolve workspace source");
+      setWorkspaceSourceId(source.source_id);
+
+      const jobResponse = await fetch("/api/ingestion/jobs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ source_id: source.source_id }),
+      });
+      if (!jobResponse.ok) throw new Error(`Failed to start sync: ${jobResponse.status}`);
+      const job = (await jobResponse.json()) as { job_id: string };
+      appendConsoleLine(`[ingestion] queued workspace sync job ${job.job_id} (interval ${defaultSyncIntervalMinutes}m)`);
+      void refreshWorkspaceStatus();
+    } catch (error) {
+      appendConsoleLine(`[ingestion] sync failed: ${(error as Error).message}`);
+    } finally {
+      setSyncingWorkspace(false);
+    }
+  };
+
+  const refreshRecentSessions = async () => {
+    setLoadingRecentSessions(true);
+    try {
+      const page = await listMemorySessions({
+        limit: RECENT_SESSION_PAGE_SIZE,
+        offset: 0,
+        actorId: normalizedSessionActorFilter(sessionActorFilter) ?? undefined,
+        excludeActorIds: excludedSessionActorIds(sessionActorFilter, excludeEtaMuSessions),
+      });
+      const preservedTail = remoteRecentSessionsRef.current.filter((item) => !page.rows.some((row) => row.session === item.session));
+      const remoteMerged = mergeSessionPages(page.rows, preservedTail);
+      remoteRecentSessionsRef.current = remoteMerged;
+      const localVisible = listPersistedChatSessions(sessionStateKey)
+        .filter((item) => persistedSessionVisibleForFilter(sessionStateKey, item, sessionActorFilter, excludeEtaMuSessions, visibleAgentIds));
+      const merged = sortSessions(mergeSessionPages(remoteMerged, localVisible));
+      recentSessionsRef.current = merged;
+      setRecentSessions(merged);
+      const remoteTotal = typeof page.total === "number" ? page.total : remoteMerged.length;
+      setRecentSessionsTotal(Math.max(remoteTotal, merged.length));
+      setRecentSessionsHasMore(
+        typeof page.total === "number"
+          ? remoteMerged.length < page.total
+          : Boolean(page.has_more ?? page.rows.length >= RECENT_SESSION_PAGE_SIZE),
+      );
+    } catch (error) {
+      appendConsoleLine(`[memory] failed to load recent sessions: ${(error as Error).message}`);
+    } finally {
+      setLoadingRecentSessions(false);
+    }
+  };
+
+  const loadMoreRecentSessions = async () => {
+    setLoadingMoreRecentSessions(true);
+    try {
+      const page = await listMemorySessions({
+        limit: RECENT_SESSION_PAGE_SIZE,
+        offset: remoteRecentSessionsRef.current.length,
+        actorId: normalizedSessionActorFilter(sessionActorFilter) ?? undefined,
+        excludeActorIds: excludedSessionActorIds(sessionActorFilter, excludeEtaMuSessions),
+      });
+      const remoteMerged = mergeSessionPages(remoteRecentSessionsRef.current, page.rows);
+      remoteRecentSessionsRef.current = remoteMerged;
+      const localVisible = listPersistedChatSessions(sessionStateKey)
+        .filter((item) => persistedSessionVisibleForFilter(sessionStateKey, item, sessionActorFilter, excludeEtaMuSessions, visibleAgentIds));
+      const merged = sortSessions(mergeSessionPages(remoteMerged, localVisible));
+      recentSessionsRef.current = merged;
+      setRecentSessions(merged);
+      const remoteTotal = typeof page.total === "number" ? page.total : remoteMerged.length;
+      setRecentSessionsTotal(Math.max(remoteTotal, merged.length));
+      setRecentSessionsHasMore(
+        typeof page.total === "number"
+          ? remoteMerged.length < page.total
+          : Boolean(page.has_more ?? page.rows.length >= RECENT_SESSION_PAGE_SIZE),
+      );
+    } catch (error) {
+      appendConsoleLine(`[memory] failed to load more sessions: ${(error as Error).message}`);
+    } finally {
+      setLoadingMoreRecentSessions(false);
+    }
+  };
+
+  const resumeMemorySession = async (sessionKey: string) => {
+    setLoadingMemorySessionId(sessionKey);
+    try {
+      const localSession = findPersistedChatSessionByConversation(sessionStateKey, sessionKey);
+      const remoteSession = recentSessionsRef.current.find((entry) => entry.session === sessionKey) ?? null;
+      const resolvedSessionId = localSession?.active_session_id ?? remoteSession?.active_session_id ?? makeId();
+      const localSnapshot = readPersistedChatSessionSnapshot(sessionStateKey, resolvedSessionId);
+      const persistedModel = preferredSessionModelForResume(localSnapshot, []);
+
+      setMessages([]);
+      setConversationId(sessionKey);
+      setSessionId(resolvedSessionId);
+      if (persistedModel) {
+        setSelectedModel(persistedModel);
+      }
+      setLatestRun(null);
+      setRuntimeEvents([]);
+      setLiveControlText("");
+      setIsSending(false);
+      pendingAssistantIdRef.current = null;
+      activeRunIdRef.current = null;
+
+      if (localSession?.local_only) {
+        appendConsoleLine(`[memory] resumed local draft ${sessionKey}`);
+        return;
+      }
+
+      let detail = await getMemorySession(sessionKey);
+      let transcript = memoryRowsToMessages(detail.rows).slice(-80);
+
+      // Some archived/legacy sessions may not have normalized knoxx.message rows
+      // in the scoped memory endpoint yet. Fall back to direct OpenPlanner history.
+      if (transcript.length === 0) {
+        try {
+          const historyDetail = await getAgentHistorySession(sessionKey);
+          const fallbackTranscript = memoryRowsToMessages(historyDetail.rows).slice(-80);
+          if (fallbackTranscript.length > 0) {
+            detail = historyDetail;
+            transcript = fallbackTranscript;
+            appendConsoleLine(`[memory] fallback loaded ${historyDetail.session} from agent history API`);
+          }
+        } catch {
+          // keep original detail path and error semantics
+        }
+      }
+
+      const resumedModel = preferredSessionModelForResume(localSnapshot, transcript);
+      const lastRunId = [...detail.rows].reverse().map(memoryRowRunId).find((value): value is string => Boolean(value)) ?? null;
+      setMessages(transcript);
+      if (resumedModel) {
+        setSelectedModel(resumedModel);
+      }
+      setConversationId(detail.session);
+      setLatestRun(null);
+      setRuntimeEvents([]);
+      setLiveControlText("");
+      setIsSending(false);
+      pendingAssistantIdRef.current = null;
+      activeRunIdRef.current = lastRunId;
+      if (lastRunId) {
+        void loadRunDetail(lastRunId);
+      }
+      appendConsoleLine(`[memory] resumed ${detail.session} with ${transcript.length} transcript message${transcript.length === 1 ? "" : "s"}`);
+    } catch (error) {
+      appendConsoleLine(`[memory] failed to resume ${sessionKey}: ${(error as Error).message}`);
+    } finally {
+      setLoadingMemorySessionId(null);
+    }
+  };
+
+  return {
+    ensureWorkspaceSync,
+    loadDirectory,
+    loadMoreRecentSessions,
+    previewFile,
+    refreshRecentSessions,
+    refreshWorkspaceStatus,
+    resumeMemorySession,
+    runSemanticSearch,
+    semanticQuery,
+  };
+}

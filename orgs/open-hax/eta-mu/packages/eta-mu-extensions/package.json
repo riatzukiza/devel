@@ -1,0 +1,64 @@
+{
+  "name": "@open-hax/eta-mu-extensions",
+  "version": "0.2.7",
+  "description": "Constitutional layer runtime extensions for cybernetic governance. Source of receipt-river, session-mycology, contract-runtime, fork-tax, and other eta-mu primitives.",
+  "type": "module",
+  "files": [
+    "dist",
+    "README.md",
+    "manifest.edn"
+  ],
+  "scripts": {
+    "build": "node scripts/build-no-warnings.mjs release",
+    "watch": "node scripts/build.mjs watch",
+    "clean": "node scripts/build.mjs clean",
+    "test": "shadow-cljs compile node-test && node target/test.cjs",
+    "test:coverage": "shadow-cljs compile node-test && c8 --reporter=text --reporter=lcov --reporter=json-summary node target/test.cjs"
+  },
+  "dependencies": {
+    "@open-hax/output-contract-gate": "workspace:*",
+    "@opencode-ai/plugin": "^1.14.41",
+    "markdown-it": "^14.1.0"
+  },
+  "devDependencies": {
+    "c8": "^10.1.2",
+    "shadow-cljs": "^3.3.5",
+    "source-map-support": "^0.5.21"
+  },
+  "license": "GPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/open-hax/eta-mu.git",
+    "directory": "packages/eta-mu-extensions"
+  },
+  "keywords": [
+    "eta-mu",
+    "pi",
+    "opencode",
+    "extensions",
+    "receipt-river",
+    "session-mycology",
+    "contract-runtime",
+    "fork-tax",
+    "cybernetic-governance"
+  ],
+  "pi": {
+    "extensions": [
+      "dist/pi/cljs-apply-patch/index.ts",
+      "dist/pi/cljs-receipt-river/index.ts",
+      "dist/pi/cljs-session-mycology/index.ts",
+      "dist/pi/cljs-contract-runtime/index.ts",
+      "dist/pi/cljs-contract-runtime-v2/index.ts",
+      "dist/pi/cljs-opmf-contract-gate/index.ts",
+      "dist/pi/cljs-opencode-global-instructions/index.ts",
+      "dist/pi/cljs-bootstrap/index.ts",
+      "dist/pi/cljs-task-timing/index.ts",
+      "dist/pi/cljs-graph-memory/index.ts",
+      "dist/pi/cljs-websearch-open-hax/index.ts",
+      "dist/pi/cljs-image-render/index.ts",
+      "dist/pi/cljs-lisp-decomp-nudge/index.ts",
+      "dist/pi/cljs-chronos/index.ts",
+      "dist/pi/cljs-custom-providers/index.ts"
+    ]
+  }
+}

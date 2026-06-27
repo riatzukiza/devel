@@ -1,0 +1,22 @@
+{
+  "tasksDir": "./tasks",
+  "trello": {
+    "boardUrl": "https://trello.com/b/Mu2BmeDE/ussyverse",
+    "archiveMissing": false,
+    "listMapping": {
+      "icebox": "Ice Box",
+      "incoming": "Incoming",
+      "accepted": "Accepted",
+      "breakdown": "Breakdown",
+      "blocked": "Blocked",
+      "ready": "Ready",
+      "todo": "To Do",
+      "in_progress": "In Progress",
+      "review": "Review",
+      "testing": "Testing",
+      "document": "Document",
+      "done": "Done",
+      "rejected": "Rejected"
+    }
+  }
+}

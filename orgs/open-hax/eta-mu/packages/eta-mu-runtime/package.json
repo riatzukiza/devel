@@ -1,0 +1,56 @@
+{
+  "name": "@open-hax/eta-mu-runtime",
+  "version": "0.1.2",
+  "description": "Typed movement kernel for eta-mu belief state, panel selection, and auditable action envelopes",
+  "private": false,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./cljs": {
+      "types": "./dist/cljs-runtime.d.ts",
+      "import": "./dist-cljs/index.js",
+      "default": "./dist-cljs/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "dist-cljs",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "pnpm cljs:compile && tsc -p tsconfig.json",
+    "clean": "rm -rf dist dist-cljs target",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "pnpm cljs:compile && vitest run --config vitest.config.ts",
+    "test:watch": "vitest --config vitest.config.ts",
+    "cljs:compile": "shadow-cljs compile runtime",
+    "cljs:test": "shadow-cljs compile test && node target/cljs-test.cjs",
+    "cljs:coverage": "shadow-cljs compile test && c8 --include '.shadow-cljs/builds/test/dev/out/cljs-runtime/eta_mu.runtime*.js' --exclude '**/*_test.js' --reporter=text --reporter=lcov --reporter=json-summary --check-coverage --lines 90 --statements 90 node target/cljs-test.cjs",
+    "cljs:smoke": "node scripts/smoke-cljs-runtime.mjs",
+    "cljs:boundary": "node scripts/check-cljs-boundaries.mjs",
+    "cljs:verify": "pnpm cljs:compile && pnpm cljs:test && pnpm cljs:smoke && pnpm cljs:boundary"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "c8": "^10.1.2",
+    "shadow-cljs": "^3.4.11",
+    "source-map-support": "^0.5.21",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.0"
+  },
+  "keywords": [
+    "eta-mu",
+    "runtime",
+    "control-plane",
+    "belief-state",
+    "movement"
+  ],
+  "license": "GPL-3.0-or-later"
+}

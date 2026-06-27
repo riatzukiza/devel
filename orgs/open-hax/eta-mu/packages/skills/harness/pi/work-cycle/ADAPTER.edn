@@ -1,0 +1,13 @@
+;; Harness adapter: pi
+;; Core skill: ημ.skill/work-cycle@0.2.0
+;; Install path: ~/.pi/agent/skills/work-cycle/CONTRACT.edn
+
+(harness-adapter
+  (harness :pi)
+  (skill "work-cycle")
+  (core-ref "packages/skills/core/work-cycle/CONTRACT.edn")
+  (install-path "~/.pi/agent/skills/work-cycle/CONTRACT.edn")
+  (overrides nil)
+  (notes
+    "Pi uses filesystem skill loading. No adapter overrides needed.
+     Install = symlink or copy core CONTRACT.edn to install-path."))

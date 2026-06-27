@@ -1,0 +1,19 @@
+(import Interface "../kit/interface/index.js")
+(def-interface Scalar (value)
+  (def-generic mul (array value)
+  (doc-string "array value"
+                  "Defines array value")
+
+    (.map array (#-> (* value))))
+  (def-generic div (array value)
+  (doc-string "array value"
+                  "Defines array value")
+
+    (.map array (#-> (/ value))))
+  (def-generic sub (array value)
+  (doc-string "array value"
+                  "Defines array value")
+
+    (.map array (#-> (- value)))))
+
+(export Scalar)

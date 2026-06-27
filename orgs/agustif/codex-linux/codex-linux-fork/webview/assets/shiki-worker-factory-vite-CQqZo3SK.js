@@ -1,0 +1,2 @@
+var e=``+new URL(`worker-Dwu46c_q.js`,import.meta.url).href;function t(){return new Worker(e,{type:`module`})}export{t as shikiWorkerFactoryVite};
+//# sourceMappingURL=shiki-worker-factory-vite-CQqZo3SK.js.map

@@ -1,0 +1,93 @@
+{
+  "generatedAt": "2026-05-29T04:01:32.380Z",
+  "totalTasks": 1,
+  "columns": [
+    {
+      "status": "icebox",
+      "title": "Icebox",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "incoming",
+      "title": "Incoming",
+      "taskCount": 1,
+      "tasks": [
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-ts-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-ts-specs-runtime-topology-md",
+          "title": "Cephalon TS Runtime Topology",
+          "slug": "cephalon-ts-runtime-topology",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:31.326Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-ts/specs/runtime-topology.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-ts/kanban/runtime-topology.md`\n\n# Cephalon TS Runtime Topology\n\n## Purpose\n\nDescribe what the TypeScript package is responsible for inside the larger Cephalon family.\n\n## Position in the family\n\n`packages/cephalon-ts` is currently the strongest **user-facing and service-facing** implementation.\n\nIt is the stratum most ready to:\n- log in as a bot identity\n- route incoming messages into session turns\n- call tools and external services\n- surface memory/running-state through an HTTP UI\n- run multiple circuits or multiple cephalons in one process\n\n## Topology\n\n```text\nDiscord / IRC / feeds / browser / files\n                ↓\n           Event bus + temporal scheduler\n                ↓\n           Session manager + circuit manifest\n                ↓\n        Turn processor + tool executor + memory\n                ↓\n   output channels / UI / memory summaries / prompt updates\n```\n\n## Major subsystems\n\n### Ingress\n- Discord gateway integration\n- IRC integration\n- feed ingestion\n- browser/web/vision tools acting as secondary perception surfaces\n\n### Cognition\n- session routing\n- context assembly\n- memory lookup and compaction\n- circuit-specific prompts and tool permissions\n- graph/field/prompt helper subsystems\n\n### Enactment\n- `discord.speak`\n- output-channel selection\n- tool-driven world actions\n- UI and runtime inspection surfaces\n\n### Governance\n- temporal scheduling\n- circuit cadence\n- control-plane pacing and welcome estimation\n- prompt update proposals and integrations\n\n## Strongest current invariants\n\n- a cephalon can be parameterized by bot identity instead of hard-coding one persona\n- circuit behavior is explicit in `src/circuits.ts`\n- runtime ticks can be expressed as scheduled events rather than only raw intervals\n- output routing is a first-class runtime concern\n\n## Weakest current invariants\n\n- there are still overlapping entrypoint stories (`app.ts` and `main.ts`)\n- some mind/field subsystems are present as local helpers rather than clearly separated contracts\n- runtime handoff/promotion is documented but not yet a finished operator flow\n\n## Desired future contract\n\nThe TS package should eventually be the place where a future operator can answer, with little ambiguity:\n- which cephalon identity is running\n- which circuits are active\n- what world surfaces it can perceive\n- which tools it may use\n- how output routing is governed\n- how a candidate runtime is promoted safely\n\n## Non-goal\n\nThis package does **not** need to absorb every conceptual detail in the family.\nThe CLJS package remains the richer always-running mind / note-corpus stratum, and the CLJ branches preserve precursor and recovered ideas that should be harvested deliberately rather than silently overwritten.",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-ts/kanban/runtime-topology.md"
+        }
+      ]
+    },
+    {
+      "status": "accepted",
+      "title": "Accepted",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "breakdown",
+      "title": "Breakdown",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "blocked",
+      "title": "Blocked",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "ready",
+      "title": "Ready",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "todo",
+      "title": "Todo",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "in_progress",
+      "title": "In Progress",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "review",
+      "title": "Review",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "document",
+      "title": "Document",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "done",
+      "title": "Done",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "rejected",
+      "title": "Rejected",
+      "taskCount": 0,
+      "tasks": []
+    }
+  ]
+}

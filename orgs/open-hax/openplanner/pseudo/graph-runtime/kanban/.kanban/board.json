@@ -1,0 +1,107 @@
+{
+  "generatedAt": "2026-05-29T04:01:41.885Z",
+  "totalTasks": 2,
+  "columns": [
+    {
+      "status": "icebox",
+      "title": "Icebox",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "incoming",
+      "title": "Incoming",
+      "taskCount": 2,
+      "tasks": [
+        {
+          "uuid": "orgs-open-hax-openplanner-pseudo-graph-runtime-kanban-orgs-open-hax-openplanner-pseudo-graph-runtime-specs-decomposition-roadmap-md",
+          "title": "Decomposition Roadmap Spec",
+          "slug": "decomposition-roadmap-spec",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:41.143Z",
+          "content": "> Source: `orgs/open-hax/openplanner/pseudo/graph-runtime/specs/decomposition-roadmap.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/pseudo/graph-runtime/kanban/decomposition-roadmap.md`\n\n# Decomposition Roadmap Spec\n\n## Goal\n\nDecompose the graph-native substrate from the original `fork_tales` experiment into individually comprehensible services without losing the core coupling of semantics, resources, and topology.\n\n## North star\n\n> What wants to exist separately, must be cut free — but not cut stupidly.\n\nThe substrate should decompose into **clear contracts**, not into amnesiac fragments.\n\n## Proposed service boundaries\n\n### 1. TruthGraph Ledger\n**Responsibility**\n- immutable raw objects\n- provenance edges\n- append-only event history\n- snapshot manifests\n\n**Potential outputs**\n- `truth.node`\n- `truth.edge`\n- `truth.event`\n- `truth.snapshot`\n\n### 2. ViewGraph Compiler\n**Responsibility**\n- coarsen TruthGraph into operational ViewGraph\n- maintain bundle membership + reconstruction metadata\n- expose sampled / compressed graph for UI and runtime loops\n\n**Potential outputs**\n- `view.snapshot`\n- `view.bundle`\n- `view.expand`\n\n### 3. Presence Runtime\n**Responsibility**\n- load presence manifests\n- maintain current needs, masks, priorities, and masses\n- execute policy hooks or advisory loops\n\n**Potential outputs**\n- `presence.state`\n- `presence.need`\n- `presence.priority`\n- `presence.violation`\n\n### 4. Daimoi Engine\n**Responsibility**\n- emit, move, collide, absorb, or deflect daimoi\n- maintain owner / wallet / intent semantics\n- expose observer-facing telemetry\n\n**Potential outputs**\n- `daimoi.emit`\n- `daimoi.move`\n- `daimoi.collide`\n- `daimoi.absorb`\n- `daimoi.band_change`\n\n### 5. Reservoir Economy\n**Responsibility**\n- track local resource reservoirs\n- compute pressure, scarcity, and local price\n- publish congestion-aware edge costs\n\n**Potential outputs**\n- `reservoir.update`\n- `pressure.update`\n- `price.update`\n\n### 6. Lith / Nexus API Layer\n**Responsibility**\n- query surface over the canonical graph\n- graph resource creation\n- neighborhood traversal\n- human/tool-facing graph APIs\n\n**Potential outputs**\n- `nexus.snapshot`\n- `nexus.query`\n- `nexus.resource`\n\n## Dependency graph\n\n```text\nTruthGraph Ledger\n    ↓\nViewGraph Compiler ──────┐\n    ↓                    │\nPresence Runtime         │\nDaimoi Engine            │\nReservoir Economy        │\n    ↓                    │\nLith / Nexus API Layer ◄─┘\n```\n\n## Extraction principles\n\n1. **Do not copy giant coupled files wholesale.**\n2. **Keep source maps and provenance explicit.**\n3. **Separate runtime state from narrative dressing.**\n4. **Preserve event visibility.**\n5. **Avoid turning the system into generic CRUD plus pretty graph paint.**\n\n## Acceptance criteria for a successful decomposition\n\n- each service can name its inputs and outputs in one page\n- each service has a bounded storage contract\n- the old `fork_tales` source anchors are recorded\n- a human can explain how a daimoi, a presence, and a nexus state change relate\n- the explanation path is shorter than reopening a 300KB Part64 file\n\n## Immediate next cuts\n\n### Cut A — document first\nDone in part by this repo:\n- substrate formalism\n- source map\n- runtime surfaces\n- provenance trail\n\n### Cut B — extract daimoi fully\nDownstream home:\n- `octave-commons/daimoi`\n\n### Cut C — extract presence/simulacron framing\nDownstream home:\n- `octave-commons/simulacron`\n\n### Cut D — reconnect graph traversal / ingestion layer\nDownstream homes:\n- `octave-commons/graph-weaver`\n- `octave-commons/graph-weaver-aco`\n- `octave-commons/myrmex`\n\n## Open questions\n\n- How much of the economy model should remain continuous vs graph-discrete?\n- Should ViewGraph compilation happen continuously or in bounded rebuild passes?\n- Are presences purely advisory, or can some become execution-authorized under explicit contracts?\n- Which runtime traces are cheap enough to retain permanently, and which should be summarized?\n\n## Status\n\nThis is a design roadmap, not an implementation claim. Its purpose is to keep future cuts crisp and honest.",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/pseudo/graph-runtime/kanban/decomposition-roadmap.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-pseudo-graph-runtime-kanban-orgs-open-hax-openplanner-pseudo-graph-runtime-specs-runtime-surfaces-md",
+          "title": "Runtime Surfaces Spec",
+          "slug": "runtime-surfaces-spec",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:41.144Z",
+          "content": "> Source: `orgs/open-hax/openplanner/pseudo/graph-runtime/specs/runtime-surfaces.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/pseudo/graph-runtime/kanban/runtime-surfaces.md`\n\n# Runtime Surfaces Spec\n\n## Purpose\n\nBridge the gap between the abstract `SPEC.md` runtime model and the concrete surfaces that existed inside `fork_tales`.\n\nThis document answers:\n\n> If `graph-runtime` was real inside the old experiment, where did it leak through the walls?\n\n## Source anchors\n\n- `orgs/octave-commons/fork_tales/docs/notes/system_design/2026-02-20-hybrid-field-graph-formalism.md`\n- `orgs/octave-commons/fork_tales/docs/notes/system_design/2026-02-20-design-hole-responses-field-and-collisions.md`\n- `orgs/octave-commons/fork_tales/part64/code/world_web/server.py`\n- `orgs/octave-commons/fork_tales/part64/docker-compose.yml`\n- `orgs/octave-commons/fork_tales/mcp-lith-nexus/`\n- `session-ses_3208.md` in the devel workspace\n\n## Surface 1 — Catalog and Lith Nexus\n\n### Abstract model\n- TruthGraph / ViewGraph\n- Nexus nodes and edges\n- explainable graph state\n\n### Concrete Fork Tales surfaces\n- `part64` exposed catalog payloads that included a `nexus_graph`\n- `mcp-lith-nexus` explicitly re-used the Python-side snapshot instead of inventing a parallel index\n- `session-ses_3208.md` records a live restored catalog with concrete node/file-node counts after hardening `lith_nexus_index.py`\n\n### Contract\nAny future `graph-runtime` implementation should expose at least:\n- a **canonical graph snapshot**\n- a **queryable node/edge surface**\n- a **provenance-preserving path** back to raw sources\n\n## Surface 2 — Simulation Parameters\n\n### Abstract model\n- daimoi motion\n- nexus friction / drag\n- pressure and saturation\n\n### Concrete Fork Tales surfaces\n`part64/docker-compose.yml` already surfaced runtime knobs such as:\n- `SIMULATION_WS_STREAM_DAIMOI_FRICTION`\n- `SIMULATION_WS_STREAM_DAIMOI_ORBIT_DAMPING`\n- `SIMULATION_WS_STREAM_NEXUS_FRICTION`\n- `SIMULATION_WS_STREAM_NEXUS_MAX_SPEED_SCALE`\n- `SIMULATION_WS_STREAM_NEXUS_STATIC_FRICTION`\n- `SIMULATION_WS_STREAM_NEXUS_QUADRATIC_DRAG`\n\n### Contract\nA rebuilt runtime should keep its tunable physics legible as:\n- named parameters\n- bounded ranges\n- environment or config surface\n- event-visible changes when parameters shift\n\n## Surface 3 — Presence Layer\n\n### Abstract model\n- presences as policy-bearing influences with needs, masks, and mass\n\n### Concrete Fork Tales surfaces\n- `.opencode/agent/presence.*.md` defines multiple specialized presences\n- the presence docs encode role, mission, non-goals, constraints, and deliverables\n- these are effectively runtime actors even when presented as agent files\n\n### Contract\nA future runtime should treat presence definitions as first-class resources with:\n- declared role\n- allowed interfaces\n- hard constraints\n- event-visible decisions\n\n## Surface 4 — Event Explainability\n\n### Abstract model\n- field dynamics should be attributable to presences and ledgered events\n\n### Concrete Fork Tales surfaces\n- `mcp-lith-nexus` and the catalog machinery already moved toward first-class fact graph exposure\n- session artifacts repeatedly emphasize explicit event emission, counts, and replayable surfaces\n\n### Contract\nNo hidden state transitions:\n- important runtime changes should emit events\n- graph deltas should be inspectable\n- explanations should be possible post hoc\n\n## Surface 5 — Resource Topology\n\n### Abstract model\n- resources are graph-local, pressure-bearing reservoirs\n- price and scarcity are topological, not global-only\n\n### Concrete Fork Tales surfaces\nThe exact economy was not fully separated, but the runtime already encoded:\n- CPU/GPU/NPU-oriented simulation parameters\n- resource-specific tuning surfaces\n- host/runtime topology through compose and service layout\n\n### Contract\nA real implementation should eventually expose:\n- per-resource local pressure\n- reservoir capacities\n- saturation-aware routing costs\n- resource-specific traces for decisions\n\n## Minimal service surface for a rebuilt runtime\n\nA `graph-runtime` service family should eventually provide:\n\n1. `runtime.snapshot` — full or sampled viewgraph snapshot\n2. `runtime.node.get` — node with local neighborhood and pressure/resource state\n3. `runtime.presence.list` / `runtime.presence.get`\n4. `runtime.daimoi.stream` — stream of daimoi movement/collision events\n5. `runtime.params.get` / `runtime.params.set` with audit trail\n6. `runtime.explain` — ranked contributing events / presences for a chosen state change\n\n## Why this matters\n\nThe original experiment was powerful precisely because the graph was not just storage and not just UI. It was trying to be:\n- memory substrate\n- routing substrate\n- resource substrate\n- explanation substrate\n\nThis spec preserves that four-way coupling so later extraction work does not flatten it into a generic graph database with a particle gimmick on top.",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/pseudo/graph-runtime/kanban/runtime-surfaces.md"
+        }
+      ]
+    },
+    {
+      "status": "accepted",
+      "title": "Accepted",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "breakdown",
+      "title": "Breakdown",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "blocked",
+      "title": "Blocked",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "ready",
+      "title": "Ready",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "todo",
+      "title": "Todo",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "in_progress",
+      "title": "In Progress",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "review",
+      "title": "Review",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "document",
+      "title": "Document",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "done",
+      "title": "Done",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "rejected",
+      "title": "Rejected",
+      "taskCount": 0,
+      "tasks": []
+    }
+  ]
+}

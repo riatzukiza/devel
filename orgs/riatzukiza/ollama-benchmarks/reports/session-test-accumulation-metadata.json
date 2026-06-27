@@ -1,0 +1,108 @@
+{
+  "session/completed-runs" : 6,
+  "session/results" : [ {
+    "model" : "qwen3:4b",
+    "prompt" : "Hello world",
+    "runs" : [ {
+      "duration_ms" : 4302,
+      "total_duration_ns" : 3964824590,
+      "load_duration_ns" : 153305425,
+      "eval_count" : 282,
+      "eval_duration_ns" : 3606439785,
+      "prompt" : "Hello world",
+      "tps" : 78.19345859395791,
+      "ok" : true,
+      "prompt_eval_duration_ns" : 34659082,
+      "model" : "qwen3:4b",
+      "prompt_eval_count" : 10
+    }, {
+      "duration_ms" : 6530,
+      "total_duration_ns" : 6516144536,
+      "load_duration_ns" : 184233031,
+      "eval_count" : 473,
+      "eval_duration_ns" : 6028718247,
+      "prompt" : "Hello world",
+      "tps" : 78.45780489665003,
+      "ok" : true,
+      "prompt_eval_duration_ns" : 17005796,
+      "model" : "qwen3:4b",
+      "prompt_eval_count" : 10
+    }, {
+      "duration_ms" : 2748,
+      "total_duration_ns" : 2741343095,
+      "load_duration_ns" : 157544929,
+      "eval_count" : 195,
+      "eval_duration_ns" : 2453033506,
+      "prompt" : "Hello world",
+      "tps" : 79.49341071902994,
+      "ok" : true,
+      "prompt_eval_duration_ns" : 15038404,
+      "model" : "qwen3:4b",
+      "prompt_eval_count" : 10
+    } ],
+    "summary" : {
+      "runs_total" : 3,
+      "runs_ok" : 3,
+      "mean_tps" : 78.71489140321263,
+      "mean_duration_ms" : 4526.666666666667
+    }
+  }, {
+    "model" : "qwen3:4b",
+    "prompt" : "What is 2+2?",
+    "runs" : [ {
+      "duration_ms" : 5522,
+      "total_duration_ns" : 5516089138,
+      "load_duration_ns" : 174789131,
+      "eval_count" : 400,
+      "eval_duration_ns" : 5088517423,
+      "prompt" : "What is 2+2?",
+      "tps" : 78.60835814219831,
+      "ok" : true,
+      "prompt_eval_duration_ns" : 18873767,
+      "model" : "qwen3:4b",
+      "prompt_eval_count" : 15
+    }, {
+      "duration_ms" : 3077,
+      "total_duration_ns" : 3070666727,
+      "load_duration_ns" : 174922602,
+      "eval_count" : 219,
+      "eval_duration_ns" : 2755857158,
+      "prompt" : "What is 2+2?",
+      "tps" : 79.46710857791128,
+      "ok" : true,
+      "prompt_eval_duration_ns" : 15651260,
+      "model" : "qwen3:4b",
+      "prompt_eval_count" : 15
+    }, {
+      "duration_ms" : 7952,
+      "total_duration_ns" : 7946200625,
+      "load_duration_ns" : 176816228,
+      "eval_count" : 579,
+      "eval_duration_ns" : 7418051416,
+      "prompt" : "What is 2+2?",
+      "tps" : 78.05284265773011,
+      "ok" : true,
+      "prompt_eval_duration_ns" : 12343115,
+      "model" : "qwen3:4b",
+      "prompt_eval_count" : 15
+    } ],
+    "summary" : {
+      "runs_total" : 3,
+      "runs_ok" : 3,
+      "mean_tps" : 78.7094364592799,
+      "mean_duration_ms" : 5517.0
+    }
+  } ],
+  "session/total-runs" : 0,
+  "session/last-updated" : 1769406357910,
+  "session/benchmark-type" : "basic",
+  "session/output-directory" : "reports",
+  "session/start-time" : 1769406327741,
+  "session/config" : {
+    "endpoint" : "http://localhost:11434",
+    "models" : [ "qwen3:4b" ],
+    "prompts" : [ "Hello world", "What is 2+2?" ],
+    "n" : 3
+  },
+  "session/id" : "test-accumulation"
+}

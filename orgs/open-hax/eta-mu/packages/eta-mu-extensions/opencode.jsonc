@@ -1,0 +1,55 @@
+{
+  // eta-mu-extensions compile targets
+  // pi/eta-mu: TypeScript wrappers consumed by the pi runtime via package metadata
+  // opencode:  ESM plugin wrappers consumed by OpenCode's plugin loader
+  //
+  // Build: node scripts/build.mjs release
+  // Sync:  build.mjs auto-registers opencode entries into ~/.config/opencode/opencode.jsonc
+
+  "pi": {
+    "extensions": [
+      "dist/pi/cljs-apply-patch/index.ts",
+      "dist/pi/cljs-bootstrap/index.ts",
+      "dist/pi/cljs-chronos/index.ts",
+      "dist/pi/cljs-contract-runtime/index.ts",
+      "dist/pi/cljs-contract-runtime-v2/index.ts",
+      "dist/pi/cljs-custom-providers/index.ts",
+      "dist/pi/cljs-graph-memory/index.ts",
+      "dist/pi/cljs-image-render/index.ts",
+      "dist/pi/cljs-lisp-decomp-nudge/index.ts",
+      "dist/pi/cljs-opencode-global-instructions/index.ts",
+      "dist/pi/cljs-opmf-contract-gate/index.ts",
+      "dist/pi/cljs-receipt-river/index.ts",
+      "dist/pi/cljs-session-mycology/index.ts",
+      "dist/pi/cljs-task-timing/index.ts",
+      "dist/pi/cljs-websearch-open-hax/index.ts"
+    ]
+  },
+
+  "plugin": [
+    // file:// URIs resolved from dist/opencode/*.mjs
+    // build.mjs syncOpenCodeConfig manages these automatically
+    "dist/opencode/apply-patch.mjs",
+    "dist/opencode/bootstrap.mjs",
+    "dist/opencode/chronos.mjs",
+    "dist/opencode/contract-runtime.mjs",
+    "dist/opencode/contract-runtime-v2.mjs",
+    "dist/opencode/custom-providers.mjs",
+    "dist/opencode/graph-memory.mjs",
+    "dist/opencode/image-render.mjs",
+    "dist/opencode/lisp-decomp-nudge.mjs",
+    "dist/opencode/opencode-global-instructions.mjs",
+    "dist/opencode/opmf-contract-gate.mjs",
+    "dist/opencode/receipt-river.mjs",
+    "dist/opencode/session-mycology.mjs",
+    "dist/opencode/task-timing.mjs",
+    "dist/opencode/websearch-open-hax.mjs"
+  ],
+
+  "permission": {
+    "*": "allow",
+    "git *": "allow",
+    "rm *": "ask",
+    "rmdir *": "ask"
+  }
+}

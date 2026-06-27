@@ -1,0 +1,56 @@
+;; SurfaceHero Component Contract
+;; Prominent page-level hero surface with kicker, title, description, stats, and actions.
+
+{:component :surface-hero
+ :version "1.0.0"
+
+ :description
+ "Prominent page-level hero surface for dashboards and control panels. Supports kicker text, title, description, summary stats, and action affordances."
+
+ :props
+ {:kicker
+  {:type :string
+   :required false
+   :description "Short uppercase context label rendered above the title"}
+
+  :title
+  {:type :string
+   :required true
+   :description "Primary hero title"}
+
+  :description
+  {:type :string
+   :required false
+   :description "Supporting copy rendered below the title"}
+
+  :stats
+  {:type :vector
+   :item {:type :map
+          :keys {:label {:type :string}
+                 :value {:type [:string :number]}
+                 :tone {:type :enum :values [:default :info :success :warning :error] :required false}}}
+   :required false
+   :description "Summary stats rendered in a compact right-side block"}
+
+  :actions
+  {:type :node
+   :required false
+   :description "Optional action area rendered alongside stats"}
+
+  :variant
+  {:type :enum
+   :values [:default :elevated]
+   :default :elevated
+   :description "Visual surface styling"}}
+
+ :slots
+ {:actions {:type :node :required false}}
+
+ :accessibility
+ {:role :region}
+
+ :styling
+ {:data-attributes
+  {:data-component "surface-hero"
+   :data-variant :variant}}
+}

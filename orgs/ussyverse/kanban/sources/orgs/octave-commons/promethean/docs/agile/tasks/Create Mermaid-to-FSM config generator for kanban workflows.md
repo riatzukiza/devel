@@ -1,0 +1,14 @@
+---
+uuid: 'ecee2a47-d4dc-42da-95db-eb1359d00425'
+title: 'Create Mermaid-to-FSM config generator for kanban workflows'
+slug: 'Create Mermaid-to-FSM config generator for kanban workflows'
+status: 'ready'
+priority: 'P1'
+labels: ['mermaid', 'fsm', 'kanban', 'create']
+created_at: '2025-10-15T07:32:11.589Z'
+estimates:
+  complexity: '3'
+  scale: 'medium'
+  time_to_completion: '2 sessions'
+storyPoints: 3
+---

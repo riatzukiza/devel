@@ -1,0 +1,390 @@
+
+> @open-hax/eta-mu-extensions@0.2.0 build /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions
+> node scripts/build.mjs release
+
+eta-mu: 13 extension(s) in manifest
+  shadow-cljs release bootstrap chronos contract-runtime contract-runtime-v2 custom-providers graph-memory image-render opencode-global-instructions opmf-contract-gate receipt-river session-mycology task-timing websearch-open-hax
+[:bootstrap] Compiling ...
+[:bootstrap] Build completed. (48 files, 1 compiled, 0 warnings, 5.06s)
+[:chronos] Compiling ...
+[:chronos] Build completed. (49 files, 1 compiled, 0 warnings, 2.24s)
+[:contract-runtime] Compiling ...
+[:contract-runtime] Build completed. (62 files, 1 compiled, 0 warnings, 3.27s)
+[:contract-runtime-v2] Compiling ...
+[:contract-runtime-v2] Build completed. (64 files, 1 compiled, 0 warnings, 2.14s)
+[:custom-providers] Compiling ...
+[:custom-providers] Build completed. (48 files, 3 compiled, 0 warnings, 1.55s)
+[:graph-memory] Compiling ...
+[:graph-memory] Build completed. (54 files, 1 compiled, 0 warnings, 1.70s)
+[:image-render] Compiling ...
+[:image-render] Build completed. (53 files, 1 compiled, 0 warnings, 1.70s)
+[:opencode-global-instructions] Compiling ...
+[:opencode-global-instructions] Build completed. (62 files, 1 compiled, 0 warnings, 2.17s)
+[:opmf-contract-gate] Compiling ...
+[:opmf-contract-gate] Build completed. (63 files, 1 compiled, 0 warnings, 2.08s)
+[:receipt-river] Compiling ...
+[:receipt-river] Build completed. (64 files, 1 compiled, 0 warnings, 1.85s)
+[:session-mycology] Compiling ...
+[:session-mycology] Build completed. (54 files, 1 compiled, 0 warnings, 1.68s)
+[:task-timing] Compiling ...
+[:task-timing] Build completed. (48 files, 2 compiled, 21 warnings, 1.43s)
+
+[1m------ WARNING #1 - :infer-warning ---------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:72:14
+--------------------------------------------------------------------------------
+[2m  69 | (defn refresh-ui [state][0m
+[2m  70 |   (when (and (aget state "enabled")[0m
+[2m  71 |              (aget state "running")[0m
+[1m  72 |              (.-hasUI (aget state "ctx")))[0m
+--------------------^-----------------------------------------------------------
+ [33;1mCannot infer target type in expression (. (aget state "ctx") -hasUI)[0m
+--------------------------------------------------------------------------------
+[2m  73 |     (let [ctx (aget state "ctx")[0m
+[2m  74 |           now (js/performance.now)][0m
+[2m  75 |       (.setStatus (.-ui ctx) STATUS-KEY (render-status state now)))))[0m
+[2m  76 | [0m
+--------------------------------------------------------------------------------
+
+[1m------ WARNING #2 - :infer-warning ---------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:75:19
+--------------------------------------------------------------------------------
+[2m  72 |              (.-hasUI (aget state "ctx")))[0m
+[2m  73 |     (let [ctx (aget state "ctx")[0m
+[2m  74 |           now (js/performance.now)][0m
+[1m  75 |       (.setStatus (.-ui ctx) STATUS-KEY (render-status state now)))))[0m
+-------------------------^------------------------------------------------------
+ [33;1mCannot infer target type in expression (. ctx -ui)[0m
+--------------------------------------------------------------------------------
+[2m  76 | [0m
+[2m  77 | (defn stop-and-finalize-ui [state][0m
+[2m  78 |   (when (.-hasUI (aget state "ctx"))[0m
+[2m  79 |     (let [ctx (aget state "ctx")][0m
+--------------------------------------------------------------------------------
+
+[1m------ WARNING #3 - :infer-warning ---------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:75:7
+--------------------------------------------------------------------------------
+[2m  72 |              (.-hasUI (aget state "ctx")))[0m
+[2m  73 |     (let [ctx (aget state "ctx")[0m
+[2m  74 |           now (js/performance.now)][0m
+[1m  75 |       (.setStatus (.-ui ctx) STATUS-KEY (render-status state now)))))[0m
+-------------^------------------------------------------------------------------
+ [33;1mCannot infer target type in expression (. (.-ui ctx) setStatus STATUS-KEY (render-status state now))[0m
+--------------------------------------------------------------------------------
+[2m  76 | [0m
+[2m  77 | (defn stop-and-finalize-ui [state][0m
+[2m  78 |   (when (.-hasUI (aget state "ctx"))[0m
+[2m  79 |     (let [ctx (aget state "ctx")][0m
+--------------------------------------------------------------------------------
+
+[1m------ WARNING #4 - :infer-warning ---------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:78:9
+--------------------------------------------------------------------------------
+[2m  75 |       (.setStatus (.-ui ctx) STATUS-KEY (render-status state now)))))[0m
+[2m  76 | [0m
+[2m  77 | (defn stop-and-finalize-ui [state][0m
+[1m  78 |   (when (.-hasUI (aget state "ctx"))[0m
+---------------^----------------------------------------------------------------
+ [33;1mCannot infer target type in expression (. (aget state "ctx") -hasUI)[0m
+--------------------------------------------------------------------------------
+[2m  79 |     (let [ctx (aget state "ctx")][0m
+[2m  80 |       (if (not (aget state "enabled"))[0m
+[2m  81 |         (.setStatus (.-ui ctx) STATUS-KEY js/undefined)[0m
+[2m  82 |         (when (aget state "running")[0m
+--------------------------------------------------------------------------------
+
+[1m------ WARNING #5 - :infer-warning ---------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:81:21
+--------------------------------------------------------------------------------
+[2m  78 |   (when (.-hasUI (aget state "ctx"))[0m
+[2m  79 |     (let [ctx (aget state "ctx")][0m
+[2m  80 |       (if (not (aget state "enabled"))[0m
+[1m  81 |         (.setStatus (.-ui ctx) STATUS-KEY js/undefined)[0m
+---------------------------^----------------------------------------------------
+ [33;1mCannot infer target type in expression (. ctx -ui)[0m
+--------------------------------------------------------------------------------
+[2m  82 |         (when (aget state "running")[0m
+[2m  83 |           (.setStatus (.-ui ctx) STATUS-KEY (render-status state (js/performance.now))))))))[0m
+[2m  84 | [0m
+[2m  85 | (defn start-ticker [state][0m
+--------------------------------------------------------------------------------
+
+[1m------ WARNING #6 - :infer-warning ---------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:81:9
+--------------------------------------------------------------------------------
+[2m  78 |   (when (.-hasUI (aget state "ctx"))[0m
+[2m  79 |     (let [ctx (aget state "ctx")][0m
+[2m  80 |       (if (not (aget state "enabled"))[0m
+[1m  81 |         (.setStatus (.-ui ctx) STATUS-KEY js/undefined)[0m
+---------------^----------------------------------------------------------------
+ [33;1mCannot infer target type in expression (. (.-ui ctx) setStatus STATUS-KEY js/undefined)[0m
+--------------------------------------------------------------------------------
+[2m  82 |         (when (aget state "running")[0m
+[2m  83 |           (.setStatus (.-ui ctx) STATUS-KEY (render-status state (js/performance.now))))))))[0m
+[2m  84 | [0m
+[2m  85 | (defn start-ticker [state][0m
+--------------------------------------------------------------------------------
+
+[1m------ WARNING #7 - :infer-warning ---------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:83:23
+--------------------------------------------------------------------------------
+[2m  80 |       (if (not (aget state "enabled"))[0m
+[2m  81 |         (.setStatus (.-ui ctx) STATUS-KEY js/undefined)[0m
+[2m  82 |         (when (aget state "running")[0m
+[1m  83 |           (.setStatus (.-ui ctx) STATUS-KEY (render-status state (js/performance.now))))))))[0m
+-----------------------------^--------------------------------------------------
+ [33;1mCannot infer target type in expression (. ctx -ui)[0m
+--------------------------------------------------------------------------------
+[2m  84 | [0m
+[2m  85 | (defn start-ticker [state][0m
+[2m  86 |   (clear-interval-safe state)[0m
+[2m  87 |   (aset state "interval" (js/setInterval #(refresh-ui state) 250)))[0m
+--------------------------------------------------------------------------------
+
+[1m------ WARNING #8 - :infer-warning ---------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:83:11
+--------------------------------------------------------------------------------
+[2m  80 |       (if (not (aget state "enabled"))[0m
+[2m  81 |         (.setStatus (.-ui ctx) STATUS-KEY js/undefined)[0m
+[2m  82 |         (when (aget state "running")[0m
+[1m  83 |           (.setStatus (.-ui ctx) STATUS-KEY (render-status state (js/performance.now))))))))[0m
+-----------------^--------------------------------------------------------------
+ [33;1mCannot infer target type in expression (. (.-ui ctx) setStatus STATUS-KEY (render-status state (js/performance.now)))[0m
+--------------------------------------------------------------------------------
+[2m  84 | [0m
+[2m  85 | (defn start-ticker [state][0m
+[2m  86 |   (clear-interval-safe state)[0m
+[2m  87 |   (aset state "interval" (js/setInterval #(refresh-ui state) 250)))[0m
+--------------------------------------------------------------------------------
+
+[1m------ WARNING #9 - :infer-warning ---------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:129:26
+--------------------------------------------------------------------------------
+[2m 126 |                  (aset state "toolSegmentStartMs" nil)[0m
+[2m 127 |                  (aset state "toolWaitTotalMs" 0)[0m
+[2m 128 |                  (if (not (aget state "enabled"))[0m
+[1m 129 |                    (when (.-hasUI ctx)[0m
+--------------------------------^-----------------------------------------------
+ [33;1mCannot infer target type in expression (. ctx -hasUI)[0m
+--------------------------------------------------------------------------------
+[2m 130 |                      (.setStatus (.-ui ctx) STATUS-KEY js/undefined))[0m
+[2m 131 |                    (when (.-hasUI ctx)[0m
+[2m 132 |                      (.setStatus (.-ui ctx) STATUS-KEY (render-status state (js/performance.now)))[0m
+[2m 133 |                      (start-ticker state))))))[0m
+--------------------------------------------------------------------------------
+
+[1m------ WARNING #10 - :infer-warning --------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:130:34
+--------------------------------------------------------------------------------
+[2m 127 |                  (aset state "toolWaitTotalMs" 0)[0m
+[2m 128 |                  (if (not (aget state "enabled"))[0m
+[2m 129 |                    (when (.-hasUI ctx)[0m
+[1m 130 |                      (.setStatus (.-ui ctx) STATUS-KEY js/undefined))[0m
+----------------------------------------^---------------------------------------
+ [33;1mCannot infer target type in expression (. ctx -ui)[0m
+--------------------------------------------------------------------------------
+[2m 131 |                    (when (.-hasUI ctx)[0m
+[2m 132 |                      (.setStatus (.-ui ctx) STATUS-KEY (render-status state (js/performance.now)))[0m
+[2m 133 |                      (start-ticker state))))))[0m
+[2m 134 | [0m
+--------------------------------------------------------------------------------
+
+[1m------ WARNING #11 - :infer-warning --------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:130:22
+--------------------------------------------------------------------------------
+[2m 127 |                  (aset state "toolWaitTotalMs" 0)[0m
+[2m 128 |                  (if (not (aget state "enabled"))[0m
+[2m 129 |                    (when (.-hasUI ctx)[0m
+[1m 130 |                      (.setStatus (.-ui ctx) STATUS-KEY js/undefined))[0m
+----------------------------^---------------------------------------------------
+ [33;1mCannot infer target type in expression (. (.-ui ctx) setStatus STATUS-KEY js/undefined)[0m
+--------------------------------------------------------------------------------
+[2m 131 |                    (when (.-hasUI ctx)[0m
+[2m 132 |                      (.setStatus (.-ui ctx) STATUS-KEY (render-status state (js/performance.now)))[0m
+[2m 133 |                      (start-ticker state))))))[0m
+[2m 134 | [0m
+--------------------------------------------------------------------------------
+
+[1m------ WARNING #12 - :infer-warning --------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:131:26
+--------------------------------------------------------------------------------
+[2m 128 |                  (if (not (aget state "enabled"))[0m
+[2m 129 |                    (when (.-hasUI ctx)[0m
+[2m 130 |                      (.setStatus (.-ui ctx) STATUS-KEY js/undefined))[0m
+[1m 131 |                    (when (.-hasUI ctx)[0m
+--------------------------------^-----------------------------------------------
+ [33;1mCannot infer target type in expression (. ctx -hasUI)[0m
+--------------------------------------------------------------------------------
+[2m 132 |                      (.setStatus (.-ui ctx) STATUS-KEY (render-status state (js/performance.now)))[0m
+[2m 133 |                      (start-ticker state))))))[0m
+[2m 134 | [0m
+[2m 135 |   (em/on "tool_execution_start"[0m
+--------------------------------------------------------------------------------
+
+[1m------ WARNING #13 - :infer-warning --------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:132:34
+--------------------------------------------------------------------------------
+[2m 129 |                    (when (.-hasUI ctx)[0m
+[2m 130 |                      (.setStatus (.-ui ctx) STATUS-KEY js/undefined))[0m
+[2m 131 |                    (when (.-hasUI ctx)[0m
+[1m 132 |                      (.setStatus (.-ui ctx) STATUS-KEY (render-status state (js/performance.now)))[0m
+----------------------------------------^---------------------------------------
+ [33;1mCannot infer target type in expression (. ctx -ui)[0m
+--------------------------------------------------------------------------------
+[2m 133 |                      (start-ticker state))))))[0m
+[2m 134 | [0m
+[2m 135 |   (em/on "tool_execution_start"[0m
+[2m 136 |     :handler (fn [event ctx][0m
+--------------------------------------------------------------------------------
+
+[1m------ WARNING #14 - :infer-warning --------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:132:22
+--------------------------------------------------------------------------------
+[2m 129 |                    (when (.-hasUI ctx)[0m
+[2m 130 |                      (.setStatus (.-ui ctx) STATUS-KEY js/undefined))[0m
+[2m 131 |                    (when (.-hasUI ctx)[0m
+[1m 132 |                      (.setStatus (.-ui ctx) STATUS-KEY (render-status state (js/performance.now)))[0m
+----------------------------^---------------------------------------------------
+ [33;1mCannot infer target type in expression (. (.-ui ctx) setStatus STATUS-KEY (render-status state (js/performance.now)))[0m
+--------------------------------------------------------------------------------
+[2m 133 |                      (start-ticker state))))))[0m
+[2m 134 | [0m
+[2m 135 |   (em/on "tool_execution_start"[0m
+[2m 136 |     :handler (fn [event ctx][0m
+--------------------------------------------------------------------------------
+
+[1m------ WARNING #15 - :infer-warning --------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:181:24
+--------------------------------------------------------------------------------
+[2m 178 |                  (aset state "toolActiveCount" 0)[0m
+[2m 179 |                  (aset state "toolSegmentStartMs" nil)[0m
+[2m 180 |                  (aset state "toolWaitTotalMs" 0)[0m
+[1m 181 |                  (when (.-hasUI ctx)[0m
+------------------------------^-------------------------------------------------
+ [33;1mCannot infer target type in expression (. ctx -hasUI)[0m
+--------------------------------------------------------------------------------
+[2m 182 |                    (.setStatus (.-ui ctx) STATUS-KEY js/undefined))))))[0m
+[2m 183 | [0m
+--------------------------------------------------------------------------------
+
+[1m------ WARNING #16 - :infer-warning --------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:182:32
+--------------------------------------------------------------------------------
+[2m 179 |                  (aset state "toolSegmentStartMs" nil)[0m
+[2m 180 |                  (aset state "toolWaitTotalMs" 0)[0m
+[2m 181 |                  (when (.-hasUI ctx)[0m
+[1m 182 |                    (.setStatus (.-ui ctx) STATUS-KEY js/undefined))))))[0m
+--------------------------------------^-----------------------------------------
+ [33;1mCannot infer target type in expression (. ctx -ui)[0m
+--------------------------------------------------------------------------------
+[2m 183 | [0m
+--------------------------------------------------------------------------------
+
+[1m------ WARNING #17 - :infer-warning --------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:182:20
+--------------------------------------------------------------------------------
+[2m 179 |                  (aset state "toolSegmentStartMs" nil)[0m
+[2m 180 |                  (aset state "toolWaitTotalMs" 0)[0m
+[2m 181 |                  (when (.-hasUI ctx)[0m
+[1m 182 |                    (.setStatus (.-ui ctx) STATUS-KEY js/undefined))))))[0m
+--------------------------^-----------------------------------------------------
+ [33;1mCannot infer target type in expression (. (.-ui ctx) setStatus STATUS-KEY js/undefined)[0m
+--------------------------------------------------------------------------------
+[2m 183 | [0m
+--------------------------------------------------------------------------------
+
+[1m------ WARNING #18 - :infer-warning --------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:109:34
+--------------------------------------------------------------------------------
+[2m 106 |                  (if (not (aget state "enabled"))[0m
+[2m 107 |                    (do[0m
+[2m 108 |                      (clear-interval-safe state)[0m
+[1m 109 |                      (.setStatus (.-ui ctx) STATUS-KEY js/undefined)[0m
+----------------------------------------^---------------------------------------
+ [33;1mCannot infer target type in expression (. ctx -ui)[0m
+--------------------------------------------------------------------------------
+[2m 110 |                      (.notify (.-ui ctx) "Task timing: disabled" "info"))[0m
+[2m 111 |                    (do[0m
+[2m 112 |                      (.notify (.-ui ctx) "Task timing: enabled" "info")[0m
+[2m 113 |                      (when (aget state "running")[0m
+--------------------------------------------------------------------------------
+
+[1m------ WARNING #19 - :infer-warning --------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:109:22
+--------------------------------------------------------------------------------
+[2m 106 |                  (if (not (aget state "enabled"))[0m
+[2m 107 |                    (do[0m
+[2m 108 |                      (clear-interval-safe state)[0m
+[1m 109 |                      (.setStatus (.-ui ctx) STATUS-KEY js/undefined)[0m
+----------------------------^---------------------------------------------------
+ [33;1mCannot infer target type in expression (. (.-ui ctx) setStatus STATUS-KEY js/undefined)[0m
+--------------------------------------------------------------------------------
+[2m 110 |                      (.notify (.-ui ctx) "Task timing: disabled" "info"))[0m
+[2m 111 |                    (do[0m
+[2m 112 |                      (.notify (.-ui ctx) "Task timing: enabled" "info")[0m
+[2m 113 |                      (when (aget state "running")[0m
+--------------------------------------------------------------------------------
+
+[1m------ WARNING #20 - :infer-warning --------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:110:31
+--------------------------------------------------------------------------------
+[2m 107 |                    (do[0m
+[2m 108 |                      (clear-interval-safe state)[0m
+[2m 109 |                      (.setStatus (.-ui ctx) STATUS-KEY js/undefined)[0m
+[1m 110 |                      (.notify (.-ui ctx) "Task timing: disabled" "info"))[0m
+-------------------------------------^------------------------------------------
+ [33;1mCannot infer target type in expression (. ctx -ui)[0m
+--------------------------------------------------------------------------------
+[2m 111 |                    (do[0m
+[2m 112 |                      (.notify (.-ui ctx) "Task timing: enabled" "info")[0m
+[2m 113 |                      (when (aget state "running")[0m
+[2m 114 |                        (aset state "ctx" ctx)[0m
+--------------------------------------------------------------------------------
+
+[1m------ WARNING #21 - :infer-warning --------------------------------------------[0m
+ File: /home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/src/eta_mu/extensions/task_timing.cljs:112:31
+--------------------------------------------------------------------------------
+[2m 109 |                      (.setStatus (.-ui ctx) STATUS-KEY js/undefined)[0m
+[2m 110 |                      (.notify (.-ui ctx) "Task timing: disabled" "info"))[0m
+[2m 111 |                    (do[0m
+[1m 112 |                      (.notify (.-ui ctx) "Task timing: enabled" "info")[0m
+-------------------------------------^------------------------------------------
+ [33;1mCannot infer target type in expression (. ctx -ui)[0m
+--------------------------------------------------------------------------------
+[2m 113 |                      (when (aget state "running")[0m
+[2m 114 |                        (aset state "ctx" ctx)[0m
+[2m 115 |                        (start-ticker state)[0m
+[2m 116 |                        (refresh-ui state)))))))[0m
+--------------------------------------------------------------------------------
+[:websearch-open-hax] Compiling ...
+[:websearch-open-hax] Build completed. (53 files, 1 compiled, 0 warnings, 1.66s)
+  deploying...
+  deployed bootstrap
+  deployed chronos
+  deployed contract-runtime
+  deployed contract-runtime-v2
+  deployed custom-providers
+  deployed graph-memory
+  deployed image-render
+  deployed opencode-global-instructions
+  deployed opmf-contract-gate
+  deployed receipt-river
+  deployed session-mycology
+  deployed task-timing
+  deployed websearch-open-hax
+  settings.json up-to-date
+
+eta-mu build complete:
+  - bootstrap
+  - chronos
+  - contract-runtime
+  - contract-runtime-v2
+  - custom-providers
+  - graph-memory
+  - image-render
+  - opencode-global-instructions
+  - opmf-contract-gate
+  - receipt-river
+  - session-mycology
+  - task-timing
+  - websearch-open-hax

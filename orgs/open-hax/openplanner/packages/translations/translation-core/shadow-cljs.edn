@@ -1,0 +1,26 @@
+{:source-paths ["src" "test"]
+ :dependencies []
+ :builds
+ {:lib
+  {:target :esm
+   :output-dir "dist"
+   :modules {:index {:entries [openplanner.translations.boundary]
+                     :exports {:nextSegmentStatus openplanner.translations.boundary/next-segment-status-js
+                               :documentOverallStatus openplanner.translations.boundary/document-overall-status-js
+                               :summarizeSegments openplanner.translations.boundary/summarize-segments-js
+                               :normalizeTranslationSegment openplanner.translations.boundary/normalize-translation-segment-js
+                               :translationGraphMemoryPlan openplanner.translations.boundary/translation-graph-memory-plan-js
+                               :sftRow openplanner.translations.boundary/sft-row-js
+                               :manifestShape openplanner.translations.boundary/manifest-shape-js
+                               :translationJobPlan openplanner.translations.boundary/translation-job-plan-js
+                               :jobStatusUpdatePlan openplanner.translations.boundary/job-status-update-plan-js
+                               :documentListShape openplanner.translations.boundary/document-list-shape-js
+                               :documentTranslationShape openplanner.translations.boundary/document-translation-shape-js
+                               :documentReviewLabelPlan openplanner.translations.boundary/document-review-label-plan-js}}}
+   :compiler-options {:output-feature-set :es-next}}
+
+  :test
+  {:target :node-script
+   :output-to "target/test.cjs"
+   :main openplanner.translations.core-test/-main
+   :compiler-options {:output-feature-set :es-next}}}}

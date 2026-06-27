@@ -1,0 +1,34 @@
+services:
+  eros-eris-field-app:
+    image: node:22-bookworm
+    working_dir: /workspace
+    network_mode: host
+    command: >-
+      bash -lc "corepack enable && pnpm -C orgs/octave-commons/eros-eris-field-app dev"
+    environment:
+      CI: "true"
+      NPM_CONFIG_CONFIRM_MODULES_PURGE: "false"
+      NODE_OPTIONS: "--use-openssl-ca"
+
+      GRAPHQL_URL: "http://127.0.0.1:8796/graphql"
+      # GRAPHQL_ADMIN_TOKEN: "..." # if GRAPH_WEAVER_ADMIN_TOKEN is set on the weaver
+
+      OLLAMA_URL: "http://127.0.0.1:11434"
+      OLLAMA_MODEL: "qwen3-embedding:0.6b"
+
+      SIM_MAX_NODES: "6000"
+      SIM_MAX_EDGES: "12000"
+      SIM_STEP_MS: "5000"
+      SIM_DT: "0.18"
+      SIM_REFRESH_MS: "30000"
+      SIM_WRITE_MS: "15000"
+
+      # boundary radius (world units) used for the soft circular wall
+      TARGET_RADIUS: "5000"
+
+      # boundary pressure pushes nodes inward when they approach the outer radius
+      BOUNDARY_THICKNESS: "650"
+      BOUNDARY_PRESSURE: "240"
+    volumes:
+      - ../..:/workspace
+    restart: unless-stopped

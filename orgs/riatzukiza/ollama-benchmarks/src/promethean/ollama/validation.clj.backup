@@ -1,0 +1,166 @@
+(ns promethean.ollama.validation
+  "Tool validation using clojure.spec.alpha with parameter validation and coercion."
+  (:require
+    [clojure.spec.alpha :as s])
+
+;; Validation adapter for potential Malli migration
+(defprotocol ValidationAdapter
+  "Abstract interface for validation implementations."
+  (validate [data spec] "Validate data against specification")
+  (coerce [data spec] "Coerce data to match specification")
+  (explain [data spec] "Generate explanation for validation failure"))
+
+;; Current spec.alpha implementation
+(defrecord SpecAdapter []
+  ValidationAdapter
+  (validate [data spec]
+    (s/valid? spec data))
+  (coerce [data spec]
+    (s/conform spec data))
+  (explain [data spec]
+    (s/explain-data spec data)))
+
+;; Current validation adapter
+(defonce ^:private !validation-adapter (atom (->SpecAdapter)))
+
+(defn set-validation-adapter!
+  "Set the validation implementation (for future Malli migration)."
+  [adapter]
+  (reset! !validation-adapter adapter))
+
+(defn get-validation-adapter []
+  "Get current validation adapter."
+  @!validation-adapter)
+
+;; Tool validation helpers
+(defn validate-tool-call!
+  "Validate tool call parameters against tool spec with clear errors."
+  [tool-call tool-spec]
+  (let [adapter (get-validation-adapter)
+        result (.validate adapter tool-call tool-spec)]
+    (if result
+      tool-call
+      (throw (ex-info "Tool validation failed" 
+                      {:tool-call tool-call
+                       :tool-spec tool-spec 
+                       :validation-errors (.explain adapter tool-call tool-spec)}))
+      result))
+
+(defn coerce-tool-arguments!
+  "Convert JSON/string arguments to proper Clojure types with error handling."
+  [args tool-spec]
+  (let [adapter (get-validation-adapter)
+        result (.coerce adapter args tool-spec)]
+    (if (= ::s/invalid result)
+      (throw (ex-info "Argument coercion failed" 
+                      :args args 
+                      :tool-spec tool-spec 
+                      :coercion-prolems (.explain adapter args tool-spec)))
+      result))
+
+;; Schema validation helpers
+(defn validate-schema-spec!
+  "Validate that schema specification is well-formed."
+  [schema-spec]
+  (let [required-keys #{:type :description}]
+        schema-keys (keys schema-spec)]
+    (when-not (contains? schema-spec :type)
+      (throw (ex-info "Schema missing required :type field" {:schema schema-spec})))
+    (doseq [key schema-keys]
+      (when (and (not (contains? required-keys key))
+                 (not= key :properties))
+        (throw (ex-info "Invalid schema field" {:key key :schema schema-spec})))))
+
+;; Type validation specs (from specs/triage/tools.md)
+(s/def ::email
+  (s/and string? #(re-find #".+@.+\..+" %)))
+
+(s/def ::positive-int
+  (s/and int? #(pos? %)))
+
+(s/def ::file-path
+  (s/and string? #(re-find #"^[a-zA-Z0-9_\-/.]+$" %)))
+
+;; Correct coordinate validation for lat/lon tuples
+(s/def ::lat (s/and number? #(<= -90 % 90)))
+(s/def ::lon (s/and number? #(<= -180 % 180)))
+(s/def ::coordinate (s/tuple ::lat ::lon))
+
+;; Complex type validation
+(s/def ::tool-parameters
+  (s/map-of keyword? any?))
+
+(s/def ::timeout-ms
+  (s/and int? #(pos? %) #(<= % 600000)))
+
+(s/def ::choice-policy
+  (s/and keyword? #{:first :any :best :adaptive}))
+
+;; Error formatting for better UX
+(defn format-validation-errors
+  "Format validation errors into human-readable messages."
+  [explain-data]
+  (when explain-data
+    (let [problems (when explain-data (:clojure.spec.alpha/problems explain-data))]
+      (for [problem problems]
+        (let [path (str/join "." (map name (:path problem)))]
+          (case (:pred problem)
+            :string (str path " must be a string, got: " (pr-str (:val problem)))
+            :number (str path " must be a number, got: " (pr-str (:val problem)))
+            :keyword (str path " must be a keyword, got: " (pr-str (:val problem)))
+            :pos? (str path " must be positive, got: " (pr-str (:val problem)))
+            :default (str path " must satisfy " (:pred problem) ", got: " (pr-str (:val problem)))
+            (str path " validation failed: " (pr-str (:val problem)))))))
+
+;; Performance-optimized validation
+(defn cached-validator
+  "Create a cached validator for repeated validations."
+  [spec]
+  (let [cache (atom {})]
+    (fn [data]
+      (if-let [cached-result (get @cache data)]
+        cached-result
+        (let [result (s/valid? spec data)]
+          (swap! cache assoc data result)
+          result))))
+
+;; Integration with configuration
+(defn init-validation!
+  "Initialize validation system based on configuration."
+  []
+  (let [cfg (promethean.ollama.config/get-config)]
+    (when (:validation/strict-mode cfg)
+      (println "Strict validation mode enabled"))
+    (when (:validation/spec-alpha cfg)
+      (println "Using clojure.spec.alpha for validation"))))
+
+;; Validation statistics and monitoring
+(defonce ^:private !validation-stats (atom {:total 0 :failed 0 :by-type {}}))
+
+(defn record-validation!
+  "Record validation statistics for monitoring."
+  [data-type success?]
+  (let [current-stats @!validation-stats
+        new-total (inc (:total current-stats))
+        new-failed (if success? 
+                     (:failed current-stats)
+                     (inc (:failed current-stats)))]
+    (swap! !validation-stats 
+             assoc :total new-total 
+                    :failed new-failed
+                    :by-type (update (:by-type current-stats) data-type 
+                                               (if success? 
+                                                 (fnil inc 0) 
+                                                 (fnil identity 0))))))
+
+(defn get-validation-stats
+  "Get current validation statistics."
+  []
+  @!validation-stats)
+
+;; Helper to initialize validation system
+(defn init-validation-system!
+  "Initialize validation system with default configuration."
+  []
+  (init-validation!))
+EOF'

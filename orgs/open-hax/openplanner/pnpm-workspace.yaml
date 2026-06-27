@@ -1,0 +1,26 @@
+packages:
+  - ./app/*
+  - packages/**
+
+allowBuilds:
+  '@discordjs/opus': true
+  '@google/genai': true
+  cbor-extract: true
+  esbuild: true
+  koffi: true
+  lmdb: true
+  msgpackr-extract: true
+  protobufjs: true
+
+onlyBuiltDependencies:
+  - '@discordjs/opus'
+  - '@google/genai'
+  - cbor-extract
+  - esbuild
+  - koffi
+  - lmdb
+  - msgpackr-extract
+  - protobufjs
+
+patchedDependencies:
+  libsodium-wrappers@0.7.16: patches/libsodium-wrappers@0.7.16.patch

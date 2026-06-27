@@ -1,0 +1,14 @@
+# Editor / LSP caches
+.clj-kondo/
+.cpcache/
+.lsp/
+
+# Vendor runtime binaries (re-download from onnxruntime releases)
+vendor/onnxruntime-openvino/capi/*.so*
+
+# Build output
+dist/
+target/
+
+# OS
+.DS_Store

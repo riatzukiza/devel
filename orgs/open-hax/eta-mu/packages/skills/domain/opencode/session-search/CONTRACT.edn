@@ -1,0 +1,43 @@
+;; ημ.skill/opencode-session-search@0.2.0
+;; Migrated from pi/agent/skills/opencode-session-search/CONTRACT.edn
+
+(skill-contract
+  (name "opencode-session-search")
+  (v "ημ.skill/opencode-session-search@0.2.0")
+
+  (intent
+    "Search and replay opencode session history stored in .opencode/state/sessions/.
+     Used for continuity when resuming interrupted work or debugging past agent behavior.")
+
+  (activation
+    (priority 52)
+    (explicit ["skill:opencode-session-search"])
+    (triggers ["session search" "find session" "replay session" "session history"
+               "past session" "opencode sessions"])
+    (autoload false))
+
+  (governance
+    (touch-layer :mutable)
+    (non-override [:mission :directives :safety :license])
+    (requires-user-approval false))
+
+  (effects
+    (writes false)
+    (network false)
+    (commits false))
+
+  (protocol
+    (storage
+      (path ".opencode/state/sessions/")
+      (format "JSONL per session, one message object per line")
+      (index "session-index.json maps session-id → {start, end, summary, model, cost}"))
+    (search-strategy
+      ["grep -r <term> .opencode/state/sessions/ | head -20"
+       "jq 'select(.role == \"assistant\") | .content' .opencode/state/sessions/<id>.jsonl"
+       "Sort by mtime to find most recent: ls -lt .opencode/state/sessions/ | head -5"])
+    (continuity-rule
+      "Before starting a new session on an interrupted task: search sessions for the task."
+      "Inject the last receipt + last assistant message as context prefix.")))
+
+  (output
+    (must-include ["Check session history before declaring a task as not started"])))

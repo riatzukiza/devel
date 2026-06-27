@@ -1,0 +1,86 @@
+;; Progress Component Contract
+;; Defines the API for progress indicators
+
+{:component :progress
+ :version "1.0.0"
+ 
+ :description
+ "Progress indicator for showing completion status of a task."
+ 
+ :props
+ {:value
+  {:type :number
+   :required false
+   :description "Current progress value (0-100)"}
+  
+  :max
+  {:type :number
+   :default 100
+   :description "Maximum value"}
+  
+  :variant
+  {:type :enum
+   :values [:default :success :warning :error :gradient]
+   :default :default
+   :description "Color variant of the progress bar"}
+  
+  :size
+  {:type :enum
+   :values [:sm :md :lg]
+   :default :md
+   :description "Height of the progress bar"}
+  
+  :indeterminate
+  {:type :boolean
+   :default false
+   :description "Whether progress is indeterminate (loading)"}
+  
+  :animated
+  {:type :boolean
+   :default true
+   :description "Whether to animate progress changes"}
+  
+  :show-value
+  {:type :boolean
+   :default false
+   :description "Whether to show the percentage value"}
+  
+  :label
+  {:type :string
+   :required false
+   :description "Accessible label for screen readers"}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :accessibility
+ {:role :progressbar
+  :aria
+  {:valuemin 0
+   :valuemax :max
+   :valuenow :value
+   :labelledby :label-id}}
+ 
+ :styling
+ {:data-attributes
+  {:data-component "progress"
+   :data-variant :variant
+   :data-size :size
+   :data-indeterminate :indeterminate}}
+ 
+ :tokens
+ {:colors
+  {:track :colors.background/subtle
+   :default :colors.accent/blue
+   :success :colors.accent/cyan
+   :warning :colors.accent/orange
+   :error :colors.accent/red
+   :gradient "linear-gradient(90deg, #a6e22e, #66d9ef, #ae81ff)"}
+  
+  :sizes
+  {:sm {:height "4px"}
+   :md {:height "8px"}
+   :lg {:height "12px"}}
+  
+  :radius
+  :spacing/1}}

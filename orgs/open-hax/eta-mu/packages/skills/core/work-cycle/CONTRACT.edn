@@ -1,0 +1,72 @@
+;; ημ.skill/work-cycle@0.2.0
+;; Migrated from pi/agent/skills/work-cycle/CONTRACT.edn
+;; Harness-agnostic. Adapter stubs in packages/skills/harness/*/work-cycle/
+
+(skill-contract
+  (name "work-cycle")
+  (v "ημ.skill/work-cycle@0.2.0")
+
+  (intent
+    "Foundational cognitive loop: observe → model → plan → execute → verify → record.
+     Defines how the agent approaches any task. Harness-agnostic.
+     Canonical loop identity: ημΠ.cognitive-loop.v1")
+
+  (activation
+    (priority 100)
+    (explicit ["skill:work-cycle"])
+    (triggers ["agent loop" "work cycle" "cognitive loop" "PRNPA" "P→R→N→Π→A"])
+    (autoload true))
+
+  (governance
+    (touch-layer :semi-stable)
+    (non-override [:mission :directives :safety :license :output-shape])
+    (requires-user-approval false))
+
+  (effects
+    (writes false)
+    (network false)
+    (commits false))
+
+  ;; Canonical typed morphisms (ημΠ.cognitive-loop.v1)
+  ;; P : S × H → O
+  ;; ρ : O → ℝ          ;; renamed from R to avoid shadowing the codomain ℝ
+  ;; N : ℝ → ℝ_norm
+  ;; Π : ℝ_norm × C × G → π
+  ;; A : π × S → (S', μ)
+  ;; F : (μ, S', O) → fb
+  ;;
+  ;; Closed step: ⟨s_{t+1}, μ_t⟩ = A(Π(N(ρ(P(s_t, η_t))), C, G), s_t)
+  ;;
+  ;; η–μ coupling: η is only knowable via μ under feedback.
+  ;; 息 (breath boundary): episodic commit operator — silence > τ triggers Commit(E_k).
+
+  (protocol
+    (agent-loop
+      (cycle
+        (observe "Collect state from repository, spec files, open todos, current task request, system environment.")
+        (model "Construct internal representation of system architecture, dependencies, current phase.")
+        (plan "Generate step-by-step plan; break into phases.")
+        (execute "Perform one safe unit of work at a time.")
+        (verify "Ensure code compiles, tests pass, specs remain valid.")
+        (record "Update specs and commit changes."))
+      (loop-rule "Never execute code modifications without passing through Observe → Model → Plan first."))
+
+    (prnpa-loop
+      (notation "P→R→N→Π→A→(feedback)→P")
+      (P "Perception / problem-framing: restate the ask, surface constraints, separate Facts vs Interpretations vs Narratives.")
+      (R "Research / reality-check: consult repo, tests, docs, web sources. Prefer evidence-on-fresh.")
+      (N "Narrative / naming the frames: synthesize findings, plan.")
+      (Π "Persistence: when needed, pay fork tax so work survives session.")
+      (A "Action / artifact: produce deliverable, run smallest verification.")
+      (feedback "Incorporate results, update perception, loop."))
+
+    (methodology
+      (principle "All work begins with planning and investigation before execution.")
+      (workflow
+        "Break features into small steps."
+        "Group steps into phases."
+        "After each phase: code MUST compile/build, all tests MUST pass."
+        "Prefer incremental progress with verification.")))
+
+  (output
+    (must-include ["any work done via this loop follows the phase-model pattern"])))

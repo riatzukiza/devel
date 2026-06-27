@@ -1,0 +1,84 @@
+;; ημ.skill/receipt-river@0.2.0
+;; Migrated from pi/agent/skills/receipt-river/CONTRACT.edn
+;; Harness-agnostic. Driver-abstracted.
+;; Adapter stubs in packages/skills/harness/*/receipt-river/
+
+(skill-contract
+  (name "receipt-river")
+  (v "ημ.skill/receipt-river@0.2.0")
+
+  (intent
+    "Append-only μ-trace ledger for multi-step work. The receipt river is the auditable
+     action trace (μ) in the ημΠ cognitive loop — the only window into η (hidden state)
+     under feedback. Prompt-injected as working memory on each turn.
+     Driver-abstracted: same tool surface, different storage backends.")
+
+  (activation
+    (priority 62)
+    (explicit ["skill:receipt-river"])
+    (triggers ["receipt river" "receipts.log" "append-only receipts" "tail receipts" "receipts v2"])
+    (autoload true))
+
+  (governance
+    (touch-layer :mutable)
+    (non-override [:mission :directives :safety :license :output-shape])
+    (requires-user-approval false))
+
+  (effects
+    (writes true)
+    (network :driver-dependent) ;; false for :fs/:db/:s3; true for :http
+    (commits false))
+
+  ;; Driver dispatch — what the agent sees is always the same tool surface.
+  ;; The runtime selects the driver based on deployment context.
+  (driver
+    (default :fs)
+    (options
+      (:fs    "Local filesystem receipts.log — canonical for personal/pi installs.
+               Discoverable by ingestion engine scanning ~/.ημ/state/ directories."
+               (network false))
+      (:db    "Database row in EventRecord table (Knoxx/cephalon cloud deploy).
+               actor_id = agent user row. Queryable by tenant org_id."
+               (network false))
+      (:s3    "S3-compatible blob append. Key: receipts/{workspace-id}/receipts.log.
+               Works with Dropbox, GDrive via mounted FUSE or adapter service."
+               (network false))
+      (:http  "Remote receipt-river API endpoint. Used when agent has no direct
+               filesystem or DB access. POST /receipts, GET /receipts/tail."
+               (network true)))
+    (rule "Driver selection MUST NOT change the tool parameter surface the agent sees.")
+    (rule "Driver selection MUST NOT change the receipt field schema.")
+    (rule "Switching drivers mid-session is permitted; append-only constraint is enforced by the driver, not the agent."))
+
+  (protocol
+    (workflow
+      ["If receipt store exists: treat as append-only; never edit past entries."
+       "If receipt store is absent and work is non-trivial: bootstrap it."
+       "Append a receipt at: (1) start, (2) after each phase, (3) after tests/build, (4) after commits/pushes."
+       "Before major decisions: tail the last ~20 entries to regain context."
+       "Do not log secrets; keep notes bounded."]))
+
+  (memory-injection
+    (rule "Runtime SHOULD inject the last 3 receipts as a system prompt prefix on each turn.")
+    (rule "Injection format: [RECEIPT RIVER MEMORY] ... never edit past lines."))
+
+  (cross-reference
+    (session-mycology
+      "On :adjudication receipts, signal session-mycology to score difficulty/confidence."
+      "High-friction receipts surface as skill spores for future embedding recall.")))
+
+(receipts-contract
+  (id "promethean.receipts/v2")
+  (append-only true)
+  (delimiter " | ")
+  (required-keys [:ts :kind :origin :owner :dod :pi :host :manifest :refs])
+  (optional-keys [:note :tests :decisions :drift])
+  (kinds
+    [:push-truth :artifact-hash :test-run :build :decision :drift :catalog
+     :observation :field-impact :truth :refutation :adjudication])
+  (driver-field
+    ;; Added in v0.2.0 — written by runtime, not agent.
+    ;; Allows mixed-driver receipt streams to be distinguished in replay.
+    (key :_driver)
+    (optional true)
+    (values [:fs :db :s3 :http])))

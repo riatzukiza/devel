@@ -1,0 +1,18 @@
+;; Prefetch sources that are gated=auto on Hugging Face.
+;; You will likely need:
+;;   export HF_TOKEN=hf_...
+;; and to accept the dataset terms in the browser while logged into HF.
+;;
+;; Usage:
+;;   promptbench fetch --config pipelines/prefetch-gated.edn
+
+{:name    :prefetch-gated
+ :version "0.1.0"
+ :seed    1337
+
+ :sources [:wildjailbreak-train
+           :wildjailbreak-eval
+           :qualifire-prompt-injection-benchmark
+           :sorrybench-202406]
+
+ :data-dir "data"}

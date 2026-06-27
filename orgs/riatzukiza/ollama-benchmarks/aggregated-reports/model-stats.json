@@ -1,0 +1,26 @@
+{
+  "qwen3:4b" : {
+    "total_runs" : 34,
+    "successful_runs" : 34,
+    "success_rate" : 1.0,
+    "mean_tps" : 74.66391586261824,
+    "mean_duration_ms" : 30178.17647058824,
+    "report_types" : [ "ollama", "ollama-tools", "ollama-tool-eval" ]
+  },
+  "llama3.2:latest" : {
+    "total_runs" : 28,
+    "successful_runs" : 28,
+    "success_rate" : 1.0,
+    "mean_tps" : 97.48664435898898,
+    "mean_duration_ms" : 17362.17857142857,
+    "report_types" : [ "ollama", "ollama-tool-eval" ]
+  },
+  "gemma3:latest" : {
+    "total_runs" : 32,
+    "successful_runs" : 12,
+    "success_rate" : 0.375,
+    "mean_tps" : 27.373646928406764,
+    "mean_duration_ms" : 2838.25,
+    "report_types" : [ "ollama", "ollama-tool-eval" ]
+  }
+}

@@ -1,0 +1,25 @@
+;; Harness adapter: opencode → tool-authoring
+;; Restructured from pi/agent/skills/opencode-tool-authoring/CONTRACT.edn
+
+(harness-adapter
+  (harness :opencode)
+  (skill "tool-authoring")
+  (core-ref "packages/skills/domain/opencode/sdk/CONTRACT.edn")
+  (install-path ".opencode/skills/tool-authoring/CONTRACT.edn")
+
+  (protocol
+    (tool-surfaces
+      (:inline
+        "opencode.json tools[]: small JS function tools defined inline."
+        "Shape: { name, description, parameters: JSONSchema, execute: string (JS fn body) }")
+      (:mcp
+        "MCP server tools: registered via opencode.json mcp{}."
+        "Full tool with side effects, filesystem access, network. See tools-mcp adapter."))
+    (authoring-rules
+      ["Prefer MCP tools for anything with side effects or >50 lines of logic."
+       "Inline tools for simple transformations, lookups, formatting."
+       "Every tool must have a description that states what it returns, not just what it does."
+       "Tools that write files must be receipt-river aware: call receipt_river after write."]))
+
+  (notes
+    "Tool TS types: import type { Tool } from '@opencode-ai/sdk'."))

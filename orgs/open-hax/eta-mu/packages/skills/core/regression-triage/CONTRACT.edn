@@ -1,0 +1,66 @@
+;; ημ.skill/regression-triage@0.2.0
+;; Migrated from pi/agent/skills/regression-triage/CONTRACT.edn
+;; Harness-agnostic. Adapter stubs in packages/skills/harness/*/regression-triage/
+
+(skill-contract
+  (name "regression-triage")
+  (v "ημ.skill/regression-triage@0.2.0")
+
+  (intent
+    "Investigate regressions: locate introducing change, classify intent,
+     choose rollback vs fix-forward, add regression test, verify, record.
+     Harness-agnostic. Integrates with receipt-river for μ-trace.
+     Canonical loop phase: A (action) within ημΠ.cognitive-loop.v1")
+
+  (activation
+    (priority 80)
+    (explicit ["skill:regression-triage"])
+    (triggers ["there was a regression" "this was a regression" "this regressed"
+               "regression triage" "git bisect" "fix-forward vs rollback"])
+    (autoload false))
+
+  (governance
+    (touch-layer :mutable)
+    (non-override [:mission :directives :safety :license :output-shape])
+    (requires-user-approval false))
+
+  (effects
+    (writes true)
+    (network false)
+    (commits true))
+
+  (protocol
+    (workflow
+      ["Confirm the regression is real on current HEAD."
+       "  — Establish expected vs actual; capture env, version, commit SHA."
+
+       "Locate introducing change."
+       "  — Prefer git bisect with a deterministic, side-effect-free test command."
+       "  — Narrow to the exact commit or PR if bisect is infeasible."
+
+       "Classify intent (label with uncertainty score)."
+       "  — :side-effect — desired change with unintended breakage."
+       "  — :incomplete  — feature shipped in partial state."
+       "  — :incorrect   — logic was always wrong; latent until now."
+
+       "Choose remediation strategy."
+       "  — :rollback     — revert commit; use when intent is :side-effect and forward path is unclear."
+       "  — :fix-forward  — patch inline; use when :incomplete or :incorrect and fix is bounded."
+       "  — Record choice + rationale in receipt-river."
+
+       "MANDATORY: add a regression test covering the failed path."
+       "  — Test must be deterministic and runnable in CI without external dependencies."
+
+       "Verify: smallest relevant test suite first, then broader suite when feasible."
+
+       "Record to receipt-river."
+       "  — Fields: intro-commit, classification, p-score, remediation, what-the-test-protects."]))
+
+  (receipts
+    (kind :decision)
+    (driver-agnostic true)
+    (fields
+      [:intro-commit :classification :p-score :remediation :test-coverage :ts]))
+
+  (output
+    (must-include ["repro" "introducing-change" "regression-test" "verification" "receipt"])))

@@ -1,0 +1,397 @@
+name: CI - Linux Packages
+
+on:
+  push:
+    branches: [main, develop]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      codex_version:
+        description: 'Codex.app version (latest or X.Y.Z)'
+        required: false
+        default: 'latest'
+      build_mode:
+        description: 'Build mode (quick=package only, full=package + smoke)'
+        required: false
+        default: 'quick'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  DOCKER_BUILDKIT: 1
+
+jobs:
+  detect:
+    name: Detect versions and matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      repo_version: ${{ steps.version.outputs.repo }}
+      codex_version: ${{ steps.version.outputs.codex }}
+      is_release: ${{ steps.version.outputs.is_release }}
+      build_mode: ${{ steps.mode.outputs.mode }}
+      matrix_json: ${{ steps.matrix.outputs.json }}
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Detect versions
+        id: version
+        env:
+          INPUT_CODEX_VERSION: ${{ github.event.inputs.codex_version }}
+        run: |
+          set -euo pipefail
+
+          REPO_VERSION="$(node -p "require('./codex-linux-fork/package.json').version")"
+          IS_RELEASE=false
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            REPO_VERSION="${GITHUB_REF#refs/tags/v}"
+            IS_RELEASE=true
+          fi
+
+          CODEX_VERSION="${INPUT_CODEX_VERSION:-latest}"
+          if [ -z "$CODEX_VERSION" ] || [ "$CODEX_VERSION" = "latest" ]; then
+            CODEX_VERSION="$(curl --retry 3 --retry-delay 2 -fsSL https://api.github.com/repos/openai/codex/releases/latest | jq -r '.tag_name' | sed 's/^v//' || echo latest)"
+          fi
+
+          echo "repo=$REPO_VERSION" >> "$GITHUB_OUTPUT"
+          echo "codex=$CODEX_VERSION" >> "$GITHUB_OUTPUT"
+          echo "is_release=$IS_RELEASE" >> "$GITHUB_OUTPUT"
+
+      - name: Determine build mode
+        id: mode
+        env:
+          INPUT_BUILD_MODE: ${{ github.event.inputs.build_mode }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          set -euo pipefail
+
+          MODE="${INPUT_BUILD_MODE:-}"
+          if [ -z "$MODE" ]; then
+            if [ "$EVENT_NAME" = "pull_request" ]; then
+              MODE=quick
+            elif [[ "$GITHUB_REF" == refs/tags/* ]]; then
+              MODE=full
+            else
+              MODE=quick
+            fi
+          fi
+
+          case "$MODE" in
+            quick|full) ;;
+            *)
+              echo "Unsupported build mode: $MODE" >&2
+              exit 1
+              ;;
+          esac
+
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+
+      - name: Generate build matrix
+        id: matrix
+        env:
+          BUILD_MODE: ${{ steps.mode.outputs.mode }}
+        run: |
+          set -euo pipefail
+
+          if [ "$BUILD_MODE" = "full" ]; then
+            SMOKE=true
+          else
+            SMOKE=false
+          fi
+
+          MATRIX_JSON="$(jq -cn --argjson smoke "$SMOKE" '
+            {
+              include: [
+                { arch: "x86_64", docker_platform: "amd64", smoke: $smoke },
+                { arch: "arm64", docker_platform: "arm64", smoke: $smoke }
+              ]
+            }
+          ')"
+
+          echo "json=$MATRIX_JSON" >> "$GITHUB_OUTPUT"
+
+  prepare-shell:
+    name: Download and extract Codex.app
+    needs: detect
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Install extraction tools
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y p7zip-full
+          npm install -g asar
+
+      - name: Download Codex.app
+        env:
+          CODEX_VERSION: ${{ needs.detect.outputs.codex_version }}
+        run: |
+          set -euo pipefail
+
+          urls=(
+            "https://persistent.oaistatic.com/codex-app-prod/Codex.dmg"
+            "https://storage.googleapis.com/codex-releases/Codex-${CODEX_VERSION}.dmg"
+            "https://codex-releases.s3.amazonaws.com/Codex-${CODEX_VERSION}.dmg"
+          )
+
+          rm -f Codex.dmg
+          for url in "${urls[@]}"; do
+            echo "Trying $url"
+            if curl --retry 3 --retry-delay 2 -fL "$url" -o Codex.dmg; then
+              break
+            fi
+          done
+
+          test -f Codex.dmg
+
+      - name: Extract desktop shell
+        run: |
+          set -euo pipefail
+
+          rm -rf extracted app
+          mkdir -p extracted app
+          set +e
+          7z x Codex.dmg -oextracted >/tmp/codex-7z.log 2>&1
+          extract_status=$?
+          set -e
+
+          if [ "$extract_status" -ne 0 ] && [ "$extract_status" -ne 1 ] && [ "$extract_status" -ne 2 ]; then
+            tail -n 200 /tmp/codex-7z.log
+            exit "$extract_status"
+          fi
+
+          RESOURCES_PATH="extracted/Codex Installer/Codex.app/Contents/Resources"
+          if [ ! -d "$RESOURCES_PATH" ]; then
+            echo "Expected resources path missing" >&2
+            tail -n 200 /tmp/codex-7z.log
+            find extracted -maxdepth 4 -type d | sort
+            exit 1
+          fi
+
+          cp -R "$RESOURCES_PATH"/. app/
+          find app -type f -name '._*' -delete
+
+          if [ -f app/app.asar ]; then
+            asar extract app/app.asar app/
+          fi
+
+          test -f app/.vite/build/main.js
+          test -d app/webview
+
+      - name: Archive extracted shell
+        run: |
+          set -euo pipefail
+
+          paths=(.vite webview)
+          if [ -d app/node_modules/tslib ]; then
+            paths+=(node_modules/tslib)
+          fi
+
+          tar -C app -czf extracted-shell.tar.gz "${paths[@]}"
+
+      - name: Upload extracted shell
+        uses: actions/upload-artifact@v4
+        with:
+          name: extracted-shell
+          path: extracted-shell.tar.gz
+          retention-days: 1
+
+  build:
+    name: Build ${{ matrix.arch }}
+    needs: [detect, prepare-shell]
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.detect.outputs.matrix_json) }}
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Download extracted shell
+        uses: actions/download-artifact@v4
+        with:
+          name: extracted-shell
+          path: .
+
+      - name: Restore extracted shell
+        run: |
+          set -euo pipefail
+          rm -rf app
+          mkdir -p app
+          tar -C app -xzf extracted-shell.tar.gz
+
+      - name: Stage extracted shell
+        run: bash ./scripts/prepare-linux-fork.sh
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build toolchain image
+        run: |
+          set -euo pipefail
+          docker buildx build \
+            --load \
+            --platform "linux/${{ matrix.docker_platform }}" \
+            -f docker/Dockerfile \
+            -t "codex-build:${{ matrix.arch }}" \
+            .
+
+      - name: Build Linux packages
+        run: |
+          set -euo pipefail
+          docker run --rm \
+            --platform "linux/${{ matrix.docker_platform }}" \
+            -v "$PWD:/build" \
+            "codex-build:${{ matrix.arch }}" \
+            bash /build/docker/build.sh
+
+      - name: Smoke test unpacked app
+        if: ${{ matrix.smoke }}
+        run: |
+          set -euo pipefail
+          docker run --rm \
+            --platform "linux/${{ matrix.docker_platform }}" \
+            -v "$PWD:/build" \
+            "codex-build:${{ matrix.arch }}" \
+            bash -lc '
+              set -euo pipefail
+              cd /build/codex-linux-fork/dist
+
+              UNPACKED_DIR=""
+              for candidate in "linux-${{ matrix.arch }}-unpacked" "linux-x64-unpacked" "linux-unpacked"; do
+                if [ -d "$candidate" ]; then
+                  UNPACKED_DIR="$candidate"
+                  break
+                fi
+              done
+
+              if [ -z "$UNPACKED_DIR" ]; then
+                echo "Missing unpacked Electron directory" >&2
+                find . -maxdepth 1 -type d -name "linux*-unpacked"
+                exit 1
+              fi
+
+              rm -f /tmp/codex-smoke.log
+              set +e
+              timeout 20 xvfb-run -a "./$UNPACKED_DIR/codex" > /tmp/codex-smoke.log 2>&1
+              code=$?
+              set -e
+
+              if [ "$code" -ne 0 ] && [ "$code" -ne 124 ]; then
+                cat /tmp/codex-smoke.log
+                exit "$code"
+              fi
+
+              grep -q "initialize_handshake_result.*outcome=success" /tmp/codex-smoke.log
+              grep -q "Codex app-server connection state changed.*next=connected" /tmp/codex-smoke.log
+              tail -n 120 /tmp/codex-smoke.log
+            '
+
+      - name: Collect artifacts
+        if: always()
+        run: |
+          set -euo pipefail
+
+          ARTIFACT_DIR="artifacts-${{ matrix.arch }}"
+          mkdir -p "$ARTIFACT_DIR"
+
+          cp release/* "$ARTIFACT_DIR"/ 2>/dev/null || true
+          cp codex-linux-fork/dist/SHA256SUMS "$ARTIFACT_DIR"/SHA256SUMS.${{ matrix.arch }} 2>/dev/null || true
+
+          cat > "$ARTIFACT_DIR/BUILD_INFO.txt" <<EOF
+          Architecture: ${{ matrix.arch }}
+          Docker platform: ${{ matrix.docker_platform }}
+          Repo version: ${{ needs.detect.outputs.repo_version }}
+          Codex version: ${{ needs.detect.outputs.codex_version }}
+          Build mode: ${{ needs.detect.outputs.build_mode }}
+          Build date: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+          EOF
+
+          ls -lh "$ARTIFACT_DIR"
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: packages-${{ matrix.arch }}
+          path: artifacts-${{ matrix.arch }}/
+          retention-days: 30
+
+  release:
+    name: Create GitHub release
+    needs: [detect, build]
+    if: ${{ needs.detect.outputs.is_release == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Download packaged artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: all-artifacts/
+
+      - name: Organize release assets
+        run: |
+          set -euo pipefail
+
+          mkdir -p release-assets
+          find all-artifacts -type f \
+            \( -name '*.deb' -o -name '*.AppImage' -o -name '*.tar.gz' -o -name 'BUILD_INFO.txt' -o -name 'SHA256SUMS.*' \) \
+            -exec cp {} release-assets/ \;
+
+          cd release-assets
+          find . -maxdepth 1 -type f \( -name '*.deb' -o -name '*.AppImage' -o -name '*.tar.gz' \) -exec sha256sum {} \; | sort > SHA256SUMS
+
+          cat > MANIFEST.md <<EOF
+          # Codex Linux Release
+
+          Version: ${{ needs.detect.outputs.repo_version }}
+          Codex version: ${{ needs.detect.outputs.codex_version }}
+          Build mode: ${{ needs.detect.outputs.build_mode }}
+          Build date: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+          EOF
+
+          for artifact in *.deb *.AppImage *.tar.gz; do
+            if [ -f "$artifact" ]; then
+              size="$(stat -c%s "$artifact")"
+              printf -- '- %s (%s bytes)\n' "$artifact" "$size" >> MANIFEST.md
+            fi
+          done
+
+          ls -lh
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-assets/*
+          body_path: release-assets/MANIFEST.md
+          draft: false
+          prerelease: false
+          generate_release_notes: true

@@ -1,0 +1,4 @@
+{
+  "orgs/open-hax/codex": ["orgs/moofone/codex-ts-sdk"],
+  "orgs/moofone/codex-ts-sdk": ["orgs/openai/codex"]
+}

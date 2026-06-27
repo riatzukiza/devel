@@ -1,0 +1,515 @@
+{
+  "generatedAt": "2026-03-14T18:22:56Z",
+  "entries": [
+    {
+      "originPath": "docs/agile/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/docs/agile/",
+      "repoRoot": "./",
+      "repoHead": "f0d536c40e462cd62470327850ca5ee978cf6150",
+      "repoOrigin": "git@github.com:riatzukiza/devel.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "docs/inbox/ready-for-code/gates-of-aker_design-spec/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/docs/inbox/ready-for-code/gates-of-aker_design-spec/spec/",
+      "repoRoot": "./",
+      "repoHead": "f0d536c40e462cd62470327850ca5ee978cf6150",
+      "repoOrigin": "git@github.com:riatzukiza/devel.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "gates-pr35-hardening-main/docs/decisions/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/gates-pr35-hardening-main/docs/decisions/spec/",
+      "repoRoot": "gates-pr35-hardening-main/",
+      "repoHead": "9d33c30d2b80f0292febfb9a592f501b9120c3e1",
+      "repoOrigin": "git@github.com:octave-commons/gates-of-aker.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "gates-pr35-hardening-main/docs/planning/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/gates-pr35-hardening-main/docs/planning/spec/",
+      "repoRoot": "gates-pr35-hardening-main/",
+      "repoHead": "9d33c30d2b80f0292febfb9a592f501b9120c3e1",
+      "repoOrigin": "git@github.com:octave-commons/gates-of-aker.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "gates-pr35-hardening-main/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/gates-pr35-hardening-main/spec/",
+      "repoRoot": "gates-pr35-hardening-main/",
+      "repoHead": "9d33c30d2b80f0292febfb9a592f501b9120c3e1",
+      "repoOrigin": "git@github.com:octave-commons/gates-of-aker.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/anomalyco/opencode/specs/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/anomalyco/opencode/specs/",
+      "repoRoot": "orgs/anomalyco/opencode/",
+      "repoHead": "58939d42bc5dbce89ae28717bbd0e16d36291ede",
+      "repoOrigin": "git@github.com:anomalyco/opencode.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/octave-commons/gates-of-aker/docs/decisions/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/octave-commons/gates-of-aker/docs/decisions/spec/",
+      "repoRoot": "orgs/octave-commons/gates-of-aker/",
+      "repoHead": "ed8272e23d14d300bcab193bd79cf8603ea7dadb",
+      "repoOrigin": "git@github.com:octave-commons/gates-of-aker.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/octave-commons/gates-of-aker/docs/planning/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/octave-commons/gates-of-aker/docs/planning/spec/",
+      "repoRoot": "orgs/octave-commons/gates-of-aker/",
+      "repoHead": "ed8272e23d14d300bcab193bd79cf8603ea7dadb",
+      "repoOrigin": "git@github.com:octave-commons/gates-of-aker.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/octave-commons/gates-of-aker/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/octave-commons/gates-of-aker/spec/",
+      "repoRoot": "orgs/octave-commons/gates-of-aker/",
+      "repoHead": "ed8272e23d14d300bcab193bd79cf8603ea7dadb",
+      "repoOrigin": "git@github.com:octave-commons/gates-of-aker.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/octave-commons/promethean/cli/kanban/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/octave-commons/promethean/cli/kanban/spec/",
+      "repoRoot": "orgs/octave-commons/promethean/cli/kanban/",
+      "repoHead": "160cb7b4ad9b225f1e55e1781a48f6f9c2df9ad4",
+      "repoOrigin": "git@github.com:octave-commons/kanban.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/octave-commons/promethean/docs/agile/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/octave-commons/promethean/docs/agile/",
+      "repoRoot": "orgs/octave-commons/promethean/",
+      "repoHead": "b04194730f096b1c7558659e03557b325b0bf53e",
+      "repoOrigin": "git@github.com:octave-commons/promethean.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/octave-commons/promethean/experimental/cephalon/docs/agile/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/octave-commons/promethean/experimental/cephalon/docs/agile/",
+      "repoRoot": "orgs/octave-commons/promethean/",
+      "repoHead": "b04194730f096b1c7558659e03557b325b0bf53e",
+      "repoOrigin": "git@github.com:octave-commons/promethean.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/octave-commons/promethean/pipelines/buildfix/docs/agile/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/octave-commons/promethean/pipelines/buildfix/docs/agile/",
+      "repoRoot": "orgs/octave-commons/promethean/pipelines/buildfix/",
+      "repoHead": "aff444e06f0ec0653bd63e240a2fceaf745a33db",
+      "repoOrigin": "git@github.com:octave-commons/buildfix.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/octave-commons/promethean/pipelines/semverguard/docs/agile/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/octave-commons/promethean/pipelines/semverguard/docs/agile/",
+      "repoRoot": "orgs/octave-commons/promethean/pipelines/semverguard/",
+      "repoHead": "bc181733e56237a3af678570afa2f9c3cf37ab3d",
+      "repoOrigin": "git@github.com:octave-commons/semverguard.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/octave-commons/promethean/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/octave-commons/promethean/spec/",
+      "repoRoot": "orgs/octave-commons/promethean/",
+      "repoHead": "b04194730f096b1c7558659e03557b325b0bf53e",
+      "repoOrigin": "git@github.com:octave-commons/promethean.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/octave-commons/shibboleth/specs/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/octave-commons/shibboleth/specs/",
+      "repoRoot": "orgs/octave-commons/shibboleth/",
+      "repoHead": "1f34ae87460a8898f13e7359d035f117bbc5cbaf",
+      "repoOrigin": "git@github.com:octave-commons/shibboleth.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/open-hax/cljs-plugin-template/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/open-hax/cljs-plugin-template/spec/",
+      "repoRoot": "orgs/open-hax/cljs-plugin-template/",
+      "repoHead": "81f5513d0a4c95b78b52e20549cdb3a85a02ec84",
+      "repoOrigin": "git@github.com:open-hax/cljs-plugin-template.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/open-hax/codex/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/open-hax/codex/spec/",
+      "repoRoot": "orgs/open-hax/codex/",
+      "repoHead": "d455ef2c3b19531f8a8dd8d7f8ba2914a3904408",
+      "repoOrigin": "git@github.com:open-hax/codex.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/open-hax/museeks/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/open-hax/museeks/spec/",
+      "repoRoot": "./",
+      "repoHead": "f0d536c40e462cd62470327850ca5ee978cf6150",
+      "repoOrigin": "git@github.com:riatzukiza/devel.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/open-hax/openhax/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/open-hax/openhax/spec/",
+      "repoRoot": "orgs/open-hax/openhax/",
+      "repoHead": "3ca349759ece976e754d68d3d2ff2fd1a09eacb1",
+      "repoOrigin": "git@github.com:open-hax/openhax.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/open-hax/plugins/codex/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/open-hax/plugins/codex/spec/",
+      "repoRoot": "orgs/open-hax/plugins/codex/",
+      "repoHead": "b8ae5b417ee7b394bc136b945a18bbcf2ecaad63",
+      "repoOrigin": "git@github.com:open-hax/codex.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/riatzukiza/ollama-benchmarks/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/riatzukiza/ollama-benchmarks/spec/",
+      "repoRoot": "orgs/riatzukiza/ollama-benchmarks/",
+      "repoHead": "697641e331ae519bd190d265dfac53a7b2841e74",
+      "repoOrigin": "git@github.com:riatzukiza/ollama-benchmarks.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/riatzukiza/ollama-benchmarks/specs/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/riatzukiza/ollama-benchmarks/specs/",
+      "repoRoot": "orgs/riatzukiza/ollama-benchmarks/",
+      "repoHead": "697641e331ae519bd190d265dfac53a7b2841e74",
+      "repoOrigin": "git@github.com:riatzukiza/ollama-benchmarks.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/riatzukiza/openhax/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/riatzukiza/openhax/spec/",
+      "repoRoot": "orgs/riatzukiza/openhax/",
+      "repoHead": "1b178f7bc7fd59a61fcd7bfc5fa5b3602a894bd8",
+      "repoOrigin": "git@github.com:riatzukiza/openhax.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/riatzukiza/promethean/cli/kanban/docs/agile/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/riatzukiza/promethean/cli/kanban/docs/agile/",
+      "repoRoot": "orgs/riatzukiza/promethean/cli/kanban/",
+      "repoHead": "b4cacf52e5de89eb6f4db05d1e95302be763a735",
+      "repoOrigin": "git@github.com:octave-commons/kanban.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/riatzukiza/promethean/cli/kanban/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/riatzukiza/promethean/cli/kanban/spec/",
+      "repoRoot": "orgs/riatzukiza/promethean/cli/kanban/",
+      "repoHead": "b4cacf52e5de89eb6f4db05d1e95302be763a735",
+      "repoOrigin": "git@github.com:octave-commons/kanban.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/riatzukiza/promethean/cli/kanban/specs/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/riatzukiza/promethean/cli/kanban/specs/",
+      "repoRoot": "orgs/riatzukiza/promethean/cli/kanban/",
+      "repoHead": "b4cacf52e5de89eb6f4db05d1e95302be763a735",
+      "repoOrigin": "git@github.com:octave-commons/kanban.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/riatzukiza/promethean/docs/agile/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/riatzukiza/promethean/docs/agile/",
+      "repoRoot": "orgs/riatzukiza/promethean/",
+      "repoHead": "e8a58debc3740957759d698156c8c9ab03fa36b9",
+      "repoOrigin": "git@github.com:riatzukiza/promethean.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/riatzukiza/promethean/experimental/cephalon/docs/agile/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/riatzukiza/promethean/experimental/cephalon/docs/agile/",
+      "repoRoot": "orgs/riatzukiza/promethean/",
+      "repoHead": "e8a58debc3740957759d698156c8c9ab03fa36b9",
+      "repoOrigin": "git@github.com:riatzukiza/promethean.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/riatzukiza/promethean/experimental/pantheon/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/riatzukiza/promethean/experimental/pantheon/spec/",
+      "repoRoot": "orgs/riatzukiza/promethean/experimental/pantheon/",
+      "repoHead": "8d72412b79992e5f946cfc5d37f9912734e975f9",
+      "repoOrigin": "git@github.com:octave-commons/pantheon",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/riatzukiza/promethean/pipelines/buildfix/docs/agile/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/riatzukiza/promethean/pipelines/buildfix/docs/agile/",
+      "repoRoot": "orgs/riatzukiza/promethean/pipelines/buildfix/",
+      "repoHead": "ea00e546e58bdc0f21d19ece9a5797a0edff0b6e",
+      "repoOrigin": "git@github.com:octave-commons/buildfix.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/riatzukiza/promethean/pipelines/semverguard/docs/agile/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/riatzukiza/promethean/pipelines/semverguard/docs/agile/",
+      "repoRoot": "orgs/riatzukiza/promethean/pipelines/semverguard/",
+      "repoHead": "50062f200dff4142a9a14ca47947b70c468b8c24",
+      "repoOrigin": "git@github.com:octave-commons/semverguard.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/riatzukiza/promethean/services/autocommit/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/riatzukiza/promethean/services/autocommit/spec/",
+      "repoRoot": "orgs/riatzukiza/promethean/services/autocommit/",
+      "repoHead": "473c7f5445534033111719a75de3ac760d286d76",
+      "repoOrigin": "git@github.com:octave-commons/autocommit.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/riatzukiza/promethean/services/knowledge-graph/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/riatzukiza/promethean/services/knowledge-graph/spec/",
+      "repoRoot": "orgs/riatzukiza/promethean/services/knowledge-graph/",
+      "repoHead": "042eacbe60e8792db609807a5787c797eb357f41",
+      "repoOrigin": "git@github.com:octave-commons/knowledge-graph.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/riatzukiza/promethean/services/sentinel/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/riatzukiza/promethean/services/sentinel/spec/",
+      "repoRoot": "orgs/riatzukiza/promethean/services/sentinel/",
+      "repoHead": "5d4579577bddee016b6ef55c9625de941b644672",
+      "repoOrigin": "git@github.com:octave-commons/sentinel.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/riatzukiza/promethean/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/riatzukiza/promethean/spec/",
+      "repoRoot": "orgs/riatzukiza/promethean/",
+      "repoHead": "e8a58debc3740957759d698156c8c9ab03fa36b9",
+      "repoOrigin": "git@github.com:riatzukiza/promethean.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/riatzukiza/riatzukiza.github.io/kanban/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/riatzukiza/riatzukiza.github.io/kanban/",
+      "repoRoot": "orgs/riatzukiza/riatzukiza.github.io/",
+      "repoHead": "c7c23bbfcdacc3ca342dc18aebe7bccd26369427",
+      "repoOrigin": "git@github.com:riatzukiza/riatzukiza.github.io.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/riatzukiza/riatzukiza.github.io/static/kanban/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/riatzukiza/riatzukiza.github.io/static/kanban/",
+      "repoRoot": "orgs/riatzukiza/riatzukiza.github.io/",
+      "repoHead": "c7c23bbfcdacc3ca342dc18aebe7bccd26369427",
+      "repoOrigin": "git@github.com:riatzukiza/riatzukiza.github.io.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "orgs/ussyverse/openclawssy/docs/specs/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/orgs/ussyverse/openclawssy/docs/specs/",
+      "repoRoot": "orgs/ussyverse/openclawssy/",
+      "repoHead": "2c7d12163f75fa32ddb2587641c4bb192dd360d5",
+      "repoOrigin": "git@github.com:mojomast/openclawssy.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "pm2-clj-project/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/pm2-clj-project/spec/",
+      "repoRoot": "./",
+      "repoHead": "f0d536c40e462cd62470327850ca5ee978cf6150",
+      "repoOrigin": "git@github.com:riatzukiza/devel.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "reconstitute/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/reconstitute/spec/",
+      "repoRoot": "./",
+      "repoHead": "f0d536c40e462cd62470327850ca5ee978cf6150",
+      "repoOrigin": "git@github.com:riatzukiza/devel.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "services/cephalon-cljs/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/services/cephalon-cljs/spec/",
+      "repoRoot": "./",
+      "repoHead": "f0d536c40e462cd62470327850ca5ee978cf6150",
+      "repoOrigin": "git@github.com:riatzukiza/devel.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "services/kronos/docs/agile/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/services/kronos/docs/agile/",
+      "repoRoot": "services/kronos/",
+      "repoHead": null,
+      "repoOrigin": null,
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "services/kronos/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/services/kronos/spec/",
+      "repoRoot": "services/kronos/",
+      "repoHead": null,
+      "repoOrigin": null,
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "services/mcp-fs-oauth/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/services/mcp-fs-oauth/spec/",
+      "repoRoot": "./",
+      "repoHead": "f0d536c40e462cd62470327850ca5ee978cf6150",
+      "repoOrigin": "git@github.com:riatzukiza/devel.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "services/open-hax-openai-proxy/specs/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/services/open-hax-openai-proxy/specs/",
+      "repoRoot": "services/open-hax-openai-proxy/",
+      "repoHead": "f2d74cdf6da1abd9f75d24867576174a4f0b9054",
+      "repoOrigin": "https://github.com/open-hax/proxx.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/spec/",
+      "repoRoot": "./",
+      "repoHead": "f0d536c40e462cd62470327850ca5ee978cf6150",
+      "repoOrigin": "git@github.com:riatzukiza/devel.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "specs/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/specs/",
+      "repoRoot": "./",
+      "repoHead": "f0d536c40e462cd62470327850ca5ee978cf6150",
+      "repoOrigin": "git@github.com:riatzukiza/devel.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "threat-radar-next-step/specs/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/threat-radar-next-step/specs/",
+      "repoRoot": "./",
+      "repoHead": "f0d536c40e462cd62470327850ca5ee978cf6150",
+      "repoOrigin": "git@github.com:riatzukiza/devel.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "workspaces/openhax-codex/codex-auth/spec/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/workspaces/openhax-codex/codex-auth/spec/",
+      "repoRoot": "workspaces/openhax-codex/codex-auth/",
+      "repoHead": "169cc7093e9f2192d13909a358754309256058ad",
+      "repoOrigin": "git@github.com:open-hax/codex.git",
+      "copied": true,
+      "notes": null
+    },
+    {
+      "originPath": "workspaces/openhax-codex/opencode/specs/",
+      "importedAt": "2026-03-14T18:22:56Z",
+      "destPath": "sources/workspaces/openhax-codex/opencode/specs/",
+      "repoRoot": "workspaces/openhax-codex/opencode/",
+      "repoHead": "4703e859bd42e8ff0f103b3e75dd3f3c83725259",
+      "repoOrigin": "git@github.com:sst/opencode.git",
+      "copied": true,
+      "notes": null
+    }
+  ]
+}

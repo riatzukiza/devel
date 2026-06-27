@@ -1,0 +1,26 @@
+;; Harness adapter: opencode
+;; Core skill: ημ.skill/receipt-river@0.2.0
+
+(harness-adapter
+  (harness :opencode)
+  (skill "receipt-river")
+  (core-ref "packages/skills/core/receipt-river/CONTRACT.edn")
+  (install-path ".opencode/skills/receipt-river/CONTRACT.edn")
+  (driver :fs)
+  (driver-config
+    ;; opencode runs in workspace CWD; receipts.log lives in workspace root
+    (receipts-file "receipts.log")
+    (state-root ".opencode/state/receipt-river/"))
+  (hooks
+    ;; Names match opencode runtime and opencode_global_instructions.cljs dispatch
+    (session_start    "bootstrap receipt store if absent; emit session-open receipt")
+    (session_switch   "flush pending receipt context; re-inject memory for new session")
+    (turn_start       "inject [RECEIPT RIVER MEMORY] with last 3 receipts")
+    (message_end      "check if substantive assistant output occurred without receipt; set pending flag")
+    (agent_end        "warn if substantive turn ended without receipt_river call")
+    (context          "surface receipt-river memory block into context window on demand")
+    (before_agent_start "inject [RECEIPT RIVER MEMORY] with last 3 receipts before first agent turn")
+    (session_shutdown  "persist pending-reminder flag; emit session-close receipt"))
+  (notes
+    "opencode plugin: packages/eta-mu-extensions implements em/defextension receipt-river.
+     This adapter is the config layer on top of that implementation."))

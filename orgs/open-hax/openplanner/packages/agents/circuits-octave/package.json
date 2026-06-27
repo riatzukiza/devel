@@ -1,0 +1,32 @@
+{
+  "name": "@promethean-os/circuits-octave",
+  "version": "0.1.0",
+  "description": "8-Circuit Octave personality system for Promethean agents",
+  "main": "dist/promethean/circuits/octave.js",
+  "module": "dist/promethean/circuits/octave.mjs",
+  "types": "dist/promethean/circuits/octave.d.ts",
+  "scripts": {
+    "build": "shadow-cljs release circuits-octave",
+    "test": "node dist/promethean/circuits/octave.test.js"
+  },
+  "keywords": [
+    "promethean",
+    "circuits",
+    "octave",
+    "personality",
+    "agent"
+  ],
+  "author": "Promethean OS",
+  "license": "LGPL-3.0-or-later",
+  "dependencies": {
+    "@promethean-os/personality-system": "workspace:*"
+  },
+  "devDependencies": {
+    "shadow-cljs": "^2.28.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/promethean-os/cephalon.git",
+    "directory": "packages/circuits-octave"
+  }
+}

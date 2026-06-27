@@ -1,0 +1,12 @@
+{:types
+ {:issue/opened         {:keys [:number :title :labels :author]}
+  :issue/commented      {:keys [:issue :comment-id :author :body]}
+  :pr/opened            {:keys [:number :url :branch :base]}
+  :pr/commented         {:keys [:pr :comment-id :author :body]}
+  :pr/review-comment    {:keys [:pr :review-id :author :body]}
+  :git/worktree-created {:keys [:branch :path :issue]}
+  :git/pushed           {:keys [:branch]}
+  :ci/status            {:keys [:sha :state :url]}
+  :refresh/gh           {}
+  :ui/command-ok        {:keys [:cmd :data]}
+  :ui/command-error     {:keys [:cmd :err]}}}

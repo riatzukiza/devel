@@ -1,0 +1,36 @@
+{
+  "name": "@open-hax/presence-core",
+  "version": "0.1.1",
+  "description": "Presence identity and field assignment for the eta-mu substrate",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.0"
+  },
+  "keywords": [
+    "presence",
+    "eta-mu",
+    "substrate",
+    "daimon"
+  ],
+  "license": "GPL-3.0-or-later"
+}

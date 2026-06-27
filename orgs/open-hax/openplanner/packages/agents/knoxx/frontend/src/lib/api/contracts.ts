@@ -1,0 +1,270 @@
+import { request } from "./core";
+import type { ContractsClass } from "../types";
+
+// ── Contract types ──────────────────────────────────────────────────────────
+
+export interface AgentContract {
+  "contract/id": string;
+  "contract/kind": "agent" | "policy" | "fulfillment" | "tool-call" | "trigger";
+  "contract/version"?: number;
+  "contract/uses"?: string[];
+  enabled?: boolean;
+  "trigger-kind"?: "event" | "cron" | "manual";
+  "source-kind"?: string;
+  "source-mode"?: string;
+  "cadence-min"?: number;
+  agent?: {
+    role?: string;
+    model?: string;
+    thinking?: string;
+  };
+  prompts?: {
+    system?: string;
+    task?: string;
+    user?: string;
+  };
+  events?: {
+    always?: string[];
+    maybe?: string[];
+  };
+  data?: Record<string, unknown>;
+  hooks?: Record<string, unknown>;
+  "ui/schema"?: Record<string, unknown>;
+}
+
+export interface ContractValidationResult {
+  ok: boolean;
+  errors: Array<{ path: string[]; message: string }>;
+  warnings: Array<{ path: string[]; message: string }>;
+  // Present for validate/save/get responses when the backend can parse EDN.
+  contract?: AgentContract | null;
+}
+
+export interface ContractListItem {
+  id: string;
+  contractClass: ContractsClass;
+  kind: string;
+  version: number;
+  enabled: boolean;
+  title?: string;
+  path?: string;
+  folder?: string;
+  ednHash: number;
+  compiledAt: string | null;
+  updatedAt: string;
+  trigger?: {
+    kind?: "event" | "cron" | "webhook" | "manual";
+    target?: string;
+    schedule?: string;
+    source?: Record<string, unknown> | null;
+    filters?: Record<string, unknown> | null;
+    context?: Record<string, unknown> | null;
+  } | null;
+  pipeline?: {
+    steps?: Array<{ id?: string; contract?: string }>;
+  } | null;
+  action?: {
+    handler?: string;
+  } | null;
+}
+
+export interface ContractListResponse {
+  contracts: ContractListItem[];
+}
+
+export interface ContractGetResponse {
+  contractClass?: ContractsClass;
+  contract: AgentContract;
+  ednText: string;
+  validation: ContractValidationResult;
+}
+
+export interface ContractSaveResponse {
+  ok: boolean;
+  contractClass?: ContractsClass;
+  contract: AgentContract;
+  ednText: string;
+  validation: ContractValidationResult;
+}
+
+// ── API functions ───────────────────────────────────────────────────────────
+
+export async function listContracts(contractClass?: ContractsClass): Promise<ContractListResponse> {
+  const suffix = contractClass ? `?kind=${encodeURIComponent(contractClass)}` : "";
+  return request<ContractListResponse>(`/api/admin/contracts${suffix}`);
+}
+
+export async function getContract(
+  contractId: string,
+  contractClass: ContractsClass = "agents",
+): Promise<ContractGetResponse> {
+  return request<ContractGetResponse>(
+    `/api/admin/contracts/${encodeURIComponent(contractId)}?kind=${encodeURIComponent(contractClass)}`,
+  );
+}
+
+export async function saveContract(
+  contractId: string,
+  ednText: string,
+  contractClass: ContractsClass = "agents",
+): Promise<ContractSaveResponse> {
+  return request<ContractSaveResponse>(
+    `/api/admin/contracts/${encodeURIComponent(contractId)}`,
+    {
+      method: "PUT",
+      body: JSON.stringify({ ednText, kind: contractClass }),
+    },
+  );
+}
+
+export async function validateContract(
+  ednText: string,
+  contractClass: ContractsClass = "agents",
+): Promise<ContractValidationResult> {
+  return request<ContractValidationResult>(
+    "/api/admin/contracts/validate",
+    {
+      method: "POST",
+      body: JSON.stringify({ ednText, kind: contractClass }),
+    },
+  );
+}
+
+export async function copyContract(
+  sourceId: string,
+  newId: string,
+  contractClass: ContractsClass = "agents",
+): Promise<ContractSaveResponse> {
+  return request<ContractSaveResponse>(
+    `/api/admin/contracts/${encodeURIComponent(sourceId)}/copy`,
+    {
+      method: "POST",
+      body: JSON.stringify({ newId, kind: contractClass }),
+    },
+  );
+}
+
+// ── Contract Agent API (EDN-native) ──────────────────────────────────────────
+
+/**
+ * Read a contract as raw EDN text via the agent API.
+ * Returns the raw EDN string (not wrapped in JSON).
+ */
+export async function agentGetContractEdn(
+  contractId: string,
+): Promise<string> {
+  const resp = await fetch(
+    `/api/agent/contracts/${encodeURIComponent(contractId)}`,
+    { method: "GET", headers: { Accept: "text/plain" } },
+  );
+  return resp.text();
+}
+
+/**
+ * Save a contract as raw EDN text via the agent API.
+ * Accepts EDN text directly (not JSON-wrapped).
+ */
+export async function agentPutContractEdn(
+  contractId: string,
+  ednText: string,
+): Promise<string> {
+  const resp = await fetch(
+    `/api/agent/contracts/${encodeURIComponent(contractId)}`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+      body: ednText,
+    },
+  );
+  return resp.text();
+}
+
+// ── Default contract template ───────────────────────────────────────────────
+
+export const DEFAULT_CONTRACT_EDN = `{:contract/id "new-agent"
+ :contract/kind :agent
+ :contract/version 1
+ :enabled true
+ :trigger-kind :event
+ :source-kind :discord
+ :source-mode :patrol
+ :cadence-min 5
+
+ :agent
+ {:role :system_admin
+  :model "glm-5"
+  :thinking :off}
+
+ :prompts
+ {:system "Observe configured Discord channels, detect fresh human signals, and queue structured events without speaking publicly."
+  :task   "Read recent channel messages, update freshness state, and dispatch normalized Discord events for worthy human signals."}
+
+ :events
+ {:always [:discord.mention]
+  :maybe  [:discord.message :discord.reaction]}
+
+ :data
+ {:source  {:max-messages 25}
+  :filters {:channels []
+            :keywords []}
+  :tools   []}
+
+ :hooks
+ {:before {}
+  :after  {}}}
+`;
+
+// ── Event kind catalog ─────────────────────────────────────────────────────
+
+export const EVENT_KIND_OPTIONS = [
+  "discord.mention",
+  "discord.message",
+  "discord.message.keyword",
+  "discord.message.mention",
+  "discord.reaction",
+  "discord.image-attachment",
+  "discord.text-attachment",
+  "github.issues.opened",
+  "github.issues.closed",
+  "github.pr.opened",
+  "github.pr.merged",
+  "github.push",
+  "cron.tick",
+  "manual.invoke",
+];
+
+export const MODEL_OPTIONS = [
+  "glm-5",
+  "glm-5-plus",
+  "gpt-5.5",
+  "gpt-5.4",
+  "gpt-5.4-mini",
+  "claude-4-sonnet",
+  "claude-4-opus",
+  "kimi-k2.5",
+];
+
+export const ROLE_OPTIONS = [
+  "system_admin",
+  "knowledge_worker",
+  "executive",
+  "analyst",
+  "editor",
+  "contract_librarian",
+];
+
+export const TRIGGER_KIND_OPTIONS = ["event", "cron", "manual"] as const;
+export const SOURCE_KIND_OPTIONS = [
+  "discord",
+  "github",
+  "cron",
+  "manual",
+] as const;
+export const THINKING_OPTIONS = [
+  "off",
+  "minimal",
+  "low",
+  "medium",
+  "high",
+  "xhigh",
+] as const;

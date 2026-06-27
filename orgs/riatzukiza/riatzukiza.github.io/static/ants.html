@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Pheromone Atlas</title>
+  <style>
+    :root {
+      --bg: #110d09;
+      --bg-soft: #1a140f;
+      --panel: rgba(28, 21, 15, 0.92);
+      --panel-strong: rgba(36, 28, 21, 0.96);
+      --paper: #f2e9d7;
+      --muted: #c8b99b;
+      --accent: #d6a24a;
+      --accent-soft: #8e6a2e;
+      --trail: #76c977;
+      --crumb: #f6d66d;
+      --stone: #8b755d;
+      --danger: #c06245;
+      --nest: #d9853b;
+      --border: rgba(214, 162, 74, 0.35);
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      color-scheme: dark;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Trebuchet MS", Verdana, sans-serif;
+      color: var(--paper);
+      background:
+        radial-gradient(circle at top, rgba(110, 76, 29, 0.28), transparent 34%),
+        radial-gradient(circle at 80% 10%, rgba(126, 201, 119, 0.12), transparent 28%),
+        linear-gradient(180deg, #21180f 0%, #110d09 56%, #0b0907 100%);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.22;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent 0,
+          transparent 23px,
+          rgba(214, 162, 74, 0.06) 24px,
+          transparent 25px,
+          transparent 48px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent 0,
+          transparent 35px,
+          rgba(214, 162, 74, 0.04) 36px,
+          transparent 37px,
+          transparent 72px
+        );
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    .page {
+      width: min(1400px, calc(100vw - 24px));
+      margin: 0 auto;
+      padding: 22px 0 34px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, var(--panel-strong), var(--panel));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero {
+      padding: 24px;
+      margin-bottom: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "FIELD CONSOLE // NIGHT SURVEY";
+      position: absolute;
+      right: -18px;
+      top: 14px;
+      transform: rotate(6deg);
+      font: 700 0.72rem/1 "Courier New", monospace;
+      letter-spacing: 0.32em;
+      color: rgba(242, 233, 215, 0.12);
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.28em;
+      font: 700 0.72rem/1.3 "Courier New", monospace;
+      color: var(--accent);
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      font-family: Baskerville, "Palatino Linotype", "Book Antiqua", Georgia, serif;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    h1 {
+      font-size: clamp(2.7rem, 5vw, 4.9rem);
+      line-height: 0.95;
+      max-width: 12ch;
+    }
+
+    .lead {
+      max-width: 66ch;
+      margin: 12px 0 0;
+      color: var(--paper);
+      font-size: 1.02rem;
+      line-height: 1.7;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.3fr) minmax(280px, 1fr);
+      gap: 18px;
+      align-items: end;
+      margin-top: 22px;
+    }
+
+    .hero-note {
+      padding: 16px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(214, 162, 74, 0.22);
+      background: rgba(14, 11, 8, 0.45);
+    }
+
+    .hero-note p,
+    .hero-note ul,
+    .record-list,
+    .ethics-list {
+      margin: 0;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .hero-note ul,
+    .record-list,
+    .ethics-list {
+      padding-left: 18px;
+    }
+
+    .hero-note li + li,
+    .record-list li + li,
+    .ethics-list li + li {
+      margin-top: 6px;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(320px, 0.95fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .sim-panel {
+      padding: 18px;
+    }
+
+    .panel-head {
+      display: flex;
+      gap: 18px;
+      justify-content: space-between;
+      align-items: end;
+      margin-bottom: 14px;
+    }
+
+    .panel-head p,
+    .footer-copy,
+    .card p,
+    .bulletin,
+    .small-note {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .panel-head p {
+      margin: 6px 0 0;
+    }
+
+    .mode-badge {
+      padding: 10px 12px;
+      border: 1px solid rgba(214, 162, 74, 0.24);
+      border-radius: 999px;
+      font: 700 0.76rem/1 "Courier New", monospace;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      aspect-ratio: 21 / 13;
+      border-radius: 16px;
+      border: 1px solid rgba(214, 162, 74, 0.22);
+      background: linear-gradient(180deg, rgba(17, 13, 9, 0.8), rgba(10, 8, 6, 0.96));
+      cursor: crosshair;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      margin-top: 12px;
+      font: 0.8rem/1.4 "Courier New", monospace;
+      color: var(--muted);
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .swatch {
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      display: inline-block;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
+    }
+
+    .swatch.nest { background: var(--nest); }
+    .swatch.trail { background: var(--trail); }
+    .swatch.crumb { background: var(--crumb); }
+    .swatch.stone { background: var(--stone); }
+
+    .sidebar {
+      display: grid;
+      gap: 14px;
+    }
+
+    .sidebar .panel {
+      padding: 16px;
+    }
+
+    .button-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid rgba(214, 162, 74, 0.28);
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(56, 40, 24, 0.9), rgba(27, 21, 15, 0.95));
+      color: var(--paper);
+      padding: 12px 10px;
+      font: 700 0.79rem/1.2 "Courier New", monospace;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+    }
+
+    button:hover,
+    button:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(214, 162, 74, 0.64);
+      outline: none;
+    }
+
+    button.is-active {
+      background: linear-gradient(180deg, rgba(122, 86, 36, 0.95), rgba(70, 47, 20, 1));
+      border-color: rgba(246, 214, 109, 0.8);
+      color: #fff8df;
+    }
+
+    dl {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px 14px;
+      margin: 12px 0 0;
+      font: 0.9rem/1.35 "Courier New", monospace;
+    }
+
+    dt {
+      color: var(--muted);
+    }
+
+    dd {
+      margin: 0;
+      color: var(--paper);
+      text-align: right;
+    }
+
+    .bulletin {
+      margin-top: 12px;
+      padding: 13px 14px;
+      border-radius: 12px;
+      border-left: 3px solid var(--accent);
+      background: rgba(10, 8, 6, 0.38);
+    }
+
+    .incident-list {
+      margin: 12px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      display: grid;
+      gap: 8px;
+      line-height: 1.5;
+    }
+
+    .records {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .records .panel,
+    .footer-panel {
+      padding: 18px;
+    }
+
+    .records h2,
+    .footer-panel h2,
+    .sidebar h2,
+    .sim-panel h2 {
+      font-size: 1.25rem;
+    }
+
+    .cards {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .card {
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(10, 8, 6, 0.36);
+      border: 1px solid rgba(214, 162, 74, 0.14);
+    }
+
+    .card h3 {
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 0.92rem;
+    }
+
+    .footer-panel {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .footer-copy {
+      margin-top: 10px;
+      max-width: 58ch;
+    }
+
+    #webring {
+      min-height: 108px;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px dashed rgba(214, 162, 74, 0.24);
+      background: rgba(10, 8, 6, 0.3);
+    }
+
+    @media (max-width: 1080px) {
+      .workspace,
+      .hero-grid,
+      .footer-panel,
+      .records {
+        grid-template-columns: 1fr;
+      }
+
+      .mode-badge {
+        white-space: normal;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .page {
+        width: min(100vw - 16px, 1400px);
+        padding-top: 16px;
+      }
+
+      .hero,
+      .sim-panel,
+      .sidebar .panel,
+      .records .panel,
+      .footer-panel {
+        padding: 16px;
+      }
+
+      .panel-head {
+        flex-direction: column;
+        align-items: start;
+      }
+
+      .button-row {
+        grid-template-columns: 1fr;
+      }
+
+      .legend {
+        font-size: 0.74rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero panel">
+      <p class="eyebrow">Pheromone Atlas / Console 09 / Velvet Floor Shift</p>
+      <h1>The Pheromone Atlas</h1>
+      <p class="lead">
+        A live cartography desk for crumb drift, ant consensus, and midnight route rewrites.
+        Drop food onto the field, place stones in their way, and watch the colony negotiate a better plan.
+      </p>
+      <div class="hero-grid">
+        <div class="hero-note">
+          <ul>
+            <li>Crumb mode seeds new food sources directly onto the floor grid.</li>
+            <li>Stone mode places polite but inconvenient geology.</li>
+            <li>Returning ants leave usable memory behind. The map is written in consensus, not command.</li>
+          </ul>
+        </div>
+        <div class="hero-note">
+          <p>
+            Operator note: this is not a laboratory and not a game board. It is a listening device for tiny logistics.
+            If the ants embarrass your route planning, let them.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <section class="sim-panel panel">
+        <div class="panel-head">
+          <div>
+            <h2>Live Field Surface</h2>
+            <p>Tap or click the map to alter the night shift. Drag in crumb mode to paint a corridor.</p>
+          </div>
+          <div class="mode-badge">Mode: <span id="mode-readout">crumb dropper</span></div>
+        </div>
+        <canvas id="field" width="840" height="520" aria-label="Interactive ant field simulation"></canvas>
+        <div class="legend" aria-hidden="true">
+          <span><i class="swatch nest"></i>nest</span>
+          <span><i class="swatch crumb"></i>crumb cluster</span>
+          <span><i class="swatch trail"></i>pheromone route</span>
+          <span><i class="swatch stone"></i>stone barrier</span>
+        </div>
+      </section>
+
+      <aside class="sidebar">
+        <section class="panel">
+          <h2>Operator Controls</h2>
+          <div class="button-row">
+            <button type="button" class="is-active" data-mode="crumb">crumb mode</button>
+            <button type="button" data-mode="stone">stone mode</button>
+            <button type="button" id="trail-clear">clear trails</button>
+          </div>
+          <div class="button-row">
+            <button type="button" id="crumb-storm">crumb shower</button>
+            <button type="button" id="field-reset">field reset</button>
+            <button type="button" id="colony-refresh">refresh colony</button>
+          </div>
+          <p class="small-note">
+            Mobile-safe controls: choose a mode first, then tap the map. Stones are permanent until reset.
+          </p>
+        </section>
+
+        <section class="panel">
+          <h2>Instrument Readings</h2>
+          <dl>
+            <dt>active ants</dt>
+            <dd id="stat-ants">0</dd>
+            <dt>crumb mass</dt>
+            <dd id="stat-crumbs">0</dd>
+            <dt>rations returned</dt>
+            <dd id="stat-returned">0</dd>
+            <dt>trail signal</dt>
+            <dd id="stat-signal">0%</dd>
+            <dt>stone count</dt>
+            <dd id="stat-stones">0</dd>
+            <dt>mapping events</dt>
+            <dd id="stat-mapped">0</dd>
+          </dl>
+        </section>
+
+        <section class="panel">
+          <h2>Night Bulletin</h2>
+          <p class="bulletin" id="bulletin-copy">
+            Field calm. The colony is tracing baseline routes and judging your future decisions in advance.
+          </p>
+        </section>
+
+        <section class="panel">
+          <h2>Incident Ledger</h2>
+          <ol class="incident-list" id="incident-list"></ol>
+        </section>
+      </aside>
+    </section>
+
+    <section class="records">
+      <article class="panel">
+        <h2>Survey Notes</h2>
+        <ul class="record-list" style="margin-top: 12px;">
+          <li>Ants prefer memory over authority. Strong trails outperform perfect plans.</li>
+          <li>One badly placed stone can create an entirely new public works philosophy.</li>
+          <li>Crumb abundance causes brief utopian behavior followed by maximum traffic drama.</li>
+          <li>The colony never argues out loud, yet still reaches conclusions faster than management.</li>
+        </ul>
+      </article>
+
+      <article class="panel">
+        <h2>Issued Equipment</h2>
+        <div class="cards">
+          <div class="card">
+            <h3>Velvet Grid Board</h3>
+            <p>Soft enough for experimentation, stern enough to remember every detour.</p>
+          </div>
+          <div class="card">
+            <h3>Crumb Allocation Kit</h3>
+            <p>Used to test optimism, temptation, and the exact distance ants will tolerate nonsense.</p>
+          </div>
+          <div class="card">
+            <h3>Nonjudgmental Stone Set</h3>
+            <p>Not actually nonjudgmental. Very expressive obstacles. Excellent at revealing real priorities.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <h2>Field Ethics</h2>
+        <ul class="ethics-list" style="margin-top: 12px;">
+          <li>Do not trap the nest for comedy. The ants will adapt, but they will remember.</li>
+          <li>Repeated crumb storms may lead to ecstatic overbuilding and minor civic collapse.</li>
+          <li>If you discover a perfect route, move one stone anyway. The interesting map begins there.</li>
+          <li>All logs are provisional. Tiny workers are entitled to mystery.</li>
+        </ul>
+      </article>
+    </section>
+
+    <footer class="footer-panel panel">
+      <div>
+        <h2>Ring Connection</h2>
+        <p class="footer-copy">
+          Built as a standalone weird-internet field desk with one real interaction and too much faith in collective routing.
+          When this repo deploys, the intended public path is <code>https://riatzukiza.github.io/ants.html</code>.
+        </p>
+      </div>
+      <div id="webring" data-theme="dark"></div>
+    </footer>
+  </main>
+
+  <script src="https://ussyco.de/api/webring/widget.js"></script>
+  <script>
+    (() => {
+      const canvas = document.getElementById("field");
+      const ctx = canvas.getContext("2d");
+      const incidentList = document.getElementById("incident-list");
+      const bulletin = document.getElementById("bulletin-copy");
+      const modeReadout = document.getElementById("mode-readout");
+
+      const statAnts = document.getElementById("stat-ants");
+      const statCrumbs = document.getElementById("stat-crumbs");
+      const statReturned = document.getElementById("stat-returned");
+      const statSignal = document.getElementById("stat-signal");
+      const statStones = document.getElementById("stat-stones");
+      const statMapped = document.getElementById("stat-mapped");
+
+      const WIDTH = canvas.width;
+      const HEIGHT = canvas.height;
+      const nest = { x: 148, y: HEIGHT * 0.58, r: 30 };
+      const ants = [];
+      const crumbs = [];
+      const stones = [];
+      const trails = [];
+      const motes = [];
+
+      const state = {
+        mode: "crumb",
+        returned: 0,
+        mapped: 0,
+        pointerActive: false,
+        pointerStampAt: 0,
+        lastTime: 0
+      };
+
+      const bulletinStates = [
+        "Field calm. The colony is tracing baseline routes and judging your future decisions in advance.",
+        "Traffic softening around the east lane. Somebody finally trusted the pheromones.",
+        "Crumb optimism elevated. Several ants now believe the night shift has meaning.",
+        "Stone pressure rising. Detour culture thriving. Morale suspiciously high.",
+        "The map is no longer theoretical. It has opinions now."
+      ];
+
+      const random = (min, max) => min + (Math.random() * (max - min));
+      const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+      const distance = (x1, y1, x2, y2) => Math.hypot(x2 - x1, y2 - y1);
+
+      const pushIncident = (message) => {
+        const item = document.createElement("li");
+        item.textContent = message;
+        incidentList.prepend(item);
+        while (incidentList.children.length > 7) {
+          incidentList.removeChild(incidentList.lastChild);
+        }
+      };
+
+      const setMode = (mode) => {
+        state.mode = mode;
+        modeReadout.textContent = mode === "crumb" ? "crumb dropper" : "stone placement";
+        document.querySelectorAll("[data-mode]").forEach((button) => {
+          button.classList.toggle("is-active", button.dataset.mode === mode);
+        });
+      };
+
+      const createAnt = (index) => ({
+        id: index,
+        x: nest.x + random(-18, 18),
+        y: nest.y + random(-18, 18),
+        vx: random(-6, 6),
+        vy: random(-6, 6),
+        angle: random(0, Math.PI * 2),
+        speed: random(34, 48),
+        carrying: false,
+        turnBias: random(-1.4, 1.4),
+        wanderTimer: random(0.2, 1.4),
+        trailTimer: random(0, 0.12)
+      });
+
+      const createMotes = () => {
+        motes.length = 0;
+        for (let index = 0; index < 110; index += 1) {
+          motes.push({
+            x: random(0, WIDTH),
+            y: random(0, HEIGHT),
+            r: random(0.5, 1.8),
+            alpha: random(0.04, 0.14)
+          });
+        }
+      };
+
+      const addCrumbCluster = (x, y, spread = 1) => {
+        for (let index = 0; index < spread; index += 1) {
+          crumbs.push({
+            x: clamp(x + random(-16, 16), 40, WIDTH - 40),
+            y: clamp(y + random(-16, 16), 40, HEIGHT - 40),
+            amount: random(8, 18),
+            size: random(7, 10)
+          });
+        }
+      };
+
+      const addStone = (x, y, radius = random(18, 34)) => {
+        stones.push({
+          x: clamp(x, 45, WIDTH - 45),
+          y: clamp(y, 45, HEIGHT - 45),
+          r: radius
+        });
+      };
+
+      const clearTrails = () => {
+        trails.length = 0;
+        pushIncident("Trail memory purged. The floor has agreed to forget for a while.");
+      };
+
+      const refreshColony = () => {
+        ants.length = 0;
+        for (let index = 0; index < 54; index += 1) {
+          ants.push(createAnt(index));
+        }
+        pushIncident("Fresh survey crew released from the nest. Everybody pretends this is normal.");
+      };
+
+      const seedField = () => {
+        crumbs.length = 0;
+        stones.length = 0;
+        trails.length = 0;
+        state.returned = 0;
+        state.mapped = 0;
+
+        addStone(355, 196, 30);
+        addStone(442, 308, 24);
+        addStone(560, 188, 34);
+        addStone(648, 372, 28);
+
+        addCrumbCluster(660, 118, 3);
+        addCrumbCluster(756, 272, 2);
+        addCrumbCluster(682, 432, 3);
+
+        refreshColony();
+        pushIncident("Console reopened. Existing crumb politics restored from the archive.");
+      };
+
+      const pointFromEvent = (event) => {
+        const rect = canvas.getBoundingClientRect();
+        return {
+          x: (event.clientX - rect.left) * (WIDTH / rect.width),
+          y: (event.clientY - rect.top) * (HEIGHT / rect.height)
+        };
+      };
+
+      const handlePlacement = (point, emphatic = false) => {
+        if (state.mode === "stone") {
+          if (distance(point.x, point.y, nest.x, nest.y) > nest.r + 24) {
+            addStone(point.x, point.y, random(18, emphatic ? 38 : 30));
+            pushIncident("Stone added. The colony has filed an immediate detour complaint.");
+          }
+          return;
+        }
+
+        addCrumbCluster(point.x, point.y, emphatic ? 2 : 1);
+        pushIncident("Crumbs deployed. Nearby workers are pretending this was their idea.");
+      };
+
+      const nearestCrumb = (ant) => {
+        let best = null;
+        let bestScore = 0;
+
+        for (const crumb of crumbs) {
+          if (crumb.amount <= 0) {
+            continue;
+          }
+
+          const dx = crumb.x - ant.x;
+          const dy = crumb.y - ant.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 1) {
+            return { crumb, dx, dy, dist: 1, score: 999 };
+          }
+
+          const score = crumb.amount / dist;
+          if (score > bestScore) {
+            bestScore = score;
+            best = { crumb, dx, dy, dist, score };
+          }
+        }
+
+        return best;
+      };
+
+      const sampleTrailVector = (ant) => {
+        let vx = 0;
+        let vy = 0;
+        let weight = 0;
+
+        for (const trail of trails) {
+          const dx = trail.x - ant.x;
+          const dy = trail.y - ant.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist > 96 || dist < 4) {
+            continue;
+          }
+
+          const influence = trail.strength / (dist * 0.18 + 1);
+          vx += (dx / dist) * influence;
+          vy += (dy / dist) * influence;
+          weight += influence;
+        }
+
+        if (weight === 0) {
+          return null;
+        }
+
+        return { x: vx / weight, y: vy / weight };
+      };
+
+      const obstacleRepulsion = (ant) => {
+        let vx = 0;
+        let vy = 0;
+
+        for (const stone of stones) {
+          const dx = ant.x - stone.x;
+          const dy = ant.y - stone.y;
+          const dist = Math.hypot(dx, dy) || 0.001;
+          const minDist = stone.r + 10;
+
+          if (dist < minDist + 18) {
+            const strength = (minDist + 18 - dist) / (minDist + 18);
+            vx += (dx / dist) * strength * 2.4;
+            vy += (dy / dist) * strength * 2.4;
+
+            if (dist < minDist) {
+              ant.x = stone.x + ((dx / dist) * minDist);
+              ant.y = stone.y + ((dy / dist) * minDist);
+            }
+          }
+        }
+
+        return { x: vx, y: vy };
+      };
+
+      const updateAnt = (ant, dt) => {
+        let targetX = 0;
+        let targetY = 0;
+
+        ant.wanderTimer -= dt;
+        if (ant.wanderTimer <= 0) {
+          ant.turnBias = random(-1.6, 1.6);
+          ant.wanderTimer = random(0.25, 1.4);
+        }
+
+        if (ant.carrying) {
+          const dx = nest.x - ant.x;
+          const dy = nest.y - ant.y;
+          const dist = Math.hypot(dx, dy) || 1;
+
+          targetX += (dx / dist) * 2.8;
+          targetY += (dy / dist) * 2.8;
+
+          ant.trailTimer -= dt;
+          if (ant.trailTimer <= 0) {
+            trails.push({ x: ant.x, y: ant.y, strength: 1.18 });
+            ant.trailTimer = random(0.05, 0.11);
+          }
+
+          if (dist < nest.r + 7) {
+            ant.carrying = false;
+            ant.speed = random(34, 48);
+            state.returned += 1;
+            ant.angle = random(0, Math.PI * 2);
+            if ((state.returned % 5) === 0) {
+              pushIncident("Rations returned in bulk. Nest traffic briefly upgraded to triumphant bustle.");
+            }
+          }
+        } else {
+          const crumb = nearestCrumb(ant);
+          if (crumb && crumb.dist < 150) {
+            targetX += (crumb.dx / crumb.dist) * 1.7;
+            targetY += (crumb.dy / crumb.dist) * 1.7;
+          }
+
+          const trailVector = sampleTrailVector(ant);
+          if (trailVector) {
+            targetX += trailVector.x * 1.5;
+            targetY += trailVector.y * 1.5;
+          }
+
+          ant.angle += ant.turnBias * dt * 0.85;
+          targetX += Math.cos(ant.angle) * 0.9;
+          targetY += Math.sin(ant.angle) * 0.9;
+
+          if (crumb && crumb.dist < crumb.crumb.size + 8) {
+            ant.carrying = true;
+            ant.speed = random(44, 58);
+            ant.trailTimer = 0;
+            crumb.crumb.amount -= 1;
+            state.mapped += 1;
+            if (crumb.crumb.amount <= 0.25) {
+              crumbs.splice(crumbs.indexOf(crumb.crumb), 1);
+            }
+            if ((state.mapped % 7) === 0) {
+              pushIncident("New route certified by six tiny witnesses and one dramatic turnaround.");
+            }
+          }
+        }
+
+        if (ant.x < 20) { targetX += 2.8; }
+        if (ant.x > WIDTH - 20) { targetX -= 2.8; }
+        if (ant.y < 20) { targetY += 2.8; }
+        if (ant.y > HEIGHT - 20) { targetY -= 2.8; }
+
+        const repulsion = obstacleRepulsion(ant);
+        targetX += repulsion.x;
+        targetY += repulsion.y;
+
+        const magnitude = Math.hypot(targetX, targetY) || 1;
+        const desiredX = (targetX / magnitude) * ant.speed;
+        const desiredY = (targetY / magnitude) * ant.speed;
+
+        ant.vx += (desiredX - ant.vx) * Math.min(1, dt * 3.7);
+        ant.vy += (desiredY - ant.vy) * Math.min(1, dt * 3.7);
+
+        ant.x = clamp(ant.x + (ant.vx * dt), 8, WIDTH - 8);
+        ant.y = clamp(ant.y + (ant.vy * dt), 8, HEIGHT - 8);
+        ant.angle = Math.atan2(ant.vy, ant.vx);
+      };
+
+      const updateWorld = (dt) => {
+        for (const ant of ants) {
+          updateAnt(ant, dt);
+        }
+
+        for (let index = trails.length - 1; index >= 0; index -= 1) {
+          trails[index].strength -= dt * 0.16;
+          if (trails[index].strength <= 0.03) {
+            trails.splice(index, 1);
+          }
+        }
+      };
+
+      const drawBackground = () => {
+        ctx.clearRect(0, 0, WIDTH, HEIGHT);
+
+        const gradient = ctx.createLinearGradient(0, 0, 0, HEIGHT);
+        gradient.addColorStop(0, "#1c140f");
+        gradient.addColorStop(0.55, "#120e0a");
+        gradient.addColorStop(1, "#0d0a08");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+        ctx.save();
+        ctx.strokeStyle = "rgba(214, 162, 74, 0.06)";
+        ctx.lineWidth = 1;
+        for (let x = 24; x < WIDTH; x += 48) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, HEIGHT);
+          ctx.stroke();
+        }
+        for (let y = 20; y < HEIGHT; y += 40) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(WIDTH, y);
+          ctx.stroke();
+        }
+        ctx.restore();
+
+        for (const mote of motes) {
+          ctx.fillStyle = `rgba(242, 233, 215, ${mote.alpha})`;
+          ctx.beginPath();
+          ctx.arc(mote.x, mote.y, mote.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      };
+
+      const drawNest = () => {
+        ctx.save();
+        const pulse = 0.5 + (Math.sin(performance.now() * 0.0024) * 0.5);
+        const glow = ctx.createRadialGradient(nest.x, nest.y, 0, nest.x, nest.y, 70);
+        glow.addColorStop(0, `rgba(217, 133, 59, ${0.32 + (pulse * 0.1)})`);
+        glow.addColorStop(1, "rgba(217, 133, 59, 0)");
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(nest.x, nest.y, 70, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = "#4d2a12";
+        ctx.beginPath();
+        ctx.arc(nest.x, nest.y, nest.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = "rgba(246, 214, 109, 0.7)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(nest.x, nest.y, nest.r + 7, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.fillStyle = "rgba(242, 233, 215, 0.84)";
+        ctx.font = '700 11px "Courier New", monospace';
+        ctx.letterSpacing = "0.08em";
+        ctx.fillText("NEST", nest.x - 16, nest.y + 4);
+        ctx.restore();
+      };
+
+      const drawTrails = () => {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+
+        for (const trail of trails) {
+          const radius = 9 + (trail.strength * 9);
+          const gradient = ctx.createRadialGradient(trail.x, trail.y, 0, trail.x, trail.y, radius);
+          gradient.addColorStop(0, `rgba(118, 201, 119, ${trail.strength * 0.26})`);
+          gradient.addColorStop(1, "rgba(118, 201, 119, 0)");
+          ctx.fillStyle = gradient;
+          ctx.beginPath();
+          ctx.arc(trail.x, trail.y, radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.restore();
+      };
+
+      const drawCrumbs = () => {
+        for (const crumb of crumbs) {
+          const pellets = clamp(Math.round(crumb.amount / 3), 3, 7);
+          for (let index = 0; index < pellets; index += 1) {
+            const angle = (Math.PI * 2 * index) / pellets;
+            const radius = crumb.size * 0.55;
+            const px = crumb.x + (Math.cos(angle) * radius * 0.8);
+            const py = crumb.y + (Math.sin(angle) * radius * 0.8);
+            ctx.fillStyle = index % 2 === 0 ? "#f6d66d" : "#f0bc4f";
+            ctx.beginPath();
+            ctx.arc(px, py, 3.2 + ((index % 3) * 0.4), 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+      };
+
+      const drawStones = () => {
+        for (const stone of stones) {
+          const gradient = ctx.createRadialGradient(stone.x - 6, stone.y - 8, 2, stone.x, stone.y, stone.r);
+          gradient.addColorStop(0, "#a68e73");
+          gradient.addColorStop(1, "#5e5143");
+          ctx.fillStyle = gradient;
+          ctx.beginPath();
+          ctx.arc(stone.x, stone.y, stone.r, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.strokeStyle = "rgba(242, 233, 215, 0.12)";
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.arc(stone.x, stone.y, stone.r, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      };
+
+      const drawAnt = (ant) => {
+        ctx.save();
+        ctx.translate(ant.x, ant.y);
+        ctx.rotate(ant.angle);
+
+        ctx.strokeStyle = "rgba(242, 233, 215, 0.18)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(-2, -4);
+        ctx.lineTo(-8, -8);
+        ctx.moveTo(0, -4);
+        ctx.lineTo(-2, -9);
+        ctx.moveTo(2, -4);
+        ctx.lineTo(4, -9);
+        ctx.moveTo(-2, 4);
+        ctx.lineTo(-8, 8);
+        ctx.moveTo(0, 4);
+        ctx.lineTo(-2, 9);
+        ctx.moveTo(2, 4);
+        ctx.lineTo(4, 9);
+        ctx.stroke();
+
+        ctx.fillStyle = ant.carrying ? "#f6d66d" : "#d8b98a";
+        ctx.beginPath();
+        ctx.ellipse(-5.5, 0, 4.4, 3.2, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 3.5, 2.9, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(5.5, 0, 2.7, 2.2, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (ant.carrying) {
+          ctx.fillStyle = "#f0bc4f";
+          ctx.beginPath();
+          ctx.arc(9.2, 0, 2.4, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.restore();
+      };
+
+      const drawFieldLabels = () => {
+        ctx.save();
+        ctx.font = '700 11px "Courier New", monospace';
+        ctx.fillStyle = "rgba(242, 233, 215, 0.58)";
+        ctx.fillText("EAST CRUMB BELT", WIDTH - 178, 34);
+        ctx.fillText("SOFT DETOUR RIDGE", 476, 492);
+        ctx.fillText("WATCH FOR OVERCONFIDENT ROUTING", 250, 34);
+        ctx.restore();
+      };
+
+      const render = () => {
+        drawBackground();
+        drawTrails();
+        drawStones();
+        drawCrumbs();
+        drawNest();
+        for (const ant of ants) {
+          drawAnt(ant);
+        }
+        drawFieldLabels();
+      };
+
+      const updateReadouts = () => {
+        const crumbMass = crumbs.reduce((sum, crumb) => sum + crumb.amount, 0);
+        const totalSignal = trails.reduce((sum, trail) => sum + trail.strength, 0);
+        const signalPercent = clamp(Math.round((totalSignal / 90) * 100), 0, 100);
+
+        statAnts.textContent = String(ants.length);
+        statCrumbs.textContent = crumbMass.toFixed(0);
+        statReturned.textContent = String(state.returned);
+        statSignal.textContent = `${signalPercent}%`;
+        statStones.textContent = String(stones.length);
+        statMapped.textContent = String(state.mapped);
+
+        if (state.returned >= 40) {
+          bulletin.textContent = bulletinStates[4];
+        } else if (state.returned >= 24) {
+          bulletin.textContent = bulletinStates[3];
+        } else if (signalPercent >= 60) {
+          bulletin.textContent = bulletinStates[2];
+        } else if (crumbMass >= 70) {
+          bulletin.textContent = bulletinStates[1];
+        } else {
+          bulletin.textContent = bulletinStates[0];
+        }
+      };
+
+      const frame = (timestamp) => {
+        if (state.lastTime === 0) {
+          state.lastTime = timestamp;
+        }
+
+        const dt = Math.min(0.045, (timestamp - state.lastTime) / 1000);
+        state.lastTime = timestamp;
+
+        updateWorld(dt);
+        render();
+        updateReadouts();
+        window.requestAnimationFrame(frame);
+      };
+
+      document.querySelectorAll("[data-mode]").forEach((button) => {
+        button.addEventListener("click", () => {
+          setMode(button.dataset.mode);
+        });
+      });
+
+      document.getElementById("trail-clear").addEventListener("click", clearTrails);
+
+      document.getElementById("crumb-storm").addEventListener("click", () => {
+        for (let index = 0; index < 4; index += 1) {
+          addCrumbCluster(random(WIDTH * 0.48, WIDTH - 60), random(70, HEIGHT - 70), 2);
+        }
+        pushIncident("Crumb shower approved. The eastern district is now extremely persuasive.");
+      });
+
+      document.getElementById("field-reset").addEventListener("click", () => {
+        seedField();
+      });
+
+      document.getElementById("colony-refresh").addEventListener("click", refreshColony);
+
+      canvas.addEventListener("pointerdown", (event) => {
+        state.pointerActive = true;
+        state.pointerStampAt = 0;
+        canvas.setPointerCapture(event.pointerId);
+        handlePlacement(pointFromEvent(event), true);
+      });
+
+      canvas.addEventListener("pointermove", (event) => {
+        if (!state.pointerActive || state.mode !== "crumb") {
+          return;
+        }
+
+        const now = performance.now();
+        if ((now - state.pointerStampAt) < 110) {
+          return;
+        }
+
+        state.pointerStampAt = now;
+        handlePlacement(pointFromEvent(event), false);
+      });
+
+      const releasePointer = () => {
+        state.pointerActive = false;
+      };
+
+      canvas.addEventListener("pointerup", releasePointer);
+      canvas.addEventListener("pointercancel", releasePointer);
+      canvas.addEventListener("contextmenu", (event) => event.preventDefault());
+
+      createMotes();
+      setMode("crumb");
+      seedField();
+      pushIncident("Night shift online. The ants have accepted the assignment without reading the memo.");
+      window.requestAnimationFrame(frame);
+    })();
+  </script>
+</body>
+</html>

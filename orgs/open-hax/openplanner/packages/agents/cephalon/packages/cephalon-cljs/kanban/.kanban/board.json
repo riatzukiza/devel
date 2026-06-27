@@ -1,0 +1,1003 @@
+{
+  "generatedAt": "2026-05-29T04:01:30.281Z",
+  "totalTasks": 66,
+  "columns": [
+    {
+      "status": "icebox",
+      "title": "Icebox",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "incoming",
+      "title": "Incoming",
+      "taskCount": 66,
+      "tasks": [
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-hybrid-continued-md",
+          "title": "`services/cephalon-ts`",
+          "slug": "services-cephalon-ts",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.725Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-hybrid-continued.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-hybrid-continued.md`\n# `services/cephalon-ts`\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-hybrid-continued.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- your **typescript cephalon** runtime (discord/tools loop, cli, etc.).\n- still outputs **both esm + cjs**, so it can be consumed from the cljs runtime.\n- a more complete **clojurescript cephalon** core (ecs-ish structure, systems, context assembler, session plumbing).\n- **now boots the typescript runtime automatically** via `promethean.bridge.cephalon-ts` at startup:\n- pulls token from `discord_token` (or `discord_bot_token`).\n- calls `createcephalonapp` and `.start()`.\n- pulled in your more complete packages:\n- `@promethean-os/event`\n- `@promethean-os/fsm`\n- `@promethean-os/utils`\n- `@promethean-os/persistence` (plus small stubs to satisfy workspace deps)\n- added minimal workspace stubs so installs don’t fail:\n\n## Summary Snippets\n- ([past chat][1])([past chat][1])([past chat][1])([past chat][1])([past chat][1])\n- * your **typescript cephalon** runtime (discord/tools loop, cli, etc.). * still outputs **both esm + cjs**, so it can be consumed from the cljs runtime.\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-hybrid-continued.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-hybrid-planning-md",
+          "title": "✅ Continuing (Option 1): what I found + the smart path forward",
+          "slug": "continuing-option-1-what-i-found-the-smart-path-forward",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.945Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-hybrid-planning.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-hybrid-planning.md`\n# ✅ Continuing (Option 1): what I found + the smart path forward\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-hybrid-planning.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- event bus wiring\n- Discord gateway integration publishing structured events\n- TurnProcessor tool-loop (Ollama tool calls, executes tools, appends tool results, loops until final output)\n- tool registry + tool executor\n- memory minting (discord events, tool calls, tool results, llm responses)\n- session manager that schedules turns\n- tick loop (autonomous heartbeat)\n- Chroma memory store / embedding service / UI server integration\n- policy loader/types\n- memory types\n- event types\n- a **very minimal** context assembler (not yet matching TS)\n\n## Summary Snippets\n- You’re right to pick **Option 1**.\n- After unpacking and inspecting what you uploaded, the situation is:\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-hybrid-planning.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-hybrid-ts-consumption-md",
+          "title": "✅ Major structural improvement: TS is now “consumable” by CLJS",
+          "slug": "major-structural-improvement-ts-is-now-consumable-by-cljs",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.896Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-hybrid-ts-consumption.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-hybrid-ts-consumption.md`\n# ✅ Major structural improvement: TS is now “consumable” by CLJS\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-hybrid-ts-consumption.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- `event.tar.gz` → extracted into `packages/event` as `@promethean-os/event`\n- `fsm.tar.gz` → extracted into `packages/fsm` as `@promethean-os/fsm`\n- `utils.tar.gz` → extracted into `packages/utils` as `@promethean-os/utils`\n- `cephalon_persistent.tar.gz` → used as the base TS cephalon service (it’s already aligned with your newer design + policy hooks)\n- `cephalon_cljs.zip` → used as the CLJS base service (shadow-cljs node script ECS loop)\n- exports `createCephalonApp()`\n- returns `{ start(), stop(), ... }`\n- **no `process.exit()`** inside the runtime (safe for embedding)\n- only the CLI registers signal handlers + exits\n- CLI runs runtime and calls stop on SIGINT/SIGTERM\n- exports core classes (`TurnProcessor`, `ToolExecutor`, etc.)\n- exports `createCephalonApp`\n\n## Summary Snippets\n- * `event.tar.gz` → extracted into `packages/event` as `@promethean-os/event` * `fsm.tar.gz` → extracted into `packages/fsm` as `@promethean-os/fsm` * `utils.tar.gz` → extracted into `packages/utils` as `@promethean-os/utils` * `cephalon_persistent.tar.gz` → used as the base TS cephalon service (it’s already aligned with your newer design + policy hooks) * `cephalon_cljs.zip` → used as the CLJS base service (shadow-cljs node script ECS loop)\n- Then I created a **single hybrid workspace** with:\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-hybrid-ts-consumption.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-root-2026-02-02-00-15-20-md",
+          "title": "✅ Progress update (and what I changed so far)",
+          "slug": "progress-update-and-what-i-changed-so-far",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.909Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/root--2026-02-02-00-15-20.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/root--2026-02-02-00-15-20.md`\n# ✅ Progress update (and what I changed so far)\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/root/2026.02.02.00.15.20.md`\n- Category: `root`\n\n## Draft Requirements\n- **Explicitly improve support for running multiple bots**\n- Ensure processes can create **distinct personas + session configs**\n- Keep repo structure in **`packages/`** and **`services/`**\n- Add a **root `AGENTS.md`** plus **skills** for running Cephalon\n- Provide **pm2 ecosystem DSL** example (multi-process bots)\n- Prefer **multiple processes per bot** (easier to change later)\n- `/mnt/data/cephalon_mono_build`\n- `:attention-focus` → `\"attention-focus\"`\n- `attentionFocus`\n- `:tick-interval-ms` → `tickIntervalMs`\n- `:discord-token-env` → `discordTokenEnv`\n- `:tool-allow-list` → `toolAllowList`\n\n## Summary Snippets\n- You asked me to **continue** and specifically to:\n- * **Explicitly improve support for running multiple bots** * Ensure processes can create **distinct personas + session configs** * Keep repo structure in **`packages/`** and **`services/`** * Add a **root `AGENTS.md`** plus **skills** for running Cephalon * Provide **pm2 ecosystem DSL** example (multi-process bots) * Prefer **multiple processes per bot** (easier to change later)\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/root--2026-02-02-00-15-20.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-multi-bot-progress-md",
+          "title": "✅ Progress update (continued + incorporated Promethean packages)",
+          "slug": "progress-update-continued-incorporated-promethean-packages",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.953Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-multi-bot-progress.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-multi-bot-progress.md`\n# ✅ Progress update (continued + incorporated Promethean packages)\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-multi-bot-progress.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- **TypeScript Cephalon runtime** (working MVP backend)\n- **Shadow-CLJS Cephalon** (control-plane / game-loop / future brain)\n- Promethean packages you uploaded:\n- `@promethean-os/event`\n- `@promethean-os/persistence`\n- `@promethean-os/fsm`\n- `@promethean-os/utils`\n- `src/runtime/create-runtime.ts`\n- event bus\n- memory store (in-memory or MongoDB selectable by env)\n- chroma store + embedding service\n- discord client + integration\n\n## Summary Snippets\n- I pulled in the new archives you uploaded and **continued “Option 1”** in a way that keeps the working TypeScript MVP intact while making the **Shadow-CLJS Cephalon the control plane** that **consumes** the TS runtime.\n- A root workspace that contains:\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-multi-bot-progress.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-ollama-tool-calling-analysis-md",
+          "title": "✅ What you’re doing right",
+          "slug": "what-you-re-doing-right",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.894Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--ollama-tool-calling-analysis.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--ollama-tool-calling-analysis.md`\n# ✅ What you’re doing right\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/ollama-tool-calling-analysis.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- call the model\n- execute tools\n- stop\n- call the model → it returns `tool_calls`\n- execute tools\n- append **role: \"tool\"** messages with results\n- call the model again to get the final response\n- repeat until no more `tool_calls`\n- run *all* tool calls (parallel calls supported) ([Ollama Docs][1])\n- append tool outputs\n- call model again and publish/send final content\n- tool results are added as `{ role: \"tool\", tool_name, content }` ([Ollama Docs][1])\n\n## Summary Snippets\n- Mostly yes — **your request shape for tools matches Ollama’s `/api/chat` tool-calling API**, but a couple details are off, and you’re missing the *most important* step: **send tool results back to the model and loop until it stops calling tools**.\n- This part matches Ollama’s documented format: `tools: [{ type: \"function\", function: { name, description, parameters } }]`. ([Ollama Docs][1])\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--ollama-tool-calling-analysis.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-promethean-ontology-8-layers-md",
+          "title": "0) What’s already here to anchor to",
+          "slug": "0-what-s-already-here-to-anchor-to",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.826Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--promethean-ontology-8-layers.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--promethean-ontology-8-layers.md`\n# 0) What’s already here to anchor to\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/promethean-ontology-8-layers.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- **Unique doc filenames & inboxes** are already configured in `.dir-locals.el` (`prom/unique-doc-format`, targets for `docs/inbox`, `docs/unique`). Use this to create stable, linkable slugs for canonical docs.\n- **Agents/structures/indexes/profiles** are declared in `pseudo/pil.hy` (e.g., `Cephalon`, `Eidolon`, `Pandora`, `Eris`, `repo-embeddings`)—that’s your ontology.\n- **Plugins** (including `EventCapturePlugin`, `AsyncSubAgentsPlugin`) are enumerated and described in `hack/index.ts`—perfect to auto‑generate plugin pages from.\n- **Data intake precedent** (audio → transcripts) references `docs/maintenance/orphaned-files.md`—use that “maintenance” area as a home for housekeeping playbooks.\n- `pseudo/pil.hy` already names the system’s **kinds** (structures, agents, indexes, profiles). The **atlas** page can mirror those headings verbatim so every entity in `pil.hy` has a doc anchor you can link to.\n- `hack/index.ts` already describes plugins with names and one‑line descriptions—**generate** a page per plugin from this file (see §3).\n- `.dir-locals.el` ensures new notes land in the right inbox with timestamped filenames—link **out of** `docs/README.md` and **into** curated canonical docs to drain the inbox over time.\n- **Architecture** → [docs/atlas/architecture.md](atlas/architecture.md)\n- **Memory System (Spec)** → [docs/specs/memory.md](specs/memory.md)\n- **Context Compilation** → [docs/specs/context-compilation.md](specs/context-compilation.md)\n- **Glossary** → [docs/concepts/glossary.md](concepts/glossary.md)\n- **Plugins** → [docs/plugins/](plugins/)\n\n## Summary Snippets\n- Absolutely—most of what you need is already in Promethean. Let’s **connect the plans** you’ve scattered across `pseudo/`, `hack/`, and `docs/` into one coherent map, and give you **drop‑in pages + tiny automations** so the docs folder becomes the source of truth for the memory system, agents, and plugins.\n- Below is a concrete **weaving plan** with ready‑to‑paste file skeletons and minimal scripts. I reference your repo where relevant so you can see why each link exists.\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--promethean-ontology-8-layers.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-promethean-ontology-8-layers-md",
+          "title": "0) What’s already here to anchor to",
+          "slug": "0-what-s-already-here-to-anchor-to",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.940Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--promethean-ontology-8-layers.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--promethean-ontology-8-layers.md`\n# 0) What’s already here to anchor to\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/promethean-ontology-8-layers.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- **Unique doc filenames & inboxes** are already configured in `.dir-locals.el` (`prom/unique-doc-format`, targets for `docs/inbox`, `docs/unique`). Use this to create stable, linkable slugs for canonical docs.\n- **Agents/structures/indexes/profiles** are declared in `pseudo/pil.hy` (e.g., `Cephalon`, `Eidolon`, `Pandora`, `Eris`, `repo-embeddings`)—that’s your ontology.\n- **Plugins** (including `EventCapturePlugin`, `AsyncSubAgentsPlugin`) are enumerated and described in `hack/index.ts`—perfect to auto‑generate plugin pages from.\n- **Data intake precedent** (audio → transcripts) references `docs/maintenance/orphaned-files.md`—use that “maintenance” area as a home for housekeeping playbooks.\n- `pseudo/pil.hy` already names the system’s **kinds** (structures, agents, indexes, profiles). The **atlas** page can mirror those headings verbatim so every entity in `pil.hy` has a doc anchor you can link to.\n- `hack/index.ts` already describes plugins with names and one‑line descriptions—**generate** a page per plugin from this file (see §3).\n- `.dir-locals.el` ensures new notes land in the right inbox with timestamped filenames—link **out of** `docs/README.md` and **into** curated canonical docs to drain the inbox over time.\n- **Architecture** → [docs/atlas/architecture.md](atlas/architecture.md)\n- **Memory System (Spec)** → [docs/specs/memory.md](specs/memory.md)\n- **Context Compilation** → [docs/specs/context-compilation.md](specs/context-compilation.md)\n- **Glossary** → [docs/concepts/glossary.md](concepts/glossary.md)\n- **Plugins** → [docs/plugins/](plugins/)\n\n## Summary Snippets\n- Absolutely—most of what you need is already in Promethean. Let’s **connect the plans** you’ve scattered across `pseudo/`, `hack/`, and `docs/` into one coherent map, and give you **drop‑in pages + tiny automations** so the docs folder becomes the source of truth for the memory system, agents, and plugins.\n- Below is a concrete **weaving plan** with ready‑to‑paste file skeletons and minimal scripts. I reference your repo where relevant so you can see why each link exists.\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--promethean-ontology-8-layers.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-hybrid-event-package-md",
+          "title": "1) Built a **hybrid workspace layout**",
+          "slug": "1-built-a-hybrid-workspace-layout",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.955Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-hybrid-event-package.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-hybrid-event-package.md`\n# 1) Built a **hybrid workspace layout**\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-hybrid-event-package.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- `src/core/mongodb-memory-store.ts`\n- `src/core/memory-store.ts` (in-memory fallback)\n- Mongo event store (`MongoEventStore`)\n- Mongo cursor store (`MongoCursorStore`)\n- Mongo change streams (watching inserts)\n- **MongoEventBus when `MONGODB_URI` is set**\n- otherwise fallback to `InMemoryEventBus`\n- **MongoDBMemoryStore when memory persistence is configured**\n- otherwise fallback to `InMemoryMemoryStore`\n- shutdown cleanup only when supported (`cleanup` is not on in-memory store)\n- `cephalon-mvp-spec.md`\n- `brain-daemon-skeleton.md`\n\n## Summary Snippets\n- I assembled a new repo structure (in-progress) like this:\n- ```text cephalon-hybrid/ package.json pnpm-workspace.yaml services/ cephalon-ts/ # your working TS service (source) packages/ event/ # @promethean-os/event persistence/ # @promethean-os/persistence utils/ # @promethean-os/utils fsm/ # @promethean-os/fsm cephalon-cljs/ # CLJS “brain” package (source only) docs/ notes/ # extracted design+planning notes ```\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-hybrid-event-package.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-memory-strategy-md",
+          "title": "1) Model strategy that matches your constraints",
+          "slug": "1-model-strategy-that-matches-your-constraints",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.911Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-memory-strategy.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-memory-strategy.md`\n# 1) Model strategy that matches your constraints\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-memory-strategy.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- **2B**: reliable tool calling + **256k** window → best for “wide context with lots of related”\n- **4B / 8B**: fallbacks (smaller window) when you need capability boosts\n- **“Actor” model** (tool-calling, outward actions): start with **qwen3-vl-2b**, clamp outputs to a strict tool-call schema, and validate.\n- **“Summarizer/Compressor” model** (GC + summaries): can also be 2B (because long context is the point), but you can optionally bump to 4B/8B if you see summary quality issues.\n- `related` > `recent`\n- both can be large\n- filter duplicates aggressively\n- `system+developer+session`: **3–8%**\n- `persistent`: **5–12%**\n- `recent`: **12–22%**\n- `related`: **30–55%** (always >= `recent` * 1.5)\n- `scratch/working`: remainder (tool results, intermediate notes, safety margin)\n\n## Summary Snippets\n- * **2B**: reliable tool calling + **256k** window → best for “wide context with lots of related” * **4B / 8B**: fallbacks (smaller window) when you need capability boosts\n- * **“Actor” model** (tool-calling, outward actions): start with **qwen3-vl-2b**, clamp outputs to a strict tool-call schema, and validate. * **“Summarizer/Compressor” model** (GC + summaries): can also be 2B (because long context is the point), but you can optionally bump to 4B/8B if you see summary quality issues.\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-memory-strategy.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-cephalon-memory-strategy-md",
+          "title": "1) Model strategy that matches your constraints",
+          "slug": "1-model-strategy-that-matches-your-constraints",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.926Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-memory-strategy.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-memory-strategy.md`\n# 1) Model strategy that matches your constraints\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/cephalon-memory-strategy.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- **2B**: reliable tool calling + **256k** window → best for “wide context with lots of related”\n- **4B / 8B**: fallbacks (smaller window) when you need capability boosts\n- **“Actor” model** (tool-calling, outward actions): start with **qwen3-vl-2b**, clamp outputs to a strict tool-call schema, and validate.\n- **“Summarizer/Compressor” model** (GC + summaries): can also be 2B (because long context is the point), but you can optionally bump to 4B/8B if you see summary quality issues.\n- `related` > `recent`\n- both can be large\n- filter duplicates aggressively\n- `system+developer+session`: **3–8%**\n- `persistent`: **5–12%**\n- `recent`: **12–22%**\n- `related`: **30–55%** (always >= `recent` * 1.5)\n- `scratch/working`: remainder (tool results, intermediate notes, safety margin)\n\n## Summary Snippets\n- * **2B**: reliable tool calling + **256k** window → best for “wide context with lots of related” * **4B / 8B**: fallbacks (smaller window) when you need capability boosts\n- * **“Actor” model** (tool-calling, outward actions): start with **qwen3-vl-2b**, clamp outputs to a strict tool-call schema, and validate. * **“Summarizer/Compressor” model** (GC + summaries): can also be 2B (because long context is the point), but you can optionally bump to 4B/8B if you see summary quality issues.\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-memory-strategy.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-tool-call-validation-md",
+          "title": "1) One envelope, one decision",
+          "slug": "1-one-envelope-one-decision",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.914Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-tool-call-validation.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-tool-call-validation.md`\n# 1) One envelope, one decision\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-tool-call-validation.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- **Mode A: tool call** (JSON object)\n- **Mode B: assistant message** (plain text)\n- Must be a **single JSON object**.\n- No arrays at top-level.\n- No markdown fences.\n- No extra keys beyond `type/name/args` (unless you *explicitly* allow `idempotency_key` / `trace_id`).\n- leading whitespace + prose\n- code fences\n- multiple JSON objects\n- trailing commentary\n- Find the **first `{`**\n- Parse the **first complete JSON object** (balanced braces, string-aware)\n\n## Summary Snippets\n- Define exactly two output modes:\n- * **Mode A: tool call** (JSON object) * **Mode B: assistant message** (plain text)\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-tool-call-validation.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-cephalon-tool-call-validation-md",
+          "title": "1) One envelope, one decision",
+          "slug": "1-one-envelope-one-decision",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.923Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-tool-call-validation.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-tool-call-validation.md`\n# 1) One envelope, one decision\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/cephalon-tool-call-validation.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- **Mode A: tool call** (JSON object)\n- **Mode B: assistant message** (plain text)\n- Must be a **single JSON object**.\n- No arrays at top-level.\n- No markdown fences.\n- No extra keys beyond `type/name/args` (unless you *explicitly* allow `idempotency_key` / `trace_id`).\n- leading whitespace + prose\n- code fences\n- multiple JSON objects\n- trailing commentary\n- Find the **first `{`**\n- Parse the **first complete JSON object** (balanced braces, string-aware)\n\n## Summary Snippets\n- Define exactly two output modes:\n- * **Mode A: tool call** (JSON object) * **Mode B: assistant message** (plain text)\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-tool-call-validation.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-recovery-progress-md",
+          "title": "Best: zip the on-disk project storage (fast + complete)",
+          "slug": "best-zip-the-on-disk-project-storage-fast-complete",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.941Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-recovery-progress.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-recovery-progress.md`\n# Best: zip the on-disk project storage (fast + complete)\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-recovery-progress.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- `opencode export [sessionID]` ([OpenCode][4])\n- `opencode import <file>` ([OpenCode][4])\n- **Backup / migration / “give me everything”** → zip `storage/{session,message,part}/$PROJECT_ID` (first script).\n- **Shareable / clean imports** → batch `opencode export` and zip the results (second script). ([OpenCode][4])\n\n## Summary Snippets\n- OpenCode keeps session/message data as JSON under your data dir (typically `~/.local/share/opencode/storage/`). ([forums.basehub.com][1]) Sessions are stored project-scoped as `storage/session/{projectID}/{sessionID}.json`. For git repos, `projectID` is the **root commit hash**; for non-git dirs it’s `\"global\"`. ([GitHub][2]) Alongside `session/`, OpenCode also stores the per-session message/part JSON in sibling folders (commonly `message/` and `part/`). ([npm][3])\n- So the simplest “full zip for the current repo” is: compute `projectID`, then zip the project’s subfolders.\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-recovery-progress.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-specs-ecs-runtime-and-effects-md",
+          "title": "Cephalon CLJS ECS Runtime and Effects",
+          "slug": "cephalon-cljs-ecs-runtime-and-effects",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:29.131Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/specs/ecs-runtime-and-effects.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/specs-import/ecs-runtime-and-effects.md`\n\n# Cephalon CLJS ECS Runtime and Effects\n\n## Goal\n\nDescribe the package as an always-running ECS-style brain daemon instead of only a collection of notes.\n\n## World contract\n\nThe runtime world assembled in `src/promethean/main.cljs` carries at least:\n- tick/time state\n- entities\n- incoming and outgoing events\n- effect queues and pending effect state\n- environment maps for config, clients, adapters, and stores\n\nThis matters because the CLJS branch treats cognition as world evolution over time, not only as “call model, get answer.”\n\n## System order\n\nThe main executable path currently runs systems in this order:\n1. route events into sessions or cephalon-facing processing\n2. ingest memory\n3. index eidolon / nexus state\n4. maintain eidolon vectors\n5. run sentinel behavior\n6. run cephalon cognition\n7. flush side effects\n\nThat order is load-bearing.\nIt means perception, memory, indexing, governance, and action are intended to be distinct passes.\n\n## Effects contract\n\nThe effects system currently preserves a strong event-native pattern:\n- effects are queued as data\n- effects receive IDs and pending-state records\n- execution is bounded by `max-inflight`\n- each effect resolves into a result or error event\n- completed effects are retained for later inspection up to a configured bound\n\nThis is one of the cleanest surviving expressions of Cephalon as a structured runtime instead of prompt glue.\n\n## Bridge contract\n\nWhen `CEPHALON_TS_BRIDGE=true`, the CLJS package may start the TypeScript cephalon runtime.\n\nInterpretation:\n- CLJS can still act as the brain-daemon / orchestrating mind layer\n- TS can provide a stronger service/runtime/output surface\n- the family was already moving toward mixed-language composition\n\n## Why this package still matters\n\nEven if the TS runtime is the stronger operator-facing surface, the CLJS branch still preserves:\n- the best explicit world model\n- the best system decomposition\n- much of the note/spec doctrine around context, eidolon, and field semantics\n\nA future convergence that ignores this package would likely rebuild these ideas from scratch.",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/specs-import/ecs-runtime-and-effects.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-mvp-spec-md",
+          "title": "Cephalon MVP spec notes #cephalon #agents #eidolon",
+          "slug": "cephalon-mvp-spec-notes-cephalon-agents-eidolon",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.955Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-mvp-spec.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-mvp-spec.md`\n# Cephalon MVP spec notes #cephalon #agents #eidolon\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-mvp-spec.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- **Event**: anything that happens in the world or the system (Discord message, timer tick, tool result, internal reflection, admin command).\n- **Message**: an LLM-provider message object (`role`, `content`, plus modality/tool fields).\n- **Memory**: a *message + metadata* that is *indexed* (vector ANN + filters) and can be retrieved later.\n- `id` (uuid)\n- `timestamp` (ms)\n- `cephalon_id` (e.g. `\"Duck\"`)\n- `session_id` (facet/aspect id)\n- `event_id` (source event)\n- `role` (`user|assistant|system|developer|tool`)\n- `kind` (`message|tool_call|tool_result|think|image|summary|admin`)\n- `content` (text, structured payload, or pointer to blob)\n- `source`\n\n## Summary Snippets\n- Below is a concrete way to *make your description executable* without losing the vibe: “always running mind” + “many sessions / facets” + “vector memory + persistent memory + recent events” + “event subscriptions with locks”.\n- ---\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-mvp-spec.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-cephalon-mvp-spec-md",
+          "title": "Cephalon MVP spec notes #cephalon #agents #eidolon",
+          "slug": "cephalon-mvp-spec-notes-cephalon-agents-eidolon",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.949Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-mvp-spec.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-mvp-spec.md`\n# Cephalon MVP spec notes #cephalon #agents #eidolon\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/cephalon-mvp-spec.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- **Event**: anything that happens in the world or the system (Discord message, timer tick, tool result, internal reflection, admin command).\n- **Message**: an LLM-provider message object (`role`, `content`, plus modality/tool fields).\n- **Memory**: a *message + metadata* that is *indexed* (vector ANN + filters) and can be retrieved later.\n- `id` (uuid)\n- `timestamp` (ms)\n- `cephalon_id` (e.g. `\"Duck\"`)\n- `session_id` (facet/aspect id)\n- `event_id` (source event)\n- `role` (`user|assistant|system|developer|tool`)\n- `kind` (`message|tool_call|tool_result|think|image|summary|admin`)\n- `content` (text, structured payload, or pointer to blob)\n- `source`\n\n## Summary Snippets\n- Below is a concrete way to *make your description executable* without losing the vibe: “always running mind” + “many sessions / facets” + “vector memory + persistent memory + recent events” + “event subscriptions with locks”.\n- ---\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-mvp-spec.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-ts-to-shadow-cljs-migration-md",
+          "title": "Cephalon TS ➜ shadow-cljs carryover notes #cephalon #shadow-cljs #promethean",
+          "slug": "cephalon-ts-shadow-cljs-carryover-notes-cephalon-shadow-cljs-promethean",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.903Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-ts-to-shadow-cljs-migration.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-ts-to-shadow-cljs-migration.md`\n# Cephalon TS ➜ shadow-cljs carryover notes #cephalon #shadow-cljs #promethean\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-ts-to-shadow-cljs-migration.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- `:llm/chat` ➜ runner calls Ollama/OpenAI, emits `:llm/chat.result` event\n- `:tool/exec` ➜ runner calls a tool handler, emits `:tool/result`\n- `:discord/send` / `:discord/fetch` ➜ runner hits Discord client, emits `:discord/...` events\n- `:memory/insert` / `:memory/search` / `:memory/pin` ➜ runner updates store(s), emits `:memory/...`\n- what the model is told (“tool schema”)\n- what you actually implement (“handler”)\n- registry is data (schemas + handler fns)\n- “tool definitions for LLM” is derived from registry\n- “executor dispatch” is derived from registry\n- assemble context\n- call LLM\n- if tool calls: append assistant tool_calls → execute tools → append tool results → repeat\n\n## Summary Snippets\n- ([Past chat][1])([Past chat][1])([Past chat][2])([Past chat][3])([Past chat][3])\n- You’ve already got the *right* shape in the CLJS version: an ECS-ish “world” plus an **effects queue** (`:effects`) where side effects happen outside the pure systems loop. That is the perfect place to import almost everything that made the TypeScript version “work”.\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-ts-to-shadow-cljs-migration.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-root-2026-02-02-17-14-48-md",
+          "title": "Cephalon v1 as a real, shippable “alive loop”",
+          "slug": "cephalon-v1-as-a-real-shippable-alive-loop",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.902Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/root--2026-02-02-17-14-48.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/root--2026-02-02-17-14-48.md`\n# Cephalon v1 as a real, shippable “alive loop”\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/root/2026.02.02.17.14.48.md`\n- Category: `root`\n\n## Draft Requirements\n- **discover**: list channels\n- **choose**: pick 1 channel deterministically (policy-based)\n- **read**: fetch last 100 messages\n- **summarize**: produce a short public summary message\n- **remember**: store structured memory about that channel\n- **persist**: save the full turn to disk/db\n- **survive**: if tools fail or model outputs junk, it recovers and tries again next tick\n- multi-agent orchestration\n- cross-server “personality arcs”\n- deep semantic retrieval\n- complex task planning\n- training / eval harness beyond basic metrics\n\n## Summary Snippets\n- You said “continue” — so here’s the next layer down: **the contracts + data shapes + loop rules** that make Milestone_1 not just “works once”, but **boringly repeatable**.\n- ---\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/root--2026-02-02-17-14-48.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-concrete-specs-md",
+          "title": "Concrete specs: normalize + near-dupe + schemas + compaction policy + scheduler #cephalon #mvp",
+          "slug": "concrete-specs-normalize-near-dupe-schemas-compaction-policy-scheduler-cephalon-mvp",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.962Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-concrete-specs.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-concrete-specs.md`\n# Concrete specs: normalize + near-dupe + schemas + compaction policy + scheduler #cephalon #mvp\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-concrete-specs.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- `event`: `{guild_id, channel_id, message_id, author_id, author_is_bot, content, embeds[], attachments[]}`\n- `policy`: normalization + dedupe settings (per guild/channel optional overrides)\n- `normalized_text` (string)\n- `signature` (object used for exact-dupe key)\n- `features` (object used for near-dupe + classification)\n- `text = unicode_nfkc(content)`\n- `text = text.replace(\"\\r\\n\", \"\\n\")`\n- collapse runs of spaces/tabs: `text = text.replace(/[ \\t]+/g, \" \")`\n- trim each line + drop empty tail lines\n- global trim\n- ISO-ish timestamps:\n- `/\\b\\d{4}-\\d{2}-\\d{2}[ T]\\d{2}:\\d{2}(:\\d{2})?\\b/g` → `<ts>`\n\n## Summary Snippets\n- * `event`: `{guild_id, channel_id, message_id, author_id, author_is_bot, content, embeds[], attachments[]}` * `policy`: normalization + dedupe settings (per guild/channel optional overrides)\n- * `normalized_text` (string) * `signature` (object used for exact-dupe key) * `features` (object used for near-dupe + classification)\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-concrete-specs.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-cephalon-concrete-specs-md",
+          "title": "Concrete specs: normalize + near-dupe + schemas + compaction policy + scheduler #cephalon #mvp",
+          "slug": "concrete-specs-normalize-near-dupe-schemas-compaction-policy-scheduler-cephalon-mvp",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.911Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-concrete-specs.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-concrete-specs.md`\n# Concrete specs: normalize + near-dupe + schemas + compaction policy + scheduler #cephalon #mvp\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/cephalon-concrete-specs.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- `event`: `{guild_id, channel_id, message_id, author_id, author_is_bot, content, embeds[], attachments[]}`\n- `policy`: normalization + dedupe settings (per guild/channel optional overrides)\n- `normalized_text` (string)\n- `signature` (object used for exact-dupe key)\n- `features` (object used for near-dupe + classification)\n- `text = unicode_nfkc(content)`\n- `text = text.replace(\"\\r\\n\", \"\\n\")`\n- collapse runs of spaces/tabs: `text = text.replace(/[ \\t]+/g, \" \")`\n- trim each line + drop empty tail lines\n- global trim\n- ISO-ish timestamps:\n- `/\\b\\d{4}-\\d{2}-\\d{2}[ T]\\d{2}:\\d{2}(:\\d{2})?\\b/g` → `<ts>`\n\n## Summary Snippets\n- * `event`: `{guild_id, channel_id, message_id, author_id, author_is_bot, content, embeds[], attachments[]}` * `policy`: normalization + dedupe settings (per guild/channel optional overrides)\n- * `normalized_text` (string) * `signature` (object used for exact-dupe key) * `features` (object used for near-dupe + classification)\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-concrete-specs.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-context-assembly-md",
+          "title": "Context assembly implementation (token accounting + summary substitution) #cephalon #context",
+          "slug": "context-assembly-implementation-token-accounting-summary-substitution-cephalon-context",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.963Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-context-assembly.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-context-assembly.md`\n# Context assembly implementation (token accounting + summary substitution) #cephalon #context\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-context-assembly.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- `windowTokens` (e.g. 65536 / 131072 / 262144)\n- `policy` (your EDN knobs)\n- `sessionId`, `cephalonId`\n- `currentEvent` (or “tick intent”)\n- pools:\n- `persistent[]` (pinned memories)\n- `recent[]` (session ring buffer, last N events as memories)\n- `relatedCandidates[]` (retrieval results)\n- `messages[]` for the provider call, already ordered and token-fit\n- `contextLog` with `(memory_id, tokensIncluded)` for access tracking\n- `related` (drop lowest score)\n- swap clusters to summaries (related first, then recent)\n\n## Summary Snippets\n- This continues with **(1) Context assembly implementation**: how to deterministically pack `[persistent, recent, related]` into a variable context window (64k/128k/256k), while deduping and swapping clusters for summaries when needed.\n- ---\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-context-assembly.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-cephalon-context-assembly-md",
+          "title": "Context assembly implementation (token accounting + summary substitution) #cephalon #context",
+          "slug": "context-assembly-implementation-token-accounting-summary-substitution-cephalon-context",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.909Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-context-assembly.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-context-assembly.md`\n# Context assembly implementation (token accounting + summary substitution) #cephalon #context\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/cephalon-context-assembly.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- `windowTokens` (e.g. 65536 / 131072 / 262144)\n- `policy` (your EDN knobs)\n- `sessionId`, `cephalonId`\n- `currentEvent` (or “tick intent”)\n- pools:\n- `persistent[]` (pinned memories)\n- `recent[]` (session ring buffer, last N events as memories)\n- `relatedCandidates[]` (retrieval results)\n- `messages[]` for the provider call, already ordered and token-fit\n- `contextLog` with `(memory_id, tokensIncluded)` for access tracking\n- `related` (drop lowest score)\n- swap clusters to summaries (related first, then recent)\n\n## Summary Snippets\n- This continues with **(1) Context assembly implementation**: how to deterministically pack `[persistent, recent, related]` into a variable context window (64k/128k/256k), while deduping and swapping clusters for summaries when needed.\n- ---\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-context-assembly.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-dedupe-gc-rules-md",
+          "title": "Continuation: dedupe rules + summary GC contract + tool schemas #cephalon #memory #gc #dedupe #summaries",
+          "slug": "continuation-dedupe-rules-summary-gc-contract-tool-schemas-cephalon-memory-gc-dedupe-summaries",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.906Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-dedupe-gc-rules.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-dedupe-gc-rules.md`\n# Continuation: dedupe rules + summary GC contract + tool schemas #cephalon #memory #gc #dedupe #summaries\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-dedupe-gc-rules.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- **Unicode + whitespace**\n- NFKC normalize\n- convert CRLF → LF\n- collapse runs of spaces/tabs\n- trim\n- **Strip volatile noise**\n- remove timestamps like `2026-01-31 12:34:56`, `12:34 PM`, etc\n- remove counters like `(#1234)` or `run=987` *(only if the prefix/suffix pattern is known to be spammy)*\n- **URL canonicalization**\n- lowercase scheme/host\n- remove tracking params (`utm_*`, `ref`, `fbclid`, etc)\n- optionally drop fragments (`#...`) for known spam URLs\n\n## Summary Snippets\n- You want this to be *useful cleanup*, not “silence everything”.\n- Apply in this order:\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-dedupe-gc-rules.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-cephalon-dedupe-gc-rules-md",
+          "title": "Continuation: dedupe rules + summary GC contract + tool schemas #cephalon #memory #gc #dedupe #summaries",
+          "slug": "continuation-dedupe-rules-summary-gc-contract-tool-schemas-cephalon-memory-gc-dedupe-summaries",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.958Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-dedupe-gc-rules.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-dedupe-gc-rules.md`\n# Continuation: dedupe rules + summary GC contract + tool schemas #cephalon #memory #gc #dedupe #summaries\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/cephalon-dedupe-gc-rules.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- **Unicode + whitespace**\n- NFKC normalize\n- convert CRLF → LF\n- collapse runs of spaces/tabs\n- trim\n- **Strip volatile noise**\n- remove timestamps like `2026-01-31 12:34:56`, `12:34 PM`, etc\n- remove counters like `(#1234)` or `run=987` *(only if the prefix/suffix pattern is known to be spammy)*\n- **URL canonicalization**\n- lowercase scheme/host\n- remove tracking params (`utm_*`, `ref`, `fbclid`, etc)\n- optionally drop fragments (`#...`) for known spam URLs\n\n## Summary Snippets\n- You want this to be *useful cleanup*, not “silence everything”.\n- Apply in this order:\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-dedupe-gc-rules.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-daimoi-v01-md",
+          "title": "Daimoi v0.1: deterministic graph-walk retrieval over nexus keys + vectors #daimoi #nexus #retrieval",
+          "slug": "daimoi-v0-1-deterministic-graph-walk-retrieval-over-nexus-keys-vectors-daimoi-nexus-retrieval",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.936Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-daimoi-v01.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-daimoi-v01.md`\n# Daimoi v0.1: deterministic graph-walk retrieval over nexus keys + vectors #daimoi #nexus #retrieval\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-daimoi-v01.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- **vector retrieval** (canonical + eidolon lanes)\n- **nexus keys** (tags, paths, urls, tool names, channels, error families)\n- **field state** (digest + chemistry tags)\n- **GC + summaries** (replace clusters)\n- deterministic\n- budgeted\n- prefers summaries/aggregates\n- respects deletions\n- produces a `related` set that *feels like associative memory*\n- starts from a seed memory\n- activates a small set of nexus keys on that memory\n- walks key → neighbors (other memories sharing the key)\n\n## Summary Snippets\n- You already have:\n- * **vector retrieval** (canonical + eidolon lanes) * **nexus keys** (tags, paths, urls, tool names, channels, error families) * **field state** (digest + chemistry tags) * **GC + summaries** (replace clusters)\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-daimoi-v01.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-cephalon-daimoi-v01-md",
+          "title": "Daimoi v0.1: deterministic graph-walk retrieval over nexus keys + vectors #daimoi #nexus #retrieval",
+          "slug": "daimoi-v0-1-deterministic-graph-walk-retrieval-over-nexus-keys-vectors-daimoi-nexus-retrieval",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.899Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-daimoi-v01.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-daimoi-v01.md`\n# Daimoi v0.1: deterministic graph-walk retrieval over nexus keys + vectors #daimoi #nexus #retrieval\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/cephalon-daimoi-v01.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- **vector retrieval** (canonical + eidolon lanes)\n- **nexus keys** (tags, paths, urls, tool names, channels, error families)\n- **field state** (digest + chemistry tags)\n- **GC + summaries** (replace clusters)\n- deterministic\n- budgeted\n- prefers summaries/aggregates\n- respects deletions\n- produces a `related` set that *feels like associative memory*\n- starts from a seed memory\n- activates a small set of nexus keys on that memory\n- walks key → neighbors (other memories sharing the key)\n\n## Summary Snippets\n- You already have:\n- * **vector retrieval** (canonical + eidolon lanes) * **nexus keys** (tags, paths, urls, tool names, channels, error families) * **field state** (digest + chemistry tags) * **GC + summaries** (replace clusters)\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-daimoi-v01.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-root-2026-02-02-17-12-43-md",
+          "title": "Define “all its glory” as 5 concrete capabilities",
+          "slug": "define-all-its-glory-as-5-concrete-capabilities",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.933Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/root--2026-02-02-17-12-43.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/root--2026-02-02-17-12-43.md`\n# Define “all its glory” as 5 concrete capabilities\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/root/2026.02.02.17.12.43.md`\n- Category: `root`\n\n## Draft Requirements\n- **Always_on_loop**\n- ticks on a schedule\n- can pause/resume\n- never wedges itself (timeouts, retries, circuit_breaker)\n- **Tool_native_agent**\n- discovers environment via tools (not prompt magic)\n- tool calls are validated, logged, replayable\n- idempotent where possible\n- **Memory_that_matters**\n- short_term_context (what’s happening now)\n- long_term_memory (facts + preferences + summaries)\n- retrieval that’s predictable (not “hope the embed works”)\n\n## Summary Snippets\n- ([Past chat][1])([Past chat][1])([Past chat][1])([Past chat][1])([Past chat][2])\n- Yeah — if **Cephalon “in all its glory”** is the north star, that’s valid.\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/root--2026-02-02-17-12-43.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-tags-v01-md",
+          "title": "Deterministic tags v0.1: ontology, generator pipeline, validators, and nexus integration #tags #nexus #eidolon",
+          "slug": "deterministic-tags-v0-1-ontology-generator-pipeline-validators-and-nexus-integration-tags-nexus-eidolon",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.928Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-tags-v01.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-tags-v01.md`\n# Deterministic tags v0.1: ontology, generator pipeline, validators, and nexus integration #tags #nexus #eidolon\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-tags-v01.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- Help embeddings “carry circumstance” (Eidolon lens)\n- Create **nexus keys** so retrieval can expand structurally (daimoi walkers)\n- **deterministic**\n- **bounded** (small, stable set per memory)\n- **typed** (so they’re usable as keys, not vibes)\n- **composable** (so meaning can drift by recombining tags over time)\n- `src/discord`\n- `src/tool`\n- `tool/discord.send_message`\n- `tool/fs.read`\n- `chan/343179912196128792`\n- `file/ext/clj`\n\n## Summary Snippets\n- You want `generated_tags` to do **two jobs** at once:\n- 1. Help embeddings “carry circumstance” (Eidolon lens) 2. Create **nexus keys** so retrieval can expand structurally (daimoi walkers)\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-tags-v01.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-cephalon-tags-v01-md",
+          "title": "Deterministic tags v0.1: ontology, generator pipeline, validators, and nexus integration #tags #nexus #eidolon",
+          "slug": "deterministic-tags-v0-1-ontology-generator-pipeline-validators-and-nexus-integration-tags-nexus-eidolon",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.935Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-tags-v01.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-tags-v01.md`\n# Deterministic tags v0.1: ontology, generator pipeline, validators, and nexus integration #tags #nexus #eidolon\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/cephalon-tags-v01.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- Help embeddings “carry circumstance” (Eidolon lens)\n- Create **nexus keys** so retrieval can expand structurally (daimoi walkers)\n- **deterministic**\n- **bounded** (small, stable set per memory)\n- **typed** (so they’re usable as keys, not vibes)\n- **composable** (so meaning can drift by recombining tags over time)\n- `src/discord`\n- `src/tool`\n- `tool/discord.send_message`\n- `tool/fs.read`\n- `chan/343179912196128792`\n- `file/ext/clj`\n\n## Summary Snippets\n- You want `generated_tags` to do **two jobs** at once:\n- 1. Help embeddings “carry circumstance” (Eidolon lens) 2. Create **nexus keys** so retrieval can expand structurally (daimoi walkers)\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-tags-v01.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-promethean-agent-runtime-spec-md",
+          "title": "Devel's workflow",
+          "slug": "devel-s-workflow",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.943Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--promethean-agent-runtime-spec.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--promethean-agent-runtime-spec.md`\n# Devel's workflow\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/promethean-agent-runtime-spec.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- opencode - The bootstraps, hacks we put together to get the job done when needed.\n- cephalon - Always running brain loops, named agent instances with persistent personalities\n- sentinel - reactive agents that trigger in response to an event, and stop their work when end conditions are met.\n- olympia - benchmarker, keeps track of stats on other agents for future optimization tools, generates benchmark reports for human analysis\n- eidolon - A semantic agent system floating agent, traverses the nooi, binding to and modifying Nexus (represents a resource on the knowledge graph, and it's location in the nooi see [promethean/docs/design/overview.md])\n- `tags` is a list of strings that obsidian treats the same as #tags\n- `description` is a summary of the document\n- `title` A natural language title that clearly describes the document\n- `slug` A string to in file names, urls, database entries, etc\n\n## Summary Snippets\n- A running instance of [[promethean]], with debugging enbabled\n- - opencode - The bootstraps, hacks we put together to get the job done when needed. - cephalon - Always running brain loops, named agent instances with persistent personalities - sentinel - reactive agents that trigger in response to an event, and stop their work when end conditions are met. - olympia - benchmarker, keeps track of stats on other agents for future optimization tools, generates benchmark reports for human analysis - eidolon - A semantic agent system floating agent, traverses the nooi, binding to and modifying Nexus (represents a resource on the knowledge graph, and it's location in the nooi see [promethean/docs/design/overview.md])\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--promethean-agent-runtime-spec.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-promethean-agent-runtime-spec-md",
+          "title": "Devel's workflow",
+          "slug": "devel-s-workflow",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.965Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--promethean-agent-runtime-spec.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--promethean-agent-runtime-spec.md`\n# Devel's workflow\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/promethean-agent-runtime-spec.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- opencode - The bootstraps, hacks we put together to get the job done when needed.\n- cephalon - Always running brain loops, named agent instances with persistent personalities\n- sentinel - reactive agents that trigger in response to an event, and stop their work when end conditions are met.\n- olympia - benchmarker, keeps track of stats on other agents for future optimization tools, generates benchmark reports for human analysis\n- eidolon - A semantic agent system floating agent, traverses the nooi, binding to and modifying Nexus (represents a resource on the knowledge graph, and it's location in the nooi see [promethean/docs/design/overview.md])\n- `tags` is a list of strings that obsidian treats the same as #tags\n- `description` is a summary of the document\n- `title` A natural language title that clearly describes the document\n- `slug` A string to in file names, urls, database entries, etc\n\n## Summary Snippets\n- A running instance of [[promethean]], with debugging enbabled\n- - opencode - The bootstraps, hacks we put together to get the job done when needed. - cephalon - Always running brain loops, named agent instances with persistent personalities - sentinel - reactive agents that trigger in response to an event, and stop their work when end conditions are met. - olympia - benchmarker, keeps track of stats on other agents for future optimization tools, generates benchmark reports for human analysis - eidolon - A semantic agent system floating agent, traverses the nooi, binding to and modifying Nexus (represents a resource on the knowledge graph, and it's location in the nooi see [promethean/docs/design/overview.md])\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--promethean-agent-runtime-spec.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-hybrid-cljs-orchestrator-md",
+          "title": "Drop-in replacement script",
+          "slug": "drop-in-replacement-script",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.957Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-hybrid-cljs-orchestrator.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-hybrid-cljs-orchestrator.md`\n# Drop-in replacement script\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-hybrid-cljs-orchestrator.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- It **does not** parse `opencode session list --format json` at all.\n- It reads the **per-session JSON files** that OpenCode stores under `~/.local/share/opencode/storage/session/` (which are independent JSON documents), then exports only the ones whose `directory` is inside `~/devel`. ([Basehub Forums][3])\n\n## Summary Snippets\n- Your error is coming from **`opencode session list --format json` not actually producing valid JSON** (it’s getting cut off / mixed with non-JSON), so `jq` hits EOF mid-parse.\n- You can skip `session list` entirely and instead read OpenCode’s **on-disk session metadata** (which is stored as individual JSON files under `~/.local/share/opencode/storage/`) and then only `opencode export` the sessions whose `directory` is under `~/devel`. This is also faster + more reliable. ([OpenCode][1]) (And `opencode export <sessionID>` is the supported way to dump a session as JSON.) ([OpenCode][2])\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-hybrid-cljs-orchestrator.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-eidolon-field-concept-md",
+          "title": "Eidolon v0 as a field",
+          "slug": "eidolon-v0-as-a-field",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.916Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-eidolon-field-concept.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-eidolon-field-concept.md`\n# Eidolon v0 as a field\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-eidolon-field-concept.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- A **text** (discord message, tool result, file chunk, HTTP response) is a “particle.”\n- An **embedding** is that particle’s coordinates **under a particular field configuration**.\n- The **field configuration** is your *state-conditioned prompt header* (health/uptime lens, session lens, circuit lens, tags, and whatever else you include).\n- **Document semantics** (the actual content)\n- **Circumstance semantics** (the cephalon/system state you prepend)\n- **Document-only embedding** answers: “what is this about, in general?”\n- **Field-conditioned embedding** answers: “what is this about, *as experienced by this system under these conditions*?”\n- **Preamble dominance**: the repeated header starts to overpower the differentiating signal of the document text.\n- **Index bloat**: every “field shift” produces a new vector for the same content.\n- run a canonical query embedding → guarantees you can still find the thing “in principle”\n- run a contextual query embedding → pulls items that were salient in similar system circumstances\n- merge + rerank (or just weighted blend top-k)\n\n## Summary Snippets\n- Think of **Eidolon** as a *dynamic coordinate system* that your cephalon uses to place texts into vector space.\n- * A **text** (discord message, tool result, file chunk, HTTP response) is a “particle.” * An **embedding** is that particle’s coordinates **under a particular field configuration**. * The **field configuration** is your *state-conditioned prompt header* (health/uptime lens, session lens, circuit lens, tags, and whatever else you include).\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-eidolon-field-concept.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-cephalon-eidolon-field-concept-md",
+          "title": "Eidolon v0 as a field",
+          "slug": "eidolon-v0-as-a-field",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.824Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-eidolon-field-concept.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-eidolon-field-concept.md`\n# Eidolon v0 as a field\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/cephalon-eidolon-field-concept.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- A **text** (discord message, tool result, file chunk, HTTP response) is a “particle.”\n- An **embedding** is that particle’s coordinates **under a particular field configuration**.\n- The **field configuration** is your *state-conditioned prompt header* (health/uptime lens, session lens, circuit lens, tags, and whatever else you include).\n- **Document semantics** (the actual content)\n- **Circumstance semantics** (the cephalon/system state you prepend)\n- **Document-only embedding** answers: “what is this about, in general?”\n- **Field-conditioned embedding** answers: “what is this about, *as experienced by this system under these conditions*?”\n- **Preamble dominance**: the repeated header starts to overpower the differentiating signal of the document text.\n- **Index bloat**: every “field shift” produces a new vector for the same content.\n- run a canonical query embedding → guarantees you can still find the thing “in principle”\n- run a contextual query embedding → pulls items that were salient in similar system circumstances\n- merge + rerank (or just weighted blend top-k)\n\n## Summary Snippets\n- Think of **Eidolon** as a *dynamic coordinate system* that your cephalon uses to place texts into vector space.\n- * A **text** (discord message, tool result, file chunk, HTTP response) is a “particle.” * An **embedding** is that particle’s coordinates **under a particular field configuration**. * The **field configuration** is your *state-conditioned prompt header* (health/uptime lens, session lens, circuit lens, tags, and whatever else you include).\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-eidolon-field-concept.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-eidolon-v01-continuation-md",
+          "title": "Eidolon v0.1 continuation: field-digest, circuit lenses, prompt blocks, and retrieval mechanics #eidolon #cephalon #duck",
+          "slug": "eidolon-v0-1-continuation-field-digest-circuit-lenses-prompt-blocks-and-retrieval-mechanics-eidolon-cephalon-duck",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.948Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-eidolon-v01-continuation.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-eidolon-v01-continuation.md`\n# Eidolon v0.1 continuation: field-digest, circuit lenses, prompt blocks, and retrieval mechanics #eidolon #cephalon #duck\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-eidolon-v01-continuation.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- keep the “meaning can drift over time” property\n- avoid preamble dominance\n- make multi-embedding-per-document tractable\n- make circuits/lenses first-class, without multiplying infra 8× unless you want to\n- `field_version` (int)\n- `cephalon_id`, `session_id`, `circuit_id`\n- `time_bucket` (e.g. hour/day) to avoid infinite churn\n- `health` (green/yellow/red + 1–3 error fingerprints)\n- `pressure` (discord rate, tool queue sizes)\n- `focus` (1–2 lines: what this session is doing)\n- `environment` (host/service names if relevant)\n- `tags` (controlled-ish vocabulary)\n\n## Summary Snippets\n- You’ve basically described **Eidolon as “state-conditioned embedding space”** plus **Nexus as “shared metadata topology”**. The next iteration is to make that *operationally clean*:\n- * keep the “meaning can drift over time” property * avoid preamble dominance * make multi-embedding-per-document tractable * make circuits/lenses first-class, without multiplying infra 8× unless you want to\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-eidolon-v01-continuation.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-cephalon-eidolon-v01-continuation-md",
+          "title": "Eidolon v0.1 continuation: field-digest, circuit lenses, prompt blocks, and retrieval mechanics #eidolon #cephalon #duck",
+          "slug": "eidolon-v0-1-continuation-field-digest-circuit-lenses-prompt-blocks-and-retrieval-mechanics-eidolon-cephalon-duck",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.957Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-eidolon-v01-continuation.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-eidolon-v01-continuation.md`\n# Eidolon v0.1 continuation: field-digest, circuit lenses, prompt blocks, and retrieval mechanics #eidolon #cephalon #duck\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/cephalon-eidolon-v01-continuation.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- keep the “meaning can drift over time” property\n- avoid preamble dominance\n- make multi-embedding-per-document tractable\n- make circuits/lenses first-class, without multiplying infra 8× unless you want to\n- `field_version` (int)\n- `cephalon_id`, `session_id`, `circuit_id`\n- `time_bucket` (e.g. hour/day) to avoid infinite churn\n- `health` (green/yellow/red + 1–3 error fingerprints)\n- `pressure` (discord rate, tool queue sizes)\n- `focus` (1–2 lines: what this session is doing)\n- `environment` (host/service names if relevant)\n- `tags` (controlled-ish vocabulary)\n\n## Summary Snippets\n- You’ve basically described **Eidolon as “state-conditioned embedding space”** plus **Nexus as “shared metadata topology”**. The next iteration is to make that *operationally clean*:\n- * keep the “meaning can drift over time” property * avoid preamble dominance * make multi-embedding-per-document tractable * make circuits/lenses first-class, without multiplying infra 8× unless you want to\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-eidolon-v01-continuation.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-embedding-scheduler-v01-md",
+          "title": "Embedding Scheduler v0.1: cost-aware, state-aware, deterministic #embeddings #scheduler #eidolon #qwen3-embedding:0.6b",
+          "slug": "embedding-scheduler-v0-1-cost-aware-state-aware-deterministic-embeddings-scheduler-eidolon-qwen3-embedding-0-6b",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.938Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-embedding-scheduler-v01.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-embedding-scheduler-v01.md`\n# Embedding Scheduler v0.1: cost-aware, state-aware, deterministic #embeddings #scheduler #eidolon #qwen3-embedding:0.6b\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-embedding-scheduler-v01.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- deterministic priorities\n- bounded backlogs\n- lineage caps (so “many times” doesn’t become “infinite”)\n- backpressure behavior during flood\n- summary/aggregate preference (so you embed *compressed meaning*, not raw noise)\n- `embed.canonical(memory_id)`\n- `embed.eidolon(memory_id, circuit_id, field_digest_hash)`\n- `embed.summary(memory_id)` *(usually canonical + eidolon, but you can treat as high-priority)*\n- `embed.aggregate(memory_id)` *(same)*\n- `embed.reembed_content(content_id, reason)` *(optional “refresh lane” job)*\n- `vector_id`\n- `embedding_model`\n\n## Summary Snippets\n- You want to embed **everything the agent has seen**, possibly many times as context changes. That’s workable if embedding becomes a *scheduled service* with:\n- * deterministic priorities * bounded backlogs * lineage caps (so “many times” doesn’t become “infinite”) * backpressure behavior during flood * summary/aggregate preference (so you embed *compressed meaning*, not raw noise)\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-embedding-scheduler-v01.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-cephalon-embedding-scheduler-v01-md",
+          "title": "Embedding Scheduler v0.1: cost-aware, state-aware, deterministic #embeddings #scheduler #eidolon #qwen3-embedding:0.6b",
+          "slug": "embedding-scheduler-v0-1-cost-aware-state-aware-deterministic-embeddings-scheduler-eidolon-qwen3-embedding-0-6b",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.947Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-embedding-scheduler-v01.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-embedding-scheduler-v01.md`\n# Embedding Scheduler v0.1: cost-aware, state-aware, deterministic #embeddings #scheduler #eidolon #qwen3-embedding:0.6b\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/cephalon-embedding-scheduler-v01.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- deterministic priorities\n- bounded backlogs\n- lineage caps (so “many times” doesn’t become “infinite”)\n- backpressure behavior during flood\n- summary/aggregate preference (so you embed *compressed meaning*, not raw noise)\n- `embed.canonical(memory_id)`\n- `embed.eidolon(memory_id, circuit_id, field_digest_hash)`\n- `embed.summary(memory_id)` *(usually canonical + eidolon, but you can treat as high-priority)*\n- `embed.aggregate(memory_id)` *(same)*\n- `embed.reembed_content(content_id, reason)` *(optional “refresh lane” job)*\n- `vector_id`\n- `embedding_model`\n\n## Summary Snippets\n- You want to embed **everything the agent has seen**, possibly many times as context changes. That’s workable if embedding becomes a *scheduled service* with:\n- * deterministic priorities * bounded backlogs * lineage caps (so “many times” doesn’t become “infinite”) * backpressure behavior during flood * summary/aggregate preference (so you embed *compressed meaning*, not raw noise)\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-embedding-scheduler-v01.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-field-digest-v01-md",
+          "title": "Field Digest v0.1: deterministic “state vector” that doesn’t churn #eidolon #field_digest #nexus",
+          "slug": "field-digest-v0-1-deterministic-state-vector-that-doesn-t-churn-eidolon-field-digest-nexus",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.891Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-field-digest-v01.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-field-digest-v01.md`\n# Field Digest v0.1: deterministic “state vector” that doesn’t churn #eidolon #field_digest #nexus\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-field-digest-v01.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- changes *when it should* (incidents, pressure, new focus)\n- doesn’t change every tick (no embedding churn)\n- can be hashed and used as a lineage key\n- can be fed into both **embedding** and **query** prompts\n- It is **not** a narrative summary of recent messages.\n- It is **not** a dump of persistent memories.\n- It is an engineered “feature vector” in text form.\n- “This text, as seen under these conditions.”\n- `time_bucket` (e.g. 1h or 15m)\n- `cephalon_id`, `session_id`, `circuit_id`\n- `focus` (short string / “current contract” label)\n- `subscriptions` (channel IDs or event filters)\n\n## Summary Snippets\n- You want a **small, stable, deterministic transformer** that turns “whatever the cephalon knows right now” into a **Field Digest** that:\n- * changes *when it should* (incidents, pressure, new focus) * doesn’t change every tick (no embedding churn) * can be hashed and used as a lineage key * can be fed into both **embedding** and **query** prompts\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-field-digest-v01.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-cephalon-field-digest-v01-md",
+          "title": "Field Digest v0.1: deterministic “state vector” that doesn’t churn #eidolon #field_digest #nexus",
+          "slug": "field-digest-v0-1-deterministic-state-vector-that-doesn-t-churn-eidolon-field-digest-nexus",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.904Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-field-digest-v01.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-field-digest-v01.md`\n# Field Digest v0.1: deterministic “state vector” that doesn’t churn #eidolon #field_digest #nexus\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/cephalon-field-digest-v01.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- changes *when it should* (incidents, pressure, new focus)\n- doesn’t change every tick (no embedding churn)\n- can be hashed and used as a lineage key\n- can be fed into both **embedding** and **query** prompts\n- It is **not** a narrative summary of recent messages.\n- It is **not** a dump of persistent memories.\n- It is an engineered “feature vector” in text form.\n- “This text, as seen under these conditions.”\n- `time_bucket` (e.g. 1h or 15m)\n- `cephalon_id`, `session_id`, `circuit_id`\n- `focus` (short string / “current contract” label)\n- `subscriptions` (channel IDs or event filters)\n\n## Summary Snippets\n- You want a **small, stable, deterministic transformer** that turns “whatever the cephalon knows right now” into a **Field Digest** that:\n- * changes *when it should* (incidents, pressure, new focus) * doesn’t change every tick (no embedding churn) * can be hashed and used as a lineage key * can be fed into both **embedding** and **query** prompts\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-field-digest-v01.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-brain-daemon-skeleton-md",
+          "title": "Full initial files: runnable brain daemon skeleton (pure `shadow-cljs`, Node) #shadowcljs #ecs #runtime",
+          "slug": "full-initial-files-runnable-brain-daemon-skeleton-pure-shadow-cljs-node-shadowcljs-ecs-runtime",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.907Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--brain-daemon-skeleton.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--brain-daemon-skeleton.md`\n# Full initial files: runnable brain daemon skeleton (pure `shadow-cljs`, Node) #shadowcljs #ecs #runtime\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/brain-daemon-skeleton.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- a tick loop\n- an effects runner (FS + LLM)\n- a sentinel for `docs/notes` frontmatter tagging\n- a session router + simple cephalon stub that builds a context and calls chat\n- maintain `:effects/pending` in world: `{effect-id {:effect ... :status ...}}`\n- when you enqueue an effect, insert into pending\n- `sys.effects.flush` starts pending effects (if not started) and on resolve pushes a result event into `:events/out`\n- executes async effects\n- emits `:fs/read.result`, `:llm/chat.result` etc into the next tick reliably\n- supports tool call execution hooks\n- and adds a tiny debug inspector (queue lengths, last events) so the dev workflow feels good immediately.\n\n## Summary Snippets\n- I’m going to assume “continue” means: **stop abstracting and give me concrete file contents** you can drop in and iterate. Below are full-file replacements for a minimal, runnable skeleton:\n- * a tick loop * an effects runner (FS + LLM) * a sentinel for `docs/notes` frontmatter tagging * a session router + simple cephalon stub that builds a context and calls chat\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--brain-daemon-skeleton.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-brain-daemon-skeleton-md",
+          "title": "Full initial files: runnable brain daemon skeleton (pure `shadow-cljs`, Node) #shadowcljs #ecs #runtime",
+          "slug": "full-initial-files-runnable-brain-daemon-skeleton-pure-shadow-cljs-node-shadowcljs-ecs-runtime",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.905Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--brain-daemon-skeleton.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--brain-daemon-skeleton.md`\n# Full initial files: runnable brain daemon skeleton (pure `shadow-cljs`, Node) #shadowcljs #ecs #runtime\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/brain-daemon-skeleton.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- a tick loop\n- an effects runner (FS + LLM)\n- a sentinel for `docs/notes` frontmatter tagging\n- a session router + simple cephalon stub that builds a context and calls chat\n- maintain `:effects/pending` in world: `{effect-id {:effect ... :status ...}}`\n- when you enqueue an effect, insert into pending\n- `sys.effects.flush` starts pending effects (if not started) and on resolve pushes a result event into `:events/out`\n- executes async effects\n- emits `:fs/read.result`, `:llm/chat.result` etc into the next tick reliably\n- supports tool call execution hooks\n- and adds a tiny debug inspector (queue lengths, last events) so the dev workflow feels good immediately.\n\n## Summary Snippets\n- I’m going to assume “continue” means: **stop abstracting and give me concrete file contents** you can drop in and iterate. Below are full-file replacements for a minimal, runnable skeleton:\n- * a tick loop * an effects runner (FS + LLM) * a sentinel for `docs/notes` frontmatter tagging * a session router + simple cephalon stub that builds a context and calls chat\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--brain-daemon-skeleton.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-ecs-keys-system-signatures-md",
+          "title": "Implementation details v0: ECS keys + system signatures + effect pipeline (pure `shadow-cljs`) #ecs #shadowcljs #promethean",
+          "slug": "implementation-details-v0-ecs-keys-system-signatures-effect-pipeline-pure-shadow-cljs-ecs-shadowcljs-promethean",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.928Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--ecs-keys-system-signatures.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--ecs-keys-system-signatures.md`\n# Implementation details v0: ECS keys + system signatures + effect pipeline (pure `shadow-cljs`) #ecs #shadowcljs #promethean\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/ecs-keys-system-signatures.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- `:discord.message/new`\n- `:fs.file/created`\n- `:fs.file/modified`\n- `:timer/tick`\n- `:memory/created` (after normalization + tagging)\n- `:eidolon/indexed` (nexus updated)\n- `:embedding/job.enqueued`\n- `:embedding/job.done`\n- `:cephalon/session.ready`\n- `:llm/response`\n- `:tool/called`\n- `:tool/result`\n\n## Summary Snippets\n- You’ll go fastest if you treat **systems as mostly pure** and push side effects through a **command buffer** (“effects”), like a game engine. That keeps the simulation deterministic, debuggable, and replayable—even though you’re talking to OpenAI-compatible APIs and Discord.\n- ---\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--ecs-keys-system-signatures.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-ecs-keys-system-signatures-md",
+          "title": "Implementation details v0: ECS keys + system signatures + effect pipeline (pure `shadow-cljs`) #ecs #shadowcljs #promethean",
+          "slug": "implementation-details-v0-ecs-keys-system-signatures-effect-pipeline-pure-shadow-cljs-ecs-shadowcljs-promethean",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.913Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--ecs-keys-system-signatures.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--ecs-keys-system-signatures.md`\n# Implementation details v0: ECS keys + system signatures + effect pipeline (pure `shadow-cljs`) #ecs #shadowcljs #promethean\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/ecs-keys-system-signatures.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- `:discord.message/new`\n- `:fs.file/created`\n- `:fs.file/modified`\n- `:timer/tick`\n- `:memory/created` (after normalization + tagging)\n- `:eidolon/indexed` (nexus updated)\n- `:embedding/job.enqueued`\n- `:embedding/job.done`\n- `:cephalon/session.ready`\n- `:llm/response`\n- `:tool/called`\n- `:tool/result`\n\n## Summary Snippets\n- You’ll go fastest if you treat **systems as mostly pure** and push side effects through a **command buffer** (“effects”), like a game engine. That keeps the simulation deterministic, debuggable, and replayable—even though you’re talking to OpenAI-compatible APIs and Discord.\n- ---\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--ecs-keys-system-signatures.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-shadow-cljs-game-loop-md",
+          "title": "Implementation zoom-out: a pure `shadow-cljs` “game loop” for Eidolon/Daimoi/Nexus #promethean #shadowcljs #ecs #eidolon",
+          "slug": "implementation-zoom-out-a-pure-shadow-cljs-game-loop-for-eidolon-daimoi-nexus-promethean-shadowcljs-ecs-eidolon",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.898Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--shadow-cljs-game-loop.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--shadow-cljs-game-loop.md`\n# Implementation zoom-out: a pure `shadow-cljs` “game loop” for Eidolon/Daimoi/Nexus #promethean #shadowcljs #ecs #eidolon\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/shadow-cljs-game-loop.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- **World state** (ECS)\n- **Event bus** (pub/sub)\n- **Systems** (pure-ish transforms + side-effect adapters)\n- **Ticks** (scheduler loop)\n- **Persistence adapters** (db, vector index, filesystem, discord, llm)\n- `:brain` — node script, always-running daemon\n- (later) `:hud` — optional humble-ui/laterna TUI/GUI target (separate concern)\n- Entity = `eid` (uuid/string)\n- Components = maps on that entity\n- World = atom `{::entities {eid {::compA {...} ::compB {...}}} ::time ...}`\n- sessions\n- memories\n\n## Summary Snippets\n- You’re basically building a **simulation runtime** that happens to talk to LLMs and tools. So the implementation should look like a game engine:\n- * **World state** (ECS) * **Event bus** (pub/sub) * **Systems** (pure-ish transforms + side-effect adapters) * **Ticks** (scheduler loop) * **Persistence adapters** (db, vector index, filesystem, discord, llm)\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--shadow-cljs-game-loop.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-shadow-cljs-game-loop-md",
+          "title": "Implementation zoom-out: a pure `shadow-cljs` “game loop” for Eidolon/Daimoi/Nexus #promethean #shadowcljs #ecs #eidolon",
+          "slug": "implementation-zoom-out-a-pure-shadow-cljs-game-loop-for-eidolon-daimoi-nexus-promethean-shadowcljs-ecs-eidolon",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.929Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--shadow-cljs-game-loop.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--shadow-cljs-game-loop.md`\n# Implementation zoom-out: a pure `shadow-cljs` “game loop” for Eidolon/Daimoi/Nexus #promethean #shadowcljs #ecs #eidolon\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/shadow-cljs-game-loop.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- **World state** (ECS)\n- **Event bus** (pub/sub)\n- **Systems** (pure-ish transforms + side-effect adapters)\n- **Ticks** (scheduler loop)\n- **Persistence adapters** (db, vector index, filesystem, discord, llm)\n- `:brain` — node script, always-running daemon\n- (later) `:hud` — optional humble-ui/laterna TUI/GUI target (separate concern)\n- Entity = `eid` (uuid/string)\n- Components = maps on that entity\n- World = atom `{::entities {eid {::compA {...} ::compB {...}}} ::time ...}`\n- sessions\n- memories\n\n## Summary Snippets\n- You’re basically building a **simulation runtime** that happens to talk to LLMs and tools. So the implementation should look like a game engine:\n- * **World state** (ECS) * **Event bus** (pub/sub) * **Systems** (pure-ish transforms + side-effect adapters) * **Ticks** (scheduler loop) * **Persistence adapters** (db, vector index, filesystem, discord, llm)\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--shadow-cljs-game-loop.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-mvp-contracts-md",
+          "title": "MVP contracts (implementation-ready): minting rules, aggregates, GC queries, tools, janitor loop #cephalon #memory #gc #dedupe",
+          "slug": "mvp-contracts-implementation-ready-minting-rules-aggregates-gc-queries-tools-janitor-loop-cephalon-memory-gc-dedupe",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.958Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-mvp-contracts.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-mvp-contracts.md`\n# MVP contracts (implementation-ready): minting rules, aggregates, GC queries, tools, janitor loop #cephalon #memory #gc #dedupe\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-mvp-contracts.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- `discord.message.created`\n- `discord.message.edited`\n- `discord.message.deleted`\n- `tool.call`\n- `tool.result`\n- `llm.assistant.message`\n- `llm.think.trace` *(optional / low weight)*\n- `system.tick`\n- `admin.command`\n- `memory.summary.created`\n- `memory.compaction.deleted` *(tombstone emit)*\n- it’s not an exact/near duplicate **or**\n\n## Summary Snippets\n- Use a small, explicit enum so policies stay simple:\n- * `discord.message.created` * `discord.message.edited` * `discord.message.deleted` * `tool.call` * `tool.result` * `llm.assistant.message` * `llm.think.trace` *(optional / low weight)* * `system.tick` * `admin.command` * `memory.summary.created` * `memory.compaction.deleted` *(tombstone emit)*\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-mvp-contracts.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-cephalon-mvp-contracts-md",
+          "title": "MVP contracts (implementation-ready): minting rules, aggregates, GC queries, tools, janitor loop #cephalon #memory #gc #dedupe",
+          "slug": "mvp-contracts-implementation-ready-minting-rules-aggregates-gc-queries-tools-janitor-loop-cephalon-memory-gc-dedupe",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.950Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-mvp-contracts.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-mvp-contracts.md`\n# MVP contracts (implementation-ready): minting rules, aggregates, GC queries, tools, janitor loop #cephalon #memory #gc #dedupe\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/cephalon-mvp-contracts.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- `discord.message.created`\n- `discord.message.edited`\n- `discord.message.deleted`\n- `tool.call`\n- `tool.result`\n- `llm.assistant.message`\n- `llm.think.trace` *(optional / low weight)*\n- `system.tick`\n- `admin.command`\n- `memory.summary.created`\n- `memory.compaction.deleted` *(tombstone emit)*\n- it’s not an exact/near duplicate **or**\n\n## Summary Snippets\n- Use a small, explicit enum so policies stay simple:\n- * `discord.message.created` * `discord.message.edited` * `discord.message.deleted` * `tool.call` * `tool.result` * `llm.assistant.message` * `llm.think.trace` *(optional / low weight)* * `system.tick` * `admin.command` * `memory.summary.created` * `memory.compaction.deleted` *(tombstone emit)*\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-mvp-contracts.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-nexus-index-v01-md",
+          "title": "Nexus Index v0.1: scalable metadata graph for “everything the agent has seen” #nexus #index #metadata #retrieval",
+          "slug": "nexus-index-v0-1-scalable-metadata-graph-for-everything-the-agent-has-seen-nexus-index-metadata-retrieval",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.920Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-nexus-index-v01.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-nexus-index-v01.md`\n# Nexus Index v0.1: scalable metadata graph for “everything the agent has seen” #nexus #index #metadata #retrieval\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-nexus-index-v01.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- incremental\n- bounded\n- summary/aggregate-aware\n- cheap to query (neighbors + degree)\n- safe under GC (no ghost links)\n- `degree` (how many memories reference it)\n- neighbor lists (IDs of memories) for fast expansion:\n- `recent_neighbors` (newest first)\n- `useful_neighbors` (highest inclusion/utility first)\n- `summary_neighbors` (prefer summaries/aggregates)\n- optional: `co_keys` (keys frequently co-occurring with K)\n- `tag:topic/dedupe`\n\n## Summary Snippets\n- Your premise is strong: **don’t index “files” or “websites” as special categories**—index *tool calls and their results*, plus *all events*. Then “files/websites” are just nexus keys (path/url) that naturally become hubs.\n- To make that scale, the Nexus Index needs to be:\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-nexus-index-v01.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-cephalon-nexus-index-v01-md",
+          "title": "Nexus Index v0.1: scalable metadata graph for “everything the agent has seen” #nexus #index #metadata #retrieval",
+          "slug": "nexus-index-v0-1-scalable-metadata-graph-for-everything-the-agent-has-seen-nexus-index-metadata-retrieval",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.900Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-nexus-index-v01.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-nexus-index-v01.md`\n# Nexus Index v0.1: scalable metadata graph for “everything the agent has seen” #nexus #index #metadata #retrieval\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/cephalon-nexus-index-v01.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- incremental\n- bounded\n- summary/aggregate-aware\n- cheap to query (neighbors + degree)\n- safe under GC (no ghost links)\n- `degree` (how many memories reference it)\n- neighbor lists (IDs of memories) for fast expansion:\n- `recent_neighbors` (newest first)\n- `useful_neighbors` (highest inclusion/utility first)\n- `summary_neighbors` (prefer summaries/aggregates)\n- optional: `co_keys` (keys frequently co-occurring with K)\n- `tag:topic/dedupe`\n\n## Summary Snippets\n- Your premise is strong: **don’t index “files” or “websites” as special categories**—index *tool calls and their results*, plus *all events*. Then “files/websites” are just nexus keys (path/url) that naturally become hubs.\n- To make that scale, the Nexus Index needs to be:\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-nexus-index-v01.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-root-2026-02-02-20-01-45-md",
+          "title": "Phase 1 is the right move",
+          "slug": "phase-1-is-the-right-move",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.945Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/root--2026-02-02-20-01-45.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/root--2026-02-02-20-01-45.md`\n# Phase 1 is the right move\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/root/2026.02.02.20.01.45.md`\n- Category: `root`\n\n## Draft Requirements\n- **Wave 1: Planning + Contracts**\n- Redis RPC envelope schema + tests\n- Test utilities + mocks\n- Align npm deps in `services/cephalon-cljs` (needed for adapters + Discord client + OpenAI sdk)\n- **Wave 2: Pure core libs (fast unit tests, no IO)**\n- `memory/model.cljs`\n- `memory/dedupe.cljs`\n- `memory/tags.cljs`\n- `contracts/markdown_frontmatter.cljs`\n- `eidolon/similarity.cljs`\n- `eidolon/nexus_keys.cljs`\n- **Wave 3: Stateful-but-in-memory libs**\n\n## Summary Snippets\n- ([Past chat][1])([Past chat][1])([Past chat][1])([Past chat][1])([Past chat][1])\n- You’ve already picked the only consolidation target that makes Phase 1 measurable: **`services/cephalon-cljs/` becomes canonical**, and you **migrate (not delete) `packages/cephalon-cljs/` into it** with unit/integration/e2e coverage.\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/root--2026-02-02-20-01-45.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-multi-bot-support-md",
+          "title": "Progress update (and what I’m going to change next)",
+          "slug": "progress-update-and-what-i-m-going-to-change-next",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.709Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-multi-bot-support.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-multi-bot-support.md`\n# Progress update (and what I’m going to change next)\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-multi-bot-support.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- **multi-bot support** (multiple Discord bots / multiple personas / multiple session configs)\n- keep layout under **`packages/`** and **`services/`**\n- add **`AGENTS.md`** + “skills” for running the cephalon\n- incorporate your **monorepo AGENTS.md** style + **pm2 ecosystem DSL** example\n- `src/main.ts` imports files that **don’t exist** in `src/`:\n- `./sessions/turn-processor.js` (missing)\n- `./sessions/proactive-behavior.js` (missing)\n- `./core/in-memory-memory-store.js` (missing)\n- `TurnProcessor` + `ToolExecutor` are implemented in `src/llm/ollama.ts`\n- `ProactiveBehavior` is implemented in `src/proactive/behavior.ts`\n- `MemoryStore` is an interface at `src/core/memory-store.ts`\n- Mongo store exists at `src/core/mongodb-memory-store.ts`\n\n## Summary Snippets\n- You asked me to **continue** and explicitly improve:\n- * **multi-bot support** (multiple Discord bots / multiple personas / multiple session configs) * keep layout under **`packages/`** and **`services/`** * add **`AGENTS.md`** + “skills” for running the cephalon * incorporate your **monorepo AGENTS.md** style + **pm2 ecosystem DSL** example\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-multi-bot-support.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-root-2026-02-02-02-19-56-md",
+          "title": "Progress update (what I found + what’s already in your current codebase)",
+          "slug": "progress-update-what-i-found-what-s-already-in-your-current-codebase",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.960Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/root--2026-02-02-02-19-56.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/root--2026-02-02-02-19-56.md`\n# Progress update (what I found + what’s already in your current codebase)\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/root/2026.02.02.02.19.56.md`\n- Category: `root`\n\n## Draft Requirements\n- wires up Discord + LLM + tools + UI\n- runs the tick loop and credit refill loop\n- manages sessions via `SessionManager`\n- provides `start()` and `stop()` lifecycle\n- the sessions created are hardcoded to `\"Duck\"` persona/IDs\n- the memory store cephalon id / namespaces are not parameterized (and could collide)\n- the config resolution is “single bot”, meaning `discordToken` is assumed (not derived per bot)\n- tick prompt is generic/hardcoded\n- `create-cephalon-app!` (bridge)\n- `start-cephalon!`\n- `packages/cephalon-ts`\n- `packages/cephalon-cljs`\n\n## Summary Snippets\n- I dug into the **`cephalon-.zip`** archive you provided (the “two cephalon packages” bundle), plus the **Promethean packages** you attached (event/persistence/fsm/utils), and the **pm2 ecosystem DSL example** (`cephalon.cljs`) + your repo’s **AGENTS.md** reference.\n- Inside `packages/cephalon-ts/src/app.ts` you already have a `createCephalonApp(options)` pattern that:\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/root--2026-02-02-02-19-56.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-retention-scheduler-md",
+          "title": "Retention + compaction in a multi-session scheduler (no starvation, immediate benefits) #cephalon #scheduler #gc #retention",
+          "slug": "retention-compaction-in-a-multi-session-scheduler-no-starvation-immediate-benefits-cephalon-scheduler-gc-retention",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.964Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-retention-scheduler.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-retention-scheduler.md`\n# Retention + compaction in a multi-session scheduler (no starvation, immediate benefits) #cephalon #scheduler #gc #retention\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-retention-scheduler.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- human messages\n- admin commands\n- anything that might respond outward immediately\n- janitor aggregation updates\n- periodic reports\n- subscription management\n- compaction planning + commit\n- embedding generation\n- outbox draining (vector deletes)\n- retention cleanup (events payload redaction, etc.)\n- `queue[]` of events to process\n- `priority_class`: `interactive | operational | maintenance`\n\n## Summary Snippets\n- You’ve now got: **many queued sessions**, **limited concurrency**, **dedupe + aggregates**, **access-driven compaction**, and **variable context windows**. The missing piece is: *how do we run maintenance (GC/embeddings/outbox) without starving interactive sessions, while still letting every session benefit from compaction immediately?*\n- ---\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-retention-scheduler.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-cephalon-retention-scheduler-md",
+          "title": "Retention + compaction in a multi-session scheduler (no starvation, immediate benefits) #cephalon #scheduler #gc #retention",
+          "slug": "retention-compaction-in-a-multi-session-scheduler-no-starvation-immediate-benefits-cephalon-scheduler-gc-retention",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.961Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-retention-scheduler.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-retention-scheduler.md`\n# Retention + compaction in a multi-session scheduler (no starvation, immediate benefits) #cephalon #scheduler #gc #retention\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/cephalon-retention-scheduler.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- human messages\n- admin commands\n- anything that might respond outward immediately\n- janitor aggregation updates\n- periodic reports\n- subscription management\n- compaction planning + commit\n- embedding generation\n- outbox draining (vector deletes)\n- retention cleanup (events payload redaction, etc.)\n- `queue[]` of events to process\n- `priority_class`: `interactive | operational | maintenance`\n\n## Summary Snippets\n- You’ve now got: **many queued sessions**, **limited concurrency**, **dedupe + aggregates**, **access-driven compaction**, and **variable context windows**. The missing piece is: *how do we run maintenance (GC/embeddings/outbox) without starving interactive sessions, while still letting every session benefit from compaction immediately?*\n- ---\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-retention-scheduler.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-storage-schema-md",
+          "title": "Storage layout + retention + migrations (events/memories/summaries/tombstones/vectors) #cephalon #storage #retention #migrations",
+          "slug": "storage-layout-retention-migrations-events-memories-summaries-tombstones-vectors-cephalon-storage-retention-migrations",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.900Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-storage-schema.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-storage-schema.md`\n# Storage layout + retention + migrations (events/memories/summaries/tombstones/vectors) #cephalon #storage #retention #migrations\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-storage-schema.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- **append-only events**\n- **memories that can be summarized + deleted**\n- **aggregates for spam families**\n- **context inclusion logs** (for access-driven GC)\n- **hard deletes coordinated with vector ANN**\n- **rolling schema migrations**\n- Source of truth for “what happened”\n- Can be retained longer than memories\n- May store full content or a redacted stub depending on policy\n- What the LLM sees (messages, summaries, aggregates, tool results)\n- Embedding pointers + retrieval metadata live here\n- Subject to GC + deletion\n\n## Summary Snippets\n- Below is a concrete storage model that supports:\n- * **append-only events** * **memories that can be summarized + deleted** * **aggregates for spam families** * **context inclusion logs** (for access-driven GC) * **hard deletes coordinated with vector ANN** * **rolling schema migrations**\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-storage-schema.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-cephalon-storage-schema-md",
+          "title": "Storage layout + retention + migrations (events/memories/summaries/tombstones/vectors) #cephalon #storage #retention #migrations",
+          "slug": "storage-layout-retention-migrations-events-memories-summaries-tombstones-vectors-cephalon-storage-retention-migrations",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.918Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-storage-schema.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-storage-schema.md`\n# Storage layout + retention + migrations (events/memories/summaries/tombstones/vectors) #cephalon #storage #retention #migrations\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/cephalon-storage-schema.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- **append-only events**\n- **memories that can be summarized + deleted**\n- **aggregates for spam families**\n- **context inclusion logs** (for access-driven GC)\n- **hard deletes coordinated with vector ANN**\n- **rolling schema migrations**\n- Source of truth for “what happened”\n- Can be retained longer than memories\n- May store full content or a redacted stub depending on policy\n- What the LLM sees (messages, summaries, aggregates, tool results)\n- Embedding pointers + retrieval metadata live here\n- Subject to GC + deletion\n\n## Summary Snippets\n- Below is a concrete storage model that supports:\n- * **append-only events** * **memories that can be summarized + deleted** * **aggregates for spam families** * **context inclusion logs** (for access-driven GC) * **hard deletes coordinated with vector ANN** * **rolling schema migrations**\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--cephalon-storage-schema.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-v1-effects-runner-md",
+          "title": "v1 effects runner: async-safe results, `:effects/pending`, inflight limits (pure `shadow-cljs`) #shadowcljs #ecs #effects",
+          "slug": "v1-effects-runner-async-safe-results-effects-pending-inflight-limits-pure-shadow-cljs-shadowcljs-ecs-effects",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.915Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--v1-effects-runner.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--v1-effects-runner.md`\n# v1 effects runner: async-safe results, `:effects/pending`, inflight limits (pure `shadow-cljs`) #shadowcljs #ecs #effects\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/v1-effects-runner.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- effects get **deduped + tracked** in `:effects/pending`\n- runner starts up to **N inflight** effects per tick\n- when an effect resolves, it **pushes a `*.result` / `*.error` event** back into the world (via `world*`)\n- systems (Sentinel/Cephalon) can now reliably react to `:fs/read.result`, `:llm/chat.result`, etc.\n- It **does not block ticks**.\n- Results appear as events like:\n- `:fs/read.result`\n- `:fs/write.result`\n- `:llm/chat.result`\n- and matching `*.error` events\n- It is **bounded** (`retain-completed`) so `:effects/pending` doesn’t grow forever.\n- `:fs/read.result` → sentinel calls LLM\n\n## Summary Snippets\n- This iteration makes effects “real”:\n- * effects get **deduped + tracked** in `:effects/pending` * runner starts up to **N inflight** effects per tick * when an effect resolves, it **pushes a `*.result` / `*.error` event** back into the world (via `world*`) * systems (Sentinel/Cephalon) can now reliably react to `:fs/read.result`, `:llm/chat.result`, etc.\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--v1-effects-runner.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cljs-ts-hybrid-v1-effects-runner-md",
+          "title": "v1 effects runner: async-safe results, `:effects/pending`, inflight limits (pure `shadow-cljs`) #shadowcljs #ecs #effects",
+          "slug": "v1-effects-runner-async-safe-results-effects-pending-inflight-limits-pure-shadow-cljs-shadowcljs-ecs-effects",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.820Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon_cljs_ts_hybrid--v1-effects-runner.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--v1-effects-runner.md`\n# v1 effects runner: async-safe results, `:effects/pending`, inflight limits (pure `shadow-cljs`) #shadowcljs #ecs #effects\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon_cljs_ts_hybrid/v1-effects-runner.md`\n- Category: `cephalon_cljs_ts_hybrid`\n\n## Draft Requirements\n- effects get **deduped + tracked** in `:effects/pending`\n- runner starts up to **N inflight** effects per tick\n- when an effect resolves, it **pushes a `*.result` / `*.error` event** back into the world (via `world*`)\n- systems (Sentinel/Cephalon) can now reliably react to `:fs/read.result`, `:llm/chat.result`, etc.\n- It **does not block ticks**.\n- Results appear as events like:\n- `:fs/read.result`\n- `:fs/write.result`\n- `:llm/chat.result`\n- and matching `*.error` events\n- It is **bounded** (`retain-completed`) so `:effects/pending` doesn’t grow forever.\n- `:fs/read.result` → sentinel calls LLM\n\n## Summary Snippets\n- This iteration makes effects “real”:\n- * effects get **deduped + tracked** in `:effects/pending` * runner starts up to **N inflight** effects per tick * when an effect resolves, it **pushes a `*.result` / `*.error` event** back into the world (via `world*`) * systems (Sentinel/Cephalon) can now reliably react to `:fs/read.result`, `:llm/chat.result`, etc.\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon_cljs_ts_hybrid--v1-effects-runner.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-zip-analysis-md",
+          "title": "v2 wiring: effect-id routing + Discord adapter + session queue stores full events #shadowcljs #ecs #effects #discord",
+          "slug": "v2-wiring-effect-id-routing-discord-adapter-session-queue-stores-full-events-shadowcljs-ecs-effects-discord",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.942Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-zip-analysis.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-zip-analysis.md`\n# v2 wiring: effect-id routing + Discord adapter + session queue stores full events #shadowcljs #ecs #effects #discord\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-zip-analysis.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- every async effect has an `:effect/id`\n- Sentinel + Session store `:*/awaiting` = that id\n- they only accept `*.result` / `*.error` events whose `:effect-id` matches\n- session queues store **full event maps** (not ids), so events don’t “evaporate” after a tick\n- Sentinel + Cephalon can safely run concurrently without stealing each other’s async responses.\n- Effects are fully async-safe (results always come back as events with `:effect-id`).\n- Sessions receive real Discord events (if bot token + intents are enabled).\n- Janitor posts to channel `450688080542695436` by default (override by changing `:cephalon/policy`).\n- `sys.memory.ingest` — create memories for events, dedupe discord, derive nexus keys\n- `sys.eidolon.search` — vector seeds + daimoi expansion → `related`\n- Replace `build-messages` to assemble:\n- `[...related ...persistent ...recent]`\n\n## Summary Snippets\n- This pass makes the runtime *stop guessing* which result belongs to whom:\n- * every async effect has an `:effect/id` * Sentinel + Session store `:*/awaiting` = that id * they only accept `*.result` / `*.error` events whose `:effect-id` matches * session queues store **full event maps** (not ids), so events don’t “evaporate” after a tick\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-zip-analysis.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-root-2026-02-02-02-57-29-md",
+          "title": "What changed",
+          "slug": "what-changed",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.939Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/root--2026-02-02-02-57-29.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/root--2026-02-02-02-57-29.md`\n# What changed\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/root/2026.02.02.02.57.29.md`\n- Category: `root`\n\n## Draft Requirements\n- Added **bot registry + per-bot config**: `packages/cephalon-ts/src/config/bots.ts`\n- `CEPHALON_BOT_ID` selects the bot (`duck`, `janitor`, …)\n- each bot has its own:\n- `cephalonId` (self-name)\n- `discordTokenEnv`\n- `sessions` (persona + routing priority)\n- `tick` loop config (interval + which session receives `system.tick`)\n- persistence + chroma namespacing\n- `createCephalonApp()` now builds sessions from the selected bot config instead of being “Duck-only”.\n- Chroma collection is now auto-suffixed by `botId` via `createDefaultChromaConfig(botId)`.\n- `packages/cephalon-cljs/src/promethean/bridge/cephalon_ts.cljs`\n- supports `{:bot-id \"duck\"}` and forwards options to TS\n\n## Summary Snippets\n- Here’s the updated workspace zip with **multi-bot** support + docs + skills:\n- [Download cephalon-mono.zip](sandbox:/mnt/data/cephalon-mono.zip)\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/root--2026-02-02-02-57-29.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-ts-fixes-md",
+          "title": "What I fixed",
+          "slug": "what-i-fixed",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.951Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-ts-fixes.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-ts-fixes.md`\n# What I fixed\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-ts-fixes.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- `SessionManager` routes `system.tick` to **maintenance** sessions by default.\n- Your tick generator in `main.ts` wasn’t setting `sessionId`, so the tick never reliably hit the interactive session.\n- **Fix:** tick events now set `sessionId: \"conversational\"`.\n- In `TurnProcessor`, the memory minted for the tool call used a *new* UUID, while the tool result used `toolCall.callId`.\n- That breaks “call/result pairing” in memory.\n- **Fix:** the minted call now uses `callId: toolCall.callId`.\n- The system/dev headers described a tool name you don’t have (`discord.send_message`) and showed a code fence pattern that models often emit in a way your parser wouldn’t reliably catch.\n- **Fix:** headers now describe:\n- `discord.send`\n- `discord.channel.messages`\n- `discord.search`\n- `memory.lookup`\n\n## Summary Snippets\n- I unpacked `cephalon.zip` and fixed a handful of issues that would make the “always-on loop + tools” behavior flaky.\n- [Download the patched zip](sandbox:/mnt/data/cephalon_patched.zip)\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-ts-fixes.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-hybrid-architecture-md",
+          "title": "What I found in your zips",
+          "slug": "what-i-found-in-your-zips",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.917Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-hybrid-architecture.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-hybrid-architecture.md`\n# What I found in your zips\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-hybrid-architecture.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- `promethean.main` boots a tiny ECS loop (`world.cljs`, `tick.cljs`)\n- `context/assembler.cljs` only builds headers (no budgeting / retrieval / dedupe yet)\n- No effects runner yet; no session scheduler; no tool loop\n- `docs/notes/cephalon/shadow-cljs-game-loop.md`\n- `docs/notes/cephalon/cephalon-mvp-spec.md`\n- `docs/notes/cephalon/v1-effects-runner.md`\n- `docs/notes/cephalon/cephalon-context-assembly.md`\n- `docs/notes/cephalon/cephalon-tool-call-validation.md`\n- `docs/notes/cephalon/cephalon-storage-schema.md` + `cephalon-memory-strategy.md`\n- `src/promethean/llm/parse.clj` has robust “accept the model’s messy formatting” parsing logic\n- `src/promethean/llm/loop.clj` is a clean “tool loop” pattern you can port directly to CLJS\n- **TS stays alive** as the *IO/tool host* (Discord, Chroma/embeddings, existing tool executor + UI)\n\n## Summary Snippets\n- ([Past chat][1])([Past chat][2])([Past chat][3])([Past chat][4])([Past chat][4])([Past chat][5])([Past chat][6])([Past chat][7])([Past chat][2])([Past chat][8])([Past chat][3])([Past chat][4])([Past chat][3])([Past chat][4])([Past chat][3])([Past chat][9])([Past chat][10])([Past chat][11])([Past chat][12])([Past chat][13])\n- It’s a **real skeleton**, not the full MVP:\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-hybrid-architecture.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-hybrid-tick-routing-fix-md",
+          "title": "What you got in this zip",
+          "slug": "what-you-got-in-this-zip",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.753Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-hybrid-tick-routing-fix.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-hybrid-tick-routing-fix.md`\n# What you got in this zip\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-hybrid-tick-routing-fix.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- `packages/cephalon/vendor/cephalon-ts/`\n- `@local/cephalon-ts` (via `file:` dependency)\n- `.` → `index.js`\n- `./*` → any subpath module (so you can import `config/policy.js`, `llm/ollama.js`, etc.)\n- `packages/cephalon/src/promethean/hybrid.cljs`\n- builds a **minimal in-memory event bus** (publish/subscribe) compatible with the TS modules’ expectations\n- loads policy via TS (`loadDefaultPolicy`)\n- wires up TS components:\n- `OllamaProvider`, `ToolExecutor`, `TurnProcessor`\n- `DiscordIntegration`, `DiscordApiClient`\n- `ChromaMemoryStore` + `EmbeddingService`\n- `MemoryUIServer`\n\n## Summary Snippets\n- ([Past chat][1])([Past chat][2])([Past chat][3])([Past chat][4])([Past chat][5])\n- Here’s **Option 1 continued** as a concrete hybrid step: **ClojureScript orchestrates + consumes the working TS Cephalon (vendored)**, so you can keep shipping the TS MVP while progressively porting the “brain” pieces into CLJS.\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-hybrid-tick-routing-fix.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban-orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-spec-notes-extracted-cephalon-cephalon-hybrid-promethean-packages-md",
+          "title": "Why your earlier approach failed (and what this avoids)",
+          "slug": "why-your-earlier-approach-failed-and-what-this-avoids",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:26.934Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/spec/notes-extracted/cephalon--cephalon-hybrid-promethean-packages.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-hybrid-promethean-packages.md`\n# Why your earlier approach failed (and what this avoids)\n\n## Context\n- Source note: `services/cephalon-cljs/docs/notes/cephalon/cephalon-hybrid-promethean-packages.md`\n- Category: `cephalon`\n\n## Draft Requirements\n- **MVP output:** a dump file containing **every message-like blob** found in OpenCode local storage whose text contains `cephalon-clj`\n- **Ideal-ish output:** creates `.reconstituted/cephalon-clj/` with:\n- `dump.ndjson` (machine-friendly)\n- `dump.md` (human/Obsidian-friendly)\n- `files/**.md` (one markdown per extracted file path, populated with evidence excerpts)\n- a running OpenCode server / API layer,\n- a CLI that might mix logs into stdout,\n- schema drift.\n- A corpus you can feed into anything (`dump.ndjson`)\n- A readable Obsidian note (`dump.md`)\n- A `.reconstituted/cephalon-clj/files/` tree where each file-doc is essentially:\n- **“here are all the receipts we saw about this file”**\n\n## Summary Snippets\n- Yeah — this is a **real** problem class, and “reconstitution” is exactly the right framing: treat agent sessions as the **ground-truth audit log**, then regenerate *artifacts* (docs, code, patches) from that log with increasingly powerful passes.\n- The key is to split it into **deterministic plumbing** (safe, boring, reliable) and **optional LLM enrichment** (powerful, risky, sandboxed).\n\n## Open Questions\n- What should be implemented first from this note?\n- Which parts are exploratory versus actionable?",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban/notes-extracted/cephalon--cephalon-hybrid-promethean-packages.md"
+        }
+      ]
+    },
+    {
+      "status": "accepted",
+      "title": "Accepted",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "breakdown",
+      "title": "Breakdown",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "blocked",
+      "title": "Blocked",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "ready",
+      "title": "Ready",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "todo",
+      "title": "Todo",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "in_progress",
+      "title": "In Progress",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "review",
+      "title": "Review",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "document",
+      "title": "Document",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "done",
+      "title": "Done",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "rejected",
+      "title": "Rejected",
+      "taskCount": 0,
+      "tasks": []
+    }
+  ]
+}

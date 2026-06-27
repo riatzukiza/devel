@@ -1,0 +1,42 @@
+name: Deploy staging
+
+on:
+  push:
+    branches: ["staging"]
+  workflow_dispatch:
+
+concurrency:
+  group: shibboleth-staging-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+      - name: Configure ssh
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "${STAGING_SSH_PRIVATE_KEY}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf 'Host *\n  IdentityFile ~/.ssh/deploy_key\n  IdentitiesOnly yes\n' > ~/.ssh/config
+          chmod 600 ~/.ssh/config
+          ssh-keyscan -H "${STAGING_HOST}" >> ~/.ssh/known_hosts
+        env:
+          STAGING_HOST: ${{ vars.SHIBBOLETH_STAGING_HOST || 'ussy3.promethean.rest' }}
+          STAGING_SSH_PRIVATE_KEY: ${{ secrets.SHIBBOLETH_STAGING_DEPLOY_SSH_KEY }}
+      - name: Sync and deploy staging runtime
+        run: |
+          chmod +x scripts/*.sh
+          ./scripts/deploy-remote.sh
+        env:
+          DEPLOY_HOST: ${{ vars.SHIBBOLETH_STAGING_HOST || 'ussy3.promethean.rest' }}
+          DEPLOY_USER: ${{ vars.SHIBBOLETH_STAGING_USER || 'error' }}
+          DEPLOY_PATH: ${{ vars.SHIBBOLETH_STAGING_DEPLOY_PATH || '~/devel/services/shibboleth-staging' }}
+          DEPLOY_ENV_FILE: ${{ secrets.SHIBBOLETH_STAGING_ENV_FILE }}
+          DEPLOY_PROXY_AUTH_ENV: ${{ secrets.SHIBBOLETH_STAGING_PROXY_AUTH_ENV }}
+          VERIFY_API_HEALTH_URL: ${{ vars.SHIBBOLETH_STAGING_API_HEALTH_URL || 'http://127.0.0.1:8787/api/health' }}
+          VERIFY_UI_HEALTH_URL: ${{ vars.SHIBBOLETH_STAGING_UI_HEALTH_URL || 'http://127.0.0.1:5197/' }}

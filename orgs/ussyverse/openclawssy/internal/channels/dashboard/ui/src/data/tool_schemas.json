@@ -1,0 +1,41 @@
+{
+  "fs.edit": {
+    "required": ["path", "edits"],
+    "example": {
+      "path": "src/file.js",
+      "edits": [
+        {
+          "oldText": "before",
+          "newText": "after"
+        }
+      ]
+    }
+  },
+  "fs.read": {
+    "required": ["path"],
+    "example": {
+      "path": "README.md"
+    }
+  },
+  "http.request": {
+    "required": ["method", "url"],
+    "example": {
+      "method": "GET",
+      "url": "https://www.ussy.host"
+    }
+  },
+  "secrets.set": {
+    "required": ["key", "value"],
+    "example": {
+      "key": "provider/perplexity/api_key",
+      "value": "token-value"
+    }
+  },
+  "shell.exec": {
+    "required": ["command"],
+    "example": {
+      "command": "bash",
+      "args": ["-lc", "pwd"]
+    }
+  }
+}

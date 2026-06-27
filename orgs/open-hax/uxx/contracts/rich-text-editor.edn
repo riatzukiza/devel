@@ -1,0 +1,226 @@
+;; RichTextEditor Component Contract
+;; Defines the API for WYSIWYG rich text editing with markdown support
+
+{:component :rich-text-editor
+ :version "1.0.0"
+ 
+ :description
+ "WYSIWYG rich text editor with markdown shortcuts, toolbar, and content serialization."
+ 
+ :props
+ {:value
+  {:type :string
+   :required false
+   :default ""
+   :description "Current editor content (HTML or Markdown)"}
+  
+  :default-value
+  {:type :string
+   :required false
+   :description "Initial content"}
+  
+  :format
+  {:type :enum
+   :values [:html :markdown :json]
+   :default :markdown
+   :description "Input/output format"}
+  
+  :placeholder
+  {:type :string
+   :default "Start writing..."
+   :description "Placeholder text"}
+  
+  :toolbar
+  {:type :union
+   :types [:boolean :toolbar-config]
+   :default true
+   :description "Show toolbar or provide custom toolbar config"}
+  
+  :readonly
+  {:type :boolean
+   :default false
+   :description "Read-only mode"}
+  
+  :disabled
+  {:type :boolean
+   :default false
+   :description "Disable editor"}
+  
+  :autofocus
+  {:type :boolean
+   :default false
+   :description "Auto-focus on mount"}
+  
+  :min-height
+  {:type :string
+   :default "150px"
+   :description "Minimum height"}
+  
+  :max-height
+  {:type :string
+   :required false
+   :description "Maximum height before scroll"}
+  
+  :image-upload
+  {:type :function
+   :signature "(file: File) => Promise<string>"
+   :required false
+   :description "Handle image upload, return URL"}
+  
+  :mentions
+  {:type :object
+   :keys {:items {:type :array :items :mention-item}
+          :trigger {:type :string :default "@"}
+          :render {:type :function}}
+   :required false
+   :description "Enable @mentions"}
+  
+  :links
+  {:type :object
+   :keys {:autolink {:type :boolean :default true}
+          :open-in-new-tab {:type :boolean :default true}}
+   :default {:autolink true}
+   :description "Link handling options"}
+  
+  :markdown-shortcuts
+  {:type :boolean
+   :default true
+   :description "Enable markdown shortcuts (e.g., **bold**)"}
+  
+  :spellcheck
+  {:type :boolean
+   :default true
+   :description "Enable spell checking"}
+  
+  :code-block-language
+  {:type :string
+   :default "javascript"
+   :description "Default language for code blocks"}
+  
+  :onChange
+  {:type :function
+   :signature "(value: string) => void"
+   :required false
+   :description "Content change callback"}
+  
+  :onFocus
+  {:type :function
+   :signature "() => void"
+   :required false}
+  
+  :onBlur
+  {:type :function
+   :signature "() => void"
+   :required false}
+  
+  :on-save
+  {:type :function
+   :signature "(value: string) => void"
+   :required false
+   :description "Ctrl+S or Cmd+S callback"}
+  
+  :reference
+  {:type :ref
+   :description "Ref to editor instance"}}
+ 
+ :types
+ {:toolbar-config
+  {:items {:type :array :items :toolbar-item}
+   :groups {:type :array :items :toolbar-group}}
+  
+  :toolbar-item
+  {:type {:type :enum :values [:bold :italic :underline :strikethrough :code
+                               :heading :quote :list :link :image :code-block
+                               :divider :undo :redo :separator]}
+   :icon {:type :node :required false}
+   :label {:type :string :required false}
+   :shortcut {:type :string :required false}}
+  
+  :toolbar-group
+  {:name :string
+   :items {:type :array :items :toolbar-item}}
+  
+  :mention-item
+  {:id :string
+   :name :string
+   :avatar {:type :string :required false}
+   :description {:type :string :required false}}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :features
+ {:formatting
+  {:bold true
+   :italic true
+   :underline true
+   :strikethrough true
+   :code true
+   :subscript true
+   :superscript true}
+  
+  :blocks
+  {:heading [1 2 3 4 5 6]
+   :paragraph true
+   :blockquote true
+   :code-block true
+   :bullet-list true
+   :ordered-list true
+   :check-list true}
+  
+  :embeds
+  {:link true
+   :image true
+   :video {:enabled false}
+   :embed {:enabled false}}
+  
+  :markdown
+  {:shortcuts true
+   :paste true
+   :export true}}
+ 
+ :accessibility
+ {:role :textbox
+  :aria
+  {:multiline true
+   :label "Rich text editor"}
+  :keyboard
+  {:bold "Ctrl+B"
+   :italic "Ctrl+I"
+   :underline "Ctrl+U"
+   :save "Ctrl+S"
+   :undo "Ctrl+Z"
+   :redo "Ctrl+Shift+Z"}}
+ 
+ :styling
+ {:data-attributes
+  {:data-component "rich-text-editor"
+   :data-readonly :readonly
+   :data-focused :focused}
+  
+  :css-custom-properties
+  ["--editor-bg"
+   "--editor-text"
+   "--editor-border"
+   "--editor-focus"
+   "--toolbar-bg"]}
+ 
+ :tokens
+ {:colors
+  {:bg :colors.background/default
+   :text :colors.text/default
+   :border :colors.border/default
+   :focus :colors.border/focus
+   :toolbar-bg :colors.background/surface
+   :toolbar-border :colors.border/subtle
+   :placeholder :colors.text/subtle}
+  
+  :spacing
+  {:padding :spacing/4
+   :toolbar-padding :spacing/2
+   :border-radius :spacing/2}
+  
+  :typography
+  {:font-family :inherit
+   :font-size 14
+   :line-height 1.6}}}

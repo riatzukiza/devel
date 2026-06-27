@@ -1,0 +1,33 @@
+{
+  "name": "@workspace/semantic-graph-builder",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "semantic-graph-builder": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "dev": "tsx src/cli.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/cli.js"
+  },
+  "dependencies": {
+    "hnswlib-node": "^3.0.0",
+    "mongodb": "^7.1.1",
+    "ngraph.graph": "^20.1.2",
+    "ngraph.leiden": "^0.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "tsx": "^4.20.6",
+    "typescript": "^5.6.3"
+  },
+  "license": "GPL-3.0-or-later"
+}

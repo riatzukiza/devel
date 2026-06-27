@@ -1,0 +1,366 @@
+<html><head><style>
+        html, body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: sandybrown;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #site-shell {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            z-index: 9999;
+            width: min(430px, calc(100vw - 24px));
+            color: #20160d;
+            background: rgba(245, 231, 205, 0.9);
+            border: 1px solid rgba(74, 48, 20, 0.25);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+            backdrop-filter: blur(6px);
+            padding: 12px 14px;
+            box-sizing: border-box;
+        }
+
+        #site-shell h1 {
+            margin: 0 0 6px;
+            font: 700 18px/1.1 Georgia, serif;
+            letter-spacing: 0.02em;
+        }
+
+        #site-shell p {
+            margin: 0 0 10px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        #site-shell .small {
+            font-size: 11px;
+            line-height: 1.45;
+            color: rgba(32, 22, 13, 0.82);
+        }
+
+        #myth-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .myth-card {
+            background: rgba(255, 250, 240, 0.42);
+            border: 1px solid rgba(74, 48, 20, 0.14);
+            padding: 8px;
+            min-height: 64px;
+        }
+
+        .myth-card b {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 12px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        #fork-note {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed rgba(45, 30, 18, 0.22);
+        }
+
+        #legend-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 14px;
+            margin-top: 8px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .swatch {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin-right: 6px;
+            vertical-align: middle;
+            border: 1px solid rgba(32, 22, 13, 0.18);
+        }
+
+        .swatch.green { background: #18ff18; }
+        .swatch.red { background: #ff3f3f; }
+        .swatch.blue { background: #14147d; }
+        .swatch.black { background: #202020; }
+
+        #site-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+            margin-bottom: 10px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        #site-links a {
+            color: #2d1e12;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(45, 30, 18, 0.25);
+        }
+
+        #site-links a:hover {
+            border-bottom-color: rgba(45, 30, 18, 0.7);
+        }
+
+        #webring-shell {
+            min-height: 42px;
+            font-size: 12px;
+        }
+
+        #frame,
+        #container {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #container {
+            display: flex;
+            align-items: stretch;
+            justify-content: stretch;
+        }
+
+        #game-view {
+            flex: 1 1 auto;
+            min-width: 0;
+            min-height: 0;
+            overflow: hidden;
+            background: sandybrown !important;
+            position: relative;
+        }
+
+        #debug-view {
+            flex: 0 0 min(360px, 28vw) !important;
+            width: min(360px, 28vw) !important;
+            height: 100vh !important;
+            max-height: 100vh !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            background: rgba(245, 235, 220, 0.94);
+            box-sizing: border-box;
+        }
+
+        .panel {
+            float: left;
+            border-style: solid;
+            border-width: 1px;
+            box-sizing: border-box;
+        }
+        .bordered {
+            border-style: solid;
+            border-width: 1px;
+        }
+img {
+position:absolute;
+}
+
+        @media (max-width: 900px) {
+            #myth-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #site-shell {
+                width: calc(100vw - 16px);
+                left: 8px;
+                top: 8px;
+                padding: 10px 12px;
+            }
+
+            #container {
+                flex-direction: column;
+            }
+
+            #game-view {
+                min-height: 62vh;
+            }
+
+            #debug-view {
+                flex: 0 0 auto !important;
+                width: 100% !important;
+                height: 38vh !important;
+                max-height: 38vh !important;
+            }
+        }
+
+</style>
+<script src='https://cdn.jsdelivr.net/quicksettings/3.0/quicksettings.min.js' ></script>
+</head>
+<script src='/bundles/shared/andy.js' ></script>
+<script src='/bundles/shared/data-structures/array.js' ></script>
+<script src='/bundles/shared/data-structures/contrib.js' ></script>
+<script src='/bundles/shared/data-structures/fields/sparse.js' ></script>
+<script src='/bundles/shared/data-structures/fields/wrapped.js' ></script>
+<script src='/bundles/shared/data-structures/group.js' ></script>
+<script src='/bundles/shared/data-structures/linked-list.js' ></script>
+<script src='/bundles/shared/data-structures/list.js' ></script>
+<script src='/bundles/shared/data-structures/maps/matrix.js' ></script>
+<script src='/bundles/shared/data-structures/maps/ordered-buckets.js' ></script>
+<script src='/bundles/shared/data-structures/maps/ordered.js' ></script>
+<script src='/bundles/shared/data-structures/old-list.js' ></script>
+<script src='/bundles/shared/data-structures/pooled.js' ></script>
+<script src='/bundles/shared/data-structures/spawnable.js' ></script>
+<script src='/bundles/shared/data-structures/table.js' ></script>
+<script src='/bundles/shared/data-structures/trees/avl.js' ></script>
+<script src='/bundles/shared/data-structures/trees/base.js' ></script>
+<script src='/bundles/shared/data-structures/trees/binary-heap.js' ></script>
+<script src='/bundles/shared/data-structures/trees/binary-search-tree.js' ></script>
+<script src='/bundles/shared/data-structures/trees/bst-buckets.js' ></script>
+<script src='/bundles/shared/data-structures/trees/bst-fixed-depth.js' ></script>
+<script src='/bundles/shared/data-structures/trees/bucket-tree.js' ></script>
+<script src='/bundles/shared/data-structures/trees/red-black-tree.js' ></script>
+<script src='/bundles/shared/data-structures/trees/trie.js' ></script>
+<script src='/bundles/shared/dom.js' ></script>
+<script src='/bundles/shared/ecs/component-system.js' ></script>
+<script src='/bundles/shared/ecs/component.js' ></script>
+<script src='/bundles/shared/ecs/entity-group.js' ></script>
+<script src='/bundles/shared/ecs/entity-system.js' ></script>
+<script src='/bundles/shared/ecs/entity.js' ></script>
+<script src='/bundles/shared/ecs.js' ></script>
+<script src='/bundles/shared/field.js' ></script>
+<script src='/bundles/shared/game.js' ></script>
+<script src='/bundles/shared/gl.js' ></script>
+<script src='/bundles/shared/graph.js' ></script>
+<script src='/bundles/shared/grid.js' ></script>
+<script src='/bundles/shared/interface.js' ></script>
+<script src='/bundles/shared/math/math.js' ></script>
+<script src='/bundles/shared/math/matrix.js' ></script>
+<script src='/bundles/shared/math/scalar.js' ></script>
+<script src='/bundles/shared/math/tensor.js' ></script>
+<script src='/bundles/shared/noise.js' ></script>
+<script src='/bundles/shared/pooling/dynamic-pool.js' ></script>
+<script src='/bundles/shared/pooling/object-pool.js' ></script>
+<script src='/bundles/shared/pooling/pooled-system.js' ></script>
+<script src='/bundles/shared/systems/collision.js' ></script>
+<script src='/bundles/shared/systems/physics/forces/friction.js' ></script>
+<script src='/bundles/shared/systems/physics/forces/gravity.js' ></script>
+<script src='/bundles/shared/systems/physics/forces/index.js' ></script>
+<script src='/bundles/shared/systems/physics/forces/signal-field.js' ></script>
+<script src='/bundles/shared/systems/physics/forces.js' ></script>
+<script src='/bundles/shared/systems/physics/index.js' ></script>
+<script src='/bundles/shared/systems/physics/system.js' ></script>
+<script src='/bundles/shared/systems/physics.js' ></script>
+<script src='/bundles/shared/systems/position.js' ></script>
+<script src='/bundles/shared/systems/rendering/dot.js' ></script>
+<script src='/bundles/shared/systems/rendering/gl-sprites.js' ></script>
+<script src='/bundles/shared/systems/rendering/layer.js' ></script>
+<script src='/bundles/shared/systems/rendering/renderable.js' ></script>
+<script src='/bundles/shared/systems/rendering/rendering.js' ></script>
+<script src='/bundles/shared/systems/rendering/scaling-vertex.js' ></script>
+<script src='/bundles/shared/systems/rendering/sprite-atlas.js' ></script>
+<script src='/bundles/shared/systems/rendering/sprite.js' ></script>
+<script src='/bundles/shared/systems/rendering/vertex.js' ></script>
+<script src='/bundles/shared/systems/rendering.js' ></script>
+<script src='/bundles/shared/systems/velocity.js' ></script>
+<script src='/bundles/shared/ticker.js' ></script>
+<script src='/bundles/shared/tiles.js' ></script>
+<script src='/bundles/shared/units.js' ></script>
+<script src='/bundles/shared/utils.js' ></script>
+<script src='/bundles/shared/vector.js' ></script>
+<script src='/bundles/shared/vectors.js' ></script>
+<script src='/bundles/shared/worker.js' ></script>
+<script src='/bundles/obstacles/colors.js' ></script>
+<script src='/bundles/obstacles/config.js' ></script>
+<script src='/bundles/obstacles/dom/dom-node.js' ></script>
+<script src='/bundles/obstacles/dom/entity-panel.js' ></script>
+<script src='/bundles/obstacles/dom/rocks.js' ></script>
+<script src='/bundles/obstacles/dom.js' ></script>
+<script src='/bundles/obstacles/entities/ants.js' ></script>
+<script src='/bundles/obstacles/entities/home.js' ></script>
+<script src='/bundles/obstacles/entities/plants.js' ></script>
+<script src='/bundles/obstacles/entities/rocks.js' ></script>
+<script src='/bundles/obstacles/entities/trail-segments.js' ></script>
+<script src='/bundles/obstacles/entities.js' ></script>
+<script src='/bundles/obstacles/events/ant-collision.js' ></script>
+<script src='/bundles/obstacles/events/ant-found-plant.js' ></script>
+<script src='/bundles/obstacles/events/collision.js' ></script>
+<script src='/bundles/obstacles/events/plant-colliding-with-spawn.js' ></script>
+<script src='/bundles/obstacles/events/simple-collision.js' ></script>
+<script src='/bundles/obstacles/events/static-object-collision.js' ></script>
+<script src='/bundles/obstacles/events/tick.js' ></script>
+<script src='/bundles/obstacles/forces.js' ></script>
+<script src='/bundles/obstacles/game.js' ></script>
+<script src='/bundles/obstacles/location.js' ></script>
+<script src='/bundles/obstacles/rendering.js' ></script>
+<script src='/bundles/obstacles/settings.js' ></script>
+<script src='/bundles/obstacles/strings.js' ></script>
+<script src='/bundles/obstacles/systems/ant-dot.js' ></script>
+<script src='/bundles/obstacles/systems/ant-life-timer.js' ></script>
+<script src='/bundles/obstacles/systems/ant-sprites.js' ></script>
+<script src='/bundles/obstacles/systems/dot.js' ></script>
+<script src='/bundles/obstacles/systems/experation.js' ></script>
+<script src='/bundles/obstacles/systems/position.js' ></script>
+<script src='/bundles/obstacles/systems/property-view.js' ></script>
+<script src='/bundles/obstacles/systems/rock-sprites.js' ></script>
+<script src='/bundles/obstacles/systems/timer.js' ></script>
+<script src='/bundles/obstacles/systems/trail-dots.js' ></script>
+<script src='/bundles/obstacles/systems/velocity.js' ></script>
+<script src='/bundles/obstacles/systems/ants/ant-dot.js' ></script>
+<script src='/bundles/obstacles/systems/ants/ant-life-timer.js' ></script>
+<script src='/bundles/obstacles/systems/ants/ant-panel.js' ></script>
+<script src='/bundles/obstacles/systems/ants/ant-trails.js' ></script>
+<script src='/bundles/obstacles/systems/ants/trail-dots.js' ></script>
+<script src='/bundles/obstacles/systems/ants/trail-panel.js' ></script>
+<script src='/bundles/obstacles/systems/ants/trail-segments.js' ></script>
+<script src='/bundles/obstacles/systems/ants/trail-view.js' ></script>
+<body><img id='ant-texture'  src='/ant.png'  hidden='true' >
+<img id='rock-texture'  src='/rock.png'  hidden='true' >
+<div id="site-shell">
+  <h1>Fork Field of the Daimoi</h1>
+  <p>This obstacle field is the folk memory that later turned into <code>fork_tales</code>: Presences nesting at the center, Daimoi scattering along vector prayer-lines, and Nexus loci pulling motive into collision, hunger, and return.</p>
+  <div id="site-links">
+    <a href="https://slop.lesbianguide.de/ussy-liminal-walk">previous</a>
+    <a href="https://ussyco.de/hub/">hub</a>
+    <a href="https://ussy.host">next</a>
+    <a href="/projects/obstacles.html">wrapper</a>
+    <a href="https://obstacles.ussyco.de">redirect</a>
+  </div>
+  <div id="myth-grid" class="small">
+    <div class="myth-card">
+      <b>Presence</b>
+      The nest. The still point. What later became the loaded center of a scene graph and a witness frame.
+    </div>
+    <div class="myth-card">
+      <b>Daimoi</b>
+      The ants. Self-motivated agents moving under noise, appetite, inertia, and copied rumor. Black Daimoi hold the common route. Red Daimoi are splinter-lit raiders, a minor heresy breaking formation whenever the field whispers hard enough.
+    </div>
+    <div class="myth-card">
+      <b>Nexus</b>
+      Food, rocks, obstacles, witness-points. Anything that bends a path and becomes lore because contact happened there.
+    </div>
+  </div>
+  <div id="legend-row" class="small">
+    <span><i class="swatch black"></i>black daimoi</span>
+    <span><i class="swatch green"></i>nexus food</span>
+    <span><i class="swatch blue"></i>memory trail</span>
+    <span><i class="swatch red"></i>red daimoi / splinter trace</span>
+  </div>
+  <div id="fork-note" class="small">
+    The trail algorithm here is one of the seeds that later mutated into the field logic behind <code>fork_tales</code>. This page is not the backend. It is the mythic prehistory: a sand table where Daimoi learned to listen to pressure, leave marks, fight over a Nexus, and mistake old routes for destiny. In later Fork Tales language, a Presence gathers, Daimoi fork, and every Nexus becomes a story because something collided there first. The red Daimoi are not a canon species so much as a remembered split: the moment copied motion becomes doctrine, then mutiny.
+  </div>
+  <div id="webring-shell" data-theme="light"></div>
+</div>
+</body>
+<script src="https://ussyco.de/api/webring/widget.js"></script>
+<script>
+  (function() {
+    var target = document.getElementById('webring-shell');
+    if (target) {
+      target.id = 'webring';
+    }
+  })();
+</script>
+<script src='/bundles/obstacles/main.js' ></script>
+</html>

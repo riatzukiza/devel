@@ -1,0 +1,2 @@
+[core]
+incremental_references = true

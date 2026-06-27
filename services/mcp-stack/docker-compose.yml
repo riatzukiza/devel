@@ -1,0 +1,90 @@
+services:
+  redis:
+    image: redislabs/redismod
+    restart: unless-stopped
+
+  mcp-stack:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      redis:
+        condition: service_started
+    ports:
+      - "127.0.0.1:${JANUS_PORT:-8790}:8788"
+      - "${MCP_FS_OAUTH_PORT:-3001}:3001"
+      - "${MCP_FS_OAUTH_DEV_PORT:-3002}:3002"
+      - "${MNEMOSYNE_PORT:-4011}:4011"
+      - "${MCP_GITHUB_PORT:-4012}:4012"
+      - "${MCP_PROCESS_PORT:-4013}:4013"
+      - "${MCP_DEVTOOLS_PORT:-4014}:4014"
+      - "${MCP_TDD_PORT:-4015}:4015"
+      - "${MCP_SANDBOXES_PORT:-4016}:4016"
+      - "${MCP_OLLAMA_PORT:-4017}:4017"
+      - "${MCP_EXEC_PORT:-4018}:4018"
+      - "${KRONOS_PORT:-4020}:4020"
+    environment:
+      WORKSPACE_ROOT: /workspace
+      MCP_ROOT_PATH: /workspace
+      LOCAL_ROOT: /workspace
+      API_GATEWAY_PORT: "8788"
+      OPENPLANNER_URL: "${OPENPLANNER_URL:-http://host.docker.internal:7777}"
+      OPENPLANNER_API_KEY: "${OPENPLANNER_API_KEY:-change-me}"
+      OPENPLANNER_API_BASE_URL: "${OPENPLANNER_API_BASE_URL:-http://127.0.0.1:8788/api/openplanner}"
+      WORKSPACE_API_BASE_URL: "${WORKSPACE_API_BASE_URL:-http://127.0.0.1:8788/api/workspace}"
+      OPENCODE_API_BASE_URL: "${OPENCODE_API_BASE_URL:-http://127.0.0.1:8788/api/opencode}"
+      OPENCODE_URL: "${OPENCODE_URL:-http://opencode:4096}"
+      OPENCODE_USERNAME: "${OPENCODE_USERNAME:-opencode}"
+      OPENCODE_PASSWORD: "${OPENCODE_PASSWORD:-${OPENCODE_SERVER_PASSWORD:-}}"
+      OPENCODE_API_KEY: "${OPENCODE_API_KEY:-}"
+      WORKSPACE_API_KEY: "${WORKSPACE_API_KEY:-}"
+      GH_TOKEN: "${GH_TOKEN:-}"
+      GITHUB_TOKEN: "${GITHUB_TOKEN:-${GH_TOKEN:-}}"
+      GITHUB_REPO_TOKEN: "${GITHUB_REPO_TOKEN:-${GH_TOKEN:-}}"
+      MCP_INTERNAL_SHARED_SECRET: "${MCP_INTERNAL_SHARED_SECRET:-change-me-mcp-secret}"
+      OAUTH_OPAQUE_SHARED_SECRET: "${OAUTH_OPAQUE_SHARED_SECRET:-change-me-mcp-secret}"
+      REDIS_URL: "${REDIS_URL:-redis://redis:6379}"
+      OAUTH_REDIS_URL: "${OAUTH_REDIS_URL:-redis://redis:6379}"
+      OAUTH_GITHUB_CLIENT_ID: "${OAUTH_GITHUB_CLIENT_ID:-}"
+      OAUTH_GITHUB_CLIENT_SECRET: "${OAUTH_GITHUB_CLIENT_SECRET:-}"
+      OAUTH_GITHUB_REDIRECT_URI: "${OAUTH_GITHUB_REDIRECT_URI:-}"
+      GITHUB_LOGIN_CLIENT_ID: "${GITHUB_LOGIN_CLIENT_ID:-${OAUTH_GITHUB_CLIENT_ID:-}}"
+      GITHUB_LOGIN_CLIENT_SECRET: "${GITHUB_LOGIN_CLIENT_SECRET:-${OAUTH_GITHUB_CLIENT_SECRET:-}}"
+      OWNER_PASSWORD: "${OWNER_PASSWORD:-change-me}"
+      ALLOW_UNAUTH_LOCAL: "${ALLOW_UNAUTH_LOCAL:-true}"
+      AUTO_APPROVE: "${AUTO_APPROVE:-true}"
+      OAUTH_ENABLED: "${OAUTH_ENABLED:-true}"
+      OAUTH_ISSUER: "${OAUTH_ISSUER:-http://127.0.0.1:3001}"
+      OAUTH_AUDIENCE: "${OAUTH_AUDIENCE:-api-gateway}"
+      OAUTH_TOKEN_STRATEGY: "${OAUTH_TOKEN_STRATEGY:-opaque}"
+      OAUTH_OPAQUE_VERIFIER: "${OAUTH_OPAQUE_VERIFIER:-redis}"
+      OAUTH_OPAQUE_INTROSPECTION_URL: "${OAUTH_OPAQUE_INTROSPECTION_URL:-http://127.0.0.1:3001/internal/oauth/introspect}"
+      OAUTH_REDIS_PREFIX: "${OAUTH_REDIS_PREFIX:-oauth-stable}"
+      OAUTH_REDIS_PREFIX_DEV: "${OAUTH_REDIS_PREFIX_DEV:-oauth-dev}"
+      OAUTH_DUCKDB_OWNER: "${OAUTH_DUCKDB_OWNER:-true}"
+      OAUTH_DUCKDB_OWNER_DEV: "${OAUTH_DUCKDB_OWNER_DEV:-false}"
+      OAUTH_DUCKDB_LOCK_TTL_SECONDS: "${OAUTH_DUCKDB_LOCK_TTL_SECONDS:-30}"
+      ALLOWED_HOSTS: "${ALLOWED_HOSTS:-localhost,127.0.0.1,host.docker.internal,mcp-stack,.tailbe888a.ts.net}"
+      MCP_EXEC_CONFIG: "/workspace/orgs/riatzukiza/promethean/promethean.mcp.exec.json"
+      MCP_FS_OAUTH_URL: "http://127.0.0.1:3001"
+      MCP_FS_OAUTH_DEV_URL: "http://127.0.0.1:3002"
+      MCP_FS_OAUTH_PUBLIC_BASE_URL: "${MCP_FS_OAUTH_PUBLIC_BASE_URL:-https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net}"
+      MCP_FS_OAUTH_DEV_PUBLIC_BASE_URL: "${MCP_FS_OAUTH_DEV_PUBLIC_BASE_URL:-https://err-stealth-16-ai-studio-a1vgg.tailbe888a.ts.net}"
+      PART64_LITH_MCP_URL: "${PART64_LITH_MCP_URL:-http://host.docker.internal:8787}"
+    volumes:
+      - ../..:/workspace
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "const urls=['http://127.0.0.1:8788/health','http://127.0.0.1:3001/health','http://127.0.0.1:3002/health','http://127.0.0.1:4011/health','http://127.0.0.1:4012/health','http://127.0.0.1:4020/healthz']; Promise.all(urls.map((url) => fetch(url).then((response) => { if (!response.ok) { throw new Error(url + ' -> ' + response.status); } }))).then(() => process.exit(0)).catch((error) => { console.error(error.message); process.exit(1); })"
+        ]
+      interval: 30s
+      timeout: 15s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped

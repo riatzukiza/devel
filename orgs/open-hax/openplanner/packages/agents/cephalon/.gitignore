@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+logs/
+target/
+.clj-kondo/
+.cpcache/
+.lsp/
+.shadow-cljs/
+build/
+test-results/
+tmp/
+*.tsbuildinfo
+.#*

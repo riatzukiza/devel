@@ -1,0 +1,36 @@
+services:
+  control-plane:
+    build:
+      context: .
+      dockerfile: Dockerfile.control-plane
+      args:
+        # Optional: override this to a local baked base image, e.g.
+        #   PROMPTBENCH_BASE_IMAGE=localhost:5000/shibboleth/ml-base:2026-03-16
+        BASE_IMAGE: ${PROMPTBENCH_BASE_IMAGE:-clojure:temurin-21-tools-deps-bookworm}
+    environment:
+      # Required for MT / eval proxy calls
+      - PROXY_AUTH_TOKEN=${PROXY_AUTH_TOKEN:-change-me}
+      # Optional: HF access for gated datasets
+      - HF_TOKEN=${HF_TOKEN:-}
+      - HUGGINGFACE_TOKEN=${HUGGINGFACE_TOKEN:-}
+      # In Docker, reach the host proxy via host-gateway.
+      - PROMPTBENCH_PROXY_URL=${PROMPTBENCH_PROXY_URL:-http://host.docker.internal:8789/v1/chat/completions}
+      - PORT=8788
+      - PROMPTBENCH_RUNS_DIR=data/control-plane/runs
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    ports:
+      - "8788:8788"
+    volumes:
+      - ./data:/app/data
+
+  ui:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: ${PROMPTBENCH_BASE_IMAGE:-clojure:temurin-21-tools-deps-bookworm}
+    depends_on:
+      - control-plane
+    ports:
+      - "5197:5197"

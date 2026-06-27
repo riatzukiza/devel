@@ -1,0 +1,149 @@
+{
+  "generatedAt": "2026-05-29T04:01:40.488Z",
+  "totalTasks": 5,
+  "columns": [
+    {
+      "status": "icebox",
+      "title": "Icebox",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "incoming",
+      "title": "Incoming",
+      "taskCount": 5,
+      "tasks": [
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-graph-myrmex-kanban-orgs-open-hax-openplanner-packages-graph-myrmex-specs-adaptive-frontier-salience-and-template-aware-pruning-md",
+          "title": "Adaptive Frontier Salience + Template-Aware Pruning Contract",
+          "slug": "adaptive-frontier-salience-template-aware-pruning-contract",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:39.559Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/graph/myrmex/specs/adaptive-frontier-salience-and-template-aware-pruning.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/graph/myrmex/kanban/adaptive-frontier-salience-and-template-aware-pruning.md`\n\n# Adaptive Frontier Salience + Template-Aware Pruning Contract\n\n## Status\nDraft\n\n## Parent spec\n\n- `orgs/open-hax/knoxx/specs/knowledge-ops-adaptive-web-frontier-and-multiscale-backbone.md`\n\n## Purpose\n\nSpecify how `Myrmex` should turn raw discovered links into:\n\n1. rich edge receipts,\n2. scored frontier candidates,\n3. bounded follow sets,\n4. stable pause/resume behavior under downstream pressure.\n\n---\n\n## Design rule\n\n`Myrmex` must not treat every outgoing link as an equal frontier edge.\n\nIt must reason over:\n\n- source page productivity,\n- block origin,\n- template recurrence,\n- target novelty,\n- host diversity,\n- backpressure headroom.\n\n---\n\n## Inputs required from fetch/extract layer\n\nThe ideal per-link payload from `ShuvCrawlFetchBackend` is:\n\n```json\n{\n  \"targetUrl\": \"https://example.com/target\",\n  \"anchorText\": \"read more\",\n  \"anchorContext\": \"adjacent sentence or block excerpt\",\n  \"domPath\": \"body/main/article/p/a\",\n  \"blockSignature\": \"host:example.com:block:abc123\",\n  \"blockRole\": \"main_content\",\n  \"visualRegion\": \"center\",\n  \"discoveryChannel\": \"html\"\n}\n```\n\nIf these fields are unavailable, Myrmex may fall back to URL-only heuristics, but the downgrade must be explicit in logs/metrics.\n\n---\n\n## Core runtime memories\n\n## 1. Page productivity state\n\nFor each source page `p`, maintain rolling features:\n\n- `visits`\n- `newTargetsFirstSeen`\n- `usefulTargetsRetained`\n- `recentNewOutlinkRate`\n- `neighborRecentNewOutlinkRate`\n- `opicCash`\n- `opicHistory`\n- `lastYieldAt`\n\n## 2. Host block template memory\n\nFor each `(host, blockSignature)` maintain:\n\n- `pagesSeen`\n- `hostCoverage`\n- `historicalYield`\n- `targetSetSketch`\n- `dominantTargetHosts`\n- `dominantTargetPathPrefixes`\n- `role`\n- `roleConfidence`\n\n## 3. Edge salience state\n\nFor each `(source,target)` maintain derived scores:\n\n- `contentBlockScore`\n- `templateRepeatPenalty`\n- `sourceProductivityScore`\n- `neighborProductivityScore`\n- `targetNoveltyScore`\n- `targetClassBonus`\n- `hostDiversityBonus`\n- `actionPenalty`\n- `explorationFlag`\n- `followScore`\n\n---\n\n## Follow-score contract\n\nA first production version may use:\n\n```text\nfollow_score =\n  + sourceProductivity\n  + neighborProductivity\n  + contentBlockScore\n  + targetNovelty\n  + targetClassBonus\n  + hostDiversityBonus\n  - templateRepeatPenalty\n  - actionPenalty\n```\n\nWhere:\n\n### Positive factors\n\n- `sourceProductivity`\n  - high when the source page recently produced retained/novel targets\n- `neighborProductivity`\n  - high when pages near the source in graph or host/path family are productive\n- `contentBlockScore`\n  - high for links from main-content or related-content blocks\n- `targetNovelty`\n  - high for new hosts, new path families, or rarely observed targets\n- `targetClassBonus`\n  - high for issues, PRs, releases, changelogs, papers, advisories, docs, feed entries\n- `hostDiversityBonus`\n  - high when the target host is underrepresented in recent crawl budget\n\n### Negative factors\n\n- `templateRepeatPenalty`\n  - high when block signature repeats widely across host pages and yields little\n- `actionPenalty`\n  - high for auth/share/session/store/legal/static endpoints\n\n---\n\n## Mandatory classes\n\nRegardless of score, the frontier should strongly preserve edges matching these classes:\n\n- issue\n- pull request\n- release\n- changelog\n- advisory\n- paper / abstract / DOI landing page\n- docs index / reference page\n- feed entry\n- standards / spec / RFC-like page\n\nThese are not exempt from politeness or backpressure, but they bypass ordinary low-salience cuts.\n\n---\n\n## Retention policy\n\nFor each fetched page:\n\n1. keep mandatory-class edges only up to `MAX_mandatory_per_page` per page and still pass them through the host-budget gate,\n2. keep top `K_page` by `followScore`,\n3. keep top `K_block` inside each block signature,\n4. keep first edges into new host/path families,\n5. sample `ε` from the remainder.\n\n### Recommended first defaults\n\n- `K_page = min(48, ceil(sqrt(outgoing_count)) + 8)`\n- `K_block = 8` for `main_content` / `related_content`\n- `K_block = 2` for `nav` / `footer` / `promo`\n- `MAX_mandatory_per_page = min(K_page, 16)` before host-budget gating\n- `ε = 0.05` floor with decay allowed above that floor\n\nThese are starting points, not immutable constants.\n\n---\n\n## Host-budget contract\n\nThe scheduler must avoid domain monopolization.\n\nRequired controls:\n\n- max concurrent requests per host\n- minimum interval per host\n- host-balance penalty in candidate selection\n- recent-host budget window\n- path-family budget window for giant hosts\n\nExample invariant:\n\n> A host with 4,000 discovered links may not consume 4,000 times the effective frontier budget of a host with 40 links.\n\n---\n\n## Exploration contract\n\nExploration must be explicit.\n\n- Use epsilon-greedy or equivalent exploration.\n- Allow decay, but never to zero.\n- Exploration should prefer underrepresented hosts/path families over random noise.\n\nRecommended ordering:\n\n1. exploit within high-confidence candidates,\n2. explore among medium-confidence diverse candidates,\n3. only rarely sample low-confidence junk.\n\n---\n\n## Backpressure contract\n\nPause/resume remains mandatory and reversible.\n\nAdditional invariant for adaptive frontier mode:\n\n> effective pending load = queued writes + in-flight fetches likely to produce writes\n\nMyrmex should pause before overshoot becomes pathological.\n\nRequired surfaced fields:\n\n- pending writes\n- in-flight fetches\n- effective pending load\n- limit\n- resume threshold\n- pause reason\n\n---\n\n## Failure semantics\n\nNo silent downgrades.\n\nIf any scoring/input layer is missing, logs/stats must show it explicitly, e.g.:\n\n- `edge-context-mode=url-only`\n- `block-role-mode=unknown`\n- `template-memory-cold=true`\n- `frontier-score-mode=degraded`\n\n---\n\n## Metrics\n\nTrack at least:\n\n- useful new targets per fetch\n- retained targets per fetched page\n- host diversity over rolling window\n- dominant-host share\n- share of followed edges by block role\n- share of followed edges by target class\n- exploration yield\n- false-positive template follow rate\n- queue overshoot frequency\n\n---\n\n## Phases\n\n### Phase A — Receipt enrichment\n\n- extend backend/API types for link receipts\n- add block signature and role capture\n- add target class heuristics\n\n### Phase B — Salience engine\n\n- compute page productivity memory\n- compute template repeat memory\n- compute derived follow score\n\n### Phase C — Adaptive frontier\n\n- replace raw link equality with tiered retention\n- add `K_page`, `K_block`, `ε`, host budgets\n- emit decision receipts for why an edge survived or not\n\n### Phase D — Evaluation loop\n\n- compare new frontier vs raw-fanout baseline\n- inspect discovery yield, diversity, and backpressure stability\n\n---\n\n## Verification\n\n1. A giant page no longer injects all outgoing links equally into the frontier.\n2. Main-content and mandatory-class edges are overrepresented among followed edges.\n3. Repeated template blocks are underrepresented among followed edges.\n4. Host diversity rises relative to raw-fanout baseline.\n5. Pause/resume continues working under load.\n6. Decision receipts explain why representative edges were followed or suppressed.",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/graph/myrmex/kanban/adaptive-frontier-salience-and-template-aware-pruning.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-graph-myrmex-kanban-orgs-open-hax-openplanner-packages-graph-myrmex-specs-checkpoint-and-recovery-md",
+          "title": "Checkpoint and Recovery Spec",
+          "slug": "checkpoint-and-recovery-spec",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:39.561Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/graph/myrmex/specs/checkpoint-and-recovery.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/graph/myrmex/kanban/checkpoint-and-recovery.md`\n\n# Checkpoint and Recovery Spec\n\n## Purpose\n\nName the current gap plainly and specify what a real checkpoint layer should do.\n\n## Current reality\n\n### What exists\n- `Myrmex` schedules periodic checkpoint events\n- `CheckpointManager.save()` exists\n- checkpoint events are emitted to listeners\n\n### What does not yet exist\n- durable checkpoint persistence\n- frontier restoration\n- replay of prior graph state\n- recovery from partial failure\n\nThe current implementation is deliberately skeletal:\n- `CheckpointManager.save()` is a no-op\n- `restoreCheckpoint()` is stubbed\n\n## Why this is still valuable\n\nThe repo already has the orchestration seam in the right place.\nThat means the missing work is now explicit and documentable rather than being hidden inside a monolith.\n\n## Desired checkpoint payload\n\nA serious checkpoint should eventually preserve:\n- frontier URLs and pheromone state\n- ant positions (if meaningful)\n- in-flight / recent visit metadata\n- node/edge counts\n- last successful downstream ingestion watermark\n- configuration snapshot\n\n## Desired restore behavior\n\nOn startup:\n1. load most recent valid checkpoint\n2. reconstruct frontier state\n3. reseed engine if checkpoint missing or corrupt\n4. emit explicit recovery event\n5. continue crawl with bounded duplicate risk\n\n## Suggested event shapes\n\n- `myrmex.checkpoint.saved`\n- `myrmex.checkpoint.failed`\n- `myrmex.recovery.started`\n- `myrmex.recovery.completed`\n- `myrmex.recovery.fallback_seeded`\n\n## Design warning\n\nIf checkpointing is added later without explicit versioning, the orchestrator will become deceptively stateful and hard to recover. Versioned checkpoints are mandatory.",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/graph/myrmex/kanban/checkpoint-and-recovery.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-graph-myrmex-kanban-orgs-open-hax-openplanner-packages-graph-myrmex-specs-deployment-lattice-md",
+          "title": "Deployment Lattice Spec",
+          "slug": "deployment-lattice-spec",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:39.560Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/graph/myrmex/specs/deployment-lattice.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/graph/myrmex/kanban/deployment-lattice.md`\n\n# Deployment Lattice Spec\n\n## Purpose\n\nDocument the deployment shape implied by the repo and surrounding specs.\n\n## Immediate dependencies\n\n### Required services\n- `graph-weaver-aco` as local workspace dependency\n- ShuvCrawl service\n- Proxx service\n\n### Indirect downstreams\n- OpenPlanner behind Proxx\n- any graph-management or search UI consuming lake data later\n\n## Important environment inputs\n\nFrom `src/main.ts` and `src/types.ts`:\n- `SEED_URLS`\n- `SHUVCRAWL_BASE_URL`\n- `SHUVCRAWL_TOKEN`\n- `PROXX_BASE_URL`\n- `PROXX_AUTH_TOKEN`\n- `MYRMEX_ANTS`\n- `MYRMEX_DISPATCH_INTERVAL_MS`\n- `MYRMEX_MAX_FRONTIER`\n\n## Docker shape\n\nThe repo ships a minimal Dockerfile that currently assumes built output exists and runs:\n- `node dist/main.js`\n\nThat means the operational contract is:\n1. build first\n2. ship `dist`\n3. provide service env\n\n## Architectural reading\n\nMyrmex wants to live in a small cluster:\n\n```text\nShuvCrawl  ->  Myrmex  ->  Proxx  ->  OpenPlanner\n                 ^\n                 |\n          graph-weaver-aco\n```\n\n## Future deployment concerns\n\n- checkpoint durability\n- secrets management for Proxx/ShuvCrawl auth\n- crawl politeness at fleet scale\n- content truncation and storage costs\n- replay and restart semantics\n\n## Principle\n\nDeploy the orchestrator as a **thin coordination layer**. Do not bloat it with responsibilities that properly belong in the traversal engine or the lake.",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/graph/myrmex/kanban/deployment-lattice.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-graph-myrmex-kanban-orgs-open-hax-openplanner-packages-graph-myrmex-specs-event-and-storage-flow-md",
+          "title": "Event and Storage Flow Spec",
+          "slug": "event-and-storage-flow-spec",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:39.561Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/graph/myrmex/specs/event-and-storage-flow.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/graph/myrmex/kanban/event-and-storage-flow.md`\n\n# Event and Storage Flow Spec\n\n## Purpose\n\nDocument what happens when Myrmex successfully fetches a page and how that result is propagated.\n\n## Source anchors\n\n- `src/Myrmex.ts`\n- `src/event-router.ts`\n- `src/graph-store.ts`\n- `src/types.ts`\n\n## Flow\n\n### 1. ACO emits a page event\n`GraphWeaverAco` emits:\n- url\n- fetchedAt\n- outgoing links\n- optional content/title/metadata\n\n### 2. Myrmex normalizes it\n`Myrmex` converts it into `MyrmexPageEvent`:\n- hashes content (currently a lightweight pseudo-hash)\n- derives status classification (`success` or `partial`)\n- assigns `graphNodeId`\n\n### 3. EventRouter sends rich node content\n`EventRouter.route()` posts to:\n- `POST /api/v1/lake/events`\n\nPayload shape:\n- `kind: graph.node`\n- timestamp\n- url/title/content/contentHash/metadata\n- discoveredAt / lastVisitedAt / visitCount / pheromone\n\n### 4. GraphStore sends node + edge records\n`GraphStore` also posts to:\n- `POST /api/v1/lake/events`\n\nFor the node itself:\n- `kind: graph.node`\n\nFor each outgoing link:\n- `kind: graph.edge`\n\n## Filtering and truncation\n\nThe EventRouter applies:\n- include patterns\n- exclude patterns\n- max content length truncation\n\nThis means Myrmex already has the beginnings of an ingestion policy surface even before a more mature content model exists.\n\n## Important current reality\n\n- node content is routed separately from edges\n- `visitCount` and `pheromone` are currently simple seeded values, not full restored frontier state\n- there is no dedupe or replay logic yet in this repo itself\n\n## Consequence\n\nThe current repo is best understood as **ingest-first**:\n- it successfully ferries content into the lake\n- it does not yet fully own long-term graph state restoration",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/graph/myrmex/kanban/event-and-storage-flow.md"
+        },
+        {
+          "uuid": "orgs-open-hax-openplanner-packages-graph-myrmex-kanban-orgs-open-hax-openplanner-packages-graph-myrmex-specs-orchestrator-contract-md",
+          "title": "Orchestrator Contract",
+          "slug": "orchestrator-contract",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:01:39.560Z",
+          "content": "> Source: `orgs/open-hax/openplanner/packages/graph/myrmex/specs/orchestrator-contract.md`\n> Migrated-to-kanban: `orgs/open-hax/openplanner/packages/graph/myrmex/kanban/orchestrator-contract.md`\n\n# Orchestrator Contract\n\n## Purpose\n\nDefine `Myrmex` as a composition root rather than as a bag of ad hoc service calls.\n\n## Core composition\n\n`Myrmex` owns and wires:\n- `ShuvCrawlClient`\n- `ShuvCrawlFetchBackend`\n- `GraphWeaverAco`\n- `EventRouter`\n- `GraphStore`\n- `CheckpointManager`\n\n## Lifecycle\n\n### Inputs\n- seed URLs\n- runtime config\n- backend service base URLs and tokens\n\n### Controls\n- `start()`\n- `stop()`\n- `pause()`\n- `resume()`\n- `restoreCheckpoint()`\n- `stats()`\n- `onEvent(cb)`\n\n## State exposed by `stats()`\n- running\n- paused\n- pause reason\n- frontier size\n- in-flight fetch count\n- page count\n- error count\n- last checkpoint timestamp\n- pending graph writes\n- graph-store/OpenPlanner backpressure state\n\n## Event normalization\n\nUpstream ACO events are normalized into `MyrmexEvent`:\n- `page`\n- `error`\n- `checkpoint`\n\nThis keeps downstream consumers from depending on raw engine internals.\n\n## Responsibilities\n\nMyrmex is responsible for:\n- constructing the richer fetch backend\n- starting the traversal engine\n- routing extracted content into Proxx/OpenPlanner surfaces\n- maintaining a small runtime summary\n- checkpoint scheduling\n- applying downstream OpenPlanner backpressure so crawl rate does not silently flood the lake\n\n## Downstream backpressure contract\n\n- Graph writes to OpenPlanner are serialized rather than fired concurrently.\n- Transient downstream failures (`5xx`, `429`, timeout, transport abort/fetch failure) engage explicit backpressure with exponential retry.\n- While OpenPlanner is unhealthy or the graph-write queue is saturated, `Myrmex` pauses the crawl and surfaces the reason in logs and `stats()`.\n- `Myrmex` resumes only after OpenPlanner recovers and the pending write queue drains below the configured resume threshold.\n- Permanent graph-store failures are surfaced as explicit `error` events; they must never be swallowed silently.\n- Pause/resume must be reversible at runtime; a temporary downstream pause must not require a process restart to restart dispatch.\n- Crawl scheduling should prefer cross-host breadth when a single sitemap-heavy domain floods the frontier.\n\nMyrmex is not responsible for:\n- reinventing ACO traversal\n- being the long-term lake itself\n- being the graph UI\n\n## Architectural position\n\nThis repo is the **bridge organism** between:\n- a small traversal brain\n- a heavy extraction mouth\n- a downstream knowledge lake",
+          "sourcePath": "/home/err/devel/orgs/open-hax/openplanner/packages/graph/myrmex/kanban/orchestrator-contract.md"
+        }
+      ]
+    },
+    {
+      "status": "accepted",
+      "title": "Accepted",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "breakdown",
+      "title": "Breakdown",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "blocked",
+      "title": "Blocked",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "ready",
+      "title": "Ready",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "todo",
+      "title": "Todo",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "in_progress",
+      "title": "In Progress",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "review",
+      "title": "Review",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "document",
+      "title": "Document",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "done",
+      "title": "Done",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "rejected",
+      "title": "Rejected",
+      "taskCount": 0,
+      "tasks": []
+    }
+  ]
+}

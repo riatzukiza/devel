@@ -1,0 +1,44 @@
+# Build artifacts (CI generates these)
+release/
+dist/
+build/
+*.deb
+*.AppImage
+*.tar.gz
+*.dmg
+
+# Extracted app files (downloaded at build time)
+app/
+app-asar-extracted/
+extracted/
+Codex.dmg
+
+# Node/Electron
+codex-linux-fork/node_modules/
+codex-linux-fork/dist/
+codex-linux-fork/dist-*
+codex-linux-fork/bin/
+
+# Rust
+codex-oss/codex-rs/target/
+**/.cargo/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# System
+.DS_Store
+*.log
+.env.local
+
+# Cache
+.npm-cache/
+docker/cache/
+
+# Local reverse-engineering scratch space
+theseus/
+CODEX_INTERNALS_MAP.md

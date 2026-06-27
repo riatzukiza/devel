@@ -1,0 +1,85 @@
+{
+  "name": "codex-linux",
+  "productName": "Codex",
+  "version": "0.1.0",
+  "description": "Codex for Linux using the extracted desktop shell and the OSS app server",
+  "homepage": "https://github.com/openai/codex",
+  "author": "Codex Linux Community",
+  "main": ".vite/build/main.js",
+  "scripts": {
+    "start": "electron .",
+    "rebuild": "npx @electron/rebuild -v 40.0.0 -f -w better-sqlite3,node-pty",
+    "build:linux": "npm run build:appimage && npm run build:deb && npm run build:tarball",
+    "build:deb": "bash ../scripts/build-linux-deb.sh",
+    "build:appimage": "npx electron-builder --linux AppImage",
+    "build:tarball": "npx electron-builder --linux tar.gz"
+  },
+  "devDependencies": {
+    "electron": "40.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.4.6",
+    "node-pty": "^1.1.0",
+    "tslib": "^2.8.1",
+    "ws": "^8.18.3"
+  },
+  "codexBuildFlavor": "prod",
+  "codexBuildNumber": "linux-fork",
+  "build": {
+    "appId": "com.community.codex-linux",
+    "productName": "Codex",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      ".vite/build/**/*",
+      "webview/**/*",
+      "resources/**/*",
+      "bin/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "bin/codex",
+        "to": "codex"
+      },
+      {
+        "from": "bin/codex-app-server",
+        "to": "codex-app-server"
+      },
+      {
+        "from": "resources/rg",
+        "to": "rg"
+      }
+    ],
+    "linux": {
+      "target": [
+        "AppImage",
+        "tar.gz"
+      ],
+      "category": "Development",
+      "icon": "resources/icons",
+      "maintainer": "Codex Linux Community",
+      "vendor": "Community Fork",
+      "executableName": "codex",
+      "synopsis": "AI-powered coding assistant",
+      "description": "Codex is an AI coding assistant that helps you write, understand, and modify code."
+    },
+    "deb": {
+      "depends": [
+        "libsecret-1-0",
+        "libgtk-3-0",
+        "libnotify4",
+        "libnss3",
+        "libxss1",
+        "libxtst6",
+        "xdg-utils",
+        "libatspi2.0-0",
+        "libuuid1",
+        "libappindicator3-1"
+      ],
+      "priority": "optional"
+    },
+    "appImage": {}
+  }
+}

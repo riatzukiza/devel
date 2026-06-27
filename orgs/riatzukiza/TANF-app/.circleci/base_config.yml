@@ -1,0 +1,59 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.1.0
+  terraform: circleci/terraform@2.1.0
+  jq: circleci/jq@2.2.0
+
+executors:
+  docker-executor:
+    docker:
+      - image: cimg/python:3.10.8
+        user: root
+  machine-executor:
+    machine:
+      docker_layer_caching: false
+      image: ubuntu-2204:2024.05.1
+  large-machine-executor:
+    machine:
+      docker_layer_caching: false
+      image: ubuntu-2204:2024.05.1
+    resource_class: large
+
+parameters:
+  build_and_test_all:
+    type: boolean
+    default: false
+  build_and_test_backend:
+    type: boolean
+    default: false
+  build_and_test_frontend:
+    type: boolean
+    default: false
+  deploy_infrastructure:
+    type: boolean
+    default: false
+  develop_branch_deploy:
+    type: boolean
+    default: false
+  run_dev_deployment:
+    type: boolean
+    default: false
+  run_nightly_owasp_scan:
+    type: boolean
+    default: false
+  run_owasp_scan:
+    type: boolean
+    default: false
+  target_env:
+    type: string
+    default: ''
+  triggered:
+    type: boolean
+    default: false
+  util_make_erd:
+    type: boolean
+    default: false
+  registry_owner:
+    type: string
+    default: 'hhs'

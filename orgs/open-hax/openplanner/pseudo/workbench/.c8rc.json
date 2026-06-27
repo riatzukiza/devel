@@ -1,0 +1,16 @@
+{
+  "src": ["target/out/cljs-runtime"],
+  "include": ["target/out/cljs-runtime/opencode_unified.*.js"],
+  "exclude": [
+    "tests/**/*.test.js",
+    "**/test/**",
+    "node_modules/**/*",
+    "**/*.cljs.hash",
+    "**/mocks/**",
+    "**/test_*.js"
+  ],
+  "reporter": ["text", "html", "lcov", "json"],
+  "all": true,
+  "cache": false,
+  "sourceMap": true
+}

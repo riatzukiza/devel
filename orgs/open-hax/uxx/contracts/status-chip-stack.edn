@@ -1,0 +1,16 @@
+;; StatusChipStack Component Contract
+;; Stack of badges/chips with consistent spacing and separators.
+
+{:component :status-chip-stack
+ :version "1.0.0"
+
+ :description
+ "Layout helper that renders a stack of Badge components with consistent spacing and optional separators. Used for credential status badges, federation provider pills, and host reachability stacks."
+
+ :props
+ {:items {:type :array :item-type {:label :string :variant :enum :icon :node} :required true}
+  :size {:type :enum :values [:xs :sm :md] :default :sm}
+  :separator {:type :node :default "·"}}
+
+ :styling
+ {:data-attributes {:data-component "status-chip-stack" :data-size :size}}}

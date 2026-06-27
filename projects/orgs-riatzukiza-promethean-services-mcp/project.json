@@ -1,0 +1,27 @@
+{
+  "name": "orgs-riatzukiza-promethean-services-mcp",
+  "projectType": "application",
+  "tags": [
+    "submodule"
+  ],
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/riatzukiza/promethean/services/mcp\" test"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/riatzukiza/promethean/services/mcp\" build"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun run src/giga/run-submodule.ts \"orgs/riatzukiza/promethean/services/mcp\" typecheck"
+      }
+    }
+  }
+}

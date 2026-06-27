@@ -1,0 +1,5 @@
+{:source-paths ["packages/opencode-reactant/src"]
+ :analysis-scope [:clj :cljs :cljc]
+ :lint-project-files-after-startup? true
+ :project-specs [{:project-path "packages/opencode-reactant/shadow-cljs.edn"
+                  :classpath-cmd ["npx" "shadow-cljs" "classpath" "-c" "packages/opencode-reactant/shadow-cljs.edn"]}]}

@@ -1,0 +1,32 @@
+{:contract/id "basic_user_chat_guardrails"
+ :contract/kind :policy
+ :contract/doc "Basic handoff users stay on the chat surface, use gemma4:31b only, get ephemeral sandbox-container shell/read/write tools plus memory, web research, and workspace media tools, and trip a runtime rate limit above 60 chat requests in a ten-minute window. They must never receive unsandboxed host OS shell/read/write/edit tools. Runtime enforcement lives in the Knoxx auth/tool-policy layer; this contract is the declarative mirror for that policy."
+ :contract/scope "roles actors chat-runtime models sandbox-container"
+ :contract/uses ["roles/basic_user" "models/gemma4_31b"]
+ :policy/invariants
+ [{:id "basic-users-chat-surface-only"
+   :severity :block
+   :message "Basic users are intended for the chat surface only."
+   :check {:rule :basic-user-chat-surface-only}}
+  {:id "basic-users-gemma-only"
+   :severity :block
+   :message "Basic users must be constrained to gemma4:31b while policy-runtime testing is active."
+   :check {:rule :basic-user-model-allowlist}}
+  {:id "basic-users-rate-limited"
+   :severity :block
+   :message "Basic users should trigger a rate-limit response after exceeding 60 chat requests in a ten-minute window."
+   :check {:rule :basic-user-chat-rate-limit}}
+  {:id "basic-users-sandbox-ephemeral-only"
+   :severity :block
+   :message "Basic handoff users may use ephemeral sandbox container shell/read/write tools, but sandbox commit/export remains denied."
+   :check {:rule :basic-user-sandbox-ephemeral-only}}
+  {:id "basic-users-no-host-os-tools"
+   :severity :block
+   :message "Basic handoff users must not receive unsandboxed host OS shell/read/write/edit tools such as bash, read, write, or edit."
+   :check {:rule :basic-user-no-host-os-tools}}]
+ :policy/required
+ [{:id "basic-user-role-declares-chat-guardrails"
+   :severity :note
+   :message "The basic_user role should carry explicit runtime guardrail constraints for model selection and burst control."
+   :check {:rule :basic-user-role-constraints-present}}]
+ :policy/checked-by :contract-validator}

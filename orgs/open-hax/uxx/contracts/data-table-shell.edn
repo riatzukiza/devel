@@ -1,0 +1,22 @@
+;; DataTableShell Component Contract
+;; Generic data table with sticky header, scroll, and cell rendering.
+
+{:component :data-table-shell
+ :version "1.0.0"
+
+ :description
+ "Generic data table shell with sticky header, horizontal/vertical scroll, dense and wide modes, empty state, loading state, and custom cell renderer. Used across analytics, hosts, credentials, and dashboard log tables."
+
+ :props
+ {:columns {:type :array :item-type {:key :string :header :string :render :fn :width :string :align :enum} :required true}
+  :rows {:type :array :required true}
+  :rowKey {:type :fn :required true}
+  :loading {:type :boolean :default false}
+  :emptyState {:type [:string :node] :required false}
+  :wide {:type :boolean :default false}
+  :dense {:type :boolean :default false}
+  :stickyHeader {:type :boolean :default true}
+  :maxHeight {:type :string :required false}}
+
+ :styling
+ {:data-attributes {:data-component "data-table-shell" :data-wide :wide :data-dense :dense}}}

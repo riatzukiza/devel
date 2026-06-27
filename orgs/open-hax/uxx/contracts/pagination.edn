@@ -1,0 +1,84 @@
+;; Pagination Component Contract
+;; Page navigation controls
+
+{:component :pagination
+ :version "1.0.0"
+ 
+ :description
+ "Pagination controls for navigating through paged content with previous/next buttons and page status display."
+ 
+ :props
+ {:page
+  {:type :number
+   :required true
+   :description "Current page number (1-indexed)"}
+  
+  :total-pages
+  {:type :number
+   :required true
+   :description "Total number of pages"}
+  
+  :on-page-change
+  {:type :function
+   :signature "(page: number) => void"
+   :required true
+   :description "Callback when page changes"}
+  
+  :disabled
+  {:type :boolean
+   :default false
+   :description "Whether pagination is disabled"}
+  
+  :show-status
+  {:type :boolean
+   :default true
+   :description "Whether to show 'Page X of Y' status"}
+  
+  :previous-label
+  {:type :string
+   :default "Previous"
+   :description "Label for previous button"}
+  
+  :next-label
+  {:type :string
+   :default "Next"
+   :description "Label for next button"}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :accessibility
+ {:role :navigation
+  :aria
+  {:label "Pagination"}
+  :keyboard
+  {:previous :arrow-left
+   :next :arrow-right}}
+ 
+ :behavior
+ {:page-bounds
+  {:min-page 1
+   :prevent-overflow true}
+  
+  :buttons
+  {:disable-at-boundaries true}}
+ 
+ :styling
+ {:data-attributes
+  {:data-component "pagination"
+   :data-page :page
+   :data-total-pages :total-pages}}
+ 
+ :tokens
+ {:colors
+  {:bg :colors.background/default
+   :border :colors.border/default
+   :text :colors.text/default
+   :text-disabled :colors.text/muted}
+  
+  :spacing
+  {:button-padding :spacing/2
+   :gap :spacing/2}
+  
+  :radius
+  :spacing/1}}

@@ -1,0 +1,130 @@
+;; Markdown Component Contract
+;; Defines the API for rendering markdown with syntax highlighting
+
+{:component :markdown
+ :version "1.0.0"
+ 
+ :description
+ "Renders markdown content with syntax highlighting for code blocks, GFM extensions, and custom components."
+ 
+ :props
+ {:content
+  {:type :string
+   :required true
+   :description "Raw markdown content to render"}
+  
+  :variant
+  {:type :enum
+   :values [:default :preview :compact :full]
+   :default :default
+   :description "Render style variant"}
+  
+  :theme
+  {:type :enum
+   :values [:monokai :night-owl :dark :light :auto]
+   :default :dark
+   :description "Syntax highlighting theme or theme preference"}
+  
+  :line-numbers
+  {:type :boolean
+   :default true
+   :description "Show line numbers in code blocks"}
+  
+  :copy-button
+  {:type :boolean
+   :default true
+   :description "Show copy button on code blocks"}
+  
+  :link-target
+  {:type :enum
+   :values [:_self :_blank]
+   :default :_blank
+   :description "Target for external links"}
+  
+  :sanitize
+  {:type :boolean
+   :default true
+   :description "Sanitize HTML content"}
+  
+  :max-lines
+  {:type :number
+   :required false
+   :description "Max lines before collapse"}
+  
+  :on-link-click
+  {:type :function
+   :signature "(href: string, e: Event) => void"
+   :required false
+   :description "Custom link handler"}
+  
+  :on-heading-click
+  {:type :function
+   :signature "(id: string, text: string) => void"
+   :required false
+   :description "Heading click for TOC navigation"}
+  
+  :components
+  {:type :object
+   :required false
+   :description "Custom component overrides for markdown elements"}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :markdown-extensions
+ {:gfm true
+  :tables true
+  :strikethrough true
+  :task-lists true
+  :autolink true
+  :footnotes true
+  :math {:enabled false}
+  :mermaid {:enabled false}}
+ 
+ :code-highlighting
+ {:engine :auto
+  :fallback-theme :monokai
+  :language-detection true
+  :extension-aware true
+  :supported-languages
+  [:javascript :typescript :tsx :jsx :python :rust :go :clojure :cljs
+   :java :c :cpp :csharp :ruby :php :swift :kotlin :scala :html :css
+   :scss :json :yaml :toml :xml :sql :bash :shell :docker :nginx
+   :markdown :latex :diff :graphql :proto :edn]}
+ 
+ :accessibility
+ {:role :article
+  :aria
+  {:label "Markdown content"}}
+ 
+ :styling
+ {:data-attributes
+  {:data-component "markdown"
+   :data-variant :variant}
+  
+  :css-custom-properties
+  ["--markdown-bg"
+   "--markdown-text"
+   "--markdown-link"
+   "--code-bg"
+   "--code-border"]}
+ 
+ :tokens
+ {:colors
+  {:bg :transparent
+   :text :colors.text/default
+   :heading :colors.text/default
+   :link :colors.accent/cyan
+   :link-hover :colors.accent/blue
+   :code-bg :colors.background/elevated
+   :code-border :colors.border/subtle
+   :blockquote-border :colors.accent/cyan
+   :table-header-bg :colors.background/surface}
+  
+  :typography
+  {:prose true
+   :heading-scale [2 1.5 1.25 1 1 0.875]
+   :code-font "JetBrains Mono, monospace"}
+  
+  :spacing
+  {:prose-gap :spacing/6}}}

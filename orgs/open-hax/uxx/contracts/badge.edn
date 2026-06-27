@@ -1,0 +1,89 @@
+;; Badge Component Contract
+;; Defines the API for status/category indicators
+
+{:component :badge
+ :version "1.0.0"
+ 
+ :description
+ "Compact status or category indicator with variant styling."
+ 
+ :props
+ {:variant
+  {:type :enum
+   :values [:default :success :warning :error :info]
+   :default :default
+   :description "Visual style variant of the badge"}
+  
+  :size
+  {:type :enum
+   :values [:sm :md :lg]
+   :default :md
+   :description "Size of the badge"}
+  
+  :dot
+  {:type :boolean
+   :default false
+   :description "Whether to show a status dot before the content"}
+  
+  :rounded
+  {:type :boolean
+   :default false
+   :description "Whether to use fully rounded (pill) corners"}
+  
+  :outline
+  {:type :boolean
+   :default false
+   :description "Whether to use outline style instead of filled"}}
+ 
+ :slots
+ {:children
+  {:type :node
+   :required false
+   :description "Content to render inside the badge"}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :accessibility
+ {:role :status
+  :aria
+  {:label :variant}}
+ 
+ :styling
+ {:data-attributes
+  {:data-component "badge"
+   :data-variant :variant
+   :data-size :size
+   :data-dot :dot
+   :data-rounded :rounded
+   :data-outline :outline}}
+ 
+ :tokens
+ {:colors
+  {:default {:bg :colors.badge.default/bg
+             :fg :colors.badge.default/fg}
+   :success {:bg :colors.badge.success/bg
+             :fg :colors.badge.success/fg}
+   :warning {:bg :colors.badge.warning/bg
+             :fg :colors.badge.warning/fg}
+   :error {:bg :colors.badge.error/bg
+           :fg :colors.badge.error/fg}
+   :info {:bg :colors.badge.info/bg
+          :fg :colors.badge.info/fg}}
+  
+  :spacing
+  {:sm {:padding-y :spacing/0.5
+        :padding-x :spacing/1.5}
+   :md {:padding-y :spacing/1
+        :padding-x :spacing/2}
+   :lg {:padding-y :spacing/1.5
+        :padding-x :spacing/3}}}
+ 
+ :examples
+ {:cljs
+  [:badge {:variant :success}
+   "Active"]
+  
+  :tsx
+  [:Badge {:variant "success"}
+   "Active"]}}

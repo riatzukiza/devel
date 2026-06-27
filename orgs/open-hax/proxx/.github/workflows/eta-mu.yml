@@ -1,0 +1,111 @@
+name: eta-mu
+
+on:
+  issues:
+    types: [opened, edited]
+  issue_comment:
+    types: [created]
+  pull_request:
+    types: [opened, reopened, synchronize, edited, ready_for_review]
+  pull_request_review:
+    types: [submitted]
+  pull_request_review_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  checks: write
+
+concurrency:
+  group: eta-mu-${{ github.repository }}-${{ github.event.issue.number || github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  eta-mu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout eta-mu logic
+        uses: actions/checkout@v4
+        with:
+          repository: open-hax/eta-mu
+          ref: 92beede072dd013e1379c9a1ba0bd160d2f9b252
+          path: .eta-mu
+          persist-credentials: false
+
+      - name: Detect eta-mu app credentials
+        id: eta_mu_app_credentials
+        env:
+          ETA_MU_APP_ID: ${{ secrets.ETA_MU_APP_ID }}
+          ETA_MU_APP_PRIVATE_KEY: ${{ secrets.ETA_MU_APP_PRIVATE_KEY }}
+        run: |
+          if [[ -n "${ETA_MU_APP_ID}" && -n "${ETA_MU_APP_PRIVATE_KEY}" ]]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create eta-mu app token
+        id: eta_mu_token
+        if: ${{ steps.eta_mu_app_credentials.outputs.available == 'true' }}
+        continue-on-error: true
+        env:
+          ETA_MU_APP_ID: ${{ secrets.ETA_MU_APP_ID }}
+          ETA_MU_APP_PRIVATE_KEY: ${{ secrets.ETA_MU_APP_PRIVATE_KEY }}
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ env.ETA_MU_APP_ID }}
+          private-key: ${{ env.ETA_MU_APP_PRIVATE_KEY }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.14.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: .eta-mu/packages/eta-mu-github/pnpm-lock.yaml
+
+      - name: Install eta-mu dependencies
+        run: pnpm --dir .eta-mu/packages/eta-mu-github install --frozen-lockfile --ignore-workspace
+
+      - name: Run eta-mu event handler
+        id: eta_mu_run
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ steps.eta_mu_token.conclusion == 'success' && steps.eta_mu_token.outputs.token != '' && steps.eta_mu_token.outputs.token || github.token }}
+          ETA_MU_APP_ID: ${{ secrets.ETA_MU_APP_ID }}
+          ETA_MU_APP_PRIVATE_KEY: ${{ secrets.ETA_MU_APP_PRIVATE_KEY }}
+          ETA_MU_MODEL_PROVIDER: ${{ vars.ETA_MU_MODEL_PROVIDER }}
+          ETA_MU_MODEL_ID: ${{ vars.ETA_MU_MODEL_ID }}
+          ETA_MU_REVIEW_ACTORS: ${{ vars.ETA_MU_REVIEW_ACTORS }}
+          ETA_MU_MENTION_TOKENS: ${{ vars.ETA_MU_MENTION_TOKENS }}
+          ETA_MU_IGNORE_LOGINS: ${{ vars.ETA_MU_IGNORE_LOGINS }}
+          # Open Hax proxy configuration
+          OPEN_HAX_OPENAI_PROXY_URL: ${{ vars.OPEN_HAX_OPENAI_PROXY_URL }}
+          OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN: ${{ secrets.OPEN_HAX_OPENAI_PROXY_AUTH_TOKEN }}
+          # Fallback provider keys
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PI_CODING_AGENT_DIR: ${{ github.workspace }}/.eta-mu/.pi/agent
+        run: >-
+          pnpm --dir .eta-mu/packages/eta-mu-github dev run-event
+          --repo "${GITHUB_REPOSITORY}"
+          --event-name "${GITHUB_EVENT_NAME}"
+          --event-path "${GITHUB_EVENT_PATH}"
+          --cwd "$PWD"
+
+      - name: Warn when eta-mu falls back
+        if: ${{ steps.eta_mu_run.outcome == 'failure' }}
+        run: |
+          echo "::warning title=eta-mu soft failure::The eta-mu event handler failed for this event. Promotion should continue because eta-mu is advisory automation here; inspect the eta-mu run logs for details while the wrapper workflow remains green."

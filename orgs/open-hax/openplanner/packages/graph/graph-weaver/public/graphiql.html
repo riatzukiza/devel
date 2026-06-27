@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>devel-graph-weaver · GraphiQL</title>
+    <style>
+      html,
+      body,
+      #graphiql {
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/graphiql/graphiql.min.css" />
+  </head>
+  <body>
+    <div id="graphiql">Loading…</div>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/graphiql/graphiql.min.js"></script>
+
+    <script>
+      const fetcher = GraphiQL.createFetcher({ url: "/graphql" });
+      ReactDOM.createRoot(document.getElementById("graphiql")).render(
+        React.createElement(GraphiQL, {
+          fetcher,
+          defaultQuery: `# devel-graph-weaver\n\nquery Status {\n  status {\n    nodes\n    edges\n    seeds\n    weaver { frontier inFlight }\n    render { maxRenderNodes maxRenderEdges }\n    scan { maxFileBytes rescanIntervalMs }\n  }\n}\n`,
+        }),
+      );
+    </script>
+  </body>
+</html>

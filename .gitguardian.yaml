@@ -1,0 +1,6 @@
+version: 2
+secret:
+  ignore:
+    # Historical oauth.json files removed, but GitGuardian scans commit history
+    - path: services/mcp-fs-oauth/data/oauth.json
+      mode: file

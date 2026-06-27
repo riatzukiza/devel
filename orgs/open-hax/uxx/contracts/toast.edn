@@ -1,0 +1,107 @@
+;; Toast Component Contract
+;; Defines the API for notification toasts
+
+{:component :toast
+ :version "1.0.0"
+ 
+ :description
+ "Non-blocking notification toasts with auto-dismiss and action support."
+ 
+ :props
+ {:id
+  {:type :string
+   :required true
+   :description "Unique identifier for the toast"}
+  
+  :type
+  {:type :enum
+   :values [:info :success :warning :error]
+   :default :info
+   :description "Type/variant of the toast"}
+  
+  :title
+  {:type :string
+   :required false
+   :description "Title text for the toast"}
+  
+  :message
+  {:type :string
+   :required true
+   :description "Main message content"}
+  
+  :duration
+  {:type :number
+   :default 5000
+   :description "Auto-dismiss duration in ms (0 = no auto-dismiss)"}
+  
+  :dismissible
+  {:type :boolean
+   :default true
+   :description "Whether the toast can be manually dismissed"}
+  
+  :action
+  {:type :object
+   :keys {:label :string :on-click :function}
+   :required false
+   :description "Optional action button"}
+  
+  :icon
+  {:type :node
+   :required false
+   :description "Custom icon (overrides default type icon)"}
+  
+  :position
+  {:type :enum
+   :values [:top-right :top-left :bottom-right :bottom-left :top-center :bottom-center]
+   :default :bottom-right
+   :description "Position of toast (set on container)"}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :accessibility
+ {:role :alert
+  :aria
+  {:live "polite"
+   :atomic true}}
+ 
+ :behavior
+ {:auto-dismiss true
+  :pause-on-hover true
+  :animate-in true
+  :animate-out true}
+ 
+ :styling
+ {:data-attributes
+  {:data-component "toast"
+   :data-type :type}
+  
+  :css-custom-properties
+  ["--toast-bg"
+   "--toast-border"
+   "--toast-color"]}
+ 
+ :tokens
+ {:colors
+  {:info {:bg "rgba(102, 217, 239, 0.15)"
+          :border :colors.accent/blue
+          :text :colors.text/default}
+   :success {:bg "rgba(166, 226, 46, 0.15)"
+             :border :colors.accent/cyan
+             :text :colors.text/default}
+   :warning {:bg "rgba(253, 151, 31, 0.15)"
+             :border :colors.accent/orange
+             :text :colors.text/default}
+   :error {:bg "rgba(249, 38, 114, 0.15)"
+           :border :colors.accent/red
+           :text :colors.text/default}}
+  
+  :shadow
+  :shadow/lg
+  
+  :radius
+  :spacing/2
+  
+  :spacing
+  {:toast-padding :spacing/4
+   :gap :spacing/2}}}

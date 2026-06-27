@@ -1,0 +1,25 @@
+services:
+  fork-tales-site:
+    container_name: ${FORK_TALES_CONTAINER_NAME:-fork-tales-site}
+    image: ${FORK_TALES_IMAGE:-fork-tales-site:local}
+    build:
+      context: .
+    env_file:
+      - .env
+    environment:
+      FORK_TALES_SITE_ROOT: /app/dist
+    ports:
+      - "${FORK_TALES_BIND_HOST:-127.0.0.1}:${FORK_TALES_PORT:-8794}:8080"
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import sys, urllib.request; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8080/healthz').status == 200 else 1)",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

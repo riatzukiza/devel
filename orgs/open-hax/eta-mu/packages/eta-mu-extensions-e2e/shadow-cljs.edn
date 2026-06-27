@@ -1,0 +1,10 @@
+{:source-paths ["src"
+                "../eta-mu-extensions/src"
+                "../eta-mu-extensions/lib"]
+
+ :builds
+ {:e2e-test
+  {:target    :node-test
+   :output-to "out/node-tests.cjs"
+   :ns-regexp "-test$"
+   :autorun   true}}}

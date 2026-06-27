@@ -1,0 +1,142 @@
+;; Input Component Contract
+;; Defines the API for text input fields
+
+{:component :input
+ :version "1.0.0"
+ 
+ :description
+ "Text input field with validation states, icons, and sizing."
+ 
+ :props
+ {:type
+  {:type :enum
+   :values [:text :password :email :number :search :url :tel]
+   :default :text
+   :description "Type of input"}
+  
+  :value
+  {:type :string
+   :required false
+   :description "Current value of the input"}
+  
+  :default-value
+  {:type :string
+   :required false
+   :description "Default value for uncontrolled input"}
+  
+  :placeholder
+  {:type :string
+   :required false
+   :description "Placeholder text"}
+  
+  :size
+  {:type :enum
+   :values [:sm :md :lg]
+   :default :md
+   :description "Size of the input"}
+  
+  :variant
+  {:type :enum
+   :values [:default :filled :unstyled]
+   :default :default
+   :description "Visual style variant"}
+  
+  :disabled
+  {:type :boolean
+   :default false
+   :description "Whether the input is disabled"}
+  
+  :readonly
+  {:type :boolean
+   :default false
+   :description "Whether the input is read-only"}
+  
+  :required
+  {:type :boolean
+   :default false
+   :description "Whether the input is required"}
+  
+  :error
+  {:type :boolean
+   :default false
+   :description "Whether the input has an error"}
+  
+  :error-message
+  {:type :string
+   :required false
+   :description "Error message to display"}
+  
+  :left-icon
+  {:type :node
+   :required false
+   :description "Icon to display on the left"}
+  
+  :right-icon
+  {:type :node
+   :required false
+   :description "Icon to display on the right"}
+  
+  :on-change
+  {:type :function
+   :signature "(event: ChangeEvent) => void"
+   :required false
+   :description "Change event handler"}
+  
+  :on-focus
+  {:type :function
+   :signature "(event: FocusEvent) => void"
+   :required false
+   :description "Focus event handler"}
+  
+  :on-blur
+  {:type :function
+   :signature "(event: FocusEvent) => void"
+   :required false
+   :description "Blur event handler"}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :accessibility
+ {:role :textbox
+  :aria
+  {:invalid :error
+   :required :required
+   :disabled :disabled
+   :readonly :readonly
+   :describedby :error-message-id}}
+ 
+ :styling
+ {:data-attributes
+  {:data-component "input"
+   :data-size :size
+   :data-variant :variant
+   :data-error :error
+   :data-disabled :disabled}}
+ 
+ :tokens
+ {:colors
+  {:default {:bg :colors.background/default
+             :border :colors.border/default
+             :text :colors.text/default
+             :placeholder :colors.text/muted}
+   :focus {:border :colors.border/focus
+           :ring :colors.border/focus}
+   :error {:border :colors.border/error
+           :text :colors.text/error}
+   :disabled {:bg :colors.background/subtle
+              :text :colors.text/muted}}
+  
+  :spacing
+  {:sm {:padding-y :spacing/1
+        :padding-x :spacing/2
+        :font-size :font-size/sm}
+   :md {:padding-y :spacing/2
+        :padding-x :spacing/3
+        :font-size :font-size/base}
+   :lg {:padding-y :spacing/3
+        :padding-x :spacing/4
+        :font-size :font-size/lg}}
+  
+  :radius
+  :spacing/1}}

@@ -1,0 +1,11 @@
+{
+  "vimMode": true,
+  "showUnsupportedFiles": true,
+  "showLineNumber": true,
+  "alwaysUpdateLinks": true,
+  "userIgnoreFilters": [
+    "static/",
+    "node_modules/"
+  ],
+  "promptDelete": false
+}

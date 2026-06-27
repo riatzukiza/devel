@@ -1,0 +1,14 @@
+packages:
+  - packages/*
+  - services/*
+  - shared/*
+
+gitChecks: false
+
+onlyBuiltDependencies:
+  - esbuild
+  - koffi
+  - protobufjs
+
+overrides:
+  '@open-hax/eta-mu-monorepo': 'link:'

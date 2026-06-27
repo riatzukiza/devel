@@ -1,0 +1,93 @@
+{
+  "generatedAt": "2026-05-29T04:29:38.703Z",
+  "totalTasks": 1,
+  "columns": [
+    {
+      "status": "icebox",
+      "title": "Icebox",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "incoming",
+      "title": "Incoming",
+      "taskCount": 1,
+      "tasks": [
+        {
+          "uuid": "orgs-open-hax-eta-mu-packages-eta-mu-extensions-kanban-orgs-open-hax-eta-mu-packages-eta-mu-extensions-spec-extension-integration-plan-md",
+          "title": "Extension Integration Plan for eta-mu",
+          "slug": "extension-integration-plan-for-eta-mu",
+          "status": "incoming",
+          "priority": "P3",
+          "labels": [
+            "specs",
+            "migrated-spec"
+          ],
+          "createdAt": "2026-05-29T04:29:38.093Z",
+          "content": "> Source: `orgs/open-hax/eta-mu/packages/eta-mu-extensions/spec/extension-integration-plan.md`\n> Migrated-to-kanban: `orgs/open-hax/eta-mu/packages/eta-mu-extensions/kanban/extension-integration-plan.md`\n\n# Extension Integration Plan for eta-mu\n\n**Status:** Active\n**Created:** 2026-04-09\n**Author:** eta-mu\n\n## Overview\n\nThis document specifies the integration plan for remaining pi/opencode extensions into the eta-mu constitutional layer.\n\n## Current State\n\n### Ported Extensions (CLJS - 11 total)\n\n| Extension | Lines | Status | Dependencies |\n|-----------|-------|--------|--------------|\n| `bootstrap.cljs` | 345 | ✅ Active | None |\n| `chronos.cljs` | 9,623 | ✅ Active | None |\n| `contract_runtime.cljs` | 18,197 | ✅ Active | None |\n| `custom_providers.cljs` | 7,678 | ✅ Active | None |\n| `image_render.cljs` | 9,220 | ✅ Active | None |\n| `opencode_global_instructions.cljs` | 2,185 | ✅ Active | None |\n| `opmf_contract_gate.cljs` | 17,272 | ✅ Active | `@open-hax/output-contract-gate` |\n| `receipt_river.cljs` | 23,868 | ✅ Active | None |\n| `session_mycology.cljs` | 30,152 | ✅ Active | None |\n| `task_timing.cljs` | 7,425 | ✅ Active | None |\n| `websearch_open_hax.cljs` | 5,599 | ✅ Active | None |\n\n### Legacy TypeScript extensions\n\nThe `pi/agent/extensions` TypeScript source directory has been retired to avoid runtime drift. `apply-patch` is now CLJS (`src/eta_mu/extensions/apply_patch.cljs`). `skill-graph-aco` was removed from the active runtime; static `skill_graph`/graph-memory tooling is canonical until an ACO CLJS rewrite is justified.\n\n## Identified Patterns for Macroization\n\n### Pattern 1: State Management (HIGH frequency)\n\nAppears in 5/11 extensions:\n- STATE-DIR constant\n- EVENTS-FILE constant\n- STATUS-KEY constant\n- GLOBAL-KEY constant\n- get-state function\n- set-status! function\n\n**Macro:** `defstate`\n\n### Pattern 2: Event Handlers (HIGH frequency)\n\nAppears in all extensions:\n- session_start handler\n- session_shutdown handler\n- turn_start handler (often)\n- before_agent_start handler (often)\n\n**Macro:** `defevents`\n\n### Pattern 3: Tool Parameter Schema (MEDIUM frequency)\n\nRepetitive parameter definitions with:\n- type specification\n- description strings\n- optional flags\n- enum constraints\n\n**Macro:** `deftool`\n\n## Implementation Roadmap\n\n### Week 1: Macro Library ✅\n\n- [x] Create `lib/eta_mu/macros/state.cljc`\n- [x] Create `lib/eta_mu/macros/event.cljc`\n- [x] Create `lib/eta_mu/macros/tool.cljc`\n- [ ] Refactor existing extensions to use macros\n\n### Week 2: Image Extensions (P1) - IN PROGRESS\n\n- [x] Create `src/eta_mu/extensions/analyze_image.cljs`\n- [ ] Create `src/eta_mu/extensions/manipulate_image.cljs`\n- [ ] Create integration tests\n- [ ] Update build system\n\n### Week 3: Drift removal\n\n- [x] Port `apply-patch` to CLJS\n- [x] Remove `pi/agent/extensions` TypeScript runtime copies\n- [x] Keep built-ins registered through `manifest.edn` and package metadata\n\n### Week 4: Advanced Extensions (P3)\n\n- [ ] Re-evaluate `skill-graph-aco` only if adaptive ACO behavior is needed beyond the canonical static skill graph / graph-memory tools\n\n## Testing Requirements\n\n### Unit Tests\n- State management: initialization, reset, persistence\n- Event handlers: session lifecycle\n- Macro expansion: verify generated code\n\n### Integration Tests\n- Extension loading via pi\n- OpenCode plugin generation\n- Cross-platform compatibility\n\n## Success Metrics\n\n- All 18 extensions load without errors\n- Build time < 60 seconds\n- Test coverage > 80%\n- No runtime errors in production use\n- Macro usage in all new extensions",
+          "sourcePath": "/home/err/devel/orgs/open-hax/eta-mu/packages/eta-mu-extensions/kanban/extension-integration-plan.md"
+        }
+      ]
+    },
+    {
+      "status": "accepted",
+      "title": "Accepted",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "breakdown",
+      "title": "Breakdown",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "blocked",
+      "title": "Blocked",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "ready",
+      "title": "Ready",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "todo",
+      "title": "Todo",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "in_progress",
+      "title": "In Progress",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "review",
+      "title": "Review",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "document",
+      "title": "Document",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "done",
+      "title": "Done",
+      "taskCount": 0,
+      "tasks": []
+    },
+    {
+      "status": "rejected",
+      "title": "Rejected",
+      "taskCount": 0,
+      "tasks": []
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+;; Card Component Contract
+;; Defines the API for versatile card containers
+
+{:component :card
+ :version "1.0.0"
+ 
+ :description
+ "Versatile card container with optional header, title, and footer sections."
+ 
+ :props
+ {:variant
+  {:type :enum
+   :values [:default :outlined :elevated]
+   :default :default
+   :description "Visual style variant of the card"}
+  
+  :interactive
+  {:type :boolean
+   :default false
+   :description "Whether the card has interactive hover/focus states"}
+  
+  :padding
+  {:type :enum
+   :values [:none :sm :md :lg]
+   :default :md
+   :description "Internal padding size"}
+  
+  :radius
+  {:type :enum
+   :values [:none :sm :md :lg :full]
+   :default :md
+   :description "Border radius size"}
+  
+  :on-click
+  {:type :function
+   :signature "(event: MouseEvent) => void"
+   :required false
+   :description "Click handler for interactive cards"}}
+ 
+ :slots
+ {:header
+  {:type :node
+   :required false
+   :description "Content for card header section"}
+  
+  :title
+  {:type :string
+   :required false
+   :description "Title text (rendered in header if no header slot)"}
+  
+  :extra
+  {:type :node
+   :required false
+   :description "Additional content in header (e.g., actions)"}
+  
+  :children
+  {:type :node
+   :required false
+   :description "Main content of the card"}
+  
+  :footer
+  {:type :node
+   :required false
+   :description "Content for card footer section"}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :accessibility
+ {:role :region
+  :keyboard
+  {:focusable :interactive
+   :activatable :interactive}}
+ 
+ :styling
+ {:data-attributes
+  {:data-component "card"
+   :data-variant :variant
+   :data-interactive :interactive}}
+ 
+ :tokens
+ {:colors
+  {:default {:bg :colors.background/surface
+             :border :colors.border/default}
+   :outlined {:bg :transparent
+              :border :colors.border/default}
+   :elevated {:bg :colors.background/elevated
+              :border :colors.border/subtle}}
+  
+  :spacing
+  {:none {:padding 0}
+   :sm {:padding-y :spacing/2
+        :padding-x :spacing/3}
+   :md {:padding-y :spacing/4
+        :padding-x :spacing/5}
+   :lg {:padding-y :spacing/6
+        :padding-x :spacing/8}}
+  
+  :shadow
+  {:default :shadow/sm
+   :outlined :shadow/none
+   :elevated :shadow/md}}}

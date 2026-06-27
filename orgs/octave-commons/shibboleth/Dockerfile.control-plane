@@ -1,0 +1,52 @@
+ARG BASE_IMAGE=clojure:temurin-21-tools-deps-bookworm
+FROM ${BASE_IMAGE}
+
+ENV PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DEFAULT_TIMEOUT=300 \
+    PIP_RETRIES=10 \
+    PIP_ROOT_USER_ACTION=ignore
+
+WORKDIR /app
+
+# Python is required for embed+cluster (sentence-transformers + hdbscan) and Parquet IO.
+# NOTE: This is a research image; it prioritizes "works out of the box" over size.
+#
+# If you use a baked base image (e.g. localhost:5000/shibboleth/ml-base:...), it may
+# already include python/pip/build tooling; avoid an unnecessary apt-get update.
+RUN if ! command -v python3 >/dev/null 2>&1 || ! command -v pip3 >/dev/null 2>&1; then \
+      apt-get update \
+        && apt-get install -y --no-install-recommends \
+           python3 python3-pip python3-venv \
+           build-essential python3-dev \
+           git \
+        && rm -rf /var/lib/apt/lists/*; \
+    else \
+      echo "python3/pip3 already present; skipping apt-get install"; \
+    fi
+
+# Install Python deps used via libpython-clj.
+# If you want to slim this image, pin/trim these.
+RUN pip3 install --break-system-packages --index-url https://download.pytorch.org/whl/cpu "torch==2.5.1+cpu"
+RUN pip3 install --no-cache-dir --break-system-packages \
+    "numpy>=1.26" \
+    "scikit-learn>=1.4" \
+    "pandas>=2.2" \
+    "pyarrow>=15" \
+    "polars>=0.20" \
+    "hdbscan>=0.8" \
+    "sentence-transformers>=2.7"
+
+COPY deps.edn /app/deps.edn
+
+# Warm Clojure deps for faster startup.
+RUN clojure -P -M:control-plane
+
+COPY src /app/src
+COPY pipelines /app/pipelines
+COPY run-tests.sh /app/run-tests.sh
+COPY bb.edn /app/bb.edn
+
+EXPOSE 8788
+
+CMD ["clojure","-M:control-plane","-m","promptbench.control-plane.server"]

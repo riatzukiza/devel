@@ -1,0 +1,17 @@
+;; Harness adapter: codex (OpenAI Codex CLI)
+;; Core skill: ημ.skill/work-cycle@0.2.0
+;; Status: STUB — codex hooks API experimental as of 2026-04
+
+(harness-adapter
+  (harness :codex)
+  (skill "work-cycle")
+  (core-ref "packages/skills/core/work-cycle/CONTRACT.edn")
+  (install-path ".codex/skills/work-cycle/CONTRACT.edn")
+  (delivery
+    ;; Codex surfaces skills via AGENTS.md or system prompt in codex.yaml
+    (method :agents-md-injection)
+    (file "AGENTS.md")
+    (section "## work-cycle skill"))
+  (notes
+    "Codex packaged MCP servers live in packages/codex-mcp/.
+     Skill delivery via AGENTS.md until native skill protocol exists."))

@@ -1,0 +1,6 @@
+# eta-mu public edge mapping for Promethean host Caddy
+# Reverse proxy the live crystal/workbench runtime on port 8790.
+
+eta.mu.promethean.rest {
+    reverse_proxy 127.0.0.1:8790
+}

@@ -1,0 +1,6 @@
+logs/
+test-results/
+logs/
+playwright-report/
+test-results.json
+test-results.xml

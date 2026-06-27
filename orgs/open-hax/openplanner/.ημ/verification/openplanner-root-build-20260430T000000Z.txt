@@ -1,0 +1,11 @@
+
+> @open-hax/openplanner@0.3.0 build /home/err/devel/orgs/open-hax/openplanner
+> pnpm --filter @open-hax/openplanner-document-hydration build && tsc
+
+
+> @open-hax/openplanner-document-hydration@0.1.0 build /home/err/devel/orgs/open-hax/openplanner/packages/stores/document-hydration
+> shadow-cljs release lib
+
+shadow-cljs - config: /home/err/devel/orgs/open-hax/openplanner/packages/stores/document-hydration/shadow-cljs.edn
+[:lib] Compiling ...
+[:lib] Build completed. (47 files, 0 compiled, 0 warnings, 4.39s)

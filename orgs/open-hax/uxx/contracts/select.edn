@@ -1,0 +1,22 @@
+;; Select Component Contract
+;; Styled dropdown select matching Input visual style.
+
+{:component :select
+ :version "1.0.0"
+
+ :description
+ "Styled <select> dropdown with consistent sizing, variants, error states, and optional options array. Matches Input component visual style for form consistency."
+
+ :props
+ {:size {:type :enum :values [:sm :md :lg] :default :md}
+  :variant {:type :enum :values [:default :filled :unstyled] :default :default}
+  :error {:type :boolean :default false}
+  :errorMessage {:type :string :required false}
+  :options {:type :array :item-type {:value :string :label :string :disabled :boolean} :required false}
+  :placeholder {:type :string :required false}
+  :disabled {:type :boolean :default false}
+  :value {:type :string :required false}
+  :onChange {:type :fn :required false}}
+
+ :styling
+ {:data-attributes {:data-component "select" :data-size :size :data-variant :variant :data-error :error}}}

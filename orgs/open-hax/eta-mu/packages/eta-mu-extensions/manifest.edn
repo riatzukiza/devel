@@ -1,0 +1,48 @@
+;; eta-mu extension manifest
+;; Declares all extensions in this eta-mu runtime.
+;; The build script reads this to drive local target materialization.
+;; Compilation is driven by shadow-cljs.edn — not this file.
+;;
+;; Source types:
+;;   :local   - relative to packages/eta-mu-extensions/ (or absolute)
+;;   :github  - fetched via git archive from a GitHub repo
+;;   :npm     - resolved from a pnpm package
+;;
+;; To add an extension:
+;;   1. Add src/eta_mu/extensions/<name>.cljs
+;;   2. Add a :node-library build entry to shadow-cljs.edn
+;;   3. Add an entry here so build.mjs knows which platform targets to materialize
+
+{:version 1
+
+ :build-dir "target"
+ :state-dir "state"
+
+ :targets
+ {:pi       "dist/pi/cljs-<name>/index.ts"
+  :opencode "dist/opencode/<name>.mjs"
+  :runtime  "dist/runtime/<name>.cjs"}
+
+ :extensions
+ [{:name "apply-patch"       :source :local :path "src/eta_mu/extensions/apply_patch.cljs"                :tracked true :description "Codex-style multi-file patch tool"}
+  {:name "bootstrap"         :source :local :path "src/eta_mu/extensions/bootstrap.cljs"                  :tracked true :description "Session initialization and state recovery"}
+  {:name "chronos"           :source :local :path "src/eta_mu/extensions/chronos.cljs"                    :tracked true :description "Time tracking for contracting work"}
+  {:name "contract-runtime"  :source :local :path "src/eta_mu/extensions/contract_runtime.cljs"           :tracked true :description "Operational contract runtime v1"}
+  {:name "contract-runtime-v2" :source :local :path "src/eta_mu/extensions/contract_runtime_v2.cljs"     :tracked true :description "Contract runtime v2: cwd-walk, policy gate, fulfillment notify/audit"}
+  {:name "custom-providers"  :source :local :path "src/eta_mu/extensions/custom_providers.cljs"           :tracked true :description "Provider configuration extensions"}
+  {:name "graph-memory"      :source :local :path "src/eta_mu/extensions/graph_memory.cljs"               :tracked true :description "Graph memory tools for OpenPlanner/Graph-Weaver"}
+  {:name "image-render"      :source :local :path "src/eta_mu/extensions/image_render.cljs"               :tracked true :description "Image rendering for TUI"}
+  {:name "lisp-decomp-nudge" :source :local :path "src/eta_mu/extensions/lisp_decomp_nudge.cljs"         :tracked true :description "Nudge agent to decompose large Lisp fns when paren mismatch is detected"}
+  {:name "opencode-global-instructions" :source :local :path "src/eta_mu/extensions/opencode_global_instructions.cljs" :tracked true :description "Global instruction injection for OpenCode"}
+  {:name "opmf-contract-gate" :source :local :path "src/eta_mu/extensions/opmf_contract_gate.cljs"       :tracked true :description "Output contract gate enforcement with auto-repair"}
+  {:name "receipt-river"     :source :local :path "src/eta_mu/extensions/receipt_river.cljs"              :tracked true :description "Append-only receipts.log ledger for multi-step work"}
+  {:name "session-mycology"  :source :local :path "src/eta_mu/extensions/session_mycology.cljs"          :tracked true :description "Per-turn retrospection with p-scores and skill spore incubation"}
+  {:name "task-timing"       :source :local :path "src/eta_mu/extensions/task_timing.cljs"               :tracked true :description "Task timing and performance tracking"}
+  {:name "websearch-open-hax" :source :local :path "src/eta_mu/extensions/websearch_open_hax.cljs"       :tracked true :description "Web search via OpenHax proxy"}
+
+  ;; Example: extension from npm
+  ;; {:name "example-npm-ext" :source :npm :package "@open-hax/eta-mu-ext-example" :version "^0.1.0" :path "src/example_ext.cljs" :description "Example extension from npm"}
+
+  ;; Example: extension from GitHub
+  ;; {:name "example-gh-ext" :source :github :repo "open-hax/eta-mu-extensions-contrib" :ref "main" :path "src/example_ext.cljs" :description "Example extension from GitHub"}
+  ]}

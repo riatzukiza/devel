@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Click Quest</title>
+    <style>
+      body { font-family: system-ui, sans-serif; line-height: 1.5; padding: 2rem; }
+      button { font-size: 1.2rem; padding: 0.5rem 1rem; }
+      #msg { margin-top: 1rem; font-weight: bold; }
+    </style>
+  </head>
+  <body>
+    <h1>Click Quest</h1>
+    <p>Clicks: <span id="count">0</span></p>
+    <button id="btn">Click me</button>
+    <div id="msg"></div>
+
+    <script>
+      // --- state
+      let count = 0
+      let goal = 10
+
+      // --- references to elements
+      const countEl = document.getElementById('count')
+      const btn     = document.getElementById('btn')
+      const msg     = document.getElementById('msg')
+
+      // --- update the UI from state
+      function update() {
+        countEl.textContent = count
+        if (count >= goal) {
+          msg.textContent = 'You win!'
+          document.body.style.background = 'lightgreen'
+          btn.disabled = true
+        }
+      }
+
+      // --- event: clicking increases count
+      btn.addEventListener('click', () => {
+        count = count + 1
+        update()
+      })
+
+      // --- initial render + hello from the console
+      update()
+      console.log('Ready. Try clicking the button.')
+    </script>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "name": "@workspace/eros-eris-field-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "predev": "pnpm -C ../eros-eris-field build",
+    "dev": "tsx src/index.ts",
+    "prebuild": "pnpm -C ../eros-eris-field build",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@workspace/eros-eris-field": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "tsx": "^4.20.6",
+    "typescript": "^5.6.3"
+  },
+  "license": "GPL-3.0-or-later"
+}

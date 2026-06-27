@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quartz Garden Viewer · riatzukiza</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./garden.css" />
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <h1>Quartz Garden · Viewer</h1>
+        <div class="sub">pan · zoom · search highlight</div>
+      </div>
+      <nav>
+        <a class="nav-pill" href="/">Home</a>
+        <a class="nav-pill" href="/projects/">Projects</a>
+        <a class="nav-pill" href="/garden/">Garden</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" style="margin-bottom: 14px;">
+      <h2 id="stageTitle">Loading…</h2>
+      <p id="stageMeta" style="margin-top: 4px; color: var(--muted);"></p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;">
+        <a class="btn" id="openRaw" href="#" target="_blank" rel="noreferrer">Open raw SVG</a>
+        <a class="btn" href="./index.html">Back to garden index</a>
+      </div>
+    </section>
+
+    <section class="viewer">
+      <aside class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Controls</div>
+          <label style="font-size:12px; color: var(--muted);">Project</label>
+          <select id="projectSelect"></select>
+          <label style="font-size:12px; color: var(--muted);">Search (file / node)</label>
+          <input id="search" type="text" placeholder="e.g. llm/index.ts, memory-store, prompts" />
+        </div>
+        <div class="panel-body">
+          <div class="panel-title" style="margin-bottom:10px;">Graphs</div>
+          <div id="graphList" class="list"></div>
+        </div>
+      </aside>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Stage</div>
+          <div style="color: var(--muted); font-size: 12px;">
+            Mouse: drag to pan · wheel to zoom · controls on the SVG
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="svg-stage">
+            <div class="hint">try: "llm" · "discord" · "memory"</div>
+            <div id="svgCanvas" class="canvas"></div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <div id="garden-error" style="color:#ffb4b4; padding-top: 12px;"></div>
+  </main>
+
+  <!-- Pan/zoom for inline SVG -->
+  <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+  <script src="./garden.js" type="module"></script>
+</body>
+</html>

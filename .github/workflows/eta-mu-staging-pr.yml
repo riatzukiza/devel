@@ -1,0 +1,43 @@
+name: eta-mu-staging-pr
+
+on:
+  pull_request:
+    branches:
+      - staging
+    paths:
+      - 'orgs/open-hax/eta-mu/**'
+      - '.github/workflows/eta-mu*.yml'
+      - 'src/github/eta-mu-rollout.ts'
+
+jobs:
+  eta-mu-docs-tests:
+    name: eta-mu-docs-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - run: node --test orgs/open-hax/eta-mu/packages/eta-mu-docs/tests/*.test.cjs
+
+  eta-mu-truth-tests:
+    name: eta-mu-truth-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - run: node --test orgs/open-hax/eta-mu/packages/eta-mu-truth/tests/*.test.cjs
+
+  eta-mu-compose-config:
+    name: eta-mu-compose-config
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - run: docker compose --project-name eta-mu-staging-ci -f orgs/open-hax/eta-mu/services/eta-mu/compose.yaml config >/tmp/eta-mu-compose.txt

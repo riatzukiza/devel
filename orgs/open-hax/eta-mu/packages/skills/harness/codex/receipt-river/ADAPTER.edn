@@ -1,0 +1,22 @@
+;; Harness adapter: codex (OpenAI Codex CLI)
+;; Core skill: ημ.skill/receipt-river@0.2.0
+;; Status: STUB — codex hooks API experimental as of 2026-04
+
+(harness-adapter
+  (harness :codex)
+  (skill "receipt-river")
+  (core-ref "packages/skills/core/receipt-river/CONTRACT.edn")
+  (install-path ".codex/skills/receipt-river/CONTRACT.edn")
+  (driver :fs)
+  (driver-config
+    (receipts-file "receipts.log")
+    (state-root ".codex/state/receipt-river/"))
+  (delivery
+    (method :agents-md-injection)
+    (file "AGENTS.md")
+    (section "## receipt-river skill"))
+  (notes
+    "MCP tool `receipt_river` must be available in codex MCP config.
+     See packages/eta-mu-extensions for the MCP tool implementation.
+     CWD invariant: install-path and driver-config.state-root are workspace-relative.
+     Codex MUST be invoked from the workspace root for these paths to resolve correctly."))

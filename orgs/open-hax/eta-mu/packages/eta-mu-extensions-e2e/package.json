@@ -1,0 +1,15 @@
+{
+  "name": "@open-hax/eta-mu-extensions-e2e",
+  "private": true,
+  "version": "0.1.1",
+  "scripts": {
+    "test": "shadow-cljs compile e2e-test && node out/node-tests.cjs",
+    "test:watch": "shadow-cljs watch e2e-test"
+  },
+  "devDependencies": {
+    "@open-hax/eta-mu-cli": "workspace:*",
+    "express": "^4.21.2",
+    "shadow-cljs": "^2.28.20",
+    "markdown-it": "^14.1.0"
+  }
+}

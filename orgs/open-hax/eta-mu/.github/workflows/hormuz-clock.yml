@@ -1,0 +1,95 @@
+name: Hormuz Clock
+
+on:
+  schedule:
+    - cron: '0 13 * * *'  # 8am CDT (13:00 UTC) daily
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (skip Discord post, only commit receipt)'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: write
+
+jobs:
+  signal:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install opencode CLI
+        run: npm install -g @opencode-ai/cli || npm install -g opencode-ai
+        continue-on-error: true
+
+      - name: Run Hormuz signal agent
+        id: signal
+        env:
+          OPENCODE_API_KEY: public
+          OPENCODE_MODEL: opencode/big-pickle
+        run: |
+          PROMPT=$(cat agents/hormuz-clock/prompt.md)
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          DATE_SLUG=$(date -u +"%Y-%m-%d")
+
+          # Run agent, capture output
+          SIGNAL=$(opencode run \
+            --model "$OPENCODE_MODEL" \
+            --prompt "$PROMPT" \
+            --format json 2>/dev/null || echo '{"error": "agent run failed", "fallback": true}')
+
+          # Write receipt
+          mkdir -p receipts/hormuz
+          RECEIPT_PATH="receipts/hormuz/${DATE_SLUG}.json"
+          echo $SIGNAL | jq --arg ts "$TIMESTAMP" '. + {"receipt_at": $ts, "agent": "hormuz-clock", "model": "opencode/big-pickle"}' > "$RECEIPT_PATH" 2>/dev/null || echo "{\"raw\": $SIGNAL, \"receipt_at\": \"$TIMESTAMP\", \"agent\": \"hormuz-clock\"}" > "$RECEIPT_PATH"
+
+          echo "receipt_path=$RECEIPT_PATH" >> $GITHUB_OUTPUT
+          echo "signal_date=$DATE_SLUG" >> $GITHUB_OUTPUT
+          echo "signal<<EOF" >> $GITHUB_OUTPUT
+          cat "$RECEIPT_PATH" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Commit receipt
+        run: |
+          git config user.name "hormuz-clock[bot]"
+          git config user.email "hormuz-clock@eta-mu.noreply"
+          git add receipts/hormuz/
+          git diff --staged --quiet || git commit -m "receipt: hormuz-clock ${{ steps.signal.outputs.signal_date }}"
+          git push
+
+      - name: Post to Discord
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
+        run: |
+          RECEIPT=$(cat "${{ steps.signal.outputs.receipt_path }}")
+          SUMMARY=$(echo $RECEIPT | jq -r '.summary // .raw // "signal unavailable"' 2>/dev/null || echo "signal parse error")
+          LEVEL=$(echo $RECEIPT | jq -r '.threat_level // "UNKNOWN"' 2>/dev/null || echo "UNKNOWN")
+          DATE="${{ steps.signal.outputs.signal_date }}"
+
+          PAYLOAD=$(jq -n \
+            --arg summary "$SUMMARY" \
+            --arg level "$LEVEL" \
+            --arg date "$DATE" \
+            '{
+              "embeds": [{
+                "title": ("🕰️ Hormuz Clock — " + $date),
+                "description": $summary,
+                "color": (if $level == "CRITICAL" then 15548997 elif $level == "HIGH" then 16753920 elif $level == "ELEVATED" then 16776960 else 5763719 end),
+                "fields": [{"name": "Threat Level", "value": $level, "inline": true}],
+                "footer": {"text": "eta-mu/hormuz-clock · opencode/big-pickle"}
+              }]
+            }')
+
+          curl -s -X POST "https://discord.com/api/v10/channels/${DISCORD_CHANNEL_ID}/messages" \
+            -H "Authorization: Bot ${DISCORD_BOT_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD"

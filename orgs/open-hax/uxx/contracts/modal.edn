@@ -1,0 +1,144 @@
+;; Modal Component Contract
+;; Defines the API for modal dialog overlays
+
+{:component :modal
+ :version "1.0.0"
+ 
+ :description
+ "Modal dialog overlay with backdrop, focus trap, and keyboard dismissal."
+ 
+ :props
+ {:open
+  {:type :boolean
+   :default false
+   :description "Whether the modal is currently open"}
+  
+  :on-close
+  {:type :function
+   :signature "() => void"
+   :required true
+   :description "Callback fired when modal should close"}
+  
+  :size
+  {:type :enum
+   :values [:sm :md :lg :xl :full]
+   :default :md
+   :description "Size of the modal dialog"}
+  
+  :closable
+  {:type :boolean
+   :default true
+   :description "Whether the modal can be closed by user interaction"}
+  
+  :close-on-backdrop
+  {:type :boolean
+   :default true
+   :description "Whether clicking the backdrop closes the modal"}
+  
+  :close-on-escape
+  {:type :boolean
+   :default true
+   :description "Whether pressing Escape closes the modal"}
+  
+  :centered
+  {:type :boolean
+   :default true
+   :description "Whether to center the modal vertically"}
+  
+  :scroll-behavior
+  {:type :enum
+   :values [:inside :outside]
+   :default :inside
+   :description "Whether content scrolls inside modal or body scrolls"}}
+ 
+ :slots
+ {:header
+  {:type :node
+   :required false
+   :description "Content for the modal header (title area)"}
+  
+  :title
+  {:type :string
+   :required false
+   :description "Title text (rendered in header if no header slot)"}
+  
+  :children
+  {:type :node
+   :required false
+   :description "Main content of the modal"}
+  
+  :footer
+  {:type :node
+   :required false
+   :description "Content for the modal footer (action buttons)"}}
+ 
+ :forbidden-props
+ [:style :class :className]
+ 
+ :accessibility
+ {:role :dialog
+  :aria
+  {:modal true
+   :labelledby :title-id
+   :describedby :description-id}
+  :keyboard
+  {:focus-trap true
+   :initial-focus :first-focusable
+   :restore-focus true}}
+ 
+ :behavior
+ {:focus-management
+  {:trap-focus true
+   :auto-focus true
+   :restore-focus-on-close true}
+  
+  :scroll-lock
+  {:lock-body-scroll true
+   :reserve-scrollbar-gutter true}
+  
+  :animation
+  {:enter {:duration "150ms" :easing :ease-out}
+   :exit {:duration "100ms" :easing :ease-in}}}
+ 
+ :styling
+ {:data-attributes
+  {:data-component "modal"
+   :data-size :size
+   :data-open :open}
+  
+  :css-custom-properties
+  ["--modal-bg"
+   "--modal-shadow"
+   "--modal-radius"
+   "--modal-padding"
+   "--backdrop-color"
+   "--backdrop-blur"]}
+ 
+ :tokens
+ {:sizes
+  {:sm {:max-width "400px"}
+   :md {:max-width "600px"}
+   :lg {:max-width "800px"}
+   :xl {:max-width "1000px"}
+   :full {:max-width "calc(100vw - 64px)"
+          :max-height "calc(100vh - 64px)"}}
+  
+  :colors
+  {:backdrop "rgba(0, 0, 0, 0.6)"
+   :modal-bg :colors.background/elevated
+   :modal-border :colors.border/subtle}
+  
+  :shadow
+  :shadow/2xl
+  
+  :radius
+  :spacing/3
+  
+
+  :spacing
+  {:header {:padding-y :spacing/4
+            :padding-x :spacing/5}
+   :body {:padding-y :spacing/4
+          :padding-x :spacing/5}
+   :footer {:padding-y :spacing/3
+            :padding-x :spacing/5}}}}

@@ -1,0 +1,198 @@
+{
+  "architectures": [
+    {
+      "name": "x86_64",
+      "label": "Intel/AMD 64-bit",
+      "docker_arch": "amd64",
+      "rust_target": "x86_64-unknown-linux-gnu",
+      "electron_arch": "x64",
+      "ripgrep_url": "https://github.com/BurntSushi/ripgrep/releases/download/14.1.0/ripgrep-14.1.0-x86_64-unknown-linux-musl.tar.gz",
+      "enabled": true
+    },
+    {
+      "name": "arm64",
+      "label": "ARM64 (Apple Silicon, AWS Graviton, Raspberry Pi 4+)",
+      "docker_arch": "arm64",
+      "rust_target": "aarch64-unknown-linux-gnu",
+      "electron_arch": "arm64",
+      "ripgrep_url": "https://github.com/BurntSushi/ripgrep/releases/download/14.1.0/ripgrep-14.1.0-aarch64-unknown-linux-gnu.tar.gz",
+      "enabled": true
+    },
+    {
+      "name": "armv7l",
+      "label": "ARMv7 (32-bit ARM, older Raspberry Pi)",
+      "docker_arch": "arm/v7",
+      "rust_target": "armv7-unknown-linux-gnueabihf",
+      "electron_arch": "armv7l",
+      "ripgrep_url": "https://github.com/BurntSushi/ripgrep/releases/download/14.1.0/ripgrep-14.1.0-armv7-unknown-linux-gnueabihf.tar.gz",
+      "enabled": true
+    },
+    {
+      "name": "ppc64le",
+      "label": "PowerPC 64-bit LE (IBM POWER servers)",
+      "docker_arch": "ppc64le",
+      "rust_target": "powerpc64le-unknown-linux-gnu",
+      "electron_arch": null,
+      "ripgrep_url": null,
+      "enabled": false,
+      "note": "Electron not available, binary-only build"
+    },
+    {
+      "name": "s390x",
+      "label": "IBM s390x (mainframe)",
+      "docker_arch": "s390x",
+      "rust_target": "s390x-unknown-linux-gnu",
+      "electron_arch": null,
+      "ripgrep_url": null,
+      "enabled": false,
+      "note": "Electron not available, binary-only build"
+    }
+  ],
+  "build_formats": [
+    {
+      "name": "appimage",
+      "label": "AppImage",
+      "description": "Portable, no installation needed",
+      "architectures": ["x86_64", "arm64", "armv7l"],
+      "enabled": true
+    },
+    {
+      "name": "deb",
+      "label": "Debian Package",
+      "description": "Install with apt/dpkg",
+      "architectures": ["x86_64", "arm64", "armv7l"],
+      "enabled": true
+    },
+    {
+      "name": "tar",
+      "label": "Tarball",
+      "description": "Extract and run",
+      "architectures": ["x86_64", "arm64", "armv7l"],
+      "enabled": true
+    },
+    {
+      "name": "rpm",
+      "label": "RPM Package",
+      "description": "RedHat/Fedora/CentOS",
+      "architectures": ["x86_64", "arm64"],
+      "enabled": false,
+      "note": "Requires electron-builder RPM plugin"
+    },
+    {
+      "name": "snap",
+      "label": "Snap Package",
+      "description": "Ubuntu Snap Store",
+      "architectures": ["x86_64", "arm64"],
+      "enabled": false,
+      "note": "Requires snapcraft.io integration"
+    },
+    {
+      "name": "flatpak",
+      "label": "Flatpak",
+      "description": "Universal Linux package",
+      "architectures": ["x86_64", "arm64"],
+      "enabled": false,
+      "note": "Requires flatpak manifest"
+    }
+  ],
+  "distributions": [
+    {
+      "name": "ubuntu-22.04",
+      "label": "Ubuntu 22.04 LTS",
+      "base_image": "ubuntu:22.04",
+      "libc": "glibc",
+      "pkg_manager": "apt",
+      "pkg_formats": ["deb", "appimage", "tar"],
+      "enabled": true
+    },
+    {
+      "name": "debian-11",
+      "label": "Debian 11 (Bullseye)",
+      "base_image": "debian:11-slim",
+      "libc": "glibc",
+      "pkg_manager": "apt",
+      "pkg_formats": ["deb", "appimage", "tar"],
+      "enabled": true
+    },
+    {
+      "name": "fedora-38",
+      "label": "Fedora 38",
+      "base_image": "fedora:38",
+      "libc": "glibc",
+      "pkg_manager": "dnf",
+      "pkg_formats": ["rpm", "tar"],
+      "enabled": true,
+      "note": "RPM-based, systemd"
+    },
+    {
+      "name": "fedora-39",
+      "label": "Fedora 39",
+      "base_image": "fedora:39",
+      "libc": "glibc",
+      "pkg_manager": "dnf",
+      "pkg_formats": ["rpm", "tar"],
+      "enabled": false,
+      "note": "Latest Fedora"
+    },
+    {
+      "name": "alpine-latest",
+      "label": "Alpine Linux (Latest)",
+      "base_image": "alpine:latest",
+      "libc": "musl",
+      "pkg_manager": "apk",
+      "pkg_formats": ["tar", "apk"],
+      "enabled": true,
+      "note": "Lightweight, musl-based, ~5MB base image"
+    },
+    {
+      "name": "alpine-3.18",
+      "label": "Alpine 3.18 (LTS)",
+      "base_image": "alpine:3.18",
+      "libc": "musl",
+      "pkg_manager": "apk",
+      "pkg_formats": ["tar", "apk"],
+      "enabled": true,
+      "note": "Long-term support version"
+    },
+    {
+      "name": "centos-7",
+      "label": "CentOS 7",
+      "base_image": "centos:7",
+      "libc": "glibc",
+      "pkg_manager": "yum",
+      "pkg_formats": ["rpm", "tar"],
+      "enabled": false,
+      "note": "Legacy, EOL soon"
+    },
+    {
+      "name": "rockylinux-8",
+      "label": "Rocky Linux 8",
+      "base_image": "rockylinux:8",
+      "libc": "glibc",
+      "pkg_manager": "dnf",
+      "pkg_formats": ["rpm", "tar"],
+      "enabled": false,
+      "note": "RHEL 8 compatible"
+    },
+    {
+      "name": "rockylinux-9",
+      "label": "Rocky Linux 9",
+      "base_image": "rockylinux:9",
+      "libc": "glibc",
+      "pkg_manager": "dnf",
+      "pkg_formats": ["rpm", "tar"],
+      "enabled": false,
+      "note": "RHEL 9 compatible, latest"
+    },
+    {
+      "name": "opensuse-leap",
+      "label": "openSUSE Leap 15",
+      "base_image": "opensuse/leap:15",
+      "libc": "glibc",
+      "pkg_manager": "zypper",
+      "pkg_formats": ["rpm", "tar"],
+      "enabled": false,
+      "note": "Alternative RPM distro"
+    }
+  ]
+}
