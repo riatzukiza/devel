@@ -240,7 +240,7 @@
     "If a skill emits EDN contracts/facts in assistant output, they SHOULD appear in fenced ```edn blocks so runtime linting can validate them."))
 
 (skill-registry
-  (REDACTED_SECRET "~/.pi/agent/skills")
+  (root "~/.pi/agent/skills")
 
   ;; ============================================================
   ;; CORE SKILLS (autoloaded)

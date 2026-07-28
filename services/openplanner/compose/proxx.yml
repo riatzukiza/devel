@@ -51,15 +51,15 @@ services:
     expose:
     - '5432'
     environment:
-      POSTGRES_DB: ${OPENPLANNER_PROXX_DB_NAME:-REDACTED_SECRET}
-      POSTGRES_USER: ${OPENPLANNER_PROXX_DB_USER:-REDACTED_SECRET}
-      POSTGRES_PASSWORD: ${OPENPLANNER_PROXX_DB_PASSWORD:-REDACTED_SECRET}
+      POSTGRES_DB: ${OPENPLANNER_PROXX_DB_NAME:-openai_proxy}
+      POSTGRES_USER: ${OPENPLANNER_PROXX_DB_USER:-openai_proxy}
+      POSTGRES_PASSWORD: ${OPENPLANNER_PROXX_DB_PASSWORD:-openai_proxy}
     volumes:
     - openplanner-proxx-db-data:/var/lib/postgresql/data
     healthcheck:
       test:
       - CMD-SHELL
-      - pg_isready -U ${OPENPLANNER_PROXX_DB_USER:-REDACTED_SECRET} -d ${OPENPLANNER_PROXX_DB_NAME:-REDACTED_SECRET}
+      - pg_isready -U ${OPENPLANNER_PROXX_DB_USER:-openai_proxy} -d ${OPENPLANNER_PROXX_DB_NAME:-openai_proxy}
       interval: 10s
       timeout: 5s
       retries: 5
@@ -87,7 +87,7 @@ services:
       PROXY_HOST: 0.0.0.0
       PROXY_PORT: '8789'
       PORT: '8789'
-      PROXY_AUTH_TOKEN: ${OPENPLANNER_PROXX_AUTH_TOKEN:-${PROXX_AUTH_TOKEN:-${PROXY_AUTH_TOKEN:REDACTED_SECRET-open-hax-proxy-token}}}
+      PROXY_AUTH_TOKEN: ${OPENPLANNER_PROXX_AUTH_TOKEN:-${PROXX_AUTH_TOKEN:-${PROXY_AUTH_TOKEN:-change-me-open-hax-proxy-token}}}
       PROXY_KEYS_FILE: /workspace/service-config/seeds/keys.json
       PROXY_MODELS_FILE: /workspace/service-config/models.json
       PROXY_REQUEST_LOGS_FILE: /app/data/request-logs.jsonl
@@ -97,10 +97,12 @@ services:
       PROXY_KEY_RELOAD_MS: ${OPENPLANNER_PROXX_KEY_RELOAD_MS:-5000}
       PROXY_KEY_COOLDOWN_MS: ${OPENPLANNER_PROXX_KEY_COOLDOWN_MS:-30000}
       PROXY_ALLOW_UNAUTHENTICATED: 'false'
-      DATABASE_URL: postgresql://${OPENPLANNER_PROXX_DB_USER:-REDACTED_SECRET}:${OPENPLANNER_PROXX_DB_PASSWORD:-REDACTED_SECRET}@openplanner-proxx-db:5432/${OPENPLANNER_PROXX_DB_NAME:-REDACTED_SECRET}
+      DATABASE_URL: postgresql://${OPENPLANNER_PROXX_DB_USER:-openai_proxy}:${OPENPLANNER_PROXX_DB_PASSWORD:-${DATABASE_PASSWORD:-openai_proxy}}@openplanner-proxx-db:5432/${OPENPLANNER_PROXX_DB_NAME:-openai_proxy}
       UPSTREAM_PROVIDER_ID: ${OPENPLANNER_PROXX_UPSTREAM_PROVIDER_ID:-zai}
       UPSTREAM_FALLBACK_PROVIDER_IDS: ${OPENPLANNER_PROXX_UPSTREAM_FALLBACK_PROVIDER_IDS:-llamacpp-embed,ollama-cloud,openai}
       UPSTREAM_BASE_URL: ${OPENPLANNER_PROXX_UPSTREAM_BASE_URL:-https://api.z.ai/api/paas/v4}
+      UPSTREAM_PROVIDER_BASE_URLS: ${OPENPLANNER_PROXX_UPSTREAM_PROVIDER_BASE_URLS:-llamacpp=http://llamacpp-chat:8080,llamacpp-embed=http://llamacpp-embed:8081,openai=https://chatgpt.com/backend-api,vivgrid=https://api.vivgrid.com,requesty=https://router.requesty.ai/v1,zai=https://api.z.ai/api/paas/v4}
+      EMBED_MODEL_PROVIDER_ALIASES: ${OPENPLANNER_PROXX_EMBED_MODEL_PROVIDER_ALIASES:-qwen3-embedding:0.6b=llamacpp-embed,qwen3-embedding-0.6b=llamacpp-embed}
       REQUESTY_API_TOKEN: ${REQUESTY_API_TOKEN:-}
       OPENAI_PROVIDER_ID: ${OPENAI_PROVIDER_ID:-openai}
       OPENAI_BASE_URL: ${OPENAI_BASE_URL:-https://chatgpt.com/backend-api}
@@ -156,7 +158,7 @@ services:
       FEDERATION_ON_DEMAND_PULL_TTL_MS: ${OPENPLANNER_PROXX_FEDERATION_ON_DEMAND_PULL_TTL_MS:-60000}
       FEDERATION_WARM_IMPORT_REQUEST_THRESHOLD: ${OPENPLANNER_PROXX_FEDERATION_WARM_IMPORT_REQUEST_THRESHOLD:-1}
       FEDERATION_BRIDGE_RELAY_URL: ${OPENPLANNER_PROXX_FEDERATION_BRIDGE_RELAY_URL:-ws://proxx:8789/api/ui/federation/bridge/ws}
-      FEDERATION_BRIDGE_AUTH_TOKEN: ${OPENPLANNER_PROXX_FEDERATION_BRIDGE_AUTH_TOKEN:-${PROXX_AUTH_TOKEN:-${PROXY_AUTH_TOKEN:REDACTED_SECRET-open-hax-proxy-token}}}
+      FEDERATION_BRIDGE_AUTH_TOKEN: ${OPENPLANNER_PROXX_FEDERATION_BRIDGE_AUTH_TOKEN:-${PROXX_AUTH_TOKEN:-${PROXY_AUTH_TOKEN:-change-me-open-hax-proxy-token}}}
       FEDERATION_BRIDGE_AUTH_MODE: ${OPENPLANNER_PROXX_FEDERATION_BRIDGE_AUTH_MODE:-admin_key}
       FEDERATION_BRIDGE_OWNER_SUBJECT: ${OPENPLANNER_PROXX_FEDERATION_BRIDGE_OWNER_SUBJECT:-did:web:proxx.local}
       FEDERATION_BRIDGE_AGENT_ID: ${OPENPLANNER_PROXX_FEDERATION_BRIDGE_AGENT_ID:-openplanner-proxx}
@@ -171,7 +173,7 @@ services:
     healthcheck:
       test:
       - CMD
-      - REDACTED_SECRET
+      - node
       - -e
       - fetch('http://127.0.0.1:8789/health',{headers:{Authorization:'Bearer '+(process.env.PROXY_AUTH_TOKEN||'')}}).then((response)=>{if(!response.ok){process.exit(1);}}).catch(()=>process.exit(1))
       interval: 30s

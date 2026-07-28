@@ -1596,3 +1596,10 @@
 [submodule "orgs/octave-commons/eta-mu-sol"]
 	path = orgs/octave-commons/eta-mu-sol
 	url = git@github.com:octave-commons/eta-mu-sol.git
+[submodule "orgs/open-hax/axxium"]
+	path = orgs/open-hax/axxium
+	url = git@github.com:open-hax/axxium.git
+[submodule "orgs/octave-commons/fork_tales_v2"]
+	path = orgs/octave-commons/fork_tales_v2
+	url = git@github.com:octave-commons/fork_tales_v2.git
+	branch = design/classifier-dsl-v1

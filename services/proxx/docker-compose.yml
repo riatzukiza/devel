@@ -47,7 +47,7 @@ services:
       PROXY_PORT: "8789"
       PORT: "8789"
       OPENAI_OAUTH_CALLBACK_PORT: "${OPENAI_OAUTH_CALLBACK_PORT:-1455}"
-      PROXY_AUTH_TOKEN: "${PROXY_AUTH_TOKEN:REDACTED_SECRET-open-hax-proxy-token}"
+      PROXY_AUTH_TOKEN: "${PROXY_AUTH_TOKEN:-REDACTED_SECRET-open-hax-proxy-token}"
       # Seed credentials directory (keys.json here is for initial seeding only).
       # See seeds/README.md for details.
       PROXY_KEYS_FILE: /workspace/service-config/seeds/keys.json
@@ -76,6 +76,7 @@ services:
       BLAZE_BASE_URL: "${BLAZE_BASE_URL:-https://blazeai.boxu.dev/api/}"
       MINIMAX_API_KEY: "${MINIMAX_API_KEY:-}"
       HUGGINGFACE_API_TOKEN: "${HUGGINGFACE_API_TOKEN:-}"
+      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY:-}"
       XIAOMI_PROVIDER_ID: "${XIAOMI_PROVIDER_ID:-xiaomi}"
       MIMO_PROVIDER_ID: "${MIMO_PROVIDER_ID:-}"
       XAIOMI_API_KEY: "${XAIOMI_API_KEY:-}"
@@ -194,7 +195,7 @@ services:
       test:
         [
           "CMD",
-          "REDACTED_SECRET",
+          "node",
           "-e",
           "Promise.all([fetch('http://127.0.0.1:8789/health',{headers:{Authorization:'Bearer '+(process.env.PROXY_AUTH_TOKEN||'')}}), fetch('http://127.0.0.1:5174')]).then(([proxyResponse, webResponse]) => { if (!proxyResponse.ok || !webResponse.ok) { process.exit(1); } }).catch(() => process.exit(1))"
         ]
@@ -235,7 +236,7 @@ services:
       PROXY_PORT: "8789"
       PORT: "8789"
       OPENAI_OAUTH_CALLBACK_PORT: "${OPENAI_OAUTH_CALLBACK_PORT:-1455}"
-      PROXY_AUTH_TOKEN: "${PROXY_AUTH_TOKEN:REDACTED_SECRET-open-hax-proxy-token}"
+      PROXY_AUTH_TOKEN: "${PROXY_AUTH_TOKEN:-REDACTED_SECRET-open-hax-proxy-token}"
       PROXY_KEYS_FILE: /workspace/service-config/seeds/keys.json
       PROXY_MODELS_FILE: /workspace/service-config/models.json
       PROXY_REQUEST_LOGS_FILE: /app/data/request-logs.jsonl
@@ -259,6 +260,7 @@ services:
       BLAZE_API_KEY: "${BLAZE_API_KEY:-${BLAZEAI_API_KEY:-}}"
       BLAZEAI_API_KEY: "${BLAZEAI_API_KEY:-${BLAZE_API_KEY:-}}"
       BLAZE_BASE_URL: "${BLAZE_BASE_URL:-https://blazeai.boxu.dev/api/}"
+      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY:-}"
       XIAOMI_PROVIDER_ID: "${XIAOMI_PROVIDER_ID:-xiaomi}"
       MIMO_PROVIDER_ID: "${MIMO_PROVIDER_ID:-}"
       XAIOMI_API_KEY: "${XAIOMI_API_KEY:-}"

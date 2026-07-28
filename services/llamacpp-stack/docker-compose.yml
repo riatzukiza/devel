@@ -22,7 +22,7 @@ services:
       LLAMACPP_CACHE_RAM: "${LLAMACPP_CACHE_RAM:-0}"
     entrypoint: ["/bin/sh", "/opt/llamacpp-stack/run-chat-server.sh"]
     volumes:
-      - ${LLAMACPP_MODELS_DIR:-./models}:/models:ro
+      - ${LLAMACPP_CHAT_MODELS_DIR:-./models}:/models:ro
       - ./bin/run-chat-server.sh:/opt/llamacpp-stack/run-chat-server.sh:ro
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8080/health"]

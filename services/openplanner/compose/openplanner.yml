@@ -75,7 +75,7 @@ services:
     environment:
       OPENPLANNER_MIGRATION_GRAPH_HOST: 0.0.0.0
       OPENPLANNER_MIGRATION_GRAPH_PORT: '7789'
-      OPENPLANNER_MONGODB_URI: mongodb://${OPENPLANNER_MONGO_APP_USERNAME:-openplanner}:${OPENPLANNER_MONGO_APP_PASSWORD:REDACTED_SECRET-openplanner-password}@mongodb:27017/${MONGODB_DB:-openplanner}?authSource=${MONGODB_DB:-openplanner}
+      OPENPLANNER_MONGODB_URI: mongodb://${OPENPLANNER_MONGO_APP_USERNAME:-openplanner}:${OPENPLANNER_MONGO_APP_PASSWORD:-change-me-openplanner-password}@mongodb:27017/${MONGODB_DB:-openplanner}?authSource=${MONGODB_DB:-openplanner}
       OPENPLANNER_MONGODB_DB: ${MONGODB_DB:-openplanner}
       OPENPLANNER_MONGO_EVENTS_COLLECTION: ${MONGODB_EVENTS_COLLECTION:-events}
     expose:
@@ -150,8 +150,8 @@ services:
 
         sleep "$${OPENPLANNER_GRAPH_BACKFILL_STEP_INTERVAL_SECONDS:-120}"
 
-        echo "[openplanner-graph-backfill-worker] triggering graph REDACTED_SECRET embedding backfill"
-        curl -fsS -X POST http://openplanner:7777/v1/jobs/backfill/graph-REDACTED_SECRET-embeddings \
+        echo "[openplanner-graph-backfill-worker] triggering graph node embedding backfill"
+        curl -fsS -X POST http://openplanner:7777/v1/jobs/backfill/graph-node-embeddings \
           -H "authorization: Bearer $${OPENPLANNER_API_KEY}" \
           -H 'content-type: application/json' \
           --data '{}' || true
@@ -167,7 +167,7 @@ services:
         sleep "$${OPENPLANNER_GRAPH_BACKFILL_INTERVAL_SECONDS:-3600}"
       done
     environment:
-      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:REDACTED_SECRET}
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
       OPENPLANNER_GRAPH_LABEL_BACKFILL_LIMIT: ${OPENPLANNER_GRAPH_LABEL_BACKFILL_LIMIT:-1000}
       OPENPLANNER_EVENT_EMBEDDING_BACKFILL_LIMIT: ${OPENPLANNER_EVENT_EMBEDDING_BACKFILL_LIMIT:-1000}
       OPENPLANNER_EVENT_EMBEDDING_BACKFILL_CONCURRENCY: ${OPENPLANNER_EVENT_EMBEDDING_BACKFILL_CONCURRENCY:-1}
@@ -207,25 +207,25 @@ services:
       NODE_ENV: production
       OPENPLANNER_HOST: 0.0.0.0
       OPENPLANNER_PORT: '7777'
-      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:REDACTED_SECRET}
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
       OPENPLANNER_DATA_DIR: /app/openplanner-lake
       OPENPLANNER_STORAGE_BACKEND: mongodb
       OPENPLANNER_KAFKA_ENABLED: ${OPENPLANNER_KAFKA_ENABLED:-false}
       OPENPLANNER_KAFKA_BROKERS: ${OPENPLANNER_KAFKA_BROKERS:-redpanda:9092}
       OPENPLANNER_KAFKA_EVENTS_RAW_TOPIC: ${OPENPLANNER_KAFKA_EVENTS_RAW_TOPIC:-openplanner.events.raw}
       OPENPLANNER_KAFKA_PUBLISH_MODE: ${OPENPLANNER_KAFKA_PUBLISH_MODE:-detached}
-      MONGODB_URI: mongodb://${OPENPLANNER_MONGO_APP_USERNAME:-openplanner}:${OPENPLANNER_MONGO_APP_PASSWORD:REDACTED_SECRET-openplanner-password}@mongodb:27017/${MONGODB_DB:-openplanner}?authSource=${MONGODB_DB:-openplanner}
+      MONGODB_URI: mongodb://${OPENPLANNER_MONGO_APP_USERNAME:-openplanner}:${OPENPLANNER_MONGO_APP_PASSWORD:-change-me-openplanner-password}@mongodb:27017/${MONGODB_DB:-openplanner}?authSource=${MONGODB_DB:-openplanner}
       MONGODB_DB: ${MONGODB_DB:-openplanner}
       MONGODB_EVENTS_COLLECTION: ${MONGODB_EVENTS_COLLECTION:-events}
       MONGODB_COMPACTED_COLLECTION: ${MONGODB_COMPACTED_COLLECTION:-compacted_memories}
       MONGODB_VECTOR_HOT_COLLECTION: ${MONGODB_VECTOR_HOT_COLLECTION:-event_chunks}
       MONGODB_VECTOR_COMPACT_COLLECTION: ${MONGODB_VECTOR_COMPACT_COLLECTION:-compacted_vectors}
       MONGODB_GRAPH_LAYOUT_COLLECTION: ${MONGODB_GRAPH_LAYOUT_COLLECTION:-graph_layout_overrides}
-      MONGODB_GRAPH_NODE_EMBEDDING_COLLECTION: ${MONGODB_GRAPH_NODE_EMBEDDING_COLLECTION:-graph_REDACTED_SECRET_embeddings}
+      MONGODB_GRAPH_NODE_EMBEDDING_COLLECTION: ${MONGODB_GRAPH_NODE_EMBEDDING_COLLECTION:-graph_node_embeddings}
       MONGODB_EVENTS_TTL_SECONDS: ${MONGODB_EVENTS_TTL_SECONDS:-0}
       MONGODB_COMPACTED_TTL_SECONDS: ${MONGODB_COMPACTED_TTL_SECONDS:-0}
       EMBED_PROVIDER_BASE_URL: ${OPENPLANNER_PROXX_BASE_URL:-http://proxx:8789}
-      EMBED_PROVIDER_API_KEY: ${OPENPLANNER_PROXX_AUTH_TOKEN:-${PROXX_AUTH_TOKEN:-${PROXY_AUTH_TOKEN:REDACTED_SECRET-open-hax-proxy-token}}}
+      EMBED_PROVIDER_API_KEY: ${OPENPLANNER_PROXX_AUTH_TOKEN:-${PROXX_AUTH_TOKEN:-${PROXY_AUTH_TOKEN:-change-me-open-hax-proxy-token}}}
       EMBED_PROVIDER_MODEL: ${EMBED_PROVIDER_MODEL:-llamacpp-embed:qwen3-embedding:0.6b}
       EMBED_PROVIDER_COMPACT_MODEL: ${EMBED_PROVIDER_COMPACT_MODEL:-llamacpp-embed:qwen3-embedding:0.6b}
       EMBED_PROVIDER_MODEL_BY_SOURCE: ${EMBED_PROVIDER_MODEL_BY_SOURCE:-}
@@ -252,14 +252,14 @@ services:
     - ../openplanner-lake:/app/openplanner-lake
     - ${WORKSPACE_PATH:-../../..}:/app/workspace:ro
     - ../../../orgs/open-hax/openplanner/dist:/app/dist:ro
-    - ../../../orgs/open-hax/openplanner/REDACTED_SECRET_modules:/app/REDACTED_SECRET_modules:ro
+    - ../../../orgs/open-hax/openplanner/node_modules:/app/node_modules:ro
     - ../../../orgs/open-hax/openplanner/packages:/app/packages:ro
     extra_hosts:
     - host.docker.internal:host-gateway
     healthcheck:
       test:
       - CMD
-      - REDACTED_SECRET
+      - node
       - -e
       - fetch('http://127.0.0.1:7777/v1/health').then((response) => { if (!response.ok) { process.exit(1); } }).catch(() => process.exit(1))
       interval: 30s

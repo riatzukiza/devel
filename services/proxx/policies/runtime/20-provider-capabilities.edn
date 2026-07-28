@@ -23,8 +23,8 @@
   :preference/items ["ollama-cloud"]}
 
  {:contract/id :provider-order/claude-opus-4-6
-  :contract/kind :preference-order
-  :preference/items ["factory" "blaze" "openrouter" "requesty" "vivgrid"]}
+   :contract/kind :preference-order
+   :preference/items ["anthropic" "factory" "blaze" "openrouter" "requesty" "vivgrid"]}
 
  {:contract/id :provider-order/glm
   :contract/kind :preference-order
@@ -44,7 +44,7 @@
 
  {:contract/id :provider-order/embeddings
   :contract/kind :preference-order
-  :preference/items ["llamacpp-embed" "ollama" "ollama-lan"]}
+  :preference/items ["llamacpp-embed" "ollama-lan" "ollama"]}
 
  {:contract/id :provider-order/gemma
   :contract/kind :preference-order
@@ -142,10 +142,17 @@
   :exclude/strategies [:ollama-chat :messages :responses :openai-responses]}
 
  {:contract/id :provider-capability/ollama-cloud-responses-passthrough
-  :contract/kind :provider-capability
-  :match/provider-pattern "^ollama-cloud$"
-  :match/request-kind :responses-passthrough
-  :exclude/provider? true}
+   :contract/kind :provider-capability
+   :match/provider-pattern "^ollama-cloud$"
+   :match/request-kind :responses-passthrough
+   :exclude/provider? true}
+
+ {:contract/id :provider-capability/anthropic-messages
+   :contract/kind :provider-capability
+   :match/provider-pattern "^anthropic$"
+   :match/request-kind :chat
+   :prefer/strategies [:messages]
+   :exclude/strategies [:chat-completions :ollama-chat :responses :openai-responses]}
 
  {:contract/id :request-surface/images-passthrough
   :contract/kind :request-surface-default
