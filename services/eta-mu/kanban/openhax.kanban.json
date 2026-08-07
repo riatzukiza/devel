@@ -1,380 +1,861 @@
 {
   "defaultProject": "knoxx",
+  "fsm": "promethean",
   "projects": [
     {
       "id": "knoxx",
       "title": "Knoxx",
-      "tasksDir": "../../../orgs/open-hax/openplanner/packages/agents/knoxx/kanban"
+      "tasksDir": "../../../orgs/open-hax/openplanner/packages/agents/knoxx/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "openplanner",
+        "project": "openplanner",
+        "domain": "knoxx",
+        "tier": "core"
+      }
     },
     {
       "id": "docs-inbox-ready-for-code-gates-of-aker-design-spec-kanban",
       "title": "ready-for-code / gates-of-aker-design-spec / kanban",
-      "tasksDir": "../../../docs/inbox/ready-for-code/gates-of-aker-design-spec/kanban"
+      "tasksDir": "../../../docs/inbox/ready-for-code/gates-of-aker-design-spec/kanban",
+      "meta": {
+        "domain": "gates-of-aker",
+        "tier": "inbox"
+      }
     },
     {
       "id": "inbox-gates-pr35-hardening-main-docs-decisions-kanban",
       "title": "gates-pr35-hardening-main / decisions / kanban",
-      "tasksDir": "../../../inbox/gates-pr35-hardening-main/docs/decisions/kanban"
+      "tasksDir": "../../../inbox/gates-pr35-hardening-main/docs/decisions/kanban",
+      "meta": {
+        "domain": "kanban",
+        "tier": "inbox"
+      }
     },
     {
       "id": "inbox-gates-pr35-hardening-main-docs-planning-kanban",
       "title": "gates-pr35-hardening-main / planning / kanban",
-      "tasksDir": "../../../inbox/gates-pr35-hardening-main/docs/planning/kanban"
+      "tasksDir": "../../../inbox/gates-pr35-hardening-main/docs/planning/kanban",
+      "meta": {
+        "domain": "kanban",
+        "tier": "inbox"
+      }
     },
     {
       "id": "inbox-gates-pr35-hardening-main-kanban",
       "title": "gates-pr35-hardening-main / kanban",
-      "tasksDir": "../../../inbox/gates-pr35-hardening-main/kanban"
+      "tasksDir": "../../../inbox/gates-pr35-hardening-main/kanban",
+      "meta": {
+        "domain": "kanban",
+        "tier": "inbox"
+      }
     },
     {
       "id": "inbox-lan-share-ts-kanban",
       "title": "lan-share-ts / kanban",
-      "tasksDir": "../../../inbox/lan-share-ts/kanban"
+      "tasksDir": "../../../inbox/lan-share-ts/kanban",
+      "meta": {
+        "domain": "kanban",
+        "tier": "inbox"
+      }
     },
     {
       "id": "inbox-pm2-clj-project-kanban",
       "title": "pm2-clj-project / kanban",
-      "tasksDir": "../../../inbox/pm2-clj-project/kanban"
+      "tasksDir": "../../../inbox/pm2-clj-project/kanban",
+      "meta": {
+        "domain": "kanban",
+        "tier": "inbox"
+      }
     },
     {
       "id": "inbox-reconstitute-kanban",
       "title": "reconstitute / kanban",
-      "tasksDir": "../../../inbox/reconstitute/kanban"
+      "tasksDir": "../../../inbox/reconstitute/kanban",
+      "meta": {
+        "domain": "kanban",
+        "tier": "inbox"
+      }
     },
     {
       "id": "inbox-threat-radar-next-step-kanban",
       "title": "threat-radar-next-step / kanban",
-      "tasksDir": "../../../inbox/threat-radar-next-step/kanban"
+      "tasksDir": "../../../inbox/threat-radar-next-step/kanban",
+      "meta": {
+        "domain": "threat-radar",
+        "tier": "inbox"
+      }
     },
     {
       "id": "inbox-workspaces-openhax-codex-codex-auth-kanban",
       "title": "openhax-codex / codex-auth / kanban",
-      "tasksDir": "../../../inbox/workspaces/openhax-codex/codex-auth/kanban"
+      "tasksDir": "../../../inbox/workspaces/openhax-codex/codex-auth/kanban",
+      "meta": {
+        "domain": "tools",
+        "tier": "inbox"
+      }
     },
     {
       "id": "inbox-workspaces-openhax-codex-opencode-kanban",
       "title": "openhax-codex / opencode / kanban",
-      "tasksDir": "../../../inbox/workspaces/openhax-codex/opencode/kanban"
+      "tasksDir": "../../../inbox/workspaces/openhax-codex/opencode/kanban",
+      "meta": {
+        "domain": "tools",
+        "tier": "inbox"
+      }
     },
     {
       "id": "inbox-worktrees-proxx-pr-156-coderabbit-kanban",
       "title": "worktrees / proxx-pr-156-coderabbit / kanban",
-      "tasksDir": "../../../inbox/worktrees/proxx-pr-156-coderabbit/kanban"
+      "tasksDir": "../../../inbox/worktrees/proxx-pr-156-coderabbit/kanban",
+      "meta": {
+        "domain": "proxx",
+        "tier": "inbox"
+      }
     },
     {
       "id": "orgs-octave-commons-daimoi-kanban",
       "title": "octave-commons / daimoi / kanban",
-      "tasksDir": "../../../orgs/octave-commons/daimoi/kanban"
+      "tasksDir": "../../../orgs/octave-commons/daimoi/kanban",
+      "meta": {
+        "org": "octave-commons",
+        "suborg": "daimoi",
+        "project": "daimoi",
+        "domain": "daimoi",
+        "tier": "commons"
+      }
     },
     {
       "id": "orgs-octave-commons-fork-tales-kanban",
       "title": "octave-commons / fork_tales / kanban",
-      "tasksDir": "../../../orgs/octave-commons/fork_tales/kanban"
+      "tasksDir": "../../../orgs/octave-commons/fork_tales/kanban",
+      "meta": {
+        "org": "octave-commons",
+        "suborg": "fork_tales",
+        "project": "fork_tales",
+        "domain": "fork-tales",
+        "tier": "commons"
+      }
     },
     {
       "id": "orgs-octave-commons-gates-of-aker-docs-decisions-kanban",
       "title": "octave-commons / gates-of-aker / decisions / kanban",
-      "tasksDir": "../../../orgs/octave-commons/gates-of-aker/docs/decisions/kanban"
+      "tasksDir": "../../../orgs/octave-commons/gates-of-aker/docs/decisions/kanban",
+      "meta": {
+        "org": "octave-commons",
+        "suborg": "gates-of-aker",
+        "project": "gates-of-aker",
+        "domain": "gates-of-aker",
+        "tier": "commons"
+      }
     },
     {
       "id": "orgs-octave-commons-gates-of-aker-docs-planning-kanban",
       "title": "octave-commons / gates-of-aker / planning / kanban",
-      "tasksDir": "../../../orgs/octave-commons/gates-of-aker/docs/planning/kanban"
+      "tasksDir": "../../../orgs/octave-commons/gates-of-aker/docs/planning/kanban",
+      "meta": {
+        "org": "octave-commons",
+        "suborg": "gates-of-aker",
+        "project": "gates-of-aker",
+        "domain": "gates-of-aker",
+        "tier": "commons"
+      }
     },
     {
       "id": "orgs-octave-commons-gates-of-aker-kanban",
       "title": "octave-commons / gates-of-aker / kanban",
-      "tasksDir": "../../../orgs/octave-commons/gates-of-aker/kanban"
+      "tasksDir": "../../../orgs/octave-commons/gates-of-aker/kanban",
+      "meta": {
+        "org": "octave-commons",
+        "suborg": "gates-of-aker",
+        "project": "gates-of-aker",
+        "domain": "gates-of-aker",
+        "tier": "commons"
+      }
     },
     {
       "id": "orgs-octave-commons-pantheon-kanban",
       "title": "octave-commons / pantheon / kanban",
-      "tasksDir": "../../../orgs/octave-commons/pantheon/kanban"
+      "tasksDir": "../../../orgs/octave-commons/pantheon/kanban",
+      "meta": {
+        "org": "octave-commons",
+        "suborg": "pantheon",
+        "project": "pantheon",
+        "domain": "pantheon",
+        "tier": "commons"
+      }
     },
     {
       "id": "orgs-octave-commons-promethean-cli-kanban-kanban",
       "title": "promethean / cli / kanban / kanban",
-      "tasksDir": "../../../orgs/octave-commons/promethean/cli/kanban/kanban"
+      "tasksDir": "../../../orgs/octave-commons/promethean/cli/kanban/kanban",
+      "meta": {
+        "org": "octave-commons",
+        "suborg": "promethean",
+        "project": "promethean",
+        "domain": "promethean",
+        "tier": "commons"
+      }
     },
     {
       "id": "orgs-octave-commons-promethean-docs-kanban",
       "title": "octave-commons / promethean / kanban",
-      "tasksDir": "../../../orgs/octave-commons/promethean/docs/kanban"
+      "tasksDir": "../../../orgs/octave-commons/promethean/docs/kanban",
+      "meta": {
+        "org": "octave-commons",
+        "suborg": "promethean",
+        "project": "promethean",
+        "domain": "promethean",
+        "tier": "commons"
+      }
     },
     {
       "id": "orgs-octave-commons-promethean-kanban",
       "title": "octave-commons / promethean / kanban",
-      "tasksDir": "../../../orgs/octave-commons/promethean/kanban"
+      "tasksDir": "../../../orgs/octave-commons/promethean/kanban",
+      "meta": {
+        "org": "octave-commons",
+        "suborg": "promethean",
+        "project": "promethean",
+        "domain": "promethean",
+        "tier": "commons"
+      }
     },
     {
       "id": "orgs-octave-commons-shibboleth-kanban",
       "title": "octave-commons / shibboleth / kanban",
-      "tasksDir": "../../../orgs/octave-commons/shibboleth/kanban"
+      "tasksDir": "../../../orgs/octave-commons/shibboleth/kanban",
+      "meta": {
+        "org": "octave-commons",
+        "suborg": "shibboleth",
+        "project": "shibboleth",
+        "domain": "shibboleth",
+        "tier": "commons"
+      }
     },
     {
       "id": "orgs-octave-commons-simulacron-kanban",
       "title": "octave-commons / simulacron / kanban",
-      "tasksDir": "../../../orgs/octave-commons/simulacron/kanban"
+      "tasksDir": "../../../orgs/octave-commons/simulacron/kanban",
+      "meta": {
+        "org": "octave-commons",
+        "suborg": "simulacron",
+        "project": "simulacron",
+        "domain": "simulacron",
+        "tier": "commons"
+      }
     },
     {
       "id": "orgs-open-hax-archived-cljs-plugin-template-kanban",
       "title": "open-hax / archived / cljs-plugin-template / kanban",
-      "tasksDir": "../../../orgs/open-hax/archived/cljs-plugin-template/kanban"
+      "tasksDir": "../../../orgs/open-hax/archived/cljs-plugin-template/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "archived",
+        "project": "archived",
+        "domain": "kanban",
+        "tier": "archived"
+      }
     },
     {
       "id": "orgs-open-hax-archived-codex-kanban",
       "title": "open-hax / archived / codex / kanban",
-      "tasksDir": "../../../orgs/open-hax/archived/codex/kanban"
+      "tasksDir": "../../../orgs/open-hax/archived/codex/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "archived",
+        "project": "archived",
+        "domain": "tools",
+        "tier": "archived"
+      }
     },
     {
       "id": "orgs-open-hax-archived-museeks-kanban",
       "title": "open-hax / archived / museeks / kanban",
-      "tasksDir": "../../../orgs/open-hax/archived/museeks/kanban"
+      "tasksDir": "../../../orgs/open-hax/archived/museeks/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "archived",
+        "project": "archived",
+        "domain": "creative",
+        "tier": "archived"
+      }
     },
     {
       "id": "orgs-open-hax-archived-opencode-skills-kanban",
       "title": "open-hax / archived / opencode-skills / kanban",
-      "tasksDir": "../../../orgs/open-hax/archived/opencode-skills/kanban"
+      "tasksDir": "../../../orgs/open-hax/archived/opencode-skills/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "archived",
+        "project": "archived",
+        "domain": "tools",
+        "tier": "archived"
+      }
     },
     {
       "id": "orgs-open-hax-archived-voxx-kanban",
       "title": "open-hax / archived / voxx / kanban",
-      "tasksDir": "../../../orgs/open-hax/archived/voxx/kanban"
+      "tasksDir": "../../../orgs/open-hax/archived/voxx/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "archived",
+        "project": "archived",
+        "domain": "voxx",
+        "tier": "archived"
+      }
     },
     {
       "id": "orgs-open-hax-eta-mu-packages-eta-mu-extensions-kanban",
       "title": "open-hax / eta-mu / eta-mu-extensions / kanban",
-      "tasksDir": "../../../orgs/open-hax/eta-mu/packages/eta-mu-extensions/kanban"
+      "tasksDir": "../../../orgs/open-hax/eta-mu/packages/eta-mu-extensions/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "eta-mu",
+        "project": "eta-mu",
+        "domain": "eta-mu",
+        "tier": "core"
+      }
     },
     {
       "id": "orgs-open-hax-eta-mu-kanban",
       "title": "open-hax / eta-mu / kanban",
-      "tasksDir": "../../../orgs/open-hax/eta-mu/kanban"
+      "tasksDir": "../../../orgs/open-hax/eta-mu/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "eta-mu",
+        "project": "eta-mu",
+        "domain": "eta-mu",
+        "tier": "core"
+      }
     },
     {
       "id": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-clj-kanban",
       "title": "agents / cephalon / cephalon-clj / kanban",
-      "tasksDir": "../../../orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-clj/kanban"
+      "tasksDir": "../../../orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-clj/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "openplanner",
+        "project": "openplanner",
+        "domain": "openplanner",
+        "tier": "core"
+      }
     },
     {
       "id": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-cljs-kanban",
       "title": "agents / cephalon / cephalon-cljs / kanban",
-      "tasksDir": "../../../orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban"
+      "tasksDir": "../../../orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-cljs/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "openplanner",
+        "project": "openplanner",
+        "domain": "openplanner",
+        "tier": "core"
+      }
     },
     {
       "id": "orgs-open-hax-openplanner-packages-agents-cephalon-packages-cephalon-ts-kanban",
       "title": "agents / cephalon / cephalon-ts / kanban",
-      "tasksDir": "../../../orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-ts/kanban"
+      "tasksDir": "../../../orgs/open-hax/openplanner/packages/agents/cephalon/packages/cephalon-ts/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "openplanner",
+        "project": "openplanner",
+        "domain": "openplanner",
+        "tier": "core"
+      }
     },
     {
       "id": "orgs-open-hax-openplanner-packages-agents-cephalon-recovered-cephalon-clj-kanban",
       "title": "cephalon / recovered / cephalon-clj / kanban",
-      "tasksDir": "../../../orgs/open-hax/openplanner/packages/agents/cephalon/recovered/cephalon-clj/kanban"
+      "tasksDir": "../../../orgs/open-hax/openplanner/packages/agents/cephalon/recovered/cephalon-clj/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "openplanner",
+        "project": "openplanner",
+        "domain": "openplanner",
+        "tier": "core"
+      }
     },
     {
       "id": "orgs-open-hax-openplanner-packages-agents-cephalon-kanban",
       "title": "openplanner / agents / cephalon / kanban",
-      "tasksDir": "../../../orgs/open-hax/openplanner/packages/agents/cephalon/kanban"
+      "tasksDir": "../../../orgs/open-hax/openplanner/packages/agents/cephalon/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "openplanner",
+        "project": "openplanner",
+        "domain": "openplanner",
+        "tier": "core"
+      }
     },
     {
       "id": "orgs-open-hax-openplanner-packages-graph-graph-weaver-kanban",
       "title": "openplanner / graph / graph-weaver / kanban",
-      "tasksDir": "../../../orgs/open-hax/openplanner/packages/graph/graph-weaver/kanban"
+      "tasksDir": "../../../orgs/open-hax/openplanner/packages/graph/graph-weaver/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "openplanner",
+        "project": "openplanner",
+        "domain": "openplanner",
+        "tier": "core"
+      }
     },
     {
       "id": "orgs-open-hax-openplanner-packages-graph-graph-weaver-aco-kanban",
       "title": "openplanner / graph / graph-weaver-aco / kanban",
-      "tasksDir": "../../../orgs/open-hax/openplanner/packages/graph/graph-weaver-aco/kanban"
+      "tasksDir": "../../../orgs/open-hax/openplanner/packages/graph/graph-weaver-aco/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "openplanner",
+        "project": "openplanner",
+        "domain": "openplanner",
+        "tier": "core"
+      }
     },
     {
       "id": "orgs-open-hax-openplanner-packages-graph-myrmex-kanban",
       "title": "openplanner / graph / myrmex / kanban",
-      "tasksDir": "../../../orgs/open-hax/openplanner/packages/graph/myrmex/kanban"
+      "tasksDir": "../../../orgs/open-hax/openplanner/packages/graph/myrmex/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "openplanner",
+        "project": "openplanner",
+        "domain": "openplanner",
+        "tier": "core"
+      }
     },
     {
       "id": "orgs-open-hax-openplanner-pseudo-graph-runtime-kanban",
       "title": "openplanner / pseudo / graph-runtime / kanban",
-      "tasksDir": "../../../orgs/open-hax/openplanner/pseudo/graph-runtime/kanban"
+      "tasksDir": "../../../orgs/open-hax/openplanner/pseudo/graph-runtime/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "openplanner",
+        "project": "openplanner",
+        "domain": "openplanner",
+        "tier": "core"
+      }
     },
     {
       "id": "orgs-open-hax-openplanner-kanban",
       "title": "open-hax / openplanner / kanban",
-      "tasksDir": "../../../orgs/open-hax/openplanner/kanban"
+      "tasksDir": "../../../orgs/open-hax/openplanner/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "openplanner",
+        "project": "openplanner",
+        "domain": "openplanner",
+        "tier": "core"
+      }
     },
     {
       "id": "orgs-open-hax-proxx-kanban",
       "title": "open-hax / proxx / kanban",
-      "tasksDir": "../../../orgs/open-hax/proxx/kanban"
+      "tasksDir": "../../../orgs/open-hax/proxx/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "proxx",
+        "project": "proxx",
+        "domain": "proxx",
+        "tier": "core"
+      }
     },
     {
       "id": "orgs-open-hax-tooloxx-docs-imports-devel-REDACTED_SECRET-kanban",
       "title": "tooloxx / imports / devel-REDACTED_SECRET / kanban",
-      "tasksDir": "../../../orgs/open-hax/tooloxx/docs/imports/devel-REDACTED_SECRET/kanban"
+      "tasksDir": "../../../orgs/open-hax/tooloxx/docs/imports/devel-REDACTED_SECRET/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "tooloxx",
+        "project": "tooloxx",
+        "domain": "kanban",
+        "tier": "core"
+      }
     },
     {
       "id": "orgs-open-hax-tooloxx-docs-imports-promethean-kanban",
       "title": "tooloxx / imports / promethean / kanban",
-      "tasksDir": "../../../orgs/open-hax/tooloxx/docs/imports/promethean/kanban"
+      "tasksDir": "../../../orgs/open-hax/tooloxx/docs/imports/promethean/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "tooloxx",
+        "project": "tooloxx",
+        "domain": "promethean",
+        "tier": "core"
+      }
     },
     {
       "id": "orgs-open-hax-tooloxx-services-mcp-fs-oauth-kanban",
       "title": "tooloxx / services / mcp-fs-oauth / kanban",
-      "tasksDir": "../../../orgs/open-hax/tooloxx/services/mcp-fs-oauth/kanban"
+      "tasksDir": "../../../orgs/open-hax/tooloxx/services/mcp-fs-oauth/kanban",
+      "meta": {
+        "org": "open-hax",
+        "suborg": "tooloxx",
+        "project": "tooloxx",
+        "domain": "kanban",
+        "tier": "core"
+      }
     },
     {
       "id": "orgs-riatzukiza-kronos-kanban",
       "title": "riatzukiza / kronos / kanban",
-      "tasksDir": "../../../orgs/riatzukiza/kronos/kanban"
+      "tasksDir": "../../../orgs/riatzukiza/kronos/kanban",
+      "meta": {
+        "org": "riatzukiza",
+        "suborg": "kronos",
+        "project": "kronos",
+        "domain": "kronos",
+        "tier": "personal"
+      }
     },
     {
       "id": "orgs-riatzukiza-ollama-benchmarks-kanban",
       "title": "riatzukiza / ollama-benchmarks / kanban",
-      "tasksDir": "../../../orgs/riatzukiza/ollama-benchmarks/kanban"
+      "tasksDir": "../../../orgs/riatzukiza/ollama-benchmarks/kanban",
+      "meta": {
+        "org": "riatzukiza",
+        "suborg": "ollama-benchmarks",
+        "project": "ollama-benchmarks",
+        "domain": "kanban",
+        "tier": "personal"
+      }
     },
     {
       "id": "orgs-riatzukiza-openhax-kanban",
       "title": "riatzukiza / openhax / kanban",
-      "tasksDir": "../../../orgs/riatzukiza/openhax/kanban"
+      "tasksDir": "../../../orgs/riatzukiza/openhax/kanban",
+      "meta": {
+        "org": "riatzukiza",
+        "suborg": "openhax",
+        "project": "openhax",
+        "domain": "kanban",
+        "tier": "personal"
+      }
     },
     {
       "id": "orgs-riatzukiza-openplanner-kanban",
       "title": "riatzukiza / openplanner / kanban",
-      "tasksDir": "../../../orgs/riatzukiza/openplanner/kanban"
+      "tasksDir": "../../../orgs/riatzukiza/openplanner/kanban",
+      "meta": {
+        "org": "riatzukiza",
+        "suborg": "openplanner",
+        "project": "openplanner",
+        "domain": "openplanner",
+        "tier": "personal"
+      }
     },
     {
       "id": "orgs-riatzukiza-riatzukiza-github-io-kanban",
       "title": "riatzukiza / riatzukiza.github.io / kanban",
-      "tasksDir": "../../../orgs/riatzukiza/riatzukiza.github.io/kanban"
+      "tasksDir": "../../../orgs/riatzukiza/riatzukiza.github.io/kanban",
+      "meta": {
+        "org": "riatzukiza",
+        "suborg": "riatzukiza.github.io",
+        "project": "riatzukiza.github.io",
+        "domain": "kanban",
+        "tier": "personal"
+      }
     },
     {
       "id": "orgs-shuv-gitnexus-docs-superpowers-kanban",
       "title": "shuv / GitNexus / superpowers / kanban",
-      "tasksDir": "../../../orgs/shuv/GitNexus/docs/superpowers/kanban"
+      "tasksDir": "../../../orgs/shuv/GitNexus/docs/superpowers/kanban",
+      "meta": {
+        "org": "shuv",
+        "suborg": "GitNexus",
+        "project": "GitNexus",
+        "domain": "shuv",
+        "tier": "shuv"
+      }
     },
     {
       "id": "orgs-shuv-bridle-beads-kanban",
       "title": "shuv / bridle / .beads / kanban",
-      "tasksDir": "../../../orgs/shuv/bridle/.beads/kanban"
+      "tasksDir": "../../../orgs/shuv/bridle/.beads/kanban",
+      "meta": {
+        "org": "shuv",
+        "suborg": "bridle",
+        "project": "bridle",
+        "domain": "shuv",
+        "tier": "shuv"
+      }
     },
     {
       "id": "orgs-shuv-juno-code-juno-task-kanban",
       "title": "shuv / juno-code / .juno_task / kanban",
-      "tasksDir": "../../../orgs/shuv/juno-code/.juno_task/kanban"
+      "tasksDir": "../../../orgs/shuv/juno-code/.juno_task/kanban",
+      "meta": {
+        "org": "shuv",
+        "suborg": "juno-code",
+        "project": "juno-code",
+        "domain": "shuv",
+        "tier": "shuv"
+      }
     },
     {
       "id": "orgs-shuv-kapture-kanban",
       "title": "shuv / kapture / kanban",
-      "tasksDir": "../../../orgs/shuv/kapture/kanban"
+      "tasksDir": "../../../orgs/shuv/kapture/kanban",
+      "meta": {
+        "org": "shuv",
+        "suborg": "kapture",
+        "project": "kapture",
+        "domain": "shuv",
+        "tier": "shuv"
+      }
     },
     {
       "id": "orgs-shuv-maple-context-effect-kanban",
       "title": "maple / .context / effect / kanban",
-      "tasksDir": "../../../orgs/shuv/maple/.context/effect/kanban"
+      "tasksDir": "../../../orgs/shuv/maple/.context/effect/kanban",
+      "meta": {
+        "org": "shuv",
+        "suborg": "maple",
+        "project": "maple",
+        "domain": "kanban",
+        "tier": "shuv"
+      }
     },
     {
       "id": "orgs-shuv-openplanner-kanban",
       "title": "shuv / openplanner / kanban",
-      "tasksDir": "../../../orgs/shuv/openplanner/kanban"
+      "tasksDir": "../../../orgs/shuv/openplanner/kanban",
+      "meta": {
+        "org": "shuv",
+        "suborg": "openplanner",
+        "project": "openplanner",
+        "domain": "openplanner",
+        "tier": "shuv"
+      }
     },
     {
       "id": "orgs-shuv-openshuvussy-docs-kanban",
       "title": "shuv / openshuvussy / kanban",
-      "tasksDir": "../../../orgs/shuv/openshuvussy/docs/kanban"
+      "tasksDir": "../../../orgs/shuv/openshuvussy/docs/kanban",
+      "meta": {
+        "org": "shuv",
+        "suborg": "openshuvussy",
+        "project": "openshuvussy",
+        "domain": "hosting",
+        "tier": "shuv"
+      }
     },
     {
       "id": "orgs-shuv-our-gpus-kanban",
       "title": "shuv / our-gpus / kanban",
-      "tasksDir": "../../../orgs/shuv/our-gpus/kanban"
+      "tasksDir": "../../../orgs/shuv/our-gpus/kanban",
+      "meta": {
+        "org": "shuv",
+        "suborg": "our-gpus",
+        "project": "our-gpus",
+        "domain": "shuv",
+        "tier": "shuv"
+      }
     },
     {
       "id": "orgs-shuv-proxx-kanban",
       "title": "shuv / proxx / kanban",
-      "tasksDir": "../../../orgs/shuv/proxx/kanban"
+      "tasksDir": "../../../orgs/shuv/proxx/kanban",
+      "meta": {
+        "org": "shuv",
+        "suborg": "proxx",
+        "project": "proxx",
+        "domain": "proxx",
+        "tier": "shuv"
+      }
     },
     {
       "id": "orgs-shuv-shuvcode-packages-opencode-kanban",
       "title": "shuv / shuvcode / opencode / kanban",
-      "tasksDir": "../../../orgs/shuv/shuvcode/packages/opencode/kanban"
+      "tasksDir": "../../../orgs/shuv/shuvcode/packages/opencode/kanban",
+      "meta": {
+        "org": "shuv",
+        "suborg": "shuvcode",
+        "project": "shuvcode",
+        "domain": "tools",
+        "tier": "shuv"
+      }
     },
     {
       "id": "orgs-shuv-shuvcode-kanban",
       "title": "shuv / shuvcode / kanban",
-      "tasksDir": "../../../orgs/shuv/shuvcode/kanban"
+      "tasksDir": "../../../orgs/shuv/shuvcode/kanban",
+      "meta": {
+        "org": "shuv",
+        "suborg": "shuvcode",
+        "project": "shuvcode",
+        "domain": "kanban",
+        "tier": "shuv"
+      }
     },
     {
       "id": "orgs-ussyverse-bananagen-kanban",
       "title": "ussyverse / bananagen / kanban",
-      "tasksDir": "../../../orgs/ussyverse/bananagen/kanban"
+      "tasksDir": "../../../orgs/ussyverse/bananagen/kanban",
+      "meta": {
+        "org": "ussyverse",
+        "suborg": "bananagen",
+        "project": "bananagen",
+        "domain": "hosting",
+        "tier": "ussyverse"
+      }
     },
     {
       "id": "orgs-ussyverse-battlebussy-kanban",
       "title": "ussyverse / battlebussy / kanban",
-      "tasksDir": "../../../orgs/ussyverse/battlebussy/kanban"
+      "tasksDir": "../../../orgs/ussyverse/battlebussy/kanban",
+      "meta": {
+        "org": "ussyverse",
+        "suborg": "battlebussy",
+        "project": "battlebussy",
+        "domain": "hosting",
+        "tier": "ussyverse"
+      }
     },
     {
       "id": "orgs-ussyverse-geoffrussy-kiro-kanban",
       "title": "ussyverse / geoffrussy / .kiro / kanban",
-      "tasksDir": "../../../orgs/ussyverse/geoffrussy/.kiro/kanban"
+      "tasksDir": "../../../orgs/ussyverse/geoffrussy/.kiro/kanban",
+      "meta": {
+        "org": "ussyverse",
+        "suborg": "geoffrussy",
+        "project": "geoffrussy",
+        "domain": "hosting",
+        "tier": "ussyverse"
+      }
     },
     {
       "id": "orgs-ussyverse-monorepo-projects-ai-agents-swarmussy-kiro-kanban",
       "title": "ai-agents / swarmussy / .kiro / kanban",
-      "tasksDir": "../../../orgs/ussyverse/monorepo/projects/ai-agents/swarmussy/.kiro/kanban"
+      "tasksDir": "../../../orgs/ussyverse/monorepo/projects/ai-agents/swarmussy/.kiro/kanban",
+      "meta": {
+        "org": "ussyverse",
+        "suborg": "monorepo",
+        "project": "monorepo",
+        "domain": "hosting",
+        "tier": "ussyverse"
+      }
     },
     {
       "id": "orgs-ussyverse-monorepo-projects-data-science-bananagen-kanban",
       "title": "monorepo / data-science / bananagen / kanban",
-      "tasksDir": "../../../orgs/ussyverse/monorepo/projects/data-science/bananagen/kanban"
+      "tasksDir": "../../../orgs/ussyverse/monorepo/projects/data-science/bananagen/kanban",
+      "meta": {
+        "org": "ussyverse",
+        "suborg": "monorepo",
+        "project": "monorepo",
+        "domain": "kanban",
+        "tier": "ussyverse"
+      }
     },
     {
       "id": "orgs-ussyverse-monorepo-projects-dev-tools-geoffrussy-kiro-kanban",
       "title": "dev-tools / geoffrussy / .kiro / kanban",
-      "tasksDir": "../../../orgs/ussyverse/monorepo/projects/dev-tools/geoffrussy/.kiro/kanban"
+      "tasksDir": "../../../orgs/ussyverse/monorepo/projects/dev-tools/geoffrussy/.kiro/kanban",
+      "meta": {
+        "org": "ussyverse",
+        "suborg": "monorepo",
+        "project": "monorepo",
+        "domain": "hosting",
+        "tier": "ussyverse"
+      }
     },
     {
       "id": "orgs-ussyverse-monorepo-projects-security-openclawssy-docs-kanban",
       "title": "monorepo / security / openclawssy / kanban",
-      "tasksDir": "../../../orgs/ussyverse/monorepo/projects/security/openclawssy/docs/kanban"
+      "tasksDir": "../../../orgs/ussyverse/monorepo/projects/security/openclawssy/docs/kanban",
+      "meta": {
+        "org": "ussyverse",
+        "suborg": "monorepo",
+        "project": "monorepo",
+        "domain": "kanban",
+        "tier": "ussyverse"
+      }
     },
     {
       "id": "orgs-ussyverse-openclawssy-docs-kanban",
       "title": "ussyverse / openclawssy / kanban",
-      "tasksDir": "../../../orgs/ussyverse/openclawssy/docs/kanban"
+      "tasksDir": "../../../orgs/ussyverse/openclawssy/docs/kanban",
+      "meta": {
+        "org": "ussyverse",
+        "suborg": "openclawssy",
+        "project": "openclawssy",
+        "domain": "hosting",
+        "tier": "ussyverse"
+      }
     },
     {
       "id": "orgs-ussyverse-opencode-kanban",
       "title": "ussyverse / opencode / kanban",
-      "tasksDir": "../../../orgs/ussyverse/opencode/kanban"
+      "tasksDir": "../../../orgs/ussyverse/opencode/kanban",
+      "meta": {
+        "org": "ussyverse",
+        "suborg": "opencode",
+        "project": "opencode",
+        "domain": "hosting",
+        "tier": "ussyverse"
+      }
     },
     {
       "id": "orgs-ussyverse-shoedelussy-docs-kanban",
       "title": "ussyverse / shoedelussy / kanban",
-      "tasksDir": "../../../orgs/ussyverse/shoedelussy/docs/kanban"
+      "tasksDir": "../../../orgs/ussyverse/shoedelussy/docs/kanban",
+      "meta": {
+        "org": "ussyverse",
+        "suborg": "shoedelussy",
+        "project": "shoedelussy",
+        "domain": "hosting",
+        "tier": "ussyverse"
+      }
     },
     {
       "id": "orgs-ussyverse-swarmussy-kiro-kanban",
       "title": "ussyverse / swarmussy / .kiro / kanban",
-      "tasksDir": "../../../orgs/ussyverse/swarmussy/.kiro/kanban"
+      "tasksDir": "../../../orgs/ussyverse/swarmussy/.kiro/kanban",
+      "meta": {
+        "org": "ussyverse",
+        "suborg": "swarmussy",
+        "project": "swarmussy",
+        "domain": "hosting",
+        "tier": "ussyverse"
+      }
     },
     {
       "id": "orgs-ussyverse-warp-kanban",
       "title": "ussyverse / warp / kanban",
-      "tasksDir": "../../../orgs/ussyverse/warp/kanban"
+      "tasksDir": "../../../orgs/ussyverse/warp/kanban",
+      "meta": {
+        "org": "ussyverse",
+        "suborg": "warp",
+        "project": "warp",
+        "domain": "hosting",
+        "tier": "ussyverse"
+      }
     },
     {
       "id": "packages-host-fleet-dashboard-kanban",
       "title": "host-fleet-dashboard / kanban",
-      "tasksDir": "../../../packages/host-fleet-dashboard/kanban"
+      "tasksDir": "../../../packages/host-fleet-dashboard/kanban",
+      "meta": {
+        "domain": "hosting"
+      }
     },
     {
       "id": "projects-webring-sites-fork-tales-site-kanban",
       "title": "webring-sites / fork-tales-site / kanban",
-      "tasksDir": "../../../projects/webring-sites/fork-tales-site/kanban"
+      "tasksDir": "../../../projects/webring-sites/fork-tales-site/kanban",
+      "meta": {
+        "domain": "fork-tales"
+      }
     },
     {
       "id": "kanban",
       "title": "kanban",
-      "tasksDir": "../../../kanban"
+      "tasksDir": "../../../kanban",
+      "meta": {
+        "domain": "kanban"
+      }
     }
   ],
   "generatedAt": "2026-05-29T04:31:18Z"

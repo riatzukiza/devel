@@ -1,11 +1,11 @@
 services:
   graph-weaver:
-    image: REDACTED_SECRET:22-bookworm
+    image: node:22-bookworm
     cpus: 2
     cpuset: 2-21
     user: ${DOCKER_USER:-1000:1000}
     working_dir: /app/workspace/devel
-    command: "bash -lc \"\n  set -euo pipefail\n  REDACTED_SECRET orgs/open-hax/openplanner/packages/graph/graph-weaver/dist/server.js\n\""
+    command: "bash -lc \"\n  set -euo pipefail\n  node orgs/open-hax/openplanner/packages/graph/graph-weaver/dist/server.js\n\""
     expose:
     - '8796'
     ports:
@@ -27,12 +27,12 @@ services:
       GRAPH_WEAVER_OPENPLANNER_EXPORT_MAX_SEMANTIC_EDGES: ${GRAPH_WEAVER_OPENPLANNER_EXPORT_MAX_SEMANTIC_EDGES:-12000}
       WEBGL_GRAPH_VIEW_DIST: /app/workspace/devel/orgs/open-hax/openplanner/packages/graph/webgl-graph-view/dist
       STATE_DIR: /app/workspace/devel/services/openplanner/openplanner-lake/graph-weaver
-      MONGODB_URI: mongodb://${OPENPLANNER_MONGO_APP_USERNAME:-openplanner}:${OPENPLANNER_MONGO_APP_PASSWORD:REDACTED_SECRET-openplanner-password}@mongodb:27017/${MONGODB_DB:-openplanner}?authSource=${MONGODB_DB:-openplanner}
+      MONGODB_URI: mongodb://${OPENPLANNER_MONGO_APP_USERNAME:-openplanner}:${OPENPLANNER_MONGO_APP_PASSWORD:-change-me-openplanner-password}@mongodb:27017/${MONGODB_DB:-openplanner}?authSource=${MONGODB_DB:-openplanner}
       MONGODB_DB: ${MONGODB_DB:-openplanner}
-      MONGODB_NODE_COLLECTION: ${GRAPH_WEAVER_NODE_COLLECTION:-graph_weaver_REDACTED_SECRETs}
+      MONGODB_NODE_COLLECTION: ${GRAPH_WEAVER_NODE_COLLECTION:-graph_weaver_nodes}
       MONGODB_EDGE_COLLECTION: ${GRAPH_WEAVER_EDGE_COLLECTION:-graph_weaver_edges}
       OPENPLANNER_BASE_URL: http://openplanner:7777
-      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:REDACTED_SECRET}
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
       GRAPH_WEAVER_WEB_CRAWL_ENABLED: ${GRAPH_WEAVER_WEB_CRAWL_ENABLED:-true}
       MAX_RENDER_NODES: ${GRAPH_WEAVER_MAX_RENDER_NODES:-6000}
       MAX_RENDER_EDGES: ${GRAPH_WEAVER_MAX_RENDER_EDGES:-12000}
@@ -50,7 +50,7 @@ services:
     healthcheck:
       test:
       - CMD
-      - REDACTED_SECRET
+      - node
       - -e
       - fetch('http://127.0.0.1:8796/api/status').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))
       interval: 30s
@@ -64,7 +64,7 @@ services:
   eros-eris-field-app:
     profiles:
     - graph-single
-    image: REDACTED_SECRET:22-bookworm
+    image: node:22-bookworm
     cpus: 1.5
     cpuset: 2-21
     # NOTE: do not publish a fixed host port if you want horizontal scaling.
@@ -72,7 +72,7 @@ services:
     expose:
     - '8786'
     working_dir: /app/workspace/devel
-    command: "bash -lc \"\n  set -euo pipefail\n  cd orgs/open-hax/openplanner/packages/graph/eros-eris-field-app\n  ./REDACTED_SECRET_modules/.bin/tsx src/index.ts\n\""
+    command: "bash -lc \"\n  set -euo pipefail\n  cd orgs/open-hax/openplanner/packages/graph/eros-eris-field-app\n  ./node_modules/.bin/tsx src/index.ts\n\""
     environment:
       CI: 'true'
       NPM_CONFIG_CONFIRM_MODULES_PURGE: 'false'
@@ -82,7 +82,7 @@ services:
       EROS_ERIS_WORKER_ROLE: ${EROS_ERIS_WORKER_ROLE:-hybrid}
       GRAPHQL_URL: http://graph-weaver:8796/graphql
       OPENPLANNER_BASE_URL: http://openplanner:7777
-      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:REDACTED_SECRET}
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
       EMBED_PROVIDER_MODEL: ${EROS_ERIS_EMBED_PROVIDER_MODEL:-qwen3-embedding:0.6b}
       VEXX_BASE_URL: ${VEXX_BASE_URL:-http://host.docker.internal:8787}
       VEXX_API_KEY: ${VEXX_API_KEY:-}
@@ -146,7 +146,7 @@ services:
     healthcheck:
       test:
       - CMD
-      - REDACTED_SECRET
+      - node
       - -e
       - fetch('http://127.0.0.1:8786/health').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))
       interval: 30s
@@ -164,11 +164,11 @@ services:
     - graph-2
     - graph-3
     - graph-20
-    image: REDACTED_SECRET:22-bookworm
+    image: node:22-bookworm
     cpus: 1.5
     cpuset: 2-21
     working_dir: /app/workspace/devel
-    command: bash -lc "cd orgs/open-hax/openplanner/packages/graph/eros-eris-field-app && ./REDACTED_SECRET_modules/.bin/tsx src/index.ts"
+    command: bash -lc "cd orgs/open-hax/openplanner/packages/graph/eros-eris-field-app && ./node_modules/.bin/tsx src/index.ts"
     environment:
       CI: 'true'
       NPM_CONFIG_CONFIRM_MODULES_PURGE: 'false'
@@ -176,7 +176,7 @@ services:
       EROS_ERIS_WORKER_ROLE: semantic
       GRAPHQL_URL: http://graph-weaver:8796/graphql
       OPENPLANNER_BASE_URL: http://openplanner:7777
-      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:REDACTED_SECRET}
+      OPENPLANNER_API_KEY: ${OPENPLANNER_API_KEY:-change-me}
       EMBED_PROVIDER_MODEL: ${EROS_ERIS_EMBED_PROVIDER_MODEL:-qwen3-embedding:0.6b}
       VEXX_BASE_URL: ${VEXX_BASE_URL:-http://host.docker.internal:8787}
       VEXX_API_KEY: ${VEXX_API_KEY:-}

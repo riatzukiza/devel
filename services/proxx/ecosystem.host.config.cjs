@@ -1,4 +1,4 @@
-const path = require("REDACTED_SECRET:path");
+const path = require("node:path");
 
 const serviceRoot = __dirname;
 const repoRoot = path.resolve(serviceRoot, "../../orgs/open-hax/proxx");

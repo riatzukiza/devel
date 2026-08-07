@@ -1,4 +1,24 @@
-[{:contract/id :model-family/openai-explicit
+[{:contract/id :model/claude-haiku-4-5
+  :contract/kind :model
+  :model/id "claude-haiku-4-5"}
+
+ {:contract/id :model/claude-sonnet-4-5
+  :contract/kind :model
+  :model/id "claude-sonnet-4-5"}
+
+ {:contract/id :model/claude-sonnet-4-6
+  :contract/kind :model
+  :model/id "claude-sonnet-4-6"}
+
+ {:contract/id :model/claude-opus-4-5
+  :contract/kind :model
+  :model/id "claude-opus-4-5"}
+
+ {:contract/id :model/claude-opus-4-6
+  :contract/kind :model
+  :model/id "claude-opus-4-6"}
+
+ {:contract/id :model-family/openai-explicit
   :contract/kind :model-family
   :match/model-pattern "(?i)^openai[/:].+"
   :routing/provider-id "openai"
@@ -54,7 +74,13 @@
   :contract/kind :model-alias
   :match/model-pattern "(?i)^gemma4:e4b$"
   :match/provider-pattern "^llamacpp$"
-  :alias/model-id "gemma4-e4b"}
+  :alias/model-id "gemma4:e4b"}
+
+ {:contract/id :model-alias/qwen3-embedding-8k
+  :contract/kind :model-alias
+  :match/model-pattern "(?i)^qwen3-embedding:0\\.6b$"
+  :match/provider-pattern "^ollama-lan$"
+  :alias/model-id "qwen3-embedding:0.6b-8k"}
 
  {:contract/id :model-family/claude
   :contract/kind :model-family

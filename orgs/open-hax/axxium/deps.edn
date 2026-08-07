@@ -1,7 +1,0 @@
-{:paths ["src/cljs" "resources"]
- :deps {org.clojure/clojurescript {:mvn/version "1.12.145"}
-        metosin/malli {:mvn/version "0.16.4"}
-        funcool/promesa {:mvn/version "11.0.678"}}
- :aliases
- {:dev {:extra-deps {thheller/shadow-cljs {:mvn/version "2.28.22"}}}
-  :test {:extra-deps {thheller/shadow-cljs {:mvn/version "2.28.22"}}}}}

@@ -125,8 +125,21 @@
   :auth/required? false}
 
  {:contract/id :provider-route/llamacpp-embed
-  :contract/kind :provider-route
-  :provider/id "llamacpp-embed"
-  :provider/base-url "http://127.0.0.1:8081"
-  :auth/required? false
-  :paths {:embeddings "/v1/embeddings"}}]
+   :contract/kind :provider-route
+   :provider/id "llamacpp-embed"
+   :provider/base-url "http://llamacpp-embed:8081"
+   :auth/required? false
+   :paths {:embeddings "/v1/embeddings"}}
+
+ {:contract/id :provider-seed/anthropic
+   :contract/kind :provider-seed
+   :provider-id-env-names ["ANTHROPIC_PROVIDER_ID"]
+   :provider-id-fallback "anthropic"
+   :provider/base-url "https://api.anthropic.com"
+   :key-env-names ["ANTHROPIC_API_KEY"]}
+
+ {:contract/id :provider-route/anthropic
+   :contract/kind :provider-route
+   :provider/id "anthropic"
+   :provider/base-url "https://api.anthropic.com"
+   :paths {:messages "/v1/messages"}}]

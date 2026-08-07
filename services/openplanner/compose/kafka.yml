@@ -14,7 +14,7 @@ services:
       - --memory=${OPENPLANNER_REDPANDA_MEMORY:-768M}
       - --reserve-memory=0M
       - --overprovisioned
-      - --REDACTED_SECRET-id=0
+      - --node-id=0
       - --check=false
       - --kafka-addr=internal://0.0.0.0:9092,external://0.0.0.0:19092
       - --advertise-kafka-addr=internal://redpanda:9092,external://127.0.0.1:${OPENPLANNER_REDPANDA_PORT:-19092}
@@ -78,7 +78,7 @@ services:
       OPENPLANNER_KAFKA_REPLAY_START_OFFSET: ${OPENPLANNER_KAFKA_REPLAY_START_OFFSET:-earliest}
       OPENPLANNER_KAFKA_REPLAY_END_OFFSET: ${OPENPLANNER_KAFKA_REPLAY_END_OFFSET:-latest}
       OPENPLANNER_KAFKA_REPLAY_MAX_MESSAGES: ${OPENPLANNER_KAFKA_REPLAY_MAX_MESSAGES:-1000}
-      MONGODB_URI: mongodb://${OPENPLANNER_MONGO_APP_USERNAME:-openplanner}:${OPENPLANNER_MONGO_APP_PASSWORD:REDACTED_SECRET-openplanner-password}@mongodb:27017/${MONGODB_DB:-openplanner}?authSource=${MONGODB_DB:-openplanner}
+      MONGODB_URI: mongodb://${OPENPLANNER_MONGO_APP_USERNAME:-openplanner}:${OPENPLANNER_MONGO_APP_PASSWORD:-change-me-openplanner-password}@mongodb:27017/${MONGODB_DB:-openplanner}?authSource=${MONGODB_DB:-openplanner}
       MONGODB_DB: ${MONGODB_DB:-openplanner}
       MONGODB_EVENTS_COLLECTION: ${MONGODB_EVENTS_COLLECTION:-events}
     depends_on:

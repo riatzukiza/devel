@@ -1,42 +1,45 @@
-# Π fork-tax snapshot — 20260602T172342Z
+# Π Fork Tax — 2026-06-13T22:18:00Z
 
-- Repository: riatzukiza/devel
-- Source branch: `feat/axxium-restore-and-track`
-- Base: `origin/staging` (dcb261bcc5edd2f328a5bff73dfabf89f0b9ed7c)
-- Snapshot commit: 3305c3f104ffd828d113fed534332ae94957da07
-- Π tag: `fork-tax/20260602-axxium-restore-and-track`
+**Branch:** `feat/ci-automation-1781026522`
+**Agent:** MiMo-v2.5-pro
 
-## Scope (path-scoped, 25 files, +2176/-0)
+## Summary
 
-- `docs/morning_update_2026-04-06.md` — Hormuz Risk Clock morning update (carried forward from working tree)
-- `docs/notes/2026.06.02.10.46.20.md` — Axxium design note (today's session)
-- `orgs/open-hax/axxium/` — full ClojureScript identity/auth kernel project:
-  - `README.md`, `deps.edn`, `shadow-cljs.edn`, `package.json`
-  - `src/cljs/axxium/{auth,routes,db,config,schema,server}.cljs` and friends
-  - `docs/axxium-kernel-spec.md`, `docs/axxium-kernel-spec-v2.md`, `docs/axium-synthesis.md`, `docs/open-hax-octave-commons-axxium.md`
-  - `.github/workflows/deploy.yml`, `.env.example`
-  - `.gitignore` (extended with `session-*.md` and standard caches)
+Working tree snapshot. 6 root-owned files staged + 3 submodule pointers updated.
 
-## Excluded (per `.gitignore` rules, intentionally not tracked)
+## Root Changes Staged
 
-- `orgs/open-hax/axxium/node_modules/` (150 MB)
-- `.shadow-cljs/`, `.cpcache/`, `.clj-kondo/`, `.lsp/`, `dist/`
-- `session-ses_1802.md` (171 KB Kimi K2.6 session dump; new `session-*.md` rule in axxium `.gitignore`)
+| File | Change |
+|------|--------|
+| `.gitignore` | 4 lines added (new artifact ignore patterns) |
+| `Lore/fork-tales/creative/README.md` | Minor story metadata edits |
+| `promethean` | Symlink deleted (convenience link removed; submodule at `orgs/octave-commons/promethean` preserved) |
+| `receipts.edn` | 1 line added (receipt river state) |
+| `services/proxx/docker-compose.yml` | 1 line change (service config) |
+| `services/proxx/ecosystem.host.config.cjs` | 1 line change (PM2 config) |
+| `CLAUDE.md` | Claude Code guidance file (new, tracked) |
 
-## Path-scoped staging verification
+## Submodule Pointer Updates
 
-- `git status -uall` shows no other untracked files
-- The `.git` submodule pointer was removed from the copied axxium directory before staging; project is added as plain tracked content under `orgs/open-hax/axxium/`
-- `.gitmodules` on `origin/staging` does not register axxium; the new commit does not reintroduce a gitlink
+| Submodule | New Commits | Summary |
+|-----------|-------------|---------|
+| `orgs/open-hax/eta-mu` | 2 | CI guard fix + kanban comments parity |
+| `orgs/open-hax/openplanner` | 3 | CodeRabbit/Kimi PR#89 review fixes + fork-tax + EventAdmission EDN |
+| `orgs/open-hax/proxx` | 3 | Merge staging + header tests + review feedback |
 
-## Concurrent dirt (intentionally untouched)
+## Concurrent Dirt (Intentionally Untouched)
 
-- Local main worktree (at `/home/err/devel`) still has branch `staging` at `db1586e03a`, which is stale relative to `origin/staging` `dcb261bcc5`.
-- The stale tip carries a `scrub secrets, re-add axxium` commit (`db1586e03a`) that is functionally redundant with `db99be843e` already on `origin/staging`; another agent's Π promotion (`pi/fork-tax/20260602T164500Z/devel-main-staging-scrubbed-promotion`) is recorded in the tag namespace.
-- Per fork-tax guardrails, no destructive reset of the main worktree was performed. The fork-tax work itself was carried out in the new worktree `.worktrees/feat-axxium-restore-and-track`.
+18 submodules with dirty content or untracked files — other agents' work. Documented in `Π_STATE.sexp`.
 
-## PR
+## Skipped (Generated/Runtime/Credentials)
 
-- Target: `staging`
-- Source: `feat/axxium-restore-and-track`
-- Diff is the snapshot above (25 files, +2176 lines), clean against the latest `origin/staging`.
+- `.claude/scheduled_tasks.lock` — runtime lock
+- `Graphics_5000/` — ~300 generated art PNGs
+- `Symmetry_Council_*` — audio files
+- `services/proxx/*-accounts.json`, `*-providers.json` — credential files (NEVER stage)
+- `services/llamacpp-stack/models/` — large model file
+- Various untracked `docs/`, `kanban/`, `Music/` artifacts
+
+## Verification
+
+- Skipped: no test suite applicable to this mixed-ownership snapshot.
