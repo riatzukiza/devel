@@ -1,8 +1,6 @@
 name: Codex Release Watch
 
 on:
-  schedule:
-    - cron: "0 9 * * *"
   workflow_dispatch:
 
 permissions:
@@ -34,9 +32,9 @@ jobs:
           fi
 
       - name: Setup Node.js
-        uses: actions/setup-REDACTED_SECRET@v4
+        uses: actions/setup-node@v4
         with:
-          REDACTED_SECRET-version: 22
+          node-version: 22
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -56,7 +54,7 @@ jobs:
       - name: Run release monitor
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: pnpm exec REDACTED_SECRET scripts/codex-release-monitor.mjs
+        run: pnpm exec node scripts/codex-release-monitor.mjs
 
       - name: Commit release state
         env:
