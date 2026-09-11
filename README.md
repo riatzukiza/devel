@@ -1,3 +1,199 @@
+# devel — the development tree
+
+`/home/err/devel` is a **development tree of independently-owned git repos**, organized
+under `orgs/**`, plus a workspace root carrying shared documentation, tooling, and
+automation. Each org repo is its own repository with its own history, branch law, and
+license; the root ties them together with shared scripts (`bb.edn`, `bin/`, `scripts/`),
+a pnpm workspace, kanban task cards, and chronological notes.
+
+This root itself is the `riatzukiza/devel` git repo. The active device branch is
+`device/yoga` (see `AGENTS.md` for the device-federation rules).
+
+> **Note on legacy content:** the bulk of this file (below the `Legacy` marker) is the
+> pre-existing README content, which actually documents the **proxx** proxy
+> (`orgs/open-hax/proxx`, deployed from `services/proxx`). It is preserved verbatim
+> under its new heading; `DEVEL.md` at the root is its workspace-flavored twin.
+
+## Quick Start
+
+**Where things live**
+
+- `orgs/open-hax`, `orgs/octave-commons`, `orgs/riatzukiza`, `orgs/shuv`,
+  `orgs/ussyverse` — groups of independently-owned repositories (see
+  *Repository Structure* below).
+- `docs/` — shared workspace documentation: `docs/agile/tasks/` (the kanban board),
+  `docs/notes/` (chronological notes), research, specs, reports.
+- `bb.edn` — Babashka task runner for the Clojure side of the workspace (REPLs,
+  shadow-cljs builds, tests, lint). See `CLOJURE.md` for the full walkthrough and
+  `./repl.sh` for starting REPLs.
+- `package.json` + `pnpm-workspace.yaml` — root pnpm workspace; workspace packages
+  live under `packages/*` and selected `orgs/**` packages. Use
+  `pnpm --filter <pkg> <script>` to build/test a specific package.
+- `nx.json` — Nx is available for affected-project detection across the workspace.
+
+**Build / test a TypeScript (pnpm) package**
+
+```bash
+pnpm install                      # workspace install (root)
+pnpm --filter @workspace/open-hax-openai-proxy dev    # example: run proxx API
+pnpm --filter @workspace/open-hax-openai-proxy test   # example: run its tests
+```
+
+Stack registries (docker compose wrappers) are managed from the root:
+`pnpm docker:stack status <stack>` — see `docs/docker-stacks.md`.
+
+**Clojure / ClojureScript work**
+
+```bash
+./repl.sh all        # JVM REPL, CLJS REPL, MCP server, shadow-cljs watch
+bb test:all          # run tests across runtimes
+bb lint:all          # lint Clojure + ClojureScript
+```
+
+See `CLOJURE.md` for ports, config files (`deps.edn`, `shadow-cljs.edn`), and the
+dev workflow. Runtime ladder: NBB (node) → Babashka → JVM → shadow-cljs (browser).
+
+**Navigating orgs/**
+
+Each repo under `orgs/<org>/<repo>` is an independent git checkout. `cd` in and treat
+it as its own repo (its own README, its own branch law). Some repos also have
+`~origin_main` sibling worktrees. Root-level symlinks exist for hot paths
+(`promethean -> orgs/riatzukiza/promethean`, `desktop -> orgs/riatzukiza/desktop`).
+
+## Example
+
+One concrete flow — the proxx proxy, whose docs are preserved below:
+
+```bash
+cd /home/err/devel/orgs/open-hax/proxx   # repo checkout (service runtime: ../services/proxx)
+pnpm install
+cp .env.example .env && cp keys.example.json keys.json
+pnpm test
+```
+
+When in doubt about a given org repo, read that repo's own README/package.json —
+conventions are per-repo, not per-root.
+
+## Concepts
+
+- **org-per-repo ownership** — every project is its own repository under an org
+  directory. The root repo (`riatzukiza/devel`) owns only the shared surface:
+  docs, tooling, services scaffolding, workspace manifests.
+- **kanban tasks dir as the board** — `docs/agile/tasks/*.md` cards carry YAML
+  frontmatter (`uuid`, `status`, `priority`). Work is requested and tracked there;
+  statuses observed today: mostly `"incoming"`, with a few `todo`/`completed`.
+- **bb.edn as the root scripting runtime** — Babashka tasks orchestrate REPLs,
+  builds, tests, and workspace setup for all Clojure projects.
+- **notes/ chronology** — `docs/notes/` files are timestamped (`YYYY.MM.DD.*.md`)
+  chronological evidence of decisions and sessions; treat as semi-structured
+  scratchpad (per `docs/README.md`).
+
+## Repository Structure
+
+### orgs/open-hax
+
+- `eta-mu` — eta-mu agent runtime monorepo (constitutional layer: receipt-river, session-mycology, fork-tax, contract-runtime)
+- `proxx` — OpenAI-compatible model proxy with provider-scoped account rotation (docs below)
+- `uxx` — UI kit (pnpm workspace member)
+- `openplanner` — planner / agent tasking
+- `axxium` — agent infrastructure repo
+- `vexx` — (nested gitlink present; unmapped in .gitmodules)
+- `privaxxy` — privacy tooling
+- plus `voxx`, `tooloxx`, `museeks`, `janus`, `commanoxx`, `depenoxx`, plugin repos, and archived/
+
+### orgs/octave-commons
+
+- `promethean` — the Promethean agent system (GPL-licensed; kanban FSM, frontends)
+- `gates-of-truth` — simulation project ("Gates of Truth")
+- `gates-of-aker` — simulation sibling (t0/t1 snapshots at root)
+- `pantheon` — pantheon services
+- `helm` — helm services
+- `daimoi` — daimoi project
+- `eros-eris-field` (+ `eros-eris-field-app`) — field simulation pair (gitlinks unmapped in .gitmodules)
+- `bitch-tracker` — (gitlink unmapped in .gitmodules; source of the known submodule error)
+- `shibboleth` — shibboleth project
+- plus `cephalon-clj`, `mythloom`, `pandora`, `simulacron`, `fork_tales`, `promethean-agent-system`, `lineara_conversation_export`, `eta-mu-sol`
+
+### orgs/riatzukiza
+
+- `TANF-app` — TANF application
+- `goblin-lessons` — goblin-lessons project
+- `ollama-benchmarks` — Ollama model benchmarks
+- `riatzukiza.github.io` — personal site
+- plus `promethean` mirror checkout, `desktop`, `dotfiles`, `stt`, `book-of-shadows`, `kronos`, `mnemosyne`, `threat-radar-*`, `portfolio`
+
+### orgs/shuv
+
+- `codex-desktop-linux` — Codex desktop build for Linux
+- `our-gpus` — GPU fleet tooling (nested gitlink; unmapped in .gitmodules)
+- `shuvcrawl` — crawler project
+- plus ~200 upstream clones/forks and small tools (agent tooling, TUIs, scripts)
+
+### orgs/ussyverse
+
+- `kanban` — kanban system repo
+- `openclawssy` — openclawssy project
+- plus several hundred small experiment repos (`*ussy` naming family)
+
+## Development
+
+- Root-level lint/typecheck for TypeScript uses the workspace skills/commands
+  (`workspace-lint`, `workspace-typecheck`); markdown lint via
+  `.markdownlint-cli2.yaml`.
+- `nx.json` supports affected detection across submodules.
+- PM2 process definitions: `ecosystem.pm2.edn`, `ecosystem.config.cjs` (+ dev and
+  container variants).
+- Runtime state and agent ledgers (`receipts.edn`, `receipts.log`, `.ημ/`) live at
+  the root; see `AGENTS.md`.
+
+## Status
+
+**Known issues**
+
+- **`.gitmodules` / index drift:** `.gitmodules` maps ~60 submodule entries, but the
+  index currently holds only a handful of gitlinks. `git submodule status` fails with
+  `fatal: no submodule mapping found in .gitmodules for path 'orgs/octave-commons/bitch-tracker'`.
+  Documented in `GIT_MODULE_INDEX.md` and `AGENTS.md`; do **not** try to "fix" it
+  casually — submodule surgery is its own task.
+- `device/yoga` was created from `main` with WIP carried across (device-scoped branch
+  law; do not switch branches casually).
+- A number of nested repo clones (≈24 at device-creation time) had **no commits**
+  (empty clones) and were skipped from tracking.
+
+## Documentation
+
+- `docs/README.md` — start-here index, `docs/MASTER_CROSS_REFERENCE_INDEX.md`
+- `DEVEL.md` — proxx dev instructions (workspace flavor)
+- `CLOJURE.md` — Clojure environment guide
+- `AGENTS.md` — agent skills + device federation rules
+- `PROCESS.md` — workspace process charter
+- `STYLE.md` — conventions
+- `GLOSSARY.md` — domain + lore + Clojure terms
+- `GIT_MODULE_INDEX.md` — parent/children repo index
+- `CONTRIBUTING.md` — legacy proxy contribution flow (staging-first; note it is
+  proxx-scoped, not root-scoped)
+
+## Contributing
+
+Most work happens **inside the individual org repos** (branch + PR there, per each
+repo's own policy), not at the devel root. Root-level changes (docs, tooling,
+task cards) land on `device/*` branches of `riatzukiza/devel` and merge to `main`.
+
+## License
+
+No single root license. Licensing is **per org repo** — check each repo's
+LICENSE file (e.g. `orgs/octave-commons/promethean/LICENSE.txt` is GPL). The
+devel root itself carries no top-level LICENSE file.
+
+---
+
+# Legacy content — Open Hax OpenAI Proxy (proxx)
+
+Everything below is the pre-existing README content, preserved verbatim. It
+documents the proxy at `orgs/open-hax/proxx` / `services/proxx`.
+
+---
+
 # Open Hax OpenAI Proxy
 
 OpenAI-compatible proxy server with provider-scoped account rotation.
