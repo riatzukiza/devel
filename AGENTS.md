@@ -125,3 +125,100 @@ Canonical Kanban directories currently known to sync to GitHub:
 | `open-hax/tooloxx` | `orgs/open-hax/tooloxx/docs/imports/devel-REDACTED_SECRET/kanban` | 6 | `orgs/open-hax/tooloxx/docs/imports/devel-REDACTED_SECRET/kanban/openhax.kanban.json` |
 | `open-hax/tooloxx` | `orgs/open-hax/tooloxx/docs/imports/promethean/kanban` | 4 | `orgs/open-hax/tooloxx/docs/imports/promethean/kanban/openhax.kanban.json` |
 | `open-hax/mcp-fs-oauth` | `orgs/open-hax/tooloxx/services/mcp-fs-oauth/kanban` | 2 | `orgs/open-hax/tooloxx/services/mcp-fs-oauth/kanban/openhax.kanban.json` |
+# AGENTS.md — Agent contract for the stealth devel tree
+
+> This document **extends** the existing agent skills context (testing,
+> workspace standards, creative production suite, kanban→GitHub→Kimi workflow,
+> Proxx workflow, and the Output Contract already defined above/below in the
+> original file). The sections here add workspace-structure rules; nothing
+> replaces the existing content.
+
+## Role
+
+You are operating in the **`devel` development tree on the `stealth` host** —
+a pnpm/shadow-cljs superproject of 505+ git submodules organized under
+`orgs/<github-org>/<repo>`, with creative production directories, kanban
+planning, and services. The active branch is **`device/stealth`**, a
+device-scoped branch created from the tip of `feat/fork-tales-v2-submodule`.
+
+## Invariants
+
+1. **Stay on `device/stealth`.** Never switch branches in the superproject.
+   `feat/fork-tales-v2-submodule` still exists upstream; leave it alone.
+2. **Never commit unrelated dirty work.** The tree routinely carries 60–80
+   uncommitted entries. Stage explicitly, by path, only files you touched.
+   Never `git add -A` / `git add .`.
+3. **No-recurse-into-orgs rule.** Each `orgs/<org>/<repo>` is an independent
+   git repository with its own branch, dirty state, and remote. Do not run
+   repo-wide destructive operations (clean, checkout, reset, branch switches)
+   across `orgs/` from the superproject. Work inside a submodule means
+   `cd`-ing into it and respecting *its* AGENTS.md and branch.
+4. **Submodule pointer changes are deliberate.** A modified submodule path in
+   `git status` means that nested repo's HEAD moved. Commit the pointer bump
+   only when the nested repo's state is pushed or intentionally local.
+5. **Do not modify `.gitignore`; do not run workspace builds casually.**
+6. **Kanban before issues.** Before opening GitHub issues, check the kanban
+   directories listed in the Kanban → GitHub → Kimi workflow table; sync with
+   throttling (`--dry-run` first, then `--max-writes 25 --write-delay-ms 5000`).
+7. **Respect the Output Contract.** Every substantive assistant response
+   satisfies the Signal / Evidence / Frames / Countermoves / Next contract
+   already defined in this file's original sections.
+8. **Credentials never enter the repo.** Provider auth uses env references;
+   secrets live in `services/*/.env` (untracked) or the environment — never in
+   committed files. Discord/GitHub webhook URLs and tokens are never logged.
+
+## Device federation
+
+This repo is a **submodule of the home-directory superproject** on `stealth`:
+`~` contains a git repo tracking dotfiles/home state, and `~/devel` is
+registered inside it (branch `device/stealth`). Consequences:
+
+- Committing inside `~/devel` changes the superproject's submodule pointer;
+  the home superproject picks that up on its own schedule — do not force it.
+- The `device/stealth` branch is the stealth-host identity across the
+  federation; sibling devices (e.g. yoga, on `device/yoga`) hold different
+  dirty states and epics. Never "sync" by switching branches.
+- Submodules that participate in the federation carry `branch = device/stealth`
+  in `.gitmodules`; others pin tags or feat branches (see
+  [GIT_MODULE_INDEX.md](GIT_MODULE_INDEX.md)).
+
+## No-recurse-into-orgs (expanded)
+
+- `orgs/` hosts the nested repos (verified counts: agustif 1, lakeraven 3,
+  octave-commons 16, open-hax 11, riatzukiza 5, shuv 167, stakira 1,
+  ussyverse 276, reference 0 — some entries are plain directories).
+- Workspace-level lint/typecheck skills target `orgs/**` read-only; they may
+  read and report, but agent *writes* belong to the specific submodule being
+  worked.
+- Merge/rebase/conflict recovery inside a submodule stays inside that
+  submodule.
+
+## .gitmodules drift (documented, not fixed casually)
+
+`git submodule status` shows drift — nested repos checked out at commits
+differing from the superproject-registered SHAs (prefix `-` missing/init or
+`+` different commit):
+
+| Submodule | Drift | Registered/current state |
+|---|---|---|
+| `orgs/octave-commons/eta-mu-sol` | `-` (not initialized) | registered in `.gitmodules`, absent on disk |
+| `orgs/octave-commons/fork_tales_v2` | `+` | `Pi/c28c84c/2026-07-27T20-22-00Z-185-g1c28d22` |
+| `orgs/octave-commons/promethean` | `+` | `pi/eta-mu-kanban-octave-promethean-20260528-13-g2c878b6a56` |
+| `orgs/octave-commons/shibboleth` | `+` | `Π/2026-03-20/194859-91ea4b8-16-gecde6df` |
+| `orgs/open-hax/eta-mu` | `+` | `Π/device/yoga/2026-07-10T232338-1-ge919c7b` (note: yoga tag on stealth) |
+| `orgs/open-hax/vexx` | `+` | `pi/fork-tax/20260515-vexx-2bbfabab-13-gc20ed4b` |
+
+This drift is **documented state, not an error to auto-fix**. Running
+`git submodule update` would move HEADs and discard local nested work; only
+realign pointers when the owning task requires it, and record the decision in
+`receipts.edn`.
+
+## Workflow notes
+
+- Eta-mu runtime work means `orgs/open-hax/eta-mu/packages/eta-mu-extensions`
+  (build/deploy reference: `docs/reference/eta-mu-runtime.md`).
+- Proxx host dev: `services/proxx/ecosystem.host.config.cjs` is canonical;
+  policy decisions come from policy EDN files, never `.env`.
+- Knoxx lives at `orgs/open-hax/openplanner/packages/agents/knoxx`; follow the
+  vertical-slice style rules in [DEVEL.md](DEVEL.md).
+- Append non-trivial execution evidence to `receipts.edn` (append-only).
