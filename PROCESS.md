@@ -33,5 +33,5 @@ Work in `devel` follows an **epiphany → task → evidence** loop:
 ## Related
 
 The epiphany process model this charter is modeled on:
-[`../spaces/foresight/epiphany/PROCESS.md`](../../spaces/foresight/epiphany/PROCESS.md)
+[`../spaces/foresight/epiphany/PROCESS.md`](../spaces/foresight/epiphany/PROCESS.md)
 (resolves to `/home/err/spaces/foresight/epiphany/PROCESS.md` — verified).
