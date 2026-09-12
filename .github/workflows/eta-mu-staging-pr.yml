@@ -16,11 +16,11 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-REDACTED_SECRET@v5
+      - uses: actions/setup-node@v5
         with:
-          REDACTED_SECRET-version: 22
+          node-version: 22
           package-manager-cache: false
-      - run: REDACTED_SECRET --test orgs/open-hax/eta-mu/packages/eta-mu-docs/tests/*.test.cjs
+      - run: node --test orgs/open-hax/eta-mu/packages/eta-mu-docs/tests/*.test.cjs
 
   eta-mu-truth-tests:
     name: eta-mu-truth-tests
@@ -28,11 +28,11 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-REDACTED_SECRET@v5
+      - uses: actions/setup-node@v5
         with:
-          REDACTED_SECRET-version: 22
+          node-version: 22
           package-manager-cache: false
-      - run: REDACTED_SECRET --test orgs/open-hax/eta-mu/packages/eta-mu-truth/tests/*.test.cjs
+      - run: node --test orgs/open-hax/eta-mu/packages/eta-mu-truth/tests/*.test.cjs
 
   eta-mu-compose-config:
     name: eta-mu-compose-config
