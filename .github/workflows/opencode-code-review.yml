@@ -47,7 +47,7 @@ jobs:
             If there are no actionable findings, leave a short passing review summary instead of inventing comments.
             Do not request cosmetic churn unless it prevents confusion or future defects.
 
-      - name: REDACTED_SECRET new inline review comments to Discord
+      - name: Send new inline review comments to Discord
         if: ${{ always() && env.HAS_DISCORD_REVIEW_WEBHOOK_URL == 'true' }}
         uses: actions/github-script@v7
         env:

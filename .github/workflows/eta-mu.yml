@@ -62,9 +62,9 @@ jobs:
           version: 10.14.0
 
       - name: Setup Node.js
-        uses: actions/setup-REDACTED_SECRET@v4
+        uses: actions/setup-node@v4
         with:
-          REDACTED_SECRET-version: 22
+          node-version: 22
           cache: pnpm
           cache-dependency-path: .eta-mu/pnpm-lock.yaml
 
