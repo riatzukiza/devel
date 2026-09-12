@@ -29,9 +29,9 @@ jobs:
           submodules: ${{ inputs.checkout-submodules && 'recursive' || 'false' }}
 
       - name: Setup Node.js
-        uses: actions/setup-REDACTED_SECRET@v4
+        uses: actions/setup-node@v4
         with:
-          REDACTED_SECRET-version: 22
+          node-version: 22
 
       - name: Generate npm lockfile from pnpm/bun
         run: |

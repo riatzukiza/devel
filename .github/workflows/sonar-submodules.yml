@@ -21,20 +21,20 @@ jobs:
         with:
           submodules: recursive
       - name: Setup Node
-        uses: actions/setup-REDACTED_SECRET@v4
+        uses: actions/setup-node@v4
         with:
-          REDACTED_SECRET-version: '20'
+          node-version: '20'
       - name: Compute submodule matrix
         id: matrix
         run: |
-          REDACTED_SECRET scripts/sonar-bootstrap.mjs matrix --namespace "${SONAR_NAMESPACE}" --recursive true > matrix.json
+          node scripts/sonar-bootstrap.mjs matrix --namespace "${SONAR_NAMESPACE}" --recursive true > matrix.json
           echo "matrix=$(cat matrix.json)" >> "$GITHUB_OUTPUT"
       - name: Ensure Sonar projects exist
         if: ${{ secrets.SONAR_TOKEN != '' }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          REDACTED_SECRET scripts/sonar-bootstrap.mjs ensure --namespace "${SONAR_NAMESPACE}" --host "${SONAR_HOST_URL}" --org "${SONAR_ORG}" --recursive true
+          node scripts/sonar-bootstrap.mjs ensure --namespace "${SONAR_NAMESPACE}" --host "${SONAR_HOST_URL}" --org "${SONAR_ORG}" --recursive true
 
   sonar:
     needs: prepare
@@ -50,9 +50,9 @@ jobs:
         with:
           submodules: recursive
       - name: Setup Node
-        uses: actions/setup-REDACTED_SECRET@v4
+        uses: actions/setup-node@v4
         with:
-          REDACTED_SECRET-version: '20'
+          node-version: '20'
       - name: Cache Sonar cache
         uses: actions/cache@v4
         with:
@@ -71,4 +71,4 @@ jobs:
             -Dsonar.host.url=${{ env.SONAR_HOST_URL }}
             -Dsonar.projectBaseDir=${{ matrix.path }}
             -Dsonar.sources=.
-            -Dsonar.exclusions=**/REDACTED_SECRET_modules/**,**/.git/**,**/.worktrees/**,**/dist/**,**/build/**,**/.next/**,**/.cache/**,**/coverage/**,**/target/**,**/.scannerwork/**
+            -Dsonar.exclusions=**/node_modules/**,**/.git/**,**/.worktrees/**,**/dist/**,**/build/**,**/.next/**,**/.cache/**,**/coverage/**,**/target/**,**/.scannerwork/**

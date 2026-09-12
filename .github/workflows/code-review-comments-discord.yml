@@ -9,12 +9,12 @@ permissions:
 
 jobs:
   discord:
-    name: REDACTED_SECRET inline review comment to Discord
+    name: Send inline review comment to Discord
     runs-on: ubuntu-latest
     env:
       HAS_DISCORD_REVIEW_WEBHOOK_URL: ${{ secrets.DISCORD_REVIEW_WEBHOOK_URL != '' }}
     steps:
-      - name: REDACTED_SECRET inline review comment to Discord
+      - name: Send inline review comment to Discord
         if: ${{ env.HAS_DISCORD_REVIEW_WEBHOOK_URL == 'true' }}
         uses: actions/github-script@v7
         env:

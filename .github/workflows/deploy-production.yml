@@ -23,9 +23,9 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: 9
-      - uses: actions/setup-REDACTED_SECRET@v5
+      - uses: actions/setup-node@v5
         with:
-          REDACTED_SECRET-version: 22
+          node-version: 22
           cache: pnpm
       - run: sudo apt-get update && sudo apt-get install -y shellcheck
       - run: go install github.com/rhysd/actionlint/cmd/actionlint@latest
